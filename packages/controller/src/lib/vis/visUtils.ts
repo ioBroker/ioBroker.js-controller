@@ -1,12 +1,443 @@
 /**
+ * Note big parts of this file are copied from https://github.com/ioBroker/ioBroker.vis-2/blob/c8eba766c5a7587135817a5e87f3e90bc4796cdb/packages/iobroker.vis-2/src-vis/src/Vis/visUtils.tsx#L95
+ */
+
+type StateID = string;
+type SingleWidgetId = `w${string}`;
+type GroupWidgetId = `g${string}`;
+type AnyWidgetId = SingleWidgetId | GroupWidgetId;
+interface WidgetData {
+    /** Only exists if given by user in a tab general */
+    name?: string;
+    filterkey?: string;
+    members?: AnyWidgetId[];
+    bindings?: string[];
+    [other: string]: any;
+}
+
+type VisBindingOperationType =
+    | 'eval'
+    | '*'
+    | '+'
+    | '-'
+    | '/'
+    | '%'
+    | 'min'
+    | 'max'
+    | 'date'
+    | 'momentDate'
+    | 'value'
+    | 'array'
+    | 'pow'
+    | 'round'
+    | 'random'
+    | 'json'
+    | 'sqrt'
+    | 'hex'
+    | 'HEX'
+    | 'HEX2'
+    | 'hex2'
+    | 'floor'
+    | 'ceil'
+    | '';
+
+interface VisBindingOperationArgument {
+    name: string;
+    /** ioBroker state ID plus '.val', '.ts', '.ack' or '.lc' */
+    visOid: StateID;
+    /** ioBroker state ID */
+    systemOid: StateID;
+}
+
+interface VisBindingOperation {
+    op: VisBindingOperationType;
+    arg?: VisBindingOperationArgument[] | string | number | string[];
+    formula?: string;
+}
+
+interface VisBinding {
+    /** ioBroker state ID plus '.val', '.ts', '.ack' or '.lc' */
+    visOid: StateID;
+    /** ioBroker state ID */
+    systemOid: StateID;
+    /** Part of the string, like {id.ack} */
+    token: string;
+    operations?: VisBindingOperation[];
+    format: string;
+    isSeconds: boolean;
+}
+
+interface VisLinkContextBinding extends VisBinding {
+    type: 'style' | 'data';
+    attr: string;
+    view: string;
+    widget: AnyWidgetId;
+}
+
+interface VisLinkContextItem {
+    view: string;
+    widget: AnyWidgetId;
+}
+
+interface VisLinkContextSignalItem extends VisLinkContextItem {
+    index: number;
+}
+
+interface VisStateUsage {
+    /** list of widgets, that depends on this state */
+    visibility: Record<string, VisLinkContextItem[]>;
+    signals: Record<string, VisLinkContextSignalItem[]>;
+    lastChanges: Record<string, VisLinkContextItem[]>;
+    /** list of widgets, that depends on this state */
+    bindings: Record<StateID, VisLinkContextBinding[]>;
+    IDs: StateID[];
+    byViews?: Record<string, string[]>;
+    widgetAttrInfo?: Record<string, any>;
+}
+
+interface Permissions {
+    /** Accessible in Runtime */
+    read: boolean;
+    /** Accessible in Editor */
+    write: boolean;
+}
+
+interface UserPermissions {
+    /** Which user has read or write access for the project */
+    [user: string]: Permissions;
+}
+
+interface WidgetStyle {
+    bindings?: string[];
+    position?: '' | 'absolute' | 'relative' | 'sticky' | 'static' | null;
+    display?: '' | 'inline-block' | null;
+    top?: string | number | null;
+    left?: string | number | null;
+    width?: string | number | null;
+    right?: string | number | null;
+    bottom?: string | number | null;
+    /** if widget become relative, here is stored the original width, so when we toggle it to the absolute width again, it has some width  */
+    absoluteWidth?: string | number | null;
+    height?: string | number | null;
+    'z-index'?: number | null;
+    'overflow-x'?: '' | 'visible' | 'hidden' | 'scroll' | 'auto' | 'initial' | 'inherit' | null;
+    'overflow-y'?: '' | 'visible' | 'hidden' | 'scroll' | 'auto' | 'initial' | 'inherit' | null;
+    opacity?: number | null;
+    cursor?:
+        | 'alias'
+        | 'all-scroll'
+        | 'auto'
+        | 'cell'
+        | 'col-resize'
+        | 'context-menu'
+        | 'copy'
+        | 'crosshair'
+        | 'default'
+        | 'e-resize'
+        | 'ew-resize'
+        | 'grab'
+        | 'grabbing'
+        | 'help'
+        | 'move'
+        | 'n-resize'
+        | 'ne-resize'
+        | 'nesw-resize'
+        | 'ns-resize'
+        | 'nw-resize'
+        | 'nwse-resize'
+        | 'no-drop'
+        | 'none'
+        | 'not-allowed'
+        | 'pointer'
+        | 'progress'
+        | 'row-resize'
+        | 's-resize'
+        | 'se-resize'
+        | 'sw-resize'
+        | 'text'
+        | 'vertical-text'
+        | 'w-resize'
+        | 'wait'
+        | 'zoom-in'
+        | 'zoom-out'
+        | 'initial'
+        | 'inherit'
+        | null;
+    transform?: string;
+
+    color?: string;
+    'text-align'?: '' | 'left' | 'right' | 'center' | 'justify' | 'initial' | 'inherit' | null;
+    'text-shadow'?: string | null;
+    'font-family'?: string | null;
+    'font-style'?: '' | 'normal' | 'italic' | 'oblique' | 'initial' | 'inherit' | null;
+    'font-variant'?: '' | 'normal' | 'small-caps' | 'initial' | 'inherit' | null;
+    'font-weight'?: string;
+    'font-size'?: string;
+    'line-height'?: string;
+    'letter-spacing'?: string;
+    'word-spacing'?: string;
+
+    background?: string;
+    'background-color'?: string;
+    'background-image'?: string;
+    'background-repeat'?: '' | 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat' | 'initial' | 'inherit' | null;
+    'background-position'?: string | null;
+    'background-size'?: string | null;
+    'background-clip'?: '' | 'border-box' | 'padding-box' | 'content-box' | 'initial' | 'inherit' | null;
+    'background-origin'?: '' | 'padding-box' | 'border-box' | 'content-box' | 'initial' | 'inherit' | null;
+
+    'border-width'?: string | null;
+    'border-style'?:
+        | ''
+        | 'dotted'
+        | 'dashed'
+        | 'solid'
+        | 'double'
+        | 'groove'
+        | 'ridge'
+        | 'inset'
+        | 'outset'
+        | 'hidden'
+        | null;
+    'border-color'?: string | null;
+    'border-radius'?: string | null;
+
+    padding?: string | null;
+    'padding-left'?: string | null;
+    'padding-top'?: string | null;
+    'padding-right'?: string | null;
+    'padding-bottom'?: string | null;
+    'box-shadow'?: string | null;
+    'margin-left'?: string | null;
+    'margin-top'?: string | null;
+    'margin-right'?: string | null;
+    'margin-bottom'?: string | null;
+
+    /** relative property, if the widget must be shown on the new line */
+    newLine?: boolean;
+    'box-sizing'?: 'content-box' | 'border-box' | 'initial' | 'inherit' | null;
+    noPxToPercent?: boolean;
+}
+
+interface SingleWidget {
+    /** Internal wid */
+    _id?: string;
+    /** Widget type */
+    tpl: string;
+    data: WidgetData;
+    style: WidgetStyle;
+    /** @deprecated The widget set Use widgetSet */
+    set?: string;
+    /** @deprecated The widget set. Use widgetSet */
+    wSet?: string;
+    /** The widget set name. Groups have widget set null */
+    widgetSet: string | null;
+    /** The id of the group, if the widget is grouped */
+    groupid?: GroupWidgetId;
+    /** If the widget is grouped */
+    grouped?: boolean;
+    /** @deprecated it was typo */
+    groupped?: boolean;
+    /** Permissions for each user for the widget */
+    permissions?: UserPermissions;
+    /** This widget was taken from a marketplace */
+    marketplace?: any;
+    /** Indicator that this widget is used in another widget (e.g., in panel) */
+    usedInWidget?: boolean;
+    /** CSS for this widget */
+    css?: string;
+    /** JavaScript for this widget */
+    js?: string;
+    /** internal cached value */
+    usedInView?: string;
+    name?: string;
+    isRoot?: boolean;
+}
+
+interface GroupWidget extends SingleWidget {
+    tpl: '_tplGroup';
+    data: GroupData;
+}
+
+interface GroupData extends WidgetData {
+    /** Widget IDs of the members */
+    members: AnyWidgetId[];
+}
+
+interface MarketplaceWidgetRevision {
+    id: string;
+    widget: (GroupWidget | SingleWidget)[];
+    date: string;
+    widget_id: string;
+    description: string;
+    whatsnew: string;
+    widgetsets: string[];
+    version: number;
+    rating: any;
+    install_count: number;
+    name: string;
+    is_last: 0 | 1;
+    widgets: string[];
+    image_id: string;
+    delete_status: 0 | 1;
+    verified: null;
+    revision_id: string;
+    categories: string[];
+}
+
+interface ProjectSettings {
+    darkReloadScreen: boolean;
+    destroyViewsAfter: number;
+    folders: { id: string; name: string; parentId: string }[];
+    openedViews: string[];
+    reconnectInterval: number;
+    reloadOnEdit: boolean;
+    reloadOnSleep: number;
+    statesDebounceTime: number;
+    scripts: unknown;
+    /** Which user has read or write access for the project */
+    permissions?: UserPermissions;
+    marketplace?: MarketplaceWidgetRevision[];
+    ts?: string;
+    bodyOverflow?: string;
+}
+
+interface ViewSettings {
+    /** Permissions for each user for the view */
+    permissions?: UserPermissions;
+    comment?: string;
+    class?: string;
+    filterkey?: string;
+    group?: string[];
+    theme?: string;
+    group_action?: 'disabled' | 'hide' | null | '';
+
+    useBackground?: boolean;
+    'bg-image'?: string;
+    'bg-position-x'?: string;
+    'bg-position-y'?: string;
+    'bg-width'?: string;
+    'bg-height'?: string;
+    'bg-color'?: string;
+    style?: {
+        display?: 'flex' | 'grid' | 'none' | null | '';
+        background_class?: string;
+        background?: string;
+        'background-color'?: string;
+        'background-image'?: string;
+        'background-repeat'?: 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat' | 'initial' | 'inherit' | null | '';
+        'background-attachment'?: 'scroll' | 'fixed' | 'local' | 'initial' | 'inherit' | null | '';
+        'background-position'?:
+            | 'left top'
+            | 'left center'
+            | 'left bottom'
+            | 'right top'
+            | 'right center'
+            | 'right bottom'
+            | 'center top'
+            | 'center center'
+            | 'center bottom'
+            | 'initial'
+            | 'inherit'
+            | null
+            | '';
+        'background-size'?: 'auto' | 'cover' | 'contain' | 'initial' | 'inherit' | null | '';
+        'background-clip'?: 'border-box' | 'padding-box' | 'content-box' | 'initial' | 'inherit' | null | '';
+        'background-origin'?: 'padding-box' | 'border-box' | 'content-box' | 'initial' | 'inherit' | null | '';
+
+        color?: string;
+        'text-shadow'?: string;
+        'font-family'?: string;
+        'font-style'?: string;
+        'font-variant'?: string;
+        'font-weight'?: string;
+        'font-size'?: string;
+        'line-height'?: string;
+        'letter-spacing'?: string;
+        'word-spacing'?: string;
+    };
+
+    useAsDefault?: boolean;
+    alwaysRender?: boolean;
+    snapType?: 0 | 1 | 2 | null;
+    snapColor?: string;
+    gridSize?: number;
+    sizex?: number;
+    sizey?: number;
+    limitScreen?: boolean;
+    limitForInstances?: string;
+    limitScreenDesktop?: boolean;
+    limitScreenBorderWidth?: number;
+    limitScreenBorderColor?: string;
+    limitScreenBorderStyle?: string;
+    limitScreenBackgroundColor?: string;
+
+    navigation?: boolean;
+    navigationTitle?: string;
+    navigationOrder?: number;
+    navigationIcon?: string;
+    navigationImage?: string;
+    navigationOrientation?: 'horizontal' | 'vertical';
+    navigationOnlyIcon?: boolean;
+    navigationBackground?: string;
+    navigationSelectedBackground?: string;
+    navigationSelectedColor?: string;
+    navigationHeaderTextColor?: string;
+    navigationColor?: string;
+    navigationWidth?: number;
+
+    navigationChevronColor?: string;
+    navigationHideMenu?: boolean;
+    navigationHideOnSelection?: boolean;
+    navigationHeaderText?: string;
+    navigationNoHide?: boolean;
+    navigationButtonBackground?: string;
+
+    navigationBar?: boolean;
+    navigationBarColor?: string;
+    navigationBarText?: string;
+    navigationBarIcon?: string;
+    navigationBarImage?: string;
+
+    columnWidth?: number;
+    columnGap?: number;
+    rowGap?: number | string;
+    /** relative widget order */
+    order?: AnyWidgetId[];
+}
+
+interface View {
+    activeWidgets: string[];
+    filterList: string[];
+    rerender: boolean;
+    name?: string;
+    /** parent folder */
+    parentId?: string;
+    settings?: ViewSettings;
+    /** Widgets on this view */
+    widgets: {
+        [groupId: GroupWidgetId]: GroupWidget;
+        [widgetId: SingleWidgetId]: SingleWidget;
+    };
+    filterWidgets?: AnyWidgetId[];
+    filterInvert?: boolean;
+}
+
+interface Project {
+    // @ts-expect-error this type has bad code-style, we should refactor the views in a views: Record<string, View> attribute
+    ___settings: ProjectSettings;
+    [view: string]: View;
+}
+/**
  * These functions are copied from https://github.com/ioBroker/ioBroker.vis-2/blob/master/src/src/Vis/visUtils.jsx
  */
+
 /**
  * Stringify-parse copy with type inference
  *
  * @param obj The object which should be cloned
  */
-function deepClone(obj) {
+function deepClone<T extends Record<string, any>>(obj: T): T {
     return JSON.parse(JSON.stringify(obj));
 }
 
@@ -14,29 +445,49 @@ function deepClone(obj) {
  * Determine if the string is of form identifier:ioBrokerId, like, val:hm-rpc.0.device.channel.state
  *
  * @param assignment the possible assignment to check
- * @returns
  */
-function isIdBinding(assignment) {
-    return !!assignment.match(/^[\d\w_]+:\s?[-.\d\w_#]+$/);
+function isIdBinding(assignment: string): boolean {
+    return !!assignment.match(/^[\w_]+:\s?[-.\w_#]+$/);
 }
 
-function getWidgetGroup(views, view, widget) {
-    const widgets = views[view].widgets;
-    let members;
-    if (widgets && typeof widgets === 'object') {
-        for (const w of Object.keys(widgets)) {
-            members = widgets[w].data.members;
-            if (members && members.includes(widget)) {
-                return w;
+function replaceGroupAttr(inputStr: string, groupAttrList: WidgetData): { doesMatch: boolean; newString: string } {
+    let newString = inputStr;
+    let match = false;
+    // old style: groupAttr0, groupAttr1, groupAttr2, ...
+    let ms = inputStr.match(/(groupAttr\d+)+?/g);
+    if (ms) {
+        match = true;
+        ms.forEach(m => {
+            const val = groupAttrList[m];
+            if (val === null || val === undefined) {
+                newString = newString.replace(/groupAttr(\d+)/, '');
+            } else {
+                newString = newString.replace(/groupAttr(\d+)/, groupAttrList[m]);
             }
-        }
+        });
     }
-    return null;
+
+    // new style: %html%, %myAttr%, ...
+    ms = inputStr.match(/%([_a-zA-Z0-9-]+)+?%/g);
+    if (ms) {
+        match = true;
+        ms.forEach((m: string) => {
+            const attr = m.substring(1, m.length - 1);
+            const val = groupAttrList[attr];
+            if (val === null || val === undefined) {
+                newString = newString.replace(m, '');
+            } else {
+                newString = newString.replace(m, val);
+            }
+        });
+    }
+
+    return { doesMatch: match, newString };
 }
 
-function extractBinding(format) {
+function extractBinding(format: string): VisBinding[] | null {
     const oid = format.match(/{(.+?)}/g);
-    let result = null;
+    let result: VisBinding[] | null = null;
 
     if (oid) {
         if (oid.length > 50) {
@@ -74,9 +525,9 @@ function extractBinding(format) {
             } else if (test2 === '.lc' || test2 === '.ts') {
                 systemOid = systemOid.substring(0, systemOid.length - 3);
             }
-            let operations = null;
+            let operations: VisBindingOperation[] | null = null;
             const isEval =
-                visOid.match(/^[\d\w_]+:\s?[-._/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+$/u) ||
+                visOid.match(/^[\w_]+:\s?[-._/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+$/u) ||
                 (!visOid.length && parts.length > 0); // (visOid.indexOf(':') !== -1) && (visOid.indexOf('::') === -1);
 
             if (isEval) {
@@ -95,11 +546,9 @@ function extractBinding(format) {
                         },
                     ],
                 });
-            }
 
-            for (let u = 1; u < parts.length; u++) {
-                // eval construction
-                if (isEval) {
+                for (let u = 1; u < parts.length; u++) {
+                    // eval construction
                     const trimmed = parts[u].trim();
                     if (isIdBinding(trimmed)) {
                         // parts[u].indexOf(':') !== -1 && parts[u].indexOf('::') === -1) {
@@ -125,7 +574,7 @@ function extractBinding(format) {
                             }
                         }
 
-                        operations[0].arg.push({
+                        (operations[0].arg as VisBindingOperationArgument[])?.push({
                             name: argParts[0].trim(),
                             visOid: _visOid,
                             systemOid: _systemOid,
@@ -140,86 +589,84 @@ function extractBinding(format) {
                             operations[0].formula = parts[u];
                         }
                     }
-                } else {
+                }
+            } else {
+                for (let u = 1; u < parts.length; u++) {
                     const parse = parts[u].match(/([\w\s/+*-]+)(\(.+\))?/);
                     if (parse && parse[1]) {
-                        parse[1] = parse[1].trim();
+                        const op = parse[1].trim();
                         // operators requires parameter
                         if (
-                            parse[1] === '*' ||
-                            parse[1] === '+' ||
-                            parse[1] === '-' ||
-                            parse[1] === '/' ||
-                            parse[1] === '%' ||
-                            parse[1] === 'min' ||
-                            parse[1] === 'max'
+                            op === '*' ||
+                            op === '+' ||
+                            op === '-' ||
+                            op === '/' ||
+                            op === '%' ||
+                            op === 'min' ||
+                            op === 'max'
                         ) {
                             if (parse[2] === undefined) {
                                 console.log(`Invalid format of format string: ${format}`);
-                                parse[2] = null;
                             } else {
-                                parse[2] = (parse[2] || '').trim().replace(',', '.');
-                                parse[2] = parse[2].substring(1, parse[2].length - 1);
-                                parse[2] = parseFloat(parse[2].trim());
+                                // try to extract number
+                                let argStr: string = (parse[2] || '').trim().replace(',', '.');
+                                argStr = argStr.substring(1, argStr.length - 1).trim();
+                                const arg: number = parseFloat(argStr);
 
-                                if (parse[2].toString() === 'NaN') {
+                                if (arg.toString() === 'NaN') {
                                     console.log(`Invalid format of format string: ${format}`);
-                                    parse[2] = null;
                                 } else {
                                     operations = operations || [];
-                                    operations.push({ op: parse[1], arg: parse[2] });
+                                    operations.push({ op, arg });
                                 }
                             }
-                        } else if (parse[1] === 'date' || parse[1] === 'momentDate') {
+                        } else if (op === 'date' || op === 'momentDate') {
                             // date formatting
                             operations = operations || [];
-                            parse[2] = (parse[2] || '').trim();
-                            parse[2] = parse[2].substring(1, parse[2].length - 1);
-                            operations.push({ op: parse[1], arg: parse[2] });
-                        } else if (parse[1] === 'array') {
+                            let arg: string = (parse[2] || '').trim();
+                            // Remove braces from {momentDate(format)}
+                            arg = arg.substring(1, arg.length - 1);
+                            operations.push({ op, arg });
+                        } else if (op === 'array') {
                             // returns array[value]. e.g.: {id.ack;array(ack is false,ack is true)}
                             operations = operations || [];
-                            let param = (parse[2] || '').trim();
+                            let param: string = (parse[2] || '').trim();
                             param = param.substring(1, param.length - 1);
-                            param = param.split(',');
-                            if (Array.isArray(param)) {
-                                operations.push({ op: parse[1], arg: param }); // xxx
-                            }
-                        } else if (parse[1] === 'value') {
+                            operations.push({ op, arg: param.split(',') }); // xxx
+                        } else if (op === 'value') {
                             // value formatting
                             operations = operations || [];
-                            let param = parse[2] === undefined ? '(2)' : parse[2] || '';
-                            param = param.trim();
-                            param = param.substring(1, param.length - 1);
-                            operations.push({ op: parse[1], arg: param });
-                        } else if (parse[1] === 'pow' || parse[1] === 'round' || parse[1] === 'random') {
+                            let arg: string = parse[2] === undefined ? '(2)' : parse[2] || '';
+                            arg = arg.trim();
+                            arg = arg.substring(1, arg.length - 1);
+                            operations.push({ op, arg });
+                        } else if (op === 'pow' || op === 'round' || op === 'random') {
                             // operators have optional parameter
                             if (parse[2] === undefined) {
                                 operations = operations || [];
-                                operations.push({ op: parse[1] });
+                                operations.push({ op });
                             } else {
-                                parse[2] = (parse[2] || '').trim().replace(',', '.');
-                                parse[2] = parse[2].substring(1, parse[2].length - 1);
-                                parse[2] = parseFloat(parse[2].trim());
+                                let argStr: string = (parse[2] || '').trim().replace(',', '.');
+                                argStr = argStr.substring(1, argStr.length - 1);
+                                const arg = parseFloat(argStr.trim());
 
-                                if (parse[2].toString() === 'NaN') {
+                                if (arg.toString() === 'NaN') {
                                     console.log(`Invalid format of format string: ${format}`);
-                                    parse[2] = null;
                                 } else {
                                     operations = operations || [];
-                                    operations.push({ op: parse[1], arg: parse[2] });
+                                    operations.push({ op, arg });
                                 }
                             }
-                        } else if (parse[1] === 'json') {
+                        } else if (op === 'json') {
                             // json(objPropPath)  ex: json(prop1);  json(prop1.propA)
                             operations = operations || [];
-                            parse[2] = (parse[2] || '').trim();
-                            parse[2] = parse[2].substring(1, parse[2].length - 1);
-                            operations.push({ op: parse[1], arg: parse[2] });
+                            let arg = (parse[2] || '').trim();
+                            arg = arg.substring(1, arg.length - 1);
+                            operations.push({ op, arg });
                         } else {
                             // operators without parameter
                             operations = operations || [];
-                            operations.push({ op: parse[1] });
+                            operations.push({ op: op as VisBindingOperationType });
                         }
                     } else {
                         console.log(`Invalid format ${format}`);
@@ -241,44 +688,19 @@ function extractBinding(format) {
     return result;
 }
 
-function replaceGroupAttr(inputStr, groupAttrList) {
-    let newString = inputStr;
-    let match = false;
-    // old style: groupAttr0, groupAttr1, groupAttr2, ...
-    let ms = inputStr.match(/(groupAttr\d+)+?/g);
-    if (ms) {
-        match = true;
-        ms.forEach(m => {
-            const val = groupAttrList[m];
-            if (val === null || val === undefined) {
-                newString = newString.replace(/groupAttr(\d+)/, '');
-            } else {
-                newString = newString.replace(/groupAttr(\d+)/, groupAttrList[m]);
-            }
-        });
+function getWidgetGroup(views: Project, view: string, widget: AnyWidgetId): GroupWidgetId | undefined {
+    const widgets = views[view].widgets;
+    const groupId: GroupWidgetId | undefined = widgets[widget]?.groupid;
+    if (groupId && widgets[groupId]) {
+        return views[view].widgets[widget].groupid;
     }
-
-    // new style: %html%, %myAttr%, ...
-    ms = inputStr.match(/%([-_a-zA-Z\d]+)+?%/g);
-    if (ms) {
-        match = true;
-        ms.forEach(m => {
-            const attr = m.substring(1, m.length - 1);
-            const val = groupAttrList[attr];
-            if (val === null || val === undefined) {
-                newString = newString.replace(m, '');
-            } else {
-                newString = newString.replace(m, val);
-            }
-        });
-    }
-
-    return { doesMatch: match, newString };
+    const widgetKeys: AnyWidgetId[] = Object.keys(widgets) as AnyWidgetId[];
+    return widgetKeys.find(w => widgets[w].data?.members?.includes(widget)) as GroupWidgetId;
 }
 
-function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
+function getUsedObjectIDsInWidget(views: Project, view: string, wid: AnyWidgetId, linkContext: VisStateUsage): void {
     // Check all attributes
-    const widget = views[view].widgets[wid];
+    const widget = deepClone(views[view].widgets[wid]);
 
     // fix error in naming
     if (widget.groupped) {
@@ -365,43 +787,16 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
     const { style } = widget;
 
     // if widget is in the group => replace groupAttrX values
-    if (widget.grouped) {
-        // widget.groupid = widget.groupid || getWidgetGroup(views, view, wid);
-
-        if (!views[view].widgets[widget.groupid]) {
-            if (!widget.groupid) {
-                // create a fictive group
-                let groupNum = 1;
-                let gId = `g${groupNum.toString().padStart(5, '0')}`;
-                while (views[view].widgets[gId]) {
-                    groupNum++;
-                    gId = `g${groupNum.toString().padStart(5, '0')}`;
-                }
-                views[view].widgets[gId] = {
-                    tpl: '_tplGroup',
-                    data: {
-                        members: [wid],
-                    },
-                    style: {
-                        top: '100px',
-                        left: '100px',
-                        width: '200px',
-                        height: '200px',
-                    },
-                    widgetSet: null,
-                };
-            }
-        }
-
+    if (widget.grouped && widget.groupid) {
         const parentWidgetData = views[view].widgets[widget.groupid]?.data;
         if (parentWidgetData) {
-            let newGroupData;
+            let newGroupData: GroupData | undefined;
 
             Object.keys(data).forEach(attr => {
                 if (typeof data[attr] === 'string') {
                     const result = replaceGroupAttr(data[attr], parentWidgetData);
                     if (result.doesMatch) {
-                        newGroupData = newGroupData || JSON.parse(JSON.stringify(data));
+                        newGroupData = newGroupData || (deepClone(data) as GroupData);
                         newGroupData[attr] = result.newString || '';
                     }
                 }
@@ -422,11 +817,11 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
         if (typeof data[attr] === 'string') {
             let m;
             // Process bindings in data attributes
-            const OIDs = extractBinding(data[attr]);
+            const OIDs: VisLinkContextBinding[] = extractBinding(data[attr]) as VisLinkContextBinding[];
 
             if (OIDs) {
                 OIDs.forEach(item => {
-                    const systemOid = item.systemOid;
+                    const systemOid: StateID = item.systemOid;
                     if (systemOid) {
                         // Save id for subscribing
                         !linkContext.IDs.includes(systemOid) && linkContext.IDs.push(systemOid);
@@ -443,17 +838,20 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
 
                         linkContext.bindings[systemOid].push(item);
                     }
+                    const operation0: VisBindingOperation | undefined = item.operations && item.operations[0];
 
-                    if (item.operations && Array.isArray(item.operations[0].arg)) {
-                        for (let ww = 0; ww < item.operations[0].arg.length; ww++) {
-                            const _systemOid = item.operations[0].arg[ww].systemOid;
+                    // If we have more than one argument
+                    if (operation0 && Array.isArray(operation0.arg)) {
+                        for (let ww = 0; ww < operation0.arg.length; ww++) {
+                            const arg: VisBindingOperationArgument = operation0.arg[ww] as VisBindingOperationArgument;
+                            const _systemOid = arg.systemOid;
                             if (!_systemOid) {
                                 continue;
                             }
 
                             !linkContext.IDs.includes(_systemOid) && linkContext.IDs.push(_systemOid);
 
-                            if (linkContext.byViews && linkContext.byViews[view].includes(_systemOid)) {
+                            if (linkContext.byViews && !linkContext.byViews[view].includes(_systemOid)) {
                                 linkContext.byViews[view].push(_systemOid);
                             }
 
@@ -470,7 +868,7 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
                 data[attr] &&
                 data[attr] !== 'nothing_selected'
             ) {
-                let isID = attr.match(/oid\d{0,2}$/);
+                let isID = !!attr.match(/oid\d{0,2}$/);
                 if (attr.startsWith('oid')) {
                     isID = true;
                 } else if (attr.startsWith('signals-oid-')) {
@@ -572,8 +970,9 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
     // build bindings for styles
     if (style) {
         Object.keys(style).forEach(cssAttr => {
-            if (cssAttr && typeof style[cssAttr] === 'string') {
-                const OIDs = extractBinding(style[cssAttr]);
+            const styleValue = (style as Record<string, any>)[cssAttr];
+            if (cssAttr && styleValue && typeof styleValue === 'string') {
+                const OIDs: VisLinkContextBinding[] = extractBinding(styleValue) as VisLinkContextBinding[];
                 if (OIDs) {
                     OIDs.forEach(item => {
                         const systemOid = item.systemOid;
@@ -593,9 +992,14 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
                             linkContext.bindings[systemOid].push(item);
                         }
 
-                        if (item.operations && Array.isArray(item.operations[0].arg)) {
-                            for (let w = 0; w < item.operations[0].arg.length; w++) {
-                                const _systemOid = item.operations[0].arg[w].systemOid;
+                        const operation0: VisBindingOperation | undefined = item.operations && item.operations[0];
+
+                        if (operation0 && Array.isArray(operation0.arg)) {
+                            for (let w = 0; w < operation0.arg.length; w++) {
+                                const arg: VisBindingOperationArgument = operation0.arg[
+                                    w
+                                ] as VisBindingOperationArgument;
+                                const _systemOid = arg.systemOid;
                                 if (!_systemOid) {
                                     continue;
                                 }
@@ -618,13 +1022,19 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
     }
 }
 
-export function getUsedObjectIDs(views, isByViews) {
+/**
+ * Get all used object IDs in the views
+ *
+ * @param views project
+ * @param isByViews is combine IDs for every view
+ */
+export function getUsedObjectIDs(views: Project, isByViews?: boolean): VisStateUsage | null {
     if (!views) {
         console.log('Check why views are not yet loaded!');
         return null;
     }
 
-    const linkContext = {
+    const linkContext: VisStateUsage = {
         IDs: [],
         visibility: {},
         bindings: {},
@@ -645,7 +1055,9 @@ export function getUsedObjectIDs(views, isByViews) {
             linkContext.byViews[view] = [];
         }
 
-        Object.keys(views[view].widgets).forEach(wid => getUsedObjectIDsInWidget(views, view, wid, linkContext));
+        Object.keys(views[view].widgets).forEach(wid =>
+            getUsedObjectIDsInWidget(views, view, wid as AnyWidgetId, linkContext),
+        );
     });
 
     if (isByViews) {
@@ -653,7 +1065,6 @@ export function getUsedObjectIDs(views, isByViews) {
         do {
             changed = false;
             // Check containers
-
             Object.keys(views).forEach(view => {
                 if (view === '___settings') {
                     return;
@@ -661,12 +1072,12 @@ export function getUsedObjectIDs(views, isByViews) {
 
                 Object.values(views[view].widgets).forEach(widget => {
                     // Add all OIDs from this view to parent
-                    if (widget.tpl === 'tplContainerView' && widget.data.contains_view) {
+                    if (widget.tpl === 'tplContainerView' && widget.data.contains_view && linkContext.byViews) {
                         const ids = linkContext.byViews[widget.data.contains_view];
                         if (ids) {
-                            for (let a = 0; a < ids.length; a++) {
-                                if (ids[a] && !linkContext.byViews[view].includes(ids[a])) {
-                                    linkContext.byViews[view].push(ids[a]);
+                            for (const id of ids) {
+                                if (id && !linkContext.byViews[view].includes(id)) {
+                                    linkContext.byViews[view].push(id);
                                     changed = true;
                                 }
                             }
