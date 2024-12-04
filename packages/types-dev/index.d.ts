@@ -290,20 +290,56 @@ declare global {
 
         interface GetHistoryOptions {
             instance?: string;
+            /** Start time in ms */
             start?: number;
+            /** End time in ms. If not defined, it is "now" */
             end?: number;
+            /** Step in ms of intervals. Used in aggregate (max, min, average, total, ...)  */
             step?: number;
+            /** number of values if aggregate is 'onchange' or number of intervals if other aggregate method. Count will be ignored if step is set, else default is 500 if not set */
             count?: number;
+            /** if `from` field should be included in answer */
             from?: boolean;
+            /** if `ack` field should be included in answer */
             ack?: boolean;
+            /** if `q` field should be included in answer */
             q?: boolean;
-            addID?: boolean;
+            /** if `id` field should be included in answer */
+            addId?: boolean;
+            /** do not return more entries than limit */
             limit?: number;
-            ignoreNull?: boolean;
-            sessionId?: any;
-            aggregate?: 'minmax' | 'min' | 'max' | 'average' | 'total' | 'count' | 'none';
+            /** round result to number of digits after decimal point */
+            round?: number;
+            /** if null values should be included (false), replaced by last not null value (true) or replaced with 0 (0) */
+            ignoreNull?: boolean | 0;
+            /** This number will be returned in answer, so the client can assign the request for it */
+            sessionId?: number;
+            /** aggregate method (Default: 'average') */
+            aggregate?:
+                | 'onchange'
+                | 'minmax'
+                | 'min'
+                | 'max'
+                | 'average'
+                | 'total'
+                | 'count'
+                | 'none'
+                | 'percentile'
+                | 'quantile'
+                | 'integral'
+                | 'integralTotal';
             /** Returned data is normally sorted ascending by date, this option lets you return the newest instead of the oldest values if the number of returned points is limited */
             returnNewestEntries?: boolean;
+            /** By default, the additional border values are returned to optimize charting. Set this option to true if this is not wanted (e.g. for script data processing) */
+            removeBorderValues?: boolean;
+            /** when using aggregate method `percentile` defines the percentile level (0..100)(defaults to 50) */
+            percentile?: number;
+            /** when using aggregate method `quantile` defines the quantile level (0..1)(defaults to 0.5) */
+            quantile?: number;
+            /** when using aggregate method `integral` defines the unit in seconds (defaults to 60s). e.g. to get integral in hours for Wh or such, set to 3600. */
+            integralUnit?: number;
+            /** when using aggregate method `integral` defines the interpolation method (defaults to `none`). */
+            integralInterpolation?: 'none' | 'linear';
         }
 
         interface DelObjectOptions {
@@ -442,7 +478,7 @@ declare global {
             err: Error | null,
             result?: GetHistoryResult,
             step?: number,
-            sessionId?: string,
+            sessionId?: number,
         ) => void;
 
         /** Contains the return values of readDir */
