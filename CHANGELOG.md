@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 7.0.5 (2024-12-07)
 * (@foxriver76) fixed UI upgrade for non-systemd systems
 
 ## 7.0.4 (2024-12-04)
