@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (@foxriver76) fixed UI upgrade for non-systemd systems
+
 ## 7.0.4 (2024-12-04)
 * (@Apollon77) Fixes async usage of extendObject
 * (@Apollon77) Makes setObject async save

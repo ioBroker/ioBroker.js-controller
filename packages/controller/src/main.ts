@@ -5868,10 +5868,14 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
             },
         );
     } else {
-        upgradeProcess = spawn(process.execPath, [upgradeProcessPath, version, adminInstance.toString()], {
-            detached: true,
-            stdio: 'ignore',
-        });
+        upgradeProcess = spawn(
+            process.execPath,
+            [upgradeProcessPath, version, adminInstance.toString(), uid.toString(), gid.toString()],
+            {
+                detached: true,
+                stdio: 'ignore',
+            },
+        );
     }
 
     upgradeProcess.unref();
