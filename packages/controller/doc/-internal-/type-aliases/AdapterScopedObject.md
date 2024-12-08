@@ -12,4 +12,4 @@ All objects that usually appear in an adapter scope
 
 ## Defined in
 
-[types-dev/objects.d.ts:1246](https://github.com/ioBroker/ioBroker.js-controller/blob/98c8e13a2785a2eeac3b3ee2a60dcd41754c14ad/packages/types-dev/objects.d.ts#L1246)
+[types-dev/objects.d.ts:1246](https://github.com/ioBroker/ioBroker.js-controller/blob/6c3a3884e29c4b6f03de102d699f9813dd546c7d/packages/types-dev/objects.d.ts#L1246)

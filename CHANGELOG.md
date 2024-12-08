@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__ - Lucy
+## 7.0.6 (2024-12-08) - Lucy
 * (@foxriver76) fixed UI upgrade if admin is running on privileged port (<1024)
 
 ## 7.0.5 (2024-12-07) - Lucy
