@@ -4,10 +4,13 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 7.0.5 (2024-12-07)
+## __WORK IN PROGRESS__ - Lucy
+* (@foxriver76) fixed UI upgrade if admin is running on privileged port (<1024)
+
+## 7.0.5 (2024-12-07) - Lucy
 * (@foxriver76) fixed UI upgrade for non-systemd systems
 
-## 7.0.4 (2024-12-04)
+## 7.0.4 (2024-12-04) - Lucy
 * (@Apollon77) Fixes async usage of extendObject
 * (@Apollon77) Makes setObject async save
 * (@foxriver76) deprecated `set(Foreign)ObjectAsync` as the non async methods are now working correctly with promises

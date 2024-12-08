@@ -97,14 +97,12 @@ class UpgradeManager {
         this.logger = this.setupLogger();
         this.gid = args.gid;
         this.uid = args.uid;
-
-        this.applyUser();
     }
 
     /**
      * To prevent commands (including npm) running as root, we apply the passed in gid and uid
      */
-    private applyUser(): void {
+    applyUser(): void {
         if (!process.setuid || !process.setgid) {
             const errMessage = 'Cannot ensure user and group ids on this system, because no POSIX platform';
             this.log(errMessage, true);
@@ -236,12 +234,12 @@ class UpgradeManager {
      *
      * @param params Web server configuration
      */
-    startWebServer(params: WebServerParameters): void {
+    async startWebServer(params: WebServerParameters): Promise<void> {
         const { useHttps } = params;
         if (useHttps) {
-            this.startSecureWebServer(params);
+            await this.startSecureWebServer(params);
         } else {
-            this.startInsecureWebServer(params);
+            await this.startInsecureWebServer(params);
         }
     }
 
@@ -300,7 +298,7 @@ class UpgradeManager {
      *
      * @param params Web server configuration
      */
-    startInsecureWebServer(params: InsecureWebServerParameters): void {
+    async startInsecureWebServer(params: InsecureWebServerParameters): Promise<void> {
         const { port } = params;
 
         this.server = http.createServer((_req, res) => {
@@ -309,9 +307,13 @@ class UpgradeManager {
 
         this.monitorSockets(this.server);
 
-        this.server.listen(port, () => {
-            this.log(`Server is running on http://localhost:${port}`);
+        await new Promise<void>(resolve => {
+            this.server!.listen(port, () => {
+                resolve();
+            });
         });
+
+        this.log(`Server is running on http://localhost:${port}`);
     }
 
     /**
@@ -319,7 +321,7 @@ class UpgradeManager {
      *
      * @param params Web server configuration
      */
-    startSecureWebServer(params: SecureWebServerParameters): void {
+    async startSecureWebServer(params: SecureWebServerParameters): Promise<void> {
         const { port, certPublic, certPrivate } = params;
 
         this.server = https.createServer({ key: certPrivate, cert: certPublic }, (_req, res) => {
@@ -328,9 +330,13 @@ class UpgradeManager {
 
         this.monitorSockets(this.server);
 
-        this.server.listen(port, () => {
-            this.log(`Server is running on https://localhost:${port}`);
+        await new Promise<void>(resolve => {
+            this.server!.listen(port, () => {
+                resolve();
+            });
         });
+
+        this.log(`Server is running on https://localhost:${port}`);
     }
 
     /**
@@ -443,7 +449,9 @@ async function main(): Promise<void> {
     await upgradeManager.stopController();
     upgradeManager.log('Successfully stopped js-controller');
 
-    upgradeManager.startWebServer(webServerParameters);
+    await upgradeManager.startWebServer(webServerParameters);
+    // do this after web server is started, else we cannot bind on privileged ports after using setgid
+    upgradeManager.applyUser();
 
     try {
         await upgradeManager.npmInstall();
