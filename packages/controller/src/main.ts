@@ -5842,7 +5842,7 @@ async function upgradeOsPackages(packages: UpgradePacket[]): Promise<void> {
  *
  * @param options Arguments passed to the UpgradeManager process
  */
-async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
+async function startUpgradeManager(options: Required<UpgradeArguments>): Promise<void> {
     const { version, adminInstance, uid, gid } = options;
     const upgradeProcessPath = require.resolve('./lib/upgradeManager');
     let upgradeProcess: cp.ChildProcess;
@@ -5868,14 +5868,10 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
             },
         );
     } else {
-        upgradeProcess = spawn(
-            process.execPath,
-            [upgradeProcessPath, version, adminInstance.toString(), uid.toString(), gid.toString()],
-            {
-                detached: true,
-                stdio: 'ignore',
-            },
-        );
+        upgradeProcess = spawn(process.execPath, [upgradeProcessPath, version, adminInstance.toString()], {
+            detached: true,
+            stdio: 'ignore',
+        });
     }
 
     upgradeProcess.unref();

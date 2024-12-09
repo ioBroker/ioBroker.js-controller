@@ -20,9 +20,9 @@ export interface UpgradeArguments {
     /** Admin instance which triggered the upgrade */
     adminInstance: number;
     /** User id the process should run as */
-    uid: number;
+    uid?: number;
     /** Group id the process should run as */
-    gid: number;
+    gid?: number;
 }
 
 interface Certificates {
@@ -70,9 +70,9 @@ class UpgradeManager {
     /** Desired controller version */
     private readonly version: string;
     /** Group id the process should run as */
-    private readonly gid: number;
+    private readonly gid: number | undefined;
     /** User id the process should run as */
-    private readonly uid: number;
+    private readonly uid: number | undefined;
     /** Response send by webserver */
     private readonly response: ServerResponse = {
         running: true,
@@ -100,9 +100,14 @@ class UpgradeManager {
     }
 
     /**
-     * To prevent commands (including npm) running as root, we apply the passed in gid and uid
+     * To prevent commands (including npm) running as root, we apply the passed in gid and uid if specified
      */
     applyUser(): void {
+        if (this.uid === undefined || this.gid === undefined) {
+            this.log('Skip applying user');
+            return;
+        }
+
         if (!process.setuid || !process.setgid) {
             const errMessage = 'Cannot ensure user and group ids on this system, because no POSIX platform';
             this.log(errMessage, true);
@@ -135,8 +140,8 @@ class UpgradeManager {
 
         const version = additionalArgs[0];
         const adminInstance = parseInt(additionalArgs[1]);
-        const uid = parseInt(additionalArgs[2]);
-        const gid = parseInt(additionalArgs[3]);
+        const uid = additionalArgs[2] ? parseInt(additionalArgs[2]) : undefined;
+        const gid = additionalArgs[3] ? parseInt(additionalArgs[3]) : undefined;
 
         const isValid = !!valid(version);
 
@@ -150,12 +155,12 @@ class UpgradeManager {
             throw new Error('Please provide a valid admin instance');
         }
 
-        if (isNaN(uid)) {
+        if (uid !== undefined && isNaN(uid)) {
             UpgradeManager.printUsage();
             throw new Error('Please provide a valid uid');
         }
 
-        if (isNaN(gid)) {
+        if (gid !== undefined && isNaN(gid)) {
             UpgradeManager.printUsage();
             throw new Error('Please provide a valid gid');
         }
@@ -207,7 +212,7 @@ class UpgradeManager {
      * Print how the module should be used
      */
     static printUsage(): void {
-        console.info('Example usage: "node upgradeManager.js <version> <adminInstance> <uid> <gid>"');
+        console.info('Example usage: "node upgradeManager.js <version> <adminInstance> [<uid> <gid>]"');
     }
 
     /**
