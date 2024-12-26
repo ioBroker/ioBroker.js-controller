@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__ - Lucy
+* (@foxriver76) fix edge case problem on Windows (if adapter calls `readDir` on single file)
+
 ## 7.0.6 (2024-12-08) - Lucy
 * (@foxriver76) fixed UI upgrade if admin is running on privileged port (<1024)
 
