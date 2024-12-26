@@ -1,4 +1,5 @@
 import type { TestContext } from '../_Types.js';
+import { objectsUtils as utils } from '@iobroker/db-objects-redis';
 
 export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} files: `;
@@ -223,12 +224,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(`${testName}should not crash if calling readDir on a single file`, async () => {
+    it(`${testName}should respond with 'ERROR_NOT_FOUND' if calling readDir on a single file`, async () => {
         const objects = context.objects;
         const fileName = 'dir/notADir.txt';
 
         await objects.writeFileAsync(testId, fileName, 'dataInFile');
-        await objects.readDirAsync(testId, fileName);
+        expect(objects.readDirAsync(testId, fileName)).to.be.eventually.rejectedWith(utils.ERRORS.ERROR_NOT_FOUND);
     });
 
     it(`${testName}should read file and prevent path traversing`, done => {
