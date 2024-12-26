@@ -223,6 +223,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
+    it(`${testName}should not crash if calling readDir on a single file`, async () => {
+        const objects = context.objects;
+        const fileName = 'dir/notADir.txt';
+
+        await objects.writeFileAsync(testId, fileName, 'dataInFile');
+        await objects.readDirAsync(testId, fileName);
+    });
+
     it(`${testName}should read file and prevent path traversing`, done => {
         const objects = context.objects;
         objects.readFile(testId, '../../myFileA/abc1.txt', null, (err, data, _mimeType) => {
