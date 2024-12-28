@@ -16,7 +16,7 @@ The buttons which should be shown on the message dialog
 
 #### Defined in
 
-[types-dev/objects.d.ts:554](https://github.com/ioBroker/ioBroker.js-controller/blob/6c3a3884e29c4b6f03de102d699f9813dd546c7d/packages/types-dev/objects.d.ts#L554)
+[types-dev/objects.d.ts:554](https://github.com/ioBroker/ioBroker.js-controller/blob/8896efebaa940f64d52c1c649e1e7f7a5500873b/packages/types-dev/objects.d.ts#L554)
 
 ***
 
@@ -36,7 +36,7 @@ The condition which needs to be met to display the message
 
 #### Defined in
 
-[types-dev/objects.d.ts:556](https://github.com/ioBroker/ioBroker.js-controller/blob/6c3a3884e29c4b6f03de102d699f9813dd546c7d/packages/types-dev/objects.d.ts#L556)
+[types-dev/objects.d.ts:556](https://github.com/ioBroker/ioBroker.js-controller/blob/8896efebaa940f64d52c1c649e1e7f7a5500873b/packages/types-dev/objects.d.ts#L556)
 
 ***
 
@@ -48,7 +48,7 @@ The severity level of the message
 
 #### Defined in
 
-[types-dev/objects.d.ts:552](https://github.com/ioBroker/ioBroker.js-controller/blob/6c3a3884e29c4b6f03de102d699f9813dd546c7d/packages/types-dev/objects.d.ts#L552)
+[types-dev/objects.d.ts:552](https://github.com/ioBroker/ioBroker.js-controller/blob/8896efebaa940f64d52c1c649e1e7f7a5500873b/packages/types-dev/objects.d.ts#L552)
 
 ***
 
@@ -60,7 +60,7 @@ Optional link
 
 #### Defined in
 
-[types-dev/objects.d.ts:548](https://github.com/ioBroker/ioBroker.js-controller/blob/6c3a3884e29c4b6f03de102d699f9813dd546c7d/packages/types-dev/objects.d.ts#L548)
+[types-dev/objects.d.ts:548](https://github.com/ioBroker/ioBroker.js-controller/blob/8896efebaa940f64d52c1c649e1e7f7a5500873b/packages/types-dev/objects.d.ts#L548)
 
 ***
 
@@ -72,7 +72,7 @@ Text of the link
 
 #### Defined in
 
-[types-dev/objects.d.ts:550](https://github.com/ioBroker/ioBroker.js-controller/blob/6c3a3884e29c4b6f03de102d699f9813dd546c7d/packages/types-dev/objects.d.ts#L550)
+[types-dev/objects.d.ts:550](https://github.com/ioBroker/ioBroker.js-controller/blob/8896efebaa940f64d52c1c649e1e7f7a5500873b/packages/types-dev/objects.d.ts#L550)
 
 ***
 
@@ -84,7 +84,7 @@ The message content
 
 #### Defined in
 
-[types-dev/objects.d.ts:546](https://github.com/ioBroker/ioBroker.js-controller/blob/6c3a3884e29c4b6f03de102d699f9813dd546c7d/packages/types-dev/objects.d.ts#L546)
+[types-dev/objects.d.ts:546](https://github.com/ioBroker/ioBroker.js-controller/blob/8896efebaa940f64d52c1c649e1e7f7a5500873b/packages/types-dev/objects.d.ts#L546)
 
 ***
 
@@ -96,4 +96,4 @@ The message title
 
 #### Defined in
 
-[types-dev/objects.d.ts:544](https://github.com/ioBroker/ioBroker.js-controller/blob/6c3a3884e29c4b6f03de102d699f9813dd546c7d/packages/types-dev/objects.d.ts#L544)
+[types-dev/objects.d.ts:544](https://github.com/ioBroker/ioBroker.js-controller/blob/8896efebaa940f64d52c1c649e1e7f7a5500873b/packages/types-dev/objects.d.ts#L544)
