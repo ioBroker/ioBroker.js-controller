@@ -1254,9 +1254,9 @@ export class BackupRestore {
                         console.log(`${backup} or ${backup.replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${i}`),
                     );
                 }
-            } else {
-                console.log(`host.${this.hostname} Using backup file ${name}`);
+                return { exitCode: EXIT_CODES.INVALID_ARGUMENTS, objects: this.objects, states: this.states };
             }
+            console.log(`host.${this.hostname} Using backup file ${name}`);
         }
 
         name = name.toString().replace(/\\/g, '/');
