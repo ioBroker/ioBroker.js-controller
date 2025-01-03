@@ -281,7 +281,7 @@
         },
         "maxQueue": {
           "type": "number",
-          "description": "do not let messages grow without a limit"
+          "description": "Do not let messages grow without a limit"
         },
         "noFileCache": {
           "type": "boolean"
@@ -524,7 +524,7 @@
         },
         "maxQueue": {
           "type": "number",
-          "description": "do not let messages grow without a limit"
+          "description": "Do not let messages grow without a limit"
         }
       },
       "required": [
