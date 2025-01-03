@@ -4,6 +4,24 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__ - Lucy
+* (@foxriver76) fix edge case problem on Windows (if adapter calls `readDir` on single file)
+
+## 7.0.6 (2024-12-08) - Lucy
+* (@foxriver76) fixed UI upgrade if admin is running on privileged port (<1024)
+
+## 7.0.5 (2024-12-07) - Lucy
+* (@foxriver76) fixed UI upgrade for non-systemd systems
+
+## 7.0.4 (2024-12-04) - Lucy
+* (@Apollon77) Fixes async usage of extendObject
+* (@Apollon77) Makes setObject async save
+* (@foxriver76) deprecated `set(Foreign)ObjectAsync` as the non async methods are now working correctly with promises
+* (@foxriver76) allow to specify a version on `iob upgrade self` command
+
+## 7.0.3 (2024-11-13) - Lucy
+* (@foxriver76) Introduce "Vendor Packages Workflow" (only relevant for vendors - see README.md)
+
 ## 7.0.2 (2024-10-28) - Lucy
 * (@foxriver76) the UI upgrade now runs as the same user as the js-controller
 * (@foxriver76) fixed `iob validate` command and `setup custom` migration

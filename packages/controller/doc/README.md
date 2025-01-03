@@ -1,4 +1,6 @@
-@iobroker/js-controller-adapter / [Exports](modules.md)
+**@iobroker/js-controller-adapter** • [**Docs**](globals.md)
+
+***
 
 # Adapter class for ioBroker
 The Library contains the Adapter class of ioBroker.

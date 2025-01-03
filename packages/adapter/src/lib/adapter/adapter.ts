@@ -1,76 +1,81 @@
 import net from 'node:net';
-import fs from 'fs-extra';
 import os from 'node:os';
-import jwt from 'jsonwebtoken';
 import { EventEmitter } from 'node:events';
+import { join } from 'node:path';
+import jwt from 'jsonwebtoken';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
-import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
-import path from 'node:path';
+// @ts-expect-error no ts file
+import extend from 'node.extend';
+import type Winston from 'winston';
+import type NodeSchedule from 'node-schedule';
+import yargs from 'yargs/yargs';
+import fs from 'fs-extra';
+import type { CommandResult } from '@alcalzone/pak';
+import * as url from 'node:url';
+
+import { PluginHandler } from '@iobroker/plugin-base';
 import {
+    EXIT_CODES,
     getObjectsConstructor,
     getStatesConstructor,
-    tools,
-    EXIT_CODES,
-    password,
-    logger,
     isInstalledFromNpm,
+    logger,
+    password,
+    tools,
 } from '@iobroker/js-controller-common';
 import {
     decryptArray,
     encryptArray,
+    getAdapterScopedPackageIdentifier,
     getSupportedFeatures,
     isMessageboxSupported,
-    getAdapterScopedPackageIdentifier,
     listInstalledNodeModules,
     requestModuleNameByUrl,
 } from '@/lib/adapter/utils.js';
-// @ts-expect-error no ts file
-import extend from 'node.extend';
+
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
-import type Winston from 'winston';
-import type NodeSchedule from 'node-schedule';
-import yargs from 'yargs/yargs';
 
 // local version is always the same as controller version, since lerna exact: true is used
 import packJson from '@iobroker/js-controller-adapter/package.json' with { type: 'json' };
-
-const controllerVersion = packJson.version;
-
 import { Log } from '@/lib/adapter/log.js';
 import { Validator } from './validator.js';
-
-const { FORBIDDEN_CHARS } = tools;
 import {
-    DEFAULT_SECRET,
-    ALIAS_STARTS_WITH,
-    SYSTEM_ADMIN_USER,
-    SYSTEM_ADMIN_GROUP,
-    ERROR_PERMISSION,
     ACCESS_EVERY_READ,
     ACCESS_EVERY_WRITE,
-    ACCESS_GROUP_WRITE,
     ACCESS_GROUP_READ,
-    ACCESS_USER_WRITE,
+    ACCESS_GROUP_WRITE,
     ACCESS_USER_READ,
+    ACCESS_USER_WRITE,
+    ALIAS_STARTS_WITH,
+    DEFAULT_SECRET,
+    ERROR_PERMISSION,
     NO_PROTECT_ADAPTERS,
     STATE_QUALITY,
     type SupportedFeature,
+    SYSTEM_ADMIN_GROUP,
+    SYSTEM_ADMIN_USER,
 } from '@/lib/adapter/constants.js';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
     AdapterOptions,
     AliasDetails,
+    AliasTargetEntry,
+    AllPropsUnknown,
     CalculatePermissionsCallback,
     CheckGroupCallback,
     CheckPasswordCallback,
     CheckStateCommand,
+    CheckStatesResult,
     CommandsPermissions,
     GetCertificatesCallback,
+    GetCertificatesPromiseReturnType,
     GetEncryptedConfigCallback,
     GetUserGroupsOptions,
+    InstallNodeModuleOptions,
+    InternalAdapterConfig,
     InternalAddChannelToEnumOptions,
     InternalAddStateToEnumOptions,
     InternalCalculatePermissionsOptions,
@@ -104,6 +109,8 @@ import type {
     InternalGetStatesOfOptions,
     InternalGetStatesOptions,
     InternalGetUserIDOptions,
+    InternalInstallNodeModuleOptions,
+    InternalReportDeprecationOption,
     InternalSendToHostOptions,
     InternalSendToOptions,
     InternalSetObjectOptions,
@@ -111,35 +118,28 @@ import type {
     InternalSetSessionOptions,
     InternalSetStateChangedOptions,
     InternalSetStateOptions,
+    InternalStopParameters,
     InternalSubscribeOptions,
     InternalUpdateConfigOptions,
-    TimeoutCallback,
-    MaybePromise,
-    SetStateChangedResult,
-    CheckStatesResult,
-    Pattern,
-    MessageCallbackObject,
-    SendToOptions,
-    GetCertificatesPromiseReturnType,
-    InternalAdapterConfig,
-    UserInterfaceClientRemoveMessage,
-    SendToUserInterfaceClientOptions,
-    AllPropsUnknown,
     IoPackageInstanceObject,
-    AliasTargetEntry,
-    InternalReportDeprecationOption,
-    SuitableLicense,
-    InstallNodeModuleOptions,
-    InternalInstallNodeModuleOptions,
-    StopParameters,
-    InternalStopParameters,
+    MaybePromise,
+    MessageCallbackObject,
     NotificationOptions,
+    Pattern,
+    SendToOptions,
+    SendToUserInterfaceClientOptions,
+    SetStateChangedResult,
+    StopParameters,
+    SuitableLicense,
+    TimeoutCallback,
+    UserInterfaceClientRemoveMessage,
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
-import type { CommandResult } from '@alcalzone/pak';
 
-import * as url from 'node:url';
+const controllerVersion = packJson.version;
+
+const { FORBIDDEN_CHARS } = tools;
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 tools.ensureDNSOrder();
@@ -157,18 +157,18 @@ export interface AdapterClass {
     on(event: 'message', listener: ioBroker.MessageHandler): this;
     /** Only emitted for compact instances */
     on(event: 'exit', listener: (exitCode: number, reason: string) => Promise<void> | void): this;
-    on(event: 'log', listener: (info: any) => Promise<void> | void): this;
+    on(event: 'log', listener: (message: ioBroker.LogMessage) => Promise<void> | void): this;
     /**
      * Extend an object and create it if it might not exist
      *
-     * @deprecated use `adapter.extendObject` without callback instead
+     * @deprecated use `adapter.extendObject` without a callback instead
      */
     extendObjectAsync(
         id: string,
         objPart: ioBroker.PartialObject,
         options?: ioBroker.ExtendObjectOptions,
     ): ioBroker.SetObjectPromise;
-    /** Set capabilities of the given executable. Only works on Linux systems. */
+    /** Set the capabilities of the given executable. Only works on Linux systems. */
     setExecutableCapabilities(
         execPath: string,
         capabilities: string[],
@@ -319,9 +319,17 @@ export interface AdapterClass {
         commandsPermissions: CommandsPermissions,
         options?: unknown,
     ): Promise<ioBroker.PermissionSet>;
-    /** Creates or overwrites an object in the object db */
+    /**
+     * Creates or overwrites an object in the object db
+     *
+     * @deprecated use `adapter.setObject` without a callback instead
+     */
     setObjectAsync(id: string, obj: ioBroker.SettableObject, options?: unknown): ioBroker.SetObjectPromise;
-    /** Creates or overwrites an object (which might not belong to this adapter) in the object db */
+    /**
+     * Creates or overwrites an object (which might not belong to this adapter) in the object db
+     *
+     * @deprecated use `adapter.setForeignObject` without a callback instead
+     */
     setForeignObjectAsync<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
@@ -728,7 +736,7 @@ export class AdapterClass extends EventEmitter {
     version?: string;
     /** Stop the adapter only defined in compact, not for external usage */
     protected kill?: () => Promise<void>;
-    processLog?: (msg: any) => void;
+    processLog?: (msg: ioBroker.LogMessage) => void;
     /**
      * Start or stop subscribing to log messages
      * The method is only available if logTransporter is active via io-pack or adapter options
@@ -1560,7 +1568,7 @@ export class AdapterClass extends EventEmitter {
      * ```
      *
      * @param port port number to start the search for free port
-     * @param [host] optional hostname for the port search
+     * @param host optional hostname for the port search
      * @param callback return result
      *        ```js
      *        function (port) {}
@@ -1619,9 +1627,9 @@ export class AdapterClass extends EventEmitter {
      *
      * Use it like ...
      * ```js
-     *     if (adapter.supportsFeature && adapter.supportsFeature('ALIAS')) {
-     *         ...
-     *     }
+     * if (adapter.supportsFeature && adapter.supportsFeature('ALIAS')) {
+     * ...
+     * }
      * ```
      *
      * @param featureName the name of the feature to check
@@ -2613,7 +2621,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Get the system secret, after retrived once it will be read from cache
+     * Get the system secret, after retrieved once it will be read from the cache
      */
     private async getSystemSecret(): Promise<string> {
         if (this._systemSecret !== undefined) {
@@ -2641,7 +2649,7 @@ export class AdapterClass extends EventEmitter {
     ): ioBroker.Timeout | undefined;
     /**
      * Same as setTimeout,
-     * but it clears the running timers during the unload process
+     * but it clears the running timers during the unloading process
      * does not work after unload has been called
      *
      * @param cb - timer callback
@@ -2782,14 +2790,17 @@ export class AdapterClass extends EventEmitter {
         this._intervals.delete(interval as NodeJS.Timeout);
     }
 
-    setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
+    setObject(
+        id: string,
+        obj: ioBroker.SettableObject,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    setObject(id: string, obj: ioBroker.SettableObject, callback: ioBroker.SetObjectCallback): void;
+    setObject(id: string, obj: ioBroker.SettableObject, options: unknown, callback: ioBroker.SetObjectCallback): void;
     setObject(
         id: string,
         obj: ioBroker.SettableObject,
         options: unknown,
-        callback?: ioBroker.SetObjectCallback,
-    ): Promise<void>;
-    setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
     /**
      * Creates or overwrites an object in objectDB.
      *
@@ -2820,7 +2831,12 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): Promise<void> | void {
+    setObject(
+        id: unknown,
+        obj: unknown,
+        options?: unknown,
+        callback?: unknown,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -2836,7 +2852,9 @@ export class AdapterClass extends EventEmitter {
         return this._setObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
 
-    private async _setObject(options: InternalSetObjectOptions): Promise<void> {
+    private async _setObject(
+        options: InternalSetObjectOptions,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> {
         if (!this._defaultObjs) {
             this._defaultObjs = (await import('./defaultObjs.js')).createDefaults();
         }
@@ -2861,6 +2879,7 @@ export class AdapterClass extends EventEmitter {
                 this._utils.validateId(options.id, false, null);
             } catch (e) {
                 this._logger.error(tools.appendStackTrace(`${this.namespaceLog} ${e.message}`));
+                // Error is logged and silently ignored to not break older adapters
                 return;
             }
         }
@@ -2938,11 +2957,11 @@ export class AdapterClass extends EventEmitter {
             options.obj.user = options.obj.user || (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
             options.obj.ts = options.obj.ts || Date.now();
 
-            this._setObjectWithDefaultValue(options.id, options.obj, options.options, options.callback);
-        } else {
-            this._logger.error(`${this.namespaceLog} setObject ${options.id} mandatory property type missing!`);
-            return tools.maybeCallbackWithError(options.callback, 'mandatory property type missing!');
+            return this._setObjectWithDefaultValue(options.id, options.obj, options.options, options.callback);
         }
+
+        this._logger.error(`${this.namespaceLog} setObject ${options.id} mandatory property type missing!`);
+        return tools.maybeCallbackWithError(options.callback, 'mandatory property type missing!');
     }
 
     /**
@@ -3349,14 +3368,23 @@ export class AdapterClass extends EventEmitter {
     setForeignObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        callback?: ioBroker.SetObjectCallback,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    setForeignObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        callback: ioBroker.SetObjectCallback,
     ): void;
     setForeignObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options: unknown,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    setForeignObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options: unknown,
         callback?: ioBroker.SetObjectCallback,
-    ): void;
+    ): void | Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
 
     /**
      * Same as {@link AdapterClass.setObject}, but for any object.
@@ -3374,7 +3402,12 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setForeignObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): MaybePromise {
+    setForeignObject(
+        id: unknown,
+        obj: unknown,
+        options?: unknown,
+        callback?: unknown,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> | void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3403,7 +3436,9 @@ export class AdapterClass extends EventEmitter {
         return this._setForeignObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
 
-    private _setForeignObject(_options: InternalSetObjectOptions): MaybePromise {
+    private _setForeignObject(
+        _options: InternalSetObjectOptions,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> | void {
         const { options, callback, obj } = _options;
         let { id } = _options;
 
@@ -3443,21 +3478,30 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        this._setObjectWithDefaultValue(id, obj, options, callback);
+        return this._setObjectWithDefaultValue(id, obj, options, callback);
     }
 
     // external signatures
     extendForeignObject<T extends string>(
         id: T,
         objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        callback?: ioBroker.SetObjectCallback,
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    extendForeignObject<T extends string>(
+        id: T,
+        objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        callback: ioBroker.SetObjectCallback,
     ): void;
     extendForeignObject<T extends string>(
         id: T,
         objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options: ioBroker.ExtendObjectOptions,
-        callback?: ioBroker.SetObjectCallback,
+        callback: ioBroker.SetObjectCallback,
     ): void;
+    extendForeignObject<T extends string>(
+        id: T,
+        objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options: ioBroker.ExtendObjectOptions,
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
 
     /**
      * Same as {@link AdapterClass.extendObject}, but for any object.
@@ -3478,7 +3522,7 @@ export class AdapterClass extends EventEmitter {
     extendForeignObject(
         id: unknown,
         obj: unknown,
-        options: unknown,
+        options?: unknown,
         callback?: unknown,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> | void {
         if (typeof options === 'function') {
@@ -9333,7 +9377,7 @@ export class AdapterClass extends EventEmitter {
                 return tools.maybeCallbackWithError(callback, e);
             }
         }
-        this.#states.delState(id, callback);
+        await this.#states.delState(id, callback);
     }
 
     // external signature
@@ -9801,7 +9845,7 @@ export class AdapterClass extends EventEmitter {
 
                 subs[pattern][this.namespace]++;
                 this.outputCount++;
-                this.#states.setState(`system.adapter.${autoSubEntry}.subscribes`, JSON.stringify(subs));
+                await this.#states.setState(`system.adapter.${autoSubEntry}.subscribes`, JSON.stringify(subs));
             }
         }
 
@@ -10030,7 +10074,7 @@ export class AdapterClass extends EventEmitter {
                         delete subs[pattern];
                     }
                     this.outputCount++;
-                    this.#states.setState(`system.adapter.${autoSub}.subscribes`, JSON.stringify(subs));
+                    await this.#states.setState(`system.adapter.${autoSub}.subscribes`, JSON.stringify(subs));
                 }
             }
         }
@@ -10233,7 +10277,7 @@ export class AdapterClass extends EventEmitter {
 
             if (obj?.native?.licenses?.length) {
                 const now = Date.now();
-                const cert = fs.readFileSync(path.join(thisDir, '..', '..', 'cert', 'cloudCert.crt'));
+                const cert = fs.readFileSync(join(thisDir, '..', '..', 'cert', 'cloudCert.crt'));
                 let adapterObj: ioBroker.AdapterObject | null | undefined;
                 if (adapterName) {
                     try {
@@ -10538,14 +10582,13 @@ export class AdapterClass extends EventEmitter {
         }
 
         // temporary log buffer
-        let messages: null | any[] = [];
+        let messages: null | ioBroker.LogMessage[] = [];
 
         // If some message from logger
         // find our notifier transport
-        // @ts-expect-error
+        // @ts-expect-error name is private
         const ts = this._logger.transports.find(t => t.name === 'NT');
-        // @ts-expect-error
-        ts.on('logged', info => {
+        ts?.on('logged', (info: ioBroker.LogMessage): void => {
             info.from = this.namespace;
             // emit to itself
             if (this._options.logTransporter && this.logRequired && !this._stopInProgress) {
@@ -10670,7 +10713,7 @@ export class AdapterClass extends EventEmitter {
                 }
             };
 
-            this.processLog = msg => {
+            this.processLog = (msg: ioBroker.LogMessage): void => {
                 if (msg && !this._stopInProgress) {
                     this.emit('log', msg);
                 }
@@ -10873,7 +10916,10 @@ export class AdapterClass extends EventEmitter {
                     this._logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
                     this.logRedirect(state ? !!state.val : false, instance);
                 } else if (id === `log.system.adapter.${this.namespace}`) {
-                    this._options.logTransporter && this.processLog && this.processLog(state);
+                    this._options.logTransporter &&
+                        this.processLog &&
+                        state &&
+                        this.processLog(state as unknown as ioBroker.LogMessage);
                 } else if (id === `messagebox.system.adapter.${this.namespace}` && state) {
                     // If this is messagebox
                     const obj = state as unknown as ioBroker.Message;
@@ -11730,7 +11776,7 @@ export class AdapterClass extends EventEmitter {
                 err ? err.message : err
             }`,
         );
-        if (err && err.stack) {
+        if (err?.stack) {
             this._logger.error(`${this.namespaceLog} ${err.stack}`);
         }
 

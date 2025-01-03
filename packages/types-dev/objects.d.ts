@@ -452,8 +452,8 @@ declare global {
 
         interface ScriptCommon extends ObjectCommon {
             name: string;
-            /** Defines the type of the script, e.g., TypeScript/ts, JavaScript/js or Blockly */
-            engineType: string;
+            /** Defines the type of the script, e.g., TypeScript/ts, Javascript/js or Blockly */
+            engineType: 'TypeScript/ts' | 'Blockly' | 'Rules' | 'Javascript/js';
             /** The instance id of the instance which executes this script */
             engine: string;
             /** The source code of this script */
@@ -797,6 +797,15 @@ declare global {
             ignoreVersion?: string;
             /** Sentry and other plugins */
             plugins?: { [pluginName: string]: Record<string, any> };
+            /** Rules blocks for Javascript rules */
+            javascriptRules?: {
+                /** Translations */
+                i18n?: boolean | Record<string, Record<ioBroker.Languages, string>> | Record<string, string>;
+                /** Where to load the blocks */
+                url: string;
+                /** Blocks names */
+                name: string;
+            };
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;

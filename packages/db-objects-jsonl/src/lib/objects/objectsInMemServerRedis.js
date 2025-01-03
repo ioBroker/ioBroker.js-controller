@@ -908,52 +908,53 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                 return void handler.sendArray(responseId, isScan ? ['0', response] : response);
             }
         }
+
         if (namespace === this.namespaceFile || namespace === this.namespaceObjects) {
-            // Handle request to get meta data keys
-            if (isMeta === undefined) {
-                let res;
-                try {
-                    res = this._readDir(id, name);
-                    if (!res || !res.length) {
-                        res = [
-                            {
-                                file: '_data.json',
-                                stats: {},
-                                isDir: false,
-                                virtualFile: true,
-                                notExists: true,
-                            },
-                        ];
-                    }
-                } catch (e) {
-                    if (!e.message.endsWith(utils.ERRORS.ERROR_NOT_FOUND)) {
-                        return void handler.sendError(responseId, new Error(`ERROR readDir id=${id}: ${e.message}`));
-                    }
-                    res = [];
-                }
-                let baseName = name || '';
-                if (baseName.length && !baseName.endsWith('/')) {
-                    baseName += '/';
-                }
-                res.forEach(arr => {
-                    let entryId = id;
-                    if (arr.isDir) {
-                        if (entryId === '' || entryId === '*') {
-                            entryId = arr.file;
-                            arr.file = '_data.json'; // We return a "virtual file" to mark the directory as existing
-                        } else {
-                            arr.file += '/_data.json'; // We return a "virtual file" to mark the directory as existing
-                        }
-                    }
-                    // We need to simulate the Meta data here, so return both
-                    response.push(this.getFileId(entryId, baseName + arr.file, true));
-                    response.push(this.getFileId(entryId, baseName + arr.file, false));
-                });
-                handler.sendArray(responseId, isScan ? ['0', response] : response); // send out file or full db response
-            } else {
+            if (isMeta !== undefined) {
                 // such a request should never happen
-                handler.sendArray(responseId, isScan ? ['0', []] : []); // send out file or full db response
+                return handler.sendArray(responseId, isScan ? ['0', []] : []); // send out file or full db response
             }
+
+            // Handle request to get meta data keys
+            let res;
+            try {
+                res = this._readDir(id, name);
+                if (!res || !res.length) {
+                    res = [
+                        {
+                            file: '_data.json',
+                            stats: {},
+                            isDir: false,
+                            virtualFile: true,
+                            notExists: true,
+                        },
+                    ];
+                }
+            } catch (e) {
+                if (!e.message.endsWith(utils.ERRORS.ERROR_NOT_FOUND)) {
+                    return void handler.sendError(responseId, new Error(`ERROR readDir id=${id}: ${e.message}`));
+                }
+                res = [];
+            }
+            let baseName = name || '';
+            if (baseName.length && !baseName.endsWith('/')) {
+                baseName += '/';
+            }
+            res.forEach(arr => {
+                let entryId = id;
+                if (arr.isDir) {
+                    if (entryId === '' || entryId === '*') {
+                        entryId = arr.file;
+                        arr.file = '_data.json'; // We return a "virtual file" to mark the directory as existing
+                    } else {
+                        arr.file += '/_data.json'; // We return a "virtual file" to mark the directory as existing
+                    }
+                }
+                // We need to simulate the Meta data here, so return both
+                response.push(this.getFileId(entryId, baseName + arr.file, true));
+                response.push(this.getFileId(entryId, baseName + arr.file, false));
+            });
+            handler.sendArray(responseId, isScan ? ['0', response] : response); // send out file or full db response
         } else if (namespace === this.namespaceSet) {
             handler.sendArray(responseId, isScan ? ['0', []] : []); // send out empty array, we have no sets
         } else {

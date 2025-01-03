@@ -154,7 +154,7 @@ export class Install {
      * @param stoppedList list of stopped instances (as instance objects)
      */
     async downloadPacket(
-        repoUrlOrRepo: string | undefined | Record<string, any>,
+        repoUrlOrRepo: string | undefined | Record<string, ioBroker.RepositoryJsonAdapterContent>,
         packetName: string,
         options?: CLIDownloadPacketOptions,
         stoppedList?: ioBroker.InstanceObject[],

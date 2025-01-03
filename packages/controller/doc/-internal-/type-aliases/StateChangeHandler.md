@@ -1,0 +1,23 @@
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+
+***
+
+[@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / StateChangeHandler
+
+# Type Alias: StateChangeHandler()
+
+> **StateChangeHandler**: (`id`, `obj`) => `void` \| `Promise`\<`void`\>
+
+## Parameters
+
+• **id**: `string`
+
+• **obj**: [`State`](../interfaces/State.md) \| `null` \| `undefined`
+
+## Returns
+
+`void` \| `Promise`\<`void`\>
+
+## Defined in
+
+[types-dev/index.d.ts:390](https://github.com/ioBroker/ioBroker.js-controller/blob/f1ba02661ee76a492ac7f898d8736bf0a1d44d8b/packages/types-dev/index.d.ts#L390)

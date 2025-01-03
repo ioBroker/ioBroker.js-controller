@@ -20,30 +20,14 @@ type JSONDecoderValue = Record<string, any>;
 /**
  * Decodes a JSON with buffer value
  *
- * @param key
+ * @param _key
  * @param value
  */
-function bufferJsonDecoder(key: string, value: JSONDecoderValue): Buffer | JSONDecoderValue {
+function bufferJsonDecoder(_key: string, value: JSONDecoderValue): Buffer | JSONDecoderValue {
     if (tools.isObject(value) && value.type === 'Buffer' && value.data && Array.isArray(value.data)) {
         return Buffer.from(value.data);
     }
     return value;
-}
-
-interface LogObject {
-    /** id of the source instance */
-    from: string;
-    /** log level */
-    severity: string;
-    /** timestamp */
-    ts: number;
-    /** actual content */
-    message: string;
-}
-
-interface InternalLogObject extends LogObject {
-    /** internal id */
-    _id: number;
 }
 
 type UserChangeFunction = (id: string, state: ioBroker.State | null) => void;
@@ -65,6 +49,9 @@ export interface StatesSettings {
     namespaceMsg?: string;
     redisNamespace?: string;
 }
+
+/** The internal log message does not have an _id parameter */
+type LogMessageInternal = Omit<ioBroker.LogMessage, '_id'>;
 
 export class StateRedisClient {
     private settings: StatesSettings;
@@ -1281,14 +1268,13 @@ export class StateRedisClient {
 
     async pushLog(
         id: string,
-        log: LogObject,
+        log: LogMessageInternal,
         callback?: (err: Error | undefined | null, id?: string) => void,
     ): Promise<string | void>;
 
-    // implementation uses an modified pushLog with internal _id
     async pushLog(
         id: string,
-        log: InternalLogObject,
+        log: ioBroker.LogMessage,
         callback?: (err: Error | undefined | null, id?: string) => void,
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {

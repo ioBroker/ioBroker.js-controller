@@ -627,7 +627,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         }
 
         const location = path.join(this.objectsDir, id, name);
-        if (fs.existsSync(location)) {
+        if (fs.existsSync(location) && fs.statSync(location).isDirectory()) {
             const dirFiles = fs.readdirSync(location);
             for (let i = 0; i < dirFiles.length; i++) {
                 if (dirFiles[i] === '..' || dirFiles[i] === '.') {
