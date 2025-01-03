@@ -1454,7 +1454,8 @@ export class AdapterClass extends EventEmitter {
         options?: Record<string, any> | null,
     ): Promise<(ioBroker.AnyObject | null)[]> {
         try {
-            return this.#objects!.getObjects(keys, options);
+            const res = await this.#objects!.getObjects(keys, options);
+            return res;
         } catch (e) {
             this._logger.error(`Could not get objects by array: ${e.message}`);
             return [];
