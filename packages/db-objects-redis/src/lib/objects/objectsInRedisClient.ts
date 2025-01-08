@@ -21,7 +21,6 @@ import type {
     CheckFileRightsCallback,
     GetUserGroupPromiseReturn,
 } from '@/lib/objects/objectsUtils.js';
-import { CheckFileRightsReturn } from '@/lib/objects/objectsUtils.js';
 import * as utils from '@/lib/objects/objectsUtils.js';
 import semver from 'semver';
 import * as CONSTS from '@/lib/objects/constants.js';
