@@ -245,6 +245,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(res).to.be.empty;
     });
 
+    it(`${testName}should not read directory without meta object`, () => {
+        const objects = context.objects;
+        const id = `${testId}.meta.nonExisting`;
+
+        expect(objects.readDirAsync(id, '')).to.be.eventually.rejectedWith(
+            new Error(`${id} is not an object of type "meta"`),
+        );
+    });
+
     it(`${testName}should respond with empty array if calling readDir on a single file`, async () => {
         const objects = context.objects;
         const fileName = 'dir/notADir.txt';
