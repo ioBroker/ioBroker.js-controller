@@ -249,9 +249,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const objects = context.objects;
         const id = `${testId}.meta.nonExisting`;
 
-        expect(objects.readDirAsync(id, '')).to.be.eventually.rejectedWith(
-            new Error(`${id} is not an object of type "meta"`),
-        );
+        expect(objects.readDirAsync(id, '')).to.be.eventually.rejectedWith(`${id} is not an object of type "meta"`);
     });
 
     it(`${testName}should respond with empty array if calling readDir on a single file`, async () => {
