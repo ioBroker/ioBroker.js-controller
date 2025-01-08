@@ -1443,8 +1443,7 @@ export class ObjectsInRedisClient {
         }
 
         try {
-            // TODO: activate
-            // await this.validateMetaObject(id);
+            await this.validateMetaObject(id);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
@@ -1469,8 +1468,7 @@ export class ObjectsInRedisClient {
         const dirs: string[] = [];
         const deepLevel = baseName.split('/').length;
         if (!keys || !keys.length) {
-            // TODO: empty array
-            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND, []);
+            return tools.maybeCallbackWithError(callback, null, []);
         }
         keys = keys.sort().filter(key => {
             if (key.endsWith('$%$meta')) {
