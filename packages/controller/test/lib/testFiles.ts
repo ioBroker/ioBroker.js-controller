@@ -224,6 +224,22 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
+    it(`${testName}should read empty directory`, async () => {
+        const objects = context.objects;
+        const id = `${testId}.files`;
+
+        const res = await objects.readDirAsync(id, '');
+        expect(res).to.be.empty;
+    });
+
+    it(`${testName}should read empty directory with path`, async () => {
+        const objects = context.objects;
+        const id = `${testId}.files`;
+
+        const res = await objects.readDirAsync(id, 'random/path');
+        expect(res).to.be.empty;
+    });
+
     it(`${testName}should respond with 'ERROR_NOT_FOUND' if calling readDir on a single file`, async () => {
         const objects = context.objects;
         const fileName = 'dir/notADir.txt';
