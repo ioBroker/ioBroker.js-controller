@@ -91,9 +91,9 @@ export interface StatesDatabaseOptions extends DatabaseOptions {
  */
 export interface IoBJson {
     system: {
-        /** do not use more than memory limit mb by ioB process (0 to deactivate) */
+        /** Do not use more than memory limit mb by ioB process (0 to deactivate) */
         memoryLimitMB: number;
-        /** if empty, determine use real hostname */
+        /** If empty, determine use real hostname */
         hostname: string;
         /** Interval how often the counters for input/output in adapters and controller will be updated in ms */
         statisticsInterval: number;
@@ -101,7 +101,7 @@ export interface IoBJson {
         /** Interval how often the disk size will be checked in ms */
         checkDiskInterval: number;
         '// checkDiskInterval': string;
-        /** interval to wait between multiple instances starts */
+        /** Interval to wait between multiple instances starts */
         instanceStartInterval: number;
         /** Controller will try to start the instances as a part of the same process. No spawn will be done. Only by adapters that support it and have flag compact flag in io-package.json */
         compact: boolean;
