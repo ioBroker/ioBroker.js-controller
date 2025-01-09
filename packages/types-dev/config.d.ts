@@ -6,7 +6,7 @@ interface DatabaseBackupOptions {
     /** All backups older than configured hours will be deleted. But only if the number of files is greater than of backupNumber */
     hours: number;
     '// hours': string;
-    /** by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0 */
+    /** By default backup every 2 hours. Time is in minutes. To disable backup set the value to 0 */
     period: number;
     '// period': string;
     /** Absolute path to back-up directory or empty to back-up in data directory */
