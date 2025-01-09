@@ -136,6 +136,7 @@ import type {
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
+import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
 
 const controllerVersion = packJson.version;
 
@@ -610,6 +611,20 @@ export interface AdapterClass {
 }
 
 /**
+ * Contents of iobroker.json plus some internal variables
+ */
+interface InternalAdapterJsonConfig extends ioBroker.IoBrokerJson {
+    /** Is instance started with the `--install` flag */
+    isInstall?: boolean;
+    /** If logs must be printed to stdout */
+    consoleOutput?: boolean;
+    /** Start instance even if it disabled in config */
+    forceIfDisabled?: boolean;
+    /** Instance number */
+    instance?: number;
+}
+
+/**
  * Adapter class
  *
  * How the initialization happens:
@@ -628,7 +643,7 @@ export class AdapterClass extends EventEmitter {
     /** Objects DB constructor */
     private Objects?: typeof ObjectsInRedisClient;
     /** Contents of iobroker.json */
-    private readonly _config: Record<string, any>;
+    private readonly _config: InternalAdapterJsonConfig;
     private readonly _options: AdapterOptions;
     private readonly startedInCompactMode: boolean;
     /** List of instances which want our logs */
@@ -700,7 +715,7 @@ export class AdapterClass extends EventEmitter {
     private _initializeTimeout?: NodeJS.Timeout | null;
     private inited?: boolean;
     /** contents of iobroker.json if required via AdapterOptions */
-    systemConfig?: Record<string, any>;
+    systemConfig?: InternalAdapterJsonConfig;
     /** the configured date format of system.config, only available if requested via AdapterOptions `useFormatDate` */
     dateFormat?: any;
     /** if float comma instead of dot is used, only available if requested via AdapterOptions `useFormatDate` */
@@ -778,7 +793,10 @@ export class AdapterClass extends EventEmitter {
             this._options.config.log = this._config.log;
         }
 
-        this._config = this._options.config || this._config;
+        // this used in tests
+        if (this._options.config) {
+            this._config = this._options.config as ioBroker.IoBrokerJson;
+        }
         this.startedInCompactMode = !!this._options.compact;
 
         const parsedArgs = yargs(process.argv.slice(2))
@@ -818,7 +836,7 @@ export class AdapterClass extends EventEmitter {
             })
             .parseSync();
 
-        if (parsedArgs.loglevel && ['info', 'debug', 'error', 'warn', 'silly'].includes(parsedArgs.loglevel)) {
+        if (parsedArgs.loglevel && isLogLevel(parsedArgs.loglevel)) {
             this._config.log.level = parsedArgs.loglevel;
             this.overwriteLogLevel = true;
         }
@@ -861,11 +879,11 @@ export class AdapterClass extends EventEmitter {
         }
 
         const instance = parseInt(
-            this._options.compactInstance !== undefined
+            (this._options.compactInstance !== undefined
                 ? this._options.compactInstance
                 : this._options.instance !== undefined
                   ? this._options.instance
-                  : this._config.instance || 0,
+                  : this._config.instance || 0) as unknown as string,
             10,
         );
 
@@ -10506,15 +10524,15 @@ export class AdapterClass extends EventEmitter {
         logs.push(`Actual Loglist - ${JSON.stringify(Array.from(this.logList))}`);
 
         if (!this.#states) {
-            // if adapterState was destroyed, we can not continue
+            // if adapterState was destroyed, we cannot continue
             return;
         }
 
-        // Read current state of all log subscribers
+        // Read the current state of all log subscribers
         this.#states.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`, (err, keys) => {
             if (keys?.length) {
                 if (!this.#states) {
-                    // if adapterState was destroyed, we can not continue
+                    // if adapterState was destroyed, we cannot continue
                     return;
                 }
 
@@ -10560,7 +10578,7 @@ export class AdapterClass extends EventEmitter {
      */
     private async _initLogging(): Promise<void> {
         if (!this.#states) {
-            // if adapterState was destroyed, we can not continue
+            // if adapterState was destroyed, we cannot continue
             return;
         }
 
@@ -10583,13 +10601,13 @@ export class AdapterClass extends EventEmitter {
                 if (messages && !this._options.logTransporter) {
                     messages.push(info);
 
-                    // do not let messages grow without limit
+                    // do not let messages grow without a limit
                     if (messages.length > this._config.states.maxQueue) {
                         messages.splice(0, messages.length - this._config.states.maxQueue);
                     }
                 }
             } else if (this.#states?.pushLog) {
-                // Send to all adapter, that required logs
+                // Send it to all adapters, that required logs
                 for (const instanceId of this.logList) {
                     this.#states.pushLog(instanceId, info);
                 }
@@ -10599,7 +10617,7 @@ export class AdapterClass extends EventEmitter {
         const keys = await this.#states.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
         if (keys?.length) {
             if (!this.#states) {
-                // if adapterState was destroyed, we can not continue
+                // if adapterState was destroyed, we cannot continue
                 return;
             }
 
@@ -10607,7 +10625,7 @@ export class AdapterClass extends EventEmitter {
             if (obj) {
                 for (let i = 0; i < keys.length; i++) {
                     const objPart = obj[i];
-                    // We can JSON.parse, but index is 16x faster
+                    // We can JSON.parse, but the index is 16x faster
                     if (!objPart) {
                         continue;
                     }
@@ -10833,13 +10851,10 @@ export class AdapterClass extends EventEmitter {
                 if (id === `system.adapter.${this.namespace}.logLevel`) {
                     if (this._config && this._config.log && state && !state.ack) {
                         let currentLevel = this._config.log.level;
-                        if (
-                            state.val &&
-                            state.val !== currentLevel &&
-                            ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val as string)
-                        ) {
+                        const newLogLevel = state.val as string;
+                        if (state.val && state.val !== currentLevel && isLogLevel(newLogLevel)) {
                             this.overwriteLogLevel = true;
-                            this._config.log.level = state.val;
+                            this._config.log.level = newLogLevel;
                             for (const transport in this._logger.transports) {
                                 if (!Object.prototype.hasOwnProperty.call(this._logger.transports, transport)) {
                                     continue;
@@ -10847,13 +10862,13 @@ export class AdapterClass extends EventEmitter {
                                 // set the loglevel on transport only if no loglevel was pinned in log config
                                 // @ts-expect-error it is our own modification
                                 if (!this._logger.transports[transport]._defaultConfigLoglevel) {
-                                    this._logger.transports[transport].level = state.val as string;
+                                    this._logger.transports[transport].level = newLogLevel;
                                 }
                             }
                             this._logger.info(
                                 `${this.namespaceLog} Loglevel changed from "${currentLevel}" to "${state.val}"`,
                             );
-                            currentLevel = state.val;
+                            currentLevel = newLogLevel;
                         } else if (state.val && state.val !== currentLevel) {
                             this._logger.info(`${this.namespaceLog} Got invalid loglevel "${state.val}", ignoring`);
                         }
@@ -10990,7 +11005,7 @@ export class AdapterClass extends EventEmitter {
                 } else if (!this._stopInProgress && this.adapterReady && this.aliases.has(id)) {
                     // If adapter is ready and for this ID exist some alias links
                     const alias = this.aliases.get(id)!;
-                    /** Prevent multiple publishes if multiple pattern contain this alias id */
+                    /** Prevent multiple publishes if multiple patterns contain this alias id */
                     const uniqueTargets = new Set<string>();
 
                     for (const target of alias.targets) {
@@ -11352,8 +11367,7 @@ export class AdapterClass extends EventEmitter {
             !this._config.forceIfDisabled &&
             !this._config.isInstall &&
             !this.startedInCompactMode &&
-            killRes &&
-            killRes.from?.startsWith('system.host.') &&
+            killRes?.from?.startsWith('system.host.') &&
             killRes.ack &&
             !isNaN(killRes.val as any) &&
             killRes.val !== process.pid
@@ -11362,13 +11376,7 @@ export class AdapterClass extends EventEmitter {
                 `${this.namespaceLog} ${this.namespace} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`,
             );
             this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
-        } else if (
-            !this._config.isInstall &&
-            resAlive &&
-            resAlive.val === true &&
-            resAlive.ack &&
-            !this._config.forceIfDisabled
-        ) {
+        } else if (!this._config.isInstall && resAlive?.val === true && resAlive.ack && !this._config.forceIfDisabled) {
             this._logger.error(`${this.namespaceLog} ${this.namespace} already running`);
             this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
         } else {
@@ -11404,7 +11412,7 @@ export class AdapterClass extends EventEmitter {
         this.pluginHandler.setDatabaseForPlugins(this.#objects, this.#states);
         await this.pluginHandler.initPlugins(adapterConfig || {});
         if (!this.#states || !this.#objects || this.terminated) {
-            // if adapterState was destroyed,we should not continue
+            // if adapterState was destroyed, we should not continue
             return;
         }
 
@@ -11639,7 +11647,7 @@ export class AdapterClass extends EventEmitter {
                 }in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`,
             );
             this._config.system = this._config.system || {};
-            this._config.system.statisticsInterval = parseInt(this._config.system.statisticsInterval, 10) || 15_000;
+            this._config.system.statisticsInterval = Math.round(this._config.system.statisticsInterval) || 15_000;
             if (!this._config.isInstall) {
                 this._reportInterval = setInterval(() => this._reportStatus(), this._config.system.statisticsInterval);
                 this._reportStatus();
@@ -11820,7 +11828,7 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 if (!obj._id.startsWith(this.namespace)) {
-                    // instanceObjects are normally defined without namespace prefix
+                    // instanceObjects are normally defined without a namespace prefix
                     obj._id = obj._id === '' ? this.namespace : `${this.namespace}.${obj._id}`;
                 }
 
@@ -12060,13 +12068,13 @@ export class AdapterClass extends EventEmitter {
         if (this._options.systemConfig) {
             this.systemConfig = this._config;
             // Workaround for an admin 5 issue which could lead to deleting the dataDir folder
-            // TODO: remove it as soon as all adapters are fixed which use systemConfig.dataDir
+            // TODO: 08.2022 FR remove it as soon as all adapters are fixed which use systemConfig.dataDir
             if (!Object.prototype.hasOwnProperty.call(this.systemConfig, 'dataDir')) {
                 this.systemConfig.dataDir = tools.getDefaultDataDir();
             }
         }
 
-        if (this._config.states && this._config.states.type) {
+        if (this._config.states?.type) {
             try {
                 this.States = (await import(`@iobroker/db-states-${this._config.states.type}`)).Client;
             } catch (e) {
@@ -12076,7 +12084,7 @@ export class AdapterClass extends EventEmitter {
             this.States = await getStatesConstructor();
         }
 
-        if (this._config.objects && this._config.objects.type) {
+        if (this._config.objects?.type) {
             try {
                 this.Objects = (await import(`@iobroker/db-objects-${this._config.objects.type}`)).Client;
             } catch (e) {

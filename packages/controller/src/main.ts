@@ -46,6 +46,7 @@ import {
     getDefaultNodeArgs,
     type HostInfo,
     isAdapterEsmModule,
+    isLogLevel,
 } from '@iobroker/js-controller-common-db/tools';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
@@ -570,11 +571,7 @@ function createStates(onConnect: () => void): void {
                     return;
                 }
                 let currentLevel = config.log.level;
-                if (
-                    typeof state.val === 'string' &&
-                    state.val !== currentLevel &&
-                    ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val)
-                ) {
+                if (typeof state.val === 'string' && state.val !== currentLevel && isLogLevel(state.val)) {
                     config.log.level = state.val;
                     for (const transport in logger.transports) {
                         if (
@@ -5281,17 +5278,17 @@ export async function init(compactGroupId?: number): Promise<void> {
         States = await getStatesConstructor();
     }
 
-    // Detect if outputs to console are forced. By default, they are disabled and redirected to log file
+    // Detect if outputs to console are forced. By default, they are disabled and redirected to the log file
     if (
         config.log.noStdout &&
         process.argv &&
-        (process.argv.indexOf('--console') !== -1 || process.argv.indexOf('--logs') !== -1)
+        (process.argv.includes('--console') || process.argv.includes('--logs') || process.argv.includes('--debug'))
     ) {
         config.log.noStdout = false;
     }
 
     // Detect if controller runs as a linux-daemon
-    if (process.argv.indexOf('start') !== -1 && !compactGroupController) {
+    if (process.argv.includes('start') && !compactGroupController) {
         isDaemon = true;
         config.log.noStdout = true;
     }

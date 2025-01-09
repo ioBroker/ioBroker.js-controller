@@ -10,11 +10,11 @@
           "properties": {
             "memoryLimitMB": {
               "type": "number",
-              "description": "do not use more than memory limit mb by ioB process (0 to deactivate)"
+              "description": "Do not use more than memory limit mb by ioB process (0 to deactivate)"
             },
             "hostname": {
               "type": "string",
-              "description": "if empty, determine use real hostname"
+              "description": "If empty, determine use real hostname"
             },
             "statisticsInterval": {
               "type": "number",
@@ -32,7 +32,7 @@
             },
             "instanceStartInterval": {
               "type": "number",
-              "description": "interval to wait between multiple instances starts"
+              "description": "Interval to wait between multiple instances starts"
             },
             "compact": {
               "type": "boolean",
@@ -110,13 +110,13 @@
           "$ref": "#/definitions/ObjectsDatabaseOptions"
         },
         "states": {
-          "$ref": "#/definitions/DatabaseOptions"
+          "$ref": "#/definitions/StatesDatabaseOptions"
         },
         "log": {
           "type": "object",
           "properties": {
             "level": {
-              "type": "string"
+              "$ref": "#/definitions/global.ioBroker.LogLevel"
             },
             "maxDays": {
               "type": "number"
@@ -274,9 +274,6 @@
         },
         "noFileCache": {
           "type": "boolean"
-        },
-        "maxQueue": {
-          "type": "number"
         }
       },
       "required": [
@@ -286,7 +283,6 @@
         "dataDir",
         "host",
         "jsonlOptions",
-        "maxQueue",
         "noFileCache",
         "options",
         "port",
@@ -317,7 +313,7 @@
         },
         "period": {
           "type": "number",
-          "description": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0"
+          "description": "By default backup every 2 hours. Time is in minutes. To disable backup set the value to 0"
         },
         "// period": {
           "type": "string"
@@ -427,7 +423,7 @@
       ],
       "additionalProperties": false
     },
-    "DatabaseOptions": {
+    "StatesDatabaseOptions": {
       "type": "object",
       "properties": {
         "type": {
@@ -513,21 +509,36 @@
         },
         "jsonlOptions": {
           "$ref": "#/definitions/JsonlOptions"
+        },
+        "maxQueue": {
+          "type": "number",
+          "description": "Limit maximum number of log entries in the list (only read by adapter.ts from the config file)"
         }
       },
       "required": [
-        "type",
         "// type",
-        "host",
-        "port",
-        "connectTimeout",
-        "writeFileInterval",
-        "dataDir",
-        "options",
         "backup",
-        "jsonlOptions"
+        "connectTimeout",
+        "dataDir",
+        "host",
+        "jsonlOptions",
+        "maxQueue",
+        "options",
+        "port",
+        "type",
+        "writeFileInterval"
       ],
       "additionalProperties": false
+    },
+    "global.ioBroker.LogLevel": {
+      "type": "string",
+      "enum": [
+        "silly",
+        "debug",
+        "info",
+        "warn",
+        "error"
+      ]
     }
   }
 }

@@ -6,7 +6,7 @@ interface DatabaseBackupOptions {
     /** All backups older than configured hours will be deleted. But only if the number of files is greater than of backupNumber */
     hours: number;
     '// hours': string;
-    /** by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0 */
+    /** By default backup every 2 hours. Time is in minutes. To disable backup set the value to 0 */
     period: number;
     '// period': string;
     /** Absolute path to back-up directory or empty to back-up in data directory */
@@ -79,6 +79,10 @@ export interface DatabaseOptions {
 
 export interface ObjectsDatabaseOptions extends DatabaseOptions {
     noFileCache: boolean;
+}
+
+export interface StatesDatabaseOptions extends DatabaseOptions {
+    /** Limit maximum number of log entries in the list (only read by adapter.ts from the config file) */
     maxQueue: number;
 }
 
@@ -87,9 +91,9 @@ export interface ObjectsDatabaseOptions extends DatabaseOptions {
  */
 export interface IoBJson {
     system: {
-        /** do not use more than memory limit mb by ioB process (0 to deactivate) */
+        /** Do not use more than memory limit mb by ioB process (0 to deactivate) */
         memoryLimitMB: number;
-        /** if empty, determine use real hostname */
+        /** If empty, determine use real hostname */
         hostname: string;
         /** Interval how often the counters for input/output in adapters and controller will be updated in ms */
         statisticsInterval: number;
@@ -97,7 +101,7 @@ export interface IoBJson {
         /** Interval how often the disk size will be checked in ms */
         checkDiskInterval: number;
         '// checkDiskInterval': string;
-        /** interval to wait between multiple instances starts */
+        /** Interval to wait between multiple instances starts */
         instanceStartInterval: number;
         /** Controller will try to start the instances as a part of the same process. No spawn will be done. Only by adapters that support it and have flag compact flag in io-package.json */
         compact: boolean;
@@ -119,9 +123,9 @@ export interface IoBJson {
         persist: boolean;
     };
     objects: ObjectsDatabaseOptions;
-    states: DatabaseOptions;
+    states: StatesDatabaseOptions;
     log: {
-        level: string;
+        level: ioBroker.LogLevel;
         maxDays: number;
         noStdout: boolean;
         transport: Record<string, any>;

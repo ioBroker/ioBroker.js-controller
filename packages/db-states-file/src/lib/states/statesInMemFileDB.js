@@ -61,8 +61,6 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
             this.log.silly(`${this.namespace} States DB uses file write interval of ${this.writeFileInterval} ms`);
         }
 
-        //this.settings.connection.maxQueue = this.settings.connection.maxQueue || 1000;
-
         // Reset expires, that are still in DB
         this._expireAll();
     }
