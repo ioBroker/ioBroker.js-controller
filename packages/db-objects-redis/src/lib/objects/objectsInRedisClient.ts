@@ -847,15 +847,15 @@ export class ObjectsInRedisClient {
     async validateMetaObject(id: string): Promise<void> {
         if (this.existingMetaObjects[id] === undefined) {
             // if not cached -> getObject
-            const obj = await this.getObjectAsync(id);
+            const obj = await this.getObject(id);
             if (obj && obj.type === 'meta') {
                 this.existingMetaObjects[id] = true;
             } else {
                 this.existingMetaObjects[id] = false;
-                return Promise.reject(new Error(`${id} is not an object of type "meta"`));
+                throw new Error(`${id} is not an object of type "meta"`);
             }
         } else if (this.existingMetaObjects[id] === false) {
-            return Promise.reject(new Error(`${id} is not an object of type "meta"`));
+            throw new Error(`${id} is not an object of type "meta"`);
         }
     }
 
@@ -990,7 +990,7 @@ export class ObjectsInRedisClient {
                 const obj = await this.getObject(id);
                 if (obj && !obj.acl) {
                     obj.acl = defaultAcl;
-                    await this.setObjectAsync(id, obj, null);
+                    await this.setObject(id, obj, null);
                 }
             } catch (e) {
                 this.log.error(
@@ -1442,6 +1442,12 @@ export class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, null, result);
         }
 
+        try {
+            await this.validateMetaObject(id);
+        } catch (e) {
+            return tools.maybeCallbackWithRedisError(callback, e);
+        }
+
         const dirID = this.getFileId(id, `${name}${name.length ? '/' : ''}*`);
 
         let keys;
@@ -1462,7 +1468,7 @@ export class ObjectsInRedisClient {
         const dirs: string[] = [];
         const deepLevel = baseName.split('/').length;
         if (!keys || !keys.length) {
-            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND, []);
+            return tools.maybeCallbackWithError(callback, null, []);
         }
         keys = keys.sort().filter(key => {
             if (key.endsWith('$%$meta')) {
