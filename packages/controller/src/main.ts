@@ -38,7 +38,7 @@ import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controll
 import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import type { GetDiskInfoResponse } from '@iobroker/js-controller-common-db/tools';
+import { type GetDiskInfoResponse, isLogLevel } from '@iobroker/js-controller-common-db/tools';
 import { DEFAULT_DISK_WARNING_LEVEL, getCronExpression, getDiskWarningLevel } from '@/lib/utils.js';
 import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
 import {
@@ -570,12 +570,8 @@ function createStates(onConnect: () => void): void {
                     return;
                 }
                 let currentLevel = config.log.level;
-                if (
-                    typeof state.val === 'string' &&
-                    state.val !== currentLevel &&
-                    ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val)
-                ) {
-                    config.log.level = state.val as ioBroker.LogLevel;
+                if (typeof state.val === 'string' && state.val !== currentLevel && isLogLevel(state.val)) {
+                    config.log.level = state.val;
                     for (const transport in logger.transports) {
                         if (
                             logger.transports[transport].level === currentLevel &&
@@ -586,7 +582,7 @@ function createStates(onConnect: () => void): void {
                         }
                     }
                     logger.info(`${hostLogPrefix} Loglevel changed from "${currentLevel}" to "${state.val}"`);
-                    currentLevel = state.val as ioBroker.LogLevel;
+                    currentLevel = state.val;
                 } else if (state.val && state.val !== currentLevel) {
                     logger.info(`${hostLogPrefix} Got invalid loglevel "${state.val}", ignoring`);
                 }
@@ -5285,15 +5281,13 @@ export async function init(compactGroupId?: number): Promise<void> {
     if (
         config.log.noStdout &&
         process.argv &&
-        (process.argv.indexOf('--console') !== -1 ||
-            process.argv.indexOf('--logs') !== -1 ||
-            process.argv.indexOf('--debug') !== -1)
+        (process.argv.includes('--console') || process.argv.includes('--logs') || process.argv.includes('--debug'))
     ) {
         config.log.noStdout = false;
     }
 
     // Detect if controller runs as a linux-daemon
-    if (process.argv.indexOf('start') !== -1 && !compactGroupController) {
+    if (process.argv.includes('start') && !compactGroupController) {
         isDaemon = true;
         config.log.noStdout = true;
     }

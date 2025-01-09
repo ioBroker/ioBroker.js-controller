@@ -229,9 +229,6 @@ export class ObjectsInRedisClient {
         const onChangeUser = this.settings.changeUser; // on change handler for User events
         const onChangeFileUser = this.settings.changeFileUser; // on change handler for User file events
 
-        // limit max number of log entries in the list
-        this.settings.connection.maxQueue = this.settings.connection.maxQueue || 1_000;
-
         this.settings.connection.options = this.settings.connection.options || {};
         const retry_max_delay: number = this.settings.connection.options.retry_max_delay || 5_000;
         const retry_max_count: number = this.settings.connection.options.retry_max_count || 19;

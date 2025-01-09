@@ -136,6 +136,7 @@ import type {
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
+import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
 
 const controllerVersion = packJson.version;
 
@@ -773,7 +774,7 @@ export class AdapterClass extends EventEmitter {
         const configFileName = tools.getConfigFileName();
 
         if (fs.pathExistsSync(configFileName)) {
-            this._config = fs.readJsonSync(configFileName) as InternalAdapterJsonConfig;
+            this._config = fs.readJsonSync(configFileName);
             this._config.states = this._config.states || { type: 'jsonl' };
             this._config.objects = this._config.objects || { type: 'jsonl' };
             // Make sure the DB has enough time (5s). JsonL can take a bit longer if the process just crashed before
@@ -835,8 +836,8 @@ export class AdapterClass extends EventEmitter {
             })
             .parseSync();
 
-        if (parsedArgs.loglevel && ['info', 'debug', 'error', 'warn', 'silly'].includes(parsedArgs.loglevel)) {
-            this._config.log.level = parsedArgs.loglevel as ioBroker.LogLevel;
+        if (parsedArgs.loglevel && isLogLevel(parsedArgs.loglevel)) {
+            this._config.log.level = parsedArgs.loglevel;
             this.overwriteLogLevel = true;
         }
 
@@ -10850,13 +10851,10 @@ export class AdapterClass extends EventEmitter {
                 if (id === `system.adapter.${this.namespace}.logLevel`) {
                     if (this._config && this._config.log && state && !state.ack) {
                         let currentLevel = this._config.log.level;
-                        if (
-                            state.val &&
-                            state.val !== currentLevel &&
-                            ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val as string)
-                        ) {
+                        const newLogLevel = state.val as string;
+                        if (state.val && state.val !== currentLevel && isLogLevel(newLogLevel)) {
                             this.overwriteLogLevel = true;
-                            this._config.log.level = state.val as ioBroker.LogLevel;
+                            this._config.log.level = newLogLevel;
                             for (const transport in this._logger.transports) {
                                 if (!Object.prototype.hasOwnProperty.call(this._logger.transports, transport)) {
                                     continue;
@@ -10864,13 +10862,13 @@ export class AdapterClass extends EventEmitter {
                                 // set the loglevel on transport only if no loglevel was pinned in log config
                                 // @ts-expect-error it is our own modification
                                 if (!this._logger.transports[transport]._defaultConfigLoglevel) {
-                                    this._logger.transports[transport].level = state.val as string;
+                                    this._logger.transports[transport].level = newLogLevel;
                                 }
                             }
                             this._logger.info(
                                 `${this.namespaceLog} Loglevel changed from "${currentLevel}" to "${state.val}"`,
                             );
-                            currentLevel = state.val as ioBroker.LogLevel;
+                            currentLevel = newLogLevel;
                         } else if (state.val && state.val !== currentLevel) {
                             this._logger.info(`${this.namespaceLog} Got invalid loglevel "${state.val}", ignoring`);
                         }
@@ -11649,8 +11647,7 @@ export class AdapterClass extends EventEmitter {
                 }in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`,
             );
             this._config.system = this._config.system || {};
-            this._config.system.statisticsInterval =
-                parseInt(this._config.system.statisticsInterval as unknown as string, 10) || 15_000;
+            this._config.system.statisticsInterval = Math.round(this._config.system.statisticsInterval) || 15_000;
             if (!this._config.isInstall) {
                 this._reportInterval = setInterval(() => this._reportStatus(), this._config.system.statisticsInterval);
                 this._reportStatus();

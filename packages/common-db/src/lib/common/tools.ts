@@ -4025,6 +4025,15 @@ export async function getPids(): Promise<number[]> {
 }
 
 /**
+ * Check if given string is a valid loglevel
+ *
+ * @param level level to validate
+ */
+export function isLogLevel(level: string): level is ioBroker.LogLevel {
+    return ['silly', 'debug', 'info', 'warn', 'error'].includes(level);
+}
+
+/**
  * Get the controller pid
  *
  * @returns pid if running else undefined

@@ -154,9 +154,6 @@ export class StateRedisClient {
         let reconnectCounter = 0;
         let errorLogged = false;
 
-        // limit max number of log entries in the list
-        this.settings.connection.maxQueue = this.settings.connection.maxQueue || 1000;
-
         this.settings.connection.options = this.settings.connection.options || {};
         const retry_max_delay = this.settings.connection.options.retry_max_delay || 5000;
         const retry_max_count = this.settings.connection.options.retry_max_count || 19;

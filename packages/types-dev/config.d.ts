@@ -75,12 +75,14 @@ export interface DatabaseOptions {
     };
     backup: DatabaseBackupOptions;
     jsonlOptions: JsonlOptions;
-    /** do not let messages grow without a limit */
-    maxQueue: number;
 }
 
 export interface ObjectsDatabaseOptions extends DatabaseOptions {
     noFileCache: boolean;
+}
+
+export interface StatesDatabaseOptions extends DatabaseOptions {
+    /** Limit maximum number of log entries in the list (only read by adapter.ts from the config file) */
     maxQueue: number;
 }
 
@@ -121,7 +123,7 @@ export interface IoBJson {
         persist: boolean;
     };
     objects: ObjectsDatabaseOptions;
-    states: DatabaseOptions;
+    states: StatesDatabaseOptions;
     log: {
         level: ioBroker.LogLevel;
         maxDays: number;
