@@ -10,11 +10,11 @@
           "properties": {
             "memoryLimitMB": {
               "type": "number",
-              "description": "do not use more than memory limit mb by ioB process (0 to deactivate)"
+              "description": "Do not use more than memory limit mb by ioB process (0 to deactivate)"
             },
             "hostname": {
               "type": "string",
-              "description": "if empty, determine use real hostname"
+              "description": "If empty, determine use real hostname"
             },
             "statisticsInterval": {
               "type": "number",
@@ -32,7 +32,7 @@
             },
             "instanceStartInterval": {
               "type": "number",
-              "description": "interval to wait between multiple instances starts"
+              "description": "Interval to wait between multiple instances starts"
             },
             "compact": {
               "type": "boolean",
@@ -313,7 +313,7 @@
         },
         "period": {
           "type": "number",
-          "description": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0"
+          "description": "By default backup every 2 hours. Time is in minutes. To disable backup set the value to 0"
         },
         "// period": {
           "type": "string"
