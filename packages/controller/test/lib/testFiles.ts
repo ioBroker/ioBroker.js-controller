@@ -1,5 +1,4 @@
 import type { TestContext } from '../_Types.js';
-import { objectsUtils as utils } from '@iobroker/db-objects-redis';
 
 export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} files: `;
@@ -10,7 +9,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const fileName = 'testFile.bin';
         const dataBinary = Buffer.from('1234');
         // create an object of type file first
-        await context.adapter.setForeignObjectAsync(objId, {
+        await context.adapter.setForeignObject(objId, {
             type: 'meta',
             common: {
                 name: 'Files and more',
@@ -224,12 +223,42 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(`${testName}should respond with 'ERROR_NOT_FOUND' if calling readDir on a single file`, async () => {
+    it(`${testName}should read empty directory`, async () => {
+        const objects = context.objects;
+        const id = `${testId}.meta.files`;
+
+        await objects.setObject(id, {
+            type: 'meta',
+            common: { name: 'test', type: 'meta.user' },
+            native: {},
+        });
+
+        const res = await objects.readDirAsync(id, '');
+        expect(res).to.be.empty;
+    });
+
+    it(`${testName}should read empty directory with path`, async () => {
+        const objects = context.objects;
+        const id = `${testId}.meta.files`;
+
+        const res = await objects.readDirAsync(id, 'random/path');
+        expect(res).to.be.empty;
+    });
+
+    it(`${testName}should not read directory without meta object`, () => {
+        const objects = context.objects;
+        const id = `${testId}.meta.nonExisting`;
+
+        expect(objects.readDirAsync(id, '')).to.be.eventually.rejectedWith(`${id} is not an object of type "meta"`);
+    });
+
+    it(`${testName}should respond with empty array if calling readDir on a single file`, async () => {
         const objects = context.objects;
         const fileName = 'dir/notADir.txt';
 
         await objects.writeFileAsync(testId, fileName, 'dataInFile');
-        expect(objects.readDirAsync(testId, fileName)).to.be.eventually.rejectedWith(utils.ERRORS.ERROR_NOT_FOUND);
+        const res = await objects.readDirAsync(testId, fileName);
+        expect(res).to.be.empty;
     });
 
     it(`${testName}should read file and prevent path traversing`, done => {
