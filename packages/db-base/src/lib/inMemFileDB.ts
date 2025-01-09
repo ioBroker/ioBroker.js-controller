@@ -42,7 +42,6 @@ export interface ConnectionOptions {
     /** array on sentinel */
     port: number | number[];
     options: Record<string, any>;
-    maxQueue?: number;
     enhancedLogging?: boolean;
     backup?: BackupOptions;
     /** relative path to the data dir */

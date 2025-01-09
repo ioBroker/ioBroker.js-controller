@@ -2,7 +2,11 @@
 
 import type * as fs from 'node:fs';
 import './objects';
-import type { IoBJson, DatabaseOptions, ObjectsDatabaseOptions as ObjectsDbOptions } from './config';
+import type {
+    IoBJson,
+    ObjectsDatabaseOptions as ObjectsDbOptions,
+    StatesDatabaseOptions as StatesDbOptions,
+} from './config';
 import type { Branded } from './utils';
 
 export {}; // avoids exporting AtLeastOne into the global scope
@@ -577,6 +581,6 @@ declare global {
         /** Objects DB options from ioBroker.json */
         type ObjectsDatabaseOptions = ObjectsDbOptions;
         /** States DB options from ioBroker.json */
-        type StatesDatabaseOptions = DatabaseOptions;
+        type StatesDatabaseOptions = StatesDbOptions;
     } // end namespace ioBroker
 } // end declare global

@@ -110,20 +110,13 @@
           "$ref": "#/definitions/ObjectsDatabaseOptions"
         },
         "states": {
-          "$ref": "#/definitions/DatabaseOptions"
+          "$ref": "#/definitions/StatesDatabaseOptions"
         },
         "log": {
           "type": "object",
           "properties": {
             "level": {
-              "type": "string",
-              "enum": [
-                "silly",
-                "debug",
-                "info",
-                "warn",
-                "error"
-              ]
+              "$ref": "#/definitions/global.ioBroker.LogLevel"
             },
             "maxDays": {
               "type": "number"
@@ -279,9 +272,6 @@
         "jsonlOptions": {
           "$ref": "#/definitions/JsonlOptions"
         },
-        "maxQueue": {
-          "$ref": "#/definitions/MaxQueue"
-        },
         "noFileCache": {
           "type": "boolean"
         }
@@ -293,7 +283,6 @@
         "dataDir",
         "host",
         "jsonlOptions",
-        "maxQueue",
         "noFileCache",
         "options",
         "port",
@@ -434,7 +423,7 @@
       ],
       "additionalProperties": false
     },
-    "DatabaseOptions": {
+    "StatesDatabaseOptions": {
       "type": "object",
       "properties": {
         "type": {
@@ -522,27 +511,34 @@
           "$ref": "#/definitions/JsonlOptions"
         },
         "maxQueue": {
-          "$ref": "#/definitions/MaxQueue"
+          "type": "number",
+          "description": "Limit maximum number of log entries in the list (only read by adapter.ts from the config file)"
         }
       },
       "required": [
-        "type",
         "// type",
-        "host",
-        "port",
-        "connectTimeout",
-        "writeFileInterval",
-        "dataDir",
-        "options",
         "backup",
+        "connectTimeout",
+        "dataDir",
+        "host",
         "jsonlOptions",
-        "maxQueue"
+        "maxQueue",
+        "options",
+        "port",
+        "type",
+        "writeFileInterval"
       ],
       "additionalProperties": false
     },
-    "MaxQueue": {
-      "type": "number",
-      "description": "Do not let messages grow without a limit"
+    "global.ioBroker.LogLevel": {
+      "type": "string",
+      "enum": [
+        "silly",
+        "debug",
+        "info",
+        "warn",
+        "error"
+      ]
     }
   }
 }
