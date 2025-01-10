@@ -18,7 +18,7 @@
 
 #### Defined in
 
-db-base/build/esm/lib/inMemFileDB.d.ts:20
+db-base/build/esm/lib/inMemFileDB.d.ts:19
 
 ***
 
@@ -30,7 +30,7 @@ relative path to the data dir
 
 #### Defined in
 
-db-base/build/esm/lib/inMemFileDB.d.ts:22
+db-base/build/esm/lib/inMemFileDB.d.ts:21
 
 ***
 
@@ -40,7 +40,7 @@ db-base/build/esm/lib/inMemFileDB.d.ts:22
 
 #### Defined in
 
-db-base/build/esm/lib/inMemFileDB.d.ts:19
+db-base/build/esm/lib/inMemFileDB.d.ts:18
 
 ***
 
@@ -53,16 +53,6 @@ array on sentinel
 #### Defined in
 
 db-base/build/esm/lib/inMemFileDB.d.ts:14
-
-***
-
-### maxQueue?
-
-> `optional` **maxQueue**: `number`
-
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:18
 
 ***
 
