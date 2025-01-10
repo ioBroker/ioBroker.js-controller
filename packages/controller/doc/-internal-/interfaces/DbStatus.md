@@ -14,7 +14,7 @@
 
 #### Defined in
 
-db-base/build/esm/lib/inMemFileDB.d.ts:27
+db-base/build/esm/lib/inMemFileDB.d.ts:26
 
 ***
 
@@ -24,4 +24,4 @@ db-base/build/esm/lib/inMemFileDB.d.ts:27
 
 #### Defined in
 
-db-base/build/esm/lib/inMemFileDB.d.ts:26
+db-base/build/esm/lib/inMemFileDB.d.ts:25

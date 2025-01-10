@@ -16,7 +16,7 @@ deactivates backup if true
 
 #### Defined in
 
-db-base/build/esm/lib/inMemFileDB.d.ts:31
+db-base/build/esm/lib/inMemFileDB.d.ts:30
 
 ***
 
@@ -28,7 +28,7 @@ minimum number of files
 
 #### Defined in
 
-db-base/build/esm/lib/inMemFileDB.d.ts:33
+db-base/build/esm/lib/inMemFileDB.d.ts:32
 
 ***
 
@@ -38,7 +38,7 @@ db-base/build/esm/lib/inMemFileDB.d.ts:33
 
 #### Defined in
 
-db-base/build/esm/lib/inMemFileDB.d.ts:34
+db-base/build/esm/lib/inMemFileDB.d.ts:33
 
 ***
 
@@ -48,7 +48,7 @@ db-base/build/esm/lib/inMemFileDB.d.ts:34
 
 #### Defined in
 
-db-base/build/esm/lib/inMemFileDB.d.ts:37
+db-base/build/esm/lib/inMemFileDB.d.ts:36
 
 ***
 
@@ -60,4 +60,4 @@ minutes
 
 #### Defined in
 
-db-base/build/esm/lib/inMemFileDB.d.ts:36
+db-base/build/esm/lib/inMemFileDB.d.ts:35
