@@ -536,7 +536,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}state set with negative number`, async () => {
         const id = 'system.adapter.admin.upload';
         // check update
-        const res = await execAsync(`"${process.execPath}" "${iobExecutable}" iob state set "${id}" "-1" 1`);
+        const res = await execAsync(`"${process.execPath}" "${iobExecutable}" state set "${id}" "-1" 1`);
         expect(res.stderr).to.be.not.ok;
 
         const state = await context.states.getState(id);
