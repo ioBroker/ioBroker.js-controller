@@ -9,9 +9,15 @@ const ALIAS_STARTS_WITH = 'alias.';
 
 type ResultTransform = (input: ioBroker.State) => string;
 
+interface CLIStatesOptions extends CLICommandOptions {
+    id?: string;
+    value?: string | boolean | number;
+    ack?: 'true' | 'false' | 0 | 1;
+}
+
 /** Command iobroker state ... */
-export class CLIStates extends CLICommand {
-    constructor(options: CLICommandOptions) {
+export class CLIStates extends CLICommand<CLIStatesOptions> {
+    constructor(options: CLIStatesOptions) {
         super(options);
     }
 
@@ -115,7 +121,7 @@ export class CLIStates extends CLICommand {
      * @param _obj cached object
      */
     private async _isBinary(id: string, objects: ObjectsClient, _obj?: ioBroker.AnyObject | null): Promise<boolean> {
-        const obj = _obj || (await objects.getObjectAsync(id));
+        const obj = _obj || (await objects.getObject(id));
 
         return !!(obj && ('binary' in obj || (obj.common && 'type' in obj.common && obj.common.type === 'file')));
     }
@@ -205,24 +211,30 @@ export class CLIStates extends CLICommand {
      * @param args parsed cli arguments
      */
     set_(args: any[]): void {
-        const { callback, dbConnect, showHelp } = this.options;
-        // eslint-disable-next-line prefer-const
-        let [id, val, ack] = args.slice(1) as [string, any, any];
+        const { callback, dbConnect, showHelp, value, ack: ackArg, id } = this.options;
         const force = args.includes('--force') || args.includes('-f');
 
-        if (val === undefined) {
+        if (id === undefined) {
+            CLI.error.requiredArgumentMissing('id');
+            showHelp();
+            return void callback(0);
+        }
+
+        if (value === undefined) {
             CLI.error.requiredArgumentMissing('value');
             showHelp();
             return void callback(0);
         }
 
-        if (ack !== undefined) {
-            ack = ack === 'true' || ack === '1' || ack === 1 || ack === true;
+        let ack = false;
+
+        if (ackArg !== undefined) {
+            ack = ackArg === 'true' || ackArg === 1;
         }
 
         dbConnect(params => {
             const { states, objects } = params;
-            const newVal = ack === undefined ? { val, ack: false } : { val, ack: !!ack };
+            const newVal = { val: value, ack: !!ack };
 
             if (id.startsWith(ALIAS_STARTS_WITH)) {
                 objects.getObject(id, async (_err, obj) => {
@@ -231,7 +243,7 @@ export class CLIStates extends CLICommand {
                         return void callback(1);
                     }
                     // alias
-                    if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                    if (obj?.common?.alias?.id) {
                         const aliasId =
                             typeof obj.common.alias.id.write === 'string'
                                 ? obj.common.alias.id.write
@@ -251,7 +263,7 @@ export class CLIStates extends CLICommand {
                                 if (obj.common.type === 'string') {
                                     newVal.val = newVal.val.toString();
                                 } else if (obj.common.type === 'number') {
-                                    newVal.val = parseFloat(newVal.val);
+                                    newVal.val = Number(newVal.val);
                                 } else if (obj.common.type === 'boolean') {
                                     newVal.val = newVal.val.toString();
                                     newVal.val =
@@ -279,7 +291,7 @@ export class CLIStates extends CLICommand {
                                         CLI.error.unknown(err.message);
                                         return void callback(1); // ?
                                     }
-                                    CLI.success.stateUpdated(id, val, !!ack);
+                                    CLI.success.stateUpdated(id, value, !!ack);
                                     return void callback(0);
                                 },
                             );
@@ -306,11 +318,11 @@ export class CLIStates extends CLICommand {
                         return void callback(1); // object not exists
                     }
 
-                    if (obj && obj.common && obj.common.type) {
+                    if (obj?.common?.type) {
                         if (obj.common.type === 'string') {
                             newVal.val = newVal.val.toString();
                         } else if (obj.common.type === 'number') {
-                            newVal.val = parseFloat(newVal.val);
+                            newVal.val = Number(newVal.val);
                         } else if (obj.common.type === 'boolean') {
                             newVal.val = newVal.val.toString();
                             newVal.val =
@@ -326,7 +338,7 @@ export class CLIStates extends CLICommand {
                             CLI.error.unknown(err.message);
                             return void callback(1); // ?
                         }
-                        CLI.success.stateUpdated(id, val, !!ack);
+                        CLI.success.stateUpdated(id, value, !!ack);
                         return void callback(0);
                     });
                 });

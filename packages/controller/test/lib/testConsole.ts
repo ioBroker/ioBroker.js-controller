@@ -533,6 +533,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     // object o
 
     // state s
+    it(`${testName}state set with negative number`, async () => {
+        const id = 'system.adapter.admin.upload';
+        // check update
+        const res = await execAsync(`"${process.execPath}" "${iobExecutable}" iob state set "${id}" "-1" 1`);
+        expect(res.stderr).to.be.not.ok;
+
+        const state = await context.states.getState(id);
+
+        expect(state?.val).to.be.equal(-1);
+        expect(state?.ack).to.be.equal(true);
+    }).timeout(20_000);
 
     // message
     // update
@@ -718,7 +729,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             // ok
         }
 
-        await context.objects.setObjectAsync('system.adapter.vis.0', {
+        await context.objects.setObject('system.adapter.vis.0', {
             common: {
                 name: 'iobroker.vis-2',
                 version: '1.0.0',
