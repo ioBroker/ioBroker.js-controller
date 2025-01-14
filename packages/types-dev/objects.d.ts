@@ -797,7 +797,7 @@ declare global {
             ignoreVersion?: string;
             /** Sentry and other plugins */
             plugins?: { [pluginName: string]: Record<string, any> };
-            /** Rules blocks for Javascript rules */
+            /** Rules blocks for JavaScript rules */
             javascriptRules?: {
                 /** Translations */
                 i18n?: boolean | Record<string, Record<ioBroker.Languages, string>> | Record<string, string>;
@@ -805,6 +805,8 @@ declare global {
                 url: string;
                 /** Blocks names */
                 name: string;
+                /** Load it as TypeScript module */
+                type?: 'module';
             };
 
             // Make it possible to narrow the object type using the custom property
