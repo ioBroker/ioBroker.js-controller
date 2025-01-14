@@ -24,7 +24,7 @@ Contents of iobroker.json plus some internal variables
 
 #### Defined in
 
-[types-dev/config.d.ts:135](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/types-dev/config.d.ts#L135)
+[types-dev/config.d.ts:135](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/config.d.ts#L135)
 
 ***
 
@@ -38,7 +38,7 @@ Contents of iobroker.json plus some internal variables
 
 #### Defined in
 
-[types-dev/config.d.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/types-dev/config.d.ts#L142)
+[types-dev/config.d.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/config.d.ts#L142)
 
 ***
 
@@ -50,7 +50,7 @@ If logs must be printed to stdout
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:620](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/adapter/src/lib/adapter/adapter.ts#L620)
+[adapter/src/lib/adapter/adapter.ts:620](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/adapter/src/lib/adapter/adapter.ts#L620)
 
 ***
 
@@ -66,7 +66,7 @@ Always relative to iobroker.js-controller/
 
 #### Defined in
 
-[types-dev/config.d.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/types-dev/config.d.ts#L134)
+[types-dev/config.d.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/config.d.ts#L134)
 
 ***
 
@@ -82,7 +82,7 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 #### Defined in
 
-[types-dev/config.d.ts:144](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/types-dev/config.d.ts#L144)
+[types-dev/config.d.ts:144](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/config.d.ts#L144)
 
 ***
 
@@ -94,7 +94,7 @@ Start instance even if it disabled in config
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:622](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/adapter/src/lib/adapter/adapter.ts#L622)
+[adapter/src/lib/adapter/adapter.ts:622](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/adapter/src/lib/adapter/adapter.ts#L622)
 
 ***
 
@@ -106,7 +106,7 @@ Instance number
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:624](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/adapter/src/lib/adapter/adapter.ts#L624)
+[adapter/src/lib/adapter/adapter.ts:624](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/adapter/src/lib/adapter/adapter.ts#L624)
 
 ***
 
@@ -118,7 +118,7 @@ Is instance started with the `--install` flag
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:618](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/adapter/src/lib/adapter/adapter.ts#L618)
+[adapter/src/lib/adapter/adapter.ts:618](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/adapter/src/lib/adapter/adapter.ts#L618)
 
 ***
 
@@ -148,7 +148,7 @@ Is instance started with the `--install` flag
 
 #### Defined in
 
-[types-dev/config.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/types-dev/config.d.ts#L127)
+[types-dev/config.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/config.d.ts#L127)
 
 ***
 
@@ -178,7 +178,7 @@ Is instance started with the `--install` flag
 
 #### Defined in
 
-[types-dev/config.d.ts:119](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/types-dev/config.d.ts#L119)
+[types-dev/config.d.ts:119](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/config.d.ts#L119)
 
 ***
 
@@ -192,7 +192,7 @@ Is instance started with the `--install` flag
 
 #### Defined in
 
-[types-dev/config.d.ts:125](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/types-dev/config.d.ts#L125)
+[types-dev/config.d.ts:125](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/config.d.ts#L125)
 
 ***
 
@@ -210,7 +210,7 @@ Is instance started with the `--install` flag
 
 #### Defined in
 
-[types-dev/config.d.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/types-dev/config.d.ts#L136)
+[types-dev/config.d.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/config.d.ts#L136)
 
 ***
 
@@ -224,7 +224,7 @@ Is instance started with the `--install` flag
 
 #### Defined in
 
-[types-dev/config.d.ts:126](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/types-dev/config.d.ts#L126)
+[types-dev/config.d.ts:126](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/config.d.ts#L126)
 
 ***
 
@@ -316,4 +316,4 @@ Interval how often the counters for input/output in adapters and controller will
 
 #### Defined in
 
-[types-dev/config.d.ts:93](https://github.com/ioBroker/ioBroker.js-controller/blob/fe9fbf6b684b474bc0dfc453eb28790be874895e/packages/types-dev/config.d.ts#L93)
+[types-dev/config.d.ts:93](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/config.d.ts#L93)
