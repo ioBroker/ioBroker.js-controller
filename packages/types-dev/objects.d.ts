@@ -801,9 +801,9 @@ declare global {
             javascriptRules?: {
                 /** Translations */
                 i18n?: boolean | Record<string, Record<ioBroker.Languages, string>> | Record<string, string>;
-                /** Where to load the blocks */
+                /** Where to load the blocks, like "rules/customRuleBlocks.js" */
                 url: string;
-                /** Blocks names */
+                /** Rules block name, like "ActionTelegram" */
                 name: string;
                 /** Load it as TypeScript module */
                 type?: 'module';
