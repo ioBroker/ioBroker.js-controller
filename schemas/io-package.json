@@ -1181,6 +1181,15 @@
             ]
           }
         },
+        "ifInstalledDependencies": {
+          "description": "Object like {\"admin\": \">=2.0.0\", \"javascript\": \">=3.0.0\"} that describes which versions of ioBroker modules are required for this adapter on one of the hosts, but only if this adapter is installed",
+          "type": "object",
+          "patternProperties": {
+            ".+": {
+              "type": "string"
+            }
+          }
+        },
         "icon": {
           "description": "name of the local icon (should be located in subdirectory \"admin\")",
           "type": "string"
