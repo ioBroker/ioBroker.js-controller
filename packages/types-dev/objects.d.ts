@@ -593,7 +593,7 @@ declare global {
         };
 
         /** Format for local and global dependencies */
-        type Depdendencies = { [adapterName: string]: string }[] | string[];
+        type Dependencies = { [adapterName: string]: string }[] | string[];
 
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
@@ -635,9 +635,11 @@ declare global {
             /** How the adapter will mainly receive its data. Set this together with @see connectionType */
             dataSource?: 'poll' | 'push' | 'assumption';
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter on the same host. */
-            dependencies?: Depdendencies;
+            dependencies?: Dependencies;
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter in the whole system. */
-            globalDependencies?: Depdendencies;
+            globalDependencies?: Dependencies;
+            /** Similar to `dependencies`, but only checked if the specified adapter is already installed. If the adapter is not installed, the version check will pass */
+            ifInstalledDependencies?: { [adapterName: string]: string };
             /** Which files outside the README.md have documentation for the adapter */
             docs?: Partial<Record<Languages, string | string[]>>;
             /** Whether new instances should be enabled by default. *Should* be `false`! */
