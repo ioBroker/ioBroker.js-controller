@@ -639,7 +639,7 @@ declare global {
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter in the whole system. */
             globalDependencies?: Dependencies;
             /** Similar to `dependencies`, but only checked if the specified adapter is already installed. If the adapter is not installed, the version check will pass */
-            ifInstalledDependencies?: { [adapterName: string]: string }[];
+            ifInstalledDependencies?: { [adapterName: string]: string };
             /** Which files outside the README.md have documentation for the adapter */
             docs?: Partial<Record<Languages, string | string[]>>;
             /** Whether new instances should be enabled by default. *Should* be `false`! */
