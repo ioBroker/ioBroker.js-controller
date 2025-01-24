@@ -1182,7 +1182,7 @@
           }
         },
         "ifInstalledDependencies": {
-          "description": "Array like {\"admin\": \">=2.0.0\", \"javascript\": \">=3.0.0\"} that describes which ioBroker versions of modules are required for this adapter on one of the hosts, but only if this adapter is installed",
+          "description": "Object like {\"admin\": \">=2.0.0\", \"javascript\": \">=3.0.0\"} that describes which ioBroker versions of modules are required for this adapter on one of the hosts, but only if this adapter is installed",
           "type": "object",
           "patternProperties": {
             ".+": {
