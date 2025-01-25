@@ -231,7 +231,7 @@
 - [CommonType](type-aliases/CommonType.md)
 - [ConnectionType](type-aliases/ConnectionType.md)
 - [DeleteStateCallback](type-aliases/DeleteStateCallback.md)
-- [Depdendencies](type-aliases/Depdendencies.md)
+- [Dependencies](type-aliases/Dependencies.md)
 - [EmptyCallback](type-aliases/EmptyCallback.md)
 - [Enum](type-aliases/Enum.md)
 - [EnumList](type-aliases/EnumList.md)
