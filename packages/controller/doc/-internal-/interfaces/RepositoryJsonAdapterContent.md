@@ -20,7 +20,7 @@ Array of blocked versions, each entry represents a semver range
 
 #### Defined in
 
-[types-dev/objects.d.ts:1009](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/objects.d.ts#L1009)
+[types-dev/objects.d.ts:1011](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L1011)
 
 ***
 
@@ -32,7 +32,7 @@ Adapter name
 
 #### Defined in
 
-[types-dev/objects.d.ts:1005](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/objects.d.ts#L1005)
+[types-dev/objects.d.ts:1007](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L1007)
 
 ***
 
@@ -44,7 +44,7 @@ If given, the packet name differs from the adapter name, e.g. because it is a sc
 
 #### Defined in
 
-[types-dev/objects.d.ts:1013](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/objects.d.ts#L1013)
+[types-dev/objects.d.ts:1015](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L1015)
 
 ***
 
@@ -56,7 +56,7 @@ If true the unsafe perm flag is needed on install
 
 #### Defined in
 
-[types-dev/objects.d.ts:1011](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/objects.d.ts#L1011)
+[types-dev/objects.d.ts:1013](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L1013)
 
 ***
 
@@ -68,4 +68,4 @@ Newest available version
 
 #### Defined in
 
-[types-dev/objects.d.ts:1007](https://github.com/ioBroker/ioBroker.js-controller/blob/3f7dfd7110e5b0031cea7f51684c94438886c7d3/packages/types-dev/objects.d.ts#L1007)
+[types-dev/objects.d.ts:1009](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L1009)
