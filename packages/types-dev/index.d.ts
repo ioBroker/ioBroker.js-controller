@@ -334,16 +334,18 @@ declare global {
                 | 'integralTotal';
             /** Returned data is normally sorted ascending by date, this option lets you return the newest instead of the oldest values if the number of returned points is limited */
             returnNewestEntries?: boolean;
-            /** By default, the additional border values are returned to optimize charting. Set this option to true if this is not wanted (e.g. for script data processing) */
+            /** By default, the additional border values are returned to optimize charting. Set this option to true if this is not wanted (e.g., for script data processing) */
             removeBorderValues?: boolean;
             /** when using aggregate method `percentile` defines the percentile level (0..100)(defaults to 50) */
             percentile?: number;
             /** when using aggregate method `quantile` defines the quantile level (0..1)(defaults to 0.5) */
             quantile?: number;
-            /** when using aggregate method `integral` defines the unit in seconds (defaults to 60s). e.g. to get integral in hours for Wh or such, set to 3600. */
+            /** when using aggregate method `integral` defines the unit in seconds (defaults to 60 seconds). E.g., to get integral in hours for Wh or such, set to 3600. */
             integralUnit?: number;
             /** when using aggregate method `integral` defines the interpolation method (defaults to `none`). */
             integralInterpolation?: 'none' | 'linear';
+            /** If user is set, it will be checked if this user may read the variable */
+            user?: `system.user.${string}`;
         }
 
         interface DelObjectOptions {
