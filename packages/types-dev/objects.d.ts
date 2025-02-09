@@ -480,7 +480,7 @@ declare global {
                   name: string;
                   img: string;
                   color: string;
-                  order: number;
+                  order?: number;
               };
 
         /**
