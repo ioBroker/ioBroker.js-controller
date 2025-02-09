@@ -4478,6 +4478,8 @@ export class AdapterClass extends EventEmitter {
      * @param id exactly object ID (without a namespace)
      * @param type optional `common.type` of the state: 'number', 'string', 'boolean', 'file', ...
      * @param options optional user context with language
+     * @param options.user current user
+     * @param options.language language in which the search must be done for multi-language names
      * @result if the object was found by ID it will return id and may be the multi-language name it exists. If the object was found by name it will return id and the multi-language name. If the object was not found, it will return only name that was searched for.
      */
     findForeignObjectAsync(
@@ -4485,19 +4487,20 @@ export class AdapterClass extends EventEmitter {
         type: ioBroker.CommonType | null,
         options: { user?: `system.user.${string}`; language?: ioBroker.Languages },
     ): Promise<{ id: string | undefined; name: ioBroker.StringOrTranslated | undefined } | null> {
-        return new Promise<{ id: string | undefined; name: ioBroker.StringOrTranslated | undefined } | null>((resolve, reject) =>
-            this.findForeignObject(
-                id,
-                type,
-                options,
-                (err, id: string | undefined, name: ioBroker.StringOrTranslated | undefined): void => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(id ? { id, name } : null);
-                    }
-                },
-            ),
+        return new Promise<{ id: string | undefined; name: ioBroker.StringOrTranslated | undefined } | null>(
+            (resolve, reject) =>
+                this.findForeignObject(
+                    id,
+                    type,
+                    options,
+                    (err, id: string | undefined, name: ioBroker.StringOrTranslated | undefined): void => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(id ? { id, name } : null);
+                        }
+                    },
+                ),
         );
     }
 

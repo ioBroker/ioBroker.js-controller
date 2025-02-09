@@ -4722,11 +4722,7 @@ export class ObjectsInRedisClient {
         // Try to read by ID
         this._getObject(idOrName, options, (err, obj) => {
             // Assume it is ID
-            if (
-                obj &&
-                utils.checkObject(obj, options, CONSTS.ACCESS_READ) &&
-                (!type || (obj.common?.type === type))
-            ) {
+            if (obj && utils.checkObject(obj, options, CONSTS.ACCESS_READ) && (!type || obj.common?.type === type)) {
                 return tools.maybeCallbackWithError(callback, null, idOrName, obj.common.name);
             }
 
@@ -4761,10 +4757,7 @@ export class ObjectsInRedisClient {
                             continue;
                         }
 
-                        if (
-                            obj?.common &&
-                            (!type || ('type' in obj.common && obj.common.type === type))
-                        ) {
+                        if (obj?.common && (!type || ('type' in obj.common && obj.common.type === type))) {
                             let name = obj?.common?.name;
                             if (name && typeof name === 'object') {
                                 name = name[options.language || 'en'] || name.en;
