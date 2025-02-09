@@ -496,12 +496,7 @@ export interface AdapterClass {
     ): ioBroker.SetObjectPromise;
 
     /**
-     * Finds an object by its ID or name
-     */
-    findForeignObjectAsync(idOrName: string, type: string): Promise<{ id: string; name: string }>;
-
-    /**
-     * Creates an object with type channel. It must be located under a device
+     * Creates an object with a type channel. It must be located under a device
      *
      * @deprecated use `extendObject` instead
      */
@@ -1010,11 +1005,6 @@ export class AdapterClass extends EventEmitter {
          * Promise-version of `Adapter.getForeignObjects`
          */
         this.getForeignObjectsAsync = tools.promisify(this.getForeignObjects, this);
-
-        /**
-         * Promise-version of `Adapter.findForeignObject`
-         */
-        this.findForeignObjectAsync = tools.promisify(this.findForeignObject, this, ['id', 'name']);
 
         /**
          * Promise-version of `Adapter.getForeignObject`
@@ -4355,7 +4345,7 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        // don't forget, that enums returns names in row[x].id and not IDs, you can find id in rows[x].value._id
+        // don't forget that enums returns names in row[x].id and not IDs, you can find id in rows[x].value._id
         let _enums;
         try {
             _enums = await this.getEnumsAsync(enums);
@@ -4424,21 +4414,21 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    findForeignObject(idOrName: string, type: string | null, callback: ioBroker.FindObjectCallback): void;
+    findForeignObject(idOrName: string, type: ioBroker.CommonType | null, callback: ioBroker.FindObjectCallback): void;
     findForeignObject(
         idOrName: string,
-        type: string | null,
-        options: unknown,
+        type: ioBroker.CommonType | null,
+        options: { user?: `system.user.${string}`; language?: ioBroker.Languages },
         callback: ioBroker.FindObjectCallback,
     ): void;
 
     /**
      * Find any object by name or ID.
      *
-     * Find object by the exact name or ID.
+     * Find an object by the exact name or ID.
      *
      * @param id exactly object ID (without namespace)
-     * @param type optional common.type of state: 'number', 'string', 'boolean', 'file', ...
+     * @param type optional `common.type` of state: 'number', 'string', 'boolean', 'file', ...
      * @param options optional user context
      * @param callback return result
      *        ```js
@@ -4479,7 +4469,36 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        this.#objects.findObject(id, type, options || {}, callback);
+        this.#objects.findObject(id, type as ioBroker.CommonType | null, options || {}, callback);
+    }
+
+    /**
+     * Find an object by the exact name or ID.
+     *
+     * @param id exactly object ID (without a namespace)
+     * @param type optional `common.type` of the state: 'number', 'string', 'boolean', 'file', ...
+     * @param options optional user context with language
+     * @result if the object was found by ID it will return id and may be the multi-language name it exists. If the object was found by name it will return id and the multi-language name. If the object was not found, it will return only name that was searched for.
+     */
+    findForeignObjectAsync(
+        id: string,
+        type: ioBroker.CommonType | null,
+        options: { user?: `system.user.${string}`; language?: ioBroker.Languages },
+    ): Promise<{ id: string | undefined; name: ioBroker.StringOrTranslated | undefined } | null> {
+        return new Promise<{ id: string | undefined; name: ioBroker.StringOrTranslated | undefined } | null>((resolve, reject) =>
+            this.findForeignObject(
+                id,
+                type,
+                options,
+                (err, id: string | undefined, name: ioBroker.StringOrTranslated | undefined): void => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(id ? { id, name } : null);
+                    }
+                },
+            ),
+        );
     }
 
     // external signatures
