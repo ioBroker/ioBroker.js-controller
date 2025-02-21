@@ -5,8 +5,9 @@
 -->
 
 ## __WORK IN PROGRESS__ - Lucy
-* (@foxriver76) fix edge case problem on Windows (if adapter calls `readDir` on single file)
+* (@foxriver76) fixed the edge-case problem on Windows (if adapter calls `readDir` on single file)
 * (@foxriver76) fixed setting negative numbers via `state set` cli command
+* (@GermanBluefox) fixed `checkPasswordAsync` command
 
 ## 7.0.6 (2024-12-08) - Lucy
 * (@foxriver76) fixed UI upgrade if admin is running on privileged port (<1024)
@@ -18,7 +19,7 @@
 * (@Apollon77) Fixes async usage of extendObject
 * (@Apollon77) Makes setObject async save
 * (@foxriver76) deprecated `set(Foreign)ObjectAsync` as the non async methods are now working correctly with promises
-* (@foxriver76) allow to specify a version on `iob upgrade self` command
+* (@foxriver76) allow specifying a version on `iob upgrade self` command
 
 ## 7.0.3 (2024-11-13) - Lucy
 * (@foxriver76) Introduce "Vendor Packages Workflow" (only relevant for vendors - see README.md)
@@ -33,7 +34,7 @@
 
 ## 7.0.0 (2024-10-06) - Lucy
 **Breaking changes**
-* Backups created with 7.0.x cannot be restored with previous version
+* Backups created with 7.0.x cannot be restored with a previous version
 
 **Features**
 * (@GermanBluefox) Added support for dynamic notification data 
@@ -43,7 +44,7 @@
 * (@foxriver76) added notification if new image is available on Docker Hub (for official docker systems)
 
 **Optimizations and fixes**
-* (@foxriver76) extend the time to wait until controller is stopped on controller UI upgrade
+* (@foxriver76) extend the time to wait until the controller is stopped on controller UI upgrade
 * (@foxriver76) enhanced translations for the `diskSpaceIssues` notification category
 * (@foxriver76) enriched logging on upload with version information
 
@@ -92,7 +93,7 @@ e.g. for dynamic notifications with Admin adapter
 * (foxriver76) the controller creates a notification if free disk space is critical (see https://github.com/ioBroker/ioBroker.js-controller?tab=readme-ov-file#disk-space-warnings)
 * (foxriver76) allow ignoring specific adapter versions (see https://github.com/ioBroker/ioBroker.js-controller?tab=readme-ov-file#ignoring-specific-adapter-version)
 * (foxriver76) if an adapter is blocklisted and thus stopped, the controller now generates a notification
-* (foxriver76) allow to configure redis tls during `setup custom`
+* (foxriver76) allow configuring redis tls during `setup custom`
 
 **Optimizations and fixes**
 * (foxriver76) we now send `SIGKILL` instead of `SIGTERM` if adapter does not stop in normal time to prevent ghost processes
