@@ -1739,8 +1739,23 @@ export class AdapterClass extends EventEmitter {
             // make sure the cache is cleared
             this.usernames = {};
             for (const row of obj.rows) {
-                if (row.value.common && typeof row.value.common.name === 'string') {
-                    this.usernames[row.value.common.name] = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
+                if (row.value.common && row.value.common.name) {
+                    // If the name is translated
+                    if (typeof row.value.common.name === 'object') {
+                        // extract the string in the current language or fallback to english
+                        const name = this.language
+                            ? row.value.common.name[this.language] || row.value.common.name.en
+                            : row.value.common.name.en;
+                        this.usernames[name] = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
+                        // if the user is the admin, we also store it under the name 'admin'
+                        if (row.id === 'system.user.admin' && name !== 'admin') {
+                            this.usernames.admin = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
+                        }
+                    } else if (typeof row.value.common.name === 'string') {
+                        this.usernames[row.value.common.name] = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
+                    } else {
+                        this._logger.warn(`${this.namespaceLog} Invalid username for id "${row.id}"`);
+                    }
                 } else {
                     this._logger.warn(`${this.namespaceLog} Invalid username for id "${row.id}"`);
                 }
