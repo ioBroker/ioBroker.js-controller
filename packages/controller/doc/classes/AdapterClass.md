@@ -1192,7 +1192,7 @@ return result
 
 ### checkPasswordAsync()
 
-> **checkPasswordAsync**(`user`, `password`, `options`?): `Promise`\<`boolean`\>
+> **checkPasswordAsync**(`user`, `password`, `options`?): `Promise`\<[`boolean`, `system.user.${string}`]\>
 
 Validates username and password
 
