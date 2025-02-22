@@ -1436,7 +1436,7 @@
           "type": "boolean"
         },
         "supportCustoms": {
-          "description": "If the adapter supports settings for every state. It requires file jsonCustom.json in admin and "common.adminUI":{"custom":"json"}. Sample can be found in ioBroker.history",
+          "description": "If the adapter supports settings for every state. It requires file jsonCustom.json in admin and \"common.adminUI\":{\"custom\":\"json\"}. Sample can be found in ioBroker.history",
           "type": "boolean"
         },
         "supportStopInstance": {
