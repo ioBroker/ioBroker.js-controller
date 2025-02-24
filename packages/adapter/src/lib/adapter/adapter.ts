@@ -1743,12 +1743,12 @@ export class AdapterClass extends EventEmitter {
 
                 if (typeof username !== 'string' && !tools.isObject(username)) {
                     this._logger.warn(`${this.namespaceLog} Invalid username for id "${row.id}"`);
-                    return;
+                    continue;
                 }
 
                 if (typeof username === 'string') {
                     this.usernames[username] = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
-                    return;
+                    continue;
                 }
 
                 // If the name is translated, extract the string in the current language or fallback to english
