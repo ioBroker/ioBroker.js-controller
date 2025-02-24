@@ -309,7 +309,11 @@ export interface AdapterClass {
     /** Read a value (which might not belong to this adapter) from the state's DB. */
     getForeignStateAsync(id: string, options?: unknown): ioBroker.GetStatePromise;
     /** Validates username and password */
-    checkPasswordAsync(user: string, password: string, options?: unknown): Promise<[boolean, `system.user.${string}`]>;
+    checkPasswordAsync(
+        user: string,
+        password: string,
+        options?: unknown,
+    ): Promise<[isPasswordCorrect: boolean, user: `system.user.${string}`]>;
     /** Sets a new password for the given user */
     setPasswordAsync(user: string, password: string, options?: unknown): Promise<void>;
     /** <INTERNAL> Checks if a user exists and is in the given group. */
@@ -1735,25 +1739,24 @@ export class AdapterClass extends EventEmitter {
             // make sure the cache is cleared
             this.usernames = {};
             for (const row of obj.rows) {
-                if (row.value.common?.name) {
-                    // If the name is translated
-                    if (typeof row.value.common.name === 'object') {
-                        // extract the string in the current language or fallback to english
-                        const name = this.language
-                            ? row.value.common.name[this.language] || row.value.common.name.en
-                            : row.value.common.name.en;
-                        this.usernames[name] = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
-                        // if the user is the admin, we also store it under the name 'admin'
-                        if (row.id === 'system.user.admin' && name !== 'admin') {
-                            this.usernames.admin = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
-                        }
-                    } else if (typeof row.value.common.name === 'string') {
-                        this.usernames[row.value.common.name] = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
-                    } else {
-                        this._logger.warn(`${this.namespaceLog} Invalid username for id "${row.id}"`);
-                    }
-                } else {
+                const username = row.value.common?.name;
+
+                if (typeof username !== 'string' && !tools.isObject(username)) {
                     this._logger.warn(`${this.namespaceLog} Invalid username for id "${row.id}"`);
+                    return;
+                }
+
+                if (typeof username === 'string') {
+                    this.usernames[username] = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
+                    return;
+                }
+
+                // If the name is translated, extract the string in the current language or fallback to english
+                const name = this.language ? username[this.language] || username.en : username.en;
+                this.usernames[name] = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
+                // if the user is the admin, we also store it under the name 'admin'
+                if (row.id === SYSTEM_ADMIN_USER && name !== 'admin') {
+                    this.usernames.admin = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
                 }
             }
         } catch (e) {
