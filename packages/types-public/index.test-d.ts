@@ -1052,7 +1052,7 @@ function testSettableState(arg: ioBroker.SettableState): void {
 }
 
 // Avoid recursion of #3023
-async function TestCheckPasswordAsync(user: string, password: string): Promise<void> {
+async function testCheckPasswordAsync(user: string, password: string): Promise<void> {
     const [isPasswordCorrect, username] = await adapter.checkPasswordAsync(user, password);
 
     // @ts-expect-error
