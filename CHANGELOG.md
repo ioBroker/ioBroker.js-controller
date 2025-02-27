@@ -7,7 +7,7 @@
 ## __WORK IN PROGRESS__ - Lucy
 * (@foxriver76) fixed the edge-case problem on Windows (if adapter calls `readDir` on single file)
 * (@foxriver76) fixed setting negative numbers via `state set` cli command
-* (@GermanBluefox) fixed `checkPasswordAsync` command
+* (@GermanBluefox) corrected typing for `checkPasswordAsync` command and added caching of mulit-languages names
 
 ## 7.0.6 (2024-12-08) - Lucy
 * (@foxriver76) fixed UI upgrade if admin is running on privileged port (<1024)
