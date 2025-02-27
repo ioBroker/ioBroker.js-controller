@@ -81,7 +81,7 @@ export function createAdapterStore(session: Session, defaultTtl = 3600): any {
             ttl = ttl || defaultTtl;
             this.adapter.setSession(sid, ttl, sess, function (err?: Error | null): void {
                 // @ts-expect-error fix later
-                fn?.apply(this, err);
+                fn?.call(this, err);
             }); // do not use here => !!!
         }
 
