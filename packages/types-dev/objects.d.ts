@@ -480,12 +480,13 @@ declare global {
                   name: string;
                   img: string;
                   color: string;
+                  order?: number;
               };
 
         /**
          * Object which defines if the adapter supports receiving messages via sendTo.
          * Additionally, it defines if specific messages are supported.
-         * If one property is enabled, the object `system.adapter.<adaptername>.<adapterinstance>.messagebox will be created to send messages to the adapter (used for email, pushover, etc...)
+         * If one property is enabled, the object `system.adapter.<adapterName>.<adapterInstance>.messagebox will be created to send messages to the adapter (used for email, pushover, etc...)
          */
         interface SupportedMessages {
             /** If custom messages are supported (same as legacy messagebox) */
