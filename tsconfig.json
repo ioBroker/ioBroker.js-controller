@@ -10,7 +10,7 @@
     "declaration": true, // generate .d.ts files
     "declarationMap": true, // generate .map files for .d.ts files
     "sourceMap": true, // generate .map files for .js files
-    "inlineSourceMap": false, // Alternatively inline the source maps
+    "inlineSourceMap": false, // Alternatively, inline the source maps
     // Don't emit anything by default. This will be turned on in the subprojects
     "noEmit": true,
     // Avoid TS errors in external dependencies
