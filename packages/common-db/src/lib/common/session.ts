@@ -1,24 +1,33 @@
-type Session = any;
+type SessionData = Record<string, any>;
+
+type Session = {
+    Store: any;
+};
 
 // TODO: in the long term move this file somewhere where we have types access it is nowhere used in controller itself and just exported for adapters so it should go to js-controller-adapter package
 interface AdapterStoreOptions {
     /** The ioBroker adapter */
     adapter: any;
     /** The cookie */
-    cookie: any;
+    cookie?: {
+        maxAge?: number;
+        originalMaxAge?: number;
+    };
 }
 
 /**
  * Function to create an AdapterStore constructor
  *
- * @param session The session object
- * @param defaultTtl the default time to live
+ * @param session The session object, like "express-session"
+ * @param defaultTtl the default time to live in seconds
  * @returns the constructor to create a new AdapterStore
  */
 export function createAdapterStore(session: Session, defaultTtl = 3600): any {
     const Store = session.Store;
 
     class AdapterStore extends Store {
+        private readonly adapter: any;
+
         constructor(options: AdapterStoreOptions) {
             super(options);
 
@@ -37,16 +46,14 @@ export function createAdapterStore(session: Session, defaultTtl = 3600): any {
          * @param sid Session ID
          * @param fn callback
          */
-        get(sid: string, fn: (err?: any, obj?: any) => void): void {
-            this.adapter.getSession(sid, (obj: any) => {
+        get(sid: string, fn: (err?: Error | string | null, obj?: SessionData) => void): void {
+            this.adapter.getSession(sid, (obj: SessionData): void => {
                 if (obj) {
                     if (fn) {
                         return fn(null, obj);
                     }
-                } else {
-                    if (fn) {
-                        return fn();
-                    }
+                } else if (fn) {
+                    return fn();
                 }
             });
         }
@@ -59,21 +66,22 @@ export function createAdapterStore(session: Session, defaultTtl = 3600): any {
          * @param sess the session
          * @param fn callback
          */
-        set(sid: string, ttl: number, sess: Session, fn: (args: any) => void): void {
+        set(
+            sid: string,
+            ttl: number | SessionData,
+            sess: SessionData | ((err?: Error | null) => void),
+            fn: (err?: Error | null) => void,
+        ): void {
             if (typeof ttl === 'object') {
-                fn = sess;
+                fn = sess as (err?: Error | null) => void;
                 sess = ttl;
                 // analyse if the session is stored directly from express session
-                ttl =
-                    sess && sess.cookie && sess.cookie.originalMaxAge
-                        ? Math.round(sess.cookie.originalMaxAge / 1000)
-                        : defaultTtl;
+                ttl = sess?.cookie?.originalMaxAge ? Math.round(sess.cookie.originalMaxAge / 1000) : defaultTtl;
             }
             ttl = ttl || defaultTtl;
-            this.adapter.setSession(sid, ttl, sess, function () {
+            this.adapter.setSession(sid, ttl, sess, function (err?: Error | null): void {
                 // @ts-expect-error fix later
-                // eslint-disable-next-line prefer-rest-params
-                fn && fn.apply(this, arguments);
+                fn?.apply(this, err);
             }); // do not use here => !!!
         }
 
