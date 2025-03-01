@@ -284,13 +284,20 @@ export interface AdapterClass {
     /** Checks if a file exists in the DB */
     fileExistsAsync(adapterName: string | null, path: string, options?: unknown): Promise<boolean>;
 
-    // TODO correct types needed
-    getHistoryAsync(...args: any[]): Promise<any>;
+    /** Read historian data for states of any instance or system state. */
+    getHistoryAsync(
+        id: string,
+        options?: ioBroker.GetHistoryOptions,
+    ): Promise<{
+        result?: ioBroker.GetHistoryResult;
+        step?: number;
+        sessionId?: number;
+    }>;
     /** Deletes a state from the states DB, but not the associated object. Consider using deleteState instead */
     delStateAsync(id: string, options?: unknown): Promise<void>;
     /** Deletes a state from the states DB, but not the associated object */
     delForeignStateAsync(id: string, options?: unknown): Promise<void>;
-    /** Read all states of this adapter which match the given pattern */
+    /** Read all states of this adapter that match the given pattern */
     getStatesAsync(pattern: string, options?: unknown): ioBroker.GetStatesPromise;
     /** Read all states (which might not belong to this adapter) which match the given pattern */
     getForeignStatesAsync(pattern: Pattern, options?: unknown): ioBroker.GetStatesPromise;
@@ -9230,7 +9237,7 @@ export class AdapterClass extends EventEmitter {
             options.instance = this.defaultHistory;
         }
 
-        this.sendTo(options.instance || 'history.0', 'getHistory', { id: id, options: options }, res => {
+        this.sendTo(options.instance || 'history.0', 'getHistory', { id, options: options }, res => {
             // @ts-expect-error
             tools.maybeCallbackWithError(callback, res.error, res.result, res.step, res.sessionId);
         });
