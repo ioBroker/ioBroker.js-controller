@@ -1050,3 +1050,21 @@ function testSettableState(arg: ioBroker.SettableState): void {
     // $ExpectType number | undefined
     arg.ts;
 }
+
+// Avoid recursion of #3023
+async function testCheckPasswordAsync(user: string, password: string): Promise<void> {
+    const [isPasswordCorrect, username] = await adapter.checkPasswordAsync(user, password);
+
+    // @ts-expect-error
+    const checkUserWrong = username === 'system.xy.admin';
+    const checkUserRight = username === 'system.user.admin';
+
+    // @ts-expect-error
+    const isPasswordCorrectWrong = isPasswordCorrect === '';
+    const isPasswordCorrectRight = isPasswordCorrect === true;
+
+    const isPasswordCorrectArray = await adapter.checkPasswordAsync(user, password);
+
+    // @ts-expect-error forgot to extract the tuple
+    const isPasswordCorrectArrayWrong = isPasswordCorrectArray === true;
+}
