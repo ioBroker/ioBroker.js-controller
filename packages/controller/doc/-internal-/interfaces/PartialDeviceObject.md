@@ -24,7 +24,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:912](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L912)
+[types-dev/objects.d.ts:912](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/types-dev/objects.d.ts#L912)
 
 ***
 
@@ -38,7 +38,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:919](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L919)
+[types-dev/objects.d.ts:919](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/types-dev/objects.d.ts#L919)
 
 ***
 
@@ -48,7 +48,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:954](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L954)
+[types-dev/objects.d.ts:954](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/types-dev/objects.d.ts#L954)
 
 ***
 
@@ -62,7 +62,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:918](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L918)
+[types-dev/objects.d.ts:918](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/types-dev/objects.d.ts#L918)
 
 ***
 
@@ -76,7 +76,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:920](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L920)
+[types-dev/objects.d.ts:920](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/types-dev/objects.d.ts#L920)
 
 ***
 
@@ -90,7 +90,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:916](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L916)
+[types-dev/objects.d.ts:916](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/types-dev/objects.d.ts#L916)
 
 ***
 
@@ -106,7 +106,7 @@ These properties can only be edited if the correct password is provided
 
 #### Defined in
 
-[types-dev/objects.d.ts:925](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L925)
+[types-dev/objects.d.ts:925](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/types-dev/objects.d.ts#L925)
 
 ***
 
@@ -120,7 +120,7 @@ These properties can only be edited if the correct password is provided
 
 #### Defined in
 
-[types-dev/objects.d.ts:923](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L923)
+[types-dev/objects.d.ts:923](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/types-dev/objects.d.ts#L923)
 
 ***
 
@@ -134,7 +134,7 @@ These properties can only be edited if the correct password is provided
 
 #### Defined in
 
-[types-dev/objects.d.ts:949](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L949)
+[types-dev/objects.d.ts:949](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/types-dev/objects.d.ts#L949)
 
 ***
 
@@ -150,4 +150,4 @@ The user who created or updated this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:922](https://github.com/ioBroker/ioBroker.js-controller/blob/99469b9944509b9c64b9a28da6d8dabf17a8ea74/packages/types-dev/objects.d.ts#L922)
+[types-dev/objects.d.ts:922](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/types-dev/objects.d.ts#L922)
