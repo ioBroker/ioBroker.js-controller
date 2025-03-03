@@ -958,6 +958,49 @@
             ]
           }
         },
+        "javascriptRules": {
+          "type": "object",
+          "properties": {
+            "i18n": {
+              "description": "Translation for the rule block",
+              "anyOf": [
+                {
+                  "description": "Translations will be loaded from javascriptRules.url and i18n/<LANG>.json",
+                  "const": true
+                },
+                {
+                  "description": "Define translations here",
+                  "type": "object",
+                  "patternProperties": {
+                    ".+": {
+                      "$ref": "#/definitions/multilingual"
+                    }
+                  }
+                }
+              ]
+            },
+            "type": {
+              "description": "Define type='module' if rules written with TypeScript",
+              "type": "string",
+              "enum": [
+                "module"
+              ]
+            },
+            "url": {
+              "description": "Link to module, like 'rules/customRuleBlocks.js'. That means it will loaded from admin/rules directory of the adapter",
+              "type": "string"
+            },
+            "name": {
+              "description": "Name of the module, like 'ActionTelegram'",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "url",
+            "name"
+          ]
+        },
         "type": {
           "description": "Type of the adapter",
           "type": "string",
