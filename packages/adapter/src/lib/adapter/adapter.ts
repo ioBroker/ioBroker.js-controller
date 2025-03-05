@@ -290,7 +290,7 @@ export interface AdapterClass {
     delStateAsync(id: string, options?: unknown): Promise<void>;
     /** Deletes a state from the states DB, but not the associated object */
     delForeignStateAsync(id: string, options?: unknown): Promise<void>;
-    /** Read all states of this adapter which match the given pattern */
+    /** Read all states of this adapter that match the given pattern */
     getStatesAsync(pattern: string, options?: unknown): ioBroker.GetStatesPromise;
     /** Read all states (which might not belong to this adapter) which match the given pattern */
     getForeignStatesAsync(pattern: Pattern, options?: unknown): ioBroker.GetStatesPromise;
@@ -303,13 +303,17 @@ export interface AdapterClass {
     /** Subscribe from changes of states in this instance */
     unsubscribeStatesAsync(pattern: Pattern, options?: unknown): Promise<void>;
     /**
-     * Helper function that looks for first free TCP port starting with the given one.
+     * Helper function that looks for the first free TCP port starting with the given one.
      */
     getPortAsync(port: number): Promise<number>;
-    /** Read a value (which might not belong to this adapter) from the states DB. */
+    /** Read a value (which might not belong to this adapter) from the state's DB. */
     getForeignStateAsync(id: string, options?: unknown): ioBroker.GetStatePromise;
     /** Validates username and password */
-    checkPasswordAsync(user: string, password: string, options?: unknown): Promise<boolean>;
+    checkPasswordAsync(
+        user: string,
+        password: string,
+        options?: unknown,
+    ): Promise<[isPasswordCorrect: boolean, user: `system.user.${string}`]>;
     /** Sets a new password for the given user */
     setPasswordAsync(user: string, password: string, options?: unknown): Promise<void>;
     /** <INTERNAL> Checks if a user exists and is in the given group. */
@@ -1705,8 +1709,8 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        this.getForeignObject(user, options, (err, obj) => {
-            if (err || !obj || !obj.common || (!obj.common.enabled && user !== SYSTEM_ADMIN_USER)) {
+        this.getForeignObject(user, options.options, (err, obj) => {
+            if (err || !obj?.common || (!obj.common.enabled && user !== SYSTEM_ADMIN_USER)) {
                 return tools.maybeCallback(callback, false, user);
             }
             password(pw).check(obj.common.password, (err, res) => {
@@ -1716,19 +1720,33 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * This method update the cached values in `this.usernames`
+     * This method updates the cached values in `this.usernames`
      */
     private async _updateUsernameCache(): Promise<void> {
         try {
             // get all users
             const obj = await this.getObjectListAsync({ startkey: 'system.user.', endkey: 'system.user.\u9999' });
-            // make sure cache is cleared
+            // make sure the cache is cleared
             this.usernames = {};
             for (const row of obj.rows) {
-                if (row.value.common && typeof row.value.common.name === 'string') {
-                    this.usernames[row.value.common.name] = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
-                } else {
+                const username = row.value.common?.name;
+
+                if (typeof username !== 'string' && !tools.isObject(username)) {
                     this._logger.warn(`${this.namespaceLog} Invalid username for id "${row.id}"`);
+                    continue;
+                }
+
+                if (typeof username === 'string') {
+                    this.usernames[username] = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
+                    continue;
+                }
+
+                // If the name is translated, extract the string in the current language or fallback to english
+                const name = this.language ? username[this.language] || username.en : username.en;
+                this.usernames[name] = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
+                // if the user is the admin, we also store it under the name 'admin'
+                if (row.id === SYSTEM_ADMIN_USER && name !== 'admin') {
+                    this.usernames.admin = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
                 }
             }
         } catch (e) {
