@@ -480,12 +480,13 @@ declare global {
                   name: string;
                   img: string;
                   color: string;
+                  order?: number;
               };
 
         /**
          * Object which defines if the adapter supports receiving messages via sendTo.
          * Additionally, it defines if specific messages are supported.
-         * If one property is enabled, the object `system.adapter.<adaptername>.<adapterinstance>.messagebox will be created to send messages to the adapter (used for email, pushover, etc...)
+         * If one property is enabled, the object `system.adapter.<adapterName>.<adapterInstance>.messagebox will be created to send messages to the adapter (used for email, pushover, etc...)
          */
         interface SupportedMessages {
             /** If custom messages are supported (same as legacy messagebox) */
@@ -803,10 +804,12 @@ declare global {
             javascriptRules?: {
                 /** Translations */
                 i18n?: boolean | Record<string, Record<ioBroker.Languages, string>> | Record<string, string>;
-                /** Where to load the blocks */
+                /** Where to load the blocks, like "rules/customRuleBlocks.js" */
                 url: string;
-                /** Blocks names */
+                /** Rules block name, like "ActionTelegram" */
                 name: string;
+                /** Load it as TypeScript module */
+                type?: 'module';
             };
 
             // Make it possible to narrow the object type using the custom property
