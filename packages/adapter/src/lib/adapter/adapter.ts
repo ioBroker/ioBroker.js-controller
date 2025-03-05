@@ -284,8 +284,15 @@ export interface AdapterClass {
     /** Checks if a file exists in the DB */
     fileExistsAsync(adapterName: string | null, path: string, options?: unknown): Promise<boolean>;
 
-    // TODO correct types needed
-    getHistoryAsync(...args: any[]): Promise<any>;
+    /** Read historian data for states of any instance or system state. */
+    getHistoryAsync(
+        id: string,
+        options?: ioBroker.GetHistoryOptions,
+    ): Promise<{
+        result?: ioBroker.GetHistoryResult;
+        step?: number;
+        sessionId?: number;
+    }>;
     /** Deletes a state from the states DB, but not the associated object. Consider using deleteState instead */
     delStateAsync(id: string, options?: unknown): Promise<void>;
     /** Deletes a state from the states DB, but not the associated object */
