@@ -9248,7 +9248,16 @@ export class AdapterClass extends EventEmitter {
             options.instance = this.defaultHistory;
         }
 
-        this.sendTo(options.instance || 'history.0', 'getHistory', { id: id, options: options }, res => {
+        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
+            try {
+                await this._checkStates(id, options, 'getState');
+            } catch (e) {
+                // @ts-expect-error
+                return tools.maybeCallbackWithError(callback, e);
+            }
+        }
+
+        this.sendTo(options.instance || 'history.0', 'getHistory', { id, options }, res => {
             // @ts-expect-error
             tools.maybeCallbackWithError(callback, res.error, res.result, res.step, res.sessionId);
         });
@@ -9592,7 +9601,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        // if pattern is array
+        // if the pattern is an array
         if (Array.isArray(pattern)) {
             if (options.user && options.user !== SYSTEM_ADMIN_USER) {
                 try {
