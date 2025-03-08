@@ -1120,7 +1120,7 @@
               "type": "boolean"
             },
             "link": {
-              "description": "Link for iframe in the TAB. You can use parameters replacement like this: \"https://%ip%:%port%\". IP will be replaced with host IP. \"port\" will be extracted from native.port.",
+              "description": "Link for iframe or JSON config file in the TAB. You can use parameters replacement like this: \"https://%ip%:%port%\". IP will be replaced with host IP. \"port\" will be extracted from native.port.",
               "type": "string"
             },
             "name": {
@@ -1130,6 +1130,17 @@
             "singleton": {
               "description": "If true, only one TAB for all instances will be shown.",
               "type": "boolean"
+            },
+            "sendTo": {
+              "description": "If used JSON config this command (if \"string\") will be sent to instance. If boolean, the command \"tab\" will be sent to backend",
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
             }
           }
         },

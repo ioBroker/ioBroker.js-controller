@@ -610,12 +610,14 @@ declare global {
                 'fa-icon'?: string;
                 /** If true, the Tab is not reloaded when the configuration changes */
                 ignoreConfigUpdate?: boolean;
-                /** Which URL should be loaded in the tab. Supports placeholders like http://%ip%:%port% */
+                /** Describes which URL should be loaded in the tab. Supports placeholders like http://%ip%:%port% or JSON(5) configs. */
                 link?: string;
                 /** If true, only one instance of this tab will be created for all instances */
                 singleton?: boolean;
                 /** Order number in admin tabs */
                 order?: number;
+                /** If used JSON config this command (if string) will be sent to backend. If boolean, the command "tab" will be sent to backend */
+                sendTo?: boolean | string;
             };
             /** If the mode is `schedule`, start one time adapter by ioBroker start, or by the configuration changes */
             allowInit?: boolean;
