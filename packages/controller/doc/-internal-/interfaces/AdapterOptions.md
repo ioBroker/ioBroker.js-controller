@@ -16,7 +16,7 @@ If true runs in compact mode
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L29)
+[adapter/src/lib/\_Types.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L29)
 
 ***
 
@@ -28,7 +28,7 @@ compact group instance if running in compact mode
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L17)
+[adapter/src/lib/\_Types.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L17)
 
 ***
 
@@ -40,7 +40,7 @@ configuration of the connection to controller
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L31)
+[adapter/src/lib/\_Types.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L31)
 
 ***
 
@@ -52,7 +52,7 @@ adapter directory name
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L25)
+[adapter/src/lib/\_Types.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L25)
 
 ***
 
@@ -64,7 +64,7 @@ Handler to handle uncaught exceptions, return true if no further handling requir
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L57)
+[adapter/src/lib/\_Types.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L57)
 
 ***
 
@@ -76,7 +76,7 @@ callback function (id, file) that will be called if file changed
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L41)
+[adapter/src/lib/\_Types.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L41)
 
 ***
 
@@ -88,7 +88,7 @@ called when adapter is installed
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L53)
+[adapter/src/lib/\_Types.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L53)
 
 ***
 
@@ -100,7 +100,7 @@ instance number of adapter
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:23](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L23)
+[adapter/src/lib/\_Types.ts:23](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L23)
 
 ***
 
@@ -112,7 +112,7 @@ If the adapter collects logs from all adapters (experts only). Default: false
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L11)
+[adapter/src/lib/\_Types.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L11)
 
 ***
 
@@ -124,7 +124,7 @@ callback to inform about a new message the adapter
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:47](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L47)
+[adapter/src/lib/\_Types.ts:47](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L47)
 
 ***
 
@@ -136,7 +136,7 @@ name of the adapter. Must be exactly the same as directory name.
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L33)
+[adapter/src/lib/\_Types.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L33)
 
 ***
 
@@ -148,7 +148,7 @@ callback function (id, obj) that will be called if an object changed
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L37)
+[adapter/src/lib/\_Types.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L37)
 
 ***
 
@@ -160,7 +160,7 @@ if desired to have oObjects. This is a list with all states, channels and device
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L21)
+[adapter/src/lib/\_Types.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L21)
 
 ***
 
@@ -172,7 +172,7 @@ called when adapter is ready
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L51)
+[adapter/src/lib/\_Types.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L51)
 
 ***
 
@@ -188,7 +188,7 @@ called on reconnection to DB
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L55)
+[adapter/src/lib/\_Types.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L55)
 
 ***
 
@@ -200,7 +200,7 @@ callback function (id, obj) that will be called if state changed
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:39](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L39)
+[adapter/src/lib/\_Types.ts:39](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L39)
 
 ***
 
@@ -212,7 +212,7 @@ if desired to have oStates. This is a list with all states values, and it will b
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L19)
+[adapter/src/lib/\_Types.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L19)
 
 ***
 
@@ -224,7 +224,7 @@ flag which defaults to true - if true, adapter warns if states are set without a
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L27)
+[adapter/src/lib/\_Types.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L27)
 
 ***
 
@@ -236,7 +236,7 @@ if it is possible for other instances to retrieve states of this adapter automat
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L15)
+[adapter/src/lib/\_Types.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L15)
 
 ***
 
@@ -254,7 +254,7 @@ if it is possible for other instances to retrieve states of this adapter automat
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:2](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L2)
+[adapter/src/lib/\_Types.ts:2](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L2)
 
 ***
 
@@ -266,7 +266,7 @@ If true, the systemConfig (iobroker.json) will be available in this.systemConfig
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L35)
+[adapter/src/lib/\_Types.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L35)
 
 ***
 
@@ -278,7 +278,7 @@ callback function that will be called when a new UI client subscribes
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L43)
+[adapter/src/lib/\_Types.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L43)
 
 ***
 
@@ -290,7 +290,7 @@ callback function that will be called when a new UI client unsubscribes
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L45)
+[adapter/src/lib/\_Types.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L45)
 
 ***
 
@@ -302,7 +302,7 @@ callback to stop the adapter
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L49)
+[adapter/src/lib/\_Types.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L49)
 
 ***
 
@@ -314,4 +314,4 @@ if true, the date format from system.config
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/1bddb836daa1042928a00fd5fb5e1f69cf0ebd69/packages/adapter/src/lib/_Types.ts#L13)
+[adapter/src/lib/\_Types.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/_Types.ts#L13)
