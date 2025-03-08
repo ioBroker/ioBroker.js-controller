@@ -153,11 +153,7 @@ export class ObjectsInRedisClient {
 
     constructor(settings: ObjectsSettings) {
         this.settings = settings || {};
-        this.redisNamespace = `${
-            this.settings.redisNamespace ||
-            this.settings.connection?.redisNamespace ||
-            'cfg'
-        }.`;
+        this.redisNamespace = `${this.settings.redisNamespace || this.settings.connection?.redisNamespace || 'cfg'}.`;
         this.fileNamespace = `${this.redisNamespace}f.`;
         this.fileNamespaceL = this.fileNamespace.length;
         this.objNamespace = `${this.redisNamespace}o.`;
@@ -573,7 +569,7 @@ export class ObjectsInRedisClient {
                     // subscribe on system.config anytime because also adapters need stuff like defaultNewAcl (especially admin)
                     try {
                         if (this.subSystem) {
-                            (await this.subSystem.psubscribe(`${this.objNamespace}system.config`));
+                            await this.subSystem.psubscribe(`${this.objNamespace}system.config`);
                         }
                     } catch {
                         // ignore
@@ -582,7 +578,7 @@ export class ObjectsInRedisClient {
                     // subscribe to meta changes
                     try {
                         if (this.subSystem) {
-                            (await this.subSystem.psubscribe(`${this.metaNamespace}*`));
+                            await this.subSystem.psubscribe(`${this.metaNamespace}*`);
                         }
                     } catch (e) {
                         this.log.warn(
@@ -1494,7 +1490,7 @@ export class ObjectsInRedisClient {
                     return !key.includes('/_data.json$%$') && key !== '_data.json'; // sort out "virtual" files that are used to mark directories
                 }
                 const dir = parts[deepLevel - 1];
-                if (dirs.indexOf(dir) === -1) {
+                if (!dirs.includes(dir)) {
                     dirs.push(dir);
                 }
             }
@@ -1547,11 +1543,7 @@ export class ObjectsInRedisClient {
                     continue;
                 }
                 obj.acl = obj.acl || {};
-                if (
-                    options.user !== CONSTS.SYSTEM_ADMIN_USER &&
-                    options.groups &&
-                    options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) === -1
-                ) {
+                if (options.user !== CONSTS.SYSTEM_ADMIN_USER && !options.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP)) {
                     obj.acl.read = !!(obj.acl.permissions & CONSTS.ACCESS_EVERY_READ);
                     obj.acl.write = !!(obj.acl.permissions & CONSTS.ACCESS_EVERY_WRITE);
                 } else {
@@ -2801,8 +2793,7 @@ export class ObjectsInRedisClient {
                     if (!obj.acl) {
                         obj.acl = {
                             owner: this.defaultNewAcl?.owner || CONSTS.SYSTEM_ADMIN_USER,
-                            ownerGroup:
-                                this.defaultNewAcl?.ownerGroup || CONSTS.SYSTEM_ADMIN_GROUP,
+                            ownerGroup: this.defaultNewAcl?.ownerGroup || CONSTS.SYSTEM_ADMIN_GROUP,
                             object:
                                 this.defaultNewAcl?.object ||
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ, // '0644'
@@ -2928,8 +2919,7 @@ export class ObjectsInRedisClient {
                     if (!obj.acl) {
                         obj.acl = {
                             owner: this.defaultNewAcl?.owner || CONSTS.SYSTEM_ADMIN_USER,
-                            ownerGroup:
-                                this.defaultNewAcl?.ownerGroup || CONSTS.SYSTEM_ADMIN_GROUP,
+                            ownerGroup: this.defaultNewAcl?.ownerGroup || CONSTS.SYSTEM_ADMIN_GROUP,
                             object:
                                 this.defaultNewAcl?.object ||
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ, // '0644'
@@ -4590,8 +4580,7 @@ export class ObjectsInRedisClient {
                     oldObj.acl.ownerGroup = null;
                     return void this.getUserGroup(options.owner, (user, groups /*, permissions */) => {
                         if (!groups || !groups[0]) {
-                            options.ownerGroup =
-                                this.defaultNewAcl?.ownerGroup || CONSTS.SYSTEM_ADMIN_GROUP;
+                            options.ownerGroup = this.defaultNewAcl?.ownerGroup || CONSTS.SYSTEM_ADMIN_GROUP;
                         } else {
                             options.ownerGroup = groups[0];
                         }
@@ -4855,7 +4844,7 @@ export class ObjectsInRedisClient {
 
         for (const setting of settings) {
             // @ts-expect-error TODO: decide https://github.com/ioBroker/ioBroker.js-controller/issues/507
-            if (this.preserveSettings.indexOf(setting) === -1) {
+            if (!this.preserveSettings.includes(setting)) {
                 // @ts-expect-error TODO: decide https://github.com/ioBroker/ioBroker.js-controller/issues/507
                 this.preserveSettings.push(setting);
             }
