@@ -138,7 +138,7 @@ declare global {
         interface Permission {
             /** The type of the permission */
             type: string;
-            /** Which kind of operation is required */
+            /** Defines which kind of operation is required */
             operation: string;
         }
         interface ObjectOrStatePermission extends Permission {

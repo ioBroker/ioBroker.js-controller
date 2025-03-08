@@ -62,27 +62,47 @@ export function createAdapterStore(session: Session, defaultTtl = 3600): any {
          * Commit the given `sess` object associated with the given `sid`.
          *
          * @param sid Session ID
+         * @param sess the session
+         * @param fn callback
+         */
+        set(sid: string, sess: SessionData, fn: (err?: Error | null) => void): void;
+        /**
+         * Commit the given `sess` object associated with the given `sid`.
+         *
+         * @param sid Session ID
          * @param ttl Time to live
          * @param sess the session
          * @param fn callback
          */
-        set(
-            sid: string,
-            ttl: number | SessionData,
-            sess: SessionData | ((err?: Error | null) => void),
-            fn: (err?: Error | null) => void,
-        ): void {
-            if (typeof ttl === 'object') {
+        set(sid: string, ttl: number, sess: SessionData, fn: (err?: Error | null) => void): void;
+
+        /**
+         * Commit the given `sess` object associated with the given `sid`.
+         *
+         * @param sid Session ID
+         * @param ttl Time to live
+         * @param sess the session
+         * @param fn callback
+         */
+        set(sid: unknown, ttl: unknown, sess: unknown, fn?: unknown): void {
+            if (typeof sess === 'function') {
                 fn = sess as (err?: Error | null) => void;
                 sess = ttl;
                 // analyse if the session is stored directly from express session
-                ttl = sess?.cookie?.originalMaxAge ? Math.round(sess.cookie.originalMaxAge / 1000) : defaultTtl;
+                ttl = (sess as SessionData)?.cookie?.originalMaxAge
+                    ? Math.round((sess as SessionData).cookie.originalMaxAge / 1000)
+                    : defaultTtl;
             }
             ttl = ttl || defaultTtl;
-            this.adapter.setSession(sid, ttl, sess, function (err?: Error | null): void {
-                // @ts-expect-error fix later
-                fn?.call(this, err);
-            }); // do not use here => !!!
+            this.adapter.setSession(
+                sid as string,
+                ttl as number,
+                sess as SessionData,
+                function (err?: Error | null): void {
+                    // @ts-expect-error fix later
+                    fn?.call(this, err);
+                },
+            ); // do not use here => !!!
         }
 
         /**
