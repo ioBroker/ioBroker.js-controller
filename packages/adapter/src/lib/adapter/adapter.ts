@@ -4510,22 +4510,22 @@ export class AdapterClass extends EventEmitter {
     findForeignObjectAsync(
         id: string,
         type: ioBroker.CommonType | null,
-        options: { user?: `system.user.${string}`; language?: ioBroker.Languages },
-    ): Promise<{ id: string | undefined; name: ioBroker.StringOrTranslated | undefined } | null> {
-        return new Promise<{ id: string | undefined; name: ioBroker.StringOrTranslated | undefined } | null>(
-            (resolve, reject) =>
-                this.findForeignObject(
-                    id,
-                    type,
-                    options,
-                    (err, id: string | undefined, name: ioBroker.StringOrTranslated | undefined): void => {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve(id ? { id, name } : null);
-                        }
-                    },
-                ),
+        options?: { user?: `system.user.${string}`; language?: ioBroker.Languages },
+    ): Promise<{ id?: string; name: ioBroker.StringOrTranslated }> {
+        return new Promise<{ id?: string; name: ioBroker.StringOrTranslated }>((resolve, reject) =>
+            this.findForeignObject(
+                id,
+                type,
+                options || {},
+                (err, id?: string, name?: ioBroker.StringOrTranslated): void => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        // if not error, name cannot be undefined
+                        resolve(id ? { id, name: name! } : { name: name! });
+                    }
+                },
+            ),
         );
     }
 
