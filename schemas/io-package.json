@@ -1104,11 +1104,6 @@
         "adminTab": {
           "description": "Adds a Tab which can be shown in admin adapter",
           "type": "object",
-          "required": [
-            "fa-icon",
-            "link",
-            "name"
-          ],
           "additionalProperties": false,
           "properties": {
             "fa-icon": {
