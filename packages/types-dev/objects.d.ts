@@ -616,8 +616,6 @@ declare global {
                 singleton?: boolean;
                 /** Order number in admin tabs */
                 order?: number;
-                /** If used JSON config this command (if string) will be sent to backend. If boolean, the command "tab" will be sent to backend */
-                sendTo?: boolean | string;
             };
             /** If the mode is `schedule`, start one time adapter by ioBroker start, or by the configuration changes */
             allowInit?: boolean;
