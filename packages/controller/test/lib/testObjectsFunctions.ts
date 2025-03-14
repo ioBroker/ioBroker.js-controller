@@ -1002,11 +1002,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 },
             },
             () => {
-                // now create the enum with object as member
+                // now create the enum with an object as member
                 objects.setObject('enum.rooms.living_room', enumObj, () => {
                     // delete the object via adapter method
                     context.adapter.delForeignObject('tesla.0.model', () => {
-                        // now get enum object
+                        // now get an enum object
                         objects.getObject('enum.rooms.living_room', (err, obj) => {
                             // check that only the deleted object has been removed
                             expect((obj as ioBroker.EnumObject).common.members!.indexOf('tesla.0.model')).to.equal(-1);

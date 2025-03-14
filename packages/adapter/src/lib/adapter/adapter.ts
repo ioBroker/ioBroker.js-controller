@@ -4581,7 +4581,7 @@ export class AdapterClass extends EventEmitter {
                 this.name !== obj._id.split('.')[2]
             ) {
                 for (const attr of obj.protectedNative) {
-                    delete obj.native[attr];
+                    deleteObjectAttribute(obj.native, attr);
                 }
             }
 
@@ -11340,7 +11340,7 @@ export class AdapterClass extends EventEmitter {
                     this.name !== obj._id.split('.')[2]
                 ) {
                     for (const attr of obj.protectedNative) {
-                        delete obj.native[attr];
+                        deleteObjectAttribute(obj.native, attr);
                     }
                 }
 
@@ -11516,7 +11516,7 @@ export class AdapterClass extends EventEmitter {
                 instance = 0;
                 adapterConfig = adapterConfig || {
                     // @ts-expect-error protectedNative exists on instance objects
-                    common: { mode: 'once', name: name, protectedNative: [] },
+                    common: { mode: 'once', name, protectedNative: [] },
                     native: {},
                 };
             }
