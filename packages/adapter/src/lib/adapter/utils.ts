@@ -157,7 +157,7 @@ export async function requestModuleNameByUrl(url: string): Promise<string> {
  * @param attr - attribute name, can be complex like `attr1.attr2.attr3`
  */
 export function getObjectAttribute(obj: Record<string, any>, attr: string): any {
-    if (attr.includes('.')) {
+    if (!attr.includes('.')) {
         return obj[attr];
     }
     const attrParts = attr.split('.');
@@ -180,7 +180,7 @@ export function getObjectAttribute(obj: Record<string, any>, attr: string): any 
  * @param value - value to set
  */
 export function setObjectAttribute(obj: Record<string, any>, attr: string, value: any): void {
-    if (attr.includes('.')) {
+    if (!attr.includes('.')) {
         obj[attr] = value;
         return;
     }
@@ -204,7 +204,7 @@ export function setObjectAttribute(obj: Record<string, any>, attr: string, value
  * @param attr - attribute name, can be complex like `attr1.attr2.attr3`
  */
 export function deleteObjectAttribute(obj: Record<string, any>, attr: string): void {
-    if (attr.includes('.')) {
+    if (!attr.includes('.')) {
         delete obj[attr];
         return;
     }
