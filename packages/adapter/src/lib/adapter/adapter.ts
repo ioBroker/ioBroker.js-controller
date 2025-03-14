@@ -33,6 +33,9 @@ import {
     isMessageboxSupported,
     listInstalledNodeModules,
     requestModuleNameByUrl,
+    deleteObjectAttribute,
+    setObjectAttribute,
+    getObjectAttribute,
 } from '@/lib/adapter/utils.js';
 
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -2593,7 +2596,7 @@ export class AdapterClass extends EventEmitter {
 
         obj.native = mergedConfig;
 
-        return this.setForeignObjectAsync(configObjId, obj);
+        return this.setForeignObject(configObjId, obj);
     }
 
     /**
@@ -2637,7 +2640,7 @@ export class AdapterClass extends EventEmitter {
     private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions): Promise<string | void> {
         const { attribute, callback } = options;
 
-        const value = (this.config as InternalAdapterConfig)[attribute];
+        const value = getObjectAttribute(this.config, attribute);
 
         if (typeof value === 'string') {
             const secret = await this.getSystemSecret();
@@ -4441,7 +4444,7 @@ export class AdapterClass extends EventEmitter {
                 this.name !== id.split('.')[2]
             ) {
                 for (const attr of obj.protectedNative) {
-                    delete obj.native[attr];
+                    deleteObjectAttribute(obj.native, attr);
                 }
             }
         }
@@ -11435,7 +11438,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Initialize the adapter
      *
-     * @param adapterConfig the AdapterOptions or the InstanceObject, is null/undefined if it is install process
+     * @param adapterConfig the AdapterOptions or the InstanceObject, is null/undefined if it is an installation process
      */
     private async _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null): Promise<void> {
         await this._initLogging();
@@ -11628,8 +11631,7 @@ export class AdapterClass extends EventEmitter {
                 if (typeof this.config[attr] === 'string') {
                     promises.push(
                         this.getEncryptedConfig(attr)
-                            // @ts-expect-error
-                            .then(decryptedValue => (this.config[attr] = decryptedValue))
+                            .then(decryptedValue => setObjectAttribute(this.config, attr, decryptedValue))
                             .catch(e =>
                                 this._logger.error(
                                     `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`,

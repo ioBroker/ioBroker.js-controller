@@ -64,9 +64,9 @@ export function encryptArray(options: EncryptArrayOptions): void {
     const { secret, obj, keys } = options;
 
     for (const attr of keys) {
-        const val = obj[attr];
+        const val = getObjectAttribute(obj, attr);
         if (typeof val === 'string') {
-            obj[attr] = encrypt(secret, val);
+            setObjectAttribute(obj, attr, encrypt(secret, val));
         }
     }
 }
@@ -80,9 +80,9 @@ export function decryptArray(options: EncryptArrayOptions): void {
     const { secret, obj, keys } = options;
 
     for (const attr of keys) {
-        const val = obj[attr];
+        const val = getObjectAttribute(obj, attr);
         if (typeof val === 'string') {
-            obj[attr] = decrypt(secret, val);
+            setObjectAttribute(obj, attr, decrypt(secret, val));
         }
     }
 }
@@ -148,4 +148,75 @@ export async function requestModuleNameByUrl(url: string): Promise<string> {
     }
 
     return res.stdout.trim();
+}
+
+/**
+ * Get attribute of an object with complex names
+ *
+ * @param obj - object to get the attribute from
+ * @param attr - attribute name, can be complex like `attr1.attr2.attr3`
+ */
+export function getObjectAttribute(obj: Record<string, any>, attr: string): any {
+    if (attr.includes('.')) {
+        return obj[attr];
+    }
+    const attrParts = attr.split('.');
+    for (let j = 0; j < attrParts.length; j++) {
+        if (j === attrParts.length - 1) {
+            return obj[attrParts[j]];
+        }
+        if (!obj[attrParts[j]] || typeof obj[attrParts[j]] !== 'object') {
+            break;
+        }
+        obj = obj[attrParts[j]];
+    }
+}
+
+/**
+ * Set attribute in an object with complex names
+ *
+ * @param obj - object to get the attribute from
+ * @param attr - attribute name, can be complex like `attr1.attr2.attr3`
+ * @param value - value to set
+ */
+export function setObjectAttribute(obj: Record<string, any>, attr: string, value: any): void {
+    if (attr.includes('.')) {
+        obj[attr] = value;
+        return;
+    }
+    const attrParts = attr.split('.');
+    for (let j = 0; j < attrParts.length; j++) {
+        if (j === attrParts.length - 1) {
+            obj[attrParts[j]] = value;
+            return;
+        }
+        if (!obj[attrParts[j]] || typeof obj[attrParts[j]] !== 'object') {
+            break;
+        }
+        obj = obj[attrParts[j]];
+    }
+}
+
+/**
+ * Delete attribute in an object with complex names
+ *
+ * @param obj - object to get the attribute from
+ * @param attr - attribute name, can be complex like `attr1.attr2.attr3`
+ */
+export function deleteObjectAttribute(obj: Record<string, any>, attr: string): void {
+    if (attr.includes('.')) {
+        delete obj[attr];
+        return;
+    }
+    const attrParts = attr.split('.');
+    for (let j = 0; j < attrParts.length; j++) {
+        if (j === attrParts.length - 1) {
+            delete obj[attrParts[j]];
+            return;
+        }
+        if (!obj[attrParts[j]] || typeof obj[attrParts[j]] !== 'object') {
+            break;
+        }
+        obj = obj[attrParts[j]];
+    }
 }
