@@ -361,8 +361,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     model: 'S P85D',
                     username: 'tesla',
                     password: 'winning',
+                    complex: {
+                        password: 'winning',
+                    },
                 },
-                protectedNative: ['username', 'password'],
+                protectedNative: ['username', 'password', 'complex.password'],
                 objects: [],
                 instanceObjects: [],
             },
@@ -377,6 +380,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.model).equal('S P85D');
                     expect(obj!.native.username).to.be.undefined;
                     expect(obj!.native.password).to.be.undefined;
+                    expect(obj!.native.complex.password).to.be.undefined;
                     expect(obj!._id).equal('system.adapter.tesla.0');
                     done();
                 });
@@ -406,8 +410,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     model: 'S P85D',
                     username: 'tesla',
                     password: 'winning',
+                    complex: {
+                        password: 'winning',
+                    },
                 },
-                protectedNative: ['username', 'password'],
+                protectedNative: ['username', 'password', 'complex.password'],
                 objects: [],
                 instanceObjects: [],
             },
@@ -422,6 +429,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.model).equal('S P85D');
                     expect(obj!.native.password).equal('winning');
                     expect(obj!.native.username).equal('tesla');
+                    expect(obj!.native.complex.password).equal('winning');
                     expect(obj!._id).equal(`system.adapter.${context.adapterShortName}.0`);
                     done();
                 });
@@ -1124,6 +1132,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.model).equal('S P85D');
                     expect(obj!.native.username).to.be.undefined;
                     expect(obj!.native.password).to.be.undefined;
+                    expect(obj!.native.complex.password).to.be.undefined;
                     expect(obj!._id).equal('system.adapter.tesla.0');
                     context.onAdapterObjectChanged = null;
                     done();
@@ -1147,8 +1156,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         model: 'S P85D',
                         username: 'tesla',
                         password: 'winning',
+                        complex: {
+                            password: 'winning',
+                        },
                     },
-                    protectedNative: ['username', 'password'],
+                    protectedNative: ['username', 'password', 'complex.password'],
                     objects: [],
                     instanceObjects: [],
                 },
@@ -1171,6 +1183,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.model).equal('S P85D');
                     expect(obj!.native.username).to.equal('tesla');
                     expect(obj!.native.password).to.equal('winning');
+                    expect(obj!.native.complex.password).to.equal('winning');
                     expect(obj!._id).equal(`system.adapter.${context.adapterShortName}.0`);
                     context.onAdapterObjectChanged = null;
                     done();
@@ -1194,8 +1207,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         model: 'S P85D',
                         username: 'tesla',
                         password: 'winning',
+                        complex: {
+                            password: 'winning',
+                        },
                     },
-                    protectedNative: ['username', 'password'],
+                    protectedNative: ['username', 'password', 'complex.password'],
                     objects: [],
                     instanceObjects: [],
                 },

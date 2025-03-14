@@ -1171,15 +1171,20 @@
       "paramBoolean": false,
       "username": "tesla",
       "password": "G\\\b\u000bY\fS",
-      "secondPassword": "$/aes-192-cbc:bcc46f0eec2addc9a54e70776c3f3f79:3861c124787cffb3e1a4e575f5acdb51a1e279ccde98a427946e1762075f051f"
+      "secondPassword": "$/aes-192-cbc:bcc46f0eec2addc9a54e70776c3f3f79:3861c124787cffb3e1a4e575f5acdb51a1e279ccde98a427946e1762075f051f",
+      "complex": {
+        "password": "G\\\b\u000bY\fS"
+      }
     },
     "protectedNative": [
       "username",
-      "password"
+      "password",
+      "complex.password"
     ],
     "encryptedNative": [
       "password",
-      "secondPassword"
+      "secondPassword",
+      "complex.password"
     ],
     "_id": "system.adapter.test.0",
     "type": "adapter"

@@ -455,7 +455,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         const passphrase = 'SavePassword123';
 
-        await context.adapter.updateConfig({ secondPassword: passphrase });
+        await context.adapter.updateConfig({ secondPassword: passphrase, complex: { password: passphrase } });
         const newConfig = await context.adapter.getForeignObjectAsync(`system.adapter.${context.adapter.namespace}`);
 
         // non encrypted and non updated params stay the same
@@ -471,6 +471,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // updated encrypted value is correctly decrypted
         expect(newConfig?.native.secondPassword).to.exist;
         expect(context.adapter.decrypt(newConfig?.native.secondPassword)).to.be.equal(passphrase);
+
+        // updated encrypted complex passwords, decrypt to the same value
+        expect(newConfig?.native.complex.password).to.exist;
+        expect(context.adapter.decrypt(newConfig?.native.complex.password)).to.be.equal(passphrase);
     });
 
     // setState object validation
