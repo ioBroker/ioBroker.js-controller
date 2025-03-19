@@ -338,7 +338,7 @@ declare global {
             /** UI type of custom tab inside admin UI */
             custom?: 'json';
             /** UI type of tab inside admin UI */
-            tab?: 'html' | 'materialize';
+            tab?: 'html' | 'json' | 'materialize';
         }
 
         /** Installed from attribute of instance/adapter object */
