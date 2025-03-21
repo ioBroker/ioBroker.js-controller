@@ -338,7 +338,7 @@ declare global {
             /** UI type of custom tab inside admin UI */
             custom?: 'json';
             /** UI type of tab inside admin UI */
-            tab?: 'html' | 'materialize';
+            tab?: 'html' | 'json' | 'materialize';
         }
 
         /** Installed from attribute of instance/adapter object */
@@ -610,7 +610,7 @@ declare global {
                 'fa-icon'?: string;
                 /** If true, the Tab is not reloaded when the configuration changes */
                 ignoreConfigUpdate?: boolean;
-                /** Which URL should be loaded in the tab. Supports placeholders like http://%ip%:%port% */
+                /** Describes which URL should be loaded in the tab. Supports placeholders like http://%ip%:%port% or JSON(5) configs. If empty `adapter/ADAPTERNAME/tab(_m).html` will be taken. JSON config file must be defined relative to "admin" folder, like "jsonTab.json"  */
                 link?: string;
                 /** If true, only one instance of this tab will be created for all instances */
                 singleton?: boolean;
