@@ -103,7 +103,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         expect(err).to.be.not.ok;
                         expect(idOrName).to.be.equal('test2');
                         expect(id).to.be.equal(undefined);
-                        done();
+
+                        objects.findObject('test2', 'string', (err, id, idOrName) => {
+                            expect(err).to.be.not.ok;
+                            expect(idOrName).to.be.equal('test2');
+                            expect(id).to.be.equal('test2');
+                            done();
+                        });
                     });
                 });
             });
@@ -129,6 +135,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             })
             .then(id => {
                 expect(id).to.be.equal(undefined);
+                return objects.findObject('test2', 'string');
+            })
+            .then(id => {
+                expect(id).to.be.equal('test2');
                 done();
             })
             .catch(err => {
