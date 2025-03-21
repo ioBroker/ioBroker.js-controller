@@ -4726,19 +4726,18 @@ export class ObjectsInRedisClient {
      */
     private _findObject(
         idOrName: string,
-        type: string | null,
-        options: CallOptions,
+        type: ioBroker.CommonType | null,
+        options: CallOptions & { language?: ioBroker.Languages },
         callback?: ioBroker.FindObjectCallback,
     ): void {
+        // Try to read by ID
         this._getObject(idOrName, options, (err, obj) => {
             // Assume it is ID
-            if (
-                obj &&
-                utils.checkObject(obj, options, CONSTS.ACCESS_READ) &&
-                (!type || (obj.common && obj.common.type === type))
-            ) {
+            if (obj && utils.checkObject(obj, options, CONSTS.ACCESS_READ) && (!type || obj.common?.type === type)) {
                 return tools.maybeCallbackWithError(callback, null, idOrName, obj.common.name);
             }
+
+            // Get all objects that this user may read
             this._getKeys(
                 '*',
                 options,
@@ -4751,14 +4750,14 @@ export class ObjectsInRedisClient {
                         return tools.maybeCallbackWithError(callback, err);
                     }
 
-                    let objs;
+                    let objs: (string | null)[];
                     try {
                         objs = await this.client.mget(keys);
                     } catch (e) {
                         return tools.maybeCallbackWithRedisError(callback, e);
                     }
                     objs = objs || [];
-                    // Assume it is name
+                    // Assume it is a name
                     for (let i = 0; i < keys.length; i++) {
                         const strObj = objs[i];
                         let obj: ioBroker.AnyObject | null;
@@ -4768,12 +4767,15 @@ export class ObjectsInRedisClient {
                             this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
                             continue;
                         }
-                        if (
-                            obj?.common &&
-                            obj.common.name === idOrName &&
-                            (!type || ('type' in obj.common && obj.common.type === type))
-                        ) {
-                            return tools.maybeCallbackWithError(callback, null, obj._id, idOrName);
+
+                        if (obj?.common && (!type || ('type' in obj.common && obj.common.type === type))) {
+                            let name = obj?.common?.name;
+                            if (name && typeof name === 'object') {
+                                name = name[options.language || 'en'] || name.en;
+                            }
+                            if (name === idOrName) {
+                                return tools.maybeCallbackWithError(callback, null, obj._id, obj.common.name);
+                            }
                         }
                     }
                     return tools.maybeCallbackWithError(callback, null, undefined, idOrName);
@@ -4786,25 +4788,25 @@ export class ObjectsInRedisClient {
     // The user has provided a callback, thus we call it
     findObject(
         idOrName: string,
-        type: string | null,
-        options: CallOptions | null,
+        type: ioBroker.CommonType | null,
+        options: (CallOptions & { language?: ioBroker.Languages }) | null,
         callback: ioBroker.FindObjectCallback,
     ): void;
 
     // The user has provided a callback without options
-    findObject(idOrName: string, type: string | null, callback: ioBroker.FindObjectCallback): void;
+    findObject(idOrName: string, type: ioBroker.CommonType | null, callback: ioBroker.FindObjectCallback): void;
 
     // No callback provided by user, we return a promise
     findObject(
         idOrName: string,
-        type?: string | null,
-        options?: CallOptions | null,
+        type?: ioBroker.CommonType | null,
+        options?: (CallOptions & { language?: ioBroker.Languages }) | null,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.FindObjectCallback>>;
 
     findObject(
         idOrName: string,
-        type: string | null,
-        options: CallOptions | null,
+        type: ioBroker.CommonType | null,
+        options: (CallOptions & { language?: ioBroker.Languages }) | null,
         callback?: ioBroker.FindObjectCallback,
     ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.FindObjectCallback>> {
         if (typeof type === 'function') {

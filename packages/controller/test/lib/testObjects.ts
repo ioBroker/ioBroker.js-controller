@@ -99,11 +99,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(idOrName).to.be.equal('test3');
                     expect(id).to.be.equal(undefined);
 
-                    objects.findObject('test2', 'channel', (err, id, idOrName) => {
+                    objects.findObject('test2', 'boolean', (err, id, idOrName) => {
                         expect(err).to.be.not.ok;
                         expect(idOrName).to.be.equal('test2');
                         expect(id).to.be.equal(undefined);
-                        done();
+
+                        objects.findObject('test2', 'string', (err, id, idOrName) => {
+                            expect(err).to.be.not.ok;
+                            expect(idOrName).to.be.equal('test2');
+                            expect(id).to.be.equal(testId);
+                            done();
+                        });
                     });
                 });
             });
@@ -125,10 +131,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             })
             .then(id => {
                 expect(id).to.be.equal(undefined);
-                return objects.findObject('test3', 'channel');
+                return objects.findObject('test3', 'boolean');
             })
             .then(id => {
                 expect(id).to.be.equal(undefined);
+                return objects.findObject('test2', 'string');
+            })
+            .then(id => {
+                expect(id).to.be.equal(testId);
                 done();
             })
             .catch(err => {
