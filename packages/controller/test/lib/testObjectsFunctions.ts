@@ -312,7 +312,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 expect(err).to.be.null;
                 expect(id).to.be.equal(`${context.adapterShortName}.0.${gid}`);
 
-                context.adapter.findForeignObject('test1', 'channel', function (err, id) {
+                context.adapter.findForeignObject('test1', 'boolean', function (err, id) {
                     expect(err).to.be.null;
 
                     expect(id).to.be.undefined;
