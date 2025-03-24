@@ -38,7 +38,7 @@ Activates the usage of sets
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:340
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:344
 
 ***
 
@@ -56,7 +56,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:340
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:273
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:277
 
 ***
 
@@ -314,7 +314,7 @@ Deactivates the usage of sets
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:344
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:348
 
 ***
 
@@ -454,7 +454,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:240
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:278
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:282
 
 ***
 
@@ -474,7 +474,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:278
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:276
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:280
 
 ***
 
@@ -492,7 +492,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:276
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:277
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:281
 
 ***
 
@@ -655,7 +655,7 @@ ms until value expires
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:310
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:314
 
 ***
 
@@ -699,9 +699,9 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:133
 
 • **idOrName**: `string`
 
-• **type**: `null` \| `string`
+• **type**: `null` \| [`CommonType`](../type-aliases/CommonType.md)
 
-• **options**: `null` \| [`CallOptions`](../interfaces/CallOptions.md)
+• **options**: `null` \| [`CallOptions`](../interfaces/CallOptions.md) & `object`
 
 • **callback**: [`FindObjectCallback`](../type-aliases/FindObjectCallback.md)
 
@@ -721,7 +721,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:270
 
 • **idOrName**: `string`
 
-• **type**: `null` \| `string`
+• **type**: `null` \| [`CommonType`](../type-aliases/CommonType.md)
 
 • **callback**: [`FindObjectCallback`](../type-aliases/FindObjectCallback.md)
 
@@ -731,7 +731,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:270
 
 ##### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:271
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:273
 
 #### findObject(idOrName, type, options)
 
@@ -741,9 +741,9 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:271
 
 • **idOrName**: `string`
 
-• **type?**: `null` \| `string`
+• **type?**: `null` \| [`CommonType`](../type-aliases/CommonType.md)
 
-• **options?**: `null` \| [`CallOptions`](../interfaces/CallOptions.md)
+• **options?**: `null` \| [`CallOptions`](../interfaces/CallOptions.md) & `object`
 
 ##### Returns
 
@@ -751,7 +751,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:271
 
 ##### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:272
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:274
 
 ***
 
@@ -881,7 +881,7 @@ redis key
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:350
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:354
 
 ***
 
@@ -1361,7 +1361,7 @@ Get name of the primary host
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:322
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:326
 
 ***
 
@@ -1377,7 +1377,7 @@ Returns the protocol version from DB
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:302
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:306
 
 ***
 
@@ -1441,7 +1441,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:244
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:279
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:283
 
 ***
 
@@ -1459,7 +1459,7 @@ number of migrated sets
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:298
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:302
 
 ***
 
@@ -1657,7 +1657,7 @@ Ensure we are no longer the primary host
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:326
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:330
 
 ***
 
@@ -1793,7 +1793,7 @@ id of the set
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:292
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:296
 
 ***
 
@@ -1920,7 +1920,7 @@ ms until value expires
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:318
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:322
 
 ***
 
@@ -1942,7 +1942,7 @@ protocol version
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:332
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:336
 
 ***
 
@@ -2020,7 +2020,7 @@ Subscribe to expired events to get expiration of primary host
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:336
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:340
 
 ***
 
