@@ -1104,11 +1104,6 @@
         "adminTab": {
           "description": "Adds a Tab which can be shown in admin adapter",
           "type": "object",
-          "required": [
-            "fa-icon",
-            "link",
-            "name"
-          ],
           "additionalProperties": false,
           "properties": {
             "fa-icon": {
@@ -1120,7 +1115,7 @@
               "type": "boolean"
             },
             "link": {
-              "description": "Link for iframe in the TAB. You can use parameters replacement like this: \"https://%ip%:%port%\". IP will be replaced with host IP. \"port\" will be extracted from native.port.",
+              "description": "Link for iframe or JSON config file in the TAB. You can use parameters replacement like this: \"https://%ip%:%port%\". IP will be replaced with host IP. \"port\" will be extracted from native.port.",
               "type": "string"
             },
             "name": {

@@ -20,4 +20,4 @@
 
 ## Defined in
 
-[types-dev/utils.d.ts:2](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/types-dev/utils.d.ts#L2)
+[types-dev/utils.d.ts:2](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/types-dev/utils.d.ts#L2)

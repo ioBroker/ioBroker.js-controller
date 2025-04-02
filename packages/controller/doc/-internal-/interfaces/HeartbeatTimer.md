@@ -16,7 +16,7 @@ The heartbeat interval
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:14](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L14)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:14](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L14)
 
 ***
 
@@ -28,4 +28,4 @@ The actual timer
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L12)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L12)

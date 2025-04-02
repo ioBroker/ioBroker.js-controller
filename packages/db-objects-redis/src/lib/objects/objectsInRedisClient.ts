@@ -153,11 +153,7 @@ export class ObjectsInRedisClient {
 
     constructor(settings: ObjectsSettings) {
         this.settings = settings || {};
-        this.redisNamespace = `${
-            this.settings.redisNamespace ||
-            (this.settings.connection && this.settings.connection.redisNamespace) ||
-            'cfg'
-        }.`;
+        this.redisNamespace = `${this.settings.redisNamespace || this.settings.connection?.redisNamespace || 'cfg'}.`;
         this.fileNamespace = `${this.redisNamespace}f.`;
         this.fileNamespaceL = this.fileNamespace.length;
         this.objNamespace = `${this.redisNamespace}o.`;
@@ -311,16 +307,17 @@ export class ObjectsInRedisClient {
         this.client = new Redis(this.settings.connection.options);
 
         this.client.on('error', error => {
-            this.settings.connection.enhancedLogging &&
+            if (this.settings.connection.enhancedLogging) {
                 this.log.silly(
                     `${this.namespace} Redis ERROR Objects: (${this.stop}) ${error.message} / ${error.stack}`,
                 );
+            }
             if (this.stop) {
                 return;
             }
             if (!ready) {
                 initError = true;
-                // Seems we have a socket.io server
+                // It seems we have a socket.io server
                 if (error.message.startsWith('Protocol error, got "H" as reply type byte.')) {
                     this.log.error(
                         `${this.namespace} Could not connect to objects database at ${this.settings.connection.options.host}:${this.settings.connection.options.port} (invalid protocol). Please make sure the configured IP and port points to a host running JS-Controller >= 2.0. and that the port is not occupied by other software!`,
@@ -333,14 +330,18 @@ export class ObjectsInRedisClient {
         });
 
         this.client.on('end', () => {
-            this.settings.connection.enhancedLogging &&
+            if (this.settings.connection.enhancedLogging) {
                 this.log.silly(`${this.namespace} Objects-Redis Event end (stop=${this.stop})`);
-            ready && typeof this.settings.disconnected === 'function' && this.settings.disconnected();
+            }
+            if (ready && typeof this.settings.disconnected === 'function') {
+                this.settings.disconnected();
+            }
         });
 
         this.client.on('connect', () => {
-            this.settings.connection.enhancedLogging &&
+            if (this.settings.connection.enhancedLogging) {
                 this.log.silly(`${this.namespace} Objects-Redis Event connect (stop=${this.stop})`);
+            }
             connected = true;
             if (errorLogged) {
                 this.log.info(`${this.namespace} Objects database successfully reconnected`);
@@ -349,8 +350,9 @@ export class ObjectsInRedisClient {
         });
 
         this.client.on('close', () => {
-            this.settings.connection.enhancedLogging &&
+            if (this.settings.connection.enhancedLogging) {
                 this.log.silly(`${this.namespace} Objects-Redis Event close (stop=${this.stop})`);
+            }
             //if (ready && typeof this.settings.disconnected === 'function') this.settings.disconnected();
         });
 
@@ -359,10 +361,11 @@ export class ObjectsInRedisClient {
                 reconnectCounter++;
             }
 
-            this.settings.connection.enhancedLogging &&
+            if (this.settings.connection.enhancedLogging) {
                 this.log.silly(
                     `${this.namespace} Objects-Redis Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`,
                 );
+            }
 
             if (reconnectCounter > 2) {
                 // fallback logic for nodejs <10
@@ -466,13 +469,13 @@ export class ObjectsInRedisClient {
 
                                         if (
                                             id === 'system.config' &&
-                                            obj &&
-                                            obj.common &&
-                                            obj.common.defaultNewAcl &&
+                                            obj?.common?.defaultNewAcl &&
                                             !isDeepStrictEqual(obj.common.defaultNewAcl, this.defaultNewAcl)
                                         ) {
                                             this.defaultNewAcl = deepClone(obj.common.defaultNewAcl);
-                                            this.settings.controller && this.setDefaultAcl(this.defaultNewAcl);
+                                            if (this.settings.controller) {
+                                                this.setDefaultAcl(this.defaultNewAcl);
+                                            }
                                         }
 
                                         onChange(id, obj);
@@ -500,21 +503,25 @@ export class ObjectsInRedisClient {
                 }
 
                 this.subSystem.on('end', () => {
-                    this.settings.connection.enhancedLogging &&
+                    if (this.settings.connection.enhancedLogging) {
                         this.log.silly(`${this.namespace} Objects-Redis System Event end sub (stop=${this.stop})`);
-                    ready && typeof this.settings.disconnected === 'function' && this.settings.disconnected();
+                    }
+                    if (ready && typeof this.settings.disconnected === 'function') {
+                        this.settings.disconnected();
+                    }
                 });
 
                 this.subSystem.on('error', error => {
                     if (this.stop) {
                         return;
                     }
-                    this.settings.connection.enhancedLogging &&
+                    if (this.settings.connection.enhancedLogging) {
                         this.log.silly(
                             `${this.namespace} PubSub System client Objects No redis connection: ${JSON.stringify(
                                 error,
                             )}`,
                         );
+                    }
                 });
 
                 if (this.settings.connection.enhancedLogging) {
@@ -554,19 +561,25 @@ export class ObjectsInRedisClient {
                                 )}:${tools.maybeArrayToString(this.settings.connection.port)}`,
                             );
                         }
-                        !ready && typeof this.settings.connected === 'function' && this.settings.connected();
+                        if (!ready && typeof this.settings.connected === 'function') {
+                            this.settings.connected();
+                        }
                         ready = true;
                     }
                     // subscribe on system.config anytime because also adapters need stuff like defaultNewAcl (especially admin)
                     try {
-                        this.subSystem && (await this.subSystem.psubscribe(`${this.objNamespace}system.config`));
+                        if (this.subSystem) {
+                            await this.subSystem.psubscribe(`${this.objNamespace}system.config`);
+                        }
                     } catch {
                         // ignore
                     }
 
                     // subscribe to meta changes
                     try {
-                        this.subSystem && (await this.subSystem.psubscribe(`${this.metaNamespace}*`));
+                        if (this.subSystem) {
+                            await this.subSystem.psubscribe(`${this.metaNamespace}*`);
+                        }
                     } catch (e) {
                         this.log.warn(
                             `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`,
@@ -643,9 +656,12 @@ export class ObjectsInRedisClient {
                 });
 
                 this.sub.on('end', () => {
-                    this.settings.connection.enhancedLogging &&
+                    if (this.settings.connection.enhancedLogging) {
                         this.log.silly(`${this.namespace} Objects-Redis Event end user sub (stop=${this.stop})`);
-                    ready && typeof this.settings.disconnected === 'function' && this.settings.disconnected();
+                    }
+                    if (ready && typeof this.settings.disconnected === 'function') {
+                        this.settings.disconnected();
+                    }
                 });
 
                 this.sub.on('error', error => {
@@ -1196,7 +1212,7 @@ export class ObjectsInRedisClient {
         let buffer;
         buffer = await this._getBinaryState(this.getFileId(id, name, false));
 
-        const mimeType = meta && meta.mimeType;
+        const mimeType = meta?.mimeType;
         if (meta && !meta.binary && buffer) {
             buffer = buffer.toString();
         }
@@ -1224,7 +1240,7 @@ export class ObjectsInRedisClient {
             callback = options;
             options = null;
         }
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -1353,7 +1369,7 @@ export class ObjectsInRedisClient {
             callback = options;
             options = null;
         }
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -1474,7 +1490,7 @@ export class ObjectsInRedisClient {
                     return !key.includes('/_data.json$%$') && key !== '_data.json'; // sort out "virtual" files that are used to mark directories
                 }
                 const dir = parts[deepLevel - 1];
-                if (dirs.indexOf(dir) === -1) {
+                if (!dirs.includes(dir)) {
                     dirs.push(dir);
                 }
             }
@@ -1501,7 +1517,7 @@ export class ObjectsInRedisClient {
         const dontCheck =
             options.user === CONSTS.SYSTEM_ADMIN_USER ||
             options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
-            (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+            options.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP);
 
         for (let i = 0; i < keys.length; i++) {
             const file = keys[i].substring(start + baseName.length, keys[i].length - end);
@@ -1527,11 +1543,7 @@ export class ObjectsInRedisClient {
                     continue;
                 }
                 obj.acl = obj.acl || {};
-                if (
-                    options.user !== CONSTS.SYSTEM_ADMIN_USER &&
-                    options.groups &&
-                    options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) === -1
-                ) {
+                if (options.user !== CONSTS.SYSTEM_ADMIN_USER && !options.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP)) {
                     obj.acl.read = !!(obj.acl.permissions & CONSTS.ACCESS_EVERY_READ);
                     obj.acl.write = !!(obj.acl.permissions & CONSTS.ACCESS_EVERY_WRITE);
                 } else {
@@ -1568,7 +1580,7 @@ export class ObjectsInRedisClient {
             callback = options;
             options = null;
         }
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -1698,7 +1710,7 @@ export class ObjectsInRedisClient {
             const dontCheck =
                 options.user === CONSTS.SYSTEM_ADMIN_USER ||
                 options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
-                (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+                options.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP);
 
             if (!dontCheck) {
                 result = [];
@@ -1740,7 +1752,7 @@ export class ObjectsInRedisClient {
             callback = options;
             options = null;
         }
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
         if (
@@ -1807,7 +1819,7 @@ export class ObjectsInRedisClient {
             callback = options;
             options = null;
         }
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -1852,7 +1864,7 @@ export class ObjectsInRedisClient {
         meta?: any,
     ): Promise<ioBroker.RmResult[] | undefined> {
         if (meta && !meta.isDir) {
-            // it is file
+            // it is a file
             const metaID = this.getFileId(id, name, true);
             const dataID = this.getFileId(id, name, false);
             await this.delObjectAsync(dataID);
@@ -1894,7 +1906,7 @@ export class ObjectsInRedisClient {
             const dontCheck =
                 options.user === CONSTS.SYSTEM_ADMIN_USER ||
                 options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
-                (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+                options.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP);
 
             objs = objs || [];
             if (!dontCheck) {
@@ -1937,7 +1949,7 @@ export class ObjectsInRedisClient {
             callback = options;
             options = null;
         }
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -1953,7 +1965,7 @@ export class ObjectsInRedisClient {
                 return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
             }
             try {
-                const files = await this._rm(id, name, options, meta && meta.notExists ? null : meta);
+                const files = await this._rm(id, name, options, meta?.notExists ? null : meta);
                 return tools.maybeCallbackWithError(callback, null, files);
             } catch (e) {
                 return tools.maybeCallbackWithError(callback, e);
@@ -2102,7 +2114,7 @@ export class ObjectsInRedisClient {
         const dontCheck =
             options.user === CONSTS.SYSTEM_ADMIN_USER ||
             options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
-            (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+            options.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP);
         const keysFiltered = [];
         const objsFiltered = [];
         const processed: ioBroker.ChownFileResult[] = [];
@@ -2316,7 +2328,7 @@ export class ObjectsInRedisClient {
         const dontCheck =
             options.user === CONSTS.SYSTEM_ADMIN_USER ||
             options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
-            (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+            options.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP);
 
         const keysFiltered = [];
         const objsFiltered = [];
@@ -2424,7 +2436,7 @@ export class ObjectsInRedisClient {
             options = null;
         }
 
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -2780,16 +2792,15 @@ export class ObjectsInRedisClient {
                     }
                     if (!obj.acl) {
                         obj.acl = {
-                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || CONSTS.SYSTEM_ADMIN_USER,
-                            ownerGroup:
-                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || CONSTS.SYSTEM_ADMIN_GROUP,
+                            owner: this.defaultNewAcl?.owner || CONSTS.SYSTEM_ADMIN_USER,
+                            ownerGroup: this.defaultNewAcl?.ownerGroup || CONSTS.SYSTEM_ADMIN_GROUP,
                             object:
-                                (this.defaultNewAcl && this.defaultNewAcl.object) ||
+                                this.defaultNewAcl?.object ||
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ, // '0644'
                         };
                         if (obj.type === 'state') {
                             obj.acl!.state =
-                                (this.defaultNewAcl && this.defaultNewAcl.state) ||
+                                this.defaultNewAcl?.state ||
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ; // '0644'
                         }
                     }
@@ -2907,16 +2918,15 @@ export class ObjectsInRedisClient {
                     }
                     if (!obj.acl) {
                         obj.acl = {
-                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || CONSTS.SYSTEM_ADMIN_USER,
-                            ownerGroup:
-                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || CONSTS.SYSTEM_ADMIN_GROUP,
+                            owner: this.defaultNewAcl?.owner || CONSTS.SYSTEM_ADMIN_USER,
+                            ownerGroup: this.defaultNewAcl?.ownerGroup || CONSTS.SYSTEM_ADMIN_GROUP,
                             object:
-                                (this.defaultNewAcl && this.defaultNewAcl.object) ||
+                                this.defaultNewAcl?.object ||
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ, // '0644'
                         };
                         if (obj.type === 'state') {
                             obj.acl!.state =
-                                (this.defaultNewAcl && this.defaultNewAcl.state) ||
+                                this.defaultNewAcl?.state ||
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ; // '0644'
                         }
                     }
@@ -3110,7 +3120,7 @@ export class ObjectsInRedisClient {
             const dontCheck =
                 options.user === CONSTS.SYSTEM_ADMIN_USER ||
                 options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
-                (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+                options.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP);
 
             if (dontCheck) {
                 for (let i = 0; i < keys.length; i++) {
@@ -3231,8 +3241,9 @@ export class ObjectsInRedisClient {
         let objs;
         try {
             objs = await this.client.mget(_keys);
-            this.settings.connection.enhancedLogging &&
+            if (this.settings.connection.enhancedLogging) {
                 this.log.silly(`${this.namespace} redis mget ${!objs ? 0 : objs.length} ${_keys.length}`);
+            }
         } catch (e) {
             this.log.warn(`${this.namespace} redis mget ${!objs ? 0 : objs.length} ${_keys.length}, err: ${e.message}`);
         }
@@ -3243,7 +3254,7 @@ export class ObjectsInRedisClient {
                 options &&
                 (options.user === CONSTS.SYSTEM_ADMIN_USER ||
                     options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
-                    (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1));
+                    options.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP));
 
             if (!dontCheck) {
                 for (let i = 0; i < objs.length; i++) {
@@ -3344,8 +3355,9 @@ export class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
-        this.settings.connection.enhancedLogging &&
+        if (this.settings.connection.enhancedLogging) {
             this.log.silly(`${this.namespace} redis keys ${keys.length} ${pattern}`);
+        }
         this._getObjects(keys, options, callback, true);
     }
 
@@ -3369,7 +3381,7 @@ export class ObjectsInRedisClient {
                 this.getObjectsByPattern(pattern, options, (err, obj) => (err ? reject(err) : resolve(obj))),
             );
         }
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
         if (typeof callback === 'function') {
@@ -3635,7 +3647,7 @@ export class ObjectsInRedisClient {
                 this.setObject(id, obj, options, (err, res) => (err ? reject(err) : resolve(res))),
             );
         }
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -4568,8 +4580,7 @@ export class ObjectsInRedisClient {
                     oldObj.acl.ownerGroup = null;
                     return void this.getUserGroup(options.owner, (user, groups /*, permissions */) => {
                         if (!groups || !groups[0]) {
-                            options.ownerGroup =
-                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || CONSTS.SYSTEM_ADMIN_GROUP;
+                            options.ownerGroup = this.defaultNewAcl?.ownerGroup || CONSTS.SYSTEM_ADMIN_GROUP;
                         } else {
                             options.ownerGroup = groups[0];
                         }
@@ -4627,7 +4638,7 @@ export class ObjectsInRedisClient {
                 }
             }
 
-            if (oldObj.common && oldObj.common.custom && !oldObjHasCustom) {
+            if (oldObj.common?.custom && !oldObjHasCustom) {
                 // we now have custom, old object had no custom
                 commands.push(['sadd', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
             } else if (oldObjHasCustom && (!oldObj.common || !oldObj.common.custom)) {
@@ -4682,7 +4693,7 @@ export class ObjectsInRedisClient {
             );
         }
 
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -4715,19 +4726,18 @@ export class ObjectsInRedisClient {
      */
     private _findObject(
         idOrName: string,
-        type: string | null,
-        options: CallOptions,
+        type: ioBroker.CommonType | null,
+        options: CallOptions & { language?: ioBroker.Languages },
         callback?: ioBroker.FindObjectCallback,
     ): void {
+        // Try to read by ID
         this._getObject(idOrName, options, (err, obj) => {
             // Assume it is ID
-            if (
-                obj &&
-                utils.checkObject(obj, options, CONSTS.ACCESS_READ) &&
-                (!type || (obj.common && obj.common.type === type))
-            ) {
+            if (obj && utils.checkObject(obj, options, CONSTS.ACCESS_READ) && (!type || obj.common?.type === type)) {
                 return tools.maybeCallbackWithError(callback, null, idOrName, obj.common.name);
             }
+
+            // Get all objects that this user may read
             this._getKeys(
                 '*',
                 options,
@@ -4740,14 +4750,14 @@ export class ObjectsInRedisClient {
                         return tools.maybeCallbackWithError(callback, err);
                     }
 
-                    let objs;
+                    let objs: (string | null)[];
                     try {
                         objs = await this.client.mget(keys);
                     } catch (e) {
                         return tools.maybeCallbackWithRedisError(callback, e);
                     }
                     objs = objs || [];
-                    // Assume it is name
+                    // Assume it is a name
                     for (let i = 0; i < keys.length; i++) {
                         const strObj = objs[i];
                         let obj: ioBroker.AnyObject | null;
@@ -4757,12 +4767,15 @@ export class ObjectsInRedisClient {
                             this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
                             continue;
                         }
-                        if (
-                            obj?.common &&
-                            obj.common.name === idOrName &&
-                            (!type || ('type' in obj.common && obj.common.type === type))
-                        ) {
-                            return tools.maybeCallbackWithError(callback, null, obj._id, idOrName);
+
+                        if (obj?.common && (!type || ('type' in obj.common && obj.common.type === type))) {
+                            let name = obj?.common?.name;
+                            if (name && typeof name === 'object') {
+                                name = name[options.language || 'en'] || name.en;
+                            }
+                            if (name === idOrName) {
+                                return tools.maybeCallbackWithError(callback, null, obj._id, obj.common.name);
+                            }
                         }
                     }
                     return tools.maybeCallbackWithError(callback, null, undefined, idOrName);
@@ -4775,25 +4788,25 @@ export class ObjectsInRedisClient {
     // The user has provided a callback, thus we call it
     findObject(
         idOrName: string,
-        type: string | null,
-        options: CallOptions | null,
+        type: ioBroker.CommonType | null,
+        options: (CallOptions & { language?: ioBroker.Languages }) | null,
         callback: ioBroker.FindObjectCallback,
     ): void;
 
     // The user has provided a callback without options
-    findObject(idOrName: string, type: string | null, callback: ioBroker.FindObjectCallback): void;
+    findObject(idOrName: string, type: ioBroker.CommonType | null, callback: ioBroker.FindObjectCallback): void;
 
     // No callback provided by user, we return a promise
     findObject(
         idOrName: string,
-        type?: string | null,
-        options?: CallOptions | null,
+        type?: ioBroker.CommonType | null,
+        options?: (CallOptions & { language?: ioBroker.Languages }) | null,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.FindObjectCallback>>;
 
     findObject(
         idOrName: string,
-        type: string | null,
-        options: CallOptions | null,
+        type: ioBroker.CommonType | null,
+        options: (CallOptions & { language?: ioBroker.Languages }) | null,
         callback?: ioBroker.FindObjectCallback,
     ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.FindObjectCallback>> {
         if (typeof type === 'function') {
@@ -4833,7 +4846,7 @@ export class ObjectsInRedisClient {
 
         for (const setting of settings) {
             // @ts-expect-error TODO: decide https://github.com/ioBroker/ioBroker.js-controller/issues/507
-            if (this.preserveSettings.indexOf(setting) === -1) {
+            if (!this.preserveSettings.includes(setting)) {
                 // @ts-expect-error TODO: decide https://github.com/ioBroker/ioBroker.js-controller/issues/507
                 this.preserveSettings.push(setting);
             }

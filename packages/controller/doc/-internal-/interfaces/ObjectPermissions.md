@@ -22,7 +22,7 @@ The access rights for files
 
 #### Defined in
 
-[types-dev/index.d.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/types-dev/index.d.ts#L116)
+[types-dev/index.d.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/types-dev/index.d.ts#L116)
 
 ***
 
@@ -34,7 +34,7 @@ The access rights for objects
 
 #### Defined in
 
-[types-dev/index.d.ts:118](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/types-dev/index.d.ts#L118)
+[types-dev/index.d.ts:118](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/types-dev/index.d.ts#L118)
 
 ***
 
@@ -46,7 +46,7 @@ The access rights for states
 
 #### Defined in
 
-[types-dev/index.d.ts:122](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/types-dev/index.d.ts#L122)
+[types-dev/index.d.ts:122](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/types-dev/index.d.ts#L122)
 
 ***
 
@@ -58,4 +58,4 @@ The access rights for users/groups
 
 #### Defined in
 
-[types-dev/index.d.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/types-dev/index.d.ts#L120)
+[types-dev/index.d.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/types-dev/index.d.ts#L120)

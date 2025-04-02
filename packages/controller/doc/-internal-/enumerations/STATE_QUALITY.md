@@ -18,7 +18,7 @@ General problem
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:22](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L22)
+[adapter/src/lib/adapter/constants.ts:22](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L22)
 
 ***
 
@@ -30,7 +30,7 @@ The instance cannot establish a connection
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:24](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L24)
+[adapter/src/lib/adapter/constants.ts:24](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L24)
 
 ***
 
@@ -42,7 +42,7 @@ The device has reported an error
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:46](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L46)
+[adapter/src/lib/adapter/constants.ts:46](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L46)
 
 ***
 
@@ -54,7 +54,7 @@ The device is not connected
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:42](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L42)
+[adapter/src/lib/adapter/constants.ts:42](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L42)
 
 ***
 
@@ -66,7 +66,7 @@ General problem by device
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:36](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L36)
+[adapter/src/lib/adapter/constants.ts:36](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L36)
 
 ***
 
@@ -78,7 +78,7 @@ General problem by instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L34)
+[adapter/src/lib/adapter/constants.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L34)
 
 ***
 
@@ -90,7 +90,7 @@ General problem by sensor
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L38)
+[adapter/src/lib/adapter/constants.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L38)
 
 ***
 
@@ -102,7 +102,7 @@ The default value for a state
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:20](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L20)
+[adapter/src/lib/adapter/constants.ts:20](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L20)
 
 ***
 
@@ -114,7 +114,7 @@ The instance is not connected
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:40](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L40)
+[adapter/src/lib/adapter/constants.ts:40](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L40)
 
 ***
 
@@ -126,7 +126,7 @@ The sensor has reported an error
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:48](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L48)
+[adapter/src/lib/adapter/constants.ts:48](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L48)
 
 ***
 
@@ -138,7 +138,7 @@ The sensor is not connected
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:44](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L44)
+[adapter/src/lib/adapter/constants.ts:44](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L44)
 
 ***
 
@@ -150,7 +150,7 @@ Substitute value from instance or device
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L30)
+[adapter/src/lib/adapter/constants.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L30)
 
 ***
 
@@ -162,7 +162,7 @@ Substitute value from controller. Do not set this in adapters
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:26](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L26)
+[adapter/src/lib/adapter/constants.ts:26](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L26)
 
 ***
 
@@ -174,7 +174,7 @@ Quality for default values
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L28)
+[adapter/src/lib/adapter/constants.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L28)
 
 ***
 
@@ -186,4 +186,4 @@ Substitute value from a sensor
 
 #### Defined in
 
-[adapter/src/lib/adapter/constants.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/a32b7b151b5fe0ae96a8a5f086299f18b48e287b/packages/adapter/src/lib/adapter/constants.ts#L32)
+[adapter/src/lib/adapter/constants.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/adapter/src/lib/adapter/constants.ts#L32)
