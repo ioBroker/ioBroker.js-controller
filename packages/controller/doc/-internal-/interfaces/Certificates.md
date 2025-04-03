@@ -16,7 +16,7 @@ chained CA certificates
 
 #### Defined in
 
-[types-dev/index.d.ts:246](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/types-dev/index.d.ts#L246)
+[types-dev/index.d.ts:246](https://github.com/ioBroker/ioBroker.js-controller/blob/6e6387bb66b8177b201746ee5d7461396c3654ed/packages/types-dev/index.d.ts#L246)
 
 ***
 
@@ -28,7 +28,7 @@ public certificate
 
 #### Defined in
 
-[types-dev/index.d.ts:244](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/types-dev/index.d.ts#L244)
+[types-dev/index.d.ts:244](https://github.com/ioBroker/ioBroker.js-controller/blob/6e6387bb66b8177b201746ee5d7461396c3654ed/packages/types-dev/index.d.ts#L244)
 
 ***
 
@@ -40,4 +40,4 @@ private key file
 
 #### Defined in
 
-[types-dev/index.d.ts:242](https://github.com/ioBroker/ioBroker.js-controller/blob/d7f4b912895e80ffd4c1cbb49decb1de7c0e8ca3/packages/types-dev/index.d.ts#L242)
+[types-dev/index.d.ts:242](https://github.com/ioBroker/ioBroker.js-controller/blob/6e6387bb66b8177b201746ee5d7461396c3654ed/packages/types-dev/index.d.ts#L242)
