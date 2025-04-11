@@ -8,6 +8,7 @@
 * (@foxriver76) fixed the edge-case problem on Windows (if adapter calls `readDir` on single file)
 * (@foxriver76) fixed setting negative numbers via `state set` cli command
 * (@GermanBluefox) corrected typing for `checkPasswordAsync` command and added caching of mulit-languages names
+* (@GermanBluefox) Added support for the complex attribute names for the encrypted and protected native configuration properties: `encryptedNative` and `protectedNative`
 
 ## 7.0.6 (2024-12-08) - Lucy
 * (@foxriver76) fixed UI upgrade if admin is running on privileged port (<1024)
