@@ -2610,7 +2610,10 @@ export class AdapterClass extends EventEmitter {
         return this.setForeignObjectAsync(configObjId, obj);
     }
 
-    async getEncryptedConfig(attribute: string, callback?: GetEncryptedConfigCallback): Promise<string | void>;
+    async getEncryptedConfig(
+        attribute: string,
+        callback?: GetEncryptedConfigCallback,
+    ): Promise<string | string[] | void>;
 
     /**
      * Reads the encrypted parameter from config.
@@ -2620,22 +2623,32 @@ export class AdapterClass extends EventEmitter {
      * @param attribute - attribute name in native configuration part
      * @param [callback] - optional callback
      */
-    getEncryptedConfig(attribute: unknown, callback: unknown): Promise<string | void> {
+    getEncryptedConfig(attribute: unknown, callback: unknown): Promise<string | string[] | void> {
         Validator.assertString(attribute, 'attribute');
         Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getEncryptedConfig({ attribute, callback });
     }
 
-    private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions): Promise<string | void> {
+    private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions): Promise<string | string[] | void> {
         const { attribute, callback } = options;
 
         const value = getObjectAttribute(this.config, attribute);
 
-        if (typeof value === 'string') {
+        if (Array.isArray(value)) {
+            const secret = await this.getSystemSecret();
+            const result: string[] = [];
+            for (let i = 0; i < value.length; i++) {
+                if (typeof value[i] === 'string') {
+                    result[i] = tools.decrypt(secret, value[i]);
+                }
+            }
+            return tools.maybeCallbackWithError(callback, null, result);
+        } else if (typeof value === 'string') {
             const secret = await this.getSystemSecret();
             return tools.maybeCallbackWithError(callback, null, tools.decrypt(secret, value));
         }
+
         return tools.maybeCallbackWithError(callback, `Attribute "${attribute}" not found`);
     }
 
@@ -3469,7 +3482,7 @@ export class AdapterClass extends EventEmitter {
 
         // check that alias is valid if given
         if (obj.common && 'alias' in obj.common && obj.common.alias.id) {
-            // if alias is object validate read and write
+            // if alias is object, validate read and write
             if (typeof obj.common.alias.id === 'object') {
                 try {
                     this._utils.validateId(obj.common.alias.id.write, true, null);

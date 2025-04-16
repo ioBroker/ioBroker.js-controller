@@ -65,7 +65,13 @@ export function encryptArray(options: EncryptArrayOptions): void {
 
     for (const attr of keys) {
         const val = getObjectAttribute(obj, attr);
-        if (typeof val === 'string') {
+        if (Array.isArray(val)) {
+            const encrypted: string[] = [];
+            for (let i = 0; i < val.length; i++) {
+                encrypted[i] = encrypt(secret, val[i]);
+            }
+            setObjectAttribute(obj, attr, encrypted);
+        } else if (typeof val === 'string') {
             setObjectAttribute(obj, attr, encrypt(secret, val));
         }
     }
@@ -81,7 +87,13 @@ export function decryptArray(options: EncryptArrayOptions): void {
 
     for (const attr of keys) {
         const val = getObjectAttribute(obj, attr);
-        if (typeof val === 'string') {
+        if (Array.isArray(val)) {
+            const decrypted: string[] = [];
+            for (let i = 0; i < val.length; i++) {
+                decrypted[i] = decrypt(secret, val[i]);
+            }
+            setObjectAttribute(obj, attr, decrypted);
+        } else if (typeof val === 'string') {
             setObjectAttribute(obj, attr, decrypt(secret, val));
         }
     }
@@ -154,47 +166,110 @@ export async function requestModuleNameByUrl(url: string): Promise<string> {
  * Get attribute of an object with complex names
  *
  * @param obj - object to get the attribute from
+ * @param attrParts - attribute parts
+ * @param index - index of attribute part
+ */
+function _getObjectAttribute(obj: Record<string, any>, attrParts: string[], index: number): any {
+    if (index === attrParts.length - 1) {
+        return obj[attrParts[index]];
+    }
+    if (!obj[attrParts[index]] || typeof obj[attrParts[index]] !== 'object') {
+        return;
+    }
+    if (Array.isArray(obj[attrParts[index]])) {
+        const result: any = [];
+        for (let i = 0; i < obj[attrParts[index]].length; i++) {
+            result.push(_getObjectAttribute(obj[attrParts[index]][i], attrParts, index + 1));
+        }
+        return result;
+    }
+
+    return _getObjectAttribute(obj[attrParts[index]], attrParts, index + 1);
+}
+
+/**
+ * Get attribute of an object with complex or simple names
+ *
+ * @param obj - object to get the attribute from
  * @param attr - attribute name, can be complex like `attr1.attr2.attr3`
+ * @return could be a value or an array
  */
 export function getObjectAttribute(obj: Record<string, any>, attr: string): any {
+    // Optimization for 98% of the cases
     if (!attr.includes('.')) {
         return obj[attr];
     }
-    const attrParts = attr.split('.');
-    for (let j = 0; j < attrParts.length; j++) {
-        if (j === attrParts.length - 1) {
-            return obj[attrParts[j]];
-        }
-        if (!obj[attrParts[j]] || typeof obj[attrParts[j]] !== 'object') {
-            break;
-        }
-        obj = obj[attrParts[j]];
-    }
+    return _getObjectAttribute(obj, attr.split('.'), 0);
 }
 
 /**
  * Set attribute in an object with complex names
  *
  * @param obj - object to get the attribute from
+ * @param value - value to set (Could be an array)
+ * @param attrParts - attribute parts
+ * @param index - index of attribute part
+ */
+function _setObjectAttribute(obj: Record<string, any>, value: any, attrParts: string[], index: number): any {
+    if (index === attrParts.length - 1) {
+        obj[attrParts[index]] = value;
+        return;
+    }
+    if (!obj[attrParts[index]] || typeof obj[attrParts[index]] !== 'object') {
+        return;
+    }
+    if (Array.isArray(obj[attrParts[index]])) {
+        if (!Array.isArray(value)) {
+            throw new Error('Value is not an array');
+        }
+        for (let i = 0; i < obj[attrParts[index]].length; i++) {
+            _setObjectAttribute(obj[attrParts[index]][i], value[i], attrParts, index + 1);
+        }
+        return;
+    }
+
+    _setObjectAttribute(obj[attrParts[index]], value, attrParts, index + 1);
+}
+
+/**
+ * Set attribute in an object with complex or simple names
+ *
+ * @param obj - object to get the attribute from
  * @param attr - attribute name, can be complex like `attr1.attr2.attr3`
- * @param value - value to set
+ * @param value - value to set (could be a value or an array)
  */
 export function setObjectAttribute(obj: Record<string, any>, attr: string, value: any): void {
+    // Optimization for 98% of the cases
     if (!attr.includes('.')) {
         obj[attr] = value;
         return;
     }
-    const attrParts = attr.split('.');
-    for (let j = 0; j < attrParts.length; j++) {
-        if (j === attrParts.length - 1) {
-            obj[attrParts[j]] = value;
-            return;
-        }
-        if (!obj[attrParts[j]] || typeof obj[attrParts[j]] !== 'object') {
-            break;
-        }
-        obj = obj[attrParts[j]];
+    _setObjectAttribute(obj, value, attr.split('.'), 0);
+}
+
+/**
+ * Delete attribute in an object with complex names
+ *
+ * @param obj - object to get the attribute from
+ * @param attrParts - attribute parts
+ * @param index - index of attribute part
+ */
+function _deleteObjectAttribute(obj: Record<string, any>, attrParts: string[], index: number): any {
+    if (index === attrParts.length - 1) {
+        delete obj[attrParts[index]];
+        return;
     }
+    if (!obj[attrParts[index]] || typeof obj[attrParts[index]] !== 'object') {
+        return;
+    }
+    if (Array.isArray(obj[attrParts[index]])) {
+        for (let i = 0; i < obj[attrParts[index]].length; i++) {
+            _deleteObjectAttribute(obj[attrParts[index]][i], attrParts, index + 1);
+        }
+        return;
+    }
+
+    _deleteObjectAttribute(obj[attrParts[index]], attrParts, index + 1);
 }
 
 /**
@@ -204,19 +279,11 @@ export function setObjectAttribute(obj: Record<string, any>, attr: string, value
  * @param attr - attribute name, can be complex like `attr1.attr2.attr3`
  */
 export function deleteObjectAttribute(obj: Record<string, any>, attr: string): void {
+    // Optimization for 98% of the cases
     if (!attr.includes('.')) {
         delete obj[attr];
         return;
     }
-    const attrParts = attr.split('.');
-    for (let j = 0; j < attrParts.length; j++) {
-        if (j === attrParts.length - 1) {
-            delete obj[attrParts[j]];
-            return;
-        }
-        if (!obj[attrParts[j]] || typeof obj[attrParts[j]] !== 'object') {
-            break;
-        }
-        obj = obj[attrParts[j]];
-    }
+
+    _deleteObjectAttribute(obj, attr.split('.'), 0);
 }

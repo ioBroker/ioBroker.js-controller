@@ -1174,17 +1174,23 @@
       "secondPassword": "$/aes-192-cbc:bcc46f0eec2addc9a54e70776c3f3f79:3861c124787cffb3e1a4e575f5acdb51a1e279ccde98a427946e1762075f051f",
       "complex": {
         "password": "G\\\b\u000bY\fS"
-      }
+      },
+      "attrArray": [
+        { "password": "G\\\b\u000bY\fS", "value": "not encoded 1" },
+        { "password": "G\\\b\u000bY\fS", "value": "not encoded 2" }
+      ]
     },
     "protectedNative": [
       "username",
       "password",
-      "complex.password"
+      "complex.password",
+      "attrArray.password"
     ],
     "encryptedNative": [
       "password",
       "secondPassword",
-      "complex.password"
+      "complex.password",
+      "attrArray.password"
     ],
     "_id": "system.adapter.test.0",
     "type": "adapter"
