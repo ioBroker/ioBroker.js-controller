@@ -1200,8 +1200,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.username).to.equal('tesla');
                     expect(obj!.native.password).to.equal('winning');
                     expect(obj!.native.complex.password).to.equal('winning');
-                    expect(obj!.native.attrArray[1].password).to.equal('winning1');
-                    expect(obj!.native.attrArray[0].password).to.equal('winning2');
+                    expect(obj!.native.attrArray[0].password).to.equal('winning1');
+                    expect(obj!.native.attrArray[1].password).to.equal('winning2');
                     expect(obj!._id).equal(`system.adapter.${context.adapterShortName}.0`);
                     context.onAdapterObjectChanged = null;
                     done();
