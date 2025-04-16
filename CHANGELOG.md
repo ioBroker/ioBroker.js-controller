@@ -9,6 +9,8 @@
 * (@foxriver76) fixed setting negative numbers via `state set` cli command
 * (@GermanBluefox) corrected typing for `checkPasswordAsync` command and added caching of mulit-languages names
 * (@GermanBluefox) Added support for the complex attribute names for the encrypted and protected native configuration properties: `encryptedNative` and `protectedNative`
+* (@GermanBluefox) Improvement of `adapter.findForeignObject` (typing and optional parameters fixed)
+* (@GermanBluefox) Improvement of JSON schema for `io-package.json` and type definitions
 
 ## 7.0.6 (2024-12-08) - Lucy
 * (@foxriver76) fixed UI upgrade if admin is running on privileged port (<1024)
