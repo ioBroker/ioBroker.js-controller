@@ -1,7 +1,7 @@
 {
     "name": "@iobroker/js-controller-cli",
     "type": "module",
-    "version": "7.0.7-alpha.8-20250324-d7f4b9128",
+    "version": "7.0.7-alpha.9-20250403-6e6387bb6",
     "engines": {
         "node": ">=18.0.0"
     },
@@ -9,7 +9,7 @@
         "@iobroker/js-controller-common": "file:../common",
         "@iobroker/js-controller-common-db": "file:../common-db",
         "@iobroker/plugin-base": "~2.0.1",
-        "axios": "^1.7.4",
+        "axios": "^1.8.4",
         "chokidar": "^3.5.3",
         "debug": "^4.3.4",
         "deep-clone": "^3.0.3",
