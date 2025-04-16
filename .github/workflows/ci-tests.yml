@@ -20,7 +20,7 @@ concurrency:
 jobs:
   lint:
     name: Eslint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v4
@@ -41,7 +41,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-20.04, macos-latest]
+        os: [windows-latest, ubuntu-22.04, macos-latest]
         node: [18, 20, 22]
 
     steps:
@@ -52,7 +52,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Prepare installation (Linux)
-        if: ${{ matrix.os == 'ubuntu-20.04' }}
+        if: ${{ matrix.os == 'ubuntu-22.04' }}
         uses: ./.github/actions/install-redis-linux
 
       - name: Prepare installation (MacOS)
@@ -91,7 +91,7 @@ jobs:
         run: npm run test-jsonl
 
       - name: Redis Socket/Sentinel Tests (Linux)
-        if: ${{ matrix.os == 'ubuntu-20.04' }}
+        if: ${{ matrix.os == 'ubuntu-22.04' }}
         run: |
           sudo chmod ogu+x packages/controller/test/redis-socket/setup-socket.sh
           sudo chmod ogu+x packages/controller/test/redis-sentinel/*.sh
