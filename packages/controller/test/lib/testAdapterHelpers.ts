@@ -455,7 +455,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         const passphrase = 'SavePassword123';
 
-        await context.adapter.updateConfig({ secondPassword: passphrase });
+        await context.adapter.updateConfig({
+            secondPassword: passphrase,
+            complex: { password: passphrase },
+            attrArray: [
+                { password: `${passphrase}1`, value: 'value1' },
+                { value: 'value2' },
+                { password: `${passphrase}3`, value: 'value3' },
+            ],
+        });
         const newConfig = await context.adapter.getForeignObjectAsync(`system.adapter.${context.adapter.namespace}`);
 
         // non encrypted and non updated params stay the same
@@ -471,6 +479,22 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // updated encrypted value is correctly decrypted
         expect(newConfig?.native.secondPassword).to.exist;
         expect(context.adapter.decrypt(newConfig?.native.secondPassword)).to.be.equal(passphrase);
+
+        // updated encrypted complex passwords, decrypt to the same value
+        expect(newConfig?.native.complex.password).to.exist;
+        expect(context.adapter.decrypt(newConfig?.native.complex.password)).to.be.equal(passphrase);
+
+        // updated encrypted complex passwords in the array, decrypt to the same value
+        expect(newConfig?.native.attrArray[0].password).to.exist;
+        expect(context.adapter.decrypt(newConfig?.native.attrArray[0].password)).to.be.equal(`${passphrase}1`);
+        expect(newConfig?.native.attrArray[0].value).to.be.equal(`value1`);
+
+        expect(newConfig?.native.attrArray[1].password).to.not.exist;
+        expect(newConfig?.native.attrArray[1].value).to.be.equal(`value2`);
+
+        expect(newConfig?.native.attrArray[2].password).to.exist;
+        expect(context.adapter.decrypt(newConfig?.native.attrArray[2].password)).to.be.equal(`${passphrase}3`);
+        expect(newConfig?.native.attrArray[2].value).to.be.equal(`value3`);
     });
 
     // setState object validation

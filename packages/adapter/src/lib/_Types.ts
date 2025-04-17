@@ -347,7 +347,7 @@ export interface InternalUpdateConfigOptions {
     newConfig: Record<string, any>;
 }
 
-export type GetEncryptedConfigCallback = (error: Error | null | undefined, result?: string) => void;
+export type GetEncryptedConfigCallback = (error: Error | null | undefined, result?: string | string[]) => void;
 
 export interface InternalGetEncryptedConfigOptions {
     attribute: string;

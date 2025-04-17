@@ -1719,21 +1719,20 @@ async function setMeta(): Promise<void> {
         { startkey: `${hostObjectPrefix}.`, endkey: `${hostObjectPrefix}.\u9999`, include_docs: true },
         async (err, doc) => {
             if (err) {
-                logger &&
-                    logger.error(
-                        `${hostLogPrefix} Could not collect ${hostObjectPrefix} states to check for obsolete states: ${err.message}`,
-                    );
+                logger?.error(
+                    `${hostLogPrefix} Could not collect ${hostObjectPrefix} states to check for obsolete states: ${err.message}`,
+                );
             } else if (doc?.rows) {
                 // identify existing states for deletion, because they are not in the new tasks-list
-                let thishostStates = doc.rows;
+                let thisHostStates = doc.rows;
                 if (!compactGroupController) {
-                    thishostStates = doc.rows.filter(
+                    thisHostStates = doc.rows.filter(
                         out1 => !out1.id.includes(hostObjectPrefix + compactGroupObjectPrefix),
                     );
                 }
                 const pluginStatesIndex = `${hostObjectPrefix}.plugins.`.length;
                 const notificationStatesIndex = `${hostObjectPrefix}.notifications.`.length;
-                const toDelete = thishostStates.filter(out1 => {
+                const toDelete = thisHostStates.filter(out1 => {
                     const found = tasks.find(out2 => out1.id === out2._id);
                     if (found === undefined) {
                         if (out1.id.startsWith(`${hostObjectPrefix}.plugins.`)) {
@@ -1753,18 +1752,20 @@ async function setMeta(): Promise<void> {
 
                 if (toDelete && toDelete.length > 0) {
                     await delObjects(toDelete);
-                    logger && logger.info(`${hostLogPrefix} Some obsolete host states deleted.`);
+                    logger?.info(`${hostLogPrefix} Some obsolete host states deleted.`);
                 }
             }
             await extendObjects(tasks);
             // create UUID if not exist
             if (!compactGroupController) {
                 const uuid = await tools.createUuid(objects);
-                uuid && logger && logger.info(`${hostLogPrefix} Created UUID: ${uuid}`);
+                if (uuid) {
+                    logger?.info(`${hostLogPrefix} Created UUID: ${uuid}`);
+                }
 
                 if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
-                    logger &&
-                        logger.info(`${hostLogPrefix} Detected vendor file: ${fs.existsSync(VENDOR_BOOTSTRAP_FILE)}`);
+                    logger?.info(`${hostLogPrefix} Detected vendor file: ${fs.existsSync(VENDOR_BOOTSTRAP_FILE)}`);
+
                     try {
                         const startScript = fs.readJSONSync(VENDOR_BOOTSTRAP_FILE);
 
@@ -1772,42 +1773,36 @@ async function setMeta(): Promise<void> {
                             const { Vendor } = await import('@iobroker/js-controller-cli');
                             const vendor = new Vendor({ objects: objects! });
 
-                            logger && logger.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
+                            logger?.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
                             try {
                                 await vendor.checkVendor(VENDOR_FILE, startScript.password, logger);
-                                logger && logger.info(`${hostLogPrefix} Vendor information synchronised.`);
+                                logger?.info(`${hostLogPrefix} Vendor information synchronised.`);
                                 try {
                                     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
                                         fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                     }
                                 } catch (e) {
-                                    logger &&
-                                        logger.error(
-                                            `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`,
-                                        );
+                                    logger?.error(
+                                        `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`,
+                                    );
                                 }
                             } catch (e) {
-                                logger &&
-                                    logger.error(`${hostLogPrefix} Cannot update vendor information: ${e.message}`);
+                                logger?.error(`${hostLogPrefix} Cannot update vendor information: ${e.message}`);
                                 try {
                                     fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                 } catch (e) {
-                                    logger &&
-                                        logger.error(
-                                            `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`,
-                                        );
+                                    logger?.error(
+                                        `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`,
+                                    );
                                 }
                             }
                         }
                     } catch (e) {
-                        logger && logger.error(`${hostLogPrefix} Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                        logger?.error(`${hostLogPrefix} Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                         try {
                             fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                         } catch (e) {
-                            logger &&
-                                logger.error(
-                                    `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`,
-                                );
+                            logger?.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                         }
                     }
                 }
@@ -5251,10 +5246,10 @@ export async function init(compactGroupId?: number): Promise<void> {
             try {
                 if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
                     fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                    logger && logger.info(`${hostLogPrefix} Deleted ${VENDOR_BOOTSTRAP_FILE}`);
+                    logger?.info(`${hostLogPrefix} Deleted ${VENDOR_BOOTSTRAP_FILE}`);
                 }
             } catch (e) {
-                logger && logger.error(`${hostLogPrefix} Cannot delete ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                logger?.error(`${hostLogPrefix} Cannot delete ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
             }
         }, 30_000);
     }

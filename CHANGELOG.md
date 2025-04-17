@@ -7,7 +7,8 @@
 ## __WORK IN PROGRESS__ - Lucy
 * (@foxriver76) fixed the edge-case problem on Windows (if adapter calls `readDir` on single file)
 * (@foxriver76) fixed setting negative numbers via `state set` cli command
-* (@GermanBluefox) corrected typing for `checkPasswordAsync` command and added caching of multilingual names
+* (@GermanBluefox) corrected typing for `checkPasswordAsync` command and added caching of mulit-languages names
+* (@GermanBluefox) Added support for the complex attribute names for the encrypted and protected native configuration properties: `encryptedNative` and `protectedNative`
 * (@GermanBluefox) Improvement of `adapter.findForeignObject` (typing and optional parameters fixed)
 * (@GermanBluefox) Improvement of JSON schema for `io-package.json` and type definitions
 

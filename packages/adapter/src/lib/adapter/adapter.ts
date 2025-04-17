@@ -33,6 +33,9 @@ import {
     isMessageboxSupported,
     listInstalledNodeModules,
     requestModuleNameByUrl,
+    deleteObjectAttribute,
+    setObjectAttribute,
+    getObjectAttribute,
 } from '@/lib/adapter/utils.js';
 
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -2583,7 +2586,7 @@ export class AdapterClass extends EventEmitter {
 
         obj.native = mergedConfig;
 
-        return this.setForeignObjectAsync(configObjId, obj);
+        return this.setForeignObject(configObjId, obj);
     }
 
     /**
@@ -2607,7 +2610,10 @@ export class AdapterClass extends EventEmitter {
         return this.setForeignObjectAsync(configObjId, obj);
     }
 
-    async getEncryptedConfig(attribute: string, callback?: GetEncryptedConfigCallback): Promise<string | void>;
+    async getEncryptedConfig(
+        attribute: string,
+        callback?: GetEncryptedConfigCallback,
+    ): Promise<string | string[] | void>;
 
     /**
      * Reads the encrypted parameter from config.
@@ -2617,22 +2623,32 @@ export class AdapterClass extends EventEmitter {
      * @param attribute - attribute name in native configuration part
      * @param [callback] - optional callback
      */
-    getEncryptedConfig(attribute: unknown, callback: unknown): Promise<string | void> {
+    getEncryptedConfig(attribute: unknown, callback: unknown): Promise<string | string[] | void> {
         Validator.assertString(attribute, 'attribute');
         Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getEncryptedConfig({ attribute, callback });
     }
 
-    private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions): Promise<string | void> {
+    private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions): Promise<string | string[] | void> {
         const { attribute, callback } = options;
 
-        const value = (this.config as InternalAdapterConfig)[attribute];
+        const value = getObjectAttribute(this.config, attribute);
 
-        if (typeof value === 'string') {
+        if (Array.isArray(value)) {
+            const secret = await this.getSystemSecret();
+            const result: string[] = [];
+            for (let i = 0; i < value.length; i++) {
+                if (typeof value[i] === 'string') {
+                    result[i] = tools.decrypt(secret, value[i]);
+                }
+            }
+            return tools.maybeCallbackWithError(callback, null, result);
+        } else if (typeof value === 'string') {
             const secret = await this.getSystemSecret();
             return tools.maybeCallbackWithError(callback, null, tools.decrypt(secret, value));
         }
+
         return tools.maybeCallbackWithError(callback, `Attribute "${attribute}" not found`);
     }
 
@@ -3466,7 +3482,7 @@ export class AdapterClass extends EventEmitter {
 
         // check that alias is valid if given
         if (obj.common && 'alias' in obj.common && obj.common.alias.id) {
-            // if alias is object validate read and write
+            // if alias is object, validate read and write
             if (typeof obj.common.alias.id === 'object') {
                 try {
                     this._utils.validateId(obj.common.alias.id.write, true, null);
@@ -4431,7 +4447,7 @@ export class AdapterClass extends EventEmitter {
                 this.name !== id.split('.')[2]
             ) {
                 for (const attr of obj.protectedNative) {
-                    delete obj.native[attr];
+                    deleteObjectAttribute(obj.native, attr);
                 }
             }
         }
@@ -4600,7 +4616,7 @@ export class AdapterClass extends EventEmitter {
                 this.name !== obj._id.split('.')[2]
             ) {
                 for (const attr of obj.protectedNative) {
-                    delete obj.native[attr];
+                    deleteObjectAttribute(obj.native, attr);
                 }
             }
 
@@ -11359,7 +11375,7 @@ export class AdapterClass extends EventEmitter {
                     this.name !== obj._id.split('.')[2]
                 ) {
                     for (const attr of obj.protectedNative) {
-                        delete obj.native[attr];
+                        deleteObjectAttribute(obj.native, attr);
                     }
                 }
 
@@ -11457,7 +11473,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Initialize the adapter
      *
-     * @param adapterConfig the AdapterOptions or the InstanceObject, is null/undefined if it is install process
+     * @param adapterConfig the AdapterOptions or the InstanceObject, is null/undefined if it is an installation process
      */
     private async _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null): Promise<void> {
         await this._initLogging();
@@ -11535,7 +11551,7 @@ export class AdapterClass extends EventEmitter {
                 instance = 0;
                 adapterConfig = adapterConfig || {
                     // @ts-expect-error protectedNative exists on instance objects
-                    common: { mode: 'once', name: name, protectedNative: [] },
+                    common: { mode: 'once', name, protectedNative: [] },
                     native: {},
                 };
             }
@@ -11650,8 +11666,7 @@ export class AdapterClass extends EventEmitter {
                 if (typeof this.config[attr] === 'string') {
                     promises.push(
                         this.getEncryptedConfig(attr)
-                            // @ts-expect-error
-                            .then(decryptedValue => (this.config[attr] = decryptedValue))
+                            .then(decryptedValue => setObjectAttribute(this.config, attr, decryptedValue))
                             .catch(e =>
                                 this._logger.error(
                                     `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`,

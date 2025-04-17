@@ -361,8 +361,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     model: 'S P85D',
                     username: 'tesla',
                     password: 'winning',
+                    complex: {
+                        password: 'winning',
+                    },
+                    attrArray: [
+                        { password: 'winning', value: 'not encoded 1' },
+                        { value: 'not encoded 2' },
+                        { password: 'winning', value: 'not encoded 3' },
+                    ],
                 },
-                protectedNative: ['username', 'password'],
+                protectedNative: ['username', 'password', 'complex.password', 'attrArray.password'],
                 objects: [],
                 instanceObjects: [],
             },
@@ -377,6 +385,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.model).equal('S P85D');
                     expect(obj!.native.username).to.be.undefined;
                     expect(obj!.native.password).to.be.undefined;
+                    expect(obj!.native.complex.password).to.be.undefined;
+                    expect(obj!.native.attrArray[0].password).to.be.undefined;
+                    expect(obj!.native.attrArray[1].password).to.be.undefined;
+                    expect(obj!.native.attrArray[2].password).to.be.undefined;
+                    expect(obj!.native.attrArray[1].value).to.be.equal('not encoded 2');
                     expect(obj!._id).equal('system.adapter.tesla.0');
                     done();
                 });
@@ -406,8 +419,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     model: 'S P85D',
                     username: 'tesla',
                     password: 'winning',
+                    complex: {
+                        password: 'winning',
+                    },
+                    attrArray: [
+                        { password: 'winning1', value: 'not encoded 1' },
+                        { password: 'winning2', value: 'not encoded 2' },
+                    ],
                 },
-                protectedNative: ['username', 'password'],
+                protectedNative: ['username', 'password', 'complex.password', 'attrArray.password'],
                 objects: [],
                 instanceObjects: [],
             },
@@ -422,6 +442,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.model).equal('S P85D');
                     expect(obj!.native.password).equal('winning');
                     expect(obj!.native.username).equal('tesla');
+                    expect(obj!.native.complex.password).equal('winning');
+                    expect(obj!.native.attrArray[0].password).equal('winning1');
+                    expect(obj!.native.attrArray[1].password).equal('winning2');
                     expect(obj!._id).equal(`system.adapter.${context.adapterShortName}.0`);
                     done();
                 });
@@ -994,11 +1017,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 },
             },
             () => {
-                // now create the enum with object as member
+                // now create the enum with an object as member
                 objects.setObject('enum.rooms.living_room', enumObj, () => {
                     // delete the object via adapter method
                     context.adapter.delForeignObject('tesla.0.model', () => {
-                        // now get enum object
+                        // now get an enum object
                         objects.getObject('enum.rooms.living_room', (err, obj) => {
                             // check that only the deleted object has been removed
                             expect((obj as ioBroker.EnumObject).common.members!.indexOf('tesla.0.model')).to.equal(-1);
@@ -1124,6 +1147,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.model).equal('S P85D');
                     expect(obj!.native.username).to.be.undefined;
                     expect(obj!.native.password).to.be.undefined;
+                    expect(obj!.native.complex.password).to.be.undefined;
                     expect(obj!._id).equal('system.adapter.tesla.0');
                     context.onAdapterObjectChanged = null;
                     done();
@@ -1147,8 +1171,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         model: 'S P85D',
                         username: 'tesla',
                         password: 'winning',
+                        complex: {
+                            password: 'winning',
+                        },
+                        attrArray: [
+                            { password: 'winning1', value: 'not encoded 1' },
+                            { password: 'winning2', value: 'not encoded 2' },
+                        ],
                     },
-                    protectedNative: ['username', 'password'],
+                    protectedNative: ['username', 'password', 'complex.password', 'attrArray.password'],
                     objects: [],
                     instanceObjects: [],
                 },
@@ -1171,6 +1202,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.model).equal('S P85D');
                     expect(obj!.native.username).to.equal('tesla');
                     expect(obj!.native.password).to.equal('winning');
+                    expect(obj!.native.complex.password).to.equal('winning');
+                    expect(obj!.native.attrArray[0].password).to.equal('winning1');
+                    expect(obj!.native.attrArray[1].password).to.equal('winning2');
                     expect(obj!._id).equal(`system.adapter.${context.adapterShortName}.0`);
                     context.onAdapterObjectChanged = null;
                     done();
@@ -1194,8 +1228,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         model: 'S P85D',
                         username: 'tesla',
                         password: 'winning',
+                        complex: {
+                            password: 'winning',
+                        },
+                        attrArray: [
+                            { password: 'winning1', value: 'not encoded 1' },
+                            { password: 'winning2', value: 'not encoded 2' },
+                        ],
                     },
-                    protectedNative: ['username', 'password'],
+                    protectedNative: ['username', 'password', 'complex.password', 'attrArray.password'],
                     objects: [],
                     instanceObjects: [],
                 },
