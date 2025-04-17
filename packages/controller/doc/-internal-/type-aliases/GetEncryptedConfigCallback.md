@@ -12,7 +12,7 @@
 
 • **error**: `Error` \| `null` \| `undefined`
 
-• **result?**: `string`
+• **result?**: `string` \| `string`[]
 
 ## Returns
 
@@ -20,4 +20,4 @@
 
 ## Defined in
 
-[adapter/src/lib/\_Types.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/ebf87a343c9c866aa4a5e7b77c2c13760c514a2e/packages/adapter/src/lib/_Types.ts#L350)
+[adapter/src/lib/\_Types.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/16f7418df1bc6d07b232fa81310bbbd4fbe2a36c/packages/adapter/src/lib/_Types.ts#L350)
