@@ -68,7 +68,7 @@ export function encryptArray(options: EncryptArrayOptions): void {
         if (Array.isArray(val)) {
             const encrypted: string[] = [];
             for (let i = 0; i < val.length; i++) {
-                encrypted[i] = encrypt(secret, val[i]);
+                encrypted[i] = typeof val[i] === 'string' ? encrypt(secret, val[i]) : val[i];
             }
             setObjectAttribute(obj, attr, encrypted);
         } else if (typeof val === 'string') {
@@ -90,7 +90,7 @@ export function decryptArray(options: EncryptArrayOptions): void {
         if (Array.isArray(val)) {
             const decrypted: string[] = [];
             for (let i = 0; i < val.length; i++) {
-                decrypted[i] = decrypt(secret, val[i]);
+                decrypted[i] = typeof val[i] === 'string' ? decrypt(secret, val[i]) : val[i];
             }
             setObjectAttribute(obj, attr, decrypted);
         } else if (typeof val === 'string') {

@@ -366,7 +366,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     },
                     attrArray: [
                         { password: 'winning', value: 'not encoded 1' },
-                        { password: 'winning', value: 'not encoded 2' },
+                        { value: 'not encoded 2' },
+                        { password: 'winning', value: 'not encoded 3' },
                     ],
                 },
                 protectedNative: ['username', 'password', 'complex.password', 'attrArray.password'],
@@ -387,6 +388,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.complex.password).to.be.undefined;
                     expect(obj!.native.attrArray[0].password).to.be.undefined;
                     expect(obj!.native.attrArray[1].password).to.be.undefined;
+                    expect(obj!.native.attrArray[2].password).to.be.undefined;
+                    expect(obj!.native.attrArray[1].value).to.be.equal('not encoded 2');
                     expect(obj!._id).equal('system.adapter.tesla.0');
                     done();
                 });
