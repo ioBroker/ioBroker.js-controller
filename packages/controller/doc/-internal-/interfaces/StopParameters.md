@@ -20,7 +20,7 @@ Specify an optional exit code
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:583](https://github.com/ioBroker/ioBroker.js-controller/blob/ebf87a343c9c866aa4a5e7b77c2c13760c514a2e/packages/adapter/src/lib/_Types.ts#L583)
+[adapter/src/lib/\_Types.ts:583](https://github.com/ioBroker/ioBroker.js-controller/blob/16f7418df1bc6d07b232fa81310bbbd4fbe2a36c/packages/adapter/src/lib/_Types.ts#L583)
 
 ***
 
@@ -32,4 +32,4 @@ Specify an optional reason for stoppage
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:585](https://github.com/ioBroker/ioBroker.js-controller/blob/ebf87a343c9c866aa4a5e7b77c2c13760c514a2e/packages/adapter/src/lib/_Types.ts#L585)
+[adapter/src/lib/\_Types.ts:585](https://github.com/ioBroker/ioBroker.js-controller/blob/16f7418df1bc6d07b232fa81310bbbd4fbe2a36c/packages/adapter/src/lib/_Types.ts#L585)
