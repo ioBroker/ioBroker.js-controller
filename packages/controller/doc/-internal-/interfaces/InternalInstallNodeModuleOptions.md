@@ -20,7 +20,7 @@ Name of the npm module or an installable url ẁorking with `npm install`
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:610](https://github.com/ioBroker/ioBroker.js-controller/blob/6e6387bb66b8177b201746ee5d7461396c3654ed/packages/adapter/src/lib/_Types.ts#L610)
+[adapter/src/lib/\_Types.ts:610](https://github.com/ioBroker/ioBroker.js-controller/blob/ebf87a343c9c866aa4a5e7b77c2c13760c514a2e/packages/adapter/src/lib/_Types.ts#L610)
 
 ***
 
@@ -36,4 +36,4 @@ Version of node module
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:605](https://github.com/ioBroker/ioBroker.js-controller/blob/6e6387bb66b8177b201746ee5d7461396c3654ed/packages/adapter/src/lib/_Types.ts#L605)
+[adapter/src/lib/\_Types.ts:605](https://github.com/ioBroker/ioBroker.js-controller/blob/ebf87a343c9c866aa4a5e7b77c2c13760c514a2e/packages/adapter/src/lib/_Types.ts#L605)
