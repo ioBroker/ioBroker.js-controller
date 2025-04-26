@@ -4459,7 +4459,14 @@ export class AdapterClass extends EventEmitter {
     findForeignObject(
         idOrName: string,
         type: ioBroker.CommonType | null,
-        options: { user?: `system.user.${string}`; language?: ioBroker.Languages },
+        options: {
+            user?: `system.user.${string}`;
+            language?: ioBroker.Languages;
+            /** Internal flag, if adapter has already checked the access rights */
+            checked?: boolean;
+            /** Search only within the states, that belongs to this user */
+            limitToOwnerRights?: boolean;
+        },
         callback: ioBroker.FindObjectCallback,
     ): void;
 
