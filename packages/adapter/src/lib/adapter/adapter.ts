@@ -4462,7 +4462,7 @@ export class AdapterClass extends EventEmitter {
         options: {
             user?: `system.user.${string}`;
             language?: ioBroker.Languages;
-            /** Internal flag, if adapter has already checked the access rights */
+            /** This can be set to true to disable permission checks if they were already checked otherwise. Use it with caution! */
             checked?: boolean;
             /** Search only within the states, that belongs to this user */
             limitToOwnerRights?: boolean;
