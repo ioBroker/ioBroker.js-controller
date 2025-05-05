@@ -334,7 +334,7 @@ export class Users {
         if (!isExisting) {
             return tools.maybeCallbackWithError(callback, `User "${username}" does not exist.`);
         }
-        // Check group
+        // Check a group
         if (!password) {
             prompt.message = '';
             prompt.delimiter = '';
@@ -356,7 +356,7 @@ export class Users {
             } as const satisfies prompt.Schema;
             prompt.start();
 
-            prompt.get<SchemaPropsToString<typeof schema>>(schema, (err, result) => {
+            prompt.get<SchemaPropsToString<typeof schema>>(schema, (_err: Error | null, result): void => {
                 if (result) {
                     if (result.password !== result.repeatPassword) {
                         return tools.maybeCallbackWithError(callback, 'Passwords are not identical!');
