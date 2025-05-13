@@ -41,8 +41,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-22.04, macos-latest]
-        node: [18, 20, 22]
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        node: [18, 20, 22, 24]
 
     steps:
       - uses: actions/checkout@v4
@@ -52,7 +52,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Prepare installation (Linux)
-        if: ${{ matrix.os == 'ubuntu-22.04' }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: ./.github/actions/install-redis-linux
 
       - name: Prepare installation (MacOS)
