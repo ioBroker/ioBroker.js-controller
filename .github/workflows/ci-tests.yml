@@ -52,7 +52,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Prepare installation (Linux)
-        if: ${{ matrix.os == 'ubuntu-22.04' }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: ./.github/actions/install-redis-linux
 
       - name: Prepare installation (MacOS)
