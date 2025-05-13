@@ -120,7 +120,7 @@ describe('States-Redis: Test states in Redis', function () {
                 expect(state).to.be.ok;
                 expect(state!.val).to.be.equal(3);
                 expect(state!.ack).to.be.true;
-                expect(state!.ts).to.be.equal(123456);
+                expect(state!.ts).to.be.equal(123456000);
                 expect(state!.lc).to.be.equal(state!.ts);
                 expect(state!.q).to.be.equal(1);
 
@@ -129,7 +129,7 @@ describe('States-Redis: Test states in Redis', function () {
                 expect(state).to.be.ok;
                 expect(state!.val).to.be.equal(3);
                 expect(state!.ack).to.be.true;
-                expect(state!.ts).to.be.equal(123456);
+                expect(state!.ts).to.be.equal(123456000);
                 expect(state!.lc).to.be.equal(state!.ts);
                 expect(state!.q).to.be.equal(1);
                 done();
@@ -147,7 +147,7 @@ describe('States-Redis: Test states in Redis', function () {
                 expect(state!.val).to.be.equal(4);
                 expect(state!.ack).to.be.true;
                 expect(state!.ts).to.be.ok;
-                expect(state!.ts).to.be.not.equal(123456);
+                expect(state!.ts).to.be.not.equal(123456000);
                 expect(state!.lc).to.be.equal(state!.ts);
                 expect(state!.q).to.be.equal(1);
 
@@ -157,7 +157,7 @@ describe('States-Redis: Test states in Redis', function () {
                 expect(state!.val).to.be.equal(4);
                 expect(state!.ack).to.be.true;
                 expect(state!.ts).to.be.ok;
-                expect(state!.ts).to.be.not.equal(123456);
+                expect(state!.ts).to.be.not.equal(123456000);
                 expect(state!.lc).to.be.equal(state!.ts);
                 expect(state!.q).to.be.equal(1);
                 done();
