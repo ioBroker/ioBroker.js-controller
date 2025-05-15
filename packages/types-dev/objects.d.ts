@@ -432,6 +432,8 @@ declare global {
             password: string;
             /** Whether this user is enabled */
             enabled: boolean;
+            /** External authentications besides password, e.g. OIDC */
+            externalAuthentication?: Record<string, unknown>;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
