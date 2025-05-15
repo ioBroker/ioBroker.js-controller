@@ -95,6 +95,7 @@ describe('States-Redis: Test states in Redis', function () {
                 expect(state!.val).to.be.equal(2);
                 expect(state!.ack).to.be.false;
                 expect(state!.ts).to.be.ok;
+                expect(state!.lc).to.be.equal(state!.ts);
                 expect(state!.q).to.be.equal(0);
 
                 // @ts-expect-error adding types later on
@@ -103,12 +104,68 @@ describe('States-Redis: Test states in Redis', function () {
                 expect(state!.val).to.be.equal(2);
                 expect(state!.ack).to.be.false;
                 expect(state!.ts).to.be.ok;
+                expect(state!.lc).to.be.equal(state!.ts);
                 expect(state!.q).to.be.equal(0);
                 done();
             }
         };
 
         states!.setState(testID, 2);
+    }).timeout(10_000);
+
+    it('States-Redis: should setState with object state parameters', done => {
+        const testID = 'testObject.0.test1';
+        onStatesChanged = async (id, state) => {
+            if (id === testID) {
+                expect(state).to.be.ok;
+                expect(state!.val).to.be.equal(3);
+                expect(state!.ack).to.be.true;
+                expect(state!.ts).to.be.equal(123456000);
+                expect(state!.lc).to.be.equal(state!.ts);
+                expect(state!.q).to.be.equal(1);
+
+                // @ts-expect-error adding types later on
+                state = await states!.getStateAsync(testID);
+                expect(state).to.be.ok;
+                expect(state!.val).to.be.equal(3);
+                expect(state!.ack).to.be.true;
+                expect(state!.ts).to.be.equal(123456000);
+                expect(state!.lc).to.be.equal(state!.ts);
+                expect(state!.q).to.be.equal(1);
+                done();
+            }
+        };
+
+        states!.setState(testID, { val: 3, ack: true, ts: 123456, q: 1 });
+    }).timeout(10_000);
+
+    it('States-Redis: should setState with object state parameters ignoring null ts', done => {
+        const testID = 'testObject.0.test1';
+        onStatesChanged = async (id, state) => {
+            if (id === testID) {
+                expect(state).to.be.ok;
+                expect(state!.val).to.be.equal(4);
+                expect(state!.ack).to.be.true;
+                expect(state!.ts).to.be.ok;
+                expect(state!.ts).to.be.not.equal(123456000);
+                expect(state!.lc).to.be.equal(state!.ts);
+                expect(state!.q).to.be.equal(1);
+
+                // @ts-expect-error adding types later on
+                state = await states!.getStateAsync(testID);
+                expect(state).to.be.ok;
+                expect(state!.val).to.be.equal(4);
+                expect(state!.ack).to.be.true;
+                expect(state!.ts).to.be.ok;
+                expect(state!.ts).to.be.not.equal(123456000);
+                expect(state!.lc).to.be.equal(state!.ts);
+                expect(state!.q).to.be.equal(1);
+                done();
+            }
+        };
+
+        // @ts-expect-error ignore types here for ts to test the case
+        states!.setState(testID, { val: 4, ack: true, ts: null, q: 1 });
     }).timeout(10_000);
 
     // todo: write more tests

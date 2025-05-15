@@ -750,7 +750,7 @@ export class StateRedisClient {
             obj.ack = false;
         }
 
-        if (state.ts !== undefined) {
+        if (typeof state.ts === 'number') {
             obj.ts = state.ts < 946681200000 ? state.ts * 1000 : state.ts; // if less 2000.01.01 00:00:00
         } else {
             obj.ts = new Date().getTime();
@@ -775,7 +775,7 @@ export class StateRedisClient {
 
         let hasChanged;
 
-        if (state.lc !== undefined) {
+        if (typeof state.lc === 'number') {
             obj.lc = state.lc;
         } else {
             // isDeepStrictEqual works on objects and primitive values
