@@ -78,10 +78,16 @@ function objectChangeHandler(id: string, object: ioBroker.Object | null | undefi
             case 'instance':
             case 'meta':
             case 'script':
-            case 'user':
                 // nothing special here, update these tests when we have specialized definitions
                 break;
-
+            case 'user': {
+                if (object.common.externalAuthentication?.oidc) {
+                    /** It is up to the dev how this looks like hence, oidc is of type unknown */
+                    const oidc = object.common.externalAuthentication.oidc as { sub: string };
+                    oidc.sub === 'foo';
+                }
+                break;
+            }
             case 'state':
                 if (object.acl) {
                     object.acl.state.toFixed();
@@ -888,6 +894,14 @@ const _userObject: ioBroker.UserObject = {
     _id: 'system.user.me',
     type: 'user',
     common: { name: 'me', password: '*****', enabled: true },
+    native: {},
+};
+
+/** With external auth */
+const _userObjectExt: ioBroker.UserObject = {
+    _id: 'system.user.me',
+    type: 'user',
+    common: { name: 'me', password: '*****', enabled: true, externalAuthentication: { oidc: { sub: 'bar' } } },
     native: {},
 };
 
