@@ -8,7 +8,7 @@ The js-controller repository is a monorepo which is managed via `lerna`. Every f
 To install the dependencies, execute
 
 ```bash
-npm i --ignore-scripts
+npm ci --ignore-scripts
 ```
 
 in the root folder of the project.
