@@ -18,7 +18,7 @@ Whether a user may create objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:108](https://github.com/ioBroker/ioBroker.js-controller/blob/93db56665248b4cd78a78e2bab0647c80d6ccf9f/packages/types-dev/index.d.ts#L108)
+[types-dev/index.d.ts:108](https://github.com/ioBroker/ioBroker.js-controller/blob/5cf8c0f8f818a3bd00a8d0bf4c2516676b695603/packages/types-dev/index.d.ts#L108)
 
 ***
 
@@ -30,7 +30,7 @@ Whether a user may delete objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:110](https://github.com/ioBroker/ioBroker.js-controller/blob/93db56665248b4cd78a78e2bab0647c80d6ccf9f/packages/types-dev/index.d.ts#L110)
+[types-dev/index.d.ts:110](https://github.com/ioBroker/ioBroker.js-controller/blob/5cf8c0f8f818a3bd00a8d0bf4c2516676b695603/packages/types-dev/index.d.ts#L110)
 
 ***
 
@@ -42,7 +42,7 @@ Whether a user may enumerate objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/93db56665248b4cd78a78e2bab0647c80d6ccf9f/packages/types-dev/index.d.ts#L102)
+[types-dev/index.d.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/5cf8c0f8f818a3bd00a8d0bf4c2516676b695603/packages/types-dev/index.d.ts#L102)
 
 ***
 
@@ -54,7 +54,7 @@ Whether a user may read objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:104](https://github.com/ioBroker/ioBroker.js-controller/blob/93db56665248b4cd78a78e2bab0647c80d6ccf9f/packages/types-dev/index.d.ts#L104)
+[types-dev/index.d.ts:104](https://github.com/ioBroker/ioBroker.js-controller/blob/5cf8c0f8f818a3bd00a8d0bf4c2516676b695603/packages/types-dev/index.d.ts#L104)
 
 ***
 
@@ -66,4 +66,4 @@ Whether a user may write objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:106](https://github.com/ioBroker/ioBroker.js-controller/blob/93db56665248b4cd78a78e2bab0647c80d6ccf9f/packages/types-dev/index.d.ts#L106)
+[types-dev/index.d.ts:106](https://github.com/ioBroker/ioBroker.js-controller/blob/5cf8c0f8f818a3bd00a8d0bf4c2516676b695603/packages/types-dev/index.d.ts#L106)
