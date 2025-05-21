@@ -1538,6 +1538,13 @@
                     "type": "string"
                   }
                 },
+                "bundlerType": {
+                    "description": "Bundler type of the widget set. Currently only 'module' is supported, if the widget was written with TypeScript. If the widget was written with JavaScript, let it empty.",
+                    "type": "string",
+                    "enum": [
+                        "module"
+                    ]
+                },
                 "ignoreInVersions": {
                   "description": "The vis widget does not support the listed major versions of vis",
                   "type": "array",
