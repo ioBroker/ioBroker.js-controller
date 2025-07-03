@@ -138,7 +138,7 @@ import type {
     UserInterfaceClientRemoveMessage,
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
-import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
+import { SYSTEM_ADAPTER_PREFIX, DEFAULT_OBJECTS_WARN_LIMIT } from '@iobroker/js-controller-common-db/constants';
 import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
 
 const controllerVersion = packJson.version;
@@ -11506,30 +11506,15 @@ export class AdapterClass extends EventEmitter {
 
                 if (!this._config.isInstall && (!process.argv || !this._config.forceIfDisabled)) {
                     const id = `system.adapter.${this.namespace}`;
-                    this.outputCount += 2;
-                    this.#states.setState(`${id}.alive`, { val: true, ack: true, expire: 30, from: id });
-                    let done = false;
-                    this.#states.setState(
-                        `${id}.connected`,
-                        {
-                            val: true,
-                            ack: true,
-                            expire: 30,
-                            from: id,
-                        },
-                        () => {
-                            if (!done) {
-                                done = true;
-                                this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
-                            }
-                        },
-                    );
-                    setTimeout(() => {
-                        if (!done) {
-                            done = true;
-                            this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
-                        }
-                    }, 1_000);
+                    await this.#setStateWithOutputCount(`${id}.alive`, { val: true, ack: true, expire: 30, from: id });
+                    await this.#setStateWithOutputCount(`${id}.connected`, {
+                        val: true,
+                        ack: true,
+                        expire: 30,
+                        from: id,
+                    });
+
+                    this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
                     return;
                 }
             }
@@ -11706,13 +11691,19 @@ export class AdapterClass extends EventEmitter {
             from: `system.adapter.${this.namespace}`,
         });
 
+        try {
+            await this.#checkObjectsWarnLimit();
+        } catch (e) {
+            this._logger.error(`${this.namespaceLog} Could not check objects warn limit: ${e.message}`);
+        }
+
         if (this._options.instance === undefined) {
             this.version = this.pack?.version
                 ? this.pack.version
                 : this.ioPack?.common
                   ? this.ioPack.common.version
                   : 'unknown';
-            // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
+
             // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
             const isNpmVersion = isInstalledFromNpm({
                 adapterName: this.name,
@@ -11980,6 +11971,67 @@ export class AdapterClass extends EventEmitter {
         return new Promise(resolve => {
             this._extendObjects(objs, resolve);
         });
+    }
+
+    /**
+     * Check if the number of objects exceeds the warning limit
+     */
+    async #checkObjectsWarnLimit(): Promise<void> {
+        if (!this.#objects || !this.#states) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        const warnLimitId = `${SYSTEM_ADAPTER_PREFIX + this.namespace}.objectsWarnLimit`;
+
+        const warnLimitState = await this.#getStateWithInputCount(warnLimitId);
+
+        const objectsWarnLimit =
+            typeof warnLimitState?.val === 'number' ? warnLimitState.val : DEFAULT_OBJECTS_WARN_LIMIT;
+
+        if (warnLimitState?.ack === false) {
+            await this.#setStateWithOutputCount(warnLimitId, { val: objectsWarnLimit, ack: true });
+        }
+
+        const keys = await this.#objects.getKeysAsync(`${this.namespace}*`);
+        const objectsCount = keys?.length ?? 0;
+
+        if (objectsCount > objectsWarnLimit) {
+            const message = `This instance has ${objectsCount} objects, the limit for this instance is set to ${objectsWarnLimit}.`;
+            this._logger.warn(`${this.namespaceLog} ${message}`);
+            await this.registerNotification('system', 'numberObjectsLimitExceeded', message);
+        }
+    }
+
+    /**
+     * Get a state and automatically increase the input count
+     *
+     * @param id id of the state
+     */
+    #getStateWithInputCount(id: string): ioBroker.GetStatePromise {
+        if (!this.#states) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        this.inputCount++;
+        return this.#states.getState(id);
+    }
+
+    /**
+     * Set a state and automatically increase the output count
+     *
+     * @param id if of the state
+     * @param state state to set
+     */
+    #setStateWithOutputCount(
+        id: string,
+        state: ioBroker.SettableState | ioBroker.StateValue,
+    ): ioBroker.SetStatePromise {
+        if (!this.#states) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        this.outputCount++;
+        return this.#states.setState(id, state);
     }
 
     private async _extendObjects(tasks: Record<string, any>, callback: () => void): Promise<void> {
