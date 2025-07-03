@@ -11575,7 +11575,7 @@ export class AdapterClass extends EventEmitter {
             // @ts-expect-error
             this.config = adapterConfig.native;
             // @ts-expect-error
-            this.host = adapterConfig.common.host;
+            this.host = adapterConfig.common.host || tools.getHostName();
             // @ts-expect-error
             this.common = adapterConfig.common;
 
@@ -11620,7 +11620,7 @@ export class AdapterClass extends EventEmitter {
             this.config = adapterConfig.native || {};
             // @ts-expect-error
             this.common = adapterConfig.common || {};
-            this.host = this.common?.host || tools.getHostName() || os.hostname();
+            this.host = this.common?.host || tools.getHostName();
         }
 
         this.adapterConfig = adapterConfig;
