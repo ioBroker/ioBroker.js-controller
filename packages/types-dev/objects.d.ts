@@ -510,6 +510,8 @@ declare global {
             name: string;
             url: string;
             components: string[];
+            /** If the widget was written with TypeScript */
+            bundlerType?: 'module';
             /** The vis widget does not support the listed major versions of vis */
             ignoreInVersions: number[];
         }
