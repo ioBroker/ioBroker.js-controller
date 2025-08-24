@@ -511,7 +511,16 @@ declare global {
             /** If the widget was written with TypeScript */
             bundlerType?: 'module';
             /** The vis widget does not support the listed major versions of vis */
-            ignoreInVersions: number[];
+            ignoreInVersions?: number[];
+        }
+
+        interface VisIconSet {
+            name?: ioBroker.StringOrTranslated;
+            url: string;
+            /** If set, this is not a widget set, but icon set. url, name and icon are required */
+            icon?: string; // base 64 string for iconSet (not used for widgetSets)
+            /** The vis icon set does not support the listed major versions of vis */
+            ignoreInVersions?: number[];
         }
 
         type PaidLicenseType = 'paid' | 'commercial' | 'limited';
@@ -776,6 +785,8 @@ declare global {
             version: string;
             /** Definition of the vis-2 widgets */
             visWidgets?: Record<string, VisWidget>;
+            /** Definition of the vis-2 icon sets */
+            visIconSets?: Record<string, VisIconSet>;
             /** Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/1.2.3/material` instead of `http://ip:port/material` */
             webByVersion?: boolean;
             /** Whether the web server in this adapter can be extended with plugin/extensions */
