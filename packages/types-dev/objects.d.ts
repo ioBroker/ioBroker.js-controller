@@ -186,6 +186,15 @@ declare global {
             role?: string;
         }
 
+        type SmartNameObject = { [lang in ioBroker.Languages]?: string } & {
+            /** Which kind of device it is */
+            smartType?: string | null;
+            /** Which value to set when the ON command is issued */
+            byON?: string | null;
+        };
+
+        type SmartName = null | false | string | SmartNameObject;
+
         interface StateCommon extends ObjectCommon {
             /** Type of this state. See https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#state-commonrole for a detailed description */
             type: CommonType;
@@ -268,16 +277,7 @@ declare global {
              * The string "ignore" (deprecated please use boolean `false` instead) or boolean value `false` is a special case, causing the state to be ignored.
              * A value of `null` means that the device should be removed by the IOT adapters
              */
-            smartName?:
-                | null
-                | false
-                | string
-                | ({ [lang in Languages]?: string } & {
-                      /** Which kind of device it is */
-                      smartType?: string | null;
-                      /** Which value to set when the ON command is issued */
-                      byON?: string | null;
-                  });
+            smartName?: SmartName;
         }
 
         interface ChannelCommon extends ObjectCommon {
@@ -320,6 +320,13 @@ declare global {
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
+
+            /**
+             * Settings for IOT adapters and how the state should be named in e.g., Alexa.
+             * The string "ignore" (deprecated please use boolean `false` instead) or boolean value `false` is a special case, causing the state to be ignored.
+             * A value of `null` means that the device should be removed by the IOT adapters
+             */
+            smartName?: SmartName;
         }
 
         interface MetaCommon extends ObjectCommon {
