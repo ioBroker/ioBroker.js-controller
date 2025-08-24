@@ -91,6 +91,7 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 - [Error Reporting via ioBroker Sentry](#error-reporting-via-iobroker-sentry)
 - [Notification System](#notification-system)
 - [Disk space warnings](#disk-space-warnings)
+- [Objects warn limit](#objects-warn-limit)
 - [Controlling and monitoring of adapter processes](#controlling-and-monitoring-of-adapter-processes)
 - [Multihost](#multihost)
 - [TIERS: Start instances in an ordered manner](#tiers-start-instances-in-an-ordered-manner)
@@ -551,6 +552,12 @@ All three are optional and can be a string or null/undefined if omitted.
 
 The js-controller will generate a notification of in the scope `system` and the category `diskSpaceIssues` on warning level, if your free disk space falls under a specified threshold. 
 By default, this threshold is 5 % of disk space. Via the state `system.host.<hostname>.diskWarning` you can override this level to any level between `0` and `100`. 
+
+### Objects warn limit
+**Feature status:** New in 7.1.0
+
+The js-controller will generate a notification of in the scope `system` and the category `numberObjectsLimitExceeded` on warning level, if your number of objects for an adapter instance exceed a specified threshold.
+By default, this is set to `5000` objects. Via the state `system.host.adapter.<adapter>.<instance>.objectsWarnLimit` you can override this threshold to any positive number.
 
 ### Logging
 #### Log levels

@@ -1310,6 +1310,38 @@
           },
           "regex": [],
           "limit": 1
+        },
+        {
+          "category": "numberObjectsLimitExceeded",
+          "name": {
+            "en": "The configured limit of objects for this adapter instance has been exceeded.",
+            "de": "Das konfigurierte Limit an Objekten für diese Adapterinstanz wurde überschritten.",
+            "ru": "Превышен настроенный лимит объектов для данного экземпляра адаптера.",
+            "pt": "O limite configurado de objectos para esta instância de adaptador foi ultrapassado.",
+            "nl": "De geconfigureerde limiet van objecten voor deze instantie van de adapter is overschreden.",
+            "fr": "La limite d'objets configurée pour cette instance d'adaptateur a été dépassée.",
+            "it": "È stato superato il limite di oggetti configurato per questa istanza dell'adattatore.",
+            "es": "Se ha superado el límite configurado de objetos para esta instancia de adaptador.",
+            "pl": "Skonfigurowany limit obiektów dla tej instancji adaptera został przekroczony.",
+            "uk": "Перевищено ліміт об'єктів для цього екземпляра адаптера.",
+            "zh-cn": "The configured limit of objects for this adapter instance has been exceeded."
+          },
+          "severity": "alert",
+          "description": {
+            "en": "This adapter instance has exceeded the configured limit of objects. Too many objects are often caused by misconfigurations or bugs. This can lead to massive performance issues. If this is expected, you can increase the limit for this adapter instance.",
+            "de": "Diese Adapterinstanz hat das konfigurierte Limit an Objekten überschritten. Zu viele Objekte werden oft durch Fehlkonfigurationen oder Bugs verursacht. Dies kann zu massiven Performance-Problemen führen. Wenn dies zu erwarten ist, können Sie das Limit für diese Adapterinstanz erhöhen.",
+            "ru": "Этот экземпляр адаптера превысил установленный лимит объектов. Слишком большое количество объектов часто вызвано неправильной конфигурацией или ошибками. Это может привести к серьезным проблемам с производительностью. Если это ожидаемо, вы можете увеличить лимит для этого экземпляра адаптера.",
+            "pt": "Esta instância do adaptador excedeu o limite configurado de objectos. A existência de demasiados objectos é frequentemente causada por configurações incorrectas ou erros. Isto pode levar a grandes problemas de desempenho. Se isto for expetável, pode aumentar o limite para esta instância do adaptador.",
+            "nl": "Deze instantie van de adapter heeft de geconfigureerde limiet van objecten overschreden. Te veel objecten worden vaak veroorzaakt door verkeerde configuraties of bugs. Dit kan leiden tot enorme prestatieproblemen. Als dit wordt verwacht, kun je de limiet voor deze adapterinstantie verhogen.",
+            "fr": "Cette instance d'adaptateur a dépassé la limite d'objets configurée. Un trop grand nombre d'objets est souvent dû à une mauvaise configuration ou à des bogues. Cela peut entraîner d'importants problèmes de performance. Si cela est prévisible, vous pouvez augmenter la limite de cette instance d'adaptateur.",
+            "it": "L'istanza di questo adattatore ha superato il limite di oggetti configurato. Un numero eccessivo di oggetti è spesso causato da configurazioni errate o da bug. Ciò può causare gravi problemi di prestazioni. Se questo è previsto, è possibile aumentare il limite per questa istanza dell'adattatore.",
+            "es": "Esta instancia de adaptador ha superado el límite configurado de objetos. El exceso de objetos suele deberse a errores o errores de configuración. Esto puede conducir a problemas de rendimiento masivos. Si esto es lo esperado, puedes aumentar el límite para esta instancia de adaptador.",
+            "pl": "Ta instancja adaptera przekroczyła skonfigurowany limit obiektów. Zbyt duża liczba obiektów jest często spowodowana błędną konfiguracją lub błędami. Może to prowadzić do poważnych problemów z wydajnością. Jeśli jest to oczekiwane, można zwiększyć limit dla tej instancji adaptera.",
+            "uk": "Цей екземпляр адаптера перевищив встановлений ліміт об'єктів. Надмірна кількість об'єктів часто спричинена неправильними конфігураціями або помилками. Це може призвести до значних проблем з продуктивністю. Якщо це очікується, ви можете збільшити ліміт для цього екземпляра адаптера.",
+            "zh-cn": "This adapter instance has exceeded the configured limit of objects. Too many objects are often caused by misconfigurations or bugs. This can lead to massive performance issues. If this is expected, you can increase the limit for this adapter instance."
+          },
+          "regex": [],
+          "limit": 1
         }
       ]
     }
