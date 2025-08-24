@@ -1498,6 +1498,7 @@
             ".+": {
               "description": "The key represents the name of a provided widget set",
               "required": [
+                "name",
                 "url",
                 "components",
                 "i18n"
@@ -1526,6 +1527,10 @@
                     }
                   ]
                 },
+                "name": {
+                    "description": "Name of the widget set",
+                    "type": "string"
+                },
                 "url": {
                   "description": "Relative path ('http://ip:port/vis/widgets/' + url) or full url to load component from",
                   "type": "string"
@@ -1552,6 +1557,49 @@
                     "type": "number",
                     "multipleOf": 1
                   }
+                }
+              }
+            }
+          }
+        },
+        "visIconSets": {
+          "description": "Overview of vis 2 SVG icon sets provided by the adapter, define the name of the provided sets as keys",
+          "minProperties": 1,
+          "type": "object",
+          "patternProperties": {
+            ".+": {
+              "description": "The key represents the name of a provided icon set",
+              "required": [
+                  "url"
+              ],
+              "type": "object",
+              "properties": {
+                "url": {
+                  "description": "Relative path ('http://ip:port/vis/widgets/' + url) or full url to load JSON file from",
+                  "type": "string"
+                },
+                "ignoreInVersions": {
+                  "description": "The vis icon set does not support the listed major versions of vis",
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "multipleOf": 1
+                  }
+                },
+                "name": {
+                  "description": "Name of the icon set",
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "$ref": "#/definitions/multilingual"
+                    }
+                  ]
+                },
+                "icon": {
+                  "description": "Base 64 icon of the widget set, data:image/svg+xml;base64,...",
+                  "type": "string"
                 }
               }
             }
