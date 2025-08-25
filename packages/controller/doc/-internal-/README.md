@@ -198,6 +198,7 @@
 - [UserInterfaceSubscribeInfo](interfaces/UserInterfaceSubscribeInfo.md)
 - [UserObject](interfaces/UserObject.md)
 - [ValidateIdOptions](interfaces/ValidateIdOptions.md)
+- [VisIconSet](interfaces/VisIconSet.md)
 - [VisWidget](interfaces/VisWidget.md)
 - [WriteFileOptions](interfaces/WriteFileOptions.md)
 

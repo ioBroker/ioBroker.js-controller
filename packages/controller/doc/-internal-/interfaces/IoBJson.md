@@ -16,7 +16,7 @@ The ioBroker global config
 
 #### Defined in
 
-[types-dev/config.d.ts:135](https://github.com/ioBroker/ioBroker.js-controller/blob/ec9b0b016d2d4f5ad1591c6bd149fd060033bed1/packages/types-dev/config.d.ts#L135)
+[types-dev/config.d.ts:135](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/config.d.ts#L135)
 
 ***
 
@@ -26,7 +26,7 @@ The ioBroker global config
 
 #### Defined in
 
-[types-dev/config.d.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/ec9b0b016d2d4f5ad1591c6bd149fd060033bed1/packages/types-dev/config.d.ts#L142)
+[types-dev/config.d.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/config.d.ts#L142)
 
 ***
 
@@ -38,7 +38,7 @@ Always relative to iobroker.js-controller/
 
 #### Defined in
 
-[types-dev/config.d.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/ec9b0b016d2d4f5ad1591c6bd149fd060033bed1/packages/types-dev/config.d.ts#L134)
+[types-dev/config.d.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/config.d.ts#L134)
 
 ***
 
@@ -50,7 +50,7 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 #### Defined in
 
-[types-dev/config.d.ts:144](https://github.com/ioBroker/ioBroker.js-controller/blob/ec9b0b016d2d4f5ad1591c6bd149fd060033bed1/packages/types-dev/config.d.ts#L144)
+[types-dev/config.d.ts:144](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/config.d.ts#L144)
 
 ***
 
@@ -76,7 +76,7 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 #### Defined in
 
-[types-dev/config.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/ec9b0b016d2d4f5ad1591c6bd149fd060033bed1/packages/types-dev/config.d.ts#L127)
+[types-dev/config.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/config.d.ts#L127)
 
 ***
 
@@ -102,7 +102,7 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 #### Defined in
 
-[types-dev/config.d.ts:119](https://github.com/ioBroker/ioBroker.js-controller/blob/ec9b0b016d2d4f5ad1591c6bd149fd060033bed1/packages/types-dev/config.d.ts#L119)
+[types-dev/config.d.ts:119](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/config.d.ts#L119)
 
 ***
 
@@ -112,7 +112,7 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 #### Defined in
 
-[types-dev/config.d.ts:125](https://github.com/ioBroker/ioBroker.js-controller/blob/ec9b0b016d2d4f5ad1591c6bd149fd060033bed1/packages/types-dev/config.d.ts#L125)
+[types-dev/config.d.ts:125](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/config.d.ts#L125)
 
 ***
 
@@ -126,7 +126,7 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 #### Defined in
 
-[types-dev/config.d.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/ec9b0b016d2d4f5ad1591c6bd149fd060033bed1/packages/types-dev/config.d.ts#L136)
+[types-dev/config.d.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/config.d.ts#L136)
 
 ***
 
@@ -136,7 +136,7 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 #### Defined in
 
-[types-dev/config.d.ts:126](https://github.com/ioBroker/ioBroker.js-controller/blob/ec9b0b016d2d4f5ad1591c6bd149fd060033bed1/packages/types-dev/config.d.ts#L126)
+[types-dev/config.d.ts:126](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/config.d.ts#L126)
 
 ***
 
@@ -224,4 +224,4 @@ Interval how often the counters for input/output in adapters and controller will
 
 #### Defined in
 
-[types-dev/config.d.ts:93](https://github.com/ioBroker/ioBroker.js-controller/blob/ec9b0b016d2d4f5ad1591c6bd149fd060033bed1/packages/types-dev/config.d.ts#L93)
+[types-dev/config.d.ts:93](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/config.d.ts#L93)
