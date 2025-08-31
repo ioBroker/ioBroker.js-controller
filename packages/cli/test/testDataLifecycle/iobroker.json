@@ -7,14 +7,14 @@
   "objects": {
     "type": "file",
     "host": "127.0.0.1",
-    "port": 19001,
-    "dataDir": "/home/runner/work/ioBroker.js-controller/ioBroker.js-controller/packages/cli/test/testData/objects"
+    "port": 19011,
+    "dataDir": "/home/runner/work/ioBroker.js-controller/ioBroker.js-controller/packages/cli/test/testDataLifecycle/objects"
   },
   "states": {
     "type": "file",
     "host": "127.0.0.1",
-    "port": 19000,
-    "dataDir": "/home/runner/work/ioBroker.js-controller/ioBroker.js-controller/packages/cli/test/testData/states"
+    "port": 19010,
+    "dataDir": "/home/runner/work/ioBroker.js-controller/ioBroker.js-controller/packages/cli/test/testDataLifecycle/states"
   },
   "log": {
     "level": "warn",
@@ -26,6 +26,6 @@
       }
     }
   },
-  "dataDir": "/home/runner/work/ioBroker.js-controller/ioBroker.js-controller/packages/cli/test/testData",
+  "dataDir": "/home/runner/work/ioBroker.js-controller/ioBroker.js-controller/packages/cli/test/testDataLifecycle",
   "plugins": {}
 }

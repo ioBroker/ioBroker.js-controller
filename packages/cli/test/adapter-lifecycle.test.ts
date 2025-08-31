@@ -18,19 +18,19 @@ const testConfig = {
     system: {
         memoryLimitMB: 0,
         hostname: '',
-        instanceStartInterval: 2000
+        instanceStartInterval: 2000,
     },
     objects: {
         type: 'file',
         host: '127.0.0.1',
         port: 19011,
-        dataDir: path.join(testDir, 'objects')
+        dataDir: path.join(testDir, 'objects'),
     },
     states: {
-        type: 'file', 
+        type: 'file',
         host: '127.0.0.1',
         port: 19010,
-        dataDir: path.join(testDir, 'states')
+        dataDir: path.join(testDir, 'states'),
     },
     log: {
         level: 'warn',
@@ -38,53 +38,59 @@ const testConfig = {
         transport: {
             file1: {
                 type: 'file',
-                enabled: false
-            }
-        }
+                enabled: false,
+            },
+        },
     },
     dataDir: testDir,
-    plugins: {}
+    plugins: {},
 };
 
 /**
  * Helper function to run CLI commands for lifecycle tests
+ *
+ * @param args - CLI command arguments to pass
+ * @param timeout - Command timeout in milliseconds
  */
-function runCliCommand(args: string[], timeout = 45000): Promise<{ exitCode: number | null; stdout: string; stderr: string }> {
-    return new Promise((resolve) => {
+function runCliCommand(
+    args: string[],
+    timeout = 45000,
+): Promise<{ exitCode: number | null; stdout: string; stderr: string }> {
+    return new Promise(resolve => {
         const nodeExecutable = process.execPath;
         const cliScript = path.join(thisDir, '../../controller/iobroker.js');
-        
+
         // Set environment variable for test config
         const env = { ...process.env, IOB_CONF_FILE: testConfigPath };
-        
+
         const child = spawn(nodeExecutable, [cliScript, ...args], {
             env,
             cwd: path.join(thisDir, '../..'),
-            stdio: ['pipe', 'pipe', 'pipe']
+            stdio: ['pipe', 'pipe', 'pipe'],
         });
 
         let stdout = '';
         let stderr = '';
 
-        child.stdout?.on('data', (data) => {
+        child.stdout?.on('data', data => {
             stdout += data.toString();
         });
 
-        child.stderr?.on('data', (data) => {
+        child.stderr?.on('data', data => {
             stderr += data.toString();
         });
 
         const timeoutId = setTimeout(() => {
             child.kill('SIGTERM');
-            resolve({ exitCode: -1, stdout, stderr: stderr + '\nTIMEOUT' });
+            resolve({ exitCode: -1, stdout, stderr: `${stderr}\nTIMEOUT` });
         }, timeout);
 
-        child.on('close', (exitCode) => {
+        child.on('close', exitCode => {
             clearTimeout(timeoutId);
             resolve({ exitCode, stdout, stderr });
         });
 
-        child.on('error', (error) => {
+        child.on('error', error => {
             clearTimeout(timeoutId);
             resolve({ exitCode: -1, stdout, stderr: stderr + error.message });
         });
@@ -133,7 +139,7 @@ describe('Adapter Lifecycle Tests', function () {
 
         it('should list adapters and show installed adapters', async function () {
             const result = await runCliCommand(['list', 'adapters']);
-            
+
             expect(result.exitCode).to.equal(0);
             // Should not timeout or crash
             expect(result.stderr).to.not.include('TIMEOUT');
@@ -142,14 +148,14 @@ describe('Adapter Lifecycle Tests', function () {
         it('should create an adapter instance (if adapter is available)', async function () {
             // First check if adapter exists
             const listResult = await runCliCommand(['list', 'adapters']);
-            
+
             if (listResult.stdout.includes(testAdapter)) {
                 // Try to create an instance
                 const result = await runCliCommand(['add', testAdapter, '--enabled', 'false']);
-                
+
                 // The command should complete without crashing
                 expect(result.stderr).to.not.include('TIMEOUT');
-                
+
                 // If successful, should show in instance list
                 if (result.exitCode === 0) {
                     const instancesResult = await runCliCommand(['list', 'instances']);
@@ -165,7 +171,7 @@ describe('Adapter Lifecycle Tests', function () {
 
         it('should list instances and show created instances', async function () {
             const result = await runCliCommand(['list', 'instances']);
-            
+
             expect(result.exitCode).to.equal(0);
             expect(result.stderr).to.not.include('TIMEOUT');
         });
@@ -173,18 +179,18 @@ describe('Adapter Lifecycle Tests', function () {
         it('should delete adapter instance (if one exists)', async function () {
             // List existing instances first
             const listResult = await runCliCommand(['list', 'instances']);
-            
+
             if (listResult.stdout.includes(`${testAdapter}.`)) {
                 // Extract instance number from output (assuming format adapter.X)
                 const instanceMatch = listResult.stdout.match(new RegExp(`${testAdapter}\\.(\\d+)`));
-                
+
                 if (instanceMatch) {
                     const instanceNum = instanceMatch[1];
                     const result = await runCliCommand(['del', `${testAdapter}.${instanceNum}`]);
-                    
+
                     // Should complete without crashing
                     expect(result.stderr).to.not.include('TIMEOUT');
-                    
+
                     // Verify deletion by listing instances again
                     const afterDeleteResult = await runCliCommand(['list', 'instances']);
                     expect(afterDeleteResult.exitCode).to.equal(0);
@@ -197,7 +203,7 @@ describe('Adapter Lifecycle Tests', function () {
 
         it('should handle attempt to delete non-existent instance gracefully', async function () {
             const result = await runCliCommand(['del', 'non-existent-adapter.99']);
-            
+
             // Should not crash or timeout
             expect(result.stderr).to.not.include('TIMEOUT');
             // Should return with some error indication but not crash
@@ -206,7 +212,7 @@ describe('Adapter Lifecycle Tests', function () {
 
         it('should handle attempt to add non-existent adapter gracefully', async function () {
             const result = await runCliCommand(['add', 'definitely-non-existent-adapter-xyz123']);
-            
+
             // Should not crash or timeout
             expect(result.stderr).to.not.include('TIMEOUT');
             // Should return error code for non-existent adapter
