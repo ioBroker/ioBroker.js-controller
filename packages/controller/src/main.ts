@@ -3363,7 +3363,7 @@ async function checkVersions(id: string, deps?: Dependencies, globalDeps?: Depen
         }
     } catch (e) {
         logger.debug(`${hostLogPrefix} ${id} [globalDependency]: ${JSON.stringify(globalDeps)}`);
-        throw new Error(`Adapter dependency not fulfilled on any host: ${e.message}`);
+        throw new Error(`Global adapter dependency not fulfilled: ${e.message}`);
     }
 }
 
