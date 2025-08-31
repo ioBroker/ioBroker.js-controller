@@ -129,6 +129,9 @@ describe('Adapter Lifecycle Tests', function () {
             // First check if adapter is already installed
             const listResult = await runCliCommand(['list', 'adapters']);
             expect(listResult.exitCode).to.equal(0);
+            
+            // Verify that admin is not already installed (test isolation)
+            expect(listResult.stdout).to.not.include(testAdapter, `${testAdapter} adapter should not be pre-installed for this test`);
 
             if (!listResult.stdout.includes(testAdapter)) {
                 // Try to install the adapter
@@ -182,6 +185,14 @@ describe('Adapter Lifecycle Tests', function () {
             const listResult = await runCliCommand(['list', 'adapters']);
 
             if (listResult.stdout.includes(testAdapter)) {
+                // Check how many instances are already installed before adding a new one
+                const beforeInstancesResult = await runCliCommand(['list', 'instances']);
+                expect(beforeInstancesResult.exitCode).to.equal(0);
+                
+                // Count existing instances of this adapter
+                const beforeInstanceCount = (beforeInstancesResult.stdout.match(new RegExp(`${testAdapter}\\.\\d+`, 'g')) || []).length;
+                console.log(`Found ${beforeInstanceCount} existing ${testAdapter} instances before creation`);
+                
                 // Try to create an instance
                 const result = await runCliCommand(['add', testAdapter, '--enabled', 'false']);
 
@@ -189,10 +200,14 @@ describe('Adapter Lifecycle Tests', function () {
                 expect(result.stderr).to.not.include('TIMEOUT');
                 expect(result.exitCode).to.equal(0, `Failed to create instance: ${result.stderr}`);
 
-                // Verify the instance was created
+                // Verify the instance was created by checking the count increased
                 const instancesResult = await runCliCommand(['list', 'instances']);
                 expect(instancesResult.exitCode).to.equal(0);
                 expect(instancesResult.stdout).to.include(`${testAdapter}.`);
+                
+                // Count instances after creation - should be one more than before
+                const afterInstanceCount = (instancesResult.stdout.match(new RegExp(`${testAdapter}\\.\\d+`, 'g')) || []).length;
+                expect(afterInstanceCount).to.equal(beforeInstanceCount + 1, `Expected exactly one new ${testAdapter} instance to be created`);
 
                 // Check that objects were created in the database
                 const objectsDir = path.join(testDir, 'objects');
