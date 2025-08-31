@@ -509,10 +509,6 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
 
             if (oldObjectsHasServer && !newObjectsHasServer) {
                 console.log(COLOR_YELLOW);
-                console.log(`Important: Using ${newConfig.objects.type} for the Objects database is only supported`);
-                console.log('with js-controller 2.0 or higher!');
-                console.log('When your system consists of multiple hosts please make sure to have');
-                console.log('js-controller 2.0 or higher installed on ALL hosts *before* continuing!');
                 if (allowMigration) {
                     console.log('');
                     console.log('');
