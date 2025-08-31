@@ -1092,27 +1092,25 @@ export class Install {
         instance?: number,
     ): Promise<void> {
         try {
-            const adapterPrefix = `${adapter}${instance !== undefined ? `.${instance}` : ''}`;
+            const adapterPrefix = `${adapter}${instance !== undefined ? `.${instance}` : ''}.`;
             const doc = await this.objects.getObjectViewAsync('system', 'meta', {
-                startkey: `${adapterPrefix}.`,
-                endkey: `${adapterPrefix}.\u9999`,
+                startkey: `${adapterPrefix}`,
+                endkey: `${adapterPrefix}\u9999`,
             });
 
             if (doc.rows.length) {
-                const adapterRegex = new RegExp(`^${adapterPrefix.replace(/\./g, '\\.')}\\.`);
-
                 // add non-duplicates to the list
                 const newObjs = doc.rows
                     .filter(row => row.value._id)
                     .map(row => row.value._id)
-                    .filter(id => adapterRegex.test(id))
+                    .filter(id => id.startsWith(adapterPrefix))
                     .filter(id => knownObjIDs.indexOf(id) === -1);
                 knownObjIDs.push(...newObjs);
                 // meta ids can also be present as files
                 metaFilesToDelete.push(...newObjs);
 
                 if (newObjs.length) {
-                    console.log(`host.${hostname} Counted ${newObjs.length} meta of ${adapterPrefix}`);
+                    console.log(`host.${hostname} Counted ${newObjs.length} meta of ${adapterPrefix}*`);
                 }
             }
         } catch (err) {
