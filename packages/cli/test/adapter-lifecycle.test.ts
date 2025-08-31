@@ -123,17 +123,49 @@ describe('Adapter Lifecycle Tests', function () {
     describe('Adapter and Instance Management Lifecycle', function () {
         // Use a test adapter that should be available - we'll use 'admin' as it's always present in ioBroker
         const testAdapter = 'admin';
+        let adapterWasInstalled = false;
 
-        it('should successfully install an adapter (if not already installed)', async function () {
+        it('should successfully install admin adapter', async function () {
             // First check if adapter is already installed
             const listResult = await runCliCommand(['list', 'adapters']);
             expect(listResult.exitCode).to.equal(0);
 
             if (!listResult.stdout.includes(testAdapter)) {
-                // Try to install the adapter - this might fail in test environment, which is OK
-                const installResult = await runCliCommand(['install', testAdapter]);
-                // We don't assert success here as it depends on network connectivity and repos
-                console.log(`Install result for ${testAdapter}: ${installResult.exitCode}`);
+                // Try to install the adapter
+                const installResult = await runCliCommand(['install', testAdapter], 60000);
+                
+                if (installResult.exitCode !== 0) {
+                    if (installResult.stderr.includes('TIMEOUT') || 
+                        installResult.stderr.includes('getaddrinfo ENOTFOUND') ||
+                        installResult.stderr.includes('dns block')) {
+                        console.log(`Skipping test - network not available for adapter installation`);
+                        this.skip();
+                        return;
+                    }
+                }
+                
+                expect(installResult.exitCode).to.equal(0, `Failed to install ${testAdapter}: ${installResult.stderr}`);
+                adapterWasInstalled = true;
+                
+                // Verify the adapter was actually installed
+                const verifyResult = await runCliCommand(['list', 'adapters']);
+                expect(verifyResult.exitCode).to.equal(0);
+                expect(verifyResult.stdout).to.include(testAdapter);
+                
+                // Check that adapter files were created
+                const adapterDir = path.join(testDir, 'node_modules', `iobroker.${testAdapter}`);
+                expect(await fs.pathExists(adapterDir)).to.be.true;
+                
+                // Check that io-package.json exists
+                const ioPackageFile = path.join(adapterDir, 'io-package.json');
+                expect(await fs.pathExists(ioPackageFile)).to.be.true;
+                
+                // Validate the io-package.json structure
+                const ioPackage = await fs.readJSON(ioPackageFile);
+                expect(ioPackage).to.have.property('common');
+                expect(ioPackage.common).to.have.property('name', testAdapter);
+            } else {
+                console.log(`${testAdapter} adapter already installed`);
             }
         });
 
@@ -145,7 +177,7 @@ describe('Adapter Lifecycle Tests', function () {
             expect(result.stderr).to.not.include('TIMEOUT');
         });
 
-        it('should create an adapter instance (if adapter is available)', async function () {
+        it('should create an adapter instance and validate objects/states', async function () {
             // First check if adapter exists
             const listResult = await runCliCommand(['list', 'adapters']);
 
@@ -155,14 +187,37 @@ describe('Adapter Lifecycle Tests', function () {
 
                 // The command should complete without crashing
                 expect(result.stderr).to.not.include('TIMEOUT');
+                expect(result.exitCode).to.equal(0, `Failed to create instance: ${result.stderr}`);
 
-                // If successful, should show in instance list
-                if (result.exitCode === 0) {
-                    const instancesResult = await runCliCommand(['list', 'instances']);
-                    expect(instancesResult.exitCode).to.equal(0);
-                    // Should show the instance we just created
-                    expect(instancesResult.stdout).to.include(`${testAdapter}.`);
+                // Verify the instance was created
+                const instancesResult = await runCliCommand(['list', 'instances']);
+                expect(instancesResult.exitCode).to.equal(0);
+                expect(instancesResult.stdout).to.include(`${testAdapter}.`);
+
+                // Check that objects were created in the database
+                const objectsDir = path.join(testDir, 'objects');
+                const objectFiles = await fs.readdir(objectsDir);
+                expect(objectFiles.length).to.be.greaterThan(0, 'No object files were created');
+
+                // Check for system objects that should be created
+                const systemObjectFile = path.join(objectsDir, 'system.json');
+                if (await fs.pathExists(systemObjectFile)) {
+                    const systemObjects = await fs.readJSON(systemObjectFile);
+                    
+                    // Should have adapter object
+                    const adapterObjectKey = `system.adapter.${testAdapter}.0`;
+                    expect(systemObjects).to.have.property(adapterObjectKey);
+                    
+                    const adapterObject = systemObjects[adapterObjectKey];
+                    expect(adapterObject).to.have.property('common');
+                    expect(adapterObject.common).to.have.property('name', testAdapter);
+                    expect(adapterObject.common).to.have.property('enabled', false);
                 }
+
+                // Check states directory was created and used
+                const statesDir = path.join(testDir, 'states');
+                const stateFiles = await fs.readdir(statesDir);
+                console.log(`Created ${stateFiles.length} state files during instance creation`);
             } else {
                 console.log(`Skipping instance creation - ${testAdapter} adapter not available`);
                 this.skip();
@@ -221,7 +276,7 @@ describe('Adapter Lifecycle Tests', function () {
     });
 
     describe('Database State Validation', function () {
-        it('should have clean database state after operations', async function () {
+        it('should have proper database structure after operations', async function () {
             // Verify that database operations completed successfully
             const objectsDir = path.join(testDir, 'objects');
             const statesDir = path.join(testDir, 'states');
@@ -233,9 +288,47 @@ describe('Adapter Lifecycle Tests', function () {
             const objectFiles = await fs.readdir(objectsDir);
             const stateFiles = await fs.readdir(statesDir);
 
-            // Should have at least some files if operations occurred
-            console.log(`Objects directory contains ${objectFiles.length} files`);
-            console.log(`States directory contains ${stateFiles.length} files`);
+            console.log(`Objects directory contains ${objectFiles.length} files: ${objectFiles.join(', ')}`);
+            console.log(`States directory contains ${stateFiles.length} files: ${stateFiles.join(', ')}`);
+
+            // If we performed operations, should have at least some files
+            if (objectFiles.length > 0) {
+                // Check that key system files exist
+                const expectedFiles = ['system.json'];
+                for (const file of expectedFiles) {
+                    if (objectFiles.includes(file)) {
+                        const filePath = path.join(objectsDir, file);
+                        const fileContent = await fs.readJSON(filePath);
+                        expect(fileContent).to.be.an('object');
+                        console.log(`Validated structure of ${file}`);
+                    }
+                }
+            }
+        });
+
+        it('should validate adapter metadata if admin was installed', async function () {
+            // Check if admin adapter was installed and has proper metadata
+            const objectsDir = path.join(testDir, 'objects');
+            const systemFile = path.join(objectsDir, 'system.json');
+            
+            if (await fs.pathExists(systemFile)) {
+                const systemObjects = await fs.readJSON(systemFile);
+                
+                // Look for admin adapter object
+                const adminAdapterKey = 'system.adapter.admin.0';
+                if (systemObjects[adminAdapterKey]) {
+                    const adminObject = systemObjects[adminAdapterKey];
+                    
+                    expect(adminObject).to.have.property('type', 'instance');
+                    expect(adminObject).to.have.property('common');
+                    expect(adminObject.common).to.have.property('name', 'admin');
+                    expect(adminObject.common).to.have.property('enabled');
+                    
+                    console.log('Successfully validated admin adapter metadata in database');
+                } else {
+                    console.log('Admin adapter not found in database - may have been skipped due to network issues');
+                }
+            }
         });
     });
 });
