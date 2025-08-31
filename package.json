@@ -86,6 +86,7 @@
     "lint": "eslint .",
     "prettier": "eslint . --fix",
     "test": "mocha packages/controller/test/*.ts --exit",
+    "test-cli": "npm run test --workspace=@iobroker/js-controller-cli",
     "test-jsonl": "mocha packages/controller/test/jsonl/*.ts --exit",
     "test-redis-socket": "mocha packages/controller/test/redis-socket/*.ts --exit",
     "test-redis-sentinel": "mocha packages/controller/test/redis-sentinel/*.ts --exit",

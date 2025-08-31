@@ -1,0 +1,31 @@
+{
+  "system": {
+    "memoryLimitMB": 0,
+    "hostname": "",
+    "instanceStartInterval": 2000
+  },
+  "objects": {
+    "type": "file",
+    "host": "127.0.0.1",
+    "port": 19001,
+    "dataDir": "/home/runner/work/ioBroker.js-controller/ioBroker.js-controller/packages/cli/test/testData/objects"
+  },
+  "states": {
+    "type": "file",
+    "host": "127.0.0.1",
+    "port": 19000,
+    "dataDir": "/home/runner/work/ioBroker.js-controller/ioBroker.js-controller/packages/cli/test/testData/states"
+  },
+  "log": {
+    "level": "warn",
+    "noStdout": true,
+    "transport": {
+      "file1": {
+        "type": "file",
+        "enabled": false
+      }
+    }
+  },
+  "dataDir": "/home/runner/work/ioBroker.js-controller/ioBroker.js-controller/packages/cli/test/testData",
+  "plugins": {}
+}
