@@ -1085,15 +1085,21 @@ export class Install {
      * @param metaFilesToDelete
      * @param instance optional instance number for filtering to instance-specific meta objects
      */
-    async _enumerateAdapterMeta(knownObjIDs: string[], adapter: string, metaFilesToDelete: string[], instance?: number): Promise<void> {
+    async _enumerateAdapterMeta(
+        knownObjIDs: string[],
+        adapter: string,
+        metaFilesToDelete: string[],
+        instance?: number,
+    ): Promise<void> {
         try {
+            const adapterPrefix = `${adapter}${instance !== undefined ? `.${instance}` : ''}`;
             const doc = await this.objects.getObjectViewAsync('system', 'meta', {
-                startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}.`,
-                endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}.\u9999`,
+                startkey: `${adapterPrefix}.`,
+                endkey: `${adapterPrefix}.\u9999`,
             });
 
             if (doc.rows.length) {
-                const adapterRegex = new RegExp(`^${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`);
+                const adapterRegex = new RegExp(`^${adapterPrefix.replace(/\./g, '\\.')}\\.`);
 
                 // add non-duplicates to the list
                 const newObjs = doc.rows
@@ -1106,7 +1112,7 @@ export class Install {
                 metaFilesToDelete.push(...newObjs);
 
                 if (newObjs.length) {
-                    console.log(`host.${hostname} Counted ${newObjs.length} meta of ${adapter}${instance !== undefined ? `.${instance}` : ''}`);
+                    console.log(`host.${hostname} Counted ${newObjs.length} meta of ${adapterPrefix}`);
                 }
             }
         } catch (err) {
