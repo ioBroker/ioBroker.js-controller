@@ -1083,16 +1083,17 @@ export class Install {
      * @param knownObjIDs
      * @param adapter
      * @param metaFilesToDelete
+     * @param instance optional instance number for filtering to instance-specific meta objects
      */
-    async _enumerateAdapterMeta(knownObjIDs: string[], adapter: string, metaFilesToDelete: string[]): Promise<void> {
+    async _enumerateAdapterMeta(knownObjIDs: string[], adapter: string, metaFilesToDelete: string[], instance?: number): Promise<void> {
         try {
             const doc = await this.objects.getObjectViewAsync('system', 'meta', {
-                startkey: `${adapter}.`,
-                endkey: `${adapter}.\u9999`,
+                startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}.`,
+                endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}.\u9999`,
             });
 
             if (doc.rows.length) {
-                const adapterRegex = new RegExp(`^${adapter}\\.`);
+                const adapterRegex = new RegExp(`^${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`);
 
                 // add non-duplicates to the list
                 const newObjs = doc.rows
@@ -1105,7 +1106,7 @@ export class Install {
                 metaFilesToDelete.push(...newObjs);
 
                 if (newObjs.length) {
-                    console.log(`host.${hostname} Counted ${newObjs.length} meta of ${adapter}`);
+                    console.log(`host.${hostname} Counted ${newObjs.length} meta of ${adapter}${instance !== undefined ? `.${instance}` : ''}`);
                 }
             }
         } catch (err) {
@@ -1377,42 +1378,6 @@ export class Install {
      * @param instance The instance number
      * @param metaFilesToDelete Array to collect meta files to delete
      */
-    private async _enumerateInstanceMeta(
-        knownObjIDs: string[],
-        adapter: string,
-        instance: number,
-        metaFilesToDelete: string[],
-    ): Promise<void> {
-        try {
-            const doc = await this.objects.getObjectViewAsync('system', 'meta', {
-                startkey: `${adapter}.${instance}.`,
-                endkey: `${adapter}.${instance}.\u9999`,
-            });
-
-            if (doc.rows.length) {
-                const instanceRegex = new RegExp(`^${adapter}\\.${instance}\\.`);
-
-                // add non-duplicates to the list
-                const newObjs = doc.rows
-                    .filter(row => row.value._id)
-                    .map(row => row.value._id)
-                    .filter(id => instanceRegex.test(id))
-                    .filter(id => knownObjIDs.indexOf(id) === -1);
-                knownObjIDs.push(...newObjs);
-                // meta ids can also be present as files
-                metaFilesToDelete.push(...newObjs);
-
-                if (newObjs.length) {
-                    console.log(`host.${hostname} Counted ${newObjs.length} meta of ${adapter}.${instance}`);
-                }
-            }
-        } catch (err) {
-            err !== tools.ERRORS.ERROR_NOT_FOUND &&
-                err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
-                console.error(`host.${hostname} error: ${err.message}`);
-        }
-    }
-
     /**
      * Delete a list of files from the objects database
      *
@@ -1447,7 +1412,7 @@ export class Install {
         const metaFilesToDelete: string[] = [];
 
         // Enumerate meta files for this instance
-        await this._enumerateInstanceMeta(knownObjectIDs, adapter, instance, metaFilesToDelete);
+        await this._enumerateAdapterMeta(knownObjectIDs, adapter, metaFilesToDelete, instance);
 
         // Create the files to delete list - only instance-specific files
         const filesToDelete = [{ id: `${adapter}.${instance}` }, ...metaFilesToDelete.map(id => ({ id }))];
