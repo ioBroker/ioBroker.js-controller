@@ -21,6 +21,13 @@
         "semver": "^7.5.2",
         "yargs": "^17.6.2"
     },
+    "devDependencies": {
+        "@types/chai": "^4.3.3",
+        "@types/mocha": "^10.0.6",
+        "chai": "^4.3.4",
+        "mocha": "^10.4.0",
+        "ts-node": "^10.9.2"
+    },
     "keywords": [
         "ioBroker"
     ],
@@ -36,7 +43,8 @@
     },
     "scripts": {
         "build": "tsc -b tsconfig.build.json && tsc-alias",
-        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
+        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/",
+        "test": "mocha test/*.test.ts --exit --timeout 30000"
     },
     "main": "build/cjs/index.js",
     "module": "build/esm/index.js",
