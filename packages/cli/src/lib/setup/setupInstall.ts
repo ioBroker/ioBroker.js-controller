@@ -1377,23 +1377,15 @@ export class Install {
     }
 
     /**
-     * Enumerate meta objects for a specific adapter instance
-     *
-     * @param knownObjIDs The already known object ids
-     * @param adapter The adapter name
-     * @param instance The instance number
-     * @param metaFilesToDelete Array to collect meta files to delete
-     */
-    /**
      * Delete a list of files from the objects database
      *
      * @param filesToDelete Array of file objects with id and optional name properties
      */
     private async _deleteFiles(
-        filesToDelete: Array<{
+        filesToDelete: {
             id: string;
             name?: string;
-        }>,
+        }[],
     ): Promise<void> {
         for (const file of filesToDelete) {
             try {
