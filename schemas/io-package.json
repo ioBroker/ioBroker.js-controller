@@ -868,6 +868,7 @@
               "type": "string",
               "enum": [
                 "html",
+                "json",
                 "materialize"
               ]
             }
