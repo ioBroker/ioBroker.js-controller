@@ -1375,6 +1375,42 @@ export class Install {
      * @param adapter
      * @param metaFilesToDelete
      */
+    /**
+     * Delete files for a specific adapter instance
+     *
+     * @param adapter adapter name like hm-rpc
+     * @param instance instance number like 0
+     */
+    private async _deleteInstanceFiles(adapter: string, instance: number): Promise<void> {
+        const instanceId = `${adapter}.${instance}`;
+        
+        try {
+            // Collect all files for this instance
+            const result = await this.upload.collectExistingFilesToDelete(instanceId, '', console);
+            
+            if (result.filesToDelete?.length || result.dirs?.length) {
+                console.log(`host.${hostname} Deleting ${result.filesToDelete.length} files and ${result.dirs.length} directories for instance ${instanceId}`);
+                
+                // Delete all files first
+                await this.upload.eraseFiles(result.filesToDelete, console);
+                
+                // Delete directories (in reverse order to delete subdirs first)
+                for (const dir of result.dirs.reverse()) {
+                    try {
+                        await this.objects.unlinkAsync(dir.adapter, dir.path);
+                        console.log(`host.${hostname} directory ${dir.adapter}/${dir.path} deleted`);
+                    } catch (err) {
+                        err !== tools.ERRORS.ERROR_NOT_FOUND &&
+                            err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
+                            console.error(`host.${hostname} Cannot delete directory ${dir.adapter}/${dir.path}: ${err.message}`);
+                    }
+                }
+            }
+        } catch (err) {
+            console.error(`host.${hostname} Cannot delete files for instance ${instanceId}: ${err.message}`);
+        }
+    }
+
     private async _deleteAdapterFiles(adapter: string, metaFilesToDelete: string[]): Promise<void> {
         // special files, which are not meta (vis widgets), combined with meta object ids
         const filesToDelete = [
@@ -1619,6 +1655,12 @@ export class Install {
 
         await this._deleteAdapterObjects(knownObjectIDs);
         await this._deleteAdapterStates(knownStateIDs);
+        
+        // Delete files for this specific instance
+        if (instance !== undefined) {
+            await this._deleteInstanceFiles(adapter, instance);
+        }
+        
         if (this.params.custom) {
             // delete instance from custom
             await this._removeCustomFromObjects([`${adapter}.${instance}`]);
