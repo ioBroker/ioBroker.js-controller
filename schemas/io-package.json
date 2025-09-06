@@ -1147,7 +1147,7 @@
               "type": "boolean"
             },
             "supportsLoadingMessage": {
-              "description": "If page sends 'iobLoaded' event, when loaded",
+              "description": "If true, the page sends an 'iobLoaded' event when loaded",
               "type": "boolean"
             }
           }
