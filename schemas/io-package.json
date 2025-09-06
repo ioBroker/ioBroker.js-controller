@@ -1145,6 +1145,10 @@
             "singleton": {
               "description": "If true, only one TAB for all instances will be shown.",
               "type": "boolean"
+            },
+            "supportsLoadingMessage": {
+              "description": "If page sends 'iobLoaded' event, when loaded",
+              "type": "boolean"
             }
           }
         },

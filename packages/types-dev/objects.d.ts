@@ -634,6 +634,19 @@ declare global {
                 singleton?: boolean;
                 /** Order number in admin tabs */
                 order?: number;
+                /**
+                 * If page sends 'iobLoaded' event:
+                 *
+                 * if (window.parent !== window) {
+                 *  try {
+                 *   window.parent.postMessage('iobLoaded', '*');
+                 *  } catch {
+                 *  // ignore
+                 *  }
+                 * }
+                 * // when loaded in iframe, inform parent window
+                 */
+                supportsLoadingMessage?: boolean;
             };
             /** If the mode is `schedule`, start one time adapter by ioBroker start, or by the configuration changes */
             allowInit?: boolean;
