@@ -644,9 +644,9 @@ declare global {
                  *  // ignore
                  *  }
                  * }
-                 * 
+                 *
                  * When loaded in iframe, inform parent window
-                 * Admin will hide a loading spinner when the message will be received. 
+                 * Admin will hide a loading spinner when the message will be received.
                  */
                 supportsLoadingMessage?: boolean;
             };
