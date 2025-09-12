@@ -321,6 +321,8 @@
 - [SetStatePromise](type-aliases/SetStatePromise.md)
 - [SettableObjectWorker](type-aliases/SettableObjectWorker.md)
 - [SettableState](type-aliases/SettableState.md)
+- [SmartName](type-aliases/SmartName.md)
+- [SmartNameObject](type-aliases/SmartNameObject.md)
 - [State](type-aliases/State.md)
 - [StateChangeHandler](type-aliases/StateChangeHandler.md)
 - [StateValue](type-aliases/StateValue.md)
