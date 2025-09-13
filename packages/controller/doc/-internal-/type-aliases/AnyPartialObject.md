@@ -10,4 +10,4 @@
 
 ## Defined in
 
-[types-dev/objects.d.ts:1267](https://github.com/ioBroker/ioBroker.js-controller/blob/b499d83cda369ad8a77cd1584bbda2b5b44bf993/packages/types-dev/objects.d.ts#L1267)
+[types-dev/objects.d.ts:1265](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/objects.d.ts#L1265)

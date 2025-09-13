@@ -20,4 +20,4 @@ Due to backward compatibility first param can be result or error
 
 ## Defined in
 
-[types-dev/index.d.ts:410](https://github.com/ioBroker/ioBroker.js-controller/blob/b499d83cda369ad8a77cd1584bbda2b5b44bf993/packages/types-dev/index.d.ts#L410)
+[types-dev/index.d.ts:410](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/index.d.ts#L410)
