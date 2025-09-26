@@ -11,7 +11,7 @@ import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 import * as url from 'node:url';
 
 // Import the setupInstall module directly from source
-import '../../packages/cli/src/lib/setup/setupInstall.js';
+import '../../cli/build/esm/lib/setup/setupInstall.js';
 
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -21,12 +21,12 @@ const thisDir = url.fileURLToPath(new URL('.', import.meta.url));
 class MockInstall {
     objects: ObjectsInRedisClient;
     states: StateRedisClient;
-    
+
     constructor(params: { objects: ObjectsInRedisClient; states: StateRedisClient }) {
         this.objects = params.objects;
         this.states = params.states;
     }
-    
+
     // Mock implementation of _hasInstanceMetaFiles
     async _hasInstanceMetaFiles(adapter: string, instance: number): Promise<boolean> {
         const adapterPrefix = `${adapter}.${instance}.`;
@@ -34,14 +34,13 @@ class MockInstall {
             startkey: `${adapterPrefix}`,
             endkey: `${adapterPrefix}\u9999`,
         });
-        
-        return doc.rows.some(row => 
-            row.value._id && 
-            row.value._id.startsWith(adapterPrefix) &&
-            row.value._id !== `${adapter}.${instance}` // Exclude the instance folder itself
+
+        return doc.rows.some(
+            row =>
+                row.value._id && row.value._id.startsWith(adapterPrefix) && row.value._id !== `${adapter}.${instance}`, // Exclude the instance folder itself
         );
     }
-    
+
     // Mock implementation of _isMetaFileDeletionAllowed
     async _isMetaFileDeletionAllowed(adapter: string): Promise<boolean> {
         try {
@@ -51,11 +50,11 @@ class MockInstall {
                 return configObj.native.allowDeletionOfFilesInMetaObject === true;
             }
             return false;
-        } catch (err) {
+        } catch {
             return false;
         }
     }
-    
+
     // Mock implementation of _deleteInstanceFiles
     async _deleteInstanceFiles(adapter: string, instance: number): Promise<void> {
         const adapterPrefix = `${adapter}.${instance}.`;
@@ -63,39 +62,39 @@ class MockInstall {
             startkey: `${adapterPrefix}`,
             endkey: `${adapterPrefix}\u9999`,
         });
-        
+
         const metaFilesToDelete = doc.rows
             .filter(row => row.value._id && row.value._id.startsWith(adapterPrefix))
             .map(row => row.value._id);
-        
+
         // Delete the instance folder itself and all meta files
         const allFilesToDelete = [`${adapter}.${instance}`, ...metaFilesToDelete];
-        
+
         for (const id of allFilesToDelete) {
             try {
                 // In a real implementation, this would call objects.unlinkAsync
                 // For testing, we'll just delete the object
-                await this.objects.delObjectAsync(id as string);
-            } catch (err) {
+                await this.objects.delObjectAsync(id);
+            } catch {
                 // Ignore not found errors
             }
         }
     }
-    
+
     // Mock implementation of deleteInstance with conditional meta deletion logic
     async deleteInstance(adapter: string, instance: number, withMeta?: boolean): Promise<void> {
         // Delete the instance object first
         await this.objects.delObjectAsync(`system.adapter.${adapter}.${instance}`);
-        
+
         // Check if there are meta files that would be deleted
         const hasMetaFiles = await this._hasInstanceMetaFiles(adapter, instance);
-        
+
         if (hasMetaFiles) {
             // Check if adapter allows deletion of meta files without confirmation
             const allowedByAdapter = await this._isMetaFileDeletionAllowed(adapter);
-            
+
             let shouldDeleteMeta = false;
-            
+
             if (allowedByAdapter) {
                 // Adapter allows deletion, proceed without asking
                 shouldDeleteMeta = true;
@@ -104,7 +103,7 @@ class MockInstall {
                 shouldDeleteMeta = true;
             }
             // Note: We skip the interactive prompt in tests
-            
+
             if (shouldDeleteMeta) {
                 await this._deleteInstanceFiles(adapter, instance);
             }
@@ -170,9 +169,9 @@ describe('setupInstall - Conditional Meta File Deletion', function () {
                 platform: 'Javascript/Node.js',
             },
             native: {},
-        });
+        } as ioBroker.InstanceObject);
 
-        // Create some meta objects for the instance
+        // Create some metaobjects for the instance
         await objects.setObject(`${testAdapterName}.${testInstanceNumber}`, {
             type: 'meta',
             common: {
@@ -182,6 +181,7 @@ describe('setupInstall - Conditional Meta File Deletion', function () {
             native: {},
         });
 
+        // @ts-expect-error
         await objects.setObject(`${testAdapterName}.${testInstanceNumber}.meta1`, {
             type: 'meta',
             common: {
@@ -189,8 +189,9 @@ describe('setupInstall - Conditional Meta File Deletion', function () {
                 type: 'meta.user',
             },
             native: {},
-        });
+        } as unknown as ioBroker.MetaObject);
 
+        // @ts-expect-error
         await objects.setObject(`${testAdapterName}.${testInstanceNumber}.meta2`, {
             type: 'meta',
             common: {
@@ -198,7 +199,7 @@ describe('setupInstall - Conditional Meta File Deletion', function () {
                 type: 'meta.user',
             },
             native: {},
-        });
+        } as unknown as ioBroker.MetaObject);
 
         // Create test io-package config (stored as test object since we can't access filesystem easily)
         await objects.setObject(`test.${testAdapterName}.iopackage`, {
@@ -220,7 +221,7 @@ describe('setupInstall - Conditional Meta File Deletion', function () {
             await objects.delObject(`${testAdapterName}.${testInstanceNumber}.meta1`);
             await objects.delObject(`${testAdapterName}.${testInstanceNumber}.meta2`);
             await objects.delObject(`test.${testAdapterName}.iopackage`);
-        } catch (err) {
+        } catch {
             // Ignore errors during cleanup
         }
     });
@@ -232,7 +233,7 @@ describe('setupInstall - Conditional Meta File Deletion', function () {
         });
 
         it('should detect when instance has no meta files', async function () {
-            // Remove all meta objects except the instance folder
+            // Remove all metaobjects except the instance folder
             await objects.delObject(`${testAdapterName}.${testInstanceNumber}.meta1`);
             await objects.delObject(`${testAdapterName}.${testInstanceNumber}.meta2`);
 
@@ -357,14 +358,16 @@ describe('setupInstall - Conditional Meta File Deletion', function () {
             });
 
             // Create another instance
+            // @ts-expect-error
             await objects.setObject(`${testAdapterName}.1.meta3`, {
+                _id: `${testAdapterName}.1.meta3`,
                 type: 'meta',
                 common: {
                     name: 'Instance 1 Meta Object',
                     type: 'meta.user',
                 },
                 native: {},
-            });
+            } as ioBroker.MetaObject);
 
             // Test that _hasInstanceMetaFiles only finds files for the specific instance
             const hasMetaFilesInstance0 = await mockInstall._hasInstanceMetaFiles(testAdapterName, 0);

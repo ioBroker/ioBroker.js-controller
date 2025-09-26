@@ -1427,10 +1427,10 @@ export class Install {
             if (!adapterDir || !fs.existsSync(path.join(adapterDir, 'io-package.json'))) {
                 return false;
             }
-            
+
             const ioPackage = await fs.readJSON(path.join(adapterDir, 'io-package.json'));
             return ioPackage.common?.allowDeletionOfFilesInMetaObject === true;
-        } catch (err) {
+        } catch {
             // If we can't read the io-package.json, assume meta file deletion is not allowed
             return false;
         }
@@ -1446,17 +1446,19 @@ export class Install {
         if (!process.stdin.isTTY || !process.stdout.isTTY) {
             return false; // In non-interactive environment, don't delete meta files
         }
-
         const rl = (await import('node:readline')).createInterface({
             input: process.stdin,
             output: process.stdout,
         });
 
-        return new Promise((resolve) => {
-            rl.question('This instance has meta files (e.g., vis projects) that will be permanently deleted. Do you want to continue? [y/N]: ', (answer) => {
-                rl.close();
-                resolve(answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes');
-            });
+        return new Promise(resolve => {
+            rl.question(
+                'This instance has meta files (e.g., vis projects) that will be permanently deleted. Do you want to continue? [y/N]: ',
+                (answer: string) => {
+                    rl.close();
+                    resolve(answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes');
+                },
+            );
         });
     }
     private async _deleteInstanceFiles(adapter: string, instance: number): Promise<void> {
@@ -1691,7 +1693,11 @@ export class Install {
      * @param instance e.g. 1, if undefined deletes all instances
      * @param withMeta if true, also delete meta files without asking for confirmation
      */
-    async deleteInstance(adapter: string, instance?: number, withMeta?: boolean): Promise<void | EXIT_CODES.CANNOT_DELETE_DEPENDENCY> {
+    async deleteInstance(
+        adapter: string,
+        instance?: number,
+        withMeta?: boolean,
+    ): Promise<void | EXIT_CODES.CANNOT_DELETE_DEPENDENCY> {
         const knownObjectIDs: string[] = [];
         const knownStateIDs: string[] = [];
 
@@ -1718,13 +1724,13 @@ export class Install {
         if (instance !== undefined) {
             // Check if there are meta files that would be deleted
             const hasMetaFiles = await this._hasInstanceMetaFiles(adapter, instance);
-            
+
             if (hasMetaFiles) {
                 // Check if adapter allows deletion of meta files without confirmation
                 const allowedByAdapter = await this._isMetaFileDeletionAllowed(adapter);
-                
+
                 let shouldDeleteMeta = false;
-                
+
                 if (allowedByAdapter) {
                     // Adapter allows deletion, proceed without asking
                     shouldDeleteMeta = true;
@@ -1735,7 +1741,7 @@ export class Install {
                     // Ask user interactively (will return false if not in TTY)
                     shouldDeleteMeta = await this._askUserToDeleteMetaFiles();
                 }
-                
+
                 if (shouldDeleteMeta) {
                     await this._deleteInstanceFiles(adapter, instance);
                 } else {
