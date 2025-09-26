@@ -90,6 +90,9 @@ jobs:
       - name: Execute Jsonl Tests
         run: npm run test-jsonl
 
+      - name: Execute CLI Tests
+        run: npm run test-cli
+
       - name: Redis Socket/Sentinel Tests (Linux)
         if: ${{ matrix.os == 'ubuntu-22.04' }}
         run: |
