@@ -46,7 +46,7 @@ the namespace RegExp of the adapter `adapter.0`
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L33)
+[adapter/src/lib/adapter/validator.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L33)
 
 ## Methods
 
@@ -72,7 +72,7 @@ if the id is a pattern
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:355](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L355)
+[adapter/src/lib/adapter/validator.ts:355](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L355)
 
 ***
 
@@ -99,7 +99,7 @@ ioBroker setState object
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L56)
+[adapter/src/lib/adapter/validator.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L56)
 
 ***
 
@@ -133,7 +133,7 @@ Error when id is invalid
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L153)
+[adapter/src/lib/adapter/validator.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L153)
 
 ***
 
@@ -155,7 +155,7 @@ object to validate
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L387)
+[adapter/src/lib/adapter/validator.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L387)
 
 ***
 
@@ -181,7 +181,7 @@ name of the parameter for logging
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:272](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L272)
+[adapter/src/lib/adapter/validator.ts:272](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L272)
 
 ***
 
@@ -207,7 +207,7 @@ name of the parameter for logging
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:315](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L315)
+[adapter/src/lib/adapter/validator.ts:315](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L315)
 
 ***
 
@@ -233,7 +233,7 @@ name of the parameter for logging
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L341)
+[adapter/src/lib/adapter/validator.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L341)
 
 ***
 
@@ -259,7 +259,7 @@ name of the parameter for logging
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:286](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L286)
+[adapter/src/lib/adapter/validator.ts:286](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L286)
 
 ***
 
@@ -289,7 +289,7 @@ name of the parameter for logging
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:300](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L300)
+[adapter/src/lib/adapter/validator.ts:300](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L300)
 
 ***
 
@@ -315,7 +315,7 @@ name of the parameter for logging
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L327)
+[adapter/src/lib/adapter/validator.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L327)
 
 ***
 
@@ -341,7 +341,7 @@ name of the parameter for logging
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:250](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L250)
+[adapter/src/lib/adapter/validator.ts:250](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L250)
 
 ***
 
@@ -367,7 +367,7 @@ name of the parameter for logging
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:236](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L236)
+[adapter/src/lib/adapter/validator.ts:236](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L236)
 
 ***
 
@@ -389,7 +389,7 @@ milliseconds to validate
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:447](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L447)
+[adapter/src/lib/adapter/validator.ts:447](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L447)
 
 ***
 
@@ -413,4 +413,4 @@ error description
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/adapter/validator.ts#L225)
+[adapter/src/lib/adapter/validator.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/adapter/validator.ts#L225)

@@ -66,4 +66,4 @@ Link to the adapter if it could be shown in the pro-cloud, like: vis-2/edit.html
 
 ## Defined in
 
-[types-dev/objects.d.ts:586](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L586)
+[types-dev/objects.d.ts:593](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/objects.d.ts#L593)
