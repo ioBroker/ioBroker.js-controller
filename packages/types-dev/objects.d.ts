@@ -186,6 +186,15 @@ declare global {
             role?: string;
         }
 
+        type SmartNameObject = { [lang in ioBroker.Languages]?: string } & {
+            /** Which kind of device it is */
+            smartType?: string | null;
+            /** Which value to set when the ON command is issued */
+            byON?: string | null;
+        };
+
+        type SmartName = null | false | string | SmartNameObject;
+
         interface StateCommon extends ObjectCommon {
             /** Type of this state. See https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#state-commonrole for a detailed description */
             type: CommonType;
@@ -268,16 +277,7 @@ declare global {
              * The string "ignore" (deprecated please use boolean `false` instead) or boolean value `false` is a special case, causing the state to be ignored.
              * A value of `null` means that the device should be removed by the IOT adapters
              */
-            smartName?:
-                | null
-                | false
-                | string
-                | ({ [lang in Languages]?: string } & {
-                      /** Which kind of device it is */
-                      smartType?: string | null;
-                      /** Which value to set when the ON command is issued */
-                      byON?: string | null;
-                  });
+            smartName?: SmartName;
         }
 
         interface ChannelCommon extends ObjectCommon {
@@ -320,6 +320,13 @@ declare global {
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
+
+            /**
+             * Settings for IOT adapters and how the state should be named in e.g., Alexa.
+             * The string "ignore" (deprecated please use boolean `false` instead) or boolean value `false` is a special case, causing the state to be ignored.
+             * A value of `null` means that the device should be removed by the IOT adapters
+             */
+            smartName?: SmartName;
         }
 
         interface MetaCommon extends ObjectCommon {
@@ -511,7 +518,16 @@ declare global {
             /** If the widget was written with TypeScript */
             bundlerType?: 'module';
             /** The vis widget does not support the listed major versions of vis */
-            ignoreInVersions: number[];
+            ignoreInVersions?: number[];
+        }
+
+        interface VisIconSet {
+            name?: ioBroker.StringOrTranslated;
+            url: string;
+            /** If set, this is not a widget set, but icon set. url, name and icon are required */
+            icon?: string; // base 64 string for iconSet (not used for widgetSets)
+            /** The vis icon set does not support the listed major versions of vis */
+            ignoreInVersions?: number[];
         }
 
         type PaidLicenseType = 'paid' | 'commercial' | 'limited';
@@ -618,6 +634,21 @@ declare global {
                 singleton?: boolean;
                 /** Order number in admin tabs */
                 order?: number;
+                /**
+                 * If page sends 'iobLoaded' event:
+                 *
+                 * if (window.parent !== window) {
+                 *  try {
+                 *   window.parent.postMessage('iobLoaded', '*');
+                 *  } catch {
+                 *  // ignore
+                 *  }
+                 * }
+                 *
+                 * When loaded in iframe, inform parent window
+                 * Admin will hide a loading spinner when the message will be received.
+                 */
+                supportsLoadingMessage?: boolean;
             };
             /** If the mode is `schedule`, start one time adapter by ioBroker start, or by the configuration changes */
             allowInit?: boolean;
@@ -776,6 +807,8 @@ declare global {
             version: string;
             /** Definition of the vis-2 widgets */
             visWidgets?: Record<string, VisWidget>;
+            /** Definition of the vis-2 icon sets */
+            visIconSets?: Record<string, VisIconSet>;
             /** Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/1.2.3/material` instead of `http://ip:port/material` */
             webByVersion?: boolean;
             /** Whether the web server in this adapter can be extended with plugin/extensions */
