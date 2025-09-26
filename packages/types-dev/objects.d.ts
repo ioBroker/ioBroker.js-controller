@@ -406,6 +406,9 @@ declare global {
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
+
+            /** If set to true, the reporting by sentry on this host is disabled for all instances */
+            disableDataReporting?: boolean;
         }
 
         interface HostNative {
