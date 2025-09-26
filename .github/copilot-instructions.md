@@ -179,5 +179,6 @@ async startInstance(instanceId: string, wakeUp = true): Promise<void> {
 - Run tests before submitting changes
 - Check that builds complete successfully
 - Follow the contribution guidelines in CONTRIBUTING.md
+- **Add changelog entries to CHANGELOG.md for functional changes or enhancements** - Focus on the user-facing effect rather than technical implementation details
 
 When working with this codebase, prioritize correctness, maintainability, and following established patterns over clever solutions.

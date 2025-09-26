@@ -182,6 +182,10 @@ function initYargs(): ReturnType<typeof yargs> {
                 describe: 'Remove instance custom attribute from all objects',
                 type: 'boolean',
             },
+            'with-meta': {
+                describe: 'Also delete meta files without asking for confirmation',
+                type: 'boolean',
+            },
         })
         .command('update [<repositoryUrl>]', 'Update repository and list adapters', {
             updatable: {
@@ -1109,7 +1113,7 @@ async function processCommand(
                     });
 
                     console.log(`Delete instance "${adapter}.${instance}"`);
-                    await install.deleteInstance(adapter, parseInt(instance));
+                    await install.deleteInstance(adapter, parseInt(instance), params['with-meta']);
                     callback();
                 });
             } else {
