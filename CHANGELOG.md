@@ -5,7 +5,11 @@
 -->
 
 ## __WORK IN PROGRESS__
-* (@Apollon77) Allows only numbers for ts and tc fields in state when provided for setState
+* (@foxriver76) Added objects warn limit per instance
+* (@Apollon77) Allows only numbers for `ts` and `lc` fields in state when provided for setState
+* (@GermanBluefox) Added typing for `visIconSets` in `io-package.json`(for vis-2 SVG icon sets)
+* (@GermanBluefox) Added typing for `smartName` in the enum objects
+* (@GermanBluefox) Added typing for `supportsLoadingMessage` in the instance objects
 
 ## 7.0.7 (2025-04-17) - Lucy
 * (@foxriver76) fixed the edge-case problem on Windows (if adapter calls `readDir` on single file)
@@ -43,8 +47,7 @@
 * Backups created with 7.0.x cannot be restored with a previous version
 
 **Features**
-* (@GermanBluefox) Added support for dynamic notification data 
-(with this feature developers can create interactive notifications in the Admin adapter)
+* (@GermanBluefox) Added support for dynamic notification data (with this feature, developers can create interactive notifications in the Admin adapter)
 * (@GermanBluefox/@foxriver76) implemented automatic upload on adapter start if version mismatch is detected
 * (@foxriver76) improved backup/restore process to work for arbitrary large installations
 * (@foxriver76) added notification if new image is available on Docker Hub (for official docker systems)
