@@ -6,6 +6,7 @@
 
 ## __WORK IN PROGRESS__
 * (@copilot) Fixed adminUI, adminTab, and adminColumns configurations being incorrectly preserved during adapter uploads
+* (@foxriver76) Added objects warn limit per instance
 * (@Apollon77) Allows only numbers for `ts` and `lc` fields in state when provided for setState
 * (@GermanBluefox) Added typing for `visIconSets` in `io-package.json`(for vis-2 SVG icon sets)
 * (@GermanBluefox) Added typing for `smartName` in the enum objects
