@@ -8,6 +8,11 @@
 * (@Apollon77) Allows only numbers for ts and tc fields in state when provided for setState
 * (@GermanBluefox) Added typing for visIconSets in `io-package.json`(for vis-2 SVG icon sets)
 * (@copilot) Fixed cleanup of storage meta folder files when deleting adapter instances
+* (@foxriver76) Added objects warn limit per instance
+* (@Apollon77) Allows only numbers for `ts` and `lc` fields in state when provided for setState
+* (@GermanBluefox) Added typing for `visIconSets` in `io-package.json`(for vis-2 SVG icon sets)
+* (@GermanBluefox) Added typing for `smartName` in the enum objects
+* (@GermanBluefox) Added typing for `supportsLoadingMessage` in the instance objects
 
 ## 7.0.7 (2025-04-17) - Lucy
 * (@foxriver76) fixed the edge-case problem on Windows (if adapter calls `readDir` on single file)
