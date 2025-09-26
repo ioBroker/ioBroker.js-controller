@@ -16,7 +16,7 @@ If the widget was written with TypeScript
 
 #### Defined in
 
-[types-dev/objects.d.ts:512](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L512)
+[types-dev/objects.d.ts:519](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/objects.d.ts#L519)
 
 ***
 
@@ -26,7 +26,7 @@ If the widget was written with TypeScript
 
 #### Defined in
 
-[types-dev/objects.d.ts:510](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L510)
+[types-dev/objects.d.ts:517](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/objects.d.ts#L517)
 
 ***
 
@@ -36,7 +36,7 @@ If the widget was written with TypeScript
 
 #### Defined in
 
-[types-dev/objects.d.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L507)
+[types-dev/objects.d.ts:514](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/objects.d.ts#L514)
 
 ***
 
@@ -48,7 +48,7 @@ The vis widget does not support the listed major versions of vis
 
 #### Defined in
 
-[types-dev/objects.d.ts:514](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L514)
+[types-dev/objects.d.ts:521](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/objects.d.ts#L521)
 
 ***
 
@@ -58,7 +58,7 @@ The vis widget does not support the listed major versions of vis
 
 #### Defined in
 
-[types-dev/objects.d.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L508)
+[types-dev/objects.d.ts:515](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/objects.d.ts#L515)
 
 ***
 
@@ -68,4 +68,4 @@ The vis widget does not support the listed major versions of vis
 
 #### Defined in
 
-[types-dev/objects.d.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L509)
+[types-dev/objects.d.ts:516](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/objects.d.ts#L516)
