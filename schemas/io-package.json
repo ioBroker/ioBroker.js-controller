@@ -874,6 +874,10 @@
             }
           }
         },
+        "allowDeletionOfFilesInMetaObject": {
+          "description": "If true, allows deletion of meta files without user confirmation when deleting adapter instances",
+          "type": "boolean"
+        },
         "automaticUpgrade": {
           "description": "Automatically upgrade the adapter in the configured semver range. Best practice is to leave this as none and let the user opt-in.",
           "type": "string",
