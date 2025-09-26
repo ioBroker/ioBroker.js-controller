@@ -68,7 +68,7 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
             .then(() => {
                 this.log.debug(
                     `${this.namespace} ${settings.secure ? 'Secure ' : ''} Redis inMem-states listening on port ${
-                        this.settings.port || 9000
+                        this.settings.connection.port || 9000
                     }`,
                 );
 
@@ -78,7 +78,7 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
             })
             .catch(e => {
                 this.log.error(
-                    `${this.namespace} Cannot start inMem-states on port ${this.settings.port || 9000}: ${e.message}`,
+                    `${this.namespace} Cannot start inMem-states on port ${this.settings.connection.port || 9000}: ${e.message}`,
                 );
                 process.exit(EXIT_CODES.NO_CONNECTION_TO_STATES_DB);
             });
@@ -534,8 +534,8 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
                 this.server = net.createServer();
                 this.server.on('error', err =>
                     this.log.info(
-                        `${this.namespace} ${settings.secure ? 'Secure ' : ''} Error inMem-objects listening on port ${
-                            settings.port || 9001
+                        `${this.namespace} ${settings.secure ? 'Secure ' : ''} Error inMem-states listening on port ${
+                            settings.port || 9000
                         }: ${err}`,
                     ),
                 );
