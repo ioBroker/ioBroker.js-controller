@@ -3269,6 +3269,26 @@ function initInstances(): void {
 }
 
 /**
+ * Error class for adapter not found dependency issues
+ */
+class AdapterNotFoundError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = 'AdapterNotFoundError';
+    }
+}
+
+/**
+ * Error class for adapter version mismatch dependency issues
+ */
+class AdapterVersionMismatchError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = 'AdapterVersionMismatchError';
+    }
+}
+
+/**
  * Checks if at least one of the instances of given name satisfies the version
  *
  * @param name - name of the dependency
@@ -3283,7 +3303,7 @@ function checkVersion(name: string, version: string, instances: Record<string, i
         // Check only a version
         if (version) {
             if (!semver.satisfies(ioPackage.common.version, version, { includePrerelease: true })) {
-                throw new Error(
+                throw new AdapterVersionMismatchError(
                     `Invalid version of "${name}". Installed "${ioPackage.common.version}", required "${version}"`,
                 );
             } else {
@@ -3301,7 +3321,7 @@ function checkVersion(name: string, version: string, instances: Record<string, i
         );
         for (const inst of filteredInst) {
             if (version && !semver.satisfies(instances[inst].common.version, version, { includePrerelease: true })) {
-                throw new Error(
+                throw new AdapterVersionMismatchError(
                     `required adapter "${name}" has wrong version. Installed "${instances[inst].common.version}", required "${version}"!`,
                 );
             }
@@ -3310,7 +3330,7 @@ function checkVersion(name: string, version: string, instances: Record<string, i
     }
 
     if (!isFound) {
-        throw new Error(`required adapter "${name}" not found!`);
+        throw new AdapterNotFoundError(`required adapter "${name}" not found!`);
     }
 }
 
@@ -3363,7 +3383,15 @@ async function checkVersions(id: string, deps?: Dependencies, globalDeps?: Depen
         }
     } catch (e) {
         logger.debug(`${hostLogPrefix} ${id} [globalDependency]: ${JSON.stringify(globalDeps)}`);
-        throw new Error(`Adapter dependency not fulfilled on all hosts where adapter is installed: ${e.message}`);
+        
+        if (e instanceof AdapterNotFoundError) {
+            throw new Error(`Adapter dependency not fulfilled: ${e.message}`);
+        } else if (e instanceof AdapterVersionMismatchError) {
+            throw new Error(`Adapter dependency not fulfilled on all hosts where adapter is installed: ${e.message}`);
+        } else {
+            // fallback for any other errors
+            throw new Error(`Adapter dependency not fulfilled: ${e.message}`);
+        }
     }
 }
 
