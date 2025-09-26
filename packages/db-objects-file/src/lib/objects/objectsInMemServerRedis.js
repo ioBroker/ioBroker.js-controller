@@ -80,7 +80,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             .then(() => {
                 this.log.debug(
                     `${this.namespace} ${settings.secure ? 'Secure ' : ''} Redis inMem-objects listening on port ${
-                        settings.port || 9001
+                        this.settings.connection.port || 9001
                     }`,
                 );
 
@@ -90,7 +90,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             })
             .catch(e => {
                 this.log.error(
-                    `${this.namespace} Cannot start inMem-objects on port ${settings.port || 9001}: ${e.message}`,
+                    `${this.namespace} Cannot start inMem-objects on port ${this.settings.connection.port || 9001}: ${e.message}`,
                 );
                 process.exit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
             });
