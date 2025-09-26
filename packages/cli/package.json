@@ -14,7 +14,7 @@
         "debug": "^4.3.4",
         "deep-clone": "^3.0.3",
         "event-stream": "^4.0.1",
-        "fs-extra": "^11.1.0",
+        "fs-extra": "^11.3.2",
         "mime-types": "^2.1.35",
         "promisify-child-process": "^4.1.1",
         "readline-sync": "^1.4.10",
