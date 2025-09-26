@@ -1398,11 +1398,67 @@ export class Install {
     }
 
     /**
-     * Delete files for a specific adapter instance
+     * Check if there are meta files that would be deleted for an instance
      *
      * @param adapter adapter name like hm-rpc
      * @param instance instance number like 0
+     * @returns Promise<boolean> true if there are meta files to delete
      */
+    private async _hasInstanceMetaFiles(adapter: string, instance: number): Promise<boolean> {
+        const knownObjectIDs: string[] = [];
+        const metaFilesToDelete: string[] = [];
+
+        // Enumerate meta files for this instance
+        await this._enumerateAdapterMeta(knownObjectIDs, adapter, metaFilesToDelete, instance);
+
+        // Return true if there are meta files beyond the instance folder itself
+        return metaFilesToDelete.length > 0;
+    }
+
+    /**
+     * Read the adapter's io-package.json and check if deletion of meta files is allowed
+     *
+     * @param adapter adapter name like hm-rpc
+     * @returns Promise<boolean> true if allowDeletionOfFilesInMetaObject is set to true
+     */
+    private async _isMetaFileDeletionAllowed(adapter: string): Promise<boolean> {
+        try {
+            const adapterDir = tools.getAdapterDir(adapter);
+            if (!adapterDir || !fs.existsSync(path.join(adapterDir, 'io-package.json'))) {
+                return false;
+            }
+            
+            const ioPackage = await fs.readJSON(path.join(adapterDir, 'io-package.json'));
+            return ioPackage.common?.allowDeletionOfFilesInMetaObject === true;
+        } catch (err) {
+            // If we can't read the io-package.json, assume meta file deletion is not allowed
+            return false;
+        }
+    }
+
+    /**
+     * Ask user interactively if they want to delete meta files
+     *
+     * @returns Promise<boolean> true if user agrees to delete meta files
+     */
+    private async _askUserToDeleteMetaFiles(): Promise<boolean> {
+        // Check if running in interactive TTY
+        if (!process.stdin.isTTY || !process.stdout.isTTY) {
+            return false; // In non-interactive environment, don't delete meta files
+        }
+
+        const rl = (await import('node:readline')).createInterface({
+            input: process.stdin,
+            output: process.stdout,
+        });
+
+        return new Promise((resolve) => {
+            rl.question('This instance has meta files (e.g., vis projects) that will be permanently deleted. Do you want to continue? [y/N]: ', (answer) => {
+                rl.close();
+                resolve(answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes');
+            });
+        });
+    }
     private async _deleteInstanceFiles(adapter: string, instance: number): Promise<void> {
         const knownObjectIDs: string[] = [];
         const metaFilesToDelete: string[] = [];
@@ -1633,8 +1689,9 @@ export class Install {
      *
      * @param adapter adapter name like hm-rpc
      * @param instance e.g. 1, if undefined deletes all instances
+     * @param withMeta if true, also delete meta files without asking for confirmation
      */
-    async deleteInstance(adapter: string, instance?: number): Promise<void | EXIT_CODES.CANNOT_DELETE_DEPENDENCY> {
+    async deleteInstance(adapter: string, instance?: number, withMeta?: boolean): Promise<void | EXIT_CODES.CANNOT_DELETE_DEPENDENCY> {
         const knownObjectIDs: string[] = [];
         const knownStateIDs: string[] = [];
 
@@ -1659,7 +1716,35 @@ export class Install {
 
         // Delete files for this specific instance (before deleting objects, since enumeration needs them)
         if (instance !== undefined) {
-            await this._deleteInstanceFiles(adapter, instance);
+            // Check if there are meta files that would be deleted
+            const hasMetaFiles = await this._hasInstanceMetaFiles(adapter, instance);
+            
+            if (hasMetaFiles) {
+                // Check if adapter allows deletion of meta files without confirmation
+                const allowedByAdapter = await this._isMetaFileDeletionAllowed(adapter);
+                
+                let shouldDeleteMeta = false;
+                
+                if (allowedByAdapter) {
+                    // Adapter allows deletion, proceed without asking
+                    shouldDeleteMeta = true;
+                } else if (withMeta) {
+                    // User provided --with-meta flag
+                    shouldDeleteMeta = true;
+                } else {
+                    // Ask user interactively (will return false if not in TTY)
+                    shouldDeleteMeta = await this._askUserToDeleteMetaFiles();
+                }
+                
+                if (shouldDeleteMeta) {
+                    await this._deleteInstanceFiles(adapter, instance);
+                } else {
+                    console.log(`host.${hostname} Meta files for ${adapter}.${instance} were not deleted`);
+                }
+            } else {
+                // No meta files to worry about, proceed with standard deletion
+                await this._deleteInstanceFiles(adapter, instance);
+            }
         }
 
         await this._deleteAdapterObjects(knownObjectIDs);

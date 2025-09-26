@@ -7,7 +7,7 @@
 ## __WORK IN PROGRESS__
 * (@Apollon77) Allows only numbers for ts and tc fields in state when provided for setState
 * (@GermanBluefox) Added typing for visIconSets in `io-package.json`(for vis-2 SVG icon sets)
-* (@copilot) Fixed cleanup of storage meta folder files when deleting adapter instances
+* (@copilot) Added conditional deletion of storage meta folder files when deleting adapter instances to prevent accidental removal of user data like vis projects
 * (@foxriver76) Added objects warn limit per instance
 * (@Apollon77) Allows only numbers for `ts` and `lc` fields in state when provided for setState
 * (@GermanBluefox) Added typing for `visIconSets` in `io-package.json`(for vis-2 SVG icon sets)
