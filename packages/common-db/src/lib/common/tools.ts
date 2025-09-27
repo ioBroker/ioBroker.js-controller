@@ -32,6 +32,7 @@ import type * as DiskUsage from 'diskusage';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
 import type { WithRequired } from '@iobroker/types-dev';
+import { DEFAULT_OBJECTS_WARN_LIMIT } from '@/lib/common/constants.js';
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
@@ -3533,6 +3534,20 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 write: true,
                 desc: 'Loglevel of the adapter. Will be set on start with defined value but can be overridden during runtime',
                 role: 'state',
+            },
+            native: {},
+        },
+        {
+            _id: `${id}.objectsWarnLimit`,
+            type: 'state',
+            common: {
+                name: `${namespace} objects warn limit`,
+                type: 'number',
+                read: true,
+                write: true,
+                desc: 'If the number of objects of this adapter instance exceeds this limit, the user will receive a warning',
+                role: 'state',
+                def: DEFAULT_OBJECTS_WARN_LIMIT,
             },
             native: {},
         },
