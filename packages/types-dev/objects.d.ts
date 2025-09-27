@@ -1068,6 +1068,8 @@ declare global {
             name: Required<ioBroker.Translated>;
             /** Time of repository update */
             repoTime: string;
+            /** Time when repository was last read/fetched */
+            repoReadTime?: string;
         }
 
         interface RepositoryJson {
