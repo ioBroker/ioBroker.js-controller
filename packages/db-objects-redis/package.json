@@ -8,10 +8,10 @@
     "dependencies": {
         "@iobroker/db-base": "file:../db-base",
         "deep-clone": "^3.0.3",
-        "ioredis": "^4.28.2",
-        "mime-types": "^2.1.35",
-        "node.extend": "^2.0.2",
-        "semver": "^7.5.2"
+        "ioredis": "^5.8.0",
+        "mime-types": "^3.0.1",
+        "node.extend": "^2.0.3",
+        "semver": "^7.7.2"
     },
     "keywords": [
         "ioBroker",

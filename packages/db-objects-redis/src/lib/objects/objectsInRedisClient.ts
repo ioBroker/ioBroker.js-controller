@@ -7,8 +7,7 @@
  */
 // @ts-expect-error no ts module
 import extend from 'node.extend';
-import type IORedis from 'ioredis';
-import Redis from 'ioredis';
+import { Redis } from 'ioredis';
 import { tools } from '@iobroker/db-base';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -125,7 +124,7 @@ interface Options {
 type CheckFileCallback = (checkFailed: boolean, options?: CallOptions, fileOptions?: { notExists: boolean }) => void;
 
 export class ObjectsInRedisClient {
-    private client: IORedis.Redis | null;
+    private client: Redis | null;
     private readonly fileNamespace: string;
     private readonly redisNamespace: string;
     private readonly fileNamespaceL: number;
@@ -135,8 +134,8 @@ export class ObjectsInRedisClient {
     private readonly objNamespaceL: number;
     private readonly supportedProtocolVersions: string[];
     private stop: boolean;
-    private sub: IORedis.Redis | null;
-    private subSystem: IORedis.Redis | null;
+    private sub: Redis | null;
+    private subSystem: Redis | null;
     private settings: ObjectsSettings;
     private readonly preserveSettings: ('custom' | 'smartName' | 'material' | 'habpanel' | 'mobile')[];
     private defaultNewAcl: ACLObject | null;
@@ -537,7 +536,7 @@ export class ObjectsInRedisClient {
                         ),
                     );
 
-                    this.subSystem.on('reconnecting', reconnectCounter =>
+                    this.subSystem.on('reconnecting', (reconnectCounter: number) =>
                         this.log.silly(
                             `${this.namespace} PubSub System client Objects-Redis Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`,
                         ),
@@ -687,7 +686,7 @@ export class ObjectsInRedisClient {
                         ),
                     );
 
-                    this.sub.on('reconnecting', reconnectCounter =>
+                    this.sub.on('reconnecting', (reconnectCounter: number) =>
                         this.log.silly(
                             `${this.namespace} PubSub user client Objects-Redis Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`,
                         ),
@@ -900,7 +899,7 @@ export class ObjectsInRedisClient {
      *
      * @param id - id of the data with namespace prefix
      */
-    private _getBinaryState(id: string): Promise<Buffer> {
+    private _getBinaryState(id: string): Promise<Buffer | null> {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
@@ -1209,15 +1208,14 @@ export class ObjectsInRedisClient {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
-        let buffer;
-        buffer = await this._getBinaryState(this.getFileId(id, name, false));
+        let buffer: Buffer | string | null = await this._getBinaryState(this.getFileId(id, name, false));
 
         const mimeType = meta?.mimeType;
         if (meta && !meta.binary && buffer) {
             buffer = buffer.toString();
         }
 
-        return { file: buffer, mimeType: mimeType };
+        return { file: buffer ?? '', mimeType: mimeType };
     }
 
     // User has provided no callback, we will return the Promise
@@ -2002,7 +2000,7 @@ export class ObjectsInRedisClient {
             }
             // we create a dummy file (for file this file exists to store meta data) - do not override passed options
             options = { ...options, virtualFile: true };
-            const realName = dirName + (dirName.endsWith('/') ? '' : '/');
+            const realName = dirName ? dirName + (dirName.endsWith('/') ? '' : '/') : '';
             this.writeFile(id, `${realName}_data.json`, '', options, callback);
         });
     }
@@ -3058,6 +3056,7 @@ export class ObjectsInRedisClient {
                 this.getObject(id, options, (err, obj) => (err ? reject(err) : resolve(obj))),
             );
         }
+        const cb = callback;
 
         if (typeof callback === 'function') {
             if (options?.acl) {
@@ -3067,7 +3066,7 @@ export class ObjectsInRedisClient {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 }
-                return this._getObject(id, options, callback);
+                return this._getObject(id, options, cb);
             });
         }
     }
@@ -3385,11 +3384,12 @@ export class ObjectsInRedisClient {
             options.acl = null;
         }
         if (typeof callback === 'function') {
+            const cb = callback;
             utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 }
-                return this._getObjectsByPattern(pattern, options, callback);
+                return this._getObjectsByPattern(pattern, options, cb);
             });
         }
     }
@@ -3870,7 +3870,7 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = await this.client.evalsha([
+                    objs = (await this.client.evalsha(
                         this.scripts.filter,
                         6,
                         this.objNamespace,
@@ -3879,7 +3879,7 @@ export class ObjectsInRedisClient {
                         matches[1],
                         cursor,
                         `${this.setNamespace}object.type.${matches[1]}`,
-                    ]);
+                    )) as string[];
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
                     throw e;
@@ -3960,7 +3960,7 @@ export class ObjectsInRedisClient {
                 }
                 let res: string[] | [objStrings: string[], cursor: string];
                 try {
-                    res = await this.client.evalsha([
+                    res = (await this.client.evalsha(
                         this.scripts.script,
                         5,
                         this.objNamespace,
@@ -3968,7 +3968,7 @@ export class ObjectsInRedisClient {
                         params.endkey,
                         cursor,
                         `${this.setNamespace}object.type.script`,
-                    ]);
+                    )) as string[] | [objStrings: string[], cursor: string];
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get "scripts" view: ${e.message}`);
                     throw e;
@@ -4018,7 +4018,7 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = await this.client.evalsha([
+                    objs = (await this.client.evalsha(
                         this.scripts.programs,
                         5,
                         `${this.objNamespace}hm-rega.`,
@@ -4026,7 +4026,7 @@ export class ObjectsInRedisClient {
                         params.endkey,
                         cursor,
                         `${this.setNamespace}object.type.channel`,
-                    ]);
+                    )) as string[];
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
                     throw e;
@@ -4073,7 +4073,7 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = await this.client.evalsha([
+                    objs = (await this.client.evalsha(
                         this.scripts.variables,
                         5,
                         `${this.objNamespace}hm-rega.`,
@@ -4081,7 +4081,7 @@ export class ObjectsInRedisClient {
                         params.endkey,
                         cursor,
                         `${this.setNamespace}object.type.state`,
-                    ]);
+                    )) as string[];
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view ${e.message}`);
                     throw e;
@@ -4127,7 +4127,7 @@ export class ObjectsInRedisClient {
                 }
                 let objs: string[];
                 try {
-                    objs = await this.client.evalsha([
+                    objs = (await this.client.evalsha(
                         this.scripts.custom,
                         5,
                         this.objNamespace,
@@ -4135,7 +4135,7 @@ export class ObjectsInRedisClient {
                         params.endkey,
                         cursor,
                         `${this.setNamespace}object.common.custom`,
-                    ]);
+                    )) as string[];
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
                     throw e;
@@ -4959,7 +4959,6 @@ export class ObjectsInRedisClient {
         });
 
         const hashes = scripts.map(e => e.hash);
-        hashes.unshift('EXISTS');
 
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
@@ -4967,7 +4966,7 @@ export class ObjectsInRedisClient {
 
         let arr: any[];
         try {
-            arr = await this.client.script(hashes);
+            arr = (await this.client.script('EXISTS', ...hashes)) as any[];
             if (arr) {
                 scripts.forEach((e, i) => (scripts[i].loaded = !!arr[i]));
             }
@@ -4983,8 +4982,9 @@ export class ObjectsInRedisClient {
             if (!script.loaded) {
                 let hash;
                 try {
-                    hash = await this.client.script(['LOAD', script.text]);
+                    hash = (await this.client.script('LOAD', script.text)) as string;
                     script.loaded = true;
+                    script.hash = hash;
                 } catch (e) {
                     script.loaded = false;
                     this.log.error(`${this.namespace} Cannot load "${script.name}": ${e.message}`);
@@ -4994,7 +4994,6 @@ export class ObjectsInRedisClient {
                         throw new Error(`Cannot load "${script.name}" into objects database: ${e.message}`);
                     }
                 }
-                script.hash = hash;
             }
         }
         this.scripts = {};
@@ -5126,13 +5125,13 @@ export class ObjectsInRedisClient {
         }
 
         // try to extend lock
-        return this.client.evalsha([
+        return this.client.evalsha(
             this.scripts.redlock_extend,
             3,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,
             ms,
-        ]);
+        ) as Promise<number>;
     }
 
     /**
@@ -5153,13 +5152,13 @@ export class ObjectsInRedisClient {
         }
 
         // try to acquire lock
-        return this.client.evalsha([
+        return this.client.evalsha(
             this.scripts.redlock_acquire,
             3,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,
             ms,
-        ]);
+        ) as Promise<number>;
     }
 
     /**
@@ -5191,14 +5190,14 @@ export class ObjectsInRedisClient {
         }
 
         // try to release lock
-        return this.client.evalsha([
+        return this.client.evalsha(
             this.scripts.redlock_release,
             4,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,
             this.settings.connection.options.db,
             `${this.metaNamespace}objects.primaryHost`,
-        ]);
+        ) as Promise<void>;
     }
 
     /**

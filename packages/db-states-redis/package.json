@@ -7,7 +7,7 @@
     },
     "dependencies": {
         "@iobroker/db-base": "file:../db-base",
-        "ioredis": "^4.28.2"
+        "ioredis": "^5.8.0"
     },
     "keywords": [
         "ioBroker",

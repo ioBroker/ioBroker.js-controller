@@ -236,14 +236,16 @@ export function checkNonEditable(
         // If new Object wants to update the nonEdit information
         if (newObject.nonEdit?.password) {
             const hash = crypto.createHash('sha256').update(newObject.nonEdit.password.toString()).digest('base64');
-            if (oldObject.nonEdit.passHash !== hash) {
+            if (oldObject.nonEdit?.passHash !== hash) {
                 delete newObject.nonEdit;
                 return false;
             }
             oldObject.nonEdit = deepClone(newObject.nonEdit);
-            delete oldObject.nonEdit.password;
+            if (oldObject.nonEdit) {
+                delete oldObject.nonEdit.password;
+                oldObject.nonEdit.passHash = hash;
+            }
             delete newObject.nonEdit.password;
-            oldObject.nonEdit.passHash = hash;
             newObject.nonEdit.passHash = hash;
 
             copyAttributes(newObject.nonEdit, newObject, newObject);

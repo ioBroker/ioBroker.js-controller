@@ -7,7 +7,7 @@
     },
     "optionalDependencies": {
         "winston-seq-updated": "^1.0.4",
-        "winston-syslog": "^2.6.0"
+        "winston-syslog": "^2.7.1"
     },
     "dependencies": {
         "@iobroker/db-objects-file": "file:../db-objects-file",

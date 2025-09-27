@@ -67,7 +67,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             })
             .then(() => {
                 this.log.debug(
-                    `${this.namespace} ${settings.secure ? 'Secure ' : ''} Redis inMem-states listening on port ${
+                    `${this.namespace} ${settings.secure ? 'Secure ' : ''}Redis inMem-states listening on port ${
                         this.settings.connection.port || 9000
                     }`,
                 );
