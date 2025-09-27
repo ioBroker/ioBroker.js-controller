@@ -26,7 +26,7 @@
         "cron-parser": "^5.4.0",
         "debug": "^4.4.3",
         "decache": "^4.6.2",
-        "deep-clone": "^4.0.0",
+        "deep-clone": "^3.0.3",
         "fs-extra": "^11.3.2",
         "jsonwebtoken": "^9.0.2",
         "loadavg-windows": "^1.1.1",
