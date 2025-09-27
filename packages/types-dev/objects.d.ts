@@ -406,6 +406,9 @@ declare global {
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
+
+            /** If set to true, the reporting by sentry on this host is disabled for all instances */
+            disableDataReporting?: boolean;
         }
 
         interface HostNative {
@@ -439,6 +442,8 @@ declare global {
             password: string;
             /** Whether this user is enabled */
             enabled: boolean;
+            /** External authentications besides password, e.g. OIDC */
+            externalAuthentication?: Record<string, unknown>;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -1063,6 +1068,8 @@ declare global {
             name: Required<ioBroker.Translated>;
             /** Time of repository update */
             repoTime: string;
+            /** Time when repository was last read/fetched */
+            repoReadTime?: string;
         }
 
         interface RepositoryJson {
