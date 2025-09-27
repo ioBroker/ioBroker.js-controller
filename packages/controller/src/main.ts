@@ -36,7 +36,7 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
 import decache from 'decache';
-import cronParser from 'cron-parser';
+import { CronExpressionParser } from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type { GetDiskInfoResponse } from '@iobroker/js-controller-common-db/tools';
 import { DEFAULT_DISK_WARNING_LEVEL, getCronExpression, getDiskWarningLevel } from '@/lib/utils.js';
@@ -4713,7 +4713,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             }
 
             try {
-                cronParser.parseExpression(instance.common.schedule);
+                CronExpressionParser.parse(instance.common.schedule);
             } catch (e) {
                 logger.error(`${hostLogPrefix} Cannot schedule start of instance ${instance._id}: ${e.message}`);
                 break;
