@@ -16,7 +16,7 @@ If set, this is not a widget set, but icon set. url, name and icon are required
 
 #### Defined in
 
-[types-dev/objects.d.ts:528](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/objects.d.ts#L528)
+[types-dev/objects.d.ts:530](https://github.com/ioBroker/ioBroker.js-controller/blob/51faba7cbec9601fb6a2f5142cb3a117e78ab588/packages/types-dev/objects.d.ts#L530)
 
 ***
 
@@ -28,7 +28,7 @@ The vis icon set does not support the listed major versions of vis
 
 #### Defined in
 
-[types-dev/objects.d.ts:530](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/objects.d.ts#L530)
+[types-dev/objects.d.ts:532](https://github.com/ioBroker/ioBroker.js-controller/blob/51faba7cbec9601fb6a2f5142cb3a117e78ab588/packages/types-dev/objects.d.ts#L532)
 
 ***
 
@@ -38,7 +38,7 @@ The vis icon set does not support the listed major versions of vis
 
 #### Defined in
 
-[types-dev/objects.d.ts:525](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/objects.d.ts#L525)
+[types-dev/objects.d.ts:527](https://github.com/ioBroker/ioBroker.js-controller/blob/51faba7cbec9601fb6a2f5142cb3a117e78ab588/packages/types-dev/objects.d.ts#L527)
 
 ***
 
@@ -48,4 +48,4 @@ The vis icon set does not support the listed major versions of vis
 
 #### Defined in
 
-[types-dev/objects.d.ts:526](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/objects.d.ts#L526)
+[types-dev/objects.d.ts:528](https://github.com/ioBroker/ioBroker.js-controller/blob/51faba7cbec9601fb6a2f5142cb3a117e78ab588/packages/types-dev/objects.d.ts#L528)

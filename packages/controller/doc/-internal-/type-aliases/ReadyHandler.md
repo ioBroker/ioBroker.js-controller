@@ -14,4 +14,4 @@
 
 ## Defined in
 
-[types-dev/index.d.ts:394](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/types-dev/index.d.ts#L394)
+[types-dev/index.d.ts:403](https://github.com/ioBroker/ioBroker.js-controller/blob/51faba7cbec9601fb6a2f5142cb3a117e78ab588/packages/types-dev/index.d.ts#L403)

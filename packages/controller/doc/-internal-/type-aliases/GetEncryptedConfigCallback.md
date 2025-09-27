@@ -20,4 +20,4 @@
 
 ## Defined in
 
-[adapter/src/lib/\_Types.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/8ad7f66ced81c171aa99d76496fa607acde05189/packages/adapter/src/lib/_Types.ts#L350)
+[adapter/src/lib/\_Types.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/51faba7cbec9601fb6a2f5142cb3a117e78ab588/packages/adapter/src/lib/_Types.ts#L350)
