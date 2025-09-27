@@ -137,6 +137,16 @@ interface SendResponseToOptions {
     payload: Record<string, unknown>;
 }
 
+/**
+ * Error class for adapter not found dependency issues
+ */
+class AdapterNotFoundError extends Error {}
+
+/**
+ * Error class for adapter version mismatch dependency issues
+ */
+class AdapterVersionMismatchError extends Error {}
+
 /** Host information including host id and running version */
 type HostInformation = ioBroker.HostCommon & { host: string; runningVersion: string };
 
@@ -3269,26 +3279,6 @@ function initInstances(): void {
 }
 
 /**
- * Error class for adapter not found dependency issues
- */
-class AdapterNotFoundError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = 'AdapterNotFoundError';
-    }
-}
-
-/**
- * Error class for adapter version mismatch dependency issues
- */
-class AdapterVersionMismatchError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = 'AdapterVersionMismatchError';
-    }
-}
-
-/**
  * Checks if at least one of the instances of given name satisfies the version
  *
  * @param name - name of the dependency
@@ -3383,9 +3373,9 @@ async function checkVersions(id: string, deps?: Dependencies, globalDeps?: Depen
         }
     } catch (e) {
         logger.debug(`${hostLogPrefix} ${id} [globalDependency]: ${JSON.stringify(globalDeps)}`);
-        
+
         if (e instanceof AdapterNotFoundError) {
-            throw new Error(`Adapter dependency not fulfilled: ${e.message}`);
+            throw new Error(`Adapter required by dependency not installed: ${e.message}`);
         } else if (e instanceof AdapterVersionMismatchError) {
             throw new Error(`Adapter dependency not fulfilled on all hosts where adapter is installed: ${e.message}`);
         } else {
