@@ -1,7 +1,7 @@
 {
     "name": "@iobroker/db-objects-file",
     "type": "module",
-    "version": "7.0.8-alpha.6-20250927-51faba7cb",
+    "version": "7.0.8-alpha.7-20250928-40cb80c18",
     "engines": {
         "node": ">=12.0.0"
     },
