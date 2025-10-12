@@ -1799,6 +1799,11 @@ export class Install {
                         `Warning: Could not verify adapter compatibility from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
                     );
                 }
+            } else if (githubUser && githubRepo) {
+                // We have GitHub info but no commit hash, cannot verify nogit flag
+                console.warn(
+                    `Warning: Could not determine commit hash from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
+                );
             }
         }
 
@@ -1826,6 +1831,11 @@ export class Install {
                             `Warning: Could not verify adapter compatibility from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
                         );
                     }
+                } else if (githubUser && githubRepo) {
+                    // We have GitHub info but no commit hash, cannot verify nogit flag
+                    console.warn(
+                        `Warning: Could not determine commit hash from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
+                    );
                 }
             }
         }
