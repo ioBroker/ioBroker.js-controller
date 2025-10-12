@@ -1142,6 +1142,10 @@
               "description": "Name of TAB (multilingual object) in admin",
               "$ref": "#/definitions/multilingual"
             },
+            "sendTo": {
+              "description": "for flexible content in the tab (to enable configure settings in TAB)",
+              "type": "boolean"
+            },
             "singleton": {
               "description": "If true, only one TAB for all instances will be shown.",
               "type": "boolean"
