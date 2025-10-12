@@ -1712,7 +1712,7 @@ export class Install {
                 };
             }
             return { nogit: false, fetched: false };
-        } catch (err) {
+        } catch {
             // Could not fetch io-package.json - will log warning later
             return { nogit: false, fetched: false };
         }
