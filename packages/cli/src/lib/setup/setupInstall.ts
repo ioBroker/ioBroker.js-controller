@@ -1682,6 +1682,43 @@ export class Install {
     }
 
     /**
+     * Check if the adapter has the nogit flag set by fetching io-package.json from GitHub
+     *
+     * @param user GitHub username
+     * @param repo GitHub repository name
+     * @param commit Commit hash or branch name
+     * @returns Object with nogit flag value and whether it was successfully fetched
+     */
+    private async _checkNogitFlag(
+        user: string,
+        repo: string,
+        commit: string,
+    ): Promise<{ nogit: boolean; fetched: boolean }> {
+        try {
+            // Try to fetch io-package.json from GitHub using the commit hash
+            const ioPackageUrl = `https://raw.githubusercontent.com/${user}/${repo}/${commit}/io-package.json`;
+            const result = await axios(ioPackageUrl, {
+                headers: {
+                    'User-Agent': 'ioBroker Adapter install',
+                },
+                timeout: 10000,
+                validateStatus: status => status === 200,
+            });
+
+            if (result.data && result.data.common) {
+                return {
+                    nogit: result.data.common.nogit === true,
+                    fetched: true,
+                };
+            }
+            return { nogit: false, fetched: false };
+        } catch (err) {
+            // Could not fetch io-package.json - will log warning later
+            return { nogit: false, fetched: false };
+        }
+    }
+
+    /**
      * Installs an adapter from given url
      *
      * @param url url to install adapter from
@@ -1698,6 +1735,10 @@ export class Install {
 
         const debug = process.argv.includes('--debug');
 
+        let githubUser: string | undefined;
+        let githubRepo: string | undefined;
+        let githubCommit: string | undefined;
+
         if (parsedUrl && parsedUrl.hostname === 'github.com') {
             if (!tools.isGithubPathname(parsedUrl.pathname)) {
                 return console.error(`Cannot install from GitHub. Invalid URL ${url}`);
@@ -1706,6 +1747,9 @@ export class Install {
             // This is a URL we can parse
             // @ts-expect-error check if type check above is enough
             const { repo, user, commit } = tools.parseGithubPathname(parsedUrl.pathname);
+
+            githubUser = user;
+            githubRepo = repo;
 
             if (!commit) {
                 // No commit given, try to get it from the API
@@ -1718,7 +1762,8 @@ export class Install {
                         },
                     });
                     if (result.data && Array.isArray(result.data) && result.data.length >= 1 && result.data[0].sha) {
-                        url = `${user}/${repo}#${result.data[0].sha}`;
+                        githubCommit = result.data[0].sha;
+                        url = `${user}/${repo}#${githubCommit}`;
                     } else {
                         console.log(
                             `Info: Can not get current GitHub commit, only remember that we installed from GitHub.`,
@@ -1734,7 +1779,54 @@ export class Install {
                 }
             } else {
                 // We've extracted all we need from the URL
+                githubCommit = commit;
                 url = `${user}/${repo}#${commit}`;
+            }
+
+            // Check nogit flag if we have the commit hash
+            if (githubCommit && githubUser && githubRepo) {
+                const { nogit, fetched } = await this._checkNogitFlag(githubUser, githubRepo, githubCommit);
+
+                if (fetched) {
+                    if (nogit) {
+                        console.error(
+                            `Cannot install adapter from GitHub: The adapter "${githubRepo}" has set the "nogit" flag which prevents manual installation from GitHub.`,
+                        );
+                        return;
+                    }
+                } else {
+                    console.warn(
+                        `Warning: Could not verify adapter compatibility from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
+                    );
+                }
+            }
+        }
+
+        // Also check short GitHub URL format if not already checked
+        if (!githubUser && !githubRepo) {
+            const shortGithubUrlParts = tools.parseShortGithubUrl(url);
+            if (shortGithubUrlParts) {
+                githubUser = shortGithubUrlParts.user;
+                githubRepo = shortGithubUrlParts.repo;
+                githubCommit = shortGithubUrlParts.commit;
+
+                // Check nogit flag if we have the commit hash
+                if (githubCommit && githubUser && githubRepo) {
+                    const { nogit, fetched } = await this._checkNogitFlag(githubUser, githubRepo, githubCommit);
+
+                    if (fetched) {
+                        if (nogit) {
+                            console.error(
+                                `Cannot install adapter from GitHub: The adapter "${githubRepo}" has set the "nogit" flag which prevents manual installation from GitHub.`,
+                            );
+                            return;
+                        }
+                    } else {
+                        console.warn(
+                            `Warning: Could not verify adapter compatibility from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
+                        );
+                    }
+                }
             }
         }
 
