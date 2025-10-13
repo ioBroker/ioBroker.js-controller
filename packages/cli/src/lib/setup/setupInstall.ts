@@ -1682,18 +1682,18 @@ export class Install {
     }
 
     /**
-     * Check if the adapter has the nogit flag set by fetching io-package.json from GitHub
+     * Fetch and validate io-package.json from GitHub before installation
      *
      * @param user GitHub username
      * @param repo GitHub repository name
      * @param commit Commit hash or branch name
-     * @returns Object with nogit flag value and whether it was successfully fetched
+     * @returns Object with io-package data if fetched, or null if not available
      */
-    private async _checkNogitFlag(
+    private async _fetchAndValidateIoPackage(
         user: string,
         repo: string,
         commit: string,
-    ): Promise<{ nogit: boolean; fetched: boolean }> {
+    ): Promise<ioBroker.AdapterObject | null> {
         try {
             // Try to fetch io-package.json from GitHub using the commit hash
             const ioPackageUrl = `https://raw.githubusercontent.com/${user}/${repo}/${commit}/io-package.json`;
@@ -1706,16 +1706,49 @@ export class Install {
             });
 
             if (result.data && result.data.common) {
-                return {
-                    nogit: result.data.common.nogit === true,
-                    fetched: true,
-                };
+                return result.data as ioBroker.AdapterObject;
             }
-            return { nogit: false, fetched: false };
+            return null;
         } catch {
-            // Could not fetch io-package.json - will log warning later
-            return { nogit: false, fetched: false };
+            // Could not fetch io-package.json
+            return null;
         }
+    }
+
+    /**
+     * Perform adapter compatibility checks using io-package data
+     *
+     * @param ioPackage The io-package.json data
+     * @param repoName The repository name for error messages
+     * @returns true if checks pass, false if installation should be blocked
+     */
+    private _performAdapterChecks(ioPackage: ioBroker.AdapterObject, repoName: string): boolean {
+        // Check nogit flag
+        if (ioPackage.common.nogit === true) {
+            console.error(
+                `Cannot install adapter from GitHub: The adapter "${repoName}" has set the "nogit" flag which prevents manual installation from GitHub.`,
+            );
+            return false;
+        }
+
+        // Check OS compatibility
+        if (ioPackage.common.os) {
+            if (typeof ioPackage.common.os === 'string' && ioPackage.common.os !== osPlatform) {
+                console.error(
+                    `Cannot install adapter from GitHub: Adapter does not support current OS. Required ${ioPackage.common.os}. Actual platform: ${osPlatform}`,
+                );
+                return false;
+            } else if (Array.isArray(ioPackage.common.os) && !ioPackage.common.os.includes(osPlatform as any)) {
+                console.error(
+                    `Cannot install adapter from GitHub: Adapter does not support current OS. Required one of ${ioPackage.common.os.join(
+                        ', ',
+                    )}. Actual platform: ${osPlatform}`,
+                );
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -1783,15 +1816,13 @@ export class Install {
                 url = `${user}/${repo}#${commit}`;
             }
 
-            // Check nogit flag if we have the commit hash
+            // Fetch and validate io-package if we have the commit hash
             if (githubCommit && githubUser && githubRepo) {
-                const { nogit, fetched } = await this._checkNogitFlag(githubUser, githubRepo, githubCommit);
+                const ioPackage = await this._fetchAndValidateIoPackage(githubUser, githubRepo, githubCommit);
 
-                if (fetched) {
-                    if (nogit) {
-                        console.error(
-                            `Cannot install adapter from GitHub: The adapter "${githubRepo}" has set the "nogit" flag which prevents manual installation from GitHub.`,
-                        );
+                if (ioPackage) {
+                    // Perform all adapter compatibility checks
+                    if (!this._performAdapterChecks(ioPackage, githubRepo)) {
                         return;
                     }
                 } else {
@@ -1800,7 +1831,7 @@ export class Install {
                     );
                 }
             } else if (githubUser && githubRepo) {
-                // We have GitHub info but no commit hash, cannot verify nogit flag
+                // We have GitHub info but no commit hash, cannot verify compatibility
                 console.warn(
                     `Warning: Could not determine commit hash from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
                 );
@@ -1815,15 +1846,13 @@ export class Install {
                 githubRepo = shortGithubUrlParts.repo;
                 githubCommit = shortGithubUrlParts.commit;
 
-                // Check nogit flag if we have the commit hash
+                // Fetch and validate io-package if we have the commit hash
                 if (githubCommit && githubUser && githubRepo) {
-                    const { nogit, fetched } = await this._checkNogitFlag(githubUser, githubRepo, githubCommit);
+                    const ioPackage = await this._fetchAndValidateIoPackage(githubUser, githubRepo, githubCommit);
 
-                    if (fetched) {
-                        if (nogit) {
-                            console.error(
-                                `Cannot install adapter from GitHub: The adapter "${githubRepo}" has set the "nogit" flag which prevents manual installation from GitHub.`,
-                            );
+                    if (ioPackage) {
+                        // Perform all adapter compatibility checks
+                        if (!this._performAdapterChecks(ioPackage, githubRepo)) {
                             return;
                         }
                     } else {
@@ -1832,7 +1861,7 @@ export class Install {
                         );
                     }
                 } else if (githubUser && githubRepo) {
-                    // We have GitHub info but no commit hash, cannot verify nogit flag
+                    // We have GitHub info but no commit hash, cannot verify compatibility
                     console.warn(
                         `Warning: Could not determine commit hash from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
                     );
