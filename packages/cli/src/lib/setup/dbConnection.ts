@@ -359,7 +359,7 @@ export async function resetDbConnect(): Promise<void> {
     }
 
     if (pluginHandler) {
-        pluginHandler.destroyAll();
+        await pluginHandler.destroyAll();
     }
 }
 

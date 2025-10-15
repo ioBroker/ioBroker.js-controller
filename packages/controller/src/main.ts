@@ -616,10 +616,10 @@ function createStates(onConnect: () => void): void {
                                 controllerDir,
                             );
                             pluginHandler.setDatabaseForPlugin(pluginName, objects, states);
-                            pluginHandler.initPlugin(pluginName, ioPackage);
+                            await pluginHandler.initPlugin(pluginName, ioPackage);
                         }
                     } else {
-                        if (!pluginHandler.destroy(pluginName)) {
+                        if (!(await pluginHandler.destroy(pluginName))) {
                             logger.info(
                                 `${hostLogPrefix} Plugin ${pluginName} could not be disabled. Please restart ioBroker to disable it.`,
                             );
@@ -5141,7 +5141,7 @@ function stop(force?: boolean, callback?: () => void): void {
     }
 
     stopInstances(force, async wasForced => {
-        pluginHandler.destroyAll();
+        await pluginHandler.destroyAll();
         notificationHandler && notificationHandler.storeNotifications();
 
         try {
