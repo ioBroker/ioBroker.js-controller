@@ -3006,7 +3006,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             const extraInfo: Record<string, unknown> = msg.message.extraInfo;
 
             const sentryObj = (
-                pluginHandler.getPluginInstance('sentry') as InstanceType<typeof SentryPlugin> | null
+                pluginHandler.getPluginInstance('sentry') as InstanceType<typeof SentryPlugin.default> | null
             )?.getSentryObject();
 
             if (!sentryObj) {
