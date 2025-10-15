@@ -61,7 +61,7 @@ import {
     SYSTEM_ADMIN_GROUP,
     SYSTEM_ADMIN_USER,
 } from '@/lib/adapter/constants.js';
-import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+import type { PluginHandlerSettings } from '@iobroker/plugin-base';
 import type {
     AdapterOptions,
     AliasDetails,
