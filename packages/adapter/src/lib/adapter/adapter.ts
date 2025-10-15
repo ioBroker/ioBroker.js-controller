@@ -15,7 +15,7 @@ import fs from 'fs-extra';
 import type { CommandResult } from '@alcalzone/pak';
 import * as url from 'node:url';
 
-import { PluginHandler } from '@iobroker/plugin-base';
+import { PluginHandler, type IoPackageFile } from '@iobroker/plugin-base';
 import {
     EXIT_CODES,
     getObjectsConstructor,
@@ -706,7 +706,7 @@ export class AdapterClass extends EventEmitter {
     /** An array of instances, that support auto subscribe */
     private autoSubscribe: string[] = [];
     private defaultHistory: null | string = null;
-    private pluginHandler?: InstanceType<typeof PluginHandler>;
+    private pluginHandler?: PluginHandler;
     private _reportInterval?: null | NodeJS.Timeout;
     private getPortRunning: null | InternalGetPortOptions = null;
     private readonly _namespaceRegExp: RegExp;
@@ -11086,7 +11086,11 @@ export class AdapterClass extends EventEmitter {
                                     thisDir,
                                 );
                                 this.pluginHandler.setDatabaseForPlugin(pluginName, this.#objects, this.#states);
-                                await this.pluginHandler.initPlugin(pluginName, this.adapterConfig || {});
+
+                                await this.pluginHandler.initPlugin(
+                                    pluginName,
+                                    (this.adapterConfig || {}) as IoPackageFile,
+                                );
                             }
                         } else {
                             if (!(await this.pluginHandler.destroy(pluginName))) {
@@ -11504,7 +11508,7 @@ export class AdapterClass extends EventEmitter {
             return;
         }
         this.pluginHandler.setDatabaseForPlugins(this.#objects, this.#states);
-        await this.pluginHandler.initPlugins(adapterConfig || {});
+        await this.pluginHandler.initPlugins((adapterConfig || {}) as IoPackageFile);
         if (!this.#states || !this.#objects || this.terminated) {
             // if adapterState was destroyed, we should not continue
             return;
