@@ -11085,6 +11085,7 @@ export class AdapterClass extends EventEmitter {
                                     this.pluginHandler.getPluginConfig(pluginName) || {},
                                     thisDir,
                                 );
+                                // @ts-expect-error objects and state object version conflicts that are none
                                 this.pluginHandler.setDatabaseForPlugin(pluginName, this.#objects, this.#states);
 
                                 await this.pluginHandler.initPlugin(
@@ -11507,6 +11508,7 @@ export class AdapterClass extends EventEmitter {
         if (!this.pluginHandler) {
             return;
         }
+        // @ts-expect-error objects and state object version conflicts that are none
         this.pluginHandler.setDatabaseForPlugins(this.#objects, this.#states);
         await this.pluginHandler.initPlugins((adapterConfig || {}) as IoPackageFile);
         if (!this.#states || !this.#objects || this.terminated) {

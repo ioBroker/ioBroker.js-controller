@@ -411,6 +411,7 @@ function initializePlugins(config: Record<string, any>): Promise<void> {
     pluginHandler = new PluginHandler(pluginSettings);
     pluginHandler.addPlugins(ioPackage.common.plugins, tools.getControllerDir()); // Plugins from io-package have priority over ...
     pluginHandler.addPlugins(config.plugins, tools.getControllerDir()); // ... plugins from iobroker.json
+    // @ts-expect-error objects and state object version conflicts that are none
     pluginHandler.setDatabaseForPlugins(objects, states);
 
     return pluginHandler.initPlugins(ioPackage);
