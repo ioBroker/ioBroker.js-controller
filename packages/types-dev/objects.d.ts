@@ -427,7 +427,7 @@ declare global {
                 tmpdir: ReturnType<(typeof os)['tmpdir']>;
             };
             hardware: {
-                /** Return value of os.cpu but property `times` could be removed from every entry */
+                /** Return value of `os.cpu` but property `times` could be removed from every entry */
                 cpus: (Omit<ReturnType<(typeof os)['cpus']>[number], 'times'> &
                     Partial<Pick<ReturnType<(typeof os)['cpus']>[number], 'times'>>)[];
                 totalmem: ReturnType<(typeof os)['totalmem']>;
@@ -1052,7 +1052,7 @@ declare global {
             version: string;
             /** Array of blocked versions, each entry represents a semver range */
             blockedVersions: string[];
-            /** If true the unsafe perm flag is needed on install */
+            /** If true, the unsafe perm flag is needed on install */
             unsafePerm?: boolean;
             /** If given, the packet name differs from the adapter name, e.g. because it is a scoped package */
             packetName?: string;
@@ -1068,7 +1068,7 @@ declare global {
             name: Required<ioBroker.Translated>;
             /** Time of repository update */
             repoTime: string;
-            /** Time when repository was last read/fetched */
+            /** Time when the repository was last read/fetched */
             repoReadTime?: string;
         }
 
