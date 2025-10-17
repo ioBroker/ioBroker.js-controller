@@ -12177,8 +12177,7 @@ export class AdapterClass extends EventEmitter {
             // @ts-expect-error
             log: this._logger,
             iobrokerConfig: this._config,
-            // @ts-expect-error
-            parentPackage: this.pack,
+            parentPackage: this.pack!,
             controllerVersion,
         };
 
