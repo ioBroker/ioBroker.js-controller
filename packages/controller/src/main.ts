@@ -615,6 +615,7 @@ function createStates(onConnect: () => void): void {
                                 pluginHandler.getPluginConfig(pluginName)!,
                                 controllerDir,
                             );
+                            // @ts-expect-error objects and state object version conflicts that are none
                             pluginHandler.setDatabaseForPlugin(pluginName, objects, states);
                             await pluginHandler.initPlugin(pluginName, ioPackage);
                         }
@@ -704,6 +705,7 @@ async function initializeController(): Promise<void> {
     if (connected === null) {
         connected = true;
         if (!isStopping) {
+            // @ts-expect-error objects and state object version conflicts that are none
             pluginHandler.setDatabaseForPlugins(objects, states);
             await pluginHandler.initPlugins(ioPackage);
             states.subscribe(`${hostObjectPrefix}.plugins.*`);
