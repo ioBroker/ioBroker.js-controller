@@ -12,7 +12,7 @@ import { setTimeout as wait } from 'node:timers/promises';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import path from 'node:path';
-import type { PluginHandlerSettings } from '@iobroker/plugin-base';
+import type { InternalAdapterJsonConfig, PluginHandlerSettings } from '@iobroker/plugin-base';
 import { PluginHandler } from '@iobroker/plugin-base';
 
 let pluginHandler: InstanceType<typeof PluginHandler>;
@@ -403,7 +403,7 @@ function initializePlugins(config: Record<string, any>): Promise<void> {
             error: (msg: string) => console.log(msg),
             level: 'warn',
         },
-        iobrokerConfig: config,
+        iobrokerConfig: config as InternalAdapterJsonConfig,
         parentPackage: packageJson,
         controllerVersion: ioPackage.common.version,
     };
