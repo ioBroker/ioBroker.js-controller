@@ -6,13 +6,13 @@
  *      MIT License
  *
  */
+import fs from 'fs-extra';
+import path from 'node:path';
 
 import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '@/lib/_Types.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
-import fs from 'fs-extra';
-import path from 'node:path';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import {
     statesDbHasServer,
@@ -360,10 +360,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         await this._maybeMigrateSets();
 
         if (checkCertificateOnly) {
-            let certObj;
+            let certObj: ioBroker.Object | undefined;
             if (iopkg?.objects) {
                 for (const obj of iopkg.objects) {
-                    if (obj && obj._id === 'system.certificates') {
+                    if (obj?._id === 'system.certificates') {
                         certObj = obj;
                         break;
                     }
@@ -371,14 +371,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
             }
 
             if (certObj) {
-                let obj;
+                let obj: ioBroker.Object | null | undefined = null;
                 try {
                     obj = await this.objects.getObjectAsync('system.certificates');
                 } catch {
                     // ignore
                 }
 
-                if (obj?.native?.certificates?.defaultPublic !== undefined) {
+                if (obj && obj?.native?.certificates?.defaultPublic !== undefined) {
                     let cert = tools.getCertificateInfo(obj.native.certificates.defaultPublic);
 
                     if (cert) {
@@ -685,27 +685,30 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
     }
 
     async setupCustom(): Promise<EXIT_CODES> {
-        let config;
-        let originalConfig;
+        let config: ioBroker.IoBrokerJson;
         // read actual configuration
         try {
             if (fs.existsSync(tools.getConfigFileName())) {
                 config = fs.readJsonSync(tools.getConfigFileName());
-                originalConfig = deepClone(config);
             } else {
                 config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName.toLowerCase()}-dist.json`));
             }
         } catch {
             config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName.toLowerCase()}-dist.json`));
         }
+        const originalConfig: ioBroker.IoBrokerJson = deepClone(config);
 
         const currentObjectsType = originalConfig.objects.type || 'jsonl';
         const currentStatesType = originalConfig.states.type || 'jsonl';
         console.log('Current configuration:');
         console.log('- Objects database:');
         console.log(`  - Type: ${originalConfig.objects.type}`);
-        console.log(`  - Host/Unix Socket: ${originalConfig.objects.host}`);
-        console.log(`  - Port: ${originalConfig.objects.port}`);
+        console.log(
+            `  - Host/Unix Socket: ${Array.isArray(originalConfig.objects.host) ? originalConfig.objects.host.join(',') : originalConfig.objects.host}`,
+        );
+        console.log(
+            `  - Port: ${Array.isArray(originalConfig.objects.port) ? originalConfig.objects.port.join(',') : originalConfig.objects.port}`,
+        );
         if (Array.isArray(originalConfig.objects.host)) {
             console.log(
                 `  - Sentinel-Master-Name: ${
@@ -717,8 +720,12 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         }
         console.log('- States database:');
         console.log(`  - Type: ${originalConfig.states.type}`);
-        console.log(`  - Host/Unix Socket: ${originalConfig.states.host}`);
-        console.log(`  - Port: ${originalConfig.states.port}`);
+        console.log(
+            `  - Host/Unix Socket: ${Array.isArray(originalConfig.states.host) ? originalConfig.states.host.join(',') : originalConfig.states.host}`,
+        );
+        console.log(
+            `  - Port: ${Array.isArray(originalConfig.states.port) ? originalConfig.states.port.join(',') : originalConfig.states.port}`,
+        );
         if (Array.isArray(originalConfig.states.host)) {
             console.log(
                 `  - Sentinel-Master-Name: ${
@@ -733,45 +740,45 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         if (hasObjectsServer || hasStatesServer) {
             console.log(`- Data Directory: ${tools.getDefaultDataDir()}`);
         }
-        if (originalConfig && originalConfig.system && originalConfig.system.hostname) {
+        if (originalConfig?.system?.hostname) {
             console.log(`- Host name: ${originalConfig.system.hostname}`);
         }
         console.log('');
 
-        let otype = rl.question(
+        let oType = rl.question(
             `Type of objects DB [(j)sonl, (f)ile, (r)edis, ...], default [${currentObjectsType}]: `,
             {
                 defaultInput: currentObjectsType,
             },
         );
-        otype = otype.toLowerCase();
+        oType = oType.toLowerCase();
 
-        if (otype === 'r') {
-            otype = 'redis';
-        } else if (otype === 'f') {
-            otype = 'file';
-        } else if (otype === 'j') {
-            otype = 'jsonl';
+        if (oType === 'r') {
+            oType = 'redis';
+        } else if (oType === 'f') {
+            oType = 'file';
+        } else if (oType === 'j') {
+            oType = 'jsonl';
         }
 
         let getDefaultObjectsPort;
         try {
-            const path = require.resolve(`@iobroker/db-objects-${otype}`);
+            const path = require.resolve(`@iobroker/db-objects-${oType}`);
 
             getDefaultObjectsPort = require(path).getDefaultPort;
         } catch {
-            console.log(`${COLOR_RED}Unknown objects type: ${otype}${COLOR_RESET}`);
-            if (otype !== 'file' && otype !== 'redis') {
+            console.log(`${COLOR_RED}Unknown objects type: ${oType}${COLOR_RESET}`);
+            if (oType !== 'file' && oType !== 'redis') {
                 console.log(COLOR_YELLOW);
                 console.log(`Please check that the objects db type you entered is really correct!`);
-                console.log(`If yes please use "npm i @iobroker/db-objects-${otype}" to install it manually.`);
+                console.log(`If yes please use "npm i @iobroker/db-objects-${oType}" to install it manually.`);
                 console.log(`You also need to make sure you stay up to date with this package in the future!`);
                 console.log(COLOR_RESET);
             }
             return EXIT_CODES.INVALID_ARGUMENTS;
         }
 
-        if (otype === 'redis' && originalConfig.objects.type !== 'redis') {
+        if (oType === 'redis' && originalConfig.objects.type !== 'redis') {
             console.log(COLOR_YELLOW);
             console.log('When Objects and Files are stored in a Redis database please consider the following:');
             console.log('1. All data will be stored in RAM, make sure to have enough free RAM available!');
@@ -783,9 +790,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         }
 
         const defaultObjectsHost =
-            otype === originalConfig.objects.type ? originalConfig.objects.host : tools.getLocalAddress();
+            oType === originalConfig.objects.type ? originalConfig.objects.host : tools.getLocalAddress();
         let oHost: string | string[] = rl.question(
-            `Host / Unix Socket of objects DB(${otype}), default[${
+            `Host / Unix Socket of objects DB(${oType}), default[${
                 Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost
             }]: `,
             {
@@ -795,19 +802,19 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         oHost = oHost.toLowerCase();
 
         const op = getDefaultObjectsPort(oHost);
-        const oSentinel = otype === 'redis' && oHost.includes(',');
+        const oSentinel = oType === 'redis' && oHost.includes(',');
 
         if (oSentinel) {
             oHost = oHost.split(',').map(host => host.trim());
         }
 
         const defaultObjectsPort =
-            otype === originalConfig.objects.type && oHost === originalConfig.objects.host
+            oType === originalConfig.objects.type && oHost === originalConfig.objects.host
                 ? originalConfig.objects.port
                 : op;
 
         const userObjPort = rl.question(
-            `Port of objects DB(${otype}), default[${
+            `Port of objects DB(${oType}), default[${
                 Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort
             }]: `,
             {
@@ -838,7 +845,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
             }
         }
 
-        config.objects = await performObjectsInterview({ dbType: otype, config: config.objects });
+        config.objects = await performObjectsInterview({ dbType: oType, config: config.objects });
 
         let oSentinelName = null;
         if (oSentinel) {
@@ -852,46 +859,46 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
 
         let defaultStatesType = currentStatesType;
         try {
-            require.resolve(`@iobroker/db-states-${otype}`);
-            defaultStatesType = otype; // if states db is also available with same type we use as default
+            require.resolve(`@iobroker/db-states-${oType}`);
+            defaultStatesType = oType as 'jsonl' | 'file' | 'redis'; // if states db is also available with same type we use as default
         } catch {
             // ignore, unchanged
         }
 
-        let stype = rl.question(
+        let sType = rl.question(
             `Type of states DB [(j)sonl, (f)file, (r)edis, ...], default [${defaultStatesType}]: `,
             {
                 defaultInput: defaultStatesType,
             },
         );
-        stype = stype.toLowerCase();
+        sType = sType.toLowerCase();
 
-        if (stype === 'r') {
-            stype = 'redis';
-        } else if (stype === 'f') {
-            stype = 'file';
-        } else if (stype === 'j') {
-            stype = 'jsonl';
+        if (sType === 'r') {
+            sType = 'redis';
+        } else if (sType === 'f') {
+            sType = 'file';
+        } else if (sType === 'j') {
+            sType = 'jsonl';
         }
 
         let getDefaultStatesPort;
         try {
-            const path = require.resolve(`@iobroker/db-states-${stype}`);
+            const path = require.resolve(`@iobroker/db-states-${sType}`);
 
             getDefaultStatesPort = require(path).getDefaultPort;
         } catch {
-            console.log(`${COLOR_RED}Unknown states type: ${stype}${COLOR_RESET}`);
-            if (stype !== 'file' && stype !== 'redis') {
+            console.log(`${COLOR_RED}Unknown states type: ${sType}${COLOR_RESET}`);
+            if (sType !== 'file' && sType !== 'redis') {
                 console.log(COLOR_YELLOW);
                 console.log(`Please check that the states db type you entered is really correct!`);
-                console.log(`If yes please use "npm i @iobroker/db-states-${stype}" to install it manually.`);
+                console.log(`If yes please use "npm i @iobroker/db-states-${sType}" to install it manually.`);
                 console.log(`You also need to make sure you stay up to date with this package in the future!`);
                 console.log(COLOR_RESET);
             }
             return EXIT_CODES.INVALID_ARGUMENTS;
         }
 
-        if (stype === 'redis' && originalConfig.states.type !== 'redis' && otype !== 'redis') {
+        if (sType === 'redis' && originalConfig.states.type !== 'redis' && oType !== 'redis') {
             console.log(COLOR_YELLOW);
             console.log('When States are stored in a Redis database please make sure to configure Redis');
             console.log('persistence to make sure a Redis problem will not cause data loss!');
@@ -899,12 +906,12 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         }
 
         let defaultStatesHost =
-            stype === originalConfig.states.type ? originalConfig.states.host : oHost || tools.getLocalAddress();
-        if (stype === otype) {
+            sType === originalConfig.states.type ? originalConfig.states.host : oHost || tools.getLocalAddress();
+        if (sType === oType) {
             defaultStatesHost = oHost;
         }
         let sHost: string | string[] = rl.question(
-            `Host / Unix Socket of states DB (${stype}), default[${
+            `Host / Unix Socket of states DB (${sType}), default[${
                 Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost
             }]: `,
             {
@@ -914,24 +921,24 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         sHost = sHost.toLowerCase();
 
         const sp = getDefaultStatesPort(sHost);
-        const sSentinel = stype === 'redis' && sHost.includes(',');
+        const sSentinel = sType === 'redis' && sHost.includes(',');
 
         if (sSentinel) {
             sHost = sHost.split(',').map(host => host.trim());
         }
 
         let defaultStatesPort =
-            stype === originalConfig.states.type && sHost === originalConfig.states.host
+            sType === originalConfig.states.type && sHost === originalConfig.states.host
                 ? originalConfig.states.port
                 : sp;
 
-        const statesHasServer = await statesDbHasServer(stype);
+        const statesHasServer = await statesDbHasServer(sType);
 
-        if (stype === otype && !statesHasServer && sHost === oHost) {
+        if (sType === oType && !statesHasServer && sHost === oHost) {
             defaultStatesPort = oPort;
         }
         const userStatePort = rl.question(
-            `Port of states DB (${stype}), default[${
+            `Port of states DB (${sType}), default[${
                 Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort
             }]: `,
             {
@@ -963,7 +970,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
             }
         }
 
-        config.states = await performStatesInterview({ dbType: stype, config: config.states });
+        config.states = await performStatesInterview({ dbType: sType, config: config.states });
 
         let sSentinelName = null;
         if (sSentinel) {
@@ -977,11 +984,11 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
             });
         }
 
-        let dir;
-        let hname;
+        let dir: string | undefined;
+        let hname: string;
 
-        const hasLocalObjectsServer = await isLocalObjectsDbServer(otype, oHost);
-        const hasLocalStatesServer = await isLocalStatesDbServer(stype, sHost);
+        const hasLocalObjectsServer = await isLocalObjectsDbServer(oType, oHost);
+        const hasLocalStatesServer = await isLocalStatesDbServer(sType, sHost);
 
         if (hasLocalStatesServer || hasLocalObjectsServer) {
             let validDataDir = false;
@@ -1024,13 +1031,13 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
             return EXIT_CODES.INVALID_ARGUMENTS;
         }
 
-        config.system = config.system || {};
+        config.system ||= {} as ioBroker.IoBrokerJson['system'];
         config.system.hostname = hname;
         config.objects.host = oHost;
-        config.objects.type = otype;
+        config.objects.type = oType as 'jsonl' | 'file' | 'redis';
         config.objects.port = oPort;
         config.states.host = sHost;
-        config.states.type = stype;
+        config.states.type = sType as 'jsonl' | 'file' | 'redis';
         config.states.port = sPort;
         config.states.dataDir = undefined;
         config.objects.dataDir = undefined;
@@ -1057,8 +1064,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
             config.states.sentinelName = sSentinelName;
         }
 
-        const exitCode = await this.migrateObjects(config, originalConfig);
-        return exitCode;
+        return await this.migrateObjects(config, originalConfig);
     }
 
     /**
@@ -1070,7 +1076,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         }
 
         try {
-            // if we have a single host system we need to ensure that existing objects are migrated to sets before doing anything else
+            // if we have a single host system, we need to ensure that existing objects are migrated to sets before doing anything else
             if (await tools.isSingleHost(this.objects)) {
                 await this.objects.activateSets();
                 const noMigrated = await this.objects.migrateToSets();
@@ -1448,14 +1454,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
     }
 
     /**
-     * Setup the installation with config file, host object, scripts etc
+     * Set up the installation with config file, host object, scripts etc
      *
      * @param options setup options
      */
     setup(options: SetupCommandOptions): void {
         const { ignoreIfExist, useRedis, callback } = options;
 
-        let config;
+        let config: ioBroker.IoBrokerJson;
         let isCreated = false;
         const platform = os.platform();
         const otherInstallDirs = [];
@@ -1605,19 +1611,16 @@ require('${path.normalize(`${thisDir}/..`)}/setup').execute();`;
             try {
                 config = fs.readJSONSync(configFileName);
                 if (!Object.prototype.hasOwnProperty.call(config, 'dataDir')) {
-                    // Workaround: there was a bug with admin v5 which could remove the dataDir attribute -> fix this
-                    // TODO: remove it as soon as all adapters are fixed which use systemConfig.dataDir, with v5.1 we can for sure remove this
-                    config.dataDir = tools.getDefaultDataDir();
                     fs.writeJSONSync(configFileName, config, { spaces: 2 });
                 }
             } catch (e) {
                 console.warn(`Cannot check config file: ${e.message}`);
             }
 
-            this.setupObjects(() => callback && callback(), true);
+            this.setupObjects(() => callback?.(), true);
             return;
         }
 
-        this.setupObjects(() => callback && callback(isCreated));
+        this.setupObjects(() => callback?.(isCreated));
     }
 }

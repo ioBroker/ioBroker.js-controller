@@ -3,9 +3,53 @@ import { tools } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'node:util';
+import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 
 export interface CLIVendorOptions {
     objects: ObjectsRedisClient;
+}
+
+interface iobVendorFile {
+    vendor?: {
+        id?: string;
+        name?: string;
+        icon?: string;
+        admin?: {
+            menu?: {
+                editable?: false;
+                [tabName: string]: false | undefined;
+            };
+            settings?: {
+                [tabName: string]: false | undefined;
+                activeRepo?: false;
+            };
+            adapters?: {
+                allowAdapterRating?: false;
+                gitHubInstall?: false;
+            };
+            login?: {
+                title?: string;
+                motto?: string;
+                link?: string;
+            };
+        };
+        ico?: string;
+        uuidPrefix?: string;
+    };
+    model?: {
+        // name for host
+        name?: string;
+        // Icon for host
+        icon?: string;
+        // Color for host
+        color?: string;
+    };
+    uuid?: string;
+    iobroker?: Partial<ioBroker.IoBrokerJson>;
+    objects?: {
+        [id: string]: ioBroker.Object;
+    };
+    javascriptPassword?: string;
 }
 
 const VENDOR_FILE = '/etc/iob-vendor.json';
@@ -44,16 +88,17 @@ export class Vendor {
      * @param password vendor password
      * @param logger
      */
-    async checkVendor(file: string | undefined, password: string, logger?: any): Promise<void> {
-        logger = logger || {
+    async checkVendor(file: string | undefined, password: string, logger?: InternalLogger): Promise<void> {
+        logger ||= {
             debug: (text: string) => console.log(text),
             info: (text: string) => console.log(text),
             error: (text: string) => console.error(text),
             warn: (text: string) => console.warn(text),
+            silly: (text: string) => console.log(text),
         };
 
-        file = file || VENDOR_FILE;
-        let data: Record<string, any>;
+        file ||= VENDOR_FILE;
+        let data: iobVendorFile | null = null;
         if (fs.existsSync(file)) {
             try {
                 data = fs.readJSONSync(file);
@@ -66,9 +111,8 @@ export class Vendor {
             throw new Error(`"${file}" does not exist`);
         }
 
-        if (data.uuid) {
+        if (data?.uuid) {
             const uuid = data.uuid;
-            data.uuid = null;
 
             // check UUID
             const obj = await this.objects.getObject('system.meta.uuid');
@@ -78,7 +122,7 @@ export class Vendor {
 
                     logger.info(`Update "system.meta.uuid:native.uuid" = "${obj.native.uuid}"`);
 
-                    obj.nonEdit = obj.nonEdit || {};
+                    obj.nonEdit ||= {};
                     obj.nonEdit.password = password;
                     try {
                         await this.objects.setObjectAsync('system.meta.uuid', obj);
@@ -99,7 +143,7 @@ export class Vendor {
                         ts: new Date().getTime(),
                         from: `system.host.${tools.getHostName()}.tools`,
                         native: {
-                            uuid: uuid,
+                            uuid,
                         },
                     });
                     logger.info(`object system.meta.uuid created: ${uuid}`);
@@ -110,25 +154,37 @@ export class Vendor {
         }
 
         // patch iobroker.json file
-        if (data.iobroker) {
+        if (data?.iobroker) {
             const settings = fs.readJSONSync(tools.getConfigFileName());
             logger.info('Update iobroker.json file');
             this.deepMerge(settings, data.iobroker);
             fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(settings, null, 2));
         }
 
-        if (data.vendor) {
+        if (data?.vendor) {
             const vendor = deepClone(data.vendor);
-            data._vendor = deepClone(vendor);
-            data.vendor = null;
 
             // store vendor
             try {
                 const obj = await this.objects.getObject('system.config');
-                if (obj && obj.native) {
-                    if (!isDeepStrictEqual(obj.native.vendor, vendor)) {
+                if (obj?.native) {
+                    let javascriptPassword: string | undefined;
+
+                    if (data.javascriptPassword) {
+                        javascriptPassword = tools.encrypt(obj.native.secret, data.javascriptPassword);
+                    }
+
+                    if (
+                        !isDeepStrictEqual(obj.native.vendor, vendor) ||
+                        obj.native.javascriptPassword !== javascriptPassword
+                    ) {
                         obj.native.vendor = vendor;
-                        obj.nonEdit = obj.nonEdit || {};
+                        obj.nonEdit ||= {};
+                        if (javascriptPassword) {
+                            obj.native.javascriptPassword = javascriptPassword;
+                            obj.nonEdit.native ||= {};
+                            obj.nonEdit.native.javascriptPassword = javascriptPassword;
+                        }
                         obj.nonEdit.password = password;
                         await this.objects.setObjectAsync(obj._id, obj);
                         logger.info('object system.config updated');
@@ -137,18 +193,38 @@ export class Vendor {
             } catch (e) {
                 logger.error(`Cannot update system.config: ${e.message}`);
             }
+        } else if (data?.javascriptPassword) {
+            const obj = await this.objects.getObject('system.config');
+
+            if (obj?.native) {
+                const javascriptPassword = tools.encrypt(obj.native.secret, data.javascriptPassword);
+                if (obj?.native?.javascriptPassword !== javascriptPassword) {
+                    obj.native ||= {};
+                    obj.native.javascriptPassword = javascriptPassword;
+                    obj.nonEdit ||= {};
+                    obj.nonEdit.password = password;
+                    obj.nonEdit.native ||= {};
+                    obj.nonEdit.native.javascriptPassword = javascriptPassword;
+                    try {
+                        await this.objects.setObjectAsync(obj._id, obj);
+                        logger.info('object system.config updated');
+                    } catch (e) {
+                        logger.error(`Cannot update system.config: ${e.message}`);
+                    }
+                }
+            }
         }
 
         // update all existing objects according to vendor
-        if (data.objects) {
+        if (data?.objects) {
             for (let id of Object.keys(data.objects)) {
                 if (!id.includes('*')) {
                     const _newObj = data.objects[id];
                     const obj = await this.objects.getObject(id);
                     if (obj) {
-                        obj.nonEdit = obj.nonEdit || {};
+                        obj.nonEdit ||= {} as ioBroker.NonEditable;
                         const originalObj = deepClone(obj);
-                        _newObj.nonEdit = _newObj.nonEdit || {};
+                        _newObj.nonEdit ||= {} as ioBroker.NonEditable;
                         _newObj.nonEdit.passHash = obj.nonEdit.passHash;
                         // merge objects
                         tools.copyAttributes(_newObj, obj);
@@ -183,13 +259,13 @@ export class Vendor {
                         { checked: true },
                     );
 
-                    if (arr && arr.rows && arr.rows.length) {
+                    if (arr?.rows?.length) {
                         for (const row of arr.rows) {
                             const obj = row.value;
                             if (obj) {
-                                obj.nonEdit = obj.nonEdit || {};
+                                obj.nonEdit ||= {};
                                 const originalObj = deepClone(obj);
-                                _obj.nonEdit = _obj.nonEdit || {};
+                                _obj.nonEdit ||= {};
                                 _obj.nonEdit.passHash = obj.nonEdit.passHash;
                                 // merge objects
                                 tools.copyAttributes(_obj, obj);
@@ -213,12 +289,11 @@ export class Vendor {
         }
 
         // update host as last
-        if (data.model) {
+        if (data?.model) {
             const model = data.model;
-            data.model = null;
             const hostname = tools.getHostName();
             const obj = await this.objects.getObject(`system.host.${hostname}`);
-            if (obj && obj.common) {
+            if (obj?.common) {
                 if (
                     (model.name && model.name !== 'JS controller' && obj.common.title === 'JS controller') ||
                     (model.icon && !obj.common.icon) ||
@@ -234,15 +309,18 @@ export class Vendor {
                         obj.common.color = model.color;
                     }
 
-                    obj.nonEdit = obj.nonEdit || {};
+                    obj.nonEdit ||= {};
                     obj.nonEdit.password = password;
 
-                    obj.common.title &&
+                    if (obj.common.title) {
                         logger.info(`Update "system.host.${hostname}:common.title" = "${obj.common.title}"`);
-                    obj.common.icon &&
+                    }
+                    if (obj.common.icon) {
                         logger.info(`Update "system.host.${hostname}:common.icon"  = "${!!obj.common.icon}"`);
-                    obj.common.color &&
+                    }
+                    if (obj.common.color) {
                         logger.info(`Update "system.host.${hostname}:common.color" = "${obj.common.color}"`);
+                    }
 
                     try {
                         await this.objects.setObjectAsync(obj._id, obj);
