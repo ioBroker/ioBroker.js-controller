@@ -12,9 +12,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
     it(`${testName}should create and read object`, done => {
         const objects = context.objects;
-        objects.setObject(
-            testId,
-            {
+        void objects
+            .setObjectAsync(testId, {
                 type: 'state',
                 common: {
                     type: 'string',
@@ -24,9 +23,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     role: 'state',
                 },
                 native: {},
-            },
-            (err, res) => {
-                expect(err).to.be.not.ok;
+            })
+            .then(res => {
                 expect(res).to.be.ok;
                 expect(res!.id).to.be.equal(testId);
 
@@ -38,8 +36,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     console.log(JSON.stringify(obj));
                     done();
                 });
-            },
-        );
+            });
     });
 
     it(`${testName}should create object async`, done => {
