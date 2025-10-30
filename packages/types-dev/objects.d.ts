@@ -149,7 +149,7 @@ declare global {
                                         ? RepositoryObject
                                         : T extends ObjectIDs.SystemConfig
                                           ? SystemConfigObject
-                                          : T extends ObjectIDs.DockerApiConfigs
+                                          : T extends ObjectIDs.DockerConfigs
                                             ? DockerApiObject
                                             : T extends ObjectIDs.Config
                                               ? OtherObject & { type: 'config' }
@@ -1122,14 +1122,15 @@ declare global {
 
         /** Docker API configuration */
         interface DockerApiObject extends BaseObject {
-            _id: ObjectIDs.DockerApiConfigs;
+            _id: ObjectIDs.DockerConfigs;
             type: 'config';
             native: {
                 dockerApis: {
                     [configName: string]: DockerApiConfig;
                 };
             };
-            common: ObjectCommon;
+            // Make it possible to narrow the object type using the custom property
+            common: ObjectCommon & { custom?: undefined };
         }
 
         interface InstanceObject extends Omit<AdapterObject, 'type'>, BaseObject {
