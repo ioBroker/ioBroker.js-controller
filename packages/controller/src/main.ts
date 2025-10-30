@@ -324,12 +324,12 @@ async function startMultihost(__config?: ioBroker.IoBrokerJson): Promise<boolean
 
         if (!_config.objects.host || hasLocalObjectsServer) {
             logger.warn(
-                `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for objects is ${_config.objects.host}. Please allow remote connections to the server by adjusting the IP.`,
+                `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for objects is ${Array.isArray(_config.objects.host) ? _config.objects.host.join(', ') : _config.objects.host}. Please allow remote connections to the server by adjusting the IP.`,
             );
             return false;
         } else if (!_config.states.host || hasLocalStatesServer) {
             logger.warn(
-                `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for states is ${_config.states.host}. Please allow remote connections to the server by adjusting the IP.`,
+                `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for states is ${Array.isArray(_config.states.host) ? _config.states.host.join(', ') : _config.states.host}. Please allow remote connections to the server by adjusting the IP.`,
             );
             return false;
         }

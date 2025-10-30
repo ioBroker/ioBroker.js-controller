@@ -62,7 +62,7 @@ interface iobVendorFile {
                 defaultLogLevel?: false;
             };
             adapters?: {
-                gitHubInstall?: false; // hide button install from github/npm
+                gitHubInstall?: false; // hide button install from GitHub/npm
                 statistics?: false; // hide statistics on the right top
                 filterUpdates?: false; // hide button filter updates in adapter tab
                 allowAdapterRating?: false; // do not show and do not load adapter ratings
