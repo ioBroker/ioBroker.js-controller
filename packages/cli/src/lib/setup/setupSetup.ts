@@ -378,7 +378,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
                     // ignore
                 }
 
-                if (obj && obj?.native?.certificates?.defaultPublic !== undefined) {
+                if (obj?.native?.certificates?.defaultPublic !== undefined) {
                     let cert = tools.getCertificateInfo(obj.native.certificates.defaultPublic);
 
                     if (cert) {
