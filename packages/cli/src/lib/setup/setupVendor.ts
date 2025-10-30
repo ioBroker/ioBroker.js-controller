@@ -15,7 +15,7 @@ interface iobVendorFile {
         name?: string;
         icon?: string;
         admin?: {
-            menu: {
+            menu?: {
                 // Settings for left menu
                 editable?: false; // Hide edit button in menu
                 'tab-hosts'?: false; // Hide hosts item (See all https://github.com/ioBroker/ioBroker.admin/blob/master/src-rx/src/components/Drawer.js#L142)
@@ -36,14 +36,14 @@ interface iobVendorFile {
                 'tab-echarts'?: false; // Hide echarts item
                 [tabName: string]: false | undefined;
             };
-            appBar: {
+            appBar?: {
                 discovery?: false;
                 systemSettings?: false;
                 toggleTheme?: false;
                 expertMode?: false;
                 hostSelector?: false;
             };
-            settings: {
+            settings?: {
                 tabConfig?: false; // Main config tab
                 tabRepositories?: false; // Repositories tab
                 tabCertificates?: false; // Certificates tab
