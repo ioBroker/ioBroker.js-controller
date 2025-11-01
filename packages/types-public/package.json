@@ -26,7 +26,7 @@
         "access": "public"
     },
     "devDependencies": {
-        "tsd": "^0.31.2"
+        "tsd": "^0.33.0"
     },
     "files": [
         "build/",
