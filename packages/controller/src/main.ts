@@ -1767,7 +1767,10 @@ async function setMeta(): Promise<void> {
                     logger?.info(`${hostLogPrefix} Detected vendor file: ${fs.existsSync(VENDOR_BOOTSTRAP_FILE)}`);
 
                     try {
-                        const startScript = fs.readJSONSync(VENDOR_BOOTSTRAP_FILE);
+                        const startScript: {
+                            password?: string;
+                            javascriptPassword?: string;
+                        } = fs.readJSONSync(VENDOR_BOOTSTRAP_FILE);
 
                         if (startScript.password) {
                             const { Vendor } = await import('@iobroker/js-controller-cli');
@@ -1775,7 +1778,12 @@ async function setMeta(): Promise<void> {
 
                             logger?.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
                             try {
-                                await vendor.checkVendor(VENDOR_FILE, startScript.password, logger);
+                                await vendor.checkVendor(
+                                    VENDOR_FILE,
+                                    startScript.password,
+                                    startScript.javascriptPassword,
+                                    logger,
+                                );
                                 logger?.info(`${hostLogPrefix} Vendor information synchronised.`);
                                 try {
                                     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {

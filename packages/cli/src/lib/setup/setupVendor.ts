@@ -13,7 +13,10 @@ interface iobVendorFile {
     vendor?: {
         id?: string;
         name?: string;
+        /** Logo for login in admin */
         icon?: string;
+        /** Logo in the top left corner of admin */
+        logo?: string;
         admin?: {
             menu?: {
                 // Settings for left menu
@@ -73,15 +76,16 @@ interface iobVendorFile {
                 link?: string;
             };
         };
+        /** Favicon for admin */
         ico?: string;
         uuidPrefix?: string;
     };
     model?: {
-        // name for host
+        /** name for host */
         name?: string;
-        // Icon for host
+        /** Icon for host */
         icon?: string;
-        // Color for host
+        /** Color for host */
         color?: string;
     };
     uuid?: string;
@@ -89,7 +93,6 @@ interface iobVendorFile {
     objects?: {
         [id: string]: ioBroker.Object;
     };
-    javascriptPassword?: string;
 }
 
 const VENDOR_FILE = '/etc/iob-vendor.json';
@@ -126,9 +129,15 @@ export class Vendor {
      *
      * @param file file path if not given, default path is used
      * @param password vendor password
+     * @param javascriptPassword vendor JavaScript password
      * @param logger
      */
-    async checkVendor(file: string | undefined, password: string, logger?: InternalLogger): Promise<void> {
+    async checkVendor(
+        file: string | undefined,
+        password: string,
+        javascriptPassword: string | undefined,
+        logger?: InternalLogger,
+    ): Promise<void> {
         logger ||= {
             debug: (text: string) => console.log(text),
             info: (text: string) => console.log(text),
@@ -208,22 +217,21 @@ export class Vendor {
             try {
                 const obj = await this.objects.getObject('system.config');
                 if (obj?.native) {
-                    let javascriptPassword: string | undefined;
-
-                    if (data.javascriptPassword) {
-                        javascriptPassword = tools.encrypt(obj.native.secret, data.javascriptPassword);
+                    let javascriptPasswordEncrypted: string | undefined;
+                    if (javascriptPassword) {
+                        javascriptPasswordEncrypted = tools.encrypt(obj.native.secret, javascriptPassword);
                     }
 
                     if (
                         !isDeepStrictEqual(obj.native.vendor, vendor) ||
-                        obj.native.javascriptPassword !== javascriptPassword
+                        obj.native.javascriptPassword !== javascriptPasswordEncrypted
                     ) {
                         obj.native.vendor = vendor;
                         obj.nonEdit ||= {};
                         if (javascriptPassword) {
-                            obj.native.javascriptPassword = javascriptPassword;
+                            obj.native.javascriptPassword = javascriptPasswordEncrypted;
                             obj.nonEdit.native ||= {};
-                            obj.nonEdit.native.javascriptPassword = javascriptPassword;
+                            obj.nonEdit.native.javascriptPassword = javascriptPasswordEncrypted;
                         }
                         obj.nonEdit.password = password;
                         await this.objects.setObjectAsync(obj._id, obj);
@@ -233,18 +241,18 @@ export class Vendor {
             } catch (e) {
                 logger.error(`Cannot update system.config: ${e.message}`);
             }
-        } else if (data?.javascriptPassword) {
+        } else if (javascriptPassword) {
             const obj = await this.objects.getObject('system.config');
 
             if (obj?.native) {
-                const javascriptPassword = tools.encrypt(obj.native.secret, data.javascriptPassword);
-                if (obj.native?.javascriptPassword !== javascriptPassword) {
+                const javascriptPasswordEncrypted = tools.encrypt(obj.native.secret, javascriptPassword);
+                if (obj.native?.javascriptPassword !== javascriptPasswordEncrypted) {
                     obj.native ||= {};
-                    obj.native.javascriptPassword = javascriptPassword;
+                    obj.native.javascriptPassword = javascriptPasswordEncrypted;
                     obj.nonEdit ||= {};
                     obj.nonEdit.password = password;
                     obj.nonEdit.native ||= {};
-                    obj.nonEdit.native.javascriptPassword = javascriptPassword;
+                    obj.nonEdit.native.javascriptPassword = javascriptPasswordEncrypted;
                     try {
                         await this.objects.setObjectAsync(obj._id, obj);
                         logger.info('object system.config updated');
