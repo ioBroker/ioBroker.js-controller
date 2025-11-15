@@ -2723,6 +2723,7 @@ async function processCommand(
         case 'vendor': {
             const password = args[0];
             const file = args[1];
+            const javascriptPassword = args[2];
             if (!password) {
                 console.warn(
                     `Please specify the password to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`,
@@ -2735,7 +2736,7 @@ async function processCommand(
             const vendor = new Vendor({ objects });
 
             try {
-                await vendor.checkVendor(file, password);
+                await vendor.checkVendor(file, password, javascriptPassword);
                 console.log(`Synchronised vendor information.`);
                 return void callback();
             } catch (err) {

@@ -45,7 +45,7 @@ export interface ConnectionOptions {
     enhancedLogging?: boolean;
     backup?: BackupOptions;
     /** relative path to the data dir */
-    dataDir: string;
+    dataDir?: string;
 }
 
 type ChangeFunction = (id: string, state: any) => void;

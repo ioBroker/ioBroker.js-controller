@@ -197,14 +197,34 @@
           ],
           "description": "Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel]."
         },
-        "// type": {
+        "sentinelName": {
           "type": "string"
         },
         "host": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
         },
         "port": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          ]
         },
         "connectTimeout": {
           "type": "number"
@@ -277,10 +297,8 @@
         }
       },
       "required": [
-        "// type",
         "backup",
         "connectTimeout",
-        "dataDir",
         "host",
         "jsonlOptions",
         "noFileCache",
@@ -435,14 +453,34 @@
           ],
           "description": "Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel]."
         },
-        "// type": {
+        "sentinelName": {
           "type": "string"
         },
         "host": {
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
         },
         "port": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          ]
         },
         "connectTimeout": {
           "type": "number"
@@ -516,10 +554,8 @@
         }
       },
       "required": [
-        "// type",
         "backup",
         "connectTimeout",
-        "dataDir",
         "host",
         "jsonlOptions",
         "maxQueue",

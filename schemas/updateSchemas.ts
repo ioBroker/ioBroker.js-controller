@@ -60,4 +60,4 @@ async function getSpdxLicenseIds(): Promise<string[]> {
 }
 
 updateIobJSON();
-updateLicenseArray();
+void updateLicenseArray();

@@ -1,12 +1,13 @@
 import fs from 'fs-extra';
 import path from 'node:path';
 import readline from 'node:readline';
+import readlineSync from 'readline-sync';
+import prompt from 'prompt';
+
 import { tools } from '@iobroker/js-controller-common';
 import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { MHClient, type BrowseResultEntry } from './multihostClient.js';
-import readlineSync from 'readline-sync';
-import prompt from 'prompt';
 
 interface MHParams {
     secure?: boolean;
@@ -14,16 +15,28 @@ interface MHParams {
     debug?: boolean;
 }
 
+/** Options for Multihost CLI */
 export interface CLIMultihostOptions {
+    /** Redis client for objects DB */
     objects: ObjectsRedisClient;
+    /** Additional parameters */
     params?: MHParams;
 }
 
+/**
+ *  Multihost CLI class
+ *  Handles multihost related commands
+ */
 export class Multihost {
     private readonly configName: string;
     private params: MHParams;
     private objects: ObjectsRedisClient;
 
+    /**
+     * Constructor
+     *
+     * @param options options for the Multihost CLI
+     */
     constructor(options: CLIMultihostOptions) {
         this.configName = tools.getConfigFileName();
         this.params = options.params || {};
@@ -79,8 +92,7 @@ export class Multihost {
     async browse(): Promise<BrowseResultEntry[]> {
         const mhClient = new MHClient();
         try {
-            const res = await mhClient.browse(2_000, !!this.params.debug);
-            return res;
+            return await mhClient.browse(2_000, !!this.params.debug);
         } catch (e) {
             throw new Error(`Multihost discovery client: Cannot browse: ${e.message}`);
         }
@@ -146,8 +158,12 @@ export class Multihost {
                 config.multihostService.enabled && config.multihostService.persist ? 'enabled' : 'disabled'
             }`,
         );
-        console.log(`Objects:                    ${config.objects.type} on ${config.objects.host}`);
-        console.log(`States:                     ${config.states.type} on ${config.states.host}`);
+        console.log(
+            `Objects:                    ${config.objects.type} on ${Array.isArray(config.objects.host) ? config.objects.host.join(', ') : config.objects.host}`,
+        );
+        console.log(
+            `States:                     ${config.states.type} on ${Array.isArray(config.states.host) ? config.states.host.join(', ') : config.states.host}`,
+        );
     }
 
     /**
@@ -166,7 +182,7 @@ export class Multihost {
             config.multihostService.enabled = true;
             config.multihostService.password = '';
             console.log(
-                'Multihost discovery server activated on this host. If iobroker is currently not running please start befeore trying to discover this host.',
+                'Multihost discovery server activated on this host. If iobroker is currently not running please start before trying to discover this host.',
             );
             console.log(
                 'Important: Multihost discovery works with UDP packets. Make sure they are routed correctly in your network. If you use Docker you also need to configure this correctly.',
@@ -219,17 +235,17 @@ export class Multihost {
                 };
                 prompt.start();
 
-                prompt.get(schema, (err, password) => {
+                prompt.get(schema, (_err, password) => {
                     if (password?.password) {
                         if (password.password !== password.passwordRepeat) {
                             callback(new Error('Secret phrases are not equal!'));
                         } else {
-                            this.objects.getObject('system.config', (err, obj) => {
+                            void this.objects.getObject('system.config', (_err, obj) => {
                                 config.multihostService.password = tools.encrypt(
                                     obj!.native.secret,
                                     password.password as string,
                                 );
-                                this.showMHState(config, changed);
+                                void this.showMHState(config, changed);
                                 callback();
                             });
                         }
@@ -238,11 +254,11 @@ export class Multihost {
                     }
                 });
             } else {
-                this.showMHState(config, changed);
+                void this.showMHState(config, changed);
                 callback();
             }
         } else {
-            this.showMHState(config, changed);
+            void this.showMHState(config, changed);
             callback();
         }
     }
@@ -253,7 +269,7 @@ export class Multihost {
     status(): void {
         const config = this.getConfig();
         config.multihostService = config.multihostService || { enabled: false, secure: true };
-        this.showMHState(config, false);
+        void this.showMHState(config, false);
     }
 
     /**
@@ -266,10 +282,10 @@ export class Multihost {
     /**
      * Connect to given MH server
      *
-     * @param mhClient mhclient used for connection
-     * @param ip ip address of server
+     * @param mhClient MultiHost Client used for connection
+     * @param ip IP address of server
      * @param pass password
-     * @param callback
+     * @param callback callback
      */
     connectHelper(mhClient: MHClient, ip: string, pass: string, callback: (err?: Error) => void): void {
         mhClient.connect(ip, pass, async (err, oObjects, oStates, ipHost) => {
@@ -293,14 +309,35 @@ export class Multihost {
                             `IP Address of the remote host is ${tools.getLocalAddress()}. Connections from this host will not be accepted. Please change the configuration of this host to accept remote connections.`,
                         ),
                     );
-                } else {
-                    if (tools.isListenAllAddress(config.states.host)) {
-                        // TODO: why we set the remote IP only when the local config allows full connectivity?
+                } else if (
+                    (!Array.isArray(config.states.host) || config.states.host.length === 1) &&
+                    (!Array.isArray(config.objects.host) || config.objects.host.length === 1)
+                ) {
+                    const sHost = Array.isArray(config.states.host) ? config.states.host[0] : config.states.host;
+                    // If server delivers 0.0.0.0 or ::, set to actual IP of the host
+                    if (tools.isListenAllAddress(sHost)) {
                         config.states.host = ipHost ?? '';
                     }
-                    if (tools.isListenAllAddress(config.objects.host)) {
-                        // TODO: why we set the remote IP only when the local config allows full connectivity?
+                    const oHost = Array.isArray(config.objects.host) ? config.objects.host[0] : config.objects.host;
+                    // If server delivers 0.0.0.0 or ::, set to actual IP of the host
+                    if (tools.isListenAllAddress(oHost)) {
                         config.objects.host = ipHost ?? '';
+                    }
+
+                    fs.writeFileSync(this.configName, JSON.stringify(config, null, 2));
+                    console.log('Config ok. Please restart ioBroker: "iobroker restart"');
+                    callback();
+                } else {
+                    // Find is any of the hosts is "listen all" or reachable
+                    for (const sHost of config.states.host) {
+                        if (tools.isListenAllAddress(sHost)) {
+                            config.states.host = ipHost ?? '';
+                        }
+                    }
+                    for (const oHost of config.objects.host) {
+                        if (tools.isListenAllAddress(oHost)) {
+                            config.objects.host = ipHost ?? '';
+                        }
                     }
 
                     fs.writeFileSync(this.configName, JSON.stringify(config, null, 2));
@@ -318,7 +355,7 @@ export class Multihost {
      *
      * @param index index of host to connect to
      * @param pass password
-     * @param callback
+     * @param callback callback
      */
     async connect(
         index: number | null,
