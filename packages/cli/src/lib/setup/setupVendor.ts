@@ -246,7 +246,7 @@ export class Vendor {
 
             if (obj?.native) {
                 const javascriptPasswordEncrypted = tools.encrypt(obj.native.secret, javascriptPassword);
-                if (obj.native?.javascriptPassword !== javascriptPasswordEncrypted) {
+                if (obj.native.javascriptPassword !== javascriptPasswordEncrypted) {
                     obj.native ||= {};
                     obj.native.javascriptPassword = javascriptPasswordEncrypted;
                     obj.nonEdit ||= {};
