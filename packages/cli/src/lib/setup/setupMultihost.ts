@@ -328,7 +328,7 @@ export class Multihost {
                     console.log('Config ok. Please restart ioBroker: "iobroker restart"');
                     callback();
                 } else {
-                    // Find is any of the hosts is "listen all" or reachable
+                    // Find if any of the hosts is "listen all" or reachable
                     if (Array.isArray(config.states.host)) {
                         config.states.host = config.states.host.map((sHost: string) =>
                             tools.isListenAllAddress(sHost) ? (ipHost ?? '') : sHost
