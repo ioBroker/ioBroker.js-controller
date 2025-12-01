@@ -329,15 +329,15 @@ export class Multihost {
                     callback();
                 } else {
                     // Find is any of the hosts is "listen all" or reachable
-                    for (const sHost of config.states.host) {
-                        if (tools.isListenAllAddress(sHost)) {
-                            config.states.host = ipHost ?? '';
-                        }
+                    if (Array.isArray(config.states.host)) {
+                        config.states.host = config.states.host.map((sHost: string) =>
+                            tools.isListenAllAddress(sHost) ? (ipHost ?? '') : sHost
+                        );
                     }
-                    for (const oHost of config.objects.host) {
-                        if (tools.isListenAllAddress(oHost)) {
-                            config.objects.host = ipHost ?? '';
-                        }
+                    if (Array.isArray(config.objects.host)) {
+                        config.objects.host = config.objects.host.map((oHost: string) =>
+                            tools.isListenAllAddress(oHost) ? (ipHost ?? '') : oHost
+                        );
                     }
 
                     fs.writeFileSync(this.configName, JSON.stringify(config, null, 2));
