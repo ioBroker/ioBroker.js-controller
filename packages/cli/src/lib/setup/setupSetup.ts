@@ -1608,15 +1608,6 @@ require('${path.normalize(`${thisDir}/..`)}/setup').execute();`;
             }
         } else if (ignoreIfExist) {
             // it is a setup first run and config exists yet
-            try {
-                config = fs.readJSONSync(configFileName);
-                if (!Object.prototype.hasOwnProperty.call(config, 'dataDir')) {
-                    fs.writeJSONSync(configFileName, config, { spaces: 2 });
-                }
-            } catch (e) {
-                console.warn(`Cannot check config file: ${e.message}`);
-            }
-
             this.setupObjects(() => callback?.(), true);
             return;
         }
