@@ -1765,6 +1765,7 @@ async function setMeta(): Promise<void> {
 
                 if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
                     logger?.info(`${hostLogPrefix} Detected vendor file: ${fs.existsSync(VENDOR_BOOTSTRAP_FILE)}`);
+                    let restartRequired = false;
 
                     try {
                         const startScript: {
@@ -1778,7 +1779,7 @@ async function setMeta(): Promise<void> {
 
                             logger?.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
                             try {
-                                await vendor.checkVendor(
+                                restartRequired = await vendor.checkVendor(
                                     VENDOR_FILE,
                                     startScript.password,
                                     startScript.javascriptPassword,
@@ -1812,6 +1813,12 @@ async function setMeta(): Promise<void> {
                         } catch (e) {
                             logger?.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                         }
+                    }
+                    if (restartRequired) {
+                        // terminate ioBroker to restart the controller as UUID probably changed
+                        logger.info(`${hostLogPrefix} Restart js-controller because vendor information updated`);
+                        await wait(200);
+                        restart(() => !isStopping && stop(false));
                     }
                 }
             }
@@ -3229,7 +3236,7 @@ function initInstances(): void {
             }
         } else if (procs[id].process) {
             // stop instance if disabled
-            stopInstance(id, false);
+            void stopInstance(id, false);
         }
     }
 

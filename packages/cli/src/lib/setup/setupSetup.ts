@@ -324,7 +324,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
 
         if (!configObj.native?.secret) {
             const buf = crypto.randomBytes(24);
-            configObj.native = configObj.native || {};
+            configObj.native ||= {};
             configObj.native.secret = buf.toString('hex');
             configObj.from = `system.host.${tools.getHostName()}.cli`;
             configObj.ts = Date.now();

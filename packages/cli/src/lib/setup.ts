@@ -2908,10 +2908,12 @@ async function unsetup(params: Record<string, any>, callback: ExitCodeCb): Promi
             if (obj?.common.licenseConfirmed || obj?.common.language || obj?.native?.secret) {
                 obj.common.language = 'en';
                 // allow with parameter --keepsecret to not delete the secret
-                // This is very specific use case for vendors and must not be described in documentation
+                // This is a very specific use case for vendors and must not be described in documentation
                 if (!params.keepsecret) {
                     obj.common.licenseConfirmed = false;
-                    obj.native && delete obj.native.secret;
+                    if (obj.native) {
+                        delete obj.native.secret;
+                    }
                 }
 
                 obj.from = `system.host.${tools.getHostName()}.cli`;

@@ -4,6 +4,7 @@ import fs from 'fs-extra';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'node:util';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
+import { randomBytes } from 'node:crypto';
 
 export interface CLIVendorOptions {
     objects: ObjectsRedisClient;
@@ -137,7 +138,7 @@ export class Vendor {
         password: string,
         javascriptPassword: string | undefined,
         logger?: InternalLogger,
-    ): Promise<void> {
+    ): Promise<boolean> {
         logger ||= {
             debug: (text: string) => console.log(text),
             info: (text: string) => console.log(text),
@@ -215,26 +216,30 @@ export class Vendor {
 
             // store vendor
             try {
-                const obj = await this.objects.getObject('system.config');
-                if (obj?.native) {
+                const configObj = await this.objects.getObject('system.config');
+                if (configObj?.native) {
                     let javascriptPasswordEncrypted: string | undefined;
                     if (javascriptPassword) {
-                        javascriptPasswordEncrypted = tools.encrypt(obj.native.secret, javascriptPassword);
+                        if (!configObj.native?.secret) {
+                            const buf = randomBytes(24);
+                            configObj.native.secret = buf.toString('hex');
+                        }
+                        javascriptPasswordEncrypted = tools.encrypt(configObj.native.secret, javascriptPassword);
                     }
 
                     if (
-                        !isDeepStrictEqual(obj.native.vendor, vendor) ||
-                        obj.native.javascriptPassword !== javascriptPasswordEncrypted
+                        !isDeepStrictEqual(configObj.native.vendor, vendor) ||
+                        configObj.native.javascriptPassword !== javascriptPasswordEncrypted
                     ) {
-                        obj.native.vendor = vendor;
-                        obj.nonEdit ||= {};
+                        configObj.native.vendor = vendor;
+                        configObj.nonEdit ||= {};
                         if (javascriptPassword) {
-                            obj.native.javascriptPassword = javascriptPasswordEncrypted;
-                            obj.nonEdit.native ||= {};
-                            obj.nonEdit.native.javascriptPassword = javascriptPasswordEncrypted;
+                            configObj.native.javascriptPassword = javascriptPasswordEncrypted;
+                            configObj.nonEdit.native ||= {};
+                            configObj.nonEdit.native.javascriptPassword = javascriptPasswordEncrypted;
                         }
-                        obj.nonEdit.password = password;
-                        await this.objects.setObjectAsync(obj._id, obj);
+                        configObj.nonEdit.password = password;
+                        await this.objects.setObjectAsync(configObj._id, configObj);
                         logger.info('object system.config updated');
                     }
                 }
@@ -242,18 +247,22 @@ export class Vendor {
                 logger.error(`Cannot update system.config: ${e.message}`);
             }
         } else if (javascriptPassword) {
-            const obj = await this.objects.getObject('system.config');
+            const configObj = await this.objects.getObject('system.config');
 
-            if (obj?.native) {
-                const javascriptPasswordEncrypted = tools.encrypt(obj.native.secret, javascriptPassword);
-                if (obj.native.javascriptPassword !== javascriptPasswordEncrypted) {
-                    obj.native.javascriptPassword = javascriptPasswordEncrypted;
-                    obj.nonEdit ||= {};
-                    obj.nonEdit.password = password;
-                    obj.nonEdit.native ||= {};
-                    obj.nonEdit.native.javascriptPassword = javascriptPasswordEncrypted;
+            if (configObj?.native) {
+                if (!configObj.native?.secret) {
+                    const buf = randomBytes(24);
+                    configObj.native.secret = buf.toString('hex');
+                }
+                const javascriptPasswordEncrypted = tools.encrypt(configObj.native.secret, javascriptPassword);
+                if (configObj.native.javascriptPassword !== javascriptPasswordEncrypted) {
+                    configObj.native.javascriptPassword = javascriptPasswordEncrypted;
+                    configObj.nonEdit ||= {};
+                    configObj.nonEdit.password = password;
+                    configObj.nonEdit.native ||= {};
+                    configObj.nonEdit.native.javascriptPassword = javascriptPasswordEncrypted;
                     try {
-                        await this.objects.setObjectAsync(obj._id, obj);
+                        await this.objects.setObjectAsync(configObj._id, configObj);
                         logger.info('object system.config updated');
                     } catch (e) {
                         logger.error(`Cannot update system.config: ${e.message}`);
@@ -380,9 +389,6 @@ export class Vendor {
         }
 
         // restart ioBroker
-        setTimeout(() => {
-            logger.warn('RESTART!');
-            process.exit(-1);
-        }, 2_000);
+        return true;
     }
 }
