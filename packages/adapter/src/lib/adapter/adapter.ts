@@ -2312,7 +2312,7 @@ export class AdapterClass extends EventEmitter {
                         try {
                             this._options.unload(finishUnload);
                         } catch {
-                            // Can only throw in  unload logic, in this case the finishUnload() was not called
+                            // Can only throw in unload logic, in this case the finishUnload() was not called
                             finishUnload();
                         }
                     } else {
