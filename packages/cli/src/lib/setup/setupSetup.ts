@@ -1104,7 +1104,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
     }
 
     /**
-     * Add adapter-core in supported version in the overrides field of the root package.json and call install there to apply it
+     * Add or update adapter-core in supported version in the overrides field of the root package.json and call install there to apply it
      */
     private async addOrUpdateAdapterCoreRequirement(): Promise<void> {
         if (tools.isDevInstallation()) {
