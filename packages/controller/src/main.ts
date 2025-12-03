@@ -37,7 +37,7 @@ import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import cronParser from 'cron-parser';
-import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+import type { PluginHandlerSettings } from '@iobroker/plugin-base';
 import type { GetDiskInfoResponse } from '@iobroker/js-controller-common-db/tools';
 import { DEFAULT_DISK_WARNING_LEVEL, getCronExpression, getDiskWarningLevel } from '@/lib/utils.js';
 import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
@@ -625,11 +625,12 @@ function createStates(onConnect: () => void): void {
                                 pluginHandler.getPluginConfig(pluginName)!,
                                 controllerDir,
                             );
+                            // @ts-expect-error objects and state object version conflicts that are none
                             pluginHandler.setDatabaseForPlugin(pluginName, objects, states);
-                            pluginHandler.initPlugin(pluginName, ioPackage);
+                            await pluginHandler.initPlugin(pluginName, ioPackage);
                         }
                     } else {
-                        if (!pluginHandler.destroy(pluginName)) {
+                        if (!(await pluginHandler.destroy(pluginName))) {
                             logger.info(
                                 `${hostLogPrefix} Plugin ${pluginName} could not be disabled. Please restart ioBroker to disable it.`,
                             );
@@ -714,6 +715,7 @@ async function initializeController(): Promise<void> {
     if (connected === null) {
         connected = true;
         if (!isStopping) {
+            // @ts-expect-error objects and state object version conflicts that are none
             pluginHandler.setDatabaseForPlugins(objects, states);
             await pluginHandler.initPlugins(ioPackage);
             states.subscribe(`${hostObjectPrefix}.plugins.*`);
@@ -3016,7 +3018,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             const extraInfo: Record<string, unknown> = msg.message.extraInfo;
 
             const sentryObj = (
-                pluginHandler.getPluginInstance('sentry') as InstanceType<typeof SentryPlugin> | null
+                pluginHandler.getPluginInstance('sentry') as InstanceType<typeof SentryPlugin.default> | null
             )?.getSentryObject();
 
             if (!sentryObj) {
@@ -5159,7 +5161,7 @@ function stop(force?: boolean, callback?: () => void): void {
     }
 
     stopInstances(force, async wasForced => {
-        pluginHandler.destroyAll();
+        await pluginHandler.destroyAll();
         notificationHandler && notificationHandler.storeNotifications();
 
         try {

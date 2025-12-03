@@ -48,4 +48,4 @@ Allows to define the severity of the notification with `info` being the lowest `
 
 ## Defined in
 
-[types-dev/objects.d.ts:1113](https://github.com/ioBroker/ioBroker.js-controller/blob/51faba7cbec9601fb6a2f5142cb3a117e78ab588/packages/types-dev/objects.d.ts#L1113)
+[types-dev/objects.d.ts:1118](https://github.com/ioBroker/ioBroker.js-controller/blob/036be02247b6f3256fd323eea857c12e94fac3f3/packages/types-dev/objects.d.ts#L1118)

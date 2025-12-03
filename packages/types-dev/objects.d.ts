@@ -89,6 +89,8 @@ declare global {
             type Host = `system.host.${string}`;
             // Guaranteed repository object
             type Repository = 'system.repositories';
+            // Guaranteed repository object
+            type DockerConfigs = 'system.dockers';
             // Guaranteed config objects
             type Config = 'system.certificates';
             // Guaranteed system config objects
@@ -147,13 +149,15 @@ declare global {
                                         ? RepositoryObject
                                         : T extends ObjectIDs.SystemConfig
                                           ? SystemConfigObject
-                                          : T extends ObjectIDs.Config
-                                            ? OtherObject & { type: 'config' }
-                                            : T extends ObjectIDs.AdapterScoped
-                                              ? AdapterScopedObject
-                                              : Read extends 'read'
-                                                ? ioBroker.Object
-                                                : AnyObject;
+                                          : T extends ObjectIDs.DockerConfigs
+                                            ? DockerApiObject
+                                            : T extends ObjectIDs.Config
+                                              ? OtherObject & { type: 'config' }
+                                              : T extends ObjectIDs.AdapterScoped
+                                                ? AdapterScopedObject
+                                                : Read extends 'read'
+                                                  ? ioBroker.Object
+                                                  : AnyObject;
 
         type Languages = 'en' | 'de' | 'ru' | 'pt' | 'nl' | 'fr' | 'it' | 'es' | 'pl' | 'uk' | 'zh-cn';
         type Translated = { en: string } & { [lang in Languages]?: string };
@@ -427,7 +431,7 @@ declare global {
                 tmpdir: ReturnType<(typeof os)['tmpdir']>;
             };
             hardware: {
-                /** Return value of os.cpu but property `times` could be removed from every entry */
+                /** Return value of `os.cpu` but property `times` could be removed from every entry */
                 cpus: (Omit<ReturnType<(typeof os)['cpus']>[number], 'times'> &
                     Partial<Pick<ReturnType<(typeof os)['cpus']>[number], 'times'>>)[];
                 totalmem: ReturnType<(typeof os)['totalmem']>;
@@ -1052,7 +1056,7 @@ declare global {
             version: string;
             /** Array of blocked versions, each entry represents a semver range */
             blockedVersions: string[];
-            /** If true the unsafe perm flag is needed on install */
+            /** If true, the unsafe perm flag is needed on install */
             unsafePerm?: boolean;
             /** If given, the packet name differs from the adapter name, e.g. because it is a scoped package */
             packetName?: string;
@@ -1068,7 +1072,7 @@ declare global {
             name: Required<ioBroker.Translated>;
             /** Time of repository update */
             repoTime: string;
-            /** Time when repository was last read/fetched */
+            /** Time when the repository was last read/fetched */
             repoReadTime?: string;
         }
 
@@ -1102,6 +1106,31 @@ declare global {
                 };
             };
             common: RepositoryCommon;
+        }
+
+        interface DockerApiConfig {
+            socketPath?: string;
+            host?: string;
+            port?: number | string;
+            username?: string;
+            /** Filename, name in ioBroker certificate or base64 certificate */
+            ca?: string;
+            cert?: string;
+            key?: string;
+            protocol?: 'https' | 'http';
+        }
+
+        /** Docker API configuration */
+        interface DockerApiObject extends BaseObject {
+            _id: ObjectIDs.DockerConfigs;
+            type: 'config';
+            native: {
+                dockerApis: {
+                    [configName: string]: DockerApiConfig;
+                };
+            };
+            // Make it possible to narrow the object type using the custom property
+            common: ObjectCommon & { custom?: undefined };
         }
 
         interface InstanceObject extends Omit<AdapterObject, 'type'>, BaseObject {
