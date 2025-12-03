@@ -16,7 +16,7 @@ i18n name of the repository
 
 #### Defined in
 
-[types-dev/objects.d.ts:1068](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L1068)
+[types-dev/objects.d.ts:1068](https://github.com/ioBroker/ioBroker.js-controller/blob/036be02247b6f3256fd323eea857c12e94fac3f3/packages/types-dev/objects.d.ts#L1068)
 
 ***
 
@@ -28,7 +28,7 @@ Time when repository was last read/fetched
 
 #### Defined in
 
-[types-dev/objects.d.ts:1072](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L1072)
+[types-dev/objects.d.ts:1072](https://github.com/ioBroker/ioBroker.js-controller/blob/036be02247b6f3256fd323eea857c12e94fac3f3/packages/types-dev/objects.d.ts#L1072)
 
 ***
 
@@ -40,7 +40,7 @@ Time of repository update
 
 #### Defined in
 
-[types-dev/objects.d.ts:1070](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L1070)
+[types-dev/objects.d.ts:1070](https://github.com/ioBroker/ioBroker.js-controller/blob/036be02247b6f3256fd323eea857c12e94fac3f3/packages/types-dev/objects.d.ts#L1070)
 
 ***
 
@@ -52,4 +52,4 @@ If it is the official stable repository
 
 #### Defined in
 
-[types-dev/objects.d.ts:1066](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L1066)
+[types-dev/objects.d.ts:1066](https://github.com/ioBroker/ioBroker.js-controller/blob/036be02247b6f3256fd323eea857c12e94fac3f3/packages/types-dev/objects.d.ts#L1066)
