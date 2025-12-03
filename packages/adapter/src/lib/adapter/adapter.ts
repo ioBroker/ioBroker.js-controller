@@ -2307,19 +2307,16 @@ export class AdapterClass extends EventEmitter {
 
                 if (this.#states && updateAliveState) {
                     this.outputCount++;
-                    await this.#states.setState(`${id}.alive`, { val: false, ack: true, from: id });
-                    if (!isPause) {
-                        this._logger.info(`${this.namespaceLog} terminating`);
+                    try {
+                        await this.#states.setState(`${id}.alive`, { val: false, ack: true, from: id });
+                    } catch (e) {
+                        this._logger.error(`${this.namespaceLog} Cannot set alive state to false: ${e.message}`);
                     }
-
-                    // To this moment, the class could be destroyed
-                    this.terminate(reason, exitCode);
-                } else {
-                    if (!isPause) {
-                        this._logger.info(`${this.namespaceLog} terminating`);
-                    }
-                    this.terminate(reason, exitCode);
                 }
+                if (!isPause) {
+                    this._logger.info(`${this.namespaceLog} terminating`);
+                }
+                this.terminate(reason, exitCode);
             };
 
             // if we were never ready, we don't trigger the unload procedure
@@ -2327,7 +2324,12 @@ export class AdapterClass extends EventEmitter {
                 if (typeof this._options.unload === 'function') {
                     if (this._options.unload.length >= 1) {
                         // The method takes (at least) a callback
-                        this._options.unload(finishUnload);
+                        try {
+                            this._options.unload(finishUnload);
+                        } catch {
+                            // Can only throw in unload logic, in this case the finishUnload() was not called
+                            finishUnload();
+                        }
                     } else {
                         // The method takes no arguments, so it must return a Promise
                         // @ts-expect-error already fixed in the latest types
@@ -2354,22 +2356,18 @@ export class AdapterClass extends EventEmitter {
             // Even if the developer forgets to call the unload callback, we need to stop the process.
             // Therefore, wait a short while and then force the unload procedure
             setTimeout(() => {
-                if (this.#states) {
-                    finishUnload();
+                if (!this.#states) {
+                    updateAliveState = false;
+                }
 
-                    // Give 1 second to write the value
-                    setTimeout(() => {
-                        if (!isPause) {
-                            this._logger.info(`${this.namespaceLog} terminating with timeout`);
-                        }
-                        this.terminate(exitCode);
-                    }, 1_000);
-                } else {
+                const terminate = (): void => {
                     if (!isPause) {
                         this._logger.info(`${this.namespaceLog} terminating`);
                     }
                     this.terminate(exitCode);
-                }
+                };
+
+                finishUnload().then(terminate, terminate);
             }, this.common?.stopTimeout || 500);
         }
     }
@@ -11174,8 +11172,10 @@ export class AdapterClass extends EventEmitter {
                         if (this.connected) {
                             return;
                         } // If reconnected in the meantime, do not terminate
-                        this._logger.warn(`${this.namespaceLog} Cannot connect/reconnect to states DB. Terminating`);
-                        this.terminate(EXIT_CODES.NO_ERROR);
+                        this._logger.warn(
+                            `${this.namespaceLog} Cannot connect/reconnect to states DB. Stopping adapter.`,
+                        );
+                        this._stop({ exitCode: EXIT_CODES.NO_ERROR, updateAliveState: false });
                     }, 5000);
             },
         });
@@ -11247,8 +11247,10 @@ export class AdapterClass extends EventEmitter {
                             return;
                         } // If reconnected in the meantime, do not terminate
 
-                        this._logger.warn(`${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`);
-                        this.terminate(EXIT_CODES.NO_ERROR);
+                        this._logger.warn(
+                            `${this.namespaceLog} Cannot connect/reconnect to objects DB. Stopping adapter.`,
+                        );
+                        this._stop({ exitCode: EXIT_CODES.NO_ERROR, updateAliveState: false });
                     }, 4000);
             },
             change: async (id, obj) => {
@@ -11826,30 +11828,32 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _exceptionHandler(err: NodeJS.ErrnoException, isUnhandledRejection?: boolean): Promise<void> {
-        // If the adapter has a callback to listen for unhandled errors
-        // give it a chance to handle the error itself instead of restarting it
-        if (typeof this._options.error === 'function') {
-            try {
-                // if the error handler in the adapter returned exactly true,
-                // we expect the error to be handled and do nothing more
-                const wasHandled = this._options.error(err);
-                if (wasHandled === true) {
-                    return;
+        if (!this._stopInProgress) {
+            // If the adapter has a callback to listen for unhandled errors
+            // give it a chance to handle the error itself instead of restarting it
+            if (typeof this._options.error === 'function') {
+                try {
+                    // if the error handler in the adapter returned exactly true,
+                    // we expect the error to be handled and do nothing more
+                    const wasHandled = this._options.error(err);
+                    if (wasHandled === true) {
+                        return;
+                    }
+                } catch (e) {
+                    console.error(`Error in adapter error handler: ${e.message}`);
                 }
-            } catch (e) {
-                console.error(`Error in adapter error handler: ${e.message}`);
             }
-        }
 
-        // catch it on Windows
-        if (this.getPortRunning && err?.message === 'listen EADDRINUSE') {
-            const { host, port, callback } = this.getPortRunning;
-            this._logger.warn(
-                `${this.namespaceLog} Port ${port}${host ? ` for host ${host}` : ''} is in use. Get next`,
-            );
+            // catch it on Windows
+            if (this.getPortRunning && err?.message === 'listen EADDRINUSE') {
+                const { host, port, callback } = this.getPortRunning;
+                this._logger.warn(
+                    `${this.namespaceLog} Port ${port}${host ? ` for host ${host}` : ''} is in use. Get next`,
+                );
 
-            setImmediate(() => this.getPort(port + 1, host, callback));
-            return;
+                setImmediate(() => this.getPort(port + 1, host, callback));
+                return;
+            }
         }
 
         if (isUnhandledRejection) {
@@ -11866,7 +11870,7 @@ export class AdapterClass extends EventEmitter {
             this._logger.error(`${this.namespaceLog} ${err.stack}`);
         }
 
-        if (err) {
+        if (err && !this._stopInProgress) {
             const message = err.code ? `Exception-Code: ${err.code}: ${err.message}` : err.message;
             this._logger.error(`${this.namespaceLog} ${message}`);
             try {
@@ -11876,16 +11880,17 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        try {
-            this._stop({
-                isPause: false,
-                isScheduled: false,
-                exitCode: EXIT_CODES.UNCAUGHT_EXCEPTION,
-                updateAliveState: false,
-            });
-            setTimeout(() => this.terminate(EXIT_CODES.UNCAUGHT_EXCEPTION), 1_000);
-        } catch (e) {
-            this._logger.error(`${this.namespaceLog} exception by stop: ${e ? e.message : e}`);
+        if (!this._stopInProgress) {
+            try {
+                this._stop({
+                    isPause: false,
+                    isScheduled: false,
+                    exitCode: EXIT_CODES.UNCAUGHT_EXCEPTION,
+                    updateAliveState: false,
+                });
+            } catch (e) {
+                this._logger.error(`${this.namespaceLog} exception by stop: ${e ? e.message : e}`);
+            }
         }
     }
 
