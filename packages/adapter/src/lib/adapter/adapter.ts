@@ -15,7 +15,7 @@ import fs from 'fs-extra';
 import type { CommandResult } from '@alcalzone/pak';
 import * as url from 'node:url';
 
-import { PluginHandler } from '@iobroker/plugin-base';
+import { PluginHandler, type IoPackageFile } from '@iobroker/plugin-base';
 import {
     EXIT_CODES,
     getObjectsConstructor,
@@ -61,7 +61,7 @@ import {
     SYSTEM_ADMIN_GROUP,
     SYSTEM_ADMIN_USER,
 } from '@/lib/adapter/constants.js';
-import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+import type { PluginHandlerSettings } from '@iobroker/plugin-base';
 import type {
     AdapterOptions,
     AliasDetails,
@@ -706,7 +706,7 @@ export class AdapterClass extends EventEmitter {
     /** An array of instances, that support auto subscribe */
     private autoSubscribe: string[] = [];
     private defaultHistory: null | string = null;
-    private pluginHandler?: InstanceType<typeof PluginHandler>;
+    private pluginHandler?: PluginHandler;
     private _reportInterval?: null | NodeJS.Timeout;
     private getPortRunning: null | InternalGetPortOptions = null;
     private readonly _namespaceRegExp: RegExp;
@@ -1494,68 +1494,83 @@ export class AdapterClass extends EventEmitter {
         }
         this.terminated = true;
 
-        this.pluginHandler && this.pluginHandler.destroyAll();
-
-        if (this._reportInterval) {
-            clearInterval(this._reportInterval);
-            this._reportInterval = null;
-        }
-        if (this._restartScheduleJob) {
-            this._restartScheduleJob.cancel();
-            this._restartScheduleJob = null;
-        }
-
-        let _reason = 'Without reason';
-        let _exitCode: number;
-
-        if (typeof reason === 'number') {
-            // Only the exit code was passed
-            exitCode = reason;
-            _reason = 'Without reason';
-        } else if (reason && typeof reason === 'string') {
-            _reason = reason;
-        }
-
-        if (typeof exitCode !== 'number') {
-            _exitCode = !this._config.isInstall ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION : EXIT_CODES.NO_ERROR;
-        } else {
-            _exitCode = exitCode;
-        }
-
-        const isNotCritical =
-            _exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
-            _exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
-            _exitCode === EXIT_CODES.NO_ERROR;
-        const text = `${this.namespaceLog} Terminated (${Validator.getErrorText(_exitCode)}): ${_reason}`;
-        if (isNotCritical) {
-            this._logger.info(text);
-        } else {
-            this._logger.warn(text);
-        }
-        setTimeout(async () => {
-            // give last states some time to get handled
-            if (this.#states) {
-                try {
-                    await this.#states.destroy();
-                } catch {
-                    // ignore
-                }
+        let shutdownStarted = false;
+        const shutdownLogic: () => void = () => {
+            if (shutdownStarted) {
+                return;
             }
-            if (this.#objects) {
-                try {
-                    await this.#objects.destroy();
-                } catch {
-                    //ignore
-                }
+            shutdownStarted = true;
+
+            if (this._reportInterval) {
+                clearInterval(this._reportInterval);
+                this._reportInterval = null;
             }
-            if (this.startedInCompactMode) {
-                this.emit('exit', _exitCode, reason);
-                this.#states = null;
-                this.#objects = null;
+            if (this._restartScheduleJob) {
+                this._restartScheduleJob.cancel();
+                this._restartScheduleJob = null;
+            }
+
+            let _reason = 'Without reason';
+            let _exitCode: number;
+
+            if (typeof reason === 'number') {
+                // Only the exit code was passed
+                exitCode = reason;
+                _reason = 'Without reason';
+            } else if (reason && typeof reason === 'string') {
+                _reason = reason;
+            }
+
+            if (typeof exitCode !== 'number') {
+                _exitCode = !this._config.isInstall ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION : EXIT_CODES.NO_ERROR;
             } else {
-                process.exit(_exitCode);
+                _exitCode = exitCode;
             }
-        }, 500);
+
+            const isNotCritical =
+                _exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
+                _exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
+                _exitCode === EXIT_CODES.NO_ERROR;
+            const text = `${this.namespaceLog} Terminated (${Validator.getErrorText(_exitCode)}): ${_reason}`;
+            if (isNotCritical) {
+                this._logger.info(text);
+            } else {
+                this._logger.warn(text);
+            }
+            setTimeout(async () => {
+                // give last states some time to get handled
+                if (this.#states) {
+                    try {
+                        await this.#states.destroy();
+                    } catch {
+                        // ignore
+                    }
+                }
+                if (this.#objects) {
+                    try {
+                        await this.#objects.destroy();
+                    } catch {
+                        //ignore
+                    }
+                }
+                if (this.startedInCompactMode) {
+                    this.emit('exit', _exitCode, reason);
+                    this.#states = null;
+                    this.#objects = null;
+                } else {
+                    process.exit(_exitCode);
+                }
+            }, 500);
+        };
+
+        if (this.pluginHandler) {
+            this.pluginHandler
+                .destroyAll()
+                .then(() => shutdownLogic())
+                .catch(() => shutdownLogic());
+        } else {
+            shutdownLogic();
+        }
     }
 
     // external signature
@@ -11068,11 +11083,16 @@ export class AdapterClass extends EventEmitter {
                                     this.pluginHandler.getPluginConfig(pluginName) || {},
                                     thisDir,
                                 );
+                                // @ts-expect-error objects and state object version conflicts that are none
                                 this.pluginHandler.setDatabaseForPlugin(pluginName, this.#objects, this.#states);
-                                this.pluginHandler.initPlugin(pluginName, this.adapterConfig || {});
+
+                                await this.pluginHandler.initPlugin(
+                                    pluginName,
+                                    (this.adapterConfig || {}) as IoPackageFile,
+                                );
                             }
                         } else {
-                            if (!this.pluginHandler.destroy(pluginName)) {
+                            if (!(await this.pluginHandler.destroy(pluginName))) {
                                 this._logger.info(
                                     `${this.namespaceLog} Plugin ${pluginName} could not be disabled. Please restart adapter to disable it.`,
                                 );
@@ -11489,8 +11509,9 @@ export class AdapterClass extends EventEmitter {
         if (!this.pluginHandler) {
             return;
         }
+        // @ts-expect-error objects and state object version conflicts that are none
         this.pluginHandler.setDatabaseForPlugins(this.#objects, this.#states);
-        await this.pluginHandler.initPlugins(adapterConfig || {});
+        await this.pluginHandler.initPlugins((adapterConfig || {}) as IoPackageFile);
         if (!this.#states || !this.#objects || this.terminated) {
             // if adapterState was destroyed, we should not continue
             return;
@@ -12160,8 +12181,7 @@ export class AdapterClass extends EventEmitter {
             // @ts-expect-error
             log: this._logger,
             iobrokerConfig: this._config,
-            // @ts-expect-error
-            parentPackage: this.pack,
+            parentPackage: this.pack!,
             controllerVersion,
         };
 
