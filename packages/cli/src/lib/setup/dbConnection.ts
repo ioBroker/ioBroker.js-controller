@@ -12,7 +12,7 @@ import { setTimeout as wait } from 'node:timers/promises';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import path from 'node:path';
-import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+import type { InternalAdapterJsonConfig, PluginHandlerSettings } from '@iobroker/plugin-base';
 import { PluginHandler } from '@iobroker/plugin-base';
 
 let pluginHandler: InstanceType<typeof PluginHandler>;
@@ -358,7 +358,7 @@ export async function resetDbConnect(): Promise<void> {
     }
 
     if (pluginHandler) {
-        pluginHandler.destroyAll();
+        await pluginHandler.destroyAll();
     }
 }
 
@@ -402,7 +402,7 @@ function initializePlugins(config: Record<string, any>): Promise<void> {
             error: (msg: string) => console.log(msg),
             level: 'warn',
         },
-        iobrokerConfig: config,
+        iobrokerConfig: config as InternalAdapterJsonConfig,
         parentPackage: packageJson,
         controllerVersion: ioPackage.common.version,
     };
@@ -410,6 +410,7 @@ function initializePlugins(config: Record<string, any>): Promise<void> {
     pluginHandler = new PluginHandler(pluginSettings);
     pluginHandler.addPlugins(ioPackage.common.plugins, tools.getControllerDir()); // Plugins from io-package have priority over ...
     pluginHandler.addPlugins(config.plugins, tools.getControllerDir()); // ... plugins from iobroker.json
+    // @ts-expect-error objects and state object version conflicts that are none
     pluginHandler.setDatabaseForPlugins(objects, states);
 
     return pluginHandler.initPlugins(ioPackage);
