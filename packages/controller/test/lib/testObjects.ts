@@ -10,36 +10,27 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     const namespace = 'testObject.0';
     const testId = `${namespace}.test2`;
 
-    it(`${testName}should create and read object`, done => {
+    it(`${testName}should create and read object`, async (): Promise<void> => {
         const objects = context.objects;
-        objects.setObject(
-            testId,
-            {
-                type: 'state',
-                common: {
-                    type: 'string',
-                    name: 'test2',
-                    read: true,
-                    write: true,
-                    role: 'state',
-                },
-                native: {},
+        const res = await objects.setObjectAsync(testId, {
+            type: 'state',
+            common: {
+                type: 'string',
+                name: 'test2',
+                read: true,
+                write: true,
+                role: 'state',
             },
-            (err, res) => {
-                expect(err).to.be.not.ok;
-                expect(res).to.be.ok;
-                expect(res!.id).to.be.equal(testId);
+            native: {},
+        });
+        expect(res).to.be.ok;
+        expect(res!.id).to.be.equal(testId);
 
-                objects.getObject(testId, (err, obj) => {
-                    expect(err).to.be.not.ok;
-                    expect(obj).to.be.ok;
-                    expect(obj!.common.name).to.be.equal('test2');
-                    expect(obj!._id).to.be.equal(testId);
-                    console.log(JSON.stringify(obj));
-                    done();
-                });
-            },
-        );
+        const obj = await objects.getObjectAsync(testId);
+        expect(obj).to.be.ok;
+        expect(obj!.common.name).to.be.equal('test2');
+        expect(obj!._id).to.be.equal(testId);
+        console.log(JSON.stringify(obj));
     });
 
     it(`${testName}should create object async`, done => {
