@@ -8,6 +8,7 @@
 * (@copilot) Fixed adminUI, adminTab, and adminColumns configurations being incorrectly preserved during adapter uploads
 * (@foxriver76) Added objects warn limit per instance
 * (@Apollon77) Allows only numbers for `ts` and `lc` fields in state when provided for setState
+* (@Apollon77) Respect the adapter specific stopTimeout in all cases instead a fallback os 4s
 * (@GermanBluefox) Added typing for `visIconSets` in `io-package.json`(for vis-2 SVG icon sets)
 * (@GermanBluefox) Added typing for `smartName` in the enum objects
 * (@GermanBluefox) Added typing for `supportsLoadingMessage` in the instance objects
