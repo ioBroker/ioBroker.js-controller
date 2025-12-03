@@ -66,7 +66,7 @@ export class Setup {
     /** Object IDs which are not allowed to exist but could be generated due to errors in the past */
     private readonly KNOWN_GARBAGE_OBJECT_IDS = ['null', 'undefined'];
     /** Adapter core version supported by this js-controller */
-    private readonly SUPPORTED_ADAPTER_CORE_VERSION = '^3.2.1';
+    private readonly SUPPORTED_ADAPTER_CORE_VERSION = '^3.3.2';
     /** Default name for redis sentinels */
     private readonly DEFAULT_SENTINEL_NAME = 'mymaster';
     private readonly processExit: ProcessExitCallback;
@@ -203,7 +203,7 @@ export class Setup {
         }
 
         try {
-            await this.addAdapterCoreRequirement();
+            await this.addOrUpdateAdapterCoreRequirement();
         } catch (e) {
             console.error(`Could not add "@iobroker/adapter-core" requirement: ${e.message}`);
         }
@@ -1110,9 +1110,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
     }
 
     /**
-     * Add adapter-core in supported version in the overrides field of the root package.json and call install there to apply it
+     * Add or update adapter-core in supported version in the overrides field of the root package.json and call install there to apply it
      */
-    private async addAdapterCoreRequirement(): Promise<void> {
+    private async addOrUpdateAdapterCoreRequirement(): Promise<void> {
         if (tools.isDevInstallation()) {
             return;
         }

@@ -9,10 +9,17 @@
 * (@foxriver76) Added objects warn limit per instance
 * (@Apollon77) Allows only numbers for `ts` and `lc` fields in state when provided for setState
 * (@Apollon77) Respect the adapter specific stopTimeout in all cases instead a fallback os 4s
+* (@Apollon77) Updates the adapter-core override dependency to 3.3.2
 * (@GermanBluefox) Added typing for `visIconSets` in `io-package.json`(for vis-2 SVG icon sets)
 * (@GermanBluefox) Added typing for `smartName` in the enum objects
 * (@GermanBluefox) Added typing for `supportsLoadingMessage` in the instance objects
 * (@GermanBluefox) Added creation of JavaScript password to encrypt vendor scripts
+* (@GermanBluefox) Added typing for `findForeignObject`
+* (@GermanBluefox) Enhanced typing for vis and vis 2 widgets
+* (@GermanBluefox) Added typing for `json` in adminUI.tab in `io-package.json`
+* (@GermanBluefox) Added typing for `docker-api`
+* (@foxriver76) Added external authentication to types for UserCommon
+* (@Apollon77) Updated Plugin and Sentry packages
 
 ## 7.0.7 (2025-04-17) - Lucy
 * (@foxriver76) fixed the edge-case problem on Windows (if adapter calls `readDir` on single file)
