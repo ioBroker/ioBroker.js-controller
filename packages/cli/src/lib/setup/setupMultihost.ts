@@ -331,12 +331,12 @@ export class Multihost {
                     // Find if any of the hosts is "listen all" or reachable
                     if (Array.isArray(config.states.host)) {
                         config.states.host = config.states.host.map((sHost: string) =>
-                            tools.isListenAllAddress(sHost) ? (ipHost ?? '') : sHost
+                            tools.isListenAllAddress(sHost) ? (ipHost ?? '') : sHost,
                         );
                     }
                     if (Array.isArray(config.objects.host)) {
                         config.objects.host = config.objects.host.map((oHost: string) =>
-                            tools.isListenAllAddress(oHost) ? (ipHost ?? '') : oHost
+                            tools.isListenAllAddress(oHost) ? (ipHost ?? '') : oHost,
                         );
                     }
 
