@@ -2756,7 +2756,8 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * delays the fulfillment of the promise the amount of time.
-     * it will not fulfill during and after adapter shutdown
+     * It will directly fulfill without any delay during and after adapter shutdown
+     * (e.g. in an unload method)
      *
      * @param timeout - timeout in milliseconds
      * @returns promise when timeout is over
@@ -10937,7 +10938,6 @@ export class AdapterClass extends EventEmitter {
                                 exitCode: EXIT_CODES.ADAPTER_REQUESTED_TERMINATION,
                                 updateAliveState: false,
                             });
-                            setTimeout(() => this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION), 4000);
                         }
                     }
                 }
@@ -11262,7 +11262,6 @@ export class AdapterClass extends EventEmitter {
                 if (id === `system.adapter.${this.namespace}` && obj?.common?.enabled === false) {
                     this._logger.info(`${this.namespaceLog} Adapter is disabled => stop`);
                     this._stop();
-                    setTimeout(() => this.terminate(EXIT_CODES.NO_ERROR), 4_000);
                     return;
                 }
 
