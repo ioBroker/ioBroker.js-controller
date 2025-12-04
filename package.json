@@ -34,7 +34,7 @@
     "@types/chai": "^4.3.3",
     "@types/chai-as-promised": "^7.1.5",
     "@types/debug": "^4.1.12",
-    "@types/event-stream": "^4.0.0",
+    "@types/event-stream": "^4.0.6",
     "@types/fs-extra": "^11.0.1",
     "@types/ioredis": "^4.28.10",
     "@types/jsonwebtoken": "^8.5.9",
