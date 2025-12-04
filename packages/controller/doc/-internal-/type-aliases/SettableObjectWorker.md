@@ -14,4 +14,4 @@
 
 ## Defined in
 
-[types-dev/objects.d.ts:1303](https://github.com/ioBroker/ioBroker.js-controller/blob/036be02247b6f3256fd323eea857c12e94fac3f3/packages/types-dev/objects.d.ts#L1303)
+[types-dev/objects.d.ts:1332](https://github.com/ioBroker/ioBroker.js-controller/blob/c076985d5f9cb553ad8698e07a8071745c06d4ff/packages/types-dev/objects.d.ts#L1332)

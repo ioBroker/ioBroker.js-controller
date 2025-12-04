@@ -22,9 +22,9 @@ db-base/build/esm/lib/inMemFileDB.d.ts:19
 
 ***
 
-### dataDir
+### dataDir?
 
-> **dataDir**: `string`
+> `optional` **dataDir**: `string`
 
 relative path to the data dir
 
