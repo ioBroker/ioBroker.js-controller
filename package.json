@@ -29,7 +29,7 @@
     "@iobroker/eslint-config": "^0.1.6",
     "@iobroker/types": "file:packages/types-public",
     "@iobroker/types-dev": "file:packages/types-dev",
-    "@microsoft/api-extractor": "^7.43.0",
+    "@microsoft/api-extractor": "^7.55.1",
     "@tsconfig/node22": "^22.0.0",
     "@types/chai": "^4.3.3",
     "@types/chai-as-promised": "^7.1.5",
