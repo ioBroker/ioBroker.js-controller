@@ -3238,7 +3238,7 @@ function initInstances(): void {
             }
         } else if (procs[id].process) {
             // stop instance if disabled
-            void stopInstance(id, false);
+            stopInstance(id, false);
         }
     }
 

@@ -240,12 +240,12 @@ export class Multihost {
                         if (password.password !== password.passwordRepeat) {
                             callback(new Error('Secret phrases are not equal!'));
                         } else {
-                            void this.objects.getObject('system.config', (_err, obj) => {
+                            this.objects.getObject('system.config', (_err, obj) => {
                                 config.multihostService.password = tools.encrypt(
                                     obj!.native.secret,
                                     password.password as string,
                                 );
-                                void this.showMHState(config, changed);
+                                this.showMHState(config, changed);
                                 callback();
                             });
                         }
@@ -254,11 +254,11 @@ export class Multihost {
                     }
                 });
             } else {
-                void this.showMHState(config, changed);
+                this.showMHState(config, changed);
                 callback();
             }
         } else {
-            void this.showMHState(config, changed);
+            this.showMHState(config, changed);
             callback();
         }
     }
@@ -269,7 +269,7 @@ export class Multihost {
     status(): void {
         const config = this.getConfig();
         config.multihostService = config.multihostService || { enabled: false, secure: true };
-        void this.showMHState(config, false);
+        this.showMHState(config, false);
     }
 
     /**

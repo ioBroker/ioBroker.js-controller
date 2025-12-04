@@ -148,7 +148,8 @@ export class Vendor {
         };
 
         file ||= VENDOR_FILE;
-        let data: iobVendorFile | null = null;
+
+        let data: iobVendorFile;
         if (fs.existsSync(file)) {
             try {
                 data = fs.readJSONSync(file);
