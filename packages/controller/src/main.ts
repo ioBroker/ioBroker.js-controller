@@ -324,12 +324,12 @@ async function startMultihost(__config?: ioBroker.IoBrokerJson): Promise<boolean
 
         if (!_config.objects.host || hasLocalObjectsServer) {
             logger.warn(
-                `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for objects is ${_config.objects.host}. Please allow remote connections to the server by adjusting the IP.`,
+                `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for objects is ${Array.isArray(_config.objects.host) ? _config.objects.host.join(', ') : _config.objects.host}. Please allow remote connections to the server by adjusting the IP.`,
             );
             return false;
         } else if (!_config.states.host || hasLocalStatesServer) {
             logger.warn(
-                `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for states is ${_config.states.host}. Please allow remote connections to the server by adjusting the IP.`,
+                `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for states is ${Array.isArray(_config.states.host) ? _config.states.host.join(', ') : _config.states.host}. Please allow remote connections to the server by adjusting the IP.`,
             );
             return false;
         }
@@ -1767,9 +1767,13 @@ async function setMeta(): Promise<void> {
 
                 if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
                     logger?.info(`${hostLogPrefix} Detected vendor file: ${fs.existsSync(VENDOR_BOOTSTRAP_FILE)}`);
+                    let restartRequired = false;
 
                     try {
-                        const startScript = fs.readJSONSync(VENDOR_BOOTSTRAP_FILE);
+                        const startScript: {
+                            password?: string;
+                            javascriptPassword?: string;
+                        } = fs.readJSONSync(VENDOR_BOOTSTRAP_FILE);
 
                         if (startScript.password) {
                             const { Vendor } = await import('@iobroker/js-controller-cli');
@@ -1777,7 +1781,12 @@ async function setMeta(): Promise<void> {
 
                             logger?.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
                             try {
-                                await vendor.checkVendor(VENDOR_FILE, startScript.password, logger);
+                                restartRequired = await vendor.checkVendor(
+                                    VENDOR_FILE,
+                                    startScript.password,
+                                    startScript.javascriptPassword,
+                                    logger,
+                                );
                                 logger?.info(`${hostLogPrefix} Vendor information synchronised.`);
                                 try {
                                     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
@@ -1806,6 +1815,12 @@ async function setMeta(): Promise<void> {
                         } catch (e) {
                             logger?.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                         }
+                    }
+                    if (restartRequired) {
+                        // terminate ioBroker to restart the controller as UUID probably changed
+                        logger.info(`${hostLogPrefix} Restart js-controller because vendor information updated`);
+                        await wait(200);
+                        restart(() => !isStopping && stop(false));
                     }
                 }
             }

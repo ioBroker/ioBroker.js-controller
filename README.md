@@ -21,13 +21,13 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 - [License](#license)
 
 ## Compatibility
-* js-controller 7.x (Lucy) works with Node.js 18.x, 20.x and probably 22.x
-* js-controller 6.x (Kiera) works with Node.js 18.x, 20.x and probably 22.x
-* js-controller 5.x works with Node.js 16.x, 18.x and probably 20.x
-* js-controller 4.x works with Node.js 12.x, 14.x, 16.x (incl. up to NPM 8) and probably 18.x
-* js-controller 3.x works with Node.js 10.x, 12.x, 14.x and probably 16.x (first tests look good, NPM 7 still has some issues, so NPM6 is best)
-* js-controller 2.x works with Node.js 8.x, 10.x, 12.x and probably 14.x (untested)
-* js-controller 1.x works with Node.js 4.x, 6.x, 8.x and probably 10.x (untested)
+* js-controller 7.x (Lucy) works with Node.js 18.x, 20.x, 22.x and probably 24.x
+* js-controller 6.x (Kiera) works with Node.js 18.x, 20.x, 22.x
+* js-controller 5.x works with Node.js 16.x, 18.x, 20.x
+* js-controller 4.x works with Node.js 12.x, 14.x, 16.x (incl. up to NPM 8), 18.x
+* js-controller 3.x works with Node.js 10.x, 12.x, 14.x , 16.x (first tests look good, NPM 7 still has some issues, so NPM6 is best)
+* js-controller 2.x works with Node.js 8.x, 10.x, 12.x, 14.x (untested)
+* js-controller 1.x works with Node.js 4.x, 6.x, 8.x, 10.x (untested)
 
 Please try to stay current with your Node.js version because the support is limited in time. As of now (May 2024) all Node.js versions below 18.x are no longer supported by Node.js and considered EOL (End Of Life).
 To upgrade your Node.js version and ioBroker, please follow https://forum.iobroker.net/topic/44566/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten-2021-edition!

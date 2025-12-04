@@ -49,12 +49,12 @@ interface JsonlOptions {
 export interface DatabaseOptions {
     /** Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel]. */
     type: 'jsonl' | 'file' | 'redis';
-    '// type': string;
-    host: string;
-    port: number;
+    sentinelName?: string;
+    host: string | string[];
+    port: number | number[];
     connectTimeout: number;
     writeFileInterval: number;
-    dataDir: string;
+    dataDir?: string;
     options: {
         auth_pass: string;
         retry_max_delay: number;

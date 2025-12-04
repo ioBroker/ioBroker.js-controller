@@ -13,6 +13,7 @@
 * (@GermanBluefox) Added typing for `visIconSets` in `io-package.json`(for vis-2 SVG icon sets)
 * (@GermanBluefox) Added typing for `smartName` in the enum objects
 * (@GermanBluefox) Added typing for `supportsLoadingMessage` in the instance objects
+* (@GermanBluefox) Added creation of JavaScript password to encrypt vendor scripts
 * (@GermanBluefox) Added typing for `findForeignObject`
 * (@GermanBluefox) Enhanced typing for vis and vis 2 widgets
 * (@GermanBluefox) Added typing for `json` in adminUI.tab in `io-package.json`
