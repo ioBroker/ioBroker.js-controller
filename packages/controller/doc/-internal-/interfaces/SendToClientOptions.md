@@ -16,7 +16,7 @@ ID of the client to send the message to, will send to all if omitted
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/c076985d5f9cb553ad8698e07a8071745c06d4ff/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L28)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/d2df4abc6ba7ce21ad5f7176f979fca5189c4bea/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L28)
 
 ***
 
@@ -28,7 +28,7 @@ Data to send to the client
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/c076985d5f9cb553ad8698e07a8071745c06d4ff/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L30)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/d2df4abc6ba7ce21ad5f7176f979fca5189c4bea/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L30)
 
 ***
 
@@ -40,4 +40,4 @@ The states db
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/c076985d5f9cb553ad8698e07a8071745c06d4ff/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L32)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/d2df4abc6ba7ce21ad5f7176f979fca5189c4bea/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L32)
