@@ -156,6 +156,7 @@ jobs:
           PRERELEASE: ${{ contains(steps.version.outputs.result, '-') }}
         run: |
           npm install -g npm@latest
+          npm install lerna@latest
           if [[ "$PRERELEASE" == "true" ]]; then
             npx lerna publish from-package --yes --dist-tag dev
           else
