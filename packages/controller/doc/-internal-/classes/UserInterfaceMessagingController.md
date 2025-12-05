@@ -22,7 +22,7 @@
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:69](https://github.com/ioBroker/ioBroker.js-controller/blob/d2df4abc6ba7ce21ad5f7176f979fca5189c4bea/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L69)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:69](https://github.com/ioBroker/ioBroker.js-controller/blob/167975fd275bcc20e3e85af4ea1a9729d6ba39fb/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L69)
 
 ## Methods
 
@@ -44,7 +44,7 @@ The subscribe message
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/d2df4abc6ba7ce21ad5f7176f979fca5189c4bea/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L116)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/167975fd275bcc20e3e85af4ea1a9729d6ba39fb/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L116)
 
 ***
 
@@ -67,7 +67,7 @@ The unsubscribe message
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/d2df4abc6ba7ce21ad5f7176f979fca5189c4bea/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L159)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/167975fd275bcc20e3e85af4ea1a9729d6ba39fb/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L159)
 
 ***
 
@@ -89,7 +89,7 @@ Data and states options
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:103](https://github.com/ioBroker/ioBroker.js-controller/blob/d2df4abc6ba7ce21ad5f7176f979fca5189c4bea/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L103)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:103](https://github.com/ioBroker/ioBroker.js-controller/blob/167975fd275bcc20e3e85af4ea1a9729d6ba39fb/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L103)
 
 ***
 
@@ -111,4 +111,4 @@ Data, states and client information
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/d2df4abc6ba7ce21ad5f7176f979fca5189c4bea/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L82)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/167975fd275bcc20e3e85af4ea1a9729d6ba39fb/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L82)
