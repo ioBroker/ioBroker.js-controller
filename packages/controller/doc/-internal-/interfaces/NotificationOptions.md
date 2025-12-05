@@ -18,4 +18,4 @@ Additional context for the notification which can be used by notification proces
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:620](https://github.com/ioBroker/ioBroker.js-controller/blob/167975fd275bcc20e3e85af4ea1a9729d6ba39fb/packages/adapter/src/lib/_Types.ts#L620)
+[adapter/src/lib/\_Types.ts:620](https://github.com/ioBroker/ioBroker.js-controller/blob/335bb5daf65504b8d1d2ebe31260f371e6c9ea1d/packages/adapter/src/lib/_Types.ts#L620)

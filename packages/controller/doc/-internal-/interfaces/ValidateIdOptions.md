@@ -16,7 +16,7 @@ in maintenance mode, we can access invalid ids to delete them, only works with t
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/167975fd275bcc20e3e85af4ea1a9729d6ba39fb/packages/adapter/src/lib/adapter/validator.ts#L10)
+[adapter/src/lib/adapter/validator.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/335bb5daf65504b8d1d2ebe31260f371e6c9ea1d/packages/adapter/src/lib/adapter/validator.ts#L10)
 
 ***
 
@@ -28,4 +28,4 @@ User used to check for access rights
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/167975fd275bcc20e3e85af4ea1a9729d6ba39fb/packages/adapter/src/lib/adapter/validator.ts#L12)
+[adapter/src/lib/adapter/validator.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/335bb5daf65504b8d1d2ebe31260f371e6c9ea1d/packages/adapter/src/lib/adapter/validator.ts#L12)
