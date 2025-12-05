@@ -11,7 +11,7 @@
         "winston-syslog": "^2.6.0"
     },
     "dependencies": {
-        "@alcalzone/pak": "^0.8.1",
+        "@alcalzone/pak": "^0.11.0",
         "axios": "^1.12.0",
         "ci-info": "^3.8.0",
         "deep-clone": "^3.0.3",
