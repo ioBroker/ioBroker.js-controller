@@ -56,12 +56,12 @@
         "AV Receiver"
     ],
     "bugs": {
-        "url": "https://github.com/ioBroker/ioBroker.js-controller/issues"
+        "url": "https://github.com/ioBroker/ioBroker.js-controller"
     },
     "licenses": [
         {
             "type": "MIT",
-            "url": "https://github.com/ioBroker/ioBroker.js-controller/blob/master/LICENSE"
+            "url": "https://github.com/ioBroker/ioBroker.js-controller"
         }
     ],
     "author": "bluefox <dogafox@gmail.com>",
