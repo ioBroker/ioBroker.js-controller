@@ -4,11 +4,11 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 7.1.0 (2025-12-06)
+## 7.1.0 (2025-12-06) - Milla
 * (@copilot) Fixed adminUI, adminTab, and adminColumns configurations being incorrectly preserved during adapter uploads
 * (@foxriver76) Added objects warn limit per instance
 * (@Apollon77) Allows only numbers for `ts` and `lc` fields in state when provided for setState
-* (@Apollon77) Respect the adapter specific stopTimeout in all cases instead a fallback os 4s
+* (@Apollon77) Respect the adapter specific stopTimeout in all cases instead of a fallback os 4s
 * (@Apollon77) Updates the adapter-core override dependency to 3.3.2
 * (@GermanBluefox) Added typing for `visIconSets` in `io-package.json`(for vis-2 SVG icon sets)
 * (@GermanBluefox) Added typing for `smartName` in the enum objects
@@ -24,7 +24,7 @@
 ## 7.0.7 (2025-04-17) - Lucy
 * (@foxriver76) fixed the edge-case problem on Windows (if adapter calls `readDir` on single file)
 * (@foxriver76) fixed setting negative numbers via `state set` cli command
-* (@GermanBluefox) corrected typing for `checkPasswordAsync` command and added caching of mulit-languages names
+* (@GermanBluefox) corrected typing for `checkPasswordAsync` command and added caching of multi-languages names
 * (@GermanBluefox) Added support for the complex attribute names for the encrypted and protected native configuration properties: `encryptedNative` and `protectedNative`
 * (@GermanBluefox) Improvement of `adapter.findForeignObject` (typing and optional parameters fixed)
 * (@GermanBluefox) Improvement of JSON schema for `io-package.json` and type definitions
@@ -268,7 +268,7 @@ e.g. for dynamic notifications with Admin adapter
 * (foxriver76) Really fix invalid backup period warning
 
 ## 4.0.18 (2022-03-04)
-* (foxriver76) Also stop instances before GitHub installs on windows
+* (foxriver76) Also stop instances before GitHub installs on Windows
 * (Apollon77) Fix eraseOnUpload logic
 * (Apollon77) Fix invalid backup period warning
 * (Apollon77) Fix maxSize property for logging in a dist file
@@ -406,7 +406,7 @@ The object view definition "custom/state" is now removed from js-controller afte
 * (Apollon77) fixed crash case when Lets encrypt config is not provided but LE is activated
 * (AlCalzone) understand .tar.gz as a valid extension for GitHub URLs
 * (foxriver76) only renew Let's encrypt when configured that way
-* (foxriver76) if free memory reaches threshold, also add a notification
+* (foxriver76) if free memory reaches the threshold, also add a notification
 * (bluefox) fixed applyViewFunc if the name is a localized object
 * (Apollon77) optimize db initialization for fileDB and enhance error case handling
 * (bluefox/Apollon77) made sure all object types are deleted on recursive object deletion
