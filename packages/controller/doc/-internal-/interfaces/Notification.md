@@ -16,7 +16,7 @@ All notification categories of this scope
 
 #### Defined in
 
-[types-dev/objects.d.ts:1187](https://github.com/ioBroker/ioBroker.js-controller/blob/023c9fd23da3000029fab87bfd4e6349dd61e07c/packages/types-dev/objects.d.ts#L1187)
+[types-dev/objects.d.ts:1187](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L1187)
 
 ***
 
@@ -28,7 +28,7 @@ The human-readable description of this scope
 
 #### Defined in
 
-[types-dev/objects.d.ts:1185](https://github.com/ioBroker/ioBroker.js-controller/blob/023c9fd23da3000029fab87bfd4e6349dd61e07c/packages/types-dev/objects.d.ts#L1185)
+[types-dev/objects.d.ts:1185](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L1185)
 
 ***
 
@@ -40,7 +40,7 @@ The human-readable name of this scope
 
 #### Defined in
 
-[types-dev/objects.d.ts:1183](https://github.com/ioBroker/ioBroker.js-controller/blob/023c9fd23da3000029fab87bfd4e6349dd61e07c/packages/types-dev/objects.d.ts#L1183)
+[types-dev/objects.d.ts:1183](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L1183)
 
 ***
 
@@ -52,4 +52,4 @@ E.g., `system`. Each adapter can define its own "scopes" for own notifications w
 
 #### Defined in
 
-[types-dev/objects.d.ts:1181](https://github.com/ioBroker/ioBroker.js-controller/blob/023c9fd23da3000029fab87bfd4e6349dd61e07c/packages/types-dev/objects.d.ts#L1181)
+[types-dev/objects.d.ts:1181](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L1181)

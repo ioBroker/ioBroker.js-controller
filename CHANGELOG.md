@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 7.1.0 (2025-12-06)
 * (@copilot) Fixed adminUI, adminTab, and adminColumns configurations being incorrectly preserved during adapter uploads
 * (@foxriver76) Added objects warn limit per instance
 * (@Apollon77) Allows only numbers for `ts` and `lc` fields in state when provided for setState
