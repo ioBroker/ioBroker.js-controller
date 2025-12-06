@@ -26,7 +26,7 @@ The access rights for files
 
 #### Defined in
 
-[types-dev/index.d.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/023c9fd23da3000029fab87bfd4e6349dd61e07c/packages/types-dev/index.d.ts#L116)
+[types-dev/index.d.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/index.d.ts#L116)
 
 ***
 
@@ -38,7 +38,7 @@ The name of the groups this ACL was merged from
 
 #### Defined in
 
-[types-dev/index.d.ts:129](https://github.com/ioBroker/ioBroker.js-controller/blob/023c9fd23da3000029fab87bfd4e6349dd61e07c/packages/types-dev/index.d.ts#L129)
+[types-dev/index.d.ts:129](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/index.d.ts#L129)
 
 ***
 
@@ -54,7 +54,7 @@ The access rights for objects
 
 #### Defined in
 
-[types-dev/index.d.ts:118](https://github.com/ioBroker/ioBroker.js-controller/blob/023c9fd23da3000029fab87bfd4e6349dd61e07c/packages/types-dev/index.d.ts#L118)
+[types-dev/index.d.ts:118](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/index.d.ts#L118)
 
 ***
 
@@ -78,7 +78,7 @@ The access rights for certain commands
 
 #### Defined in
 
-[types-dev/index.d.ts:131](https://github.com/ioBroker/ioBroker.js-controller/blob/023c9fd23da3000029fab87bfd4e6349dd61e07c/packages/types-dev/index.d.ts#L131)
+[types-dev/index.d.ts:131](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/index.d.ts#L131)
 
 ***
 
@@ -94,7 +94,7 @@ The access rights for states
 
 #### Defined in
 
-[types-dev/index.d.ts:122](https://github.com/ioBroker/ioBroker.js-controller/blob/023c9fd23da3000029fab87bfd4e6349dd61e07c/packages/types-dev/index.d.ts#L122)
+[types-dev/index.d.ts:122](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/index.d.ts#L122)
 
 ***
 
@@ -106,7 +106,7 @@ The name of the user this ACL is for
 
 #### Defined in
 
-[types-dev/index.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/023c9fd23da3000029fab87bfd4e6349dd61e07c/packages/types-dev/index.d.ts#L127)
+[types-dev/index.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/index.d.ts#L127)
 
 ***
 
@@ -122,4 +122,4 @@ The access rights for users/groups
 
 #### Defined in
 
-[types-dev/index.d.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/023c9fd23da3000029fab87bfd4e6349dd61e07c/packages/types-dev/index.d.ts#L120)
+[types-dev/index.d.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/index.d.ts#L120)
