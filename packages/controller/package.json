@@ -23,7 +23,7 @@
         "@iobroker/plugin-base": "~3.0.3",
         "@iobroker/plugin-sentry": "~3.0.0",
         "axios": "^1.12.0",
-        "cron-parser": "^4.9.0",
+        "cron-parser": "^5.4.0",
         "debug": "^4.4.3",
         "decache": "^4.6.1",
         "deep-clone": "^3.0.3",
