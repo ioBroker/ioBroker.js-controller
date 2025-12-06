@@ -19,7 +19,7 @@
         "promisify-child-process": "^4.1.1",
         "readline-sync": "^1.4.10",
         "semver": "^7.5.2",
-        "yargs": "^17.6.2"
+        "yargs": "^18.0.0"
     },
     "keywords": [
         "ioBroker"
