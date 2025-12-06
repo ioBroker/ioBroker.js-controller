@@ -18,4 +18,4 @@
 
 ## Defined in
 
-[adapter/src/lib/adapter/log.ts:1](https://github.com/ioBroker/ioBroker.js-controller/blob/27e04fd51c9e4b882c44cee1bcedf2c328d1f403/packages/adapter/src/lib/adapter/log.ts#L1)
+[adapter/src/lib/adapter/log.ts:1](https://github.com/ioBroker/ioBroker.js-controller/blob/023c9fd23da3000029fab87bfd4e6349dd61e07c/packages/adapter/src/lib/adapter/log.ts#L1)

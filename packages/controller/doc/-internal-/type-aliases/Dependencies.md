@@ -12,4 +12,4 @@ Format for local and global dependencies
 
 ## Defined in
 
-[types-dev/objects.d.ts:624](https://github.com/ioBroker/ioBroker.js-controller/blob/27e04fd51c9e4b882c44cee1bcedf2c328d1f403/packages/types-dev/objects.d.ts#L624)
+[types-dev/objects.d.ts:624](https://github.com/ioBroker/ioBroker.js-controller/blob/023c9fd23da3000029fab87bfd4e6349dd61e07c/packages/types-dev/objects.d.ts#L624)
