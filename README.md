@@ -557,7 +557,7 @@ By default, this threshold is 5 % of disk space. Via the state `system.host.<hos
 **Feature status:** New in 7.1.0
 
 The js-controller will generate a notification of in the scope `system` and the category `numberObjectsLimitExceeded` on warning level, if your number of objects for an adapter instance exceed a specified threshold.
-By default, this is set to `5000` objects. Via the state `system.host.adapter.<adapter>.<instance>.objectsWarnLimit` you can override this threshold to any positive number.
+By default, this is set to `5000` objects. Via the state `system.adapter.<adapter>.<instance>.objectsWarnLimit` you can override this threshold to any positive number.
 
 ### Logging
 #### Log levels
