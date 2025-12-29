@@ -543,6 +543,14 @@ export function isDocker(): boolean {
     }
 
     try {
+        // check a container environment, works with Podman or CRI-O
+        fs.statSync('/run/.containerenv');
+        return true;
+    } catch {
+        // ignore error
+    }
+
+    try {
         // check a docker group, works in most cases, but not on arm
         return fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
     } catch {
