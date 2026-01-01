@@ -1,19 +1,42 @@
+/**
+ * Multihost discovery client used by the CLI setup utilities.
+ *
+ * This module implements a lightweight UDP-based discovery protocol (multicast/broadcast)
+ * to find other ioBroker hosts on the local network. It supports an optional
+ * password-based handshake and returns the objects/states database configuration
+ * necessary for remote setup and connection.
+ */
+
 import dgram from 'node:dgram';
+import * as crypto from 'node:crypto';
+
 import { tools } from '@iobroker/js-controller-common';
-import crypto from 'node:crypto';
 
 const PORT = 50005;
 const MULTICAST_ADDR = '239.255.255.250';
 
-interface ReceivedMessage {
-    cmd: string;
+/**
+ * Message structure received from a multihost server during discovery or connect.
+ */
+export interface ReceivedMessage {
+    /** Command name, e.g. 'browse' */
+    cmd: 'browse' | 'auth';
+    /** Unique message identifier */
     id: number;
-    result: string;
+    /** Result string returned by server: 'ok', 'not authenticated', etc. */
+    // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    result: 'ok' | 'not authenticated' | string;
+    /** Optional IP address of responder */
     ip?: string;
+    /** Optional hostname of responder */
     hostname?: string;
+    /** Informational text */
     info?: string;
+    /** Whether responder is a slave */
     slave?: boolean;
+    /** Authentication token (when required) */
     auth?: string;
+    /** Salt used for password hashing during authentication */
     salt?: string;
     /** The states config of ioBroker.json  */
     states?: ioBroker.StatesDatabaseOptions;
@@ -23,13 +46,25 @@ interface ReceivedMessage {
 
 export type BrowseResultEntry = Partial<ReceivedMessage>;
 
+/**
+ * MHClient implements browsing and connecting to multihost-enabled ioBroker hosts.
+ *
+ * Usage:
+ * - Create an instance of MHClient
+ * - Call `browse(timeout, isDebug)` to discover hosts
+ * - Call `connect(ip, password, callback)` to retrieve configs from a host
+ */
 export class MHClient {
+    /** Incremental message id used for request/response correlation */
     private id: number = 1;
     private timer: NodeJS.Timeout | null = null;
     private server: dgram.Socket | undefined;
 
     /**
-     * Stops the MH server
+     * Stops the MH server and clears any pending timers.
+     *
+     * Cleans up the UDP socket and associated timeout to ensure no resources
+     * are leaked after browsing or connect operations finish.
      */
     private stopServer(): void {
         if (this.server) {
@@ -48,11 +83,11 @@ export class MHClient {
     }
 
     /**
-     * Calculate the SHA
+     * Calculate SHA-256 hash from secret and salt.
      *
-     * @param secret the MH secret
-     * @param salt the MH salt
-     * @param callback
+     * @param secret - Multihost secret/password
+     * @param salt - Salt provided by server
+     * @param callback - Called with hex-encoded SHA-256 result
      */
     private sha(secret: string, salt: string, callback: (sha: string) => void): void {
         // calculate sha256
@@ -70,13 +105,13 @@ export class MHClient {
     }
 
     /**
-     * Starts the MH server
+     * Starts a UDP server socket used for discovery and authentication.
      *
-     * @param isBroadcast if server should receive broadcast
-     * @param timeout timeout after which MH server will be closed
-     * @param onReady ready handler
-     * @param onMessage message handler, if return true here, server will be stopped
-     * @param onFinished finished handler
+     * @param isBroadcast - If true, enables broadcast mode on the socket.
+     * @param timeout - Time in ms after which the server will be automatically closed.
+     * @param onReady - Called once the socket is bound and ready to send.
+     * @param onMessage - Handler invoked for each parsed message. Return true to stop the server.
+     * @param onFinished - Called when the server stops or an error occurs.
      */
     private startServer(
         isBroadcast: boolean,
@@ -130,10 +165,13 @@ export class MHClient {
     }
 
     /**
-     * Start MH browsing for server
+     * Browse for multihost servers.
      *
-     * @param timeout timeout to stop browsing
-     * @param isDebug debug will also show local addresses
+     * Sends a multicast/broadcast "browse" request and collects responses until timeout.
+     *
+     * @param timeout - Milliseconds to wait for responses.
+     * @param isDebug - If true, include local addresses and log received messages.
+     * @returns Promise resolving to an array of discovered hosts (partial ReceivedMessage entries).
      */
     browse(timeout: number, isDebug: boolean): Promise<BrowseResultEntry[]> {
         const result: BrowseResultEntry[] = [];
@@ -185,11 +223,13 @@ export class MHClient {
     }
 
     /**
-     * Connect to server
+     * Connect to a single multihost server and retrieve its objects/states configuration.
      *
-     * @param ip ip address of server
-     * @param password password for authentication
-     * @param callback
+     * Performs an optional password-based authentication handshake if the server requires it.
+     *
+     * @param ip - IP address of the server to connect to.
+     * @param password - Password to use for authentication (if required). Pass empty string to skip.
+     * @param callback - Callback called with (err, objectsConfig, statesConfig, address).
      */
     connect(
         ip: string,
@@ -214,6 +254,7 @@ export class MHClient {
                 this.server!.send(text, 0, text.length, PORT, ip);
             },
             (msg, rinfo) => {
+                // we expect only one answer
                 if (msg.cmd === 'browse' && msg.id === this.id) {
                     if (msg.result === 'ok') {
                         if (callCb) {
@@ -223,10 +264,8 @@ export class MHClient {
                             } else if (!msg.states) {
                                 callback(new Error(`Invalid configuration received: ${JSON.stringify(msg)}`));
                                 callCb = false;
-                            } else {
-                                if (typeof callback === 'function') {
-                                    callback(undefined, msg.objects, msg.states, rinfo.address);
-                                }
+                            } else if (typeof callback === 'function') {
+                                callback(undefined, msg.objects, msg.states, rinfo.address);
                             }
                         }
                     } else if (msg.result === 'not authenticated') {

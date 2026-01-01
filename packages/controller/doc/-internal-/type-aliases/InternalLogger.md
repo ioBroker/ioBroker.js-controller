@@ -10,4 +10,4 @@
 
 ## Defined in
 
-common-db/build/esm/lib/common/tools.d.ts:606
+common-db/build/esm/lib/common/tools.d.ts:615

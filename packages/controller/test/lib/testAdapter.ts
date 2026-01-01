@@ -62,11 +62,11 @@ export default function testAdapter(options: Record<string, any>): void {
     ];
 
     const context: TestContext = {
-        /** @ts-expect-error will be filled in time */
+        // @ts-expect-error will be filled in time
         objects: null,
-        /** @ts-expect-error will be filled in time */
+        // @ts-expect-error will be filled in time
         states: null,
-        /** @ts-expect-error will be filled in time */
+        // @ts-expect-error will be filled in time
         adapter: null,
         onControllerStateChanged: null,
         onControllerObjectChanged: null,

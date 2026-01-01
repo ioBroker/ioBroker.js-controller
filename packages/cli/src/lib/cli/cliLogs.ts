@@ -43,7 +43,7 @@ export class CLILogs extends CLICommand {
 
         const config = fs.readJSONSync(require.resolve(getConfigFileName()));
         const logger = toolsLogger(config.log);
-        /** @ts-expect-error todo adjust logger type */
+        // @ts-expect-error todo adjust logger type
         let fileName = logger.getFileName();
         if (fileName) {
             let lines = fs.readFileSync(fileName).toString('utf-8').split('\n');

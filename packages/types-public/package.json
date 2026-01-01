@@ -1,6 +1,6 @@
 {
     "name": "@iobroker/types",
-    "version": "7.0.8-alpha.8-20251127-036be0224",
+    "version": "7.1.0",
     "engines": {
         "node": ">=12.0.0"
     },
@@ -13,7 +13,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/types-public"
+        "url": "https://github.com/ioBroker/ioBroker.js-controller"
     },
     "scripts": {
         "build": "ts-node build.ts",

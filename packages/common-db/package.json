@@ -1,7 +1,7 @@
 {
     "name": "@iobroker/js-controller-common-db",
     "type": "module",
-    "version": "7.0.8-alpha.8-20251127-036be0224",
+    "version": "7.1.0",
     "engines": {
         "node": ">=18.0.0"
     },
@@ -11,7 +11,7 @@
         "winston-syslog": "^2.6.0"
     },
     "dependencies": {
-        "@alcalzone/pak": "^0.8.1",
+        "@alcalzone/pak": "^0.11.0",
         "axios": "^1.12.0",
         "ci-info": "^3.8.0",
         "deep-clone": "^3.0.3",
@@ -39,7 +39,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/common-db"
+        "url": "https://github.com/ioBroker/ioBroker.js-controller"
     },
     "scripts": {
         "build": "tsc -b tsconfig.build.json && tsc-alias",
