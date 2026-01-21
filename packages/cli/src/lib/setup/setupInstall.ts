@@ -21,7 +21,6 @@ import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '@/lib/_Types.js';
 import { IoBrokerError } from '@/lib/setup/customError.js';
-import type { CommandResult } from '@alcalzone/pak';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import { createRequire } from 'node:module';
 
@@ -52,7 +51,7 @@ interface NpmInstallOptions {
 
 interface NotEmptyErrorOptions extends Omit<NpmInstallOptions, 'isRetry'> {
     /** Result of the failed installation process */
-    result: CommandResult;
+    result: ioBroker.CommandResult;
 }
 
 export interface CLIInstallOptions {

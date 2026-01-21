@@ -7,7 +7,7 @@ import deepClone from 'deep-clone';
 import { type ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
 import { createInterface } from 'node:readline';
 import { PassThrough } from 'node:stream';
-import type { CommandResult, InstallOptions, PackageManager } from '@alcalzone/pak';
+import type { InstallOptions, PackageManager } from '@alcalzone/pak';
 import { detectPackageManager, packageManagers } from '@alcalzone/pak';
 import { EXIT_CODES } from '@/lib/common/exitCodes.js';
 import zlib from 'node:zlib';
@@ -1744,7 +1744,7 @@ export async function detectPackageManagerWithFallback(cwd?: string): Promise<Pa
 export async function installNodeModule(
     npmUrl: string,
     options: InstallNodeModuleOptions = {},
-): Promise<CommandResult> {
+): Promise<ioBroker.CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out
@@ -1792,7 +1792,7 @@ export interface UninstallNodeModuleOptions {
 export async function uninstallNodeModule(
     packageName: string,
     options: UninstallNodeModuleOptions = {},
-): Promise<CommandResult> {
+): Promise<ioBroker.CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out
@@ -1829,7 +1829,7 @@ export interface RebuildNodeModulesOptions {
  *
  * @param options Options for the rebuild
  */
-export async function rebuildNodeModules(options: RebuildNodeModulesOptions = {}): Promise<CommandResult> {
+export async function rebuildNodeModules(options: RebuildNodeModulesOptions = {}): Promise<ioBroker.CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out

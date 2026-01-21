@@ -12,7 +12,6 @@ import type Winston from 'winston';
 import type NodeSchedule from 'node-schedule';
 import yargs from 'yargs/yargs';
 import fs from 'fs-extra';
-import type { CommandResult } from '@alcalzone/pak';
 import * as url from 'node:url';
 
 import { PluginHandler, type IoPackageFile } from '@iobroker/plugin-base';
@@ -1286,7 +1285,7 @@ export class AdapterClass extends EventEmitter {
         return getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
     }
 
-    installNodeModule(moduleName: string, options: InstallNodeModuleOptions): Promise<CommandResult>;
+    installNodeModule(moduleName: string, options: InstallNodeModuleOptions): Promise<ioBroker.CommandResult>;
 
     /**
      * Install specified npm module
@@ -1294,14 +1293,14 @@ export class AdapterClass extends EventEmitter {
      * @param moduleNameOrUrl name of the node module or GitHub url which can be passed to `npm install`
      * @param options version information
      */
-    installNodeModule(moduleNameOrUrl: unknown, options: unknown): Promise<CommandResult> {
+    installNodeModule(moduleNameOrUrl: unknown, options: unknown): Promise<ioBroker.CommandResult> {
         Validator.assertString(moduleNameOrUrl, 'moduleNameOrUrl');
         Validator.assertObject<InstallNodeModuleOptions>(options, 'options');
 
         return this._installNodeModule({ ...options, moduleNameOrUrl });
     }
 
-    private async _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<CommandResult> {
+    private async _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<ioBroker.CommandResult> {
         const { moduleNameOrUrl, version } = options;
 
         let moduleName = moduleNameOrUrl;
@@ -1324,14 +1323,14 @@ export class AdapterClass extends EventEmitter {
         return listInstalledNodeModules(this.namespace);
     }
 
-    uninstallNodeModule(moduleName: string): Promise<CommandResult>;
+    uninstallNodeModule(moduleName: string): Promise<ioBroker.CommandResult>;
 
     /**
      * Uninstall specified npm module
      *
      * @param moduleName name of the node module
      */
-    uninstallNodeModule(moduleName: unknown): Promise<CommandResult> {
+    uninstallNodeModule(moduleName: unknown): Promise<ioBroker.CommandResult> {
         Validator.assertString(moduleName, 'moduleName');
 
         const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });

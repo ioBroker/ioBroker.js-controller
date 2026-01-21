@@ -3,6 +3,8 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (@GermanBluefox) Added typing to avoid import of additional packages
 
 ## 7.1.0 (2025-12-06) - Milla
 * (@copilot) Fixed adminUI, adminTab, and adminColumns configurations being incorrectly preserved during adapter uploads

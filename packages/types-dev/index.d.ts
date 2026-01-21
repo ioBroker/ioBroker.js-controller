@@ -593,5 +593,19 @@ declare global {
         type ObjectsDatabaseOptions = ObjectsDbOptions;
         /** States DB options from ioBroker.json */
         type StatesDatabaseOptions = StatesDbOptions;
+
+        // Following type was defined in @alcalzone/pak, but we place it here to avoid importing of additional packages
+        export interface CommandResult {
+            /** Whether the command execution was successful */
+            success: boolean;
+            /** The exit code of the command execution */
+            exitCode: number;
+            /** The captured stdout */
+            stdout: string;
+            /** The captured stderr */
+            stderr: string;
+            /** The captured stdout and stderr, interleaved like it would appear on the console */
+            stdall: string;
+        }
     } // end namespace ioBroker
 } // end declare global
