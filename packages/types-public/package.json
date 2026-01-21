@@ -37,7 +37,8 @@
     "tsd": {
         "compilerOptions": {
             "types": [
-                "@iobroker/types"
+                "@iobroker/types",
+                "@types/node"
             ]
         }
     }
