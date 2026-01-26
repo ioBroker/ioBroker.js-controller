@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (@GermanBluefox) Corrected typing (@alcalzone/pak)
+
 ## 7.1.0 (2025-12-06) - Milla
 * (@copilot) Fixed adminUI, adminTab, and adminColumns configurations being incorrectly preserved during adapter uploads
 * (@foxriver76) Added objects warn limit per instance
