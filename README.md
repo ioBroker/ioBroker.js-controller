@@ -380,7 +380,7 @@ If needed, especially for low memory situations the memory limit for all adapter
 ```
 
 ### Directly executing TypeScript adapters
-**Feature status:** Technology preview since js-controller 3.3.0
+**Feature status:** Stable since js-controller 3.3.0
 
 The js-controller is able to execute `.ts` files, which removes the need of compiling to JavaScript first.
 To use this feature, simply define the adapter main file as the required `.ts` file.
@@ -1416,6 +1416,6 @@ This new process and rules are introduced with js-controller 2.0 and updated to 
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2024 bluefox <dogafox@gmail.com>,
+Copyright (c) 2014-2026 bluefox <dogafox@gmail.com>,
 
 Copyright (c) 2014      hobbyquaker
