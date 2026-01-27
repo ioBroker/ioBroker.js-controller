@@ -22,7 +22,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:76](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/config.d.ts#L76)
+[types-dev/config.d.ts:76](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/config.d.ts#L76)
 
 ***
 
@@ -36,7 +36,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/config.d.ts#L55)
+[types-dev/config.d.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/config.d.ts#L55)
 
 ***
 
@@ -50,7 +50,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/config.d.ts#L57)
+[types-dev/config.d.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/config.d.ts#L57)
 
 ***
 
@@ -64,7 +64,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/config.d.ts#L53)
+[types-dev/config.d.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/config.d.ts#L53)
 
 ***
 
@@ -78,7 +78,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/config.d.ts#L77)
+[types-dev/config.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/config.d.ts#L77)
 
 ***
 
@@ -88,7 +88,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/config.d.ts#L81)
+[types-dev/config.d.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/config.d.ts#L81)
 
 ***
 
@@ -152,7 +152,7 @@ Needs to be false with self-signed certs
 
 #### Defined in
 
-[types-dev/config.d.ts:58](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/config.d.ts#L58)
+[types-dev/config.d.ts:58](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/config.d.ts#L58)
 
 ***
 
@@ -166,7 +166,7 @@ Needs to be false with self-signed certs
 
 #### Defined in
 
-[types-dev/config.d.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/config.d.ts#L54)
+[types-dev/config.d.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/config.d.ts#L54)
 
 ***
 
@@ -180,7 +180,7 @@ Needs to be false with self-signed certs
 
 #### Defined in
 
-[types-dev/config.d.ts:52](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/config.d.ts#L52)
+[types-dev/config.d.ts:52](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/config.d.ts#L52)
 
 ***
 
@@ -196,7 +196,7 @@ Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 63
 
 #### Defined in
 
-[types-dev/config.d.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/config.d.ts#L51)
+[types-dev/config.d.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/config.d.ts#L51)
 
 ***
 
@@ -210,4 +210,4 @@ Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 63
 
 #### Defined in
 
-[types-dev/config.d.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/config.d.ts#L56)
+[types-dev/config.d.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/config.d.ts#L56)
