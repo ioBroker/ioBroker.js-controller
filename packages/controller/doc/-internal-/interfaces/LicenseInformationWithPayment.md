@@ -16,7 +16,7 @@ License of the software
 
 #### Defined in
 
-[types-dev/objects.d.ts:558](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L558)
+[types-dev/objects.d.ts:558](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/objects.d.ts#L558)
 
 ***
 
@@ -29,7 +29,7 @@ This is required if the license type is different from 'free'. For 'free' licens
 
 #### Defined in
 
-[types-dev/objects.d.ts:565](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L565)
+[types-dev/objects.d.ts:565](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/objects.d.ts#L565)
 
 ***
 
@@ -41,4 +41,4 @@ Use 'paid' for adapters which do not work without a paid license. Use 'commercia
 
 #### Defined in
 
-[types-dev/objects.d.ts:560](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L560)
+[types-dev/objects.d.ts:560](https://github.com/ioBroker/ioBroker.js-controller/blob/997e40b7387fd354c814a396a6ac94a6d3e21134/packages/types-dev/objects.d.ts#L560)
