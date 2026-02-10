@@ -1682,6 +1682,76 @@ export class Install {
     }
 
     /**
+     * Fetch and validate io-package.json from GitHub before installation
+     *
+     * @param user GitHub username
+     * @param repo GitHub repository name
+     * @param commit Commit hash or branch name
+     * @returns Object with io-package data if fetched, or null if not available
+     */
+    private async _fetchAndValidateIoPackage(
+        user: string,
+        repo: string,
+        commit: string,
+    ): Promise<ioBroker.AdapterObject | null> {
+        try {
+            // Try to fetch io-package.json from GitHub using the commit hash
+            const ioPackageUrl = `https://raw.githubusercontent.com/${user}/${repo}/${commit}/io-package.json`;
+            const result = await axios(ioPackageUrl, {
+                headers: {
+                    'User-Agent': 'ioBroker Adapter install',
+                },
+                timeout: 10000,
+                validateStatus: status => status === 200,
+            });
+
+            if (result.data && result.data.common) {
+                return result.data as ioBroker.AdapterObject;
+            }
+            return null;
+        } catch {
+            // Could not fetch io-package.json
+            return null;
+        }
+    }
+
+    /**
+     * Perform adapter compatibility checks using io-package data
+     *
+     * @param ioPackage The io-package.json data
+     * @param repoName The repository name for error messages
+     * @returns true if checks pass, false if installation should be blocked
+     */
+    private _performAdapterChecks(ioPackage: ioBroker.AdapterObject, repoName: string): boolean {
+        // Check nogit flag
+        if (ioPackage.common.nogit === true) {
+            console.error(
+                `Cannot install adapter from GitHub: The adapter "${repoName}" has set the "nogit" flag which prevents manual installation from GitHub.`,
+            );
+            return false;
+        }
+
+        // Check OS compatibility
+        if (ioPackage.common.os) {
+            if (typeof ioPackage.common.os === 'string' && ioPackage.common.os !== osPlatform) {
+                console.error(
+                    `Cannot install adapter from GitHub: Adapter does not support current OS. Required ${ioPackage.common.os}. Actual platform: ${osPlatform}`,
+                );
+                return false;
+            } else if (Array.isArray(ioPackage.common.os) && !ioPackage.common.os.includes(osPlatform as any)) {
+                console.error(
+                    `Cannot install adapter from GitHub: Adapter does not support current OS. Required one of ${ioPackage.common.os.join(
+                        ', ',
+                    )}. Actual platform: ${osPlatform}`,
+                );
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Installs an adapter from given url
      *
      * @param url url to install adapter from
@@ -1698,6 +1768,10 @@ export class Install {
 
         const debug = process.argv.includes('--debug');
 
+        let githubUser: string | undefined;
+        let githubRepo: string | undefined;
+        let githubCommit: string | undefined;
+
         if (parsedUrl && parsedUrl.hostname === 'github.com') {
             if (!tools.isGithubPathname(parsedUrl.pathname)) {
                 return console.error(`Cannot install from GitHub. Invalid URL ${url}`);
@@ -1706,6 +1780,9 @@ export class Install {
             // This is a URL we can parse
             // @ts-expect-error check if type check above is enough
             const { repo, user, commit } = tools.parseGithubPathname(parsedUrl.pathname);
+
+            githubUser = user;
+            githubRepo = repo;
 
             if (!commit) {
                 // No commit given, try to get it from the API
@@ -1718,7 +1795,8 @@ export class Install {
                         },
                     });
                     if (result.data && Array.isArray(result.data) && result.data.length >= 1 && result.data[0].sha) {
-                        url = `${user}/${repo}#${result.data[0].sha}`;
+                        githubCommit = result.data[0].sha;
+                        url = `${user}/${repo}#${githubCommit}`;
                     } else {
                         console.log(
                             `Info: Can not get current GitHub commit, only remember that we installed from GitHub.`,
@@ -1734,7 +1812,60 @@ export class Install {
                 }
             } else {
                 // We've extracted all we need from the URL
+                githubCommit = commit;
                 url = `${user}/${repo}#${commit}`;
+            }
+
+            // Fetch and validate io-package if we have the commit hash
+            if (githubCommit && githubUser && githubRepo) {
+                const ioPackage = await this._fetchAndValidateIoPackage(githubUser, githubRepo, githubCommit);
+
+                if (ioPackage) {
+                    // Perform all adapter compatibility checks
+                    if (!this._performAdapterChecks(ioPackage, githubRepo)) {
+                        return;
+                    }
+                } else {
+                    console.warn(
+                        `Warning: Could not verify adapter compatibility from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
+                    );
+                }
+            } else if (githubUser && githubRepo) {
+                // We have GitHub info but no commit hash, cannot verify compatibility
+                console.warn(
+                    `Warning: Could not determine commit hash from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
+                );
+            }
+        }
+
+        // Also check short GitHub URL format if not already checked
+        if (!githubUser && !githubRepo) {
+            const shortGithubUrlParts = tools.parseShortGithubUrl(url);
+            if (shortGithubUrlParts) {
+                githubUser = shortGithubUrlParts.user;
+                githubRepo = shortGithubUrlParts.repo;
+                githubCommit = shortGithubUrlParts.commit;
+
+                // Fetch and validate io-package if we have the commit hash
+                if (githubCommit && githubUser && githubRepo) {
+                    const ioPackage = await this._fetchAndValidateIoPackage(githubUser, githubRepo, githubCommit);
+
+                    if (ioPackage) {
+                        // Perform all adapter compatibility checks
+                        if (!this._performAdapterChecks(ioPackage, githubRepo)) {
+                            return;
+                        }
+                    } else {
+                        console.warn(
+                            `Warning: Could not verify adapter compatibility from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
+                        );
+                    }
+                } else if (githubUser && githubRepo) {
+                    // We have GitHub info but no commit hash, cannot verify compatibility
+                    console.warn(
+                        `Warning: Could not determine commit hash from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
+                    );
+                }
             }
         }
 
