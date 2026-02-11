@@ -9,7 +9,7 @@
         "@iobroker/js-controller-common": "file:../common",
         "@iobroker/js-controller-common-db": "file:../common-db",
         "@iobroker/plugin-base": "~3.0.3",
-        "axios": "^1.12.0",
+        "axios": "^1.13.5",
         "chokidar": "^3.5.3",
         "debug": "^4.4.3",
         "deep-clone": "^3.0.3",
