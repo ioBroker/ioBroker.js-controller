@@ -31,7 +31,7 @@
         "jsonwebtoken": "^9.0.0",
         "loadavg-windows": "^1.1.1",
         "node-schedule": "^2.1.1",
-        "pidusage": "^3.0.2",
+        "pidusage": "^4.0.1",
         "promisify-child-process": "^4.1.1",
         "prompt": "^1.2.2",
         "readline-sync": "^1.4.10",
