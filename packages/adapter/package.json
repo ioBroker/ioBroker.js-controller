@@ -18,7 +18,7 @@
         "@iobroker/plugin-base": "~3.0.3",
         "deep-clone": "^3.0.3",
         "fs-extra": "^11.3.2",
-        "jsonwebtoken": "^9.0.0",
+        "jsonwebtoken": "^9.0.3",
         "node-schedule": "^2.1.0",
         "node.extend": "^2.0.2",
         "pidusage": "^3.0.2",
