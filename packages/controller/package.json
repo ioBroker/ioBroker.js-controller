@@ -36,7 +36,7 @@
         "prompt": "^1.2.2",
         "readline-sync": "^1.4.10",
         "semver": "^7.5.2",
-        "tar": "^6.2.1"
+        "tar": "^7.5.8"
     },
     "homepage": "https://www.iobroker.com",
     "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
