@@ -1,15 +1,15 @@
 {
     "name": "@iobroker/js-controller-cli",
     "type": "module",
-    "version": "7.0.8-alpha.6-20250927-51faba7cb",
+    "version": "7.1.1-alpha.0-20260127-997e40b73",
     "engines": {
         "node": ">=18.0.0"
     },
     "dependencies": {
         "@iobroker/js-controller-common": "file:../common",
         "@iobroker/js-controller-common-db": "file:../common-db",
-        "@iobroker/plugin-base": "~2.0.1",
-        "axios": "^1.12.2",
+        "@iobroker/plugin-base": "~3.0.3",
+        "axios": "^1.13.6",
         "chokidar": "^3.6.0",
         "debug": "^4.4.3",
         "deep-clone": "^3.0.3",
@@ -32,7 +32,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/cli"
+        "url": "https://github.com/ioBroker/ioBroker.js-controller"
     },
     "scripts": {
         "build": "tsc -b tsconfig.build.json && tsc-alias",
