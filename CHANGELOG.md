@@ -8,7 +8,7 @@
 * (@GermanBluefox) Corrected typing (@alcalzone/pak)
 * (@GermanBluefox) Remove chai tests and replace them with node assert tests (not relevant for end users)
 * (@adbecaf) Extended isDocker to support `.conatinerenv` file in Podman or CRI-O
-* minor changes in the documentation
+* minor changes in the documentation conserninig deprecations
 
 ## 7.1.0 (2025-12-06) - Milla
 * (@copilot) Fixed adminUI, adminTab, and adminColumns configurations being incorrectly preserved during adapter uploads
