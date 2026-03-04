@@ -108,7 +108,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         const objects = context.objects;
         try {
             await objects.getObject(secretId, { user: 'admin' });
-            assert.strictEqual(1, 'Never happens');
+            assert.fail('Never happens');
         } catch (e) {
             console.error(e.message);
             assert.strictEqual(e.message, 'permissionError');
@@ -120,7 +120,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         return objects
             .getObject(secretId, { user: 'system.user.admin1' })
             .then(_obj => {
-                assert.strictEqual(1, 'Never happens');
+                assert.fail('Never happens');
             })
             .catch(err => {
                 console.error(err.message);
@@ -137,7 +137,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             })
             .catch(err => {
                 console.error(err.message);
-                assert.strictEqual(1, 'Never happens');
+                assert.fail('Never happens');
             });
     }).timeout(2_000);
 
@@ -146,7 +146,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         return objects
             .getObject(secretId, { user: 'system.user.user' })
             .then(_obj => {
-                assert.strictEqual(1, 'Never happens');
+                assert.fail('Never happens');
             })
             .catch(err => {
                 assert.strictEqual(err.message, 'permissionError');
