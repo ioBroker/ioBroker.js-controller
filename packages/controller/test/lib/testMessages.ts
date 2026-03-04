@@ -1,15 +1,16 @@
 import type { TestContext } from '../_Types.js';
+import assert from 'node:assert/strict';
 
-export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
+export function register(it: Mocha.TestFunction, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} adapter: `;
     const gid = `system.adapter.${context.adapterShortName}.0`;
     it(`${testName}check pushMessage`, function (done) {
         context.states.subscribeMessage(gid, function (err) {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
 
             context.onAdapterMessage = function (obj) {
-                expect(typeof obj).to.equal('object');
-                expect(obj.message.test).to.equal(1);
+                assert.strictEqual(typeof obj, 'object');
+                assert.strictEqual(obj.message.test, 1);
                 context.states.unsubscribeMessage(gid, () => done());
                 context.onAdapterMessage = null;
             };
@@ -23,12 +24,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
     it(`${testName}check pushMessage Buffer`, function (done) {
         context.states.subscribeMessage(gid, function (err) {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
 
             context.onAdapterMessage = function (obj) {
-                expect(typeof obj).to.equal('object');
-                expect(Buffer.isBuffer(obj.message.test)).to.be.true;
-                expect(obj.message.test.toString('utf8')).to.equal('ABCDEFG');
+                assert.strictEqual(typeof obj, 'object');
+                assert.strictEqual(Buffer.isBuffer(obj.message.test), true);
+                assert.strictEqual(obj.message.test.toString('utf8'), 'ABCDEFG');
                 context.states.unsubscribeMessage(gid, () => done());
                 context.onAdapterMessage = null;
             };
@@ -42,20 +43,20 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
     it(`${testName}check unsubscribeMessage`, function (done) {
         context.states.unsubscribeMessage(gid, function (err) {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             done();
         });
     });
 
     it(`${testName}check pushLog`, function (done) {
         context.states.subscribeLog(gid, function (err) {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             context.states.pushLog(
                 gid,
                 { message: '1', severity: 'info', from: `system.adapter.${context.adapterShortName}`, ts: Date.now() },
                 function (err, id) {
-                    expect(err).to.be.null;
-                    expect(id).to.be.equal(gid);
+                    assert.strictEqual(err, null);
+                    assert.strictEqual(id, gid);
                     done();
                 },
             );
@@ -64,7 +65,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
     it(`${testName}check unsubscribeLog`, function (done) {
         context.states.unsubscribeLog(gid, function (err) {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             done();
         });
     });

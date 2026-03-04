@@ -1,4 +1,4 @@
-export function register(/*it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext*/): void {
+export function register(/*it: Mocha.TestFunction, context: TestContext*/): void {
     // getEnum
     // getEnums
     // addChannelToEnum
