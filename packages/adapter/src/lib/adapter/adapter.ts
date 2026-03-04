@@ -5286,7 +5286,7 @@ export class AdapterClass extends EventEmitter {
      */
     createDevice(deviceName: unknown, common: unknown, _native?: unknown, options?: unknown, callback?: unknown): any {
         this._logger.info(
-            `${this.namespaceLog} Method "createDevice" is deprecated and will be removed in js-controller 7.1, use "extendObject/setObjectNotExists" instead`,
+            `${this.namespaceLog} Method "createDevice" is deprecated and will be removed in js-controller 8.x, use "extendObject/setObjectNotExists" instead`,
         );
 
         if (typeof options === 'function') {
@@ -5389,7 +5389,7 @@ export class AdapterClass extends EventEmitter {
         callback?: unknown,
     ): any {
         this._logger.info(
-            `${this.namespaceLog} Method "createChannel" is deprecated and will be removed in js-controller 7.1, use "extendObject/setObjectNotExists" instead`,
+            `${this.namespaceLog} Method "createChannel" is deprecated and will be removed in js-controller 8.x, use "extendObject/setObjectNotExists" instead`,
         );
 
         if (typeof options === 'function') {
@@ -5500,7 +5500,7 @@ export class AdapterClass extends EventEmitter {
         callback?: unknown,
     ): any {
         this._logger.info(
-            `${this.namespaceLog} Method "createState" is deprecated and will be removed in js-controller 7.1, use "extendObject/setObjectNotExists" instead`,
+            `${this.namespaceLog} Method "createState" is deprecated and will be removed in js-controller 8.x, use "extendObject/setObjectNotExists" instead`,
         );
 
         if (typeof options === 'function') {
@@ -5689,7 +5689,7 @@ export class AdapterClass extends EventEmitter {
      */
     deleteDevice(deviceName: unknown, options: unknown, callback?: unknown): any {
         this._logger.info(
-            `${this.namespaceLog} Method "deleteDevice" is deprecated and will be removed in js-controller 7.1, use "delObject" instead`,
+            `${this.namespaceLog} Method "deleteDevice" is deprecated and will be removed in js-controller 8.x, use "delObject" instead`,
         );
 
         if (typeof options === 'function') {
@@ -6019,7 +6019,7 @@ export class AdapterClass extends EventEmitter {
      */
     deleteChannel(parentDevice: unknown, channelName: unknown, options?: unknown, callback?: unknown): any {
         this._logger.info(
-            `${this.namespaceLog} Method "deleteChannel" is deprecated and will be removed in js-controller 7.1, use "delObject" instead`,
+            `${this.namespaceLog} Method "deleteChannel" is deprecated and will be removed in js-controller 8.x, use "delObject" instead`,
         );
 
         if (typeof options === 'function') {
@@ -6135,7 +6135,7 @@ export class AdapterClass extends EventEmitter {
         callback?: unknown,
     ): any {
         this._logger.info(
-            `${this.namespaceLog} Method "deleteState" is deprecated and will be removed in js-controller 7.1, use "delObject" instead`,
+            `${this.namespaceLog} Method "deleteState" is deprecated and will be removed in js-controller 8.x, use "delObject" instead`,
         );
 
         if (typeof parentChannel === 'function' && stateName === undefined) {
