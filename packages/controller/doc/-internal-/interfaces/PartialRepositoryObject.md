@@ -24,7 +24,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:1098](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/objects.d.ts#L1098)
+[types-dev/objects.d.ts:1098](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/objects.d.ts#L1098)
 
 ***
 
@@ -38,7 +38,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:966](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/objects.d.ts#L966)
+[types-dev/objects.d.ts:966](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/objects.d.ts#L966)
 
 ***
 
@@ -48,7 +48,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:1049](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/objects.d.ts#L1049)
+[types-dev/objects.d.ts:1049](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/objects.d.ts#L1049)
 
 ***
 
@@ -62,7 +62,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:965](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/objects.d.ts#L965)
+[types-dev/objects.d.ts:965](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/objects.d.ts#L965)
 
 ***
 
@@ -76,7 +76,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:967](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/objects.d.ts#L967)
+[types-dev/objects.d.ts:967](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/objects.d.ts#L967)
 
 ***
 
@@ -106,7 +106,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:1100](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/objects.d.ts#L1100)
+[types-dev/objects.d.ts:1100](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/objects.d.ts#L1100)
 
 ***
 
@@ -122,7 +122,7 @@ These properties can only be edited if the correct password is provided
 
 #### Defined in
 
-[types-dev/objects.d.ts:972](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/objects.d.ts#L972)
+[types-dev/objects.d.ts:972](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/objects.d.ts#L972)
 
 ***
 
@@ -136,7 +136,7 @@ These properties can only be edited if the correct password is provided
 
 #### Defined in
 
-[types-dev/objects.d.ts:970](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/objects.d.ts#L970)
+[types-dev/objects.d.ts:970](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/objects.d.ts#L970)
 
 ***
 
@@ -150,7 +150,7 @@ These properties can only be edited if the correct password is provided
 
 #### Defined in
 
-[types-dev/objects.d.ts:1099](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/objects.d.ts#L1099)
+[types-dev/objects.d.ts:1099](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/objects.d.ts#L1099)
 
 ***
 
@@ -166,4 +166,4 @@ The user who created or updated this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:969](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/objects.d.ts#L969)
+[types-dev/objects.d.ts:969](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/objects.d.ts#L969)

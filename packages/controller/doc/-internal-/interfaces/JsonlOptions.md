@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/config.d.ts#L18)
+[types-dev/config.d.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/config.d.ts#L18)
 
 ***
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/config.d.ts#L19)
+[types-dev/config.d.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/config.d.ts#L19)
 
 ***
 
@@ -34,7 +34,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:20](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/config.d.ts#L20)
+[types-dev/config.d.ts:20](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/config.d.ts#L20)
 
 ***
 
@@ -44,7 +44,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/config.d.ts#L30)
+[types-dev/config.d.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/config.d.ts#L30)
 
 ***
 
@@ -54,7 +54,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/config.d.ts#L33)
+[types-dev/config.d.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/config.d.ts#L33)
 
 ***
 
@@ -64,7 +64,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/config.d.ts#L34)
+[types-dev/config.d.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/config.d.ts#L34)
 
 ***
 
@@ -86,7 +86,7 @@ Note that too low values here will cause the DB to be rewritten often.
 
 #### Defined in
 
-[types-dev/config.d.ts:26](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/config.d.ts#L26)
+[types-dev/config.d.ts:26](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/config.d.ts#L26)
 
 ***
 
@@ -98,7 +98,7 @@ If single lines in the DB are corrupted, they can be ignored without losing the 
 
 #### Defined in
 
-[types-dev/config.d.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/config.d.ts#L32)
+[types-dev/config.d.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/config.d.ts#L32)
 
 ***
 
@@ -131,4 +131,4 @@ Force writing of buffered commands after so many changes. This reduces memory co
 
 #### Defined in
 
-[types-dev/config.d.ts:39](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/types-dev/config.d.ts#L39)
+[types-dev/config.d.ts:39](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/types-dev/config.d.ts#L39)

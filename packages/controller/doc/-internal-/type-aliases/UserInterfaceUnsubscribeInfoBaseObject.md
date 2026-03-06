@@ -18,4 +18,4 @@ The handler id, which can be used to send information to clients
 
 ## Defined in
 
-[adapter/src/lib/\_Types.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/adbecafe9c0107c317e4495817767a133991da81/packages/adapter/src/lib/_Types.ts#L156)
+[adapter/src/lib/\_Types.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/e7760e24fa0ffd426a76c1a5e27d319df3c1841a/packages/adapter/src/lib/_Types.ts#L156)
