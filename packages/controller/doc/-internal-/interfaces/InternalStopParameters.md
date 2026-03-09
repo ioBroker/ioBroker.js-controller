@@ -24,7 +24,7 @@ Specify an optional exit code
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:583](https://github.com/ioBroker/ioBroker.js-controller/blob/060ff22a1e2ae75e2dc07e09e920302d6ed072ea/packages/adapter/src/lib/_Types.ts#L583)
+[adapter/src/lib/\_Types.ts:583](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/adapter/src/lib/_Types.ts#L583)
 
 ***
 
@@ -36,7 +36,7 @@ If mode is schedule or once
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/060ff22a1e2ae75e2dc07e09e920302d6ed072ea/packages/adapter/src/lib/_Types.ts#L590)
+[adapter/src/lib/\_Types.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/adapter/src/lib/_Types.ts#L590)
 
 ***
 
@@ -48,7 +48,7 @@ If it has a restart schedule running
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:592](https://github.com/ioBroker/ioBroker.js-controller/blob/060ff22a1e2ae75e2dc07e09e920302d6ed072ea/packages/adapter/src/lib/_Types.ts#L592)
+[adapter/src/lib/\_Types.ts:592](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/adapter/src/lib/_Types.ts#L592)
 
 ***
 
@@ -64,7 +64,7 @@ Specify an optional reason for stoppage
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:585](https://github.com/ioBroker/ioBroker.js-controller/blob/060ff22a1e2ae75e2dc07e09e920302d6ed072ea/packages/adapter/src/lib/_Types.ts#L585)
+[adapter/src/lib/\_Types.ts:585](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/adapter/src/lib/_Types.ts#L585)
 
 ***
 
@@ -76,4 +76,4 @@ If alive state should be updated, if undefined defaults to true
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:594](https://github.com/ioBroker/ioBroker.js-controller/blob/060ff22a1e2ae75e2dc07e09e920302d6ed072ea/packages/adapter/src/lib/_Types.ts#L594)
+[adapter/src/lib/\_Types.ts:594](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/adapter/src/lib/_Types.ts#L594)
