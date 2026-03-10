@@ -20,7 +20,7 @@ Callback information. This is set when the source expects a response
 
 #### Defined in
 
-[types-dev/index.d.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/index.d.ts#L271)
+[types-dev/index.d.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/index.d.ts#L271)
 
 ***
 
@@ -32,7 +32,7 @@ The command to be executed
 
 #### Defined in
 
-[types-dev/index.d.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/index.d.ts#L265)
+[types-dev/index.d.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/index.d.ts#L265)
 
 ***
 
@@ -44,7 +44,7 @@ The source of this message
 
 #### Defined in
 
-[types-dev/index.d.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/index.d.ts#L269)
+[types-dev/index.d.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/index.d.ts#L269)
 
 ***
 
@@ -56,4 +56,4 @@ The message payload
 
 #### Defined in
 
-[types-dev/index.d.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/index.d.ts#L267)
+[types-dev/index.d.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/index.d.ts#L267)

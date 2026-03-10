@@ -28,7 +28,7 @@ Return value of `os.cpu` but property `times` could be removed from every entry
 
 #### Defined in
 
-[types-dev/objects.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/objects.d.ts#L433)
+[types-dev/objects.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/objects.d.ts#L433)
 
 ***
 
@@ -66,7 +66,7 @@ Return value of `os.cpu` but property `times` could be removed from every entry
 
 #### Defined in
 
-[types-dev/objects.d.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/objects.d.ts#L424)
+[types-dev/objects.d.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/objects.d.ts#L424)
 
 ***
 
@@ -88,4 +88,4 @@ Return value of `os.cpu` but property `times` could be removed from every entry
 
 #### Defined in
 
-[types-dev/objects.d.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/objects.d.ts#L419)
+[types-dev/objects.d.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/objects.d.ts#L419)

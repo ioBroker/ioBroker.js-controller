@@ -18,7 +18,7 @@ unique ID
 
 #### Defined in
 
-[types-dev/index.d.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/index.d.ts#L229)
+[types-dev/index.d.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/index.d.ts#L229)
 
 ***
 
@@ -30,7 +30,7 @@ id of the source instance
 
 #### Defined in
 
-[types-dev/index.d.ts:231](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/index.d.ts#L231)
+[types-dev/index.d.ts:231](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/index.d.ts#L231)
 
 ***
 
@@ -42,7 +42,7 @@ actual content
 
 #### Defined in
 
-[types-dev/index.d.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/index.d.ts#L237)
+[types-dev/index.d.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/index.d.ts#L237)
 
 ***
 
@@ -54,7 +54,7 @@ log level
 
 #### Defined in
 
-[types-dev/index.d.ts:233](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/index.d.ts#L233)
+[types-dev/index.d.ts:233](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/index.d.ts#L233)
 
 ***
 
@@ -66,4 +66,4 @@ timestamp
 
 #### Defined in
 
-[types-dev/index.d.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/index.d.ts#L235)
+[types-dev/index.d.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/index.d.ts#L235)

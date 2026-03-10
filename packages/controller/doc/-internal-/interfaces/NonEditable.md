@@ -22,7 +22,7 @@ These properties can only be changed by providing the password, else they stay o
 
 #### Defined in
 
-[types-dev/objects.d.ts:951](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/objects.d.ts#L951)
+[types-dev/objects.d.ts:951](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/objects.d.ts#L951)
 
 ***
 
@@ -34,7 +34,7 @@ These properties can only be changed by providing the password, else they stay o
 
 #### Defined in
 
-[types-dev/objects.d.ts:953](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/objects.d.ts#L953)
+[types-dev/objects.d.ts:953](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/objects.d.ts#L953)
 
 ***
 
@@ -46,7 +46,7 @@ Hashed version of current password
 
 #### Defined in
 
-[types-dev/objects.d.ts:949](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/objects.d.ts#L949)
+[types-dev/objects.d.ts:949](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/objects.d.ts#L949)
 
 ***
 
@@ -58,4 +58,4 @@ Password needed to edit non-editable information
 
 #### Defined in
 
-[types-dev/objects.d.ts:947](https://github.com/ioBroker/ioBroker.js-controller/blob/c18c3d3792bb67c9c1409f8581204fe03b230720/packages/types-dev/objects.d.ts#L947)
+[types-dev/objects.d.ts:947](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/objects.d.ts#L947)
