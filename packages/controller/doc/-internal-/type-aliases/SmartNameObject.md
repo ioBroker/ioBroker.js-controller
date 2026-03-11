@@ -24,4 +24,4 @@ Which kind of device it is
 
 ## Defined in
 
-[types-dev/objects.d.ts:193](https://github.com/ioBroker/ioBroker.js-controller/blob/21707f9252802efde0a901b27d473f7245d103bc/packages/types-dev/objects.d.ts#L193)
+[types-dev/objects.d.ts:193](https://github.com/ioBroker/ioBroker.js-controller/blob/9f69ee00462d8a34f3189a35b41e51f0166408bb/packages/types-dev/objects.d.ts#L193)

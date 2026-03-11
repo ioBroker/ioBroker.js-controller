@@ -1,7 +1,7 @@
 {
     "name": "@iobroker/db-states-redis",
     "type": "module",
-    "version": "7.1.1-alpha.7-20260310-21707f925",
+    "version": "7.1.1-alpha.8-20260311-9f69ee004",
     "engines": {
         "node": ">=12.0.0"
     },
