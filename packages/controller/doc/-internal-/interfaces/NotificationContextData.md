@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,12 @@
 
 # Interface: NotificationContextData
 
+Defined in: [types-dev/index.d.ts:393](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L393)
+
 Additional context for the notification which can be used by notification processing adapters
 
 ## Indexable
 
- \[`adapterNameOrAdapterType`: `string`\]: `unknown`
+\[`adapterNameOrAdapterType`: `string`\]: `unknown`
+
+Use a `key` specific to the adapter or if a feature is supported by all adapters of a type, the type (e.g. `messaging`) is also fine.

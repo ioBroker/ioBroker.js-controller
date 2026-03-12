@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,9 +6,11 @@
 
 # Interface: DelObjectOptions
 
+Defined in: [types-dev/index.d.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L351)
+
 ## Indexable
 
- \[`other`: `string`\]: `unknown`
+\[`other`: `string`\]: `unknown`
 
 ## Properties
 
@@ -16,8 +18,6 @@
 
 > `optional` **recursive**: `boolean`
 
+Defined in: [types-dev/index.d.ts:353](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L353)
+
 Whether all child objects should be deleted as well
-
-#### Defined in
-
-[types-dev/index.d.ts:353](https://github.com/ioBroker/ioBroker.js-controller/blob/b9a70c027cb15ad8422cad463063f61693ea0378/packages/types-dev/index.d.ts#L353)

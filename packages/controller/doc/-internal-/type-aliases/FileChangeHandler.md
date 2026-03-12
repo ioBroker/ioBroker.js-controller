@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,20 +6,24 @@
 
 # Type Alias: FileChangeHandler()
 
-> **FileChangeHandler**: (`id`, `fileName`, `size`) => `void`
+> **FileChangeHandler** = (`id`, `fileName`, `size`) => `void`
+
+Defined in: [types-dev/index.d.ts:406](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L406)
 
 ## Parameters
 
-• **id**: `string`
+### id
 
-• **fileName**: `string`
+`string`
 
-• **size**: `number` \| `null`
+### fileName
+
+`string`
+
+### size
+
+`number` | `null`
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[types-dev/index.d.ts:406](https://github.com/ioBroker/ioBroker.js-controller/blob/b9a70c027cb15ad8422cad463063f61693ea0378/packages/types-dev/index.d.ts#L406)

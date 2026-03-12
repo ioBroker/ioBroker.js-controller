@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,20 +6,24 @@
 
 # Type Alias: GetCertificatesCallback()
 
-> **GetCertificatesCallback**: (`err`?, `certs`?, `useLetsEncryptCert`?) => `void`
+> **GetCertificatesCallback** = (`err?`, `certs?`, `useLetsEncryptCert?`) => `void`
+
+Defined in: [adapter/src/lib/\_Types.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/_Types.ts#L331)
 
 ## Parameters
 
-• **err?**: `Error` \| `null`
+### err?
 
-• **certs?**: [`Certificates`](../interfaces/Certificates.md)
+`Error` | `null`
 
-• **useLetsEncryptCert?**: `boolean`
+### certs?
+
+[`Certificates`](../interfaces/Certificates.md)
+
+### useLetsEncryptCert?
+
+`boolean`
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[adapter/src/lib/\_Types.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/b9a70c027cb15ad8422cad463063f61693ea0378/packages/adapter/src/lib/_Types.ts#L331)

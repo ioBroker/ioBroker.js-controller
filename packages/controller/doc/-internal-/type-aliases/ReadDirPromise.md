@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,6 @@
 
 # Type Alias: ReadDirPromise
 
-> **ReadDirPromise**: `Promise`\<[`ReadDirResult`](../interfaces/ReadDirResult.md)[]\>
+> **ReadDirPromise** = `Promise`\<[`ReadDirResult`](../interfaces/ReadDirResult.md)[]\>
 
-## Defined in
-
-[types-dev/index.d.ts:515](https://github.com/ioBroker/ioBroker.js-controller/blob/b9a70c027cb15ad8422cad463063f61693ea0378/packages/types-dev/index.d.ts#L515)
+Defined in: [types-dev/index.d.ts:515](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L515)

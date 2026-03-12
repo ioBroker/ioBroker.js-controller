@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,24 +6,28 @@
 
 # Type Alias: GetObjectViewCallback()\<T\>
 
-> **GetObjectViewCallback**\<`T`\>: (`err`?, `result`?) => `void`
+> **GetObjectViewCallback**\<`T`\> = (`err?`, `result?`) => `void`
+
+Defined in: [types-dev/index.d.ts:558](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L558)
 
 ## Type Parameters
 
-• **T** *extends* [`AnyObject`](AnyObject.md)
+### T
+
+`T` *extends* [`AnyObject`](AnyObject.md)
 
 ## Parameters
 
-• **err?**: `Error` \| `null`
+### err?
 
-• **result?**
+`Error` | `null`
 
-• **result.rows?**: [`GetObjectViewItem`](../interfaces/GetObjectViewItem.md)\<`T`\>[]
+### result?
+
+#### rows
+
+[`GetObjectViewItem`](../interfaces/GetObjectViewItem.md)\<`T`\>[]
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[types-dev/index.d.ts:558](https://github.com/ioBroker/ioBroker.js-controller/blob/b9a70c027cb15ad8422cad463063f61693ea0378/packages/types-dev/index.d.ts#L558)

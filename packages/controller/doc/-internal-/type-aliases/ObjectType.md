@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,10 +6,8 @@
 
 # Type Alias: ObjectType
 
-> **ObjectType**: `"state"` \| `"channel"` \| `"device"` \| `"folder"` \| `"enum"` \| `"adapter"` \| `"config"` \| `"group"` \| `"host"` \| `"instance"` \| `"meta"` \| `"script"` \| `"user"` \| `"chart"` \| `"schedule"` \| `"design"`
+> **ObjectType** = `"state"` \| `"channel"` \| `"device"` \| `"folder"` \| `"enum"` \| `"adapter"` \| `"config"` \| `"group"` \| `"host"` \| `"instance"` \| `"meta"` \| `"script"` \| `"user"` \| `"chart"` \| `"schedule"` \| `"design"`
+
+Defined in: [types-dev/objects.d.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L41)
 
 Defines the existing object types in ioBroker
-
-## Defined in
-
-[types-dev/objects.d.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/b9a70c027cb15ad8422cad463063f61693ea0378/packages/types-dev/objects.d.ts#L41)

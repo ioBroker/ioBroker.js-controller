@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,20 +6,24 @@
 
 # Type Alias: GetEnumCallback()
 
-> **GetEnumCallback**: (`err`?, `enums`?, `requestedEnum`?) => `void`
+> **GetEnumCallback** = (`err?`, `enums?`, `requestedEnum?`) => `void`
+
+Defined in: [types-dev/index.d.ts:430](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L430)
 
 ## Parameters
 
-• **err?**: `Error` \| `null`
+### err?
 
-• **enums?**: `Record`\<`string`, [`EnumObject`](../interfaces/EnumObject.md)\>
+`Error` | `null`
 
-• **requestedEnum?**: `string`
+### enums?
+
+`Record`\<`string`, [`EnumObject`](../interfaces/EnumObject.md)\>
+
+### requestedEnum?
+
+`string`
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[types-dev/index.d.ts:430](https://github.com/ioBroker/ioBroker.js-controller/blob/b9a70c027cb15ad8422cad463063f61693ea0378/packages/types-dev/index.d.ts#L430)

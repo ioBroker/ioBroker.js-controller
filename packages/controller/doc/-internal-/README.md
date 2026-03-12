@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../README.md)
 
 ***
 
@@ -6,13 +6,11 @@
 
 # \<internal\>
 
-## Index
-
-### Enumerations
+## Enumerations
 
 - [STATE\_QUALITY](enumerations/STATE_QUALITY.md)
 
-### Classes
+## Classes
 
 - [Log](classes/Log.md)
 - [ObjectsInRedisClient](classes/ObjectsInRedisClient.md)
@@ -20,7 +18,7 @@
 - [UserInterfaceMessagingController](classes/UserInterfaceMessagingController.md)
 - [Validator](classes/Validator.md)
 
-### Interfaces
+## Interfaces
 
 - [ACLObject](interfaces/ACLObject.md)
 - [AdapterCommon](interfaces/AdapterCommon.md)
@@ -202,7 +200,7 @@
 - [VisWidget](interfaces/VisWidget.md)
 - [WriteFileOptions](interfaces/WriteFileOptions.md)
 
-### Type Aliases
+## Type Aliases
 
 - [Adapter](type-aliases/Adapter.md)
 - [AdapterScopedObject](type-aliases/AdapterScopedObject.md)
@@ -216,7 +214,7 @@
 - [Callback](type-aliases/Callback.md)
 - [CallbackReturnTypeOf](type-aliases/CallbackReturnTypeOf.md)
 - [ChangeFunction](type-aliases/ChangeFunction.md)
-- [ChangeFunction](type-aliases/ChangeFunction.md)
+- [ChangeFunction](type-aliases/ChangeFunction-1.md)
 - [Channel](type-aliases/Channel.md)
 - [CheckFileCallback](type-aliases/CheckFileCallback.md)
 - [CheckFileRightsCallback](type-aliases/CheckFileRightsCallback.md)
@@ -301,7 +299,7 @@
 - [PartialChartObject](type-aliases/PartialChartObject.md)
 - [PartialObjectWorker](type-aliases/PartialObjectWorker.md)
 - [Pattern](type-aliases/Pattern.md)
-- [Pattern](type-aliases/Pattern.md)
+- [Pattern](type-aliases/Pattern-1.md)
 - [Plugin](type-aliases/Plugin.md)
 - [ReadDirCallback](type-aliases/ReadDirCallback.md)
 - [ReadDirPromise](type-aliases/ReadDirPromise.md)

@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,18 +6,20 @@
 
 # Type Alias: GetEncryptedConfigCallback()
 
-> **GetEncryptedConfigCallback**: (`error`, `result`?) => `void`
+> **GetEncryptedConfigCallback** = (`error`, `result?`) => `void`
+
+Defined in: [adapter/src/lib/\_Types.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/_Types.ts#L350)
 
 ## Parameters
 
-• **error**: `Error` \| `null` \| `undefined`
+### error
 
-• **result?**: `string` \| `string`[]
+`Error` | `null` | `undefined`
+
+### result?
+
+`string` | `string`[]
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[adapter/src/lib/\_Types.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/b9a70c027cb15ad8422cad463063f61693ea0378/packages/adapter/src/lib/_Types.ts#L350)

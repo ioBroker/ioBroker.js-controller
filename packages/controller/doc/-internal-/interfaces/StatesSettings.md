@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,15 +6,15 @@
 
 # Interface: StatesSettings
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:14
+
 ## Properties
 
 ### autoConnect?
 
 > `optional` **autoConnect**: `boolean`
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:20
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:20
 
 ***
 
@@ -22,9 +22,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:20
 
 > `optional` **change**: [`ChangeFunction`](../type-aliases/ChangeFunction.md)
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:18
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:18
 
 ***
 
@@ -32,9 +30,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:18
 
 > `optional` **changeUser**: [`UserChangeFunction`](../type-aliases/UserChangeFunction.md)
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:17
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:17
 
 ***
 
@@ -42,13 +38,11 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:17
 
 > `optional` **connected**: () => `void`
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:15
+
 #### Returns
 
 `void`
-
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:15
 
 ***
 
@@ -56,9 +50,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:15
 
 > **connection**: [`ConnectionOptions`](ConnectionOptions.md)
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:19
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:19
 
 ***
 
@@ -66,13 +58,11 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:19
 
 > `optional` **disconnected**: () => `void`
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:16
+
 #### Returns
 
 `void`
-
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:16
 
 ***
 
@@ -80,9 +70,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:16
 
 > `optional` **hostname**: `string`
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:22
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:22
 
 ***
 
@@ -90,9 +78,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:22
 
 > `optional` **logger**: [`InternalLogger`](../type-aliases/InternalLogger.md)
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:21
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:21
 
 ***
 
@@ -100,9 +86,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:21
 
 > `optional` **metaNamespace**: `string`
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:24
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:24
 
 ***
 
@@ -110,9 +94,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:24
 
 > `optional` **namespace**: `string`
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:23
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:23
 
 ***
 
@@ -120,9 +102,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:23
 
 > `optional` **namespaceLog**: `string`
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:26
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:26
 
 ***
 
@@ -130,9 +110,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:26
 
 > `optional` **namespaceMsg**: `string`
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:27
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:27
 
 ***
 
@@ -140,9 +118,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:27
 
 > `optional` **namespaceSession**: `string`
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:25
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:25
 
 ***
 
@@ -150,6 +126,4 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:25
 
 > `optional` **redisNamespace**: `string`
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:28
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:28

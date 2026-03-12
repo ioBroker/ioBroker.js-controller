@@ -8,4 +8,4 @@
 
 > **Pattern** = `string` \| `string`[]
 
-Defined in: [adapter/src/lib/\_Types.ts:196](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/_Types.ts#L196)
+Defined in: [adapter/src/lib/adapter/validator.ts:6](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/validator.ts#L6)

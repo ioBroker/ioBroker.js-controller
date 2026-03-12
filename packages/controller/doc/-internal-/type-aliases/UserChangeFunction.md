@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,18 +6,20 @@
 
 # Type Alias: UserChangeFunction()
 
-> **UserChangeFunction**: (`id`, `state`) => `void`
+> **UserChangeFunction** = (`id`, `state`) => `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:12
 
 ## Parameters
 
-• **id**: `string`
+### id
 
-• **state**: [`State`](../interfaces/State.md) \| `null`
+`string`
+
+### state
+
+[`State`](../interfaces/State.md) | `null`
 
 ## Returns
 
 `void`
-
-## Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:12

@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,16 +6,20 @@
 
 # Type Alias: AtLeastOne\<T, Req, Opt\>
 
-> **AtLeastOne**\<`T`, `Req`, `Opt`\>: `{ [K in keyof Req]: Omit<Opt, K> & { [P in K]: Req[P] } }`\[keyof `Req`\]
+> **AtLeastOne**\<`T`, `Req`, `Opt`\> = `{ [K in keyof Req]: Omit<Opt, K> & { [P in K]: Req[P] } }`\[keyof `Req`\]
+
+Defined in: [types-dev/index.d.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L15)
 
 ## Type Parameters
 
-• **T**
+### T
 
-• **Req** = `{ [K in keyof T]-?: T[K] }`
+`T`
 
-• **Opt** = `{ [K in keyof T]?: T[K] }`
+### Req
 
-## Defined in
+`Req` = `{ [K in keyof T]-?: T[K] }`
 
-[types-dev/index.d.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/b9a70c027cb15ad8422cad463063f61693ea0378/packages/types-dev/index.d.ts#L15)
+### Opt
+
+`Opt` = `{ [K in keyof T]?: T[K] }`

@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,18 +6,20 @@
 
 # Type Alias: DeleteStateCallback()
 
-> **DeleteStateCallback**: (`err`?, `id`?) => `void`
+> **DeleteStateCallback** = (`err?`, `id?`) => `void`
+
+Defined in: [types-dev/index.d.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L489)
 
 ## Parameters
 
-• **err?**: `Error` \| `null`
+### err?
 
-• **id?**: `string`
+`Error` | `null`
+
+### id?
+
+`string`
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[types-dev/index.d.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/b9a70c027cb15ad8422cad463063f61693ea0378/packages/types-dev/index.d.ts#L489)

@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,20 +6,22 @@
 
 # Interface: InternalGetAdapterObjectsOptions
 
+Defined in: [adapter/src/lib/\_Types.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/_Types.ts#L398)
+
 ## Properties
 
 ### callback()?
 
 > `optional` **callback**: (`objects`) => `void`
 
+Defined in: [adapter/src/lib/\_Types.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/_Types.ts#L399)
+
 #### Parameters
 
-• **objects**: `Record`\<`string`, [`AdapterScopedObject`](../type-aliases/AdapterScopedObject.md)\>
+##### objects
+
+`Record`\<`string`, [`AdapterScopedObject`](../type-aliases/AdapterScopedObject.md)\>
 
 #### Returns
 
 `void`
-
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/b9a70c027cb15ad8422cad463063f61693ea0378/packages/adapter/src/lib/_Types.ts#L399)
