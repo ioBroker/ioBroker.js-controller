@@ -74,7 +74,7 @@
   "scripts": {
     "clean": "rimraf packages/*/build packages/*/*.tsbuildinfo",
     "build:doc": "lerna run build:doc",
-    "build:ts": "lerna run build --ignore '@iobroker/types'",
+    "build:ts": "lerna run build --ignore \"@iobroker/types\"",
     "build:types": "npm run build --workspace=@iobroker/types",
     "build": "npm run build:ts && npm run build:types",
     "npm": "npm i --ignore-scripts",
