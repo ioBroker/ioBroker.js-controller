@@ -16,7 +16,7 @@ The client id, which can be used to send information to clients
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:138](https://github.com/ioBroker/ioBroker.js-controller/blob/9f69ee00462d8a34f3189a35b41e51f0166408bb/packages/adapter/src/lib/_Types.ts#L138)
+[adapter/src/lib/\_Types.ts:138](https://github.com/ioBroker/ioBroker.js-controller/blob/11e394c119a9fed360edef633a71c58ba7d0f625/packages/adapter/src/lib/_Types.ts#L138)
 
 ***
 
@@ -28,4 +28,4 @@ The message used for subscription
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:140](https://github.com/ioBroker/ioBroker.js-controller/blob/9f69ee00462d8a34f3189a35b41e51f0166408bb/packages/adapter/src/lib/_Types.ts#L140)
+[adapter/src/lib/\_Types.ts:140](https://github.com/ioBroker/ioBroker.js-controller/blob/11e394c119a9fed360edef633a71c58ba7d0f625/packages/adapter/src/lib/_Types.ts#L140)
