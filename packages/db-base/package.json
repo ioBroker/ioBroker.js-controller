@@ -7,7 +7,7 @@
     },
     "dependencies": {
         "@iobroker/js-controller-common-db": "file:../common-db",
-        "deep-clone": "^3.0.3",
+        "deep-clone": "^4.0.0",
         "fs-extra": "^11.3.2",
         "respjs": "^4.2.0"
     },

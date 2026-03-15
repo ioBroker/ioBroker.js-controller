@@ -16,7 +16,7 @@
         "@iobroker/js-controller-common": "file:../common",
         "@iobroker/js-controller-common-db": "file:../common-db",
         "@iobroker/plugin-base": "~3.0.3",
-        "deep-clone": "^3.0.3",
+        "deep-clone": "^4.0.0",
         "fs-extra": "^11.3.2",
         "jsonwebtoken": "^9.0.0",
         "node-schedule": "^2.1.0",

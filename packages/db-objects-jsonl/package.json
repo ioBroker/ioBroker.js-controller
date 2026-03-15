@@ -10,7 +10,7 @@
         "@iobroker/db-base": "file:../db-base",
         "@iobroker/db-objects-file": "file:../db-objects-file",
         "@iobroker/db-objects-redis": "file:../db-objects-redis",
-        "deep-clone": "^3.0.3",
+        "deep-clone": "^4.0.0",
         "fs-extra": "^11.3.2"
     },
     "keywords": [
