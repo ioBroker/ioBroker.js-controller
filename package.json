@@ -55,7 +55,7 @@
     "@types/yargs": "^17.0.8",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
-    "cpy-cli": "^4.2.0",
+    "cpy-cli": "^7.0.0",
     "fs-extra": "^11.3.2",
     "lerna": "^7.4.2",
     "mocha": "^10.4.0",
