@@ -10,3 +10,5 @@ export const SYSTEM_CONFIG_ID = 'system.config';
 export const HIGHEST_UNICODE_SYMBOL = '\u9999';
 /** Default limit for generating a warning if exceeding the number of objects per instance */
 export const DEFAULT_OBJECTS_WARN_LIMIT = 5_000;
+/** Next js-controller major version */
+export const NEXT_MAJOR_VERSION = '8';
