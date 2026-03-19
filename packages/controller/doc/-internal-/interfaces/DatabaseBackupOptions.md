@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:5](https://github.com/ioBroker/ioBroker.js-controller/blob/bee351f4d47b8514a65f3989abba63ceb50ec7f1/packages/types-dev/config.d.ts#L5)
+[types-dev/config.d.ts:5](https://github.com/ioBroker/ioBroker.js-controller/blob/9578039c8a5bfce788012a461faa974b521b9d71/packages/types-dev/config.d.ts#L5)
 
 ***
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/bee351f4d47b8514a65f3989abba63ceb50ec7f1/packages/types-dev/config.d.ts#L8)
+[types-dev/config.d.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/9578039c8a5bfce788012a461faa974b521b9d71/packages/types-dev/config.d.ts#L8)
 
 ***
 
@@ -34,7 +34,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:14](https://github.com/ioBroker/ioBroker.js-controller/blob/bee351f4d47b8514a65f3989abba63ceb50ec7f1/packages/types-dev/config.d.ts#L14)
+[types-dev/config.d.ts:14](https://github.com/ioBroker/ioBroker.js-controller/blob/9578039c8a5bfce788012a461faa974b521b9d71/packages/types-dev/config.d.ts#L14)
 
 ***
 
@@ -44,7 +44,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/bee351f4d47b8514a65f3989abba63ceb50ec7f1/packages/types-dev/config.d.ts#L11)
+[types-dev/config.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/9578039c8a5bfce788012a461faa974b521b9d71/packages/types-dev/config.d.ts#L11)
 
 ***
 
@@ -54,7 +54,7 @@
 
 #### Defined in
 
-[types-dev/config.d.ts:2](https://github.com/ioBroker/ioBroker.js-controller/blob/bee351f4d47b8514a65f3989abba63ceb50ec7f1/packages/types-dev/config.d.ts#L2)
+[types-dev/config.d.ts:2](https://github.com/ioBroker/ioBroker.js-controller/blob/9578039c8a5bfce788012a461faa974b521b9d71/packages/types-dev/config.d.ts#L2)
 
 ***
 
@@ -66,7 +66,7 @@ Minimal number of backup files, after the deletion will be executed according to
 
 #### Defined in
 
-[types-dev/config.d.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/bee351f4d47b8514a65f3989abba63ceb50ec7f1/packages/types-dev/config.d.ts#L4)
+[types-dev/config.d.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/9578039c8a5bfce788012a461faa974b521b9d71/packages/types-dev/config.d.ts#L4)
 
 ***
 
@@ -78,7 +78,7 @@ All backups older than configured hours will be deleted. But only if the number 
 
 #### Defined in
 
-[types-dev/config.d.ts:7](https://github.com/ioBroker/ioBroker.js-controller/blob/bee351f4d47b8514a65f3989abba63ceb50ec7f1/packages/types-dev/config.d.ts#L7)
+[types-dev/config.d.ts:7](https://github.com/ioBroker/ioBroker.js-controller/blob/9578039c8a5bfce788012a461faa974b521b9d71/packages/types-dev/config.d.ts#L7)
 
 ***
 
@@ -90,7 +90,7 @@ Absolute path to back-up directory or empty to back-up in data directory
 
 #### Defined in
 
-[types-dev/config.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/bee351f4d47b8514a65f3989abba63ceb50ec7f1/packages/types-dev/config.d.ts#L13)
+[types-dev/config.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/9578039c8a5bfce788012a461faa974b521b9d71/packages/types-dev/config.d.ts#L13)
 
 ***
 
@@ -102,4 +102,4 @@ By default backup every 2 hours. Time is in minutes. To disable backup set the v
 
 #### Defined in
 
-[types-dev/config.d.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/bee351f4d47b8514a65f3989abba63ceb50ec7f1/packages/types-dev/config.d.ts#L10)
+[types-dev/config.d.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/9578039c8a5bfce788012a461faa974b521b9d71/packages/types-dev/config.d.ts#L10)
