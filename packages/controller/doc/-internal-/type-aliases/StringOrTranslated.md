@@ -12,4 +12,4 @@ For objects, we require the English language to be present
 
 ## Defined in
 
-[types-dev/objects.d.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/20731445acbf2e9ffb7c376933eed97b9ba6f608/packages/types-dev/objects.d.ts#L166)
+[types-dev/objects.d.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/7498cd609a8e6e0d191a2467d677929ccc069fc5/packages/types-dev/objects.d.ts#L166)
