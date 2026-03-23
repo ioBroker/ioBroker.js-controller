@@ -16,7 +16,7 @@ The log line to report
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:578](https://github.com/ioBroker/ioBroker.js-controller/blob/7498cd609a8e6e0d191a2467d677929ccc069fc5/packages/adapter/src/lib/_Types.ts#L578)
+[adapter/src/lib/\_Types.ts:578](https://github.com/ioBroker/ioBroker.js-controller/blob/18695735ffc11d8f5dfb2754fb9c365afd7928e5/packages/adapter/src/lib/_Types.ts#L578)
 
 ***
 
@@ -28,4 +28,4 @@ Version in which this warning will throw an error instead
 
 #### Defined in
 
-[adapter/src/lib/\_Types.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/7498cd609a8e6e0d191a2467d677929ccc069fc5/packages/adapter/src/lib/_Types.ts#L576)
+[adapter/src/lib/\_Types.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/18695735ffc11d8f5dfb2754fb9c365afd7928e5/packages/adapter/src/lib/_Types.ts#L576)
