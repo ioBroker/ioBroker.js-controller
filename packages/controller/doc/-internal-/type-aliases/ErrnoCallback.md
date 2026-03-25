@@ -20,4 +20,4 @@ Special variant of ErrorCallback for methods where Node.js returns an ErrnoExcep
 
 ## Defined in
 
-[types-dev/index.d.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/35d87c5cf46009c6451166aed3e16f755f4b6691/packages/types-dev/index.d.ts#L414)
+[types-dev/index.d.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/9642a3515f34e88b8baebd8c144d4f143afd8463/packages/types-dev/index.d.ts#L414)
