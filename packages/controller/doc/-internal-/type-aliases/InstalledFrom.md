@@ -12,4 +12,4 @@ Installed from attribute of instance/adapter object
 
 ## Defined in
 
-[types-dev/objects.d.ts:356](https://github.com/ioBroker/ioBroker.js-controller/blob/9642a3515f34e88b8baebd8c144d4f143afd8463/packages/types-dev/objects.d.ts#L356)
+[types-dev/objects.d.ts:356](https://github.com/ioBroker/ioBroker.js-controller/blob/2abf558236fc2443bbfcedad913cae9aac579555/packages/types-dev/objects.d.ts#L356)
