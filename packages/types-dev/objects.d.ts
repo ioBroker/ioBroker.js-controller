@@ -652,8 +652,6 @@ declare global {
                 name?: StringOrTranslated;
                 /** Base 64 icon for the tab */
                 icon?: string;
-                /** @deprecated icon name for FontAwesome (works only in admin 4)*/
-                'fa-icon'?: string;
                 /** If true, the Tab is not reloaded when the configuration changes */
                 ignoreConfigUpdate?: boolean;
                 /** Describes which URL should be loaded in the tab. Supports placeholders like http://%ip%:%port% or JSON(5) configs. If empty, `adapter/ADAPTERNAME/tab(_m).html` will be taken. JSON config file must be defined relative to the "admin" folder, like "jsonTab.json"  */
