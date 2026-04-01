@@ -191,7 +191,7 @@ declare global {
         }
 
         type SmartNameObject = { [lang in ioBroker.Languages]?: string } & {
-            /** Which kind of device it is */
+            /** Description of which kind of device it is */
             smartType?: string | null;
             /** Which value to set when the ON command is issued */
             byON?: string | null;
@@ -907,13 +907,13 @@ declare global {
             defaultHistory: string;
             /** Which diag data is allowed to be sent */
             diag: 'none' | 'extended' | 'no-city';
-            /** If license has already been confirmed */
+            /** If the license has already been confirmed */
             licenseConfirmed: boolean;
             /** System wide default log level */
             defaultLogLevel?: LogLevel;
             /** Used date format for formatting */
             dateFormat: string;
-            /** This name will be shown in admin's header. Just to identify the whole installation */
+            /** This name will be shown in the admin's header. Just to identify the whole installation */
             siteName?: string;
             /** Default acl for new objects */
             defaultNewAcl: {
