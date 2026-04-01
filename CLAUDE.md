@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ioBroker.js-controller is the core runtime of the ioBroker smart home automation platform. It manages adapter processes, the central configuration, and provides the runtime environment. Written in TypeScript, it's a Lerna-managed monorepo using Yarn workspaces.
+ioBroker.js-controller is the core runtime of the ioBroker smart home automation platform. It manages adapter processes, the central configuration, and provides the runtime environment. Written in TypeScript, it's a Lerna-managed monorepo using npm workspaces.
 
 ## Common Commands
 
