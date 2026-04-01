@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,15 +6,15 @@
 
 # Interface: SetStateChangedResult
 
-Defined in: [adapter/src/lib/\_Types.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/_Types.ts#L237)
-
 ## Properties
 
 ### id
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/_Types.ts#L239)
+#### Defined in
+
+[adapter/src/lib/\_Types.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L239)
 
 ***
 
@@ -22,4 +22,6 @@ Defined in: [adapter/src/lib/\_Types.ts:239](https://github.com/ioBroker/ioBroke
 
 > **notChanged**: `boolean`
 
-Defined in: [adapter/src/lib/\_Types.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/_Types.ts#L238)
+#### Defined in
+
+[adapter/src/lib/\_Types.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L238)

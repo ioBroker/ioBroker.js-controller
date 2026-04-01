@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,17 +6,17 @@
 
 # Interface: GetHistoryOptions
 
-Defined in: [types-dev/index.d.ts:295](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L295)
-
 ## Properties
 
 ### ack?
 
 > `optional` **ack**: `boolean`
 
-Defined in: [types-dev/index.d.ts:308](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L308)
-
 if `ack` field should be included in answer
+
+#### Defined in
+
+[types-dev/index.d.ts:308](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L308)
 
 ***
 
@@ -24,9 +24,11 @@ if `ack` field should be included in answer
 
 > `optional` **addId**: `boolean`
 
-Defined in: [types-dev/index.d.ts:312](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L312)
-
 if `id` field should be included in answer
+
+#### Defined in
+
+[types-dev/index.d.ts:312](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L312)
 
 ***
 
@@ -34,9 +36,11 @@ if `id` field should be included in answer
 
 > `optional` **aggregate**: `"min"` \| `"max"` \| `"count"` \| `"none"` \| `"onchange"` \| `"minmax"` \| `"average"` \| `"total"` \| `"percentile"` \| `"quantile"` \| `"integral"` \| `"integralTotal"`
 
-Defined in: [types-dev/index.d.ts:322](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L322)
-
 aggregate method (Default: 'average')
+
+#### Defined in
+
+[types-dev/index.d.ts:322](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L322)
 
 ***
 
@@ -44,9 +48,11 @@ aggregate method (Default: 'average')
 
 > `optional` **count**: `number`
 
-Defined in: [types-dev/index.d.ts:304](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L304)
-
 number of values if aggregate is 'onchange' or number of intervals if other aggregate method. Count will be ignored if step is set, else default is 500 if not set
+
+#### Defined in
+
+[types-dev/index.d.ts:304](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L304)
 
 ***
 
@@ -54,9 +60,11 @@ number of values if aggregate is 'onchange' or number of intervals if other aggr
 
 > `optional` **end**: `number`
 
-Defined in: [types-dev/index.d.ts:300](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L300)
-
 End time in ms. If not defined, it is "now"
+
+#### Defined in
+
+[types-dev/index.d.ts:300](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L300)
 
 ***
 
@@ -64,9 +72,11 @@ End time in ms. If not defined, it is "now"
 
 > `optional` **from**: `boolean`
 
-Defined in: [types-dev/index.d.ts:306](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L306)
-
 if `from` field should be included in answer
+
+#### Defined in
+
+[types-dev/index.d.ts:306](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L306)
 
 ***
 
@@ -74,9 +84,11 @@ if `from` field should be included in answer
 
 > `optional` **ignoreNull**: `boolean` \| `0`
 
-Defined in: [types-dev/index.d.ts:318](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L318)
-
 if null values should be included (false), replaced by last not null value (true) or replaced with 0 (0)
+
+#### Defined in
+
+[types-dev/index.d.ts:318](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L318)
 
 ***
 
@@ -84,7 +96,9 @@ if null values should be included (false), replaced by last not null value (true
 
 > `optional` **instance**: `string`
 
-Defined in: [types-dev/index.d.ts:296](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L296)
+#### Defined in
+
+[types-dev/index.d.ts:296](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L296)
 
 ***
 
@@ -92,9 +106,11 @@ Defined in: [types-dev/index.d.ts:296](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **integralInterpolation**: `"none"` \| `"linear"`
 
-Defined in: [types-dev/index.d.ts:346](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L346)
-
 when using aggregate method `integral` defines the interpolation method (defaults to `none`).
+
+#### Defined in
+
+[types-dev/index.d.ts:346](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L346)
 
 ***
 
@@ -102,9 +118,11 @@ when using aggregate method `integral` defines the interpolation method (default
 
 > `optional` **integralUnit**: `number`
 
-Defined in: [types-dev/index.d.ts:344](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L344)
-
 when using aggregate method `integral` defines the unit in seconds (defaults to 60 seconds). E.g., to get integral in hours for Wh or such, set to 3600.
+
+#### Defined in
+
+[types-dev/index.d.ts:344](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L344)
 
 ***
 
@@ -112,9 +130,11 @@ when using aggregate method `integral` defines the unit in seconds (defaults to 
 
 > `optional` **limit**: `number`
 
-Defined in: [types-dev/index.d.ts:314](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L314)
-
 do not return more entries than limit
+
+#### Defined in
+
+[types-dev/index.d.ts:314](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L314)
 
 ***
 
@@ -122,9 +142,11 @@ do not return more entries than limit
 
 > `optional` **percentile**: `number`
 
-Defined in: [types-dev/index.d.ts:340](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L340)
-
 when using aggregate method `percentile` defines the percentile level (0..100)(defaults to 50)
+
+#### Defined in
+
+[types-dev/index.d.ts:340](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L340)
 
 ***
 
@@ -132,9 +154,11 @@ when using aggregate method `percentile` defines the percentile level (0..100)(d
 
 > `optional` **q**: `boolean`
 
-Defined in: [types-dev/index.d.ts:310](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L310)
-
 if `q` field should be included in answer
+
+#### Defined in
+
+[types-dev/index.d.ts:310](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L310)
 
 ***
 
@@ -142,9 +166,11 @@ if `q` field should be included in answer
 
 > `optional` **quantile**: `number`
 
-Defined in: [types-dev/index.d.ts:342](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L342)
-
 when using aggregate method `quantile` defines the quantile level (0..1)(defaults to 0.5)
+
+#### Defined in
+
+[types-dev/index.d.ts:342](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L342)
 
 ***
 
@@ -152,9 +178,11 @@ when using aggregate method `quantile` defines the quantile level (0..1)(default
 
 > `optional` **removeBorderValues**: `boolean`
 
-Defined in: [types-dev/index.d.ts:338](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L338)
-
 By default, the additional border values are returned to optimize charting. Set this option to true if this is not wanted (e.g., for script data processing)
+
+#### Defined in
+
+[types-dev/index.d.ts:338](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L338)
 
 ***
 
@@ -162,9 +190,11 @@ By default, the additional border values are returned to optimize charting. Set 
 
 > `optional` **returnNewestEntries**: `boolean`
 
-Defined in: [types-dev/index.d.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L336)
-
 Returned data is normally sorted ascending by date, this option lets you return the newest instead of the oldest values if the number of returned points is limited
+
+#### Defined in
+
+[types-dev/index.d.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L336)
 
 ***
 
@@ -172,9 +202,11 @@ Returned data is normally sorted ascending by date, this option lets you return 
 
 > `optional` **round**: `number`
 
-Defined in: [types-dev/index.d.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L316)
-
 round result to number of digits after decimal point
+
+#### Defined in
+
+[types-dev/index.d.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L316)
 
 ***
 
@@ -182,9 +214,11 @@ round result to number of digits after decimal point
 
 > `optional` **sessionId**: `number`
 
-Defined in: [types-dev/index.d.ts:320](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L320)
-
 This number will be returned in answer, so the client can assign the request for it
+
+#### Defined in
+
+[types-dev/index.d.ts:320](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L320)
 
 ***
 
@@ -192,9 +226,11 @@ This number will be returned in answer, so the client can assign the request for
 
 > `optional` **start**: `number`
 
-Defined in: [types-dev/index.d.ts:298](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L298)
-
 Start time in ms
+
+#### Defined in
+
+[types-dev/index.d.ts:298](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L298)
 
 ***
 
@@ -202,16 +238,20 @@ Start time in ms
 
 > `optional` **step**: `number`
 
-Defined in: [types-dev/index.d.ts:302](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L302)
-
 Step in ms of intervals. Used in aggregate (max, min, average, total, ...)
+
+#### Defined in
+
+[types-dev/index.d.ts:302](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L302)
 
 ***
 
 ### user?
 
-> `optional` **user**: `` `system.user.${string}` ``
-
-Defined in: [types-dev/index.d.ts:348](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L348)
+> `optional` **user**: \`system.user.$\{string\}\`
 
 If user is set, it will be checked if this user may read the variable
+
+#### Defined in
+
+[types-dev/index.d.ts:348](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L348)

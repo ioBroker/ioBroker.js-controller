@@ -1,12 +1,10 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / SystemConfigCommon
 
 # Interface: SystemConfigCommon
-
-Defined in: [types-dev/objects.d.ts:863](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L863)
 
 ## Extends
 
@@ -18,17 +16,17 @@ Defined in: [types-dev/objects.d.ts:863](https://github.com/ioBroker/ioBroker.js
 
 > **activeRepo**: `string`[]
 
-Defined in: [types-dev/objects.d.ts:865](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L865)
-
 Name of all active repositories
+
+#### Defined in
+
+[types-dev/objects.d.ts:865](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L865)
 
 ***
 
 ### adapterAutoUpgrade?
 
 > `optional` **adapterAutoUpgrade**: `object`
-
-Defined in: [types-dev/objects.d.ts:905](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L905)
 
 Configured auto upgrade policy
 
@@ -46,7 +44,11 @@ Configuration for each repository
 
 ##### Index Signature
 
-\[`repoName`: `string`\]: `boolean`
+ \[`repoName`: `string`\]: `boolean`
+
+#### Defined in
+
+[types-dev/objects.d.ts:905](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L905)
 
 ***
 
@@ -54,9 +56,11 @@ Configuration for each repository
 
 > `optional` **city**: `string`
 
-Defined in: [types-dev/objects.d.ts:875](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L875)
-
 Optional user's city (only for diagnostics)
+
+#### Defined in
+
+[types-dev/objects.d.ts:875](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L875)
 
 ***
 
@@ -64,13 +68,15 @@ Optional user's city (only for diagnostics)
 
 > `optional` **color**: `string`
 
-Defined in: [types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L183)
-
 Color attribute used in UI
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`color`](ObjectCommon.md#color)
+
+#### Defined in
+
+[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L183)
 
 ***
 
@@ -78,9 +84,11 @@ Color attribute used in UI
 
 > `optional` **country**: `string`
 
-Defined in: [types-dev/objects.d.ts:877](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L877)
-
 Optional user's country (only for diagnostics)
+
+#### Defined in
+
+[types-dev/objects.d.ts:877](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L877)
 
 ***
 
@@ -88,9 +96,11 @@ Optional user's country (only for diagnostics)
 
 > `optional` **currency**: `string`
 
-Defined in: [types-dev/objects.d.ts:881](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L881)
-
 User-defined currency
+
+#### Defined in
+
+[types-dev/objects.d.ts:881](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L881)
 
 ***
 
@@ -98,7 +108,9 @@ User-defined currency
 
 > `optional` **custom**: `undefined`
 
-Defined in: [types-dev/objects.d.ts:928](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L928)
+#### Defined in
+
+[types-dev/objects.d.ts:928](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L928)
 
 ***
 
@@ -106,9 +118,11 @@ Defined in: [types-dev/objects.d.ts:928](https://github.com/ioBroker/ioBroker.js
 
 > **dateFormat**: `string`
 
-Defined in: [types-dev/objects.d.ts:893](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L893)
-
 Used date format for formatting
+
+#### Defined in
+
+[types-dev/objects.d.ts:893](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L893)
 
 ***
 
@@ -116,9 +130,11 @@ Used date format for formatting
 
 > **defaultHistory**: `string`
 
-Defined in: [types-dev/objects.d.ts:885](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L885)
-
 Default history instance
+
+#### Defined in
+
+[types-dev/objects.d.ts:885](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L885)
 
 ***
 
@@ -126,17 +142,17 @@ Default history instance
 
 > `optional` **defaultLogLevel**: [`LogLevel`](../type-aliases/LogLevel.md)
 
-Defined in: [types-dev/objects.d.ts:891](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L891)
-
 System wide default log level
+
+#### Defined in
+
+[types-dev/objects.d.ts:891](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L891)
 
 ***
 
 ### defaultNewAcl
 
 > **defaultNewAcl**: `object`
-
-Defined in: [types-dev/objects.d.ts:897](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L897)
 
 Default acl for new objects
 
@@ -150,15 +166,19 @@ Default acl for new objects
 
 #### owner
 
-> **owner**: `` `system.user.${string}` ``
+> **owner**: \`system.user.$\{string\}\`
 
 #### ownerGroup
 
-> **ownerGroup**: `` `system.group.${string}` ``
+> **ownerGroup**: \`system.group.$\{string\}\`
 
 #### state
 
 > **state**: `number`
+
+#### Defined in
+
+[types-dev/objects.d.ts:897](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L897)
 
 ***
 
@@ -166,13 +186,15 @@ Default acl for new objects
 
 > `optional` **desc**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
-Defined in: [types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L175)
-
 Description of this object
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`desc`](ObjectCommon.md#desc)
+
+#### Defined in
+
+[types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L175)
 
 ***
 
@@ -180,9 +202,11 @@ Description of this object
 
 > **diag**: `"none"` \| `"extended"` \| `"no-city"`
 
-Defined in: [types-dev/objects.d.ts:887](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L887)
-
 Which diag data is allowed to be sent
+
+#### Defined in
+
+[types-dev/objects.d.ts:887](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L887)
 
 ***
 
@@ -190,13 +214,15 @@ Which diag data is allowed to be sent
 
 > `optional` **dontDelete**: `true`
 
-Defined in: [types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L178)
-
 When set to true, this object may not be deleted
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`dontDelete`](ObjectCommon.md#dontdelete)
+
+#### Defined in
+
+[types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L178)
 
 ***
 
@@ -204,13 +230,15 @@ When set to true, this object may not be deleted
 
 > `optional` **expert**: `true`
 
-Defined in: [types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L181)
-
 When set to true, this object is only visible when expert mode is turned on in admin
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`expert`](ObjectCommon.md#expert)
+
+#### Defined in
+
+[types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L181)
 
 ***
 
@@ -218,9 +246,11 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 > `optional` **expertMode**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:925](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L925)
-
 Global saved expert mode for admin
+
+#### Defined in
+
+[types-dev/objects.d.ts:925](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L925)
 
 ***
 
@@ -228,9 +258,11 @@ Global saved expert mode for admin
 
 > `optional` **firstDayOfWeek**: `"monday"` \| `"sunday"`
 
-Defined in: [types-dev/objects.d.ts:883](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L883)
-
 User-defined first day of the week
+
+#### Defined in
+
+[types-dev/objects.d.ts:883](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L883)
 
 ***
 
@@ -238,13 +270,15 @@ User-defined first day of the week
 
 > `optional` **icon**: `string`
 
-Defined in: [types-dev/objects.d.ts:188](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L188)
-
 Icon for this object
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`icon`](ObjectCommon.md#icon)
+
+#### Defined in
+
+[types-dev/objects.d.ts:188](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L188)
 
 ***
 
@@ -252,9 +286,11 @@ Icon for this object
 
 > `optional` **intro**: `string`[]
 
-Defined in: [types-dev/objects.d.ts:914](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L914)
-
 Deactivated instances, that should not be shown in admin/Intro page
+
+#### Defined in
+
+[types-dev/objects.d.ts:914](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L914)
 
 ***
 
@@ -262,9 +298,11 @@ Deactivated instances, that should not be shown in admin/Intro page
 
 > **isFloatComma**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:869](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L869)
-
 If floating comma is used instead of dot
+
+#### Defined in
+
+[types-dev/objects.d.ts:869](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L869)
 
 ***
 
@@ -272,9 +310,11 @@ If floating comma is used instead of dot
 
 > **language**: [`Languages`](../type-aliases/Languages.md)
 
-Defined in: [types-dev/objects.d.ts:867](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L867)
-
 Current configured language
+
+#### Defined in
+
+[types-dev/objects.d.ts:867](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L867)
 
 ***
 
@@ -282,9 +322,11 @@ Current configured language
 
 > `optional` **latitude**: `number`
 
-Defined in: [types-dev/objects.d.ts:873](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L873)
-
 Configured latitude
+
+#### Defined in
+
+[types-dev/objects.d.ts:873](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L873)
 
 ***
 
@@ -292,9 +334,11 @@ Configured latitude
 
 > **licenseConfirmed**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:889](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L889)
-
 If license has already been confirmed
+
+#### Defined in
+
+[types-dev/objects.d.ts:889](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L889)
 
 ***
 
@@ -302,9 +346,11 @@ If license has already been confirmed
 
 > `optional` **longitude**: `number`
 
-Defined in: [types-dev/objects.d.ts:871](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L871)
-
 Configured longitude
+
+#### Defined in
+
+[types-dev/objects.d.ts:871](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L871)
 
 ***
 
@@ -312,13 +358,15 @@ Configured longitude
 
 > **name**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
-Defined in: [types-dev/objects.d.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L172)
-
 The name of this object as a simple string or an object with translations
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`name`](ObjectCommon.md#name)
+
+#### Defined in
+
+[types-dev/objects.d.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L172)
 
 ***
 
@@ -326,13 +374,15 @@ The name of this object as a simple string or an object with translations
 
 > `optional` **role**: `string`
 
-Defined in: [types-dev/objects.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L190)
-
 role of the object
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`role`](ObjectCommon.md#role)
+
+#### Defined in
+
+[types-dev/objects.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L190)
 
 ***
 
@@ -340,9 +390,11 @@ role of the object
 
 > `optional` **siteName**: `string`
 
-Defined in: [types-dev/objects.d.ts:895](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L895)
-
 This name will be shown in admin's header. Just to identify the whole installation
+
+#### Defined in
+
+[types-dev/objects.d.ts:895](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L895)
 
 ***
 
@@ -350,27 +402,11 @@ This name will be shown in admin's header. Just to identify the whole installati
 
 > `optional` **tabsVisible**: `object`[]
 
-Defined in: [types-dev/objects.d.ts:916](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L916)
-
 Defines which tabs are visible in the left menu of the admin
 
-#### color?
+#### Defined in
 
-> `optional` **color**: `string`
-
-Optional color of the tab
-
-#### name
-
-> **name**: `string`
-
-Name of the tab
-
-#### visible
-
-> **visible**: `boolean`
-
-If the tab should be visible
+[types-dev/objects.d.ts:916](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L916)
 
 ***
 
@@ -378,6 +414,8 @@ If the tab should be visible
 
 > `optional` **tempUnit**: `"°C"` \| `"°F"`
 
-Defined in: [types-dev/objects.d.ts:879](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L879)
-
 User-defined temperature unit
+
+#### Defined in
+
+[types-dev/objects.d.ts:879](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L879)

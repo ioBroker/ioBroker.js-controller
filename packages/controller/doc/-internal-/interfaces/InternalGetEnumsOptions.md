@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,15 +6,15 @@
 
 # Interface: InternalGetEnumsOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:416](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/_Types.ts#L416)
-
 ## Properties
 
 ### \_enumList?
 
 > `optional` **\_enumList**: [`EnumList`](../type-aliases/EnumList.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/_Types.ts#L417)
+#### Defined in
+
+[adapter/src/lib/\_Types.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L417)
 
 ***
 
@@ -22,12 +22,16 @@ Defined in: [adapter/src/lib/\_Types.ts:417](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback**: [`GetEnumsCallback`](../type-aliases/GetEnumsCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/_Types.ts#L419)
+#### Defined in
+
+[adapter/src/lib/\_Types.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L419)
 
 ***
 
 ### options?
 
-> `optional` **options**: `Record`\<`string`, `any`\> \| `null`
+> `optional` **options**: `null` \| `Record`\<`string`, `any`\>
 
-Defined in: [adapter/src/lib/\_Types.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/_Types.ts#L418)
+#### Defined in
+
+[adapter/src/lib/\_Types.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L418)

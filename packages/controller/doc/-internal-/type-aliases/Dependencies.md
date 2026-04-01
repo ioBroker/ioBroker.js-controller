@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,8 +6,10 @@
 
 # Type Alias: Dependencies
 
-> **Dependencies** = `object`[] \| `string`[]
-
-Defined in: [types-dev/objects.d.ts:624](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L624)
+> **Dependencies**: `object`[] \| `string`[]
 
 Format for local and global dependencies
+
+## Defined in
+
+[types-dev/objects.d.ts:624](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L624)

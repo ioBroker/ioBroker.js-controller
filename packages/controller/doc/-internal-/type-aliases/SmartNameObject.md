@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,11 +6,9 @@
 
 # Type Alias: SmartNameObject
 
-> **SmartNameObject** = `{ [lang in Languages]?: string }` & `object`
+> **SmartNameObject**: `{ [lang in Languages]?: string }` & `object`
 
-Defined in: [types-dev/objects.d.ts:193](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L193)
-
-## Type Declaration
+## Type declaration
 
 ### byON?
 
@@ -23,3 +21,7 @@ Which value to set when the ON command is issued
 > `optional` **smartType**: `string` \| `null`
 
 Which kind of device it is
+
+## Defined in
+
+[types-dev/objects.d.ts:193](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L193)

@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,18 +6,18 @@
 
 # Type Alias: ErrnoCallback()
 
-> **ErrnoCallback** = (`err?`) => `void`
-
-Defined in: [types-dev/index.d.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L414)
+> **ErrnoCallback**: (`err`?) => `void`
 
 Special variant of ErrorCallback for methods where Node.js returns an ErrnoException
 
 ## Parameters
 
-### err?
-
-`NodeJS.ErrnoException` | `null`
+• **err?**: `NodeJS.ErrnoException` \| `null`
 
 ## Returns
 
 `void`
+
+## Defined in
+
+[types-dev/index.d.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L414)

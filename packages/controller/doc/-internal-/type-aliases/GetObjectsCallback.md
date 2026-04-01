@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,20 +6,18 @@
 
 # Type Alias: GetObjectsCallback()
 
-> **GetObjectsCallback** = (`err?`, `objects?`) => `void`
-
-Defined in: [types-dev/index.d.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L439)
+> **GetObjectsCallback**: (`err`?, `objects`?) => `void`
 
 ## Parameters
 
-### err?
+• **err?**: `Error` \| `null`
 
-`Error` | `null`
-
-### objects?
-
-`Record`\<`string`, [`Object`](Object.md)\>
+• **objects?**: `Record`\<`string`, [`Object`](Object.md)\>
 
 ## Returns
 
 `void`
+
+## Defined in
+
+[types-dev/index.d.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L439)

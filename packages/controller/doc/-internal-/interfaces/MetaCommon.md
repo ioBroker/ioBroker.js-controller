@@ -1,12 +1,10 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / MetaCommon
 
 # Interface: MetaCommon
-
-Defined in: [types-dev/objects.d.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L336)
 
 ## Extends
 
@@ -18,13 +16,15 @@ Defined in: [types-dev/objects.d.ts:336](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **color**: `string`
 
-Defined in: [types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L183)
-
 Color attribute used in UI
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`color`](ObjectCommon.md#color)
+
+#### Defined in
+
+[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L183)
 
 ***
 
@@ -32,7 +32,9 @@ Color attribute used in UI
 
 > `optional` **custom**: `undefined`
 
-Defined in: [types-dev/objects.d.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L341)
+#### Defined in
+
+[types-dev/objects.d.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L341)
 
 ***
 
@@ -40,13 +42,15 @@ Defined in: [types-dev/objects.d.ts:341](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **desc**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
-Defined in: [types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L175)
-
 Description of this object
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`desc`](ObjectCommon.md#desc)
+
+#### Defined in
+
+[types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L175)
 
 ***
 
@@ -54,13 +58,15 @@ Description of this object
 
 > `optional` **dontDelete**: `true`
 
-Defined in: [types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L178)
-
 When set to true, this object may not be deleted
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`dontDelete`](ObjectCommon.md#dontdelete)
+
+#### Defined in
+
+[types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L178)
 
 ***
 
@@ -68,13 +74,15 @@ When set to true, this object may not be deleted
 
 > `optional` **expert**: `true`
 
-Defined in: [types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L181)
-
 When set to true, this object is only visible when expert mode is turned on in admin
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`expert`](ObjectCommon.md#expert)
+
+#### Defined in
+
+[types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L181)
 
 ***
 
@@ -82,13 +90,15 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 > `optional` **icon**: `string`
 
-Defined in: [types-dev/objects.d.ts:188](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L188)
-
 Icon for this object
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`icon`](ObjectCommon.md#icon)
+
+#### Defined in
+
+[types-dev/objects.d.ts:188](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L188)
 
 ***
 
@@ -96,13 +106,15 @@ Icon for this object
 
 > **name**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
-Defined in: [types-dev/objects.d.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L172)
-
 The name of this object as a simple string or an object with translations
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`name`](ObjectCommon.md#name)
+
+#### Defined in
+
+[types-dev/objects.d.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L172)
 
 ***
 
@@ -110,13 +122,15 @@ The name of this object as a simple string or an object with translations
 
 > `optional` **role**: `string`
 
-Defined in: [types-dev/objects.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L190)
-
 role of the object
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`role`](ObjectCommon.md#role)
+
+#### Defined in
+
+[types-dev/objects.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L190)
 
 ***
 
@@ -124,4 +138,6 @@ role of the object
 
 > **type**: `"meta.user"` \| `"meta.folder"`
 
-Defined in: [types-dev/objects.d.ts:338](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L338)
+#### Defined in
+
+[types-dev/objects.d.ts:338](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L338)

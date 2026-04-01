@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,13 +6,9 @@
 
 # Interface: RepositoryJsonAdapterContent
 
-Defined in: [types-dev/objects.d.ts:1052](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1052)
-
 ## Indexable
 
-\[`other`: `string`\]: `unknown`
-
-Other Adapter related properties, not important for this implementation
+ \[`other`: `string`\]: `unknown`
 
 ## Properties
 
@@ -20,9 +16,11 @@ Other Adapter related properties, not important for this implementation
 
 > **blockedVersions**: `string`[]
 
-Defined in: [types-dev/objects.d.ts:1058](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1058)
-
 Array of blocked versions, each entry represents a semver range
+
+#### Defined in
+
+[types-dev/objects.d.ts:1058](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1058)
 
 ***
 
@@ -30,9 +28,11 @@ Array of blocked versions, each entry represents a semver range
 
 > **name**: `string`
 
-Defined in: [types-dev/objects.d.ts:1054](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1054)
-
 Adapter name
+
+#### Defined in
+
+[types-dev/objects.d.ts:1054](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1054)
 
 ***
 
@@ -40,9 +40,11 @@ Adapter name
 
 > `optional` **packetName**: `string`
 
-Defined in: [types-dev/objects.d.ts:1062](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1062)
-
 If given, the packet name differs from the adapter name, e.g. because it is a scoped package
+
+#### Defined in
+
+[types-dev/objects.d.ts:1062](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1062)
 
 ***
 
@@ -50,9 +52,11 @@ If given, the packet name differs from the adapter name, e.g. because it is a sc
 
 > `optional` **unsafePerm**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:1060](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1060)
-
 If true, the unsafe perm flag is needed on install
+
+#### Defined in
+
+[types-dev/objects.d.ts:1060](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1060)
 
 ***
 
@@ -60,6 +64,8 @@ If true, the unsafe perm flag is needed on install
 
 > **version**: `string`
 
-Defined in: [types-dev/objects.d.ts:1056](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1056)
-
 Newest available version
+
+#### Defined in
+
+[types-dev/objects.d.ts:1056](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1056)

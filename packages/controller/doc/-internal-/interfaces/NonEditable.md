@@ -1,12 +1,10 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / NonEditable
 
 # Interface: NonEditable
-
-Defined in: [types-dev/objects.d.ts:945](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L945)
 
 ioBroker has built-in protection for specific attributes of objects. If this protection is installed in the object, then the protected attributes of an object cannot be changed by the user without a valid password.
 To protect the properties from change, the special attribute "nonEdit" must be added to the object. This attribute contains the password, which is required to change the object.
@@ -20,9 +18,11 @@ Note, that all properties outside "nonEdit" can be updated without providing the
 
 > `optional` **common**: `Record`\<`string`, `any`\>
 
-Defined in: [types-dev/objects.d.ts:951](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L951)
-
 These properties can only be changed by providing the password, else they stay on the initial value
+
+#### Defined in
+
+[types-dev/objects.d.ts:951](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L951)
 
 ***
 
@@ -30,9 +30,11 @@ These properties can only be changed by providing the password, else they stay o
 
 > `optional` **native**: `Record`\<`string`, `any`\>
 
-Defined in: [types-dev/objects.d.ts:953](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L953)
-
 These properties can only be changed by providing the password, else they stay on the initial value
+
+#### Defined in
+
+[types-dev/objects.d.ts:953](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L953)
 
 ***
 
@@ -40,9 +42,11 @@ These properties can only be changed by providing the password, else they stay o
 
 > `optional` **passHash**: `string`
 
-Defined in: [types-dev/objects.d.ts:949](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L949)
-
 Hashed version of current password
+
+#### Defined in
+
+[types-dev/objects.d.ts:949](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L949)
 
 ***
 
@@ -50,6 +54,8 @@ Hashed version of current password
 
 > `optional` **password**: `string`
 
-Defined in: [types-dev/objects.d.ts:947](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L947)
-
 Password needed to edit non-editable information
+
+#### Defined in
+
+[types-dev/objects.d.ts:947](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L947)

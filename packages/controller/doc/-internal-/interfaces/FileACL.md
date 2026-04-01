@@ -1,12 +1,10 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / FileACL
 
 # Interface: FileACL
-
-Defined in: [types-dev/objects.d.ts:7](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L7)
 
 Defines access rights for a single file
 
@@ -20,9 +18,11 @@ Defines access rights for a single file
 
 > **owner**: `string`
 
-Defined in: [types-dev/objects.d.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L9)
-
 Full name of the user who owns this file, e.g. "system.user.admin"
+
+#### Defined in
+
+[types-dev/objects.d.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L9)
 
 ***
 
@@ -30,9 +30,11 @@ Full name of the user who owns this file, e.g. "system.user.admin"
 
 > **ownerGroup**: `string`
 
-Defined in: [types-dev/objects.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L11)
-
 Full name of the group who owns this file, e.g. "system.group.administrator"
+
+#### Defined in
+
+[types-dev/objects.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L11)
 
 ***
 
@@ -40,6 +42,8 @@ Full name of the group who owns this file, e.g. "system.group.administrator"
 
 > **permissions**: `number`
 
-Defined in: [types-dev/objects.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L13)
-
 Linux-type permissions defining access to this file
+
+#### Defined in
+
+[types-dev/objects.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L13)

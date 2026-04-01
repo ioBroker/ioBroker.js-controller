@@ -1,12 +1,10 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / GroupCommon
 
 # Interface: GroupCommon
-
-Defined in: [types-dev/objects.d.ts:456](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L456)
 
 ## Extends
 
@@ -18,9 +16,11 @@ Defined in: [types-dev/objects.d.ts:456](https://github.com/ioBroker/ioBroker.js
 
 > **acl**: `Omit`\<[`PermissionSet`](PermissionSet.md), `"user"` \| `"groups"`\>
 
-Defined in: [types-dev/objects.d.ts:462](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L462)
-
 The default permissions of this group
+
+#### Defined in
+
+[types-dev/objects.d.ts:462](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L462)
 
 ***
 
@@ -28,13 +28,15 @@ The default permissions of this group
 
 > `optional` **color**: `string`
 
-Defined in: [types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L183)
-
 Color attribute used in UI
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`color`](ObjectCommon.md#color)
+
+#### Defined in
+
+[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L183)
 
 ***
 
@@ -42,7 +44,9 @@ Color attribute used in UI
 
 > `optional` **custom**: `undefined`
 
-Defined in: [types-dev/objects.d.ts:466](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L466)
+#### Defined in
+
+[types-dev/objects.d.ts:466](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L466)
 
 ***
 
@@ -50,13 +54,15 @@ Defined in: [types-dev/objects.d.ts:466](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **desc**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
-Defined in: [types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L175)
-
 Description of this object
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`desc`](ObjectCommon.md#desc)
+
+#### Defined in
+
+[types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L175)
 
 ***
 
@@ -64,13 +70,15 @@ Description of this object
 
 > `optional` **dontDelete**: `true`
 
-Defined in: [types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L178)
-
 When set to true, this object may not be deleted
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`dontDelete`](ObjectCommon.md#dontdelete)
+
+#### Defined in
+
+[types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L178)
 
 ***
 
@@ -78,9 +86,11 @@ When set to true, this object may not be deleted
 
 > `optional` **enabled**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:464](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L464)
-
 A group can be disabled, if missing, a group is active
+
+#### Defined in
+
+[types-dev/objects.d.ts:464](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L464)
 
 ***
 
@@ -88,13 +98,15 @@ A group can be disabled, if missing, a group is active
 
 > `optional` **expert**: `true`
 
-Defined in: [types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L181)
-
 When set to true, this object is only visible when expert mode is turned on in admin
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`expert`](ObjectCommon.md#expert)
+
+#### Defined in
+
+[types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L181)
 
 ***
 
@@ -102,23 +114,27 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 > `optional` **icon**: `string`
 
-Defined in: [types-dev/objects.d.ts:188](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L188)
-
 Icon for this object
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`icon`](ObjectCommon.md#icon)
 
+#### Defined in
+
+[types-dev/objects.d.ts:188](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L188)
+
 ***
 
 ### members
 
-> **members**: `` `system.user.${string}` ``[]
-
-Defined in: [types-dev/objects.d.ts:460](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L460)
+> **members**: \`system.user.$\{string\}\`[]
 
 The users of this group
+
+#### Defined in
+
+[types-dev/objects.d.ts:460](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L460)
 
 ***
 
@@ -126,13 +142,15 @@ The users of this group
 
 > **name**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
-Defined in: [types-dev/objects.d.ts:458](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L458)
-
 The name of this group
 
 #### Overrides
 
 [`ObjectCommon`](ObjectCommon.md).[`name`](ObjectCommon.md#name)
+
+#### Defined in
+
+[types-dev/objects.d.ts:458](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L458)
 
 ***
 
@@ -140,10 +158,12 @@ The name of this group
 
 > `optional` **role**: `string`
 
-Defined in: [types-dev/objects.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L190)
-
 role of the object
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`role`](ObjectCommon.md#role)
+
+#### Defined in
+
+[types-dev/objects.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L190)

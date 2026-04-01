@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,20 +6,18 @@
 
 # Type Alias: ChownFileCallback()
 
-> **ChownFileCallback** = (`err?`, `processed?`) => `void`
-
-Defined in: [types-dev/index.d.ts:537](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L537)
+> **ChownFileCallback**: (`err`?, `processed`?) => `void`
 
 ## Parameters
 
-### err?
+• **err?**: `NodeJS.ErrnoException` \| `null`
 
-`NodeJS.ErrnoException` | `null`
-
-### processed?
-
-[`ChownFileResult`](../interfaces/ChownFileResult.md)[]
+• **processed?**: [`ChownFileResult`](../interfaces/ChownFileResult.md)[]
 
 ## Returns
 
 `void`
+
+## Defined in
+
+[types-dev/index.d.ts:537](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L537)

@@ -1,12 +1,10 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / InternalAdapterJsonConfig
 
 # Interface: InternalAdapterJsonConfig
-
-Defined in: [adapter/src/lib/adapter/adapter.ts:625](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/adapter.ts#L625)
 
 Contents of iobroker.json plus some internal variables
 
@@ -20,11 +18,13 @@ Contents of iobroker.json plus some internal variables
 
 > **// dataDir**: `string`
 
-Defined in: [types-dev/config.d.ts:135](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/config.d.ts#L135)
-
 #### Inherited from
 
 `ioBroker.IoBrokerJson.// dataDir`
+
+#### Defined in
+
+[types-dev/config.d.ts:135](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L135)
 
 ***
 
@@ -32,11 +32,13 @@ Defined in: [types-dev/config.d.ts:135](https://github.com/ioBroker/ioBroker.js-
 
 > **// dnsResolution**: `string`
 
-Defined in: [types-dev/config.d.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/config.d.ts#L142)
-
 #### Inherited from
 
 `ioBroker.IoBrokerJson.// dnsResolution`
+
+#### Defined in
+
+[types-dev/config.d.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L142)
 
 ***
 
@@ -44,9 +46,11 @@ Defined in: [types-dev/config.d.ts:142](https://github.com/ioBroker/ioBroker.js-
 
 > `optional` **consoleOutput**: `boolean`
 
-Defined in: [adapter/src/lib/adapter/adapter.ts:629](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/adapter.ts#L629)
-
 If logs must be printed to stdout
+
+#### Defined in
+
+[adapter/src/lib/adapter/adapter.ts:629](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/adapter/adapter.ts#L629)
 
 ***
 
@@ -54,13 +58,15 @@ If logs must be printed to stdout
 
 > **dataDir**: `string`
 
-Defined in: [types-dev/config.d.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/config.d.ts#L134)
-
 Always relative to iobroker.js-controller/
 
 #### Inherited from
 
 `ioBroker.IoBrokerJson.dataDir`
+
+#### Defined in
+
+[types-dev/config.d.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L134)
 
 ***
 
@@ -68,13 +74,15 @@ Always relative to iobroker.js-controller/
 
 > **dnsResolution**: `"verbatim"` \| `"ipv4first"`
 
-Defined in: [types-dev/config.d.ts:144](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/config.d.ts#L144)
-
 Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 #### Inherited from
 
 `ioBroker.IoBrokerJson.dnsResolution`
+
+#### Defined in
+
+[types-dev/config.d.ts:144](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L144)
 
 ***
 
@@ -82,9 +90,11 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 > `optional` **forceIfDisabled**: `boolean`
 
-Defined in: [adapter/src/lib/adapter/adapter.ts:631](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/adapter.ts#L631)
-
 Start instance even if it disabled in config
+
+#### Defined in
+
+[adapter/src/lib/adapter/adapter.ts:631](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/adapter/adapter.ts#L631)
 
 ***
 
@@ -92,9 +102,11 @@ Start instance even if it disabled in config
 
 > `optional` **instance**: `number`
 
-Defined in: [adapter/src/lib/adapter/adapter.ts:633](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/adapter.ts#L633)
-
 Instance number
+
+#### Defined in
+
+[adapter/src/lib/adapter/adapter.ts:633](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/adapter/adapter.ts#L633)
 
 ***
 
@@ -102,17 +114,17 @@ Instance number
 
 > `optional` **isInstall**: `boolean`
 
-Defined in: [adapter/src/lib/adapter/adapter.ts:627](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/adapter.ts#L627)
-
 Is instance started with the `--install` flag
+
+#### Defined in
+
+[adapter/src/lib/adapter/adapter.ts:627](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/adapter/adapter.ts#L627)
 
 ***
 
 ### log
 
 > **log**: `object`
-
-Defined in: [types-dev/config.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/config.d.ts#L127)
 
 #### level
 
@@ -134,13 +146,15 @@ Defined in: [types-dev/config.d.ts:127](https://github.com/ioBroker/ioBroker.js-
 
 `ioBroker.IoBrokerJson.log`
 
+#### Defined in
+
+[types-dev/config.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L127)
+
 ***
 
 ### multihostService
 
 > **multihostService**: `object`
-
-Defined in: [types-dev/config.d.ts:119](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/config.d.ts#L119)
 
 #### enabled
 
@@ -162,17 +176,23 @@ Defined in: [types-dev/config.d.ts:119](https://github.com/ioBroker/ioBroker.js-
 
 `ioBroker.IoBrokerJson.multihostService`
 
+#### Defined in
+
+[types-dev/config.d.ts:119](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L119)
+
 ***
 
 ### objects
 
 > **objects**: [`ObjectsDatabaseOptions`](ObjectsDatabaseOptions.md)
 
-Defined in: [types-dev/config.d.ts:125](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/config.d.ts#L125)
-
 #### Inherited from
 
 `ioBroker.IoBrokerJson.objects`
+
+#### Defined in
+
+[types-dev/config.d.ts:125](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L125)
 
 ***
 
@@ -180,15 +200,17 @@ Defined in: [types-dev/config.d.ts:125](https://github.com/ioBroker/ioBroker.js-
 
 > **plugins**: `object`
 
-Defined in: [types-dev/config.d.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/config.d.ts#L136)
-
 #### Index Signature
 
-\[`pluginName`: `string`\]: `object`
+ \[`pluginName`: `string`\]: `object`
 
 #### Inherited from
 
 `ioBroker.IoBrokerJson.plugins`
+
+#### Defined in
+
+[types-dev/config.d.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L136)
 
 ***
 
@@ -196,19 +218,19 @@ Defined in: [types-dev/config.d.ts:136](https://github.com/ioBroker/ioBroker.js-
 
 > **states**: [`StatesDatabaseOptions`](StatesDatabaseOptions.md)
 
-Defined in: [types-dev/config.d.ts:126](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/config.d.ts#L126)
-
 #### Inherited from
 
 `ioBroker.IoBrokerJson.states`
+
+#### Defined in
+
+[types-dev/config.d.ts:126](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L126)
 
 ***
 
 ### system
 
 > **system**: `object`
-
-Defined in: [types-dev/config.d.ts:93](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/config.d.ts#L93)
 
 #### // allowShellCommands
 
@@ -291,3 +313,7 @@ Interval how often the counters for input/output in adapters and controller will
 #### Inherited from
 
 `ioBroker.IoBrokerJson.system`
+
+#### Defined in
+
+[types-dev/config.d.ts:93](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L93)

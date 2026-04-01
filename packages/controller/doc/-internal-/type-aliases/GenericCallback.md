@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,26 +6,22 @@
 
 # Type Alias: GenericCallback()\<T\>
 
-> **GenericCallback**\<`T`\> = (`err?`, `result?`) => `void`
-
-Defined in: [types-dev/index.d.ts:416](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L416)
+> **GenericCallback**\<`T`\>: (`err`?, `result`?) => `void`
 
 ## Type Parameters
 
-### T
-
-`T`
+• **T**
 
 ## Parameters
 
-### err?
+• **err?**: `Error` \| `null`
 
-`Error` | `null`
-
-### result?
-
-`T`
+• **result?**: `T`
 
 ## Returns
 
 `void`
+
+## Defined in
+
+[types-dev/index.d.ts:416](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L416)

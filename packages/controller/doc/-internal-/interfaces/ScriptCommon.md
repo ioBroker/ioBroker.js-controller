@@ -1,12 +1,10 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / ScriptCommon
 
 # Interface: ScriptCommon
-
-Defined in: [types-dev/objects.d.ts:469](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L469)
 
 ## Extends
 
@@ -18,13 +16,15 @@ Defined in: [types-dev/objects.d.ts:469](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **color**: `string`
 
-Defined in: [types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L183)
-
 Color attribute used in UI
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`color`](ObjectCommon.md#color)
+
+#### Defined in
+
+[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L183)
 
 ***
 
@@ -32,9 +32,11 @@ Color attribute used in UI
 
 > `optional` **compiled**: `string`
 
-Defined in: [types-dev/objects.d.ts:484](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L484)
-
 If the script uses a compiled language like TypeScript, this contains the compilation output
+
+#### Defined in
+
+[types-dev/objects.d.ts:484](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L484)
 
 ***
 
@@ -42,7 +44,9 @@ If the script uses a compiled language like TypeScript, this contains the compil
 
 > `optional` **custom**: `undefined`
 
-Defined in: [types-dev/objects.d.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L489)
+#### Defined in
+
+[types-dev/objects.d.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L489)
 
 ***
 
@@ -50,7 +54,9 @@ Defined in: [types-dev/objects.d.ts:489](https://github.com/ioBroker/ioBroker.js
 
 > **debug**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:477](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L477)
+#### Defined in
+
+[types-dev/objects.d.ts:477](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L477)
 
 ***
 
@@ -58,9 +64,11 @@ Defined in: [types-dev/objects.d.ts:477](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **declarations**: `string`
 
-Defined in: [types-dev/objects.d.ts:486](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L486)
-
 If the script uses a compiled language like TypeScript, this contains the generated declarations (global scripts only)
+
+#### Defined in
+
+[types-dev/objects.d.ts:486](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L486)
 
 ***
 
@@ -68,13 +76,15 @@ If the script uses a compiled language like TypeScript, this contains the genera
 
 > `optional` **desc**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
-Defined in: [types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L175)
-
 Description of this object
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`desc`](ObjectCommon.md#desc)
+
+#### Defined in
+
+[types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L175)
 
 ***
 
@@ -82,13 +92,15 @@ Description of this object
 
 > `optional` **dontDelete**: `true`
 
-Defined in: [types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L178)
-
 When set to true, this object may not be deleted
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`dontDelete`](ObjectCommon.md#dontdelete)
+
+#### Defined in
+
+[types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L178)
 
 ***
 
@@ -96,9 +108,11 @@ When set to true, this object may not be deleted
 
 > **enabled**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:480](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L480)
-
 Whether this script should be executed
+
+#### Defined in
+
+[types-dev/objects.d.ts:480](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L480)
 
 ***
 
@@ -106,9 +120,11 @@ Whether this script should be executed
 
 > **engine**: `string`
 
-Defined in: [types-dev/objects.d.ts:474](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L474)
-
 The instance id of the instance which executes this script
+
+#### Defined in
+
+[types-dev/objects.d.ts:474](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L474)
 
 ***
 
@@ -116,9 +132,11 @@ The instance id of the instance which executes this script
 
 > **engineType**: `"TypeScript/ts"` \| `"Blockly"` \| `"Rules"` \| `"Javascript/js"`
 
-Defined in: [types-dev/objects.d.ts:472](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L472)
-
 Defines the type of the script, e.g., TypeScript/ts, Javascript/js or Blockly
+
+#### Defined in
+
+[types-dev/objects.d.ts:472](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L472)
 
 ***
 
@@ -126,13 +144,15 @@ Defines the type of the script, e.g., TypeScript/ts, Javascript/js or Blockly
 
 > `optional` **expert**: `true`
 
-Defined in: [types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L181)
-
 When set to true, this object is only visible when expert mode is turned on in admin
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`expert`](ObjectCommon.md#expert)
+
+#### Defined in
+
+[types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L181)
 
 ***
 
@@ -140,13 +160,15 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 > `optional` **icon**: `string`
 
-Defined in: [types-dev/objects.d.ts:188](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L188)
-
 Icon for this object
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`icon`](ObjectCommon.md#icon)
+
+#### Defined in
+
+[types-dev/objects.d.ts:188](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L188)
 
 ***
 
@@ -154,13 +176,15 @@ Icon for this object
 
 > **name**: `string`
 
-Defined in: [types-dev/objects.d.ts:470](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L470)
-
 The name of this object as a simple string or an object with translations
 
 #### Overrides
 
 [`ObjectCommon`](ObjectCommon.md).[`name`](ObjectCommon.md#name)
+
+#### Defined in
+
+[types-dev/objects.d.ts:470](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L470)
 
 ***
 
@@ -168,13 +192,15 @@ The name of this object as a simple string or an object with translations
 
 > `optional` **role**: `string`
 
-Defined in: [types-dev/objects.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L190)
-
 role of the object
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`role`](ObjectCommon.md#role)
+
+#### Defined in
+
+[types-dev/objects.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L190)
 
 ***
 
@@ -182,9 +208,11 @@ role of the object
 
 > **source**: `string`
 
-Defined in: [types-dev/objects.d.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L476)
-
 The source code of this script
+
+#### Defined in
+
+[types-dev/objects.d.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L476)
 
 ***
 
@@ -192,9 +220,11 @@ The source code of this script
 
 > `optional` **sourceHash**: `string`
 
-Defined in: [types-dev/objects.d.ts:482](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L482)
-
 Is used to determine whether a script has changed and needs to be recompiled
+
+#### Defined in
+
+[types-dev/objects.d.ts:482](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L482)
 
 ***
 
@@ -202,4 +232,6 @@ Is used to determine whether a script has changed and needs to be recompiled
 
 > **verbose**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:478](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L478)
+#### Defined in
+
+[types-dev/objects.d.ts:478](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L478)

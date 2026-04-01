@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,20 +6,18 @@
 
 # Type Alias: ObjectChangeHandler()
 
-> **ObjectChangeHandler** = (`id`, `obj`) => `void` \| `Promise`\<`void`\>
-
-Defined in: [types-dev/index.d.ts:404](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L404)
+> **ObjectChangeHandler**: (`id`, `obj`) => `void` \| `Promise`\<`void`\>
 
 ## Parameters
 
-### id
+• **id**: `string`
 
-`string`
-
-### obj
-
-[`Object`](Object.md) | `null` | `undefined`
+• **obj**: [`Object`](Object.md) \| `null` \| `undefined`
 
 ## Returns
 
 `void` \| `Promise`\<`void`\>
+
+## Defined in
+
+[types-dev/index.d.ts:404](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L404)

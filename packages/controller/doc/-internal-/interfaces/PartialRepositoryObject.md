@@ -1,12 +1,10 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / PartialRepositoryObject
 
 # Interface: PartialRepositoryObject
-
-Defined in: [types-dev/objects.d.ts:1048](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1048)
 
 ## Extends
 
@@ -18,13 +16,15 @@ Defined in: [types-dev/objects.d.ts:1048](https://github.com/ioBroker/ioBroker.j
 
 > `optional` **\_id**: `"system.repositories"`
 
-Defined in: [types-dev/objects.d.ts:1098](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1098)
-
 The ID of this object
 
 #### Inherited from
 
-[`RepositoryObject`](RepositoryObject.md).[`_id`](RepositoryObject.md#_id)
+`Partial._id`
+
+#### Defined in
+
+[types-dev/objects.d.ts:1098](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1098)
 
 ***
 
@@ -32,11 +32,13 @@ The ID of this object
 
 > `optional` **acl**: [`ObjectACL`](ObjectACL.md)
 
-Defined in: [types-dev/objects.d.ts:966](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L966)
-
 #### Inherited from
 
-[`BaseObject`](BaseObject.md).[`acl`](BaseObject.md#acl)
+`Partial.acl`
+
+#### Defined in
+
+[types-dev/objects.d.ts:966](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L966)
 
 ***
 
@@ -44,7 +46,9 @@ Defined in: [types-dev/objects.d.ts:966](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **common**: `Partial`\<[`RepositoryCommon`](RepositoryCommon.md)\>
 
-Defined in: [types-dev/objects.d.ts:1049](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1049)
+#### Defined in
+
+[types-dev/objects.d.ts:1049](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1049)
 
 ***
 
@@ -52,11 +56,13 @@ Defined in: [types-dev/objects.d.ts:1049](https://github.com/ioBroker/ioBroker.j
 
 > `optional` **enums**: `Record`\<`string`, `string` \| [`Translated`](../type-aliases/Translated.md)\>
 
-Defined in: [types-dev/objects.d.ts:965](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L965)
-
 #### Inherited from
 
-[`BaseObject`](BaseObject.md).[`enums`](BaseObject.md#enums)
+`Partial.enums`
+
+#### Defined in
+
+[types-dev/objects.d.ts:965](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L965)
 
 ***
 
@@ -64,11 +70,13 @@ Defined in: [types-dev/objects.d.ts:965](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **from**: `string`
 
-Defined in: [types-dev/objects.d.ts:967](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L967)
-
 #### Inherited from
 
-[`BaseObject`](BaseObject.md).[`from`](BaseObject.md#from)
+`Partial.from`
+
+#### Defined in
+
+[types-dev/objects.d.ts:967](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L967)
 
 ***
 
@@ -76,15 +84,13 @@ Defined in: [types-dev/objects.d.ts:967](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **native**: `object`
 
-Defined in: [types-dev/objects.d.ts:1100](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1100)
-
 #### oldRepositories?
 
 > `optional` **oldRepositories**: `object`
 
 ##### Index Signature
 
-\[`repoName`: `string`\]: [`RepositoryInformation`](RepositoryInformation.md)
+ \[`repoName`: `string`\]: [`RepositoryInformation`](RepositoryInformation.md)
 
 #### repositories
 
@@ -92,11 +98,15 @@ Defined in: [types-dev/objects.d.ts:1100](https://github.com/ioBroker/ioBroker.j
 
 ##### Index Signature
 
-\[`repoName`: `string`\]: [`RepositoryInformation`](RepositoryInformation.md)
+ \[`repoName`: `string`\]: [`RepositoryInformation`](RepositoryInformation.md)
 
 #### Inherited from
 
-[`RepositoryObject`](RepositoryObject.md).[`native`](RepositoryObject.md#native)
+`Partial.native`
+
+#### Defined in
+
+[types-dev/objects.d.ts:1100](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1100)
 
 ***
 
@@ -104,13 +114,15 @@ Defined in: [types-dev/objects.d.ts:1100](https://github.com/ioBroker/ioBroker.j
 
 > `optional` **nonEdit**: [`NonEditable`](NonEditable.md)
 
-Defined in: [types-dev/objects.d.ts:972](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L972)
-
 These properties can only be edited if the correct password is provided
 
 #### Inherited from
 
-[`BaseObject`](BaseObject.md).[`nonEdit`](BaseObject.md#nonedit)
+`Partial.nonEdit`
+
+#### Defined in
+
+[types-dev/objects.d.ts:972](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L972)
 
 ***
 
@@ -118,11 +130,13 @@ These properties can only be edited if the correct password is provided
 
 > `optional` **ts**: `number`
 
-Defined in: [types-dev/objects.d.ts:970](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L970)
-
 #### Inherited from
 
-[`BaseObject`](BaseObject.md).[`ts`](BaseObject.md#ts)
+`Partial.ts`
+
+#### Defined in
+
+[types-dev/objects.d.ts:970](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L970)
 
 ***
 
@@ -130,11 +144,13 @@ Defined in: [types-dev/objects.d.ts:970](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **type**: `"config"`
 
-Defined in: [types-dev/objects.d.ts:1099](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1099)
-
 #### Inherited from
 
-[`RepositoryObject`](RepositoryObject.md).[`type`](RepositoryObject.md#type)
+`Partial.type`
+
+#### Defined in
+
+[types-dev/objects.d.ts:1099](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1099)
 
 ***
 
@@ -142,10 +158,12 @@ Defined in: [types-dev/objects.d.ts:1099](https://github.com/ioBroker/ioBroker.j
 
 > `optional` **user**: `string`
 
-Defined in: [types-dev/objects.d.ts:969](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L969)
-
 The user who created or updated this object
 
 #### Inherited from
 
-[`BaseObject`](BaseObject.md).[`user`](BaseObject.md#user)
+`Partial.user`
+
+#### Defined in
+
+[types-dev/objects.d.ts:969](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L969)

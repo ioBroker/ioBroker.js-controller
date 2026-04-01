@@ -1,12 +1,10 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / InstanceObject
 
 # Interface: InstanceObject
-
-Defined in: [types-dev/objects.d.ts:1136](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1136)
 
 ## Extends
 
@@ -16,15 +14,17 @@ Defined in: [types-dev/objects.d.ts:1136](https://github.com/ioBroker/ioBroker.j
 
 ### \_id
 
-> **\_id**: `` `system.adapter.${string}.${number}` ``
-
-Defined in: [types-dev/objects.d.ts:1137](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1137)
+> **\_id**: \`system.adapter.$\{string\}.$\{number\}\`
 
 The ID of this object
 
 #### Overrides
 
-[`AdapterObject`](AdapterObject.md).[`_id`](AdapterObject.md#_id)
+[`BaseObject`](BaseObject.md).[`_id`](BaseObject.md#_id)
+
+#### Defined in
+
+[types-dev/objects.d.ts:1137](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1137)
 
 ***
 
@@ -32,11 +32,13 @@ The ID of this object
 
 > `optional` **acl**: [`ObjectACL`](ObjectACL.md)
 
-Defined in: [types-dev/objects.d.ts:966](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L966)
-
 #### Inherited from
 
 [`BaseObject`](BaseObject.md).[`acl`](BaseObject.md#acl)
+
+#### Defined in
+
+[types-dev/objects.d.ts:966](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L966)
 
 ***
 
@@ -44,11 +46,13 @@ Defined in: [types-dev/objects.d.ts:966](https://github.com/ioBroker/ioBroker.js
 
 > **common**: [`InstanceCommon`](InstanceCommon.md)
 
-Defined in: [types-dev/objects.d.ts:1139](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1139)
-
 #### Overrides
 
-[`AdapterObject`](AdapterObject.md).[`common`](AdapterObject.md#common)
+[`BaseObject`](BaseObject.md).[`common`](BaseObject.md#common)
+
+#### Defined in
+
+[types-dev/objects.d.ts:1139](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1139)
 
 ***
 
@@ -56,13 +60,15 @@ Defined in: [types-dev/objects.d.ts:1139](https://github.com/ioBroker/ioBroker.j
 
 > `optional` **encryptedNative**: `string`[]
 
-Defined in: [types-dev/objects.d.ts:1197](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1197)
-
 Like protectedNative, but the properties are also encrypted and decrypted automatically
 
 #### Inherited from
 
-[`AdapterObject`](AdapterObject.md).[`encryptedNative`](AdapterObject.md#encryptednative)
+`Omit.encryptedNative`
+
+#### Defined in
+
+[types-dev/objects.d.ts:1197](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1197)
 
 ***
 
@@ -70,11 +76,13 @@ Like protectedNative, but the properties are also encrypted and decrypted automa
 
 > `optional` **enums**: `Record`\<`string`, `string` \| [`Translated`](../type-aliases/Translated.md)\>
 
-Defined in: [types-dev/objects.d.ts:965](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L965)
-
 #### Inherited from
 
 [`BaseObject`](BaseObject.md).[`enums`](BaseObject.md#enums)
+
+#### Defined in
+
+[types-dev/objects.d.ts:965](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L965)
 
 ***
 
@@ -82,11 +90,13 @@ Defined in: [types-dev/objects.d.ts:965](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **from**: `string`
 
-Defined in: [types-dev/objects.d.ts:967](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L967)
-
 #### Inherited from
 
 [`BaseObject`](BaseObject.md).[`from`](BaseObject.md#from)
+
+#### Defined in
+
+[types-dev/objects.d.ts:967](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L967)
 
 ***
 
@@ -94,13 +104,15 @@ Defined in: [types-dev/objects.d.ts:967](https://github.com/ioBroker/ioBroker.js
 
 > **instanceObjects**: ([`StateObject`](StateObject.md) \| [`DeviceObject`](DeviceObject.md) \| [`ChannelObject`](ChannelObject.md) \| [`FolderObject`](FolderObject.md) \| [`MetaObject`](MetaObject.md))[]
 
-Defined in: [types-dev/objects.d.ts:1201](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1201)
-
 Objects created for each instance, inside the namespace of this adapter
 
 #### Inherited from
 
-[`AdapterObject`](AdapterObject.md).[`instanceObjects`](AdapterObject.md#instanceobjects)
+`Omit.instanceObjects`
+
+#### Defined in
+
+[types-dev/objects.d.ts:1201](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1201)
 
 ***
 
@@ -108,11 +120,13 @@ Objects created for each instance, inside the namespace of this adapter
 
 > **native**: `Record`\<`string`, `any`\>
 
-Defined in: [types-dev/objects.d.ts:963](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L963)
-
 #### Inherited from
 
 [`BaseObject`](BaseObject.md).[`native`](BaseObject.md#native)
+
+#### Defined in
+
+[types-dev/objects.d.ts:963](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L963)
 
 ***
 
@@ -120,13 +134,15 @@ Defined in: [types-dev/objects.d.ts:963](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **nonEdit**: [`NonEditable`](NonEditable.md)
 
-Defined in: [types-dev/objects.d.ts:972](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L972)
-
 These properties can only be edited if the correct password is provided
 
 #### Inherited from
 
 [`BaseObject`](BaseObject.md).[`nonEdit`](BaseObject.md#nonedit)
+
+#### Defined in
+
+[types-dev/objects.d.ts:972](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L972)
 
 ***
 
@@ -134,13 +150,15 @@ These properties can only be edited if the correct password is provided
 
 > `optional` **notifications**: [`Notification`](Notification.md)[]
 
-Defined in: [types-dev/objects.d.ts:1199](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1199)
-
 Register notifications for the built-in notification system
 
 #### Inherited from
 
-[`AdapterObject`](AdapterObject.md).[`notifications`](AdapterObject.md#notifications)
+`Omit.notifications`
+
+#### Defined in
+
+[types-dev/objects.d.ts:1199](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1199)
 
 ***
 
@@ -148,13 +166,15 @@ Register notifications for the built-in notification system
 
 > **objects**: [`AnyObject`](../type-aliases/AnyObject.md)[]
 
-Defined in: [types-dev/objects.d.ts:1203](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1203)
-
 Objects created for the adapter, anywhere in the global namespace
 
 #### Inherited from
 
-[`AdapterObject`](AdapterObject.md).[`objects`](AdapterObject.md#objects)
+`Omit.objects`
+
+#### Defined in
+
+[types-dev/objects.d.ts:1203](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1203)
 
 ***
 
@@ -162,13 +182,15 @@ Objects created for the adapter, anywhere in the global namespace
 
 > `optional` **protectedNative**: `string`[]
 
-Defined in: [types-dev/objects.d.ts:1195](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1195)
-
 An array of `native` properties which cannot be accessed from outside the defining adapter
 
 #### Inherited from
 
-[`AdapterObject`](AdapterObject.md).[`protectedNative`](AdapterObject.md#protectednative)
+`Omit.protectedNative`
+
+#### Defined in
+
+[types-dev/objects.d.ts:1195](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1195)
 
 ***
 
@@ -176,11 +198,13 @@ An array of `native` properties which cannot be accessed from outside the defini
 
 > `optional` **ts**: `number`
 
-Defined in: [types-dev/objects.d.ts:970](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L970)
-
 #### Inherited from
 
 [`BaseObject`](BaseObject.md).[`ts`](BaseObject.md#ts)
+
+#### Defined in
+
+[types-dev/objects.d.ts:970](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L970)
 
 ***
 
@@ -188,11 +212,13 @@ Defined in: [types-dev/objects.d.ts:970](https://github.com/ioBroker/ioBroker.js
 
 > **type**: `"instance"`
 
-Defined in: [types-dev/objects.d.ts:1138](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L1138)
-
 #### Overrides
 
 [`BaseObject`](BaseObject.md).[`type`](BaseObject.md#type)
+
+#### Defined in
+
+[types-dev/objects.d.ts:1138](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1138)
 
 ***
 
@@ -200,10 +226,12 @@ Defined in: [types-dev/objects.d.ts:1138](https://github.com/ioBroker/ioBroker.j
 
 > `optional` **user**: `string`
 
-Defined in: [types-dev/objects.d.ts:969](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L969)
-
 The user who created or updated this object
 
 #### Inherited from
 
 [`BaseObject`](BaseObject.md).[`user`](BaseObject.md#user)
+
+#### Defined in
+
+[types-dev/objects.d.ts:969](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L969)

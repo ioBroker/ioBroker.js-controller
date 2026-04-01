@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,15 +6,11 @@
 
 # Interface: HostNative
 
-Defined in: [types-dev/objects.d.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L418)
-
 ## Properties
 
 ### hardware
 
 > **hardware**: `object`
-
-Defined in: [types-dev/objects.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L433)
 
 #### cpus
 
@@ -30,13 +26,15 @@ Return value of `os.cpu` but property `times` could be removed from every entry
 
 > **totalmem**: `number`
 
+#### Defined in
+
+[types-dev/objects.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L433)
+
 ***
 
 ### os
 
 > **os**: `object`
-
-Defined in: [types-dev/objects.d.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L424)
 
 #### arch
 
@@ -66,13 +64,15 @@ Defined in: [types-dev/objects.d.ts:424](https://github.com/ioBroker/ioBroker.js
 
 > **type**: `string`
 
+#### Defined in
+
+[types-dev/objects.d.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L424)
+
 ***
 
 ### process
 
 > **process**: `object`
-
-Defined in: [types-dev/objects.d.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L419)
 
 #### env
 
@@ -85,3 +85,7 @@ Defined in: [types-dev/objects.d.ts:419](https://github.com/ioBroker/ioBroker.js
 #### versions
 
 > **versions**: `ProcessVersions`
+
+#### Defined in
+
+[types-dev/objects.d.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L419)

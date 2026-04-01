@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,6 +6,8 @@
 
 # Type Alias: PaidLicenseType
 
-> **PaidLicenseType** = `"paid"` \| `"commercial"` \| `"limited"`
+> **PaidLicenseType**: `"paid"` \| `"commercial"` \| `"limited"`
 
-Defined in: [types-dev/objects.d.ts:542](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L542)
+## Defined in
+
+[types-dev/objects.d.ts:542](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L542)

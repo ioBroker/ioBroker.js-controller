@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
@@ -6,17 +6,13 @@
 
 # Interface: GetObjectListItem\<T\>
 
-Defined in: [types-dev/index.d.ts:564](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L564)
-
 ## Extends
 
 - [`GetObjectViewItem`](GetObjectViewItem.md)\<`T`\>
 
 ## Type Parameters
 
-### T
-
-`T` *extends* [`Object`](../type-aliases/Object.md)
+• **T** *extends* [`Object`](../type-aliases/Object.md)
 
 ## Properties
 
@@ -24,9 +20,11 @@ Defined in: [types-dev/index.d.ts:564](https://github.com/ioBroker/ioBroker.js-c
 
 > **doc**: `T`
 
-Defined in: [types-dev/index.d.ts:568](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L568)
-
 The same as @link{value}
+
+#### Defined in
+
+[types-dev/index.d.ts:568](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L568)
 
 ***
 
@@ -34,13 +32,15 @@ The same as @link{value}
 
 > **id**: `T`\[`"_id"`\]
 
-Defined in: [types-dev/index.d.ts:554](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L554)
-
 The ID of this object
 
 #### Inherited from
 
 [`GetObjectViewItem`](GetObjectViewItem.md).[`id`](GetObjectViewItem.md#id)
+
+#### Defined in
+
+[types-dev/index.d.ts:554](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L554)
 
 ***
 
@@ -48,10 +48,12 @@ The ID of this object
 
 > **value**: `T`
 
-Defined in: [types-dev/index.d.ts:566](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/index.d.ts#L566)
-
 A copy of the object
 
 #### Overrides
 
 [`GetObjectViewItem`](GetObjectViewItem.md).[`value`](GetObjectViewItem.md#value)
+
+#### Defined in
+
+[types-dev/index.d.ts:566](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L566)

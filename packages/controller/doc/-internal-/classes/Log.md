@@ -1,12 +1,10 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / Log
 
 # Class: Log
-
-Defined in: [adapter/src/lib/adapter/log.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/log.ts#L8)
 
 Log class for adapter.js
 
@@ -18,35 +16,31 @@ It prefixes every message with the given namespace
 
 ## Constructors
 
-### Constructor
+### new Log()
 
-> **new Log**(`namespaceLog`, `level`, `logger`): `Log`
-
-Defined in: [adapter/src/lib/adapter/log.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/log.ts#L25)
+> **new Log**(`namespaceLog`, `level`, `logger`): [`Log`](Log.md)
 
 #### Parameters
 
-##### namespaceLog
-
-`string`
+• **namespaceLog**: `string`
 
 Logging namespace to prefix
 
-##### level
-
-[`LogLevel`](../type-aliases/LogLevel.md)
+• **level**: [`LogLevel`](../type-aliases/LogLevel.md)
 
 The log level
 
-##### logger
-
-`any`
+• **logger**: `any`
 
 logger instance
 
 #### Returns
 
-`Log`
+[`Log`](Log.md)
+
+#### Defined in
+
+[adapter/src/lib/adapter/log.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/adapter/log.ts#L25)
 
 ## Properties
 
@@ -54,13 +48,15 @@ logger instance
 
 > `readonly` **level**: [`LogLevel`](../type-aliases/LogLevel.md)
 
-Defined in: [adapter/src/lib/adapter/log.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/log.ts#L10)
-
 Verbosity of the log output
 
 #### Implementation of
 
 [`Logger`](../interfaces/Logger.md).[`level`](../interfaces/Logger.md#level)
+
+#### Defined in
+
+[adapter/src/lib/adapter/log.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/adapter/log.ts#L10)
 
 ## Methods
 
@@ -68,15 +64,11 @@ Verbosity of the log output
 
 > **debug**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/log.ts#L45)
-
 log a message with debug level
 
 #### Parameters
 
-##### msg
-
-`string`
+• **msg**: `string`
 
 #### Returns
 
@@ -86,21 +78,21 @@ log a message with debug level
 
 [`Logger`](../interfaces/Logger.md).[`debug`](../interfaces/Logger.md#debug)
 
+#### Defined in
+
+[adapter/src/lib/adapter/log.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/adapter/log.ts#L45)
+
 ***
 
 ### error()
 
 > **error**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/log.ts#L53)
-
 log a message with error severity
 
 #### Parameters
 
-##### msg
-
-`string`
+• **msg**: `string`
 
 #### Returns
 
@@ -110,21 +102,21 @@ log a message with error severity
 
 [`Logger`](../interfaces/Logger.md).[`error`](../interfaces/Logger.md#error)
 
+#### Defined in
+
+[adapter/src/lib/adapter/log.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/adapter/log.ts#L53)
+
 ***
 
 ### info()
 
 > **info**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/log.ts#L49)
-
 log a message with info level (default output level for all adapters)
 
 #### Parameters
 
-##### msg
-
-`string`
+• **msg**: `string`
 
 #### Returns
 
@@ -134,21 +126,21 @@ log a message with info level (default output level for all adapters)
 
 [`Logger`](../interfaces/Logger.md).[`info`](../interfaces/Logger.md#info)
 
+#### Defined in
+
+[adapter/src/lib/adapter/log.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/adapter/log.ts#L49)
+
 ***
 
 ### silly()
 
 > **silly**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/log.ts#L41)
-
 log a message with silly level
 
 #### Parameters
 
-##### msg
-
-`string`
+• **msg**: `string`
 
 #### Returns
 
@@ -158,21 +150,21 @@ log a message with silly level
 
 [`Logger`](../interfaces/Logger.md).[`silly`](../interfaces/Logger.md#silly)
 
+#### Defined in
+
+[adapter/src/lib/adapter/log.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/adapter/log.ts#L41)
+
 ***
 
 ### warn()
 
 > **warn**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/adapter/src/lib/adapter/log.ts#L57)
-
 log a message with warning severity
 
 #### Parameters
 
-##### msg
-
-`string`
+• **msg**: `string`
 
 #### Returns
 
@@ -181,3 +173,7 @@ log a message with warning severity
 #### Implementation of
 
 [`Logger`](../interfaces/Logger.md).[`warn`](../interfaces/Logger.md#warn)
+
+#### Defined in
+
+[adapter/src/lib/adapter/log.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/adapter/log.ts#L57)

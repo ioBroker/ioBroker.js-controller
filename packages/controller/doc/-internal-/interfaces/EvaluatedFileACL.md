@@ -1,12 +1,10 @@
-[**@iobroker/js-controller-adapter**](../../README.md)
+[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / EvaluatedFileACL
 
 # Interface: EvaluatedFileACL
-
-Defined in: [types-dev/objects.d.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L17)
 
 Defines access rights for a single file, applied to a user or group
 
@@ -20,13 +18,15 @@ Defines access rights for a single file, applied to a user or group
 
 > **owner**: `string`
 
-Defined in: [types-dev/objects.d.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L9)
-
 Full name of the user who owns this file, e.g. "system.user.admin"
 
 #### Inherited from
 
 [`FileACL`](FileACL.md).[`owner`](FileACL.md#owner)
+
+#### Defined in
+
+[types-dev/objects.d.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L9)
 
 ***
 
@@ -34,13 +34,15 @@ Full name of the user who owns this file, e.g. "system.user.admin"
 
 > **ownerGroup**: `string`
 
-Defined in: [types-dev/objects.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L11)
-
 Full name of the group who owns this file, e.g. "system.group.administrator"
 
 #### Inherited from
 
 [`FileACL`](FileACL.md).[`ownerGroup`](FileACL.md#ownergroup)
+
+#### Defined in
+
+[types-dev/objects.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L11)
 
 ***
 
@@ -48,13 +50,15 @@ Full name of the group who owns this file, e.g. "system.group.administrator"
 
 > **permissions**: `number`
 
-Defined in: [types-dev/objects.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L13)
-
 Linux-type permissions defining access to this file
 
 #### Inherited from
 
 [`FileACL`](FileACL.md).[`permissions`](FileACL.md#permissions)
+
+#### Defined in
+
+[types-dev/objects.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L13)
 
 ***
 
@@ -62,9 +66,11 @@ Linux-type permissions defining access to this file
 
 > **read**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L19)
-
 Whether the user may read the file
+
+#### Defined in
+
+[types-dev/objects.d.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L19)
 
 ***
 
@@ -72,6 +78,8 @@ Whether the user may read the file
 
 > **write**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/e120bedfe97ccc05353afb78489da9de14b8814c/packages/types-dev/objects.d.ts#L21)
-
 Whether the user may write the file
+
+#### Defined in
+
+[types-dev/objects.d.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L21)
