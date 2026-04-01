@@ -12,4 +12,4 @@ Defines the existing object types in ioBroker
 
 ## Defined in
 
-[types-dev/objects.d.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/b64872d6fb9bb1026baae604d77b545e4c539d8d/packages/types-dev/objects.d.ts#L41)
+[types-dev/objects.d.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L41)

@@ -1154,10 +1154,6 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "fa-icon": {
-              "description": "Font-Awesome icon name for TAB",
-              "type": "string"
-            },
             "ignoreConfigUpdate": {
               "description": "Do not update config TAB if configuration changed (to enable configure settings in TAB)",
               "type": "boolean"
