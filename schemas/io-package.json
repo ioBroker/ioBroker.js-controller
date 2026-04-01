@@ -926,7 +926,7 @@
               ],
               "properties": {
                 "url": {
-                  "description": "Link to the file with components relatively to `admin/dm-widgets` in admin or `${adapterName}` in web",
+                  "description": "Link to the file with components relative to `admin/dm-widgets` in admin or `${adapterName}` in web",
                   "type": "string"
                 },
                 "components": {
