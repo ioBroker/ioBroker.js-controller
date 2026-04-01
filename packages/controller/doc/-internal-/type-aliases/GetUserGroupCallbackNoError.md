@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,20 +6,24 @@
 
 # Type Alias: GetUserGroupCallbackNoError()
 
-> **GetUserGroupCallbackNoError**: (`user`, `groups`, `acl`) => `void`
+> **GetUserGroupCallbackNoError** = (`user`, `groups`, `acl`) => `void`
+
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:5
 
 ## Parameters
 
-• **user**: `string`
+### user
 
-• **groups**: `string`[]
+`string`
 
-• **acl**: [`ObjectPermissions`](../interfaces/ObjectPermissions.md)
+### groups
+
+`string`[]
+
+### acl
+
+[`ObjectPermissions`](../interfaces/ObjectPermissions.md)
 
 ## Returns
 
 `void`
-
-## Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:5

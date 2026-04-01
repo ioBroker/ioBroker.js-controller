@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import path from 'node:path';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import { exec as execAsync } from 'promisify-child-process';
-import tar from 'tar';
+import * as tar from 'tar';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { Upload } from './setupUpload.js';

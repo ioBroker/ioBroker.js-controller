@@ -6,9 +6,9 @@
 
 # Type Alias: ChangeFunction()
 
-> **ChangeFunction** = (`id`, `state`) => `void`
+> **ChangeFunction** = (`id`, `object`) => `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:13
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:4
 
 ## Parameters
 
@@ -16,9 +16,9 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:13
 
 `string`
 
-### state
+### object
 
-[`State`](../interfaces/State.md) | [`Message`](../interfaces/Message.md) | `null`
+[`Object`](Object.md) | `null`
 
 ## Returns
 

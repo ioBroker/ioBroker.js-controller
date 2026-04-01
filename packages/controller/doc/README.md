@@ -1,4 +1,4 @@
-**@iobroker/js-controller-adapter** • [**Docs**](globals.md)
+**@iobroker/js-controller-adapter**
 
 ***
 

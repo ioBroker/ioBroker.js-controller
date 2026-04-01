@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,22 +6,26 @@
 
 # Type Alias: CheckFileCallback()
 
-> **CheckFileCallback**: (`checkFailed`, `options`?, `fileOptions`?) => `void`
+> **CheckFileCallback** = (`checkFailed`, `options?`, `fileOptions?`) => `void`
+
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:43
 
 ## Parameters
 
-• **checkFailed**: `boolean`
+### checkFailed
 
-• **options?**: [`CallOptions`](../interfaces/CallOptions.md)
+`boolean`
 
-• **fileOptions?**
+### options?
 
-• **fileOptions.notExists?**: `boolean`
+[`CallOptions`](../interfaces/CallOptions.md)
+
+### fileOptions?
+
+#### notExists
+
+`boolean`
 
 ## Returns
 
 `void`
-
-## Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:43

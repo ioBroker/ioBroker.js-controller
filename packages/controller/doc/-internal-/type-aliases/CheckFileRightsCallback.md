@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,20 +6,24 @@
 
 # Type Alias: CheckFileRightsCallback()
 
-> **CheckFileRightsCallback**: (`err`, `options`, `opt`?) => `void`
+> **CheckFileRightsCallback** = (`err`, `options`, `opt?`) => `void`
+
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:33
 
 ## Parameters
 
-• **err**: `Error` \| `null` \| `undefined`
+### err
 
-• **options**: `Record`\<`string`, `any`\>
+`Error` | `null` | `undefined`
 
-• **opt?**: `any`
+### options
+
+`Record`\<`string`, `any`\>
+
+### opt?
+
+`any`
 
 ## Returns
 
 `void`
-
-## Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:33

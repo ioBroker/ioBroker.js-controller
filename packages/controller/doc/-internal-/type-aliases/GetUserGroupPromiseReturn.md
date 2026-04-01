@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,6 @@
 
 # Type Alias: GetUserGroupPromiseReturn
 
-> **GetUserGroupPromiseReturn**: [`string`, `string`[], [`ObjectPermissions`](../interfaces/ObjectPermissions.md)]
+> **GetUserGroupPromiseReturn** = \[`string`, `string`[], [`ObjectPermissions`](../interfaces/ObjectPermissions.md)\]
 
-## Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:43
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:43

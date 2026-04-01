@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,9 +6,15 @@
 
 # Interface: WriteFileOptions
 
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:35
+
 ## Extends
 
 - [`CallOptions`](CallOptions.md)
+
+## Indexable
+
+\[`other`: `string`\]: `any`
 
 ## Properties
 
@@ -16,13 +22,11 @@
 
 > `optional` **acl**: `any`
 
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:32
+
 #### Inherited from
 
 [`CallOptions`](CallOptions.md).[`acl`](CallOptions.md#acl)
-
-#### Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:32
 
 ***
 
@@ -30,13 +34,11 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:32
 
 > `optional` **group**: `string`
 
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:28
+
 #### Inherited from
 
 [`CallOptions`](CallOptions.md).[`group`](CallOptions.md#group)
-
-#### Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:28
 
 ***
 
@@ -44,13 +46,11 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:28
 
 > `optional` **groups**: `string`[]
 
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:27
+
 #### Inherited from
 
 [`CallOptions`](CallOptions.md).[`groups`](CallOptions.md#groups)
-
-#### Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:27
 
 ***
 
@@ -58,23 +58,19 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:27
 
 > `optional` **mimeType**: `string`
 
-#### Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:36
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:36
 
 ***
 
 ### owner?
 
-> `optional` **owner**: \`system.user.$\{string\}\`
+> `optional` **owner**: `` `system.user.${string}` ``
+
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:30
 
 #### Inherited from
 
 [`CallOptions`](CallOptions.md).[`owner`](CallOptions.md#owner)
-
-#### Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:30
 
 ***
 
@@ -82,24 +78,20 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:30
 
 > `optional` **ownerGroup**: `string`
 
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:31
+
 #### Inherited from
 
 [`CallOptions`](CallOptions.md).[`ownerGroup`](CallOptions.md#ownergroup)
-
-#### Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:31
 
 ***
 
 ### user?
 
-> `optional` **user**: \`system.user.$\{string\}\`
+> `optional` **user**: `` `system.user.${string}` ``
+
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:29
 
 #### Inherited from
 
 [`CallOptions`](CallOptions.md).[`user`](CallOptions.md#user)
-
-#### Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:29
