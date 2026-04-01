@@ -37,7 +37,7 @@ type MaybeCbErrCallbackParameters<
         ? // If the error argument is given,
           TErr extends Error | string
             ? //  don't require arguments but allow passing them
-                  U | []
+              U | []
             : // Otherwise, require the correct args
               U
         : any[];
