@@ -912,6 +912,75 @@
             "major"
           ]
         },
+        "deviceWidgets": {
+          "description": "Definition of the widgets for \"devices\" adapter",
+          "type": "object",
+          "minProperties": 1,
+          "patternProperties": {
+            ".+": {
+              "description": "The key represents the name of a provided device widget",
+              "type": "object",
+              "required": [
+                "url",
+                "components"
+              ],
+              "properties": {
+                "url": {
+                  "description": "Link to the file with components relative to `admin/dm-widgets` in admin or `${adapterName}` in web",
+                  "type": "string"
+                },
+                "components": {
+                  "description": "Description of the components (widgets). It could be multiple widgets in one adapter",
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "name",
+                      "label",
+                      "description",
+                      "icon"
+                    ],
+                    "properties": {
+                      "name": {
+                        "description": "Name of the class",
+                        "type": "string"
+                      },
+                      "label": {
+                        "description": "Title",
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "$ref": "#/definitions/multilingual"
+                          }
+                        ]
+                      },
+                      "description": {
+                        "description": "Description",
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "$ref": "#/definitions/multilingual"
+                          }
+                        ]
+                      },
+                      "icon": {
+                        "description": "Icon as a link to picture imageName.png relative to the admin folder or base64",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
         "docs": {
           "description": "The structure like {\"en\": \"docs/en/README.md\", \"de\": [\"docs/de/README.md\", \"docs/de/README1.md\"]} that describes the documentation if not in README.md",
           "type": "object",

@@ -177,7 +177,7 @@ declare global {
             /** When set to true, this object may not be deleted */
             dontDelete?: true;
 
-            /** When set to true, this object is only visible when expert mode is turned on in admin */
+            /** When set to true, this object is only visible when the expert mode is turned on in admin */
             expert?: true;
             /** Color attribute used in UI */
             color?: string;
@@ -191,7 +191,7 @@ declare global {
         }
 
         type SmartNameObject = { [lang in ioBroker.Languages]?: string } & {
-            /** Which kind of device it is */
+            /** Description of which kind of device it is */
             smartType?: string | null;
             /** Which value to set when the ON command is issued */
             byON?: string | null;
@@ -267,13 +267,13 @@ declare global {
             /** Custom settings for this state */
             custom?: Record<string, any>;
 
-            /** Custom defined properties for backward compatibility of material adapter */
+            /** Custom-defined properties for backward compatibility of material adapter */
             material?: any;
 
-            /** Custom defined properties for backward compatibility of habpanel adapter */
+            /** Custom-defined properties for backward compatibility of habpanel adapter */
             habpanel?: any;
 
-            /** Custom defined properties for backward compatibility of habpanel adapter */
+            /** Custom-defined properties for backward compatibility of habpanel adapter */
             mobile?: any;
 
             /**
@@ -352,7 +352,7 @@ declare global {
             tab?: 'html' | 'json' | 'materialize';
         }
 
-        /** Installed from attribute of instance/adapter object */
+        /** Installed from an attribute of an instance/adapter object */
         type InstalledFrom = Branded<string, 'InstalledFrom'>;
 
         interface InstanceCommon extends AdapterCommon {
@@ -470,7 +470,7 @@ declare global {
             name: string;
             /** Defines the type of the script, e.g., TypeScript/ts, Javascript/js or Blockly */
             engineType: 'TypeScript/ts' | 'Blockly' | 'Rules' | 'Javascript/js';
-            /** The instance id of the instance which executes this script */
+            /** The instance id of the instance that executes this script */
             engine: string;
             /** The source code of this script */
             source: string;
@@ -500,7 +500,7 @@ declare global {
               };
 
         /**
-         * Object which defines if the adapter supports receiving messages via sendTo.
+         * Object that defines if the adapter supports receiving messages via sendTo.
          * Additionally, it defines if specific messages are supported.
          * If one property is enabled, the object `system.adapter.<adapterName>.<adapterInstance>.messagebox will be created to send messages to the adapter (used for email, pushover, etc...)
          */
@@ -509,11 +509,11 @@ declare global {
             custom?: boolean;
             /** If notification handling is supported, for information, see https://github.com/foxriver76/ioBroker.notification-manager#requirements-for-messaging-adapters */
             notifications?: boolean;
-            /** If adapter supports signal stopInstance. Use number if you need more than 1000 ms for stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM). */
+            /** If the adapter supports signal stopInstance. Use number if you need more than 1000 ms for the stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM). */
             stopInstance?: boolean | number;
-            /** If adapter supports the device manager and thus responds to the corresponding messages */
+            /** If the adapter supports the device manager and thus responds to the corresponding messages */
             deviceManager?: boolean;
-            /** If adapter supports getHistory message. */
+            /** If the adapter supports getHistory message. */
             getHistory?: boolean;
         }
 
@@ -530,10 +530,29 @@ declare global {
             ignoreInVersions?: number[];
         }
 
+        /**
+         * This structure defines the widgets for "devices" adapter
+         */
+        export interface DevicesWidget {
+            /** Link to the file with components relatively to `admin/dm-widgets` in admin or `${adapterName}` in web */
+            url: string;
+            /** Description of the components (widgets). It could be multiple widgets in one adapter */
+            components: {
+                /** Name of the class */
+                name: string;
+                /** Title */
+                label: ioBroker.StringOrTranslated;
+                /** Description */
+                description: ioBroker.StringOrTranslated;
+                /** Icon as a link to picture imageName.png relative to the admin folder or base64 */
+                icon: string;
+            }[];
+        }
+
         interface VisIconSet {
             name?: ioBroker.StringOrTranslated;
             url: string;
-            /** If set, this is not a widget set, but icon set. url, name and icon are required */
+            /** If set, this is not a widget set, but an icon set. url, name and icon are required */
             icon?: string; // base 64 string for iconSet (not used for widgetSets)
             /** The vis icon set does not support the listed major versions of vis */
             ignoreInVersions?: number[];
@@ -578,9 +597,9 @@ declare global {
             linkText?: ioBroker.Translated;
             /** The severity level of the message */
             level: 'warn' | 'error' | 'info';
-            /** The buttons which should be shown on the message dialog */
+            /** The buttons that should be shown on the message dialog */
             buttons?: ('agree' | 'cancel' | 'ok')[];
-            /** The condition which needs to be met to display the message */
+            /** The condition that needs to be met to display the message */
             condition: {
                 operand: 'and' | 'or';
                 rules: string[];
@@ -633,18 +652,16 @@ declare global {
                 name?: StringOrTranslated;
                 /** Base 64 icon for the tab */
                 icon?: string;
-                /** @deprecated icon name for FontAwesome (works only in admin 4)*/
-                'fa-icon'?: string;
                 /** If true, the Tab is not reloaded when the configuration changes */
                 ignoreConfigUpdate?: boolean;
-                /** Describes which URL should be loaded in the tab. Supports placeholders like http://%ip%:%port% or JSON(5) configs. If empty `adapter/ADAPTERNAME/tab(_m).html` will be taken. JSON config file must be defined relative to "admin" folder, like "jsonTab.json"  */
+                /** Describes which URL should be loaded in the tab. Supports placeholders like http://%ip%:%port% or JSON(5) configs. If empty, `adapter/ADAPTERNAME/tab(_m).html` will be taken. JSON config file must be defined relative to the "admin" folder, like "jsonTab.json"  */
                 link?: string;
                 /** If true, only one instance of this tab will be created for all instances */
                 singleton?: boolean;
                 /** Order number in admin tabs */
                 order?: number;
                 /**
-                 * If page sends 'iobLoaded' event:
+                 * If the page sends an 'iobLoaded' event:
                  *
                  * if (window.parent !== window) {
                  *  try {
@@ -654,7 +671,7 @@ declare global {
                  *  }
                  * }
                  *
-                 * When loaded in iframe, inform parent window
+                 * When loaded in an iframe, inform the parent window
                  * Admin will hide a loading spinner when the message will be received.
                  */
                 supportsLoadingMessage?: boolean;
@@ -665,7 +682,7 @@ declare global {
             automaticUpgrade?: AutoUpgradePolicy;
             /** Possible values for the instance mode (if more than one is possible) */
             availableModes?: InstanceMode[];
-            /** Array which lists all blocked versions. Blocked versions will not be started. Use semver notation to specify the version ranges. The information is always used from the io-package.json in the GitHub repository. */
+            /** Array that lists all blocked versions. Blocked versions will not be started. Use semver notation to specify the version ranges. The information is always used from the io-package.json in the GitHub repository. */
             blockedVersions?: string[];
             /** Whether this adapter includes custom blocks for Blockly. If true, `admin/blockly.js` must exist. */
             blockly?: boolean;
@@ -683,6 +700,8 @@ declare global {
             globalDependencies?: Dependencies;
             /** Similar to `dependencies`, but only checked if the specified adapter is already installed. If the adapter is not installed, the version check will pass */
             ifInstalledDependencies?: { [adapterName: string]: string };
+            /** Definition of the widgets for "devices" adapter */
+            deviceWidgets?: Record<string, DevicesWidget>;
             /** Which files outside the README.md have documentation for the adapter */
             docs?: Partial<Record<Languages, string | string[]>>;
             /** Whether new instances should be enabled by default. *Should* be `false`! */
@@ -693,9 +712,9 @@ declare global {
             extIcon?: string;
             /** Whether this adapter responds to `getHistory` messages */
             getHistory?: boolean;
-            /** Filename of the local icon which is shown for installed adapters. Should be located in the `admin` directory */
+            /** Filename of the local icon that is shown for installed adapters. Should be located in the `admin` directory */
             icon?: string;
-            /** The adapter will be executed once additionally after installation, and the `install` event will be emitted during this run. This allows for executing one time installation code. */
+            /** The adapter will be executed once additionally after installation, and the `install` event will be emitted during this run. This allows for executing one-time installation code. */
             install?: boolean;
             /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
             installedFrom?: InstalledFrom;
@@ -713,9 +732,10 @@ declare global {
             logTransporter?: boolean;
             /** Path to the start file of the adapter. Should be the same as in `package.json` */
             main?: string;
-            /** Whether the admin tab is written in materialized style. Required for Admin 3+ */
+            /** Whether the admin tab is written in a materialized style. Required for Admin 3+ */
             materializeTab?: boolean;
-            /** Whether the admin configuration dialog is written in materialized style. Required for Admin 3+ */
+            /** Whether the admin configuration dialog is written in a materialized style. Required for Admin 3+ */
+            /** @deprectaed Use adminUI with config = "materialize". But better use jsonConfig.json */
             materialize: boolean;
             /** @deprecated Use @see supportedMessages up from controller v5 */
             messagebox?: true;
@@ -739,7 +759,7 @@ declare global {
             nondeletable?: true;
             /** If `true`, this "adapter" only contains HTML files and no main executable */
             onlyWWW?: boolean;
-            /** Used to configure native (OS) dependencies of this adapter that need to be installed with system package manager before installing the adapter */
+            /** Used to configure native (OS) dependencies of this adapter that need to be installed with the system package manager before installing the adapter */
             osDependencies?: {
                 /** For OSX */
                 darwin: string[];
@@ -824,7 +844,7 @@ declare global {
             webExtendable?: boolean;
             /** Relative path to a module that contains an extension for the web adapter. Use together with @see native.webInstance to configure which instances this affects */
             webExtension?: string;
-            /** List of parameters that must be included in info.js by webServer adapter. (Example material: `"webPreSettings": { "materialBackground": "native.loadingBackground" }`). Web adapter uses this setting to create a customized info.js file to provide some essential settings for index.html file before the socket connection is established to provide e.g., background color of the loading screen. */
+            /** List of parameters that must be included in info.js by webServer adapter. (Example material: `"webPreSettings": { "materialBackground": "native.loadingBackground" }`). Web adapter uses this setting to create a customized info.js file to provide some essential settings for the index.html file before the socket connection is established to provide e.g., background color of the loading screen. */
             webPreSettings?: Record<string, any>;
             /** @deprecated (where is it necessary?) Array of web server's instances that should serve content from the adapter's www folder */
             webservers?: string[];
@@ -838,7 +858,7 @@ declare global {
             license?: string;
             /** An object representing information with the license details */
             licenseInformation?: LicenseInformation;
-            /** Messages, that will be shown (if condition evaluates to true) by upgrade or installation */
+            /** Messages that will be shown (if the condition evaluates to true) by upgrade or installation */
             messages?: MessageRule[];
             /** If a specific update of this adapter should be ignored, specifies version number to be ignored */
             ignoreVersion?: string;
@@ -852,7 +872,7 @@ declare global {
                 url: string;
                 /** Rules block name, like "ActionTelegram" */
                 name: string;
-                /** Load it as TypeScript module */
+                /** Load it as a TypeScript module */
                 type?: 'module';
             };
 
@@ -885,13 +905,13 @@ declare global {
             defaultHistory: string;
             /** Which diag data is allowed to be sent */
             diag: 'none' | 'extended' | 'no-city';
-            /** If license has already been confirmed */
+            /** If the license has already been confirmed */
             licenseConfirmed: boolean;
             /** System wide default log level */
             defaultLogLevel?: LogLevel;
             /** Used date format for formatting */
             dateFormat: string;
-            /** This name will be shown in admin's header. Just to identify the whole installation */
+            /** This name will be shown in the admin's header. Just to identify the whole installation */
             siteName?: string;
             /** Default acl for new objects */
             defaultNewAcl: {
@@ -910,7 +930,7 @@ declare global {
                 /** Default policy, if none has been set explicit for the adapter */
                 defaultPolicy: AutoUpgradePolicy;
             };
-            /** Deactivated instances, that should not be shown in admin/Intro page */
+            /** Deactivated instances that should not be shown in admin/Intro page */
             intro?: string[];
             /** Defines which tabs are visible in the left menu of the admin */
             tabsVisible?: {
@@ -938,14 +958,14 @@ declare global {
         /**
          * ioBroker has built-in protection for specific attributes of objects. If this protection is installed in the object, then the protected attributes of an object cannot be changed by the user without a valid password.
          * To protect the properties from change, the special attribute "nonEdit" must be added to the object. This attribute contains the password, which is required to change the object.
-         * If an object does not have "nonEdit" attribute, so the hash will be saved into "nonEdit.passHash". After that, if someone changes the object, he must provide the password in "nonEdit.password".
+         * If an object does not have a "nonEdit" attribute, so the hash will be saved into "nonEdit.passHash". After that, if someone changes the object, he must provide the password in "nonEdit.password".
          * If the password is correct, the object attributes will be updated. If the password is wrong, the object will not be changed.
-         * Note, that all properties outside "nonEdit" can be updated without providing the password. Furthermore, do not confuse e.g. "nonEdit.common" with "obj.common" they are not linked in any way.
+         * Note that all properties outside "nonEdit" can be updated without providing the password. Furthermore, do not confuse e.g. "nonEdit.common" with "obj.common" they are not linked in any way.
          */
         interface NonEditable {
             /** Password needed to edit non-editable information */
             password?: string;
-            /** Hashed version of current password */
+            /** Hashed version of the current password */
             passHash?: string;
             /** These properties can only be changed by providing the password, else they stay on the initial value */
             common?: Record<string, any>;
@@ -1056,7 +1076,7 @@ declare global {
             version: string;
             /** Array of blocked versions, each entry represents a semver range */
             blockedVersions: string[];
-            /** If true, the unsafe perm flag is needed on install */
+            /** If true, the unsafe perm flag is needed on installation */
             unsafePerm?: boolean;
             /** If given, the packet name differs from the adapter name, e.g. because it is a scoped package */
             packetName?: string;
@@ -1168,7 +1188,7 @@ declare global {
             name: Translated;
             /** The human-readable category description */
             description: Translated;
-            /** Allows to define the severity of the notification with `info` being the lowest `notify` representing middle priority, `alert` representing high priority and often containing critical information */
+            /** Allows defining the severity of the notification with `info` being the lowest `notify` representing middle priority, `alert` representing high priority and often containing critical information */
             severity: 'info' | 'notify' | 'alert';
             /** If a regex is specified, the js-controller will check error messages on adapter crashes against this regex and will generate a notification of this category */
             regex: string[];
@@ -1177,7 +1197,7 @@ declare global {
         };
 
         interface Notification {
-            /** E.g., `system`. Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system. Adapters should only register one scope which matches the name of the adapter. */
+            /** E.g., `system`. Each adapter can define its own "scopes" for own notifications with its own categories, which then will be available in the system. Adapters should only register one scope which matches the name of the adapter. */
             scope: string;
             /** The human-readable name of this scope */
             name: Translated;
@@ -1191,7 +1211,7 @@ declare global {
             _id: ObjectIDs.Adapter;
             type: 'adapter';
             common: AdapterCommon;
-            /** An array of `native` properties which cannot be accessed from outside the defining adapter */
+            /** An array of `native` properties that cannot be accessed from outside the defining adapter */
             protectedNative?: string[];
             /** Like protectedNative, but the properties are also encrypted and decrypted automatically */
             encryptedNative?: string[];
