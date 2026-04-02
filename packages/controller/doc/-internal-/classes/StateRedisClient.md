@@ -538,7 +538,7 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:63
 
 ###### state
 
-[`SettableState`](../type-aliases/SettableState.md) | [`StateValue`](../type-aliases/StateValue.md)
+[`SettableState`](../type-aliases/SettableState.md) \| [`StateValue`](../type-aliases/StateValue.md)
 
 ##### Returns
 
@@ -558,7 +558,7 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:65
 
 ###### state
 
-[`SettableState`](../type-aliases/SettableState.md) | [`StateValue`](../type-aliases/StateValue.md)
+[`SettableState`](../type-aliases/SettableState.md) \| [`StateValue`](../type-aliases/StateValue.md)
 
 ###### callback
 
@@ -590,7 +590,7 @@ Promise-version of setState
 
 ##### state
 
-[`SettableState`](../type-aliases/SettableState.md) | [`StateValue`](../type-aliases/StateValue.md)
+[`SettableState`](../type-aliases/SettableState.md) \| [`StateValue`](../type-aliases/StateValue.md)
 
 #### Returns
 

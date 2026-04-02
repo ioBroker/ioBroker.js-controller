@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,32 +6,28 @@
 
 # Interface: InternalGetEnumsOptions
 
+Defined in: [adapter/src/lib/\_Types.ts:416](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/_Types.ts#L416)
+
 ## Properties
 
 ### \_enumList?
 
-> `optional` **\_enumList**: [`EnumList`](../type-aliases/EnumList.md)
+> `optional` **\_enumList?**: [`EnumList`](../type-aliases/EnumList.md)
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L417)
+Defined in: [adapter/src/lib/\_Types.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/_Types.ts#L417)
 
 ***
 
 ### callback?
 
-> `optional` **callback**: [`GetEnumsCallback`](../type-aliases/GetEnumsCallback.md)
+> `optional` **callback?**: [`GetEnumsCallback`](../type-aliases/GetEnumsCallback.md)
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L419)
+Defined in: [adapter/src/lib/\_Types.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/_Types.ts#L419)
 
 ***
 
 ### options?
 
-> `optional` **options**: `null` \| `Record`\<`string`, `any`\>
+> `optional` **options?**: `Record`\<`string`, `any`\> \| `null`
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L418)
+Defined in: [adapter/src/lib/\_Types.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/_Types.ts#L418)

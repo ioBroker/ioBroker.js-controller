@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,6 @@
 
 # Type Alias: AnyPartialObject
 
-> **AnyPartialObject**: [`PartialStateObject`](../interfaces/PartialStateObject.md) \| [`PartialChannelObject`](../interfaces/PartialChannelObject.md) \| [`PartialDeviceObject`](../interfaces/PartialDeviceObject.md) \| [`PartialFolderObject`](../interfaces/PartialFolderObject.md) \| [`PartialEnumObject`](../interfaces/PartialEnumObject.md) \| [`PartialMetaObject`](../interfaces/PartialMetaObject.md) \| [`PartialHostObject`](../interfaces/PartialHostObject.md) \| [`PartialAdapterObject`](../interfaces/PartialAdapterObject.md) \| [`PartialInstanceObject`](../interfaces/PartialInstanceObject.md) \| [`PartialUserObject`](../interfaces/PartialUserObject.md) \| [`PartialGroupObject`](../interfaces/PartialGroupObject.md) \| [`PartialScriptObject`](../interfaces/PartialScriptObject.md) \| [`PartialChartObject`](PartialChartObject.md) \| [`PartialScheduleObject`](../interfaces/PartialScheduleObject.md) \| [`PartialRepositoryObject`](../interfaces/PartialRepositoryObject.md) \| [`PartialSystemConfigObject`](../interfaces/PartialSystemConfigObject.md) \| [`PartialOtherObject`](../interfaces/PartialOtherObject.md) \| [`PartialDesignObject`](../interfaces/PartialDesignObject.md)
+> **AnyPartialObject** = [`PartialStateObject`](../interfaces/PartialStateObject.md) \| [`PartialChannelObject`](../interfaces/PartialChannelObject.md) \| [`PartialDeviceObject`](../interfaces/PartialDeviceObject.md) \| [`PartialFolderObject`](../interfaces/PartialFolderObject.md) \| [`PartialEnumObject`](../interfaces/PartialEnumObject.md) \| [`PartialMetaObject`](../interfaces/PartialMetaObject.md) \| [`PartialHostObject`](../interfaces/PartialHostObject.md) \| [`PartialAdapterObject`](../interfaces/PartialAdapterObject.md) \| [`PartialInstanceObject`](../interfaces/PartialInstanceObject.md) \| [`PartialUserObject`](../interfaces/PartialUserObject.md) \| [`PartialGroupObject`](../interfaces/PartialGroupObject.md) \| [`PartialScriptObject`](../interfaces/PartialScriptObject.md) \| [`PartialChartObject`](PartialChartObject.md) \| [`PartialScheduleObject`](../interfaces/PartialScheduleObject.md) \| [`PartialRepositoryObject`](../interfaces/PartialRepositoryObject.md) \| [`PartialSystemConfigObject`](../interfaces/PartialSystemConfigObject.md) \| [`PartialOtherObject`](../interfaces/PartialOtherObject.md) \| [`PartialDesignObject`](../interfaces/PartialDesignObject.md)
 
-## Defined in
-
-[types-dev/objects.d.ts:1301](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1301)
+Defined in: [types-dev/objects.d.ts:1301](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L1301)

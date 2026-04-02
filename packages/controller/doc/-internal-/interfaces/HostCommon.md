@@ -1,10 +1,12 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / HostCommon
 
 # Interface: HostCommon
+
+Defined in: [types-dev/objects.d.ts:394](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L394)
 
 ## Extends
 
@@ -16,11 +18,9 @@
 
 > **address**: `string`[]
 
+Defined in: [types-dev/objects.d.ts:406](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L406)
+
 An array of IP addresses this host exposes
-
-#### Defined in
-
-[types-dev/objects.d.ts:406](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L406)
 
 ***
 
@@ -28,17 +28,17 @@ An array of IP addresses this host exposes
 
 > **cmd**: `string`
 
+Defined in: [types-dev/objects.d.ts:403](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L403)
+
 The command line of the executable
-
-#### Defined in
-
-[types-dev/objects.d.ts:403](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L403)
 
 ***
 
 ### color?
 
-> `optional` **color**: `string`
+> `optional` **color?**: `string`
+
+Defined in: [types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L183)
 
 Color attribute used in UI
 
@@ -46,25 +46,21 @@ Color attribute used in UI
 
 [`ObjectCommon`](ObjectCommon.md).[`color`](ObjectCommon.md#color)
 
-#### Defined in
-
-[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L183)
-
 ***
 
 ### custom?
 
-> `optional` **custom**: `undefined`
+> `optional` **custom?**: `undefined`
 
-#### Defined in
-
-[types-dev/objects.d.ts:412](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L412)
+Defined in: [types-dev/objects.d.ts:412](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L412)
 
 ***
 
 ### desc?
 
-> `optional` **desc**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
+> `optional` **desc?**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
+
+Defined in: [types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L175)
 
 Description of this object
 
@@ -72,27 +68,23 @@ Description of this object
 
 [`ObjectCommon`](ObjectCommon.md).[`desc`](ObjectCommon.md#desc)
 
-#### Defined in
-
-[types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L175)
-
 ***
 
 ### disableDataReporting?
 
-> `optional` **disableDataReporting**: `boolean`
+> `optional` **disableDataReporting?**: `boolean`
+
+Defined in: [types-dev/objects.d.ts:415](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L415)
 
 If set to true, the reporting by sentry on this host is disabled for all instances
-
-#### Defined in
-
-[types-dev/objects.d.ts:415](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L415)
 
 ***
 
 ### dontDelete?
 
-> `optional` **dontDelete**: `true`
+> `optional` **dontDelete?**: `true`
+
+Defined in: [types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L178)
 
 When set to true, this object may not be deleted
 
@@ -100,15 +92,13 @@ When set to true, this object may not be deleted
 
 [`ObjectCommon`](ObjectCommon.md).[`dontDelete`](ObjectCommon.md#dontdelete)
 
-#### Defined in
-
-[types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L178)
-
 ***
 
 ### expert?
 
-> `optional` **expert**: `true`
+> `optional` **expert?**: `true`
+
+Defined in: [types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L181)
 
 When set to true, this object is only visible when expert mode is turned on in admin
 
@@ -116,25 +106,21 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 [`ObjectCommon`](ObjectCommon.md).[`expert`](ObjectCommon.md#expert)
 
-#### Defined in
-
-[types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L181)
-
 ***
 
 ### hostname
 
 > **hostname**: `string`
 
-#### Defined in
-
-[types-dev/objects.d.ts:404](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L404)
+Defined in: [types-dev/objects.d.ts:404](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L404)
 
 ***
 
 ### icon?
 
-> `optional` **icon**: `string`
+> `optional` **icon?**: `string`
+
+Defined in: [types-dev/objects.d.ts:400](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L400)
 
 base64 encoded icon
 
@@ -142,19 +128,13 @@ base64 encoded icon
 
 [`ObjectCommon`](ObjectCommon.md).[`icon`](ObjectCommon.md#icon)
 
-#### Defined in
-
-[types-dev/objects.d.ts:400](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L400)
-
 ***
 
 ### installedVersion
 
 > **installedVersion**: `string`
 
-#### Defined in
-
-[types-dev/objects.d.ts:401](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L401)
+Defined in: [types-dev/objects.d.ts:401](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L401)
 
 ***
 
@@ -162,15 +142,13 @@ base64 encoded icon
 
 > **name**: `string`
 
+Defined in: [types-dev/objects.d.ts:396](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L396)
+
 The display name of this host
 
 #### Overrides
 
 [`ObjectCommon`](ObjectCommon.md).[`name`](ObjectCommon.md#name)
-
-#### Defined in
-
-[types-dev/objects.d.ts:396](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L396)
 
 ***
 
@@ -178,15 +156,15 @@ The display name of this host
 
 > **platform**: `"Javascript/Node.js"`
 
-#### Defined in
-
-[types-dev/objects.d.ts:409](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L409)
+Defined in: [types-dev/objects.d.ts:409](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L409)
 
 ***
 
 ### role?
 
-> `optional` **role**: `string`
+> `optional` **role?**: `string`
+
+Defined in: [types-dev/objects.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L190)
 
 role of the object
 
@@ -194,21 +172,15 @@ role of the object
 
 [`ObjectCommon`](ObjectCommon.md).[`role`](ObjectCommon.md#role)
 
-#### Defined in
-
-[types-dev/objects.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L190)
-
 ***
 
 ### title
 
 > **title**: `string`
 
+Defined in: [types-dev/objects.d.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L398)
+
 Changeable name of the host
-
-#### Defined in
-
-[types-dev/objects.d.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L398)
 
 ***
 
@@ -216,6 +188,4 @@ Changeable name of the host
 
 > **type**: `"js-controller"`
 
-#### Defined in
-
-[types-dev/objects.d.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L408)
+Defined in: [types-dev/objects.d.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L408)

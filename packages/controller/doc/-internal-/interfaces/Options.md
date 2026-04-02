@@ -10,13 +10,13 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:38
 
 ## Indexable
 
-\[`other`: `string`\]: `unknown`
+> \[`other`: `string`\]: `unknown`
 
 ## Properties
 
 ### user?
 
-> `optional` **user**: `string`
+> `optional` **user?**: `string`
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:40
 

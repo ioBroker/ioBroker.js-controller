@@ -12,7 +12,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:9
 
 ### autoConnect?
 
-> `optional` **autoConnect**: `boolean`
+> `optional` **autoConnect?**: `boolean`
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:17
 
@@ -20,7 +20,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:17
 
 ### change?
 
-> `optional` **change**: [`ChangeFunction`](../type-aliases/ChangeFunction-1.md)
+> `optional` **change?**: [`ChangeFunction`](../type-aliases/ChangeFunction-1.md)
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:14
 
@@ -28,7 +28,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:14
 
 ### changeFileUser?
 
-> `optional` **changeFileUser**: [`FileChangeHandler`](../type-aliases/FileChangeHandler.md)
+> `optional` **changeFileUser?**: [`FileChangeHandler`](../type-aliases/FileChangeHandler.md)
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:16
 
@@ -36,13 +36,13 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:16
 
 ### changeUser?
 
-> `optional` **changeUser**: [`ChangeFunction`](../type-aliases/ChangeFunction-1.md)
+> `optional` **changeUser?**: [`ChangeFunction`](../type-aliases/ChangeFunction-1.md)
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:15
 
 ***
 
-### connected()
+### connected
 
 > **connected**: () => `void`
 
@@ -64,7 +64,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:24
 
 ### controller?
 
-> `optional` **controller**: `boolean`
+> `optional` **controller?**: `boolean`
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:11
 
@@ -72,15 +72,15 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:11
 
 ### defaultNewAcl?
 
-> `optional` **defaultNewAcl**: [`ACLObject`](ACLObject.md)
+> `optional` **defaultNewAcl?**: [`ACLObject`](ACLObject.md)
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:21
 
 ***
 
-### disconnected()?
+### disconnected?
 
-> `optional` **disconnected**: () => `void`
+> `optional` **disconnected?**: () => `void`
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:13
 
@@ -92,7 +92,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:13
 
 ### hostname?
 
-> `optional` **hostname**: `string`
+> `optional` **hostname?**: `string`
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:19
 
@@ -108,7 +108,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:18
 
 ### metaNamespace?
 
-> `optional` **metaNamespace**: `string`
+> `optional` **metaNamespace?**: `string`
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:22
 
@@ -116,15 +116,15 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:22
 
 ### namespace?
 
-> `optional` **namespace**: `string`
+> `optional` **namespace?**: `string`
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:20
 
 ***
 
-### primaryHostLost()?
+### primaryHostLost?
 
-> `optional` **primaryHostLost**: () => `void`
+> `optional` **primaryHostLost?**: () => `void`
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:12
 
@@ -136,6 +136,6 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:12
 
 ### redisNamespace?
 
-> `optional` **redisNamespace**: `string`
+> `optional` **redisNamespace?**: `string`
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:23

@@ -1,10 +1,12 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / IoBJson
 
 # Interface: IoBJson
+
+Defined in: [types-dev/config.d.ts:92](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L92)
 
 The ioBroker global config
 
@@ -14,9 +16,7 @@ The ioBroker global config
 
 > **// dataDir**: `string`
 
-#### Defined in
-
-[types-dev/config.d.ts:135](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L135)
+Defined in: [types-dev/config.d.ts:135](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L135)
 
 ***
 
@@ -24,9 +24,7 @@ The ioBroker global config
 
 > **// dnsResolution**: `string`
 
-#### Defined in
-
-[types-dev/config.d.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L142)
+Defined in: [types-dev/config.d.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L142)
 
 ***
 
@@ -34,11 +32,9 @@ The ioBroker global config
 
 > **dataDir**: `string`
 
+Defined in: [types-dev/config.d.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L134)
+
 Always relative to iobroker.js-controller/
-
-#### Defined in
-
-[types-dev/config.d.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L134)
 
 ***
 
@@ -46,17 +42,17 @@ Always relative to iobroker.js-controller/
 
 > **dnsResolution**: `"verbatim"` \| `"ipv4first"`
 
+Defined in: [types-dev/config.d.ts:144](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L144)
+
 Use 'verbatim' for ipv6 first, else use 'ipv4first'
-
-#### Defined in
-
-[types-dev/config.d.ts:144](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L144)
 
 ***
 
 ### log
 
 > **log**: `object`
+
+Defined in: [types-dev/config.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L127)
 
 #### level
 
@@ -74,15 +70,13 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 > **transport**: `Record`\<`string`, `any`\>
 
-#### Defined in
-
-[types-dev/config.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L127)
-
 ***
 
 ### multihostService
 
 > **multihostService**: `object`
+
+Defined in: [types-dev/config.d.ts:119](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L119)
 
 #### enabled
 
@@ -100,19 +94,13 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 > **secure**: `boolean`
 
-#### Defined in
-
-[types-dev/config.d.ts:119](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L119)
-
 ***
 
 ### objects
 
 > **objects**: [`ObjectsDatabaseOptions`](ObjectsDatabaseOptions.md)
 
-#### Defined in
-
-[types-dev/config.d.ts:125](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L125)
+Defined in: [types-dev/config.d.ts:125](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L125)
 
 ***
 
@@ -120,13 +108,11 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 > **plugins**: `object`
 
+Defined in: [types-dev/config.d.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L136)
+
 #### Index Signature
 
- \[`pluginName`: `string`\]: `object`
-
-#### Defined in
-
-[types-dev/config.d.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L136)
+\[`pluginName`: `string`\]: `object`
 
 ***
 
@@ -134,15 +120,15 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 > **states**: [`StatesDatabaseOptions`](StatesDatabaseOptions.md)
 
-#### Defined in
-
-[types-dev/config.d.ts:126](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L126)
+Defined in: [types-dev/config.d.ts:126](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L126)
 
 ***
 
 ### system
 
 > **system**: `object`
+
+Defined in: [types-dev/config.d.ts:93](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L93)
 
 #### // allowShellCommands
 
@@ -221,7 +207,3 @@ Do not use more than memory limit mb by ioB process (0 to deactivate)
 > **statisticsInterval**: `number`
 
 Interval how often the counters for input/output in adapters and controller will be updated in ms
-
-#### Defined in
-
-[types-dev/config.d.ts:93](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L93)
