@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,18 +6,18 @@
 
 # Interface: ExtendObjectOptions
 
+Defined in: [types-dev/index.d.ts:362](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L362)
+
 ## Indexable
 
- \[`other`: `string`\]: `unknown`
+> \[`other`: `string`\]: `unknown`
 
 ## Properties
 
 ### preserve?
 
-> `optional` **preserve**: [`ExtendObjectOptionsPreserve`](ExtendObjectOptionsPreserve.md)
+> `optional` **preserve?**: [`ExtendObjectOptionsPreserve`](ExtendObjectOptionsPreserve.md)
+
+Defined in: [types-dev/index.d.ts:364](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L364)
 
 Which properties of the original object should be preserved
-
-#### Defined in
-
-[types-dev/index.d.ts:364](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L364)

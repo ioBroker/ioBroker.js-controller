@@ -14,13 +14,13 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:26
 
 ## Indexable
 
-\[`other`: `string`\]: `any`
+> \[`other`: `string`\]: `any`
 
 ## Properties
 
 ### acl?
 
-> `optional` **acl**: `any`
+> `optional` **acl?**: `any`
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:32
 
@@ -28,7 +28,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:32
 
 ### group?
 
-> `optional` **group**: `string`
+> `optional` **group?**: `string`
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:28
 
@@ -36,7 +36,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:28
 
 ### groups?
 
-> `optional` **groups**: `string`[]
+> `optional` **groups?**: `string`[]
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:27
 
@@ -44,7 +44,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:27
 
 ### owner?
 
-> `optional` **owner**: `` `system.user.${string}` ``
+> `optional` **owner?**: `` `system.user.${string}` ``
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:30
 
@@ -52,7 +52,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:30
 
 ### ownerGroup?
 
-> `optional` **ownerGroup**: `string`
+> `optional` **ownerGroup?**: `string`
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:31
 
@@ -60,6 +60,6 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:31
 
 ### user?
 
-> `optional` **user**: `` `system.user.${string}` ``
+> `optional` **user?**: `` `system.user.${string}` ``
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:29

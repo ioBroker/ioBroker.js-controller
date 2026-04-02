@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,15 +6,15 @@
 
 # Interface: AliasDetails
 
+Defined in: [adapter/src/lib/\_Types.ts:210](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/_Types.ts#L210)
+
 ## Properties
 
 ### source?
 
-> `optional` **source**: [`AliasDetailsSource`](AliasDetailsSource.md)
+> `optional` **source?**: [`AliasDetailsSource`](AliasDetailsSource.md)
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:211](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L211)
+Defined in: [adapter/src/lib/\_Types.ts:211](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/_Types.ts#L211)
 
 ***
 
@@ -22,6 +22,4 @@
 
 > **targets**: [`AliasTargetEntry`](AliasTargetEntry.md)[]
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:212](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L212)
+Defined in: [adapter/src/lib/\_Types.ts:212](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/_Types.ts#L212)

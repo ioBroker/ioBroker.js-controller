@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,6 @@
 
 # Type Alias: Enum
 
-> **Enum**: \`enum.$\{string\}\`
+> **Enum** = `` `enum.${string}` ``
 
-## Defined in
-
-[types-dev/objects.d.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L79)
+Defined in: [types-dev/objects.d.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L79)

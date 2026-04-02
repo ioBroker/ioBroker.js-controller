@@ -52,7 +52,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:277
 
 ##### settings
 
-`string` | `string`[]
+`string` \| `string`[]
 
 #### Returns
 
@@ -108,11 +108,11 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:108
 
 ##### name
 
-`string` | `null`
+`string` \| `null`
 
 ##### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### flag?
 
@@ -146,7 +146,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:168
 
 ##### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### callback
 
@@ -198,7 +198,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:197
 
 ##### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### callback?
 
@@ -454,7 +454,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:238
 
 ###### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ###### callback
 
@@ -478,7 +478,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:239
 
 ###### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### Returns
 
@@ -530,7 +530,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:280
 
 ##### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null` | `undefined`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null` \| `undefined`
 
 ##### callback
 
@@ -656,7 +656,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:258
 
 ###### options?
 
-[`ExtendObjectOptions`](../interfaces/ExtendObjectOptions.md) | `null`
+[`ExtendObjectOptions`](../interfaces/ExtendObjectOptions.md) \| `null`
 
 ##### Returns
 
@@ -686,7 +686,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:259
 
 ###### options?
 
-[`ExtendObjectOptions`](../interfaces/ExtendObjectOptions.md) | `null`
+[`ExtendObjectOptions`](../interfaces/ExtendObjectOptions.md) \| `null`
 
 ###### callback?
 
@@ -773,9 +773,9 @@ name of the file
 
 ##### options?
 
-optional user context
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+optional user context
 
 #### Returns
 
@@ -799,11 +799,11 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:270
 
 ###### type
 
-[`CommonType`](../type-aliases/CommonType.md) | `null`
+[`CommonType`](../type-aliases/CommonType.md) \| `null`
 
 ###### options
 
-[`CallOptions`](../interfaces/CallOptions.md) & `object` | `null`
+[`CallOptions`](../interfaces/CallOptions.md) & `object` \| `null`
 
 ###### callback
 
@@ -827,7 +827,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:273
 
 ###### type
 
-[`CommonType`](../type-aliases/CommonType.md) | `null`
+[`CommonType`](../type-aliases/CommonType.md) \| `null`
 
 ###### callback
 
@@ -851,11 +851,11 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:274
 
 ###### type?
 
-[`CommonType`](../type-aliases/CommonType.md) | `null`
+[`CommonType`](../type-aliases/CommonType.md) \| `null`
 
 ###### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) & `object` | `null`
+[`CallOptions`](../interfaces/CallOptions.md) & `object` \| `null`
 
 ##### Returns
 
@@ -905,7 +905,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:211
 
 ###### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null` | `undefined`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null` \| `undefined`
 
 ###### callback
 
@@ -953,7 +953,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:213
 
 ###### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ###### callback?
 
@@ -1035,7 +1035,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:200
 
 ###### options
 
-[`Options`](../interfaces/Options.md) | `null` | `undefined`
+[`Options`](../interfaces/Options.md) \| `null` \| `undefined`
 
 ###### callback
 
@@ -1065,7 +1065,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:201
 
 ###### options?
 
-[`Options`](../interfaces/Options.md) | `null`
+[`Options`](../interfaces/Options.md) \| `null`
 
 ##### Returns
 
@@ -1119,7 +1119,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:209
 
 ##### options?
 
-`Record`\<`string`, `any`\> | `null`
+`Record`\<`string`, `any`\> \| `null`
 
 #### Returns
 
@@ -1163,7 +1163,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:253
 
 ###### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### Returns
 
@@ -1209,7 +1209,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:255
 
 ###### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ###### callback?
 
@@ -1259,7 +1259,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:216
 
 ###### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### Returns
 
@@ -1299,7 +1299,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:218
 
 ###### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ###### callback
 
@@ -1329,7 +1329,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:219
 
 ##### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 #### Returns
 
@@ -1353,7 +1353,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:221
 
 ###### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### Returns
 
@@ -1373,7 +1373,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:222
 
 ###### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ###### callback
 
@@ -1441,7 +1441,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:247
 
 ###### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### Returns
 
@@ -1475,11 +1475,11 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:248
 
 ###### params
 
-[`GetObjectViewParams`](../interfaces/GetObjectViewParams.md) | `undefined`
+[`GetObjectViewParams`](../interfaces/GetObjectViewParams.md) \| `undefined`
 
 ###### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null` | `undefined`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null` \| `undefined`
 
 ###### callback
 
@@ -1691,7 +1691,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:153
 
 ##### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### callback?
 
@@ -1765,9 +1765,9 @@ id of the object
 
 ##### options?
 
-optional user context
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+optional user context
 
 #### Returns
 
@@ -1793,7 +1793,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:140
 
 ##### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null` | `undefined`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null` \| `undefined`
 
 ##### callback
 
@@ -1851,7 +1851,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:117
 
 ###### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### Returns
 
@@ -1875,7 +1875,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:118
 
 ###### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null` | `undefined`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null` \| `undefined`
 
 ###### callback
 
@@ -1923,7 +1923,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:144
 
 ##### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### callback?
 
@@ -1983,7 +1983,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:151
 
 ##### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### callback
 
@@ -2031,7 +2031,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:110
 
 ##### defaultNewAcl
 
-[`ACLObject`](../interfaces/ACLObject.md) | `null`
+[`ACLObject`](../interfaces/ACLObject.md) \| `null`
 
 #### Returns
 
@@ -2143,7 +2143,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:227
 
 ###### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ###### callback?
 
@@ -2169,11 +2169,11 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:235
 
 ##### obj
 
-`Omit`\<[`StateObject`](../interfaces/StateObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`DeviceObject`](../interfaces/DeviceObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`ChannelObject`](../interfaces/ChannelObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`FolderObject`](../interfaces/FolderObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`MetaObject`](../interfaces/MetaObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`EnumObject`](../interfaces/EnumObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`HostObject`](../interfaces/HostObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`AdapterObject`](../interfaces/AdapterObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`InstanceObject`](../interfaces/InstanceObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`UserObject`](../interfaces/UserObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`GroupObject`](../interfaces/GroupObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`ScriptObject`](../interfaces/ScriptObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`ChartObject`](../interfaces/ChartObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`ScheduleObject`](../interfaces/ScheduleObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`RepositoryObject`](../interfaces/RepositoryObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`OtherObject`](../interfaces/OtherObject.md), `"_id"` \| `"acl"`\> & `object` | `Omit`\<[`DesignObject`](../interfaces/DesignObject.md), `"_id"` \| `"acl"`\> & `object`
+`Omit`\<[`StateObject`](../interfaces/StateObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`DeviceObject`](../interfaces/DeviceObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`ChannelObject`](../interfaces/ChannelObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`FolderObject`](../interfaces/FolderObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`MetaObject`](../interfaces/MetaObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`EnumObject`](../interfaces/EnumObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`HostObject`](../interfaces/HostObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`AdapterObject`](../interfaces/AdapterObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`InstanceObject`](../interfaces/InstanceObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`UserObject`](../interfaces/UserObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`GroupObject`](../interfaces/GroupObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`ScriptObject`](../interfaces/ScriptObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`ChartObject`](../interfaces/ChartObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`ScheduleObject`](../interfaces/ScheduleObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`RepositoryObject`](../interfaces/RepositoryObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`OtherObject`](../interfaces/OtherObject.md), `"_id"` \| `"acl"`\> & `object` \| `Omit`\<[`DesignObject`](../interfaces/DesignObject.md), `"_id"` \| `"acl"`\> & `object`
 
 ##### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 #### Returns
 
@@ -2222,9 +2222,9 @@ Sets the protocol version to the DB
 
 ##### version
 
-protocol version
+`string` \| `number`
 
-`string` | `number`
+protocol version
 
 #### Returns
 
@@ -2244,7 +2244,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:179
 
 ###### pattern
 
-`string` | `string`[]
+`string` \| `string`[]
 
 ###### callback?
 
@@ -2264,7 +2264,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:180
 
 ###### pattern
 
-`string` | `string`[]
+`string` \| `string`[]
 
 ###### options?
 
@@ -2290,7 +2290,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:181
 
 ##### pattern
 
-`string` | `string`[]
+`string` \| `string`[]
 
 ##### options?
 
@@ -2328,7 +2328,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:182
 
 ###### pattern
 
-`string` | `string`[]
+`string` \| `string`[]
 
 ###### callback?
 
@@ -2348,11 +2348,11 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:183
 
 ###### pattern
 
-`string` | `string`[]
+`string` \| `string`[]
 
 ###### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ###### callback?
 
@@ -2374,7 +2374,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:184
 
 ##### pattern
 
-`string` | `string`[]
+`string` \| `string`[]
 
 ##### options
 
@@ -2400,11 +2400,11 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:175
 
 ##### pattern
 
-`string` | `string`[]
+`string` \| `string`[]
 
 ##### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 #### Returns
 
@@ -2430,7 +2430,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:147
 
 ##### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### callback
 
@@ -2486,7 +2486,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:135
 
 ##### options
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null` | `undefined`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null` \| `undefined`
 
 ##### callback?
 
@@ -2536,7 +2536,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:187
 
 ###### pattern
 
-`string` | `string`[]
+`string` \| `string`[]
 
 ###### callback?
 
@@ -2556,11 +2556,11 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:188
 
 ###### pattern
 
-`string` | `string`[]
+`string` \| `string`[]
 
 ###### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ###### callback?
 
@@ -2582,7 +2582,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:189
 
 ##### pattern
 
-`string` | `string`[]
+`string` \| `string`[]
 
 ##### options
 
@@ -2604,11 +2604,11 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:190
 
 ##### pattern
 
-`string` | `string`[]
+`string` \| `string`[]
 
 ##### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 ##### callback?
 
@@ -2630,7 +2630,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:191
 
 ##### pattern
 
-`string` | `string`[]
+`string` \| `string`[]
 
 ##### options
 
@@ -2656,11 +2656,11 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:176
 
 ##### pattern
 
-`string` | `string`[]
+`string` \| `string`[]
 
 ##### options?
 
-[`CallOptions`](../interfaces/CallOptions.md) | `null`
+[`CallOptions`](../interfaces/CallOptions.md) \| `null`
 
 #### Returns
 
@@ -2746,7 +2746,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:114
 
 ###### options?
 
-[`WriteFileOptions`](../interfaces/WriteFileOptions.md) | `null`
+[`WriteFileOptions`](../interfaces/WriteFileOptions.md) \| `null`
 
 ###### callback?
 
@@ -2780,7 +2780,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:115
 
 ##### options?
 
-[`WriteFileOptions`](../interfaces/WriteFileOptions.md) | `null`
+[`WriteFileOptions`](../interfaces/WriteFileOptions.md) \| `null`
 
 #### Returns
 

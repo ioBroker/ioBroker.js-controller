@@ -1,10 +1,12 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / EnumCommon
 
 # Interface: EnumCommon
+
+Defined in: [types-dev/objects.d.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L321)
 
 ## Extends
 
@@ -14,7 +16,9 @@
 
 ### color?
 
-> `optional` **color**: `string`
+> `optional` **color?**: `string`
+
+Defined in: [types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L183)
 
 Color attribute used in UI
 
@@ -22,25 +26,21 @@ Color attribute used in UI
 
 [`ObjectCommon`](ObjectCommon.md).[`color`](ObjectCommon.md#color)
 
-#### Defined in
-
-[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L183)
-
 ***
 
 ### custom?
 
-> `optional` **custom**: `undefined`
+> `optional` **custom?**: `undefined`
 
-#### Defined in
-
-[types-dev/objects.d.ts:326](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L326)
+Defined in: [types-dev/objects.d.ts:326](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L326)
 
 ***
 
 ### desc?
 
-> `optional` **desc**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
+> `optional` **desc?**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
+
+Defined in: [types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L175)
 
 Description of this object
 
@@ -48,15 +48,13 @@ Description of this object
 
 [`ObjectCommon`](ObjectCommon.md).[`desc`](ObjectCommon.md#desc)
 
-#### Defined in
-
-[types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L175)
-
 ***
 
 ### dontDelete?
 
-> `optional` **dontDelete**: `true`
+> `optional` **dontDelete?**: `true`
+
+Defined in: [types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L178)
 
 When set to true, this object may not be deleted
 
@@ -64,15 +62,13 @@ When set to true, this object may not be deleted
 
 [`ObjectCommon`](ObjectCommon.md).[`dontDelete`](ObjectCommon.md#dontdelete)
 
-#### Defined in
-
-[types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L178)
-
 ***
 
 ### expert?
 
-> `optional` **expert**: `true`
+> `optional` **expert?**: `true`
+
+Defined in: [types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L181)
 
 When set to true, this object is only visible when expert mode is turned on in admin
 
@@ -80,15 +76,13 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 [`ObjectCommon`](ObjectCommon.md).[`expert`](ObjectCommon.md#expert)
 
-#### Defined in
-
-[types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L181)
-
 ***
 
 ### icon?
 
-> `optional` **icon**: `string`
+> `optional` **icon?**: `string`
+
+Defined in: [types-dev/objects.d.ts:188](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L188)
 
 Icon for this object
 
@@ -96,21 +90,15 @@ Icon for this object
 
 [`ObjectCommon`](ObjectCommon.md).[`icon`](ObjectCommon.md#icon)
 
-#### Defined in
-
-[types-dev/objects.d.ts:188](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L188)
-
 ***
 
 ### members?
 
-> `optional` **members**: `string`[]
+> `optional` **members?**: `string`[]
+
+Defined in: [types-dev/objects.d.ts:323](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L323)
 
 The IDs of the enum members
-
-#### Defined in
-
-[types-dev/objects.d.ts:323](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L323)
 
 ***
 
@@ -118,21 +106,21 @@ The IDs of the enum members
 
 > **name**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
+Defined in: [types-dev/objects.d.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L172)
+
 The name of this object as a simple string or an object with translations
 
 #### Inherited from
 
 [`ObjectCommon`](ObjectCommon.md).[`name`](ObjectCommon.md#name)
 
-#### Defined in
-
-[types-dev/objects.d.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L172)
-
 ***
 
 ### role?
 
-> `optional` **role**: `string`
+> `optional` **role?**: `string`
+
+Defined in: [types-dev/objects.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L190)
 
 role of the object
 
@@ -140,20 +128,14 @@ role of the object
 
 [`ObjectCommon`](ObjectCommon.md).[`role`](ObjectCommon.md#role)
 
-#### Defined in
-
-[types-dev/objects.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L190)
-
 ***
 
 ### smartName?
 
-> `optional` **smartName**: [`SmartName`](../type-aliases/SmartName.md)
+> `optional` **smartName?**: [`SmartName`](../type-aliases/SmartName.md)
+
+Defined in: [types-dev/objects.d.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L333)
 
 Settings for IOT adapters and how the state should be named in e.g., Alexa.
 The string "ignore" (deprecated please use boolean `false` instead) or boolean value `false` is a special case, causing the state to be ignored.
 A value of `null` means that the device should be removed by the IOT adapters
-
-#### Defined in
-
-[types-dev/objects.d.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L333)

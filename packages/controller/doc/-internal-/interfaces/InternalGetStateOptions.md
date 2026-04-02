@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,15 +6,15 @@
 
 # Interface: InternalGetStateOptions
 
+Defined in: [adapter/src/lib/\_Types.ts:504](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/_Types.ts#L504)
+
 ## Properties
 
 ### callback?
 
-> `optional` **callback**: [`GetStateCallback`](../type-aliases/GetStateCallback.md)
+> `optional` **callback?**: [`GetStateCallback`](../type-aliases/GetStateCallback.md)
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L507)
+Defined in: [adapter/src/lib/\_Types.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/_Types.ts#L507)
 
 ***
 
@@ -22,16 +22,12 @@
 
 > **id**: `string`
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:505](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L505)
+Defined in: [adapter/src/lib/\_Types.ts:505](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/_Types.ts#L505)
 
 ***
 
 ### options?
 
-> `optional` **options**: `null` \| `Record`\<`string`, `any`\>
+> `optional` **options?**: `Record`\<`string`, `any`\> \| `null`
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:506](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L506)
+Defined in: [adapter/src/lib/\_Types.ts:506](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/_Types.ts#L506)

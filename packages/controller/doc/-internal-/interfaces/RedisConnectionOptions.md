@@ -16,7 +16,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:6
 
 ### backup?
 
-> `optional` **backup**: [`BackupOptions`](BackupOptions.md)
+> `optional` **backup?**: [`BackupOptions`](BackupOptions.md)
 
 Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:19
 
@@ -28,7 +28,7 @@ Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:19
 
 ### dataDir?
 
-> `optional` **dataDir**: `string`
+> `optional` **dataDir?**: `string`
 
 Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:21
 
@@ -42,7 +42,7 @@ relative path to the data dir
 
 ### enhancedLogging?
 
-> `optional` **enhancedLogging**: `boolean`
+> `optional` **enhancedLogging?**: `boolean`
 
 Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:18
 
@@ -80,7 +80,7 @@ Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:17
 
 ### pass?
 
-> `optional` **pass**: `string`
+> `optional` **pass?**: `string`
 
 Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:11
 
@@ -106,7 +106,7 @@ array on sentinel
 
 ### redisNamespace?
 
-> `optional` **redisNamespace**: `string`
+> `optional` **redisNamespace?**: `string`
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:7
 
@@ -114,7 +114,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:7
 
 ### sentinelName?
 
-> `optional` **sentinelName**: `string`
+> `optional` **sentinelName?**: `string`
 
 Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:12
 

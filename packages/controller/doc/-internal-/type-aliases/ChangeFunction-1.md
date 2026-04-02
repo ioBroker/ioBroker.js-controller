@@ -4,7 +4,7 @@
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / ChangeFunction
 
-# Type Alias: ChangeFunction()
+# Type Alias: ChangeFunction
 
 > **ChangeFunction** = (`id`, `object`) => `void`
 
@@ -18,7 +18,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:4
 
 ### object
 
-[`Object`](Object.md) | `null`
+[`Object`](Object.md) \| `null`
 
 ## Returns
 

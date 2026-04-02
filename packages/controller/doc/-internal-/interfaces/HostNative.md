@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,11 +6,15 @@
 
 # Interface: HostNative
 
+Defined in: [types-dev/objects.d.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L418)
+
 ## Properties
 
 ### hardware
 
 > **hardware**: `object`
+
+Defined in: [types-dev/objects.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L433)
 
 #### cpus
 
@@ -26,15 +30,13 @@ Return value of `os.cpu` but property `times` could be removed from every entry
 
 > **totalmem**: `number`
 
-#### Defined in
-
-[types-dev/objects.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L433)
-
 ***
 
 ### os
 
 > **os**: `object`
+
+Defined in: [types-dev/objects.d.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L424)
 
 #### arch
 
@@ -64,15 +66,13 @@ Return value of `os.cpu` but property `times` could be removed from every entry
 
 > **type**: `string`
 
-#### Defined in
-
-[types-dev/objects.d.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L424)
-
 ***
 
 ### process
 
 > **process**: `object`
+
+Defined in: [types-dev/objects.d.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L419)
 
 #### env
 
@@ -85,7 +85,3 @@ Return value of `os.cpu` but property `times` could be removed from every entry
 #### versions
 
 > **versions**: `ProcessVersions`
-
-#### Defined in
-
-[types-dev/objects.d.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L419)

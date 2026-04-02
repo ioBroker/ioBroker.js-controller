@@ -12,7 +12,7 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:14
 
 ### autoConnect?
 
-> `optional` **autoConnect**: `boolean`
+> `optional` **autoConnect?**: `boolean`
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:20
 
@@ -20,7 +20,7 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:20
 
 ### change?
 
-> `optional` **change**: [`ChangeFunction`](../type-aliases/ChangeFunction.md)
+> `optional` **change?**: [`ChangeFunction`](../type-aliases/ChangeFunction.md)
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:18
 
@@ -28,15 +28,15 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:18
 
 ### changeUser?
 
-> `optional` **changeUser**: [`UserChangeFunction`](../type-aliases/UserChangeFunction.md)
+> `optional` **changeUser?**: [`UserChangeFunction`](../type-aliases/UserChangeFunction.md)
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:17
 
 ***
 
-### connected()?
+### connected?
 
-> `optional` **connected**: () => `void`
+> `optional` **connected?**: () => `void`
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:15
 
@@ -54,9 +54,9 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:19
 
 ***
 
-### disconnected()?
+### disconnected?
 
-> `optional` **disconnected**: () => `void`
+> `optional` **disconnected?**: () => `void`
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:16
 
@@ -68,7 +68,7 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:16
 
 ### hostname?
 
-> `optional` **hostname**: `string`
+> `optional` **hostname?**: `string`
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:22
 
@@ -76,7 +76,7 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:22
 
 ### logger?
 
-> `optional` **logger**: [`InternalLogger`](../type-aliases/InternalLogger.md)
+> `optional` **logger?**: [`InternalLogger`](../type-aliases/InternalLogger.md)
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:21
 
@@ -84,7 +84,7 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:21
 
 ### metaNamespace?
 
-> `optional` **metaNamespace**: `string`
+> `optional` **metaNamespace?**: `string`
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:24
 
@@ -92,7 +92,7 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:24
 
 ### namespace?
 
-> `optional` **namespace**: `string`
+> `optional` **namespace?**: `string`
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:23
 
@@ -100,7 +100,7 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:23
 
 ### namespaceLog?
 
-> `optional` **namespaceLog**: `string`
+> `optional` **namespaceLog?**: `string`
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:26
 
@@ -108,7 +108,7 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:26
 
 ### namespaceMsg?
 
-> `optional` **namespaceMsg**: `string`
+> `optional` **namespaceMsg?**: `string`
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:27
 
@@ -116,7 +116,7 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:27
 
 ### namespaceSession?
 
-> `optional` **namespaceSession**: `string`
+> `optional` **namespaceSession?**: `string`
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:25
 
@@ -124,6 +124,6 @@ Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:25
 
 ### redisNamespace?
 
-> `optional` **redisNamespace**: `string`
+> `optional` **redisNamespace?**: `string`
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:28
