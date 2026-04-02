@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../README.md)
 
 ***
 
@@ -8,8 +8,6 @@
 
 > `const` **Adapter**: *typeof* [`AdapterClass`](../classes/AdapterClass.md)
 
+Defined in: [adapter/src/lib/adapter/adapter.ts:12281](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/adapter.ts#L12281)
+
 Polyfill to allow calling without `new`
-
-## Defined in
-
-[adapter/src/lib/adapter/adapter.ts:12281](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/adapter/adapter.ts#L12281)

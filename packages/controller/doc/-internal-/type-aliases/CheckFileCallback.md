@@ -4,7 +4,7 @@
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / CheckFileCallback
 
-# Type Alias: CheckFileCallback()
+# Type Alias: CheckFileCallback
 
 > **CheckFileCallback** = (`checkFailed`, `options?`, `fileOptions?`) => `void`
 

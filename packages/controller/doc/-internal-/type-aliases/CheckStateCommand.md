@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,6 @@
 
 # Type Alias: CheckStateCommand
 
-> **CheckStateCommand**: `"getState"` \| `"setState"` \| `"delState"`
+> **CheckStateCommand** = `"getState"` \| `"setState"` \| `"delState"`
 
-## Defined in
-
-[adapter/src/lib/\_Types.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/adapter/src/lib/_Types.ts#L247)
+Defined in: [adapter/src/lib/\_Types.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/_Types.ts#L247)

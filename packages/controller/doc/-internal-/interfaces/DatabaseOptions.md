@@ -1,10 +1,12 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / DatabaseOptions
 
 # Interface: DatabaseOptions
+
+Defined in: [types-dev/config.d.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L49)
 
 ## Extended by
 
@@ -17,9 +19,7 @@
 
 > **backup**: [`DatabaseBackupOptions`](DatabaseBackupOptions.md)
 
-#### Defined in
-
-[types-dev/config.d.ts:76](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L76)
+Defined in: [types-dev/config.d.ts:76](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L76)
 
 ***
 
@@ -27,19 +27,15 @@
 
 > **connectTimeout**: `number`
 
-#### Defined in
-
-[types-dev/config.d.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L55)
+Defined in: [types-dev/config.d.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L55)
 
 ***
 
 ### dataDir?
 
-> `optional` **dataDir**: `string`
+> `optional` **dataDir?**: `string`
 
-#### Defined in
-
-[types-dev/config.d.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L57)
+Defined in: [types-dev/config.d.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L57)
 
 ***
 
@@ -47,9 +43,7 @@
 
 > **host**: `string` \| `string`[]
 
-#### Defined in
-
-[types-dev/config.d.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L53)
+Defined in: [types-dev/config.d.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L53)
 
 ***
 
@@ -57,15 +51,15 @@
 
 > **jsonlOptions**: [`JsonlOptions`](JsonlOptions.md)
 
-#### Defined in
-
-[types-dev/config.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L77)
+Defined in: [types-dev/config.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L77)
 
 ***
 
 ### options
 
 > **options**: `object`
+
+Defined in: [types-dev/config.d.ts:58](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L58)
 
 #### auth\_pass
 
@@ -89,37 +83,33 @@
 
 #### tls?
 
-> `optional` **tls**: `object`
+> `optional` **tls?**: `object`
 
 As soon as the tls property is defined, redis will try to connect via tls (currently only for redis)
 
-#### tls.ca?
+##### tls.ca?
 
-> `optional` **ca**: `string`
+> `optional` **ca?**: `string`
 
 The certificate content
 
-#### tls.cert?
+##### tls.cert?
 
-> `optional` **cert**: `string`
+> `optional` **cert?**: `string`
 
 The cert file content
 
-#### tls.key?
+##### tls.key?
 
-> `optional` **key**: `string`
+> `optional` **key?**: `string`
 
 The key file content
 
-#### tls.rejectUnauthorized?
+##### tls.rejectUnauthorized?
 
-> `optional` **rejectUnauthorized**: `boolean`
+> `optional` **rejectUnauthorized?**: `boolean`
 
 Needs to be false with self-signed certs
-
-#### Defined in
-
-[types-dev/config.d.ts:58](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L58)
 
 ***
 
@@ -127,19 +117,15 @@ Needs to be false with self-signed certs
 
 > **port**: `number` \| `number`[]
 
-#### Defined in
-
-[types-dev/config.d.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L54)
+Defined in: [types-dev/config.d.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L54)
 
 ***
 
 ### sentinelName?
 
-> `optional` **sentinelName**: `string`
+> `optional` **sentinelName?**: `string`
 
-#### Defined in
-
-[types-dev/config.d.ts:52](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L52)
+Defined in: [types-dev/config.d.ts:52](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L52)
 
 ***
 
@@ -147,11 +133,9 @@ Needs to be false with self-signed certs
 
 > **type**: `"file"` \| `"jsonl"` \| `"redis"`
 
+Defined in: [types-dev/config.d.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L51)
+
 Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel].
-
-#### Defined in
-
-[types-dev/config.d.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L51)
 
 ***
 
@@ -159,6 +143,4 @@ Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 63
 
 > **writeFileInterval**: `number`
 
-#### Defined in
-
-[types-dev/config.d.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/config.d.ts#L56)
+Defined in: [types-dev/config.d.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/config.d.ts#L56)

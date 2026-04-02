@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,10 +6,8 @@
 
 # Type Alias: IoBrokerJson
 
-> **IoBrokerJson**: [`IoBJson`](../interfaces/IoBJson.md)
+> **IoBrokerJson** = [`IoBJson`](../interfaces/IoBJson.md)
+
+Defined in: [types-dev/index.d.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L590)
 
 The ioBroker global config
-
-## Defined in
-
-[types-dev/index.d.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L590)

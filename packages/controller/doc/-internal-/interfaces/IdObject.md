@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,32 +6,28 @@
 
 # Interface: IdObject
 
+Defined in: [types-dev/index.d.ts:91](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L91)
+
 ## Properties
 
 ### channel?
 
-> `optional` **channel**: `string`
+> `optional` **channel?**: `string`
 
-#### Defined in
-
-[types-dev/index.d.ts:93](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L93)
+Defined in: [types-dev/index.d.ts:93](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L93)
 
 ***
 
 ### device?
 
-> `optional` **device**: `string`
+> `optional` **device?**: `string`
 
-#### Defined in
-
-[types-dev/index.d.ts:92](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L92)
+Defined in: [types-dev/index.d.ts:92](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L92)
 
 ***
 
 ### state?
 
-> `optional` **state**: `string`
+> `optional` **state?**: `string`
 
-#### Defined in
-
-[types-dev/index.d.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L94)
+Defined in: [types-dev/index.d.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L94)

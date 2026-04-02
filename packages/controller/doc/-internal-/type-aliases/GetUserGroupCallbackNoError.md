@@ -4,7 +4,7 @@
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / GetUserGroupCallbackNoError
 
-# Type Alias: GetUserGroupCallbackNoError()
+# Type Alias: GetUserGroupCallbackNoError
 
 > **GetUserGroupCallbackNoError** = (`user`, `groups`, `acl`) => `void`
 

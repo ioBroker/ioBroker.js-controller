@@ -1,10 +1,12 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / StateObject
 
 # Interface: StateObject
+
+Defined in: [types-dev/objects.d.ts:975](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L975)
 
 ## Extends
 
@@ -16,29 +18,25 @@
 
 > **\_id**: `string`
 
+Defined in: [types-dev/objects.d.ts:959](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L959)
+
 The ID of this object
 
 #### Inherited from
 
 [`BaseObject`](BaseObject.md).[`_id`](BaseObject.md#_id)
 
-#### Defined in
-
-[types-dev/objects.d.ts:959](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L959)
-
 ***
 
 ### acl?
 
-> `optional` **acl**: [`StateACL`](StateACL.md)
+> `optional` **acl?**: [`StateACL`](StateACL.md)
+
+Defined in: [types-dev/objects.d.ts:978](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L978)
 
 #### Overrides
 
 [`BaseObject`](BaseObject.md).[`acl`](BaseObject.md#acl)
-
-#### Defined in
-
-[types-dev/objects.d.ts:978](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L978)
 
 ***
 
@@ -46,41 +44,35 @@ The ID of this object
 
 > **common**: [`StateCommon`](StateCommon.md)
 
+Defined in: [types-dev/objects.d.ts:977](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L977)
+
 #### Overrides
 
 [`BaseObject`](BaseObject.md).[`common`](BaseObject.md#common)
-
-#### Defined in
-
-[types-dev/objects.d.ts:977](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L977)
 
 ***
 
 ### enums?
 
-> `optional` **enums**: `Record`\<`string`, `string` \| [`Translated`](../type-aliases/Translated.md)\>
+> `optional` **enums?**: `Record`\<`string`, `string` \| [`Translated`](../type-aliases/Translated.md)\>
+
+Defined in: [types-dev/objects.d.ts:965](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L965)
 
 #### Inherited from
 
 [`BaseObject`](BaseObject.md).[`enums`](BaseObject.md#enums)
 
-#### Defined in
-
-[types-dev/objects.d.ts:965](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L965)
-
 ***
 
 ### from?
 
-> `optional` **from**: `string`
+> `optional` **from?**: `string`
+
+Defined in: [types-dev/objects.d.ts:967](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L967)
 
 #### Inherited from
 
 [`BaseObject`](BaseObject.md).[`from`](BaseObject.md#from)
-
-#### Defined in
-
-[types-dev/objects.d.ts:967](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L967)
 
 ***
 
@@ -88,19 +80,19 @@ The ID of this object
 
 > **native**: `Record`\<`string`, `any`\>
 
+Defined in: [types-dev/objects.d.ts:963](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L963)
+
 #### Inherited from
 
 [`BaseObject`](BaseObject.md).[`native`](BaseObject.md#native)
-
-#### Defined in
-
-[types-dev/objects.d.ts:963](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L963)
 
 ***
 
 ### nonEdit?
 
-> `optional` **nonEdit**: [`NonEditable`](NonEditable.md)
+> `optional` **nonEdit?**: [`NonEditable`](NonEditable.md)
+
+Defined in: [types-dev/objects.d.ts:972](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L972)
 
 These properties can only be edited if the correct password is provided
 
@@ -108,23 +100,17 @@ These properties can only be edited if the correct password is provided
 
 [`BaseObject`](BaseObject.md).[`nonEdit`](BaseObject.md#nonedit)
 
-#### Defined in
-
-[types-dev/objects.d.ts:972](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L972)
-
 ***
 
 ### ts?
 
-> `optional` **ts**: `number`
+> `optional` **ts?**: `number`
+
+Defined in: [types-dev/objects.d.ts:970](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L970)
 
 #### Inherited from
 
 [`BaseObject`](BaseObject.md).[`ts`](BaseObject.md#ts)
-
-#### Defined in
-
-[types-dev/objects.d.ts:970](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L970)
 
 ***
 
@@ -132,26 +118,22 @@ These properties can only be edited if the correct password is provided
 
 > **type**: `"state"`
 
+Defined in: [types-dev/objects.d.ts:976](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L976)
+
 #### Overrides
 
 [`BaseObject`](BaseObject.md).[`type`](BaseObject.md#type)
-
-#### Defined in
-
-[types-dev/objects.d.ts:976](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L976)
 
 ***
 
 ### user?
 
-> `optional` **user**: `string`
+> `optional` **user?**: `string`
+
+Defined in: [types-dev/objects.d.ts:969](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L969)
 
 The user who created or updated this object
 
 #### Inherited from
 
 [`BaseObject`](BaseObject.md).[`user`](BaseObject.md#user)
-
-#### Defined in
-
-[types-dev/objects.d.ts:969](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L969)

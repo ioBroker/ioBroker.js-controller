@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,9 +6,11 @@
 
 # Type Alias: Object
 
-> **Object**: [`AnyObject`](AnyObject.md) & `object`
+> **Object** = [`AnyObject`](AnyObject.md) & `object`
 
-## Type declaration
+Defined in: [types-dev/objects.d.ts:1326](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L1326)
+
+## Type Declaration
 
 ### common
 
@@ -17,7 +19,3 @@
 ### native
 
 > **native**: `Record`\<`string`, `any`\>
-
-## Defined in
-
-[types-dev/objects.d.ts:1326](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L1326)

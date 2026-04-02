@@ -1,10 +1,12 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / PartialStateObject
 
 # Interface: PartialStateObject
+
+Defined in: [types-dev/objects.d.ts:981](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L981)
 
 ## Extends
 
@@ -14,136 +16,116 @@
 
 ### \_id?
 
-> `optional` **\_id**: `string`
+> `optional` **\_id?**: `string`
+
+Defined in: [types-dev/objects.d.ts:959](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L959)
 
 The ID of this object
 
 #### Inherited from
 
-`Partial._id`
-
-#### Defined in
-
-[types-dev/objects.d.ts:959](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L959)
+[`BaseObject`](BaseObject.md).[`_id`](BaseObject.md#_id)
 
 ***
 
 ### acl?
 
-> `optional` **acl**: `Partial`\<[`StateACL`](StateACL.md)\>
+> `optional` **acl?**: `Partial`\<[`StateACL`](StateACL.md)\>
 
-#### Defined in
-
-[types-dev/objects.d.ts:983](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L983)
+Defined in: [types-dev/objects.d.ts:983](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L983)
 
 ***
 
 ### common?
 
-> `optional` **common**: `Partial`\<[`StateCommon`](StateCommon.md)\>
+> `optional` **common?**: `Partial`\<[`StateCommon`](StateCommon.md)\>
 
-#### Defined in
-
-[types-dev/objects.d.ts:982](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L982)
+Defined in: [types-dev/objects.d.ts:982](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L982)
 
 ***
 
 ### enums?
 
-> `optional` **enums**: `Record`\<`string`, `string` \| [`Translated`](../type-aliases/Translated.md)\>
+> `optional` **enums?**: `Record`\<`string`, `string` \| [`Translated`](../type-aliases/Translated.md)\>
+
+Defined in: [types-dev/objects.d.ts:965](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L965)
 
 #### Inherited from
 
-`Partial.enums`
-
-#### Defined in
-
-[types-dev/objects.d.ts:965](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L965)
+[`BaseObject`](BaseObject.md).[`enums`](BaseObject.md#enums)
 
 ***
 
 ### from?
 
-> `optional` **from**: `string`
+> `optional` **from?**: `string`
+
+Defined in: [types-dev/objects.d.ts:967](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L967)
 
 #### Inherited from
 
-`Partial.from`
-
-#### Defined in
-
-[types-dev/objects.d.ts:967](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L967)
+[`BaseObject`](BaseObject.md).[`from`](BaseObject.md#from)
 
 ***
 
 ### native?
 
-> `optional` **native**: `Record`\<`string`, `any`\>
+> `optional` **native?**: `Record`\<`string`, `any`\>
+
+Defined in: [types-dev/objects.d.ts:963](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L963)
 
 #### Inherited from
 
-`Partial.native`
-
-#### Defined in
-
-[types-dev/objects.d.ts:963](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L963)
+[`BaseObject`](BaseObject.md).[`native`](BaseObject.md#native)
 
 ***
 
 ### nonEdit?
 
-> `optional` **nonEdit**: [`NonEditable`](NonEditable.md)
+> `optional` **nonEdit?**: [`NonEditable`](NonEditable.md)
+
+Defined in: [types-dev/objects.d.ts:972](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L972)
 
 These properties can only be edited if the correct password is provided
 
 #### Inherited from
 
-`Partial.nonEdit`
-
-#### Defined in
-
-[types-dev/objects.d.ts:972](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L972)
+[`BaseObject`](BaseObject.md).[`nonEdit`](BaseObject.md#nonedit)
 
 ***
 
 ### ts?
 
-> `optional` **ts**: `number`
+> `optional` **ts?**: `number`
+
+Defined in: [types-dev/objects.d.ts:970](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L970)
 
 #### Inherited from
 
-`Partial.ts`
-
-#### Defined in
-
-[types-dev/objects.d.ts:970](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L970)
+[`BaseObject`](BaseObject.md).[`ts`](BaseObject.md#ts)
 
 ***
 
 ### type?
 
-> `optional` **type**: `"state"`
+> `optional` **type?**: `"state"`
+
+Defined in: [types-dev/objects.d.ts:976](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L976)
 
 #### Inherited from
 
-`Partial.type`
-
-#### Defined in
-
-[types-dev/objects.d.ts:976](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L976)
+[`StateObject`](StateObject.md).[`type`](StateObject.md#type)
 
 ***
 
 ### user?
 
-> `optional` **user**: `string`
+> `optional` **user?**: `string`
+
+Defined in: [types-dev/objects.d.ts:969](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L969)
 
 The user who created or updated this object
 
 #### Inherited from
 
-`Partial.user`
-
-#### Defined in
-
-[types-dev/objects.d.ts:969](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/objects.d.ts#L969)
+[`BaseObject`](BaseObject.md).[`user`](BaseObject.md#user)

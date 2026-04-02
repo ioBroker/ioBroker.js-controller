@@ -1,10 +1,12 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / PermissionSet
 
 # Interface: PermissionSet
+
+Defined in: [types-dev/index.d.ts:125](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L125)
 
 Defined the complete set of access rights a user has
 
@@ -18,15 +20,13 @@ Defined the complete set of access rights a user has
 
 > **file**: [`ObjectOperationPermissions`](ObjectOperationPermissions.md)
 
+Defined in: [types-dev/index.d.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L116)
+
 The access rights for files
 
 #### Inherited from
 
 [`ObjectPermissions`](ObjectPermissions.md).[`file`](ObjectPermissions.md#file)
-
-#### Defined in
-
-[types-dev/index.d.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L116)
 
 ***
 
@@ -34,11 +34,9 @@ The access rights for files
 
 > **groups**: `string`[]
 
+Defined in: [types-dev/index.d.ts:129](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L129)
+
 The name of the groups this ACL was merged from
-
-#### Defined in
-
-[types-dev/index.d.ts:129](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L129)
 
 ***
 
@@ -46,21 +44,21 @@ The name of the groups this ACL was merged from
 
 > **object**: [`ObjectOperationPermissions`](ObjectOperationPermissions.md)
 
+Defined in: [types-dev/index.d.ts:118](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L118)
+
 The access rights for objects
 
 #### Inherited from
 
 [`ObjectPermissions`](ObjectPermissions.md).[`object`](ObjectPermissions.md#object)
 
-#### Defined in
-
-[types-dev/index.d.ts:118](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L118)
-
 ***
 
 ### other
 
 > **other**: `object`
+
+Defined in: [types-dev/index.d.ts:131](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L131)
 
 The access rights for certain commands
 
@@ -76,15 +74,13 @@ The access rights for certain commands
 
 > **sendto**: `boolean`
 
-#### Defined in
-
-[types-dev/index.d.ts:131](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L131)
-
 ***
 
 ### state?
 
-> `optional` **state**: [`ObjectOperationPermissions`](ObjectOperationPermissions.md)
+> `optional` **state?**: [`ObjectOperationPermissions`](ObjectOperationPermissions.md)
+
+Defined in: [types-dev/index.d.ts:122](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L122)
 
 The access rights for states
 
@@ -92,21 +88,15 @@ The access rights for states
 
 [`ObjectPermissions`](ObjectPermissions.md).[`state`](ObjectPermissions.md#state)
 
-#### Defined in
-
-[types-dev/index.d.ts:122](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L122)
-
 ***
 
 ### user
 
 > **user**: `string`
 
+Defined in: [types-dev/index.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L127)
+
 The name of the user this ACL is for
-
-#### Defined in
-
-[types-dev/index.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L127)
 
 ***
 
@@ -114,12 +104,10 @@ The name of the user this ACL is for
 
 > **users**: [`ObjectOperationPermissions`](ObjectOperationPermissions.md)
 
+Defined in: [types-dev/index.d.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/index.d.ts#L120)
+
 The access rights for users/groups
 
 #### Inherited from
 
 [`ObjectPermissions`](ObjectPermissions.md).[`users`](ObjectPermissions.md#users)
-
-#### Defined in
-
-[types-dev/index.d.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/489db4132aeec4714b9dddbb1034bb412858264c/packages/types-dev/index.d.ts#L120)
