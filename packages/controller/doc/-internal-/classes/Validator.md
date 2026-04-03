@@ -6,7 +6,7 @@
 
 # Class: Validator
 
-Defined in: [adapter/src/lib/adapter/validator.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L15)
+Defined in: [adapter/src/lib/adapter/validator.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L15)
 
 ## Constructors
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/adapter/validator.ts:15](https://github.com/ioBroke
 
 > **new Validator**(`objects`, `states`, `namespaceLog`, `logger`, `namespace`, `namespaceRegExp`): `Validator`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L33)
+Defined in: [adapter/src/lib/adapter/validator.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L33)
 
 Validator for internal adapter.js usage
 
@@ -66,7 +66,7 @@ the namespace RegExp of the adapter `adapter.0`
 
 > **fixId**(`id`, `isPattern?`): `string`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:355](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L355)
+Defined in: [adapter/src/lib/adapter/validator.ts:355](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L355)
 
 Adds the namespace to the ID if it is missing, if an object is passed it will be converted to an id string
 
@@ -94,7 +94,7 @@ if the id is a pattern
 
 > **performStrictObjectCheck**(`id`, `state`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/validator.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L56)
+Defined in: [adapter/src/lib/adapter/validator.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L56)
 
 Performs the strict object check, which includes checking object existence, read-only logic, type and min/max
 additionally it rounds state values whose objects have a `common.step` attribute defined
@@ -123,7 +123,7 @@ ioBroker setState object
 
 > **validateId**(`id`, `isForeignId`, `options?`): `asserts id is string`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L153)
+Defined in: [adapter/src/lib/adapter/validator.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L153)
 
 Checks if a passed ID is valid. Throws an error if id is invalid
 
@@ -161,7 +161,7 @@ Error when id is invalid
 
 > **validateSetStateObjectArgument**(`obj`): `void`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L387)
+Defined in: [adapter/src/lib/adapter/validator.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L387)
 
 Validates the object-type argument that is passed to setState
 
@@ -183,7 +183,7 @@ object to validate
 
 > `static` **assertBoolean**(`value`, `name`): `asserts value is boolean`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:272](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L272)
+Defined in: [adapter/src/lib/adapter/validator.ts:272](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L272)
 
 Throws if a type is not matching the expected type
 
@@ -211,7 +211,7 @@ name of the parameter for logging
 
 > `static` **assertBuffer**(`value`, `name`): `asserts value is Buffer<ArrayBufferLike>`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:315](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L315)
+Defined in: [adapter/src/lib/adapter/validator.ts:315](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L315)
 
 Throws if a type is not an optional callback
 
@@ -239,7 +239,7 @@ name of the parameter for logging
 
 > `static` **assertCallback**(`value`, `name`): `asserts value is Callback`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L341)
+Defined in: [adapter/src/lib/adapter/validator.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L341)
 
 Throws if a type is not an optional callback
 
@@ -267,7 +267,7 @@ name of the parameter for logging
 
 > `static` **assertNumber**(`value`, `name`): `asserts value is number`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:286](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L286)
+Defined in: [adapter/src/lib/adapter/validator.ts:286](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L286)
 
 Throws if a type is not matching the expected type
 
@@ -295,7 +295,7 @@ name of the parameter for logging
 
 > `static` **assertObject**\<`T`\>(`value`, `name`): `asserts value is T`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:300](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L300)
+Defined in: [adapter/src/lib/adapter/validator.ts:300](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L300)
 
 Throws if a type is not matching the expected type
 
@@ -329,7 +329,7 @@ name of the parameter for logging
 
 > `static` **assertOptionalCallback**(`value`, `name`): `asserts value is OptionalCallback`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L327)
+Defined in: [adapter/src/lib/adapter/validator.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L327)
 
 Throws if a type is not an optional callback
 
@@ -357,7 +357,7 @@ name of the parameter for logging
 
 > `static` **assertPattern**(`value`, `name`): `asserts value is Pattern`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:250](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L250)
+Defined in: [adapter/src/lib/adapter/validator.ts:250](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L250)
 
 Throws if a type is not a pattern
 
@@ -385,7 +385,7 @@ name of the parameter for logging
 
 > `static` **assertString**(`value`, `name`): `asserts value is string`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:236](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L236)
+Defined in: [adapter/src/lib/adapter/validator.ts:236](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L236)
 
 Throws if a type is not matching the expected type
 
@@ -413,7 +413,7 @@ name of the parameter for logging
 
 > `static` **assertTimeout**(`ms`): `void`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:447](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L447)
+Defined in: [adapter/src/lib/adapter/validator.ts:447](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L447)
 
 Validates that the timeout is not exceeding a 32-bit signed integer
 
@@ -435,7 +435,7 @@ milliseconds to validate
 
 > `static` **getErrorText**(`code`): `string`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/validator.ts#L225)
+Defined in: [adapter/src/lib/adapter/validator.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/validator.ts#L225)
 
 Look up the error description for an error code
 

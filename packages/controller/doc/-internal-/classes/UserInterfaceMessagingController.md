@@ -6,7 +6,7 @@
 
 # Class: UserInterfaceMessagingController
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:58](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L58)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:58](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L58)
 
 ## Constructors
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:58](htt
 
 > **new UserInterfaceMessagingController**(`options`): `UserInterfaceMessagingController`
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:69](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L69)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:69](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L69)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:69](htt
 
 > **registerClientSubscribeByMessage**(`msg`): `Promise`\<[`UserInterfaceClientSubscribeReturnType`](../interfaces/UserInterfaceClientSubscribeReturnType.md) \| `undefined`\>
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L116)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L116)
 
 Register subscription from new client
 
@@ -54,7 +54,7 @@ The subscribe message
 
 > **removeClientSubscribeByMessage**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L159)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L159)
 
 Remove a client subscription, issued by message
 It contains an array of types which should be unsubscribed
@@ -77,7 +77,7 @@ The unsubscribe message
 
 > **sendToAllClients**(`options`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:103](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L103)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:103](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L103)
 
 Send a message to all active clients
 
@@ -99,7 +99,7 @@ Data and states options
 
 > **sendToClient**(`options`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L82)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L82)
 
 Send a message to the given clientId
 

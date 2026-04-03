@@ -6,7 +6,7 @@
 
 # Interface: EvaluatedFileACL
 
-Defined in: [types-dev/objects.d.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L17)
+Defined in: [types-dev/objects.d.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/objects.d.ts#L17)
 
 Defines access rights for a single file, applied to a user or group
 
@@ -20,7 +20,7 @@ Defines access rights for a single file, applied to a user or group
 
 > **owner**: `string`
 
-Defined in: [types-dev/objects.d.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L9)
+Defined in: [types-dev/objects.d.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/objects.d.ts#L9)
 
 Full name of the user who owns this file, e.g. "system.user.admin"
 
@@ -34,7 +34,7 @@ Full name of the user who owns this file, e.g. "system.user.admin"
 
 > **ownerGroup**: `string`
 
-Defined in: [types-dev/objects.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L11)
+Defined in: [types-dev/objects.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/objects.d.ts#L11)
 
 Full name of the group who owns this file, e.g. "system.group.administrator"
 
@@ -48,7 +48,7 @@ Full name of the group who owns this file, e.g. "system.group.administrator"
 
 > **permissions**: `number`
 
-Defined in: [types-dev/objects.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L13)
+Defined in: [types-dev/objects.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/objects.d.ts#L13)
 
 Linux-type permissions defining access to this file
 
@@ -62,7 +62,7 @@ Linux-type permissions defining access to this file
 
 > **read**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L19)
+Defined in: [types-dev/objects.d.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/objects.d.ts#L19)
 
 Whether the user may read the file
 
@@ -72,6 +72,6 @@ Whether the user may read the file
 
 > **write**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L21)
+Defined in: [types-dev/objects.d.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/objects.d.ts#L21)
 
 Whether the user may write the file

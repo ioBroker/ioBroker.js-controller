@@ -8,7 +8,7 @@
 
 > **SmartNameObject** = `{ [lang in Languages]?: string }` & `object`
 
-Defined in: [types-dev/objects.d.ts:193](https://github.com/ioBroker/ioBroker.js-controller/blob/93ef165ef84e6ce31045ad6cc46ece0914bfee18/packages/types-dev/objects.d.ts#L193)
+Defined in: [types-dev/objects.d.ts:193](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/objects.d.ts#L193)
 
 ## Type Declaration
 
@@ -22,4 +22,4 @@ Which value to set when the ON command is issued
 
 > `optional` **smartType?**: `string` \| `null`
 
-Which kind of device it is
+Description of which kind of device it is
