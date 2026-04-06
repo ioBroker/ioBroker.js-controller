@@ -6,7 +6,7 @@
 
 # Interface: SendToClientOptions
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:26](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L26)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:26](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L26)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:26](htt
 
 > **clientId**: `string`
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L28)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L28)
 
 ID of the client to send the message to, will send to all if omitted
 
@@ -24,7 +24,7 @@ ID of the client to send the message to, will send to all if omitted
 
 > **data**: `unknown`
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L30)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L30)
 
 Data to send to the client
 
@@ -34,6 +34,6 @@ Data to send to the client
 
 > **states**: [`StateRedisClient`](../classes/StateRedisClient.md)
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L32)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L32)
 
 The states db

@@ -6,7 +6,7 @@
 
 # Interface: JsonlOptions
 
-Defined in: [types-dev/config.d.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L17)
+Defined in: [types-dev/config.d.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L17)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/config.d.ts:17](https://github.com/ioBroker/ioBroker.js-c
 
 > **// autoCompress (1)**: `string`
 
-Defined in: [types-dev/config.d.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L18)
+Defined in: [types-dev/config.d.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L18)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [types-dev/config.d.ts:18](https://github.com/ioBroker/ioBroker.js-c
 
 > **// autoCompress (2)**: `string`
 
-Defined in: [types-dev/config.d.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L19)
+Defined in: [types-dev/config.d.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L19)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [types-dev/config.d.ts:19](https://github.com/ioBroker/ioBroker.js-c
 
 > **// autoCompress (3)**: `string`
 
-Defined in: [types-dev/config.d.ts:20](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L20)
+Defined in: [types-dev/config.d.ts:20](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L20)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [types-dev/config.d.ts:20](https://github.com/ioBroker/ioBroker.js-c
 
 > **// ignoreReadErrors**: `string`
 
-Defined in: [types-dev/config.d.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L30)
+Defined in: [types-dev/config.d.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L30)
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: [types-dev/config.d.ts:30](https://github.com/ioBroker/ioBroker.js-c
 
 > **// throttleFS (1)**: `string`
 
-Defined in: [types-dev/config.d.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L33)
+Defined in: [types-dev/config.d.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L33)
 
 ***
 
@@ -54,7 +54,7 @@ Defined in: [types-dev/config.d.ts:33](https://github.com/ioBroker/ioBroker.js-c
 
 > **// throttleFS (2)**: `string`
 
-Defined in: [types-dev/config.d.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L34)
+Defined in: [types-dev/config.d.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L34)
 
 ***
 
@@ -62,7 +62,7 @@ Defined in: [types-dev/config.d.ts:34](https://github.com/ioBroker/ioBroker.js-c
 
 > **autoCompress**: `object`
 
-Defined in: [types-dev/config.d.ts:26](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L26)
+Defined in: [types-dev/config.d.ts:26](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L26)
 
 The JSONL DB is append-only and will contain unnecessary entries after a while.
 It will be compressed when the uncompressed size is >= size * sizeFactor AND >= sizeFactorMinimumSize
@@ -82,7 +82,7 @@ Note that too low values here will cause the DB to be rewritten often.
 
 > **ignoreReadErrors**: `true`
 
-Defined in: [types-dev/config.d.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L32)
+Defined in: [types-dev/config.d.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L32)
 
 If single lines in the DB are corrupted, they can be ignored without losing the whole DB.
 
@@ -92,7 +92,7 @@ If single lines in the DB are corrupted, they can be ignored without losing the 
 
 > **throttleFS**: `object`
 
-Defined in: [types-dev/config.d.ts:39](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L39)
+Defined in: [types-dev/config.d.ts:39](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L39)
 
 By default, the database immediately writes to the database file. Write access can be reduced using the throttleFS option.
 Be aware that buffered changes will be lost in case the process crashes

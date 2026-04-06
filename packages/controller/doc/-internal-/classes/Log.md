@@ -6,7 +6,7 @@
 
 # Class: Log
 
-Defined in: [adapter/src/lib/adapter/log.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/log.ts#L8)
+Defined in: [adapter/src/lib/adapter/log.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/adapter/log.ts#L8)
 
 Log class for adapter.js
 
@@ -22,7 +22,7 @@ It prefixes every message with the given namespace
 
 > **new Log**(`namespaceLog`, `level`, `logger`): `Log`
 
-Defined in: [adapter/src/lib/adapter/log.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/log.ts#L25)
+Defined in: [adapter/src/lib/adapter/log.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/adapter/log.ts#L25)
 
 #### Parameters
 
@@ -54,7 +54,7 @@ logger instance
 
 > `readonly` **level**: [`LogLevel`](../type-aliases/LogLevel.md)
 
-Defined in: [adapter/src/lib/adapter/log.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/log.ts#L10)
+Defined in: [adapter/src/lib/adapter/log.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/adapter/log.ts#L10)
 
 Verbosity of the log output
 
@@ -68,7 +68,7 @@ Verbosity of the log output
 
 > **debug**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/log.ts#L45)
+Defined in: [adapter/src/lib/adapter/log.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/adapter/log.ts#L45)
 
 log a message with debug level
 
@@ -92,7 +92,7 @@ log a message with debug level
 
 > **error**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/log.ts#L53)
+Defined in: [adapter/src/lib/adapter/log.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/adapter/log.ts#L53)
 
 log a message with error severity
 
@@ -116,7 +116,7 @@ log a message with error severity
 
 > **info**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/log.ts#L49)
+Defined in: [adapter/src/lib/adapter/log.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/adapter/log.ts#L49)
 
 log a message with info level (default output level for all adapters)
 
@@ -140,7 +140,7 @@ log a message with info level (default output level for all adapters)
 
 > **silly**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/log.ts#L41)
+Defined in: [adapter/src/lib/adapter/log.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/adapter/log.ts#L41)
 
 log a message with silly level
 
@@ -164,7 +164,7 @@ log a message with silly level
 
 > **warn**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/adapter/src/lib/adapter/log.ts#L57)
+Defined in: [adapter/src/lib/adapter/log.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/adapter/log.ts#L57)
 
 log a message with warning severity
 

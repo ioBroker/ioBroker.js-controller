@@ -6,7 +6,7 @@
 
 # Interface: SupportedMessages
 
-Defined in: [types-dev/objects.d.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/objects.d.ts#L507)
+Defined in: [types-dev/objects.d.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L507)
 
 Object that defines if the adapter supports receiving messages via sendTo.
 Additionally, it defines if specific messages are supported.
@@ -18,7 +18,7 @@ If one property is enabled, the object `system.adapter.<adapterName>.<adapterIns
 
 > `optional` **custom?**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/objects.d.ts#L509)
+Defined in: [types-dev/objects.d.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L509)
 
 If custom messages are supported (same as legacy messagebox)
 
@@ -28,7 +28,7 @@ If custom messages are supported (same as legacy messagebox)
 
 > `optional` **deviceManager?**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:515](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/objects.d.ts#L515)
+Defined in: [types-dev/objects.d.ts:515](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L515)
 
 If the adapter supports the device manager and thus responds to the corresponding messages
 
@@ -38,7 +38,7 @@ If the adapter supports the device manager and thus responds to the correspondin
 
 > `optional` **getHistory?**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:517](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/objects.d.ts#L517)
+Defined in: [types-dev/objects.d.ts:517](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L517)
 
 If the adapter supports getHistory message.
 
@@ -48,7 +48,7 @@ If the adapter supports getHistory message.
 
 > `optional` **notifications?**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:511](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/objects.d.ts#L511)
+Defined in: [types-dev/objects.d.ts:511](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L511)
 
 If notification handling is supported, for information, see https://github.com/foxriver76/ioBroker.notification-manager#requirements-for-messaging-adapters
 
@@ -58,6 +58,6 @@ If notification handling is supported, for information, see https://github.com/f
 
 > `optional` **stopInstance?**: `number` \| `boolean`
 
-Defined in: [types-dev/objects.d.ts:513](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/objects.d.ts#L513)
+Defined in: [types-dev/objects.d.ts:513](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L513)
 
 If the adapter supports signal stopInstance. Use number if you need more than 1000 ms for the stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM).

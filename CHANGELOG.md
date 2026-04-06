@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 7.1.1 (2026-04-06)
 * (@GermanBluefox) Corrected typing (@alcalzone/pak)
 * (@GermanBluefox) Remove chai tests and replace them with node assert tests (not relevant for end users)
 * (@adbecaf) Extended isDocker to support `.conatinerenv` file in Podman or CRI-O

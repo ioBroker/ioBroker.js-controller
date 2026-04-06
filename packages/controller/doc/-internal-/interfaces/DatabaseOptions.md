@@ -6,7 +6,7 @@
 
 # Interface: DatabaseOptions
 
-Defined in: [types-dev/config.d.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L49)
+Defined in: [types-dev/config.d.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L49)
 
 ## Extended by
 
@@ -19,7 +19,7 @@ Defined in: [types-dev/config.d.ts:49](https://github.com/ioBroker/ioBroker.js-c
 
 > **backup**: [`DatabaseBackupOptions`](DatabaseBackupOptions.md)
 
-Defined in: [types-dev/config.d.ts:76](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L76)
+Defined in: [types-dev/config.d.ts:76](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L76)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [types-dev/config.d.ts:76](https://github.com/ioBroker/ioBroker.js-c
 
 > **connectTimeout**: `number`
 
-Defined in: [types-dev/config.d.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L55)
+Defined in: [types-dev/config.d.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L55)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [types-dev/config.d.ts:55](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **dataDir?**: `string`
 
-Defined in: [types-dev/config.d.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L57)
+Defined in: [types-dev/config.d.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L57)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [types-dev/config.d.ts:57](https://github.com/ioBroker/ioBroker.js-c
 
 > **host**: `string` \| `string`[]
 
-Defined in: [types-dev/config.d.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L53)
+Defined in: [types-dev/config.d.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L53)
 
 ***
 
@@ -51,7 +51,7 @@ Defined in: [types-dev/config.d.ts:53](https://github.com/ioBroker/ioBroker.js-c
 
 > **jsonlOptions**: [`JsonlOptions`](JsonlOptions.md)
 
-Defined in: [types-dev/config.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L77)
+Defined in: [types-dev/config.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L77)
 
 ***
 
@@ -59,7 +59,7 @@ Defined in: [types-dev/config.d.ts:77](https://github.com/ioBroker/ioBroker.js-c
 
 > **options**: `object`
 
-Defined in: [types-dev/config.d.ts:58](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L58)
+Defined in: [types-dev/config.d.ts:58](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L58)
 
 #### auth\_pass
 
@@ -117,7 +117,7 @@ Needs to be false with self-signed certs
 
 > **port**: `number` \| `number`[]
 
-Defined in: [types-dev/config.d.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L54)
+Defined in: [types-dev/config.d.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L54)
 
 ***
 
@@ -125,7 +125,7 @@ Defined in: [types-dev/config.d.ts:54](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **sentinelName?**: `string`
 
-Defined in: [types-dev/config.d.ts:52](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L52)
+Defined in: [types-dev/config.d.ts:52](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L52)
 
 ***
 
@@ -133,7 +133,7 @@ Defined in: [types-dev/config.d.ts:52](https://github.com/ioBroker/ioBroker.js-c
 
 > **type**: `"file"` \| `"jsonl"` \| `"redis"`
 
-Defined in: [types-dev/config.d.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L51)
+Defined in: [types-dev/config.d.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L51)
 
 Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel].
 
@@ -143,4 +143,4 @@ Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 63
 
 > **writeFileInterval**: `number`
 
-Defined in: [types-dev/config.d.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/a3193055d7036f87e1ec37944282c0a27e0c2990/packages/types-dev/config.d.ts#L56)
+Defined in: [types-dev/config.d.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/config.d.ts#L56)
