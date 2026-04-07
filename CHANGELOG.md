@@ -3,6 +3,8 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (@GermanBluefox) Corrected typings
 
 ## 7.1.1 (2026-04-06)
 * (@GermanBluefox) Corrected typing (@alcalzone/pak)

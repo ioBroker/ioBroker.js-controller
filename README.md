@@ -110,7 +110,7 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 
 The admin adapter is installed automatically and starts a web-server that hosts the Admin UI. Default port is 8081, so just open `http://<iobroker-ip>:8081/`
 
-If port 8081 is occupied, you can install a second Admin UI on an alternate port and change the port for the first admin UI. To do so, run `iobroker add admin --enabled --port 8090` and go to the `http://<iobroker-ip>:8090/`. Of course you can change port 8090 to a different one.
+If port 8081 is occupied, you can install a second Admin UI on an alternate port and change the port for the first admin UI. To do so, run `iobroker add admin --enabled --port 8090` and go to the `http://<iobroker-ip>:8090/`. Of course, you can change port 8090 to a different one.
 
 ### Automatic adapter upgrade
 **Feature status:** New in 6.0.0
@@ -325,7 +325,7 @@ If a package fails, the response will have a value of `false` for `success` and 
 
 Currently only upgrading of packages is supported. If you need a specific OS dependency for your adapter, you can specify it inside `io-package.json` with the field `osDependencies`.
 
-### Custom install logic
+### Custom installation logic
 **Feature status:** New in 5.0.0
 
 If an adapter needs to execute custom install logic, one possibility is to use the `scripts` attribute of `package.json`. 
@@ -1016,7 +1016,7 @@ More details can be found at https://redis.io/topics/replication#configuration a
 
 Redis slaves will be not writable by default.
 
-In case of a crash of the master, you can reconfigure one of the slaves to be the new master and it will use the current content. After reconfiguring all slaves to sync with the new Master, the redis database is functional again.
+In case of a crash of the master, you can reconfigure one of the slaves to be the new master, and it will use the current content. After reconfiguring all slaves to sync with the new Master, the redis database is functional again.
 
 After reconfiguring Redis, you also need to update all ioBroker states/objects DB settings to connect to the new Redis Master host.
 
