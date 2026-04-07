@@ -533,7 +533,7 @@ declare global {
         /**
          * This structure defines the widgets for "devices" adapter
          */
-        export interface DevicesWidget {
+        export interface DevicesWidgets {
             /** Link to the file with components relatively to `admin/dm-widgets` in admin or `${adapterName}` in web */
             url: string;
             /** Description of the components (widgets). It could be multiple widgets in one adapter */
@@ -701,7 +701,7 @@ declare global {
             /** Similar to `dependencies`, but only checked if the specified adapter is already installed. If the adapter is not installed, the version check will pass */
             ifInstalledDependencies?: { [adapterName: string]: string };
             /** Definition of the widgets for "devices" adapter */
-            deviceWidgets?: Record<string, DevicesWidget>;
+            deviceWidgets?: DevicesWidgets;
             /** Which files outside the README.md have documentation for the adapter */
             docs?: Partial<Record<Languages, string | string[]>>;
             /** Whether new instances should be enabled by default. *Should* be `false`! */
