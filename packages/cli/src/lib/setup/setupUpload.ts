@@ -670,13 +670,20 @@ export class Upload {
                 'tier',
             ];
 
+            // Object attributes that should be completely replaced, not merged
+            const replaceAttributes = ['adminUI', 'adminTab', 'adminColumns'];
+
             for (const [attr, attrData] of Object.entries(additional)) {
                 // preserve these attributes, except, they were undefined before and preserve titleLang if current titleLang is of type string (changed by user)
                 if (preserveAttributes.includes(attr) || (attr === 'titleLang' && typeof target[attr] === 'string')) {
                     if (target[attr] === undefined) {
                         target[attr] = attrData;
                     }
-                } else if (typeof attrData !== 'object' || attrData instanceof Array) {
+                } else if (
+                    typeof attrData !== 'object' ||
+                    attrData instanceof Array ||
+                    replaceAttributes.includes(attr)
+                ) {
                     try {
                         target[attr] = attrData;
 

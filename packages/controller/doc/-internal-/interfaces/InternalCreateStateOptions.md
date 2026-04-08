@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,25 +6,23 @@
 
 # Interface: InternalCreateStateOptions
 
+Defined in: [adapter/src/lib/\_Types.ts:448](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L448)
+
 ## Properties
 
 ### \_native
 
 > **\_native**: `Record`\<`string`, `any`\>
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:453](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L453)
+Defined in: [adapter/src/lib/\_Types.ts:453](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L453)
 
 ***
 
 ### callback?
 
-> `optional` **callback**: [`SetObjectCallback`](../type-aliases/SetObjectCallback.md)
+> `optional` **callback?**: [`SetObjectCallback`](../type-aliases/SetObjectCallback.md)
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:455](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L455)
+Defined in: [adapter/src/lib/\_Types.ts:455](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L455)
 
 ***
 
@@ -32,19 +30,15 @@
 
 > **common**: `Partial`\<[`StateCommon`](StateCommon.md)\>
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:452](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L452)
+Defined in: [adapter/src/lib/\_Types.ts:452](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L452)
 
 ***
 
 ### options?
 
-> `optional` **options**: `null` \| `Record`\<`string`, `any`\>
+> `optional` **options?**: `Record`\<`string`, `any`\> \| `null`
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L454)
+Defined in: [adapter/src/lib/\_Types.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L454)
 
 ***
 
@@ -52,9 +46,7 @@
 
 > **parentChannel**: `string`
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:450](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L450)
+Defined in: [adapter/src/lib/\_Types.ts:450](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L450)
 
 ***
 
@@ -62,9 +54,7 @@
 
 > **parentDevice**: `string`
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L449)
+Defined in: [adapter/src/lib/\_Types.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L449)
 
 ***
 
@@ -72,6 +62,4 @@
 
 > **stateName**: `string`
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:451](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L451)
+Defined in: [adapter/src/lib/\_Types.ts:451](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L451)

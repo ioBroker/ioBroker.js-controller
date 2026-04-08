@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import assert from 'node:assert/strict';
 import { FORBIDDEN_CHARS, execAsync } from '@iobroker/js-controller-common-db/tools';
 
 describe('test tools.js helpers', () => {
@@ -12,12 +12,12 @@ describe('test tools.js helpers', () => {
             { input: 'Th1s-IS_0.k4y', expected: 'Th1s-IS_0.k4y' },
         ];
         for (const { input, expected } of tests) {
-            expect(input.replace(FORBIDDEN_CHARS, '_')).to.equal(expected);
+            assert.strictEqual(input.replace(FORBIDDEN_CHARS, '_'), expected);
         }
     });
 
     it('execAsync', async () => {
         const res = await execAsync('echo test');
-        expect((res.stdout as string).trim()).to.be.equal('test');
+        assert.strictEqual((res.stdout as string).trim(), 'test');
     });
 });

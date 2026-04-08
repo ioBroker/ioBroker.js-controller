@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,38 +6,34 @@
 
 # Interface: AdminUi
 
+Defined in: [types-dev/objects.d.ts:346](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L346)
+
 ## Properties
 
 ### config
 
 > **config**: `"json"` \| `"none"` \| `"materialize"` \| `"html"`
 
+Defined in: [types-dev/objects.d.ts:348](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L348)
+
 UI type of config page inside admin UI
-
-#### Defined in
-
-[types-dev/objects.d.ts:337](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L337)
 
 ***
 
 ### custom?
 
-> `optional` **custom**: `"json"`
+> `optional` **custom?**: `"json"`
+
+Defined in: [types-dev/objects.d.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L350)
 
 UI type of custom tab inside admin UI
-
-#### Defined in
-
-[types-dev/objects.d.ts:339](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L339)
 
 ***
 
 ### tab?
 
-> `optional` **tab**: `"json"` \| `"materialize"` \| `"html"`
+> `optional` **tab?**: `"json"` \| `"materialize"` \| `"html"`
+
+Defined in: [types-dev/objects.d.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L352)
 
 UI type of tab inside admin UI
-
-#### Defined in
-
-[types-dev/objects.d.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L341)

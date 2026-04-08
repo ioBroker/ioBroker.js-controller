@@ -376,7 +376,16 @@ declare global {
                 | 'nonExistingFileErrors'
                 | 'remoteHostErrors'
                 | 'restartLoop'
-                | 'fileToJsonl';
+                | 'fileToJsonl'
+                | 'numberObjectsLimitExceeded'
+                | 'systemRebootRequired'
+                | 'dockerUpdate'
+                | 'packageUpdates'
+                | 'securityIssues'
+                | 'databaseErrors'
+                | 'blockedVersions'
+                | 'automaticAdapterUpgradeSuccessful'
+                | 'automaticAdapterUpgradeFailed';
             [other: string]: string;
         }
 

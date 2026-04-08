@@ -1,10 +1,12 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / ConnectionOptions
 
 # Interface: ConnectionOptions
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:10
 
 ## Extended by
 
@@ -14,33 +16,27 @@
 
 ### backup?
 
-> `optional` **backup**: [`BackupOptions`](BackupOptions.md)
+> `optional` **backup?**: [`BackupOptions`](BackupOptions.md)
 
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:19
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:19
 
 ***
 
-### dataDir
+### dataDir?
 
-> **dataDir**: `string`
+> `optional` **dataDir?**: `string`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:21
 
 relative path to the data dir
-
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:21
 
 ***
 
 ### enhancedLogging?
 
-> `optional` **enhancedLogging**: `boolean`
+> `optional` **enhancedLogging?**: `boolean`
 
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:18
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:18
 
 ***
 
@@ -48,11 +44,9 @@ db-base/build/esm/lib/inMemFileDB.d.ts:18
 
 > **host**: `string` \| `string`[]
 
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:14
+
 array on sentinel
-
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:14
 
 ***
 
@@ -60,19 +54,15 @@ db-base/build/esm/lib/inMemFileDB.d.ts:14
 
 > **options**: `Record`\<`string`, `any`\>
 
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:17
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:17
 
 ***
 
 ### pass?
 
-> `optional` **pass**: `string`
+> `optional` **pass?**: `string`
 
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:11
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:11
 
 ***
 
@@ -80,18 +70,14 @@ db-base/build/esm/lib/inMemFileDB.d.ts:11
 
 > **port**: `number` \| `number`[]
 
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:16
+
 array on sentinel
-
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:16
 
 ***
 
 ### sentinelName?
 
-> `optional` **sentinelName**: `string`
+> `optional` **sentinelName?**: `string`
 
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:12
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:12

@@ -15,7 +15,7 @@ import fs from 'fs-extra';
 import type { CommandResult } from '@alcalzone/pak';
 import * as url from 'node:url';
 
-import { PluginHandler } from '@iobroker/plugin-base';
+import { PluginHandler, type IoPackageFile } from '@iobroker/plugin-base';
 import {
     EXIT_CODES,
     getObjectsConstructor,
@@ -61,7 +61,7 @@ import {
     SYSTEM_ADMIN_GROUP,
     SYSTEM_ADMIN_USER,
 } from '@/lib/adapter/constants.js';
-import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+import type { PluginHandlerSettings } from '@iobroker/plugin-base';
 import type {
     AdapterOptions,
     AliasDetails,
@@ -138,7 +138,7 @@ import type {
     UserInterfaceClientRemoveMessage,
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
-import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
+import { SYSTEM_ADAPTER_PREFIX, DEFAULT_OBJECTS_WARN_LIMIT } from '@iobroker/js-controller-common-db/constants';
 import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
 
 const controllerVersion = packJson.version;
@@ -706,7 +706,7 @@ export class AdapterClass extends EventEmitter {
     /** An array of instances, that support auto subscribe */
     private autoSubscribe: string[] = [];
     private defaultHistory: null | string = null;
-    private pluginHandler?: InstanceType<typeof PluginHandler>;
+    private pluginHandler?: PluginHandler;
     private _reportInterval?: null | NodeJS.Timeout;
     private getPortRunning: null | InternalGetPortOptions = null;
     private readonly _namespaceRegExp: RegExp;
@@ -1494,68 +1494,83 @@ export class AdapterClass extends EventEmitter {
         }
         this.terminated = true;
 
-        this.pluginHandler && this.pluginHandler.destroyAll();
-
-        if (this._reportInterval) {
-            clearInterval(this._reportInterval);
-            this._reportInterval = null;
-        }
-        if (this._restartScheduleJob) {
-            this._restartScheduleJob.cancel();
-            this._restartScheduleJob = null;
-        }
-
-        let _reason = 'Without reason';
-        let _exitCode: number;
-
-        if (typeof reason === 'number') {
-            // Only the exit code was passed
-            exitCode = reason;
-            _reason = 'Without reason';
-        } else if (reason && typeof reason === 'string') {
-            _reason = reason;
-        }
-
-        if (typeof exitCode !== 'number') {
-            _exitCode = !this._config.isInstall ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION : EXIT_CODES.NO_ERROR;
-        } else {
-            _exitCode = exitCode;
-        }
-
-        const isNotCritical =
-            _exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
-            _exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
-            _exitCode === EXIT_CODES.NO_ERROR;
-        const text = `${this.namespaceLog} Terminated (${Validator.getErrorText(_exitCode)}): ${_reason}`;
-        if (isNotCritical) {
-            this._logger.info(text);
-        } else {
-            this._logger.warn(text);
-        }
-        setTimeout(async () => {
-            // give last states some time to get handled
-            if (this.#states) {
-                try {
-                    await this.#states.destroy();
-                } catch {
-                    // ignore
-                }
+        let shutdownStarted = false;
+        const shutdownLogic: () => void = () => {
+            if (shutdownStarted) {
+                return;
             }
-            if (this.#objects) {
-                try {
-                    await this.#objects.destroy();
-                } catch {
-                    //ignore
-                }
+            shutdownStarted = true;
+
+            if (this._reportInterval) {
+                clearInterval(this._reportInterval);
+                this._reportInterval = null;
             }
-            if (this.startedInCompactMode) {
-                this.emit('exit', _exitCode, reason);
-                this.#states = null;
-                this.#objects = null;
+            if (this._restartScheduleJob) {
+                this._restartScheduleJob.cancel();
+                this._restartScheduleJob = null;
+            }
+
+            let _reason = 'Without reason';
+            let _exitCode: number;
+
+            if (typeof reason === 'number') {
+                // Only the exit code was passed
+                exitCode = reason;
+                _reason = 'Without reason';
+            } else if (reason && typeof reason === 'string') {
+                _reason = reason;
+            }
+
+            if (typeof exitCode !== 'number') {
+                _exitCode = !this._config.isInstall ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION : EXIT_CODES.NO_ERROR;
             } else {
-                process.exit(_exitCode);
+                _exitCode = exitCode;
             }
-        }, 500);
+
+            const isNotCritical =
+                _exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
+                _exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
+                _exitCode === EXIT_CODES.NO_ERROR;
+            const text = `${this.namespaceLog} Terminated (${Validator.getErrorText(_exitCode)}): ${_reason}`;
+            if (isNotCritical) {
+                this._logger.info(text);
+            } else {
+                this._logger.warn(text);
+            }
+            setTimeout(async () => {
+                // give last states some time to get handled
+                if (this.#states) {
+                    try {
+                        await this.#states.destroy();
+                    } catch {
+                        // ignore
+                    }
+                }
+                if (this.#objects) {
+                    try {
+                        await this.#objects.destroy();
+                    } catch {
+                        //ignore
+                    }
+                }
+                if (this.startedInCompactMode) {
+                    this.emit('exit', _exitCode, reason);
+                    this.#states = null;
+                    this.#objects = null;
+                } else {
+                    process.exit(_exitCode);
+                }
+            }, 500);
+        };
+
+        if (this.pluginHandler) {
+            this.pluginHandler
+                .destroyAll()
+                .then(() => shutdownLogic())
+                .catch(() => shutdownLogic());
+        } else {
+            shutdownLogic();
+        }
     }
 
     // external signature
@@ -2292,19 +2307,16 @@ export class AdapterClass extends EventEmitter {
 
                 if (this.#states && updateAliveState) {
                     this.outputCount++;
-                    await this.#states.setState(`${id}.alive`, { val: false, ack: true, from: id });
-                    if (!isPause) {
-                        this._logger.info(`${this.namespaceLog} terminating`);
+                    try {
+                        await this.#states.setState(`${id}.alive`, { val: false, ack: true, from: id });
+                    } catch (e) {
+                        this._logger.error(`${this.namespaceLog} Cannot set alive state to false: ${e.message}`);
                     }
-
-                    // To this moment, the class could be destroyed
-                    this.terminate(reason, exitCode);
-                } else {
-                    if (!isPause) {
-                        this._logger.info(`${this.namespaceLog} terminating`);
-                    }
-                    this.terminate(reason, exitCode);
                 }
+                if (!isPause) {
+                    this._logger.info(`${this.namespaceLog} terminating`);
+                }
+                this.terminate(reason, exitCode);
             };
 
             // if we were never ready, we don't trigger the unload procedure
@@ -2312,7 +2324,12 @@ export class AdapterClass extends EventEmitter {
                 if (typeof this._options.unload === 'function') {
                     if (this._options.unload.length >= 1) {
                         // The method takes (at least) a callback
-                        this._options.unload(finishUnload);
+                        try {
+                            this._options.unload(finishUnload);
+                        } catch {
+                            // Can only throw in unload logic, in this case the finishUnload() was not called
+                            finishUnload();
+                        }
                     } else {
                         // The method takes no arguments, so it must return a Promise
                         // @ts-expect-error already fixed in the latest types
@@ -2339,22 +2356,18 @@ export class AdapterClass extends EventEmitter {
             // Even if the developer forgets to call the unload callback, we need to stop the process.
             // Therefore, wait a short while and then force the unload procedure
             setTimeout(() => {
-                if (this.#states) {
-                    finishUnload();
+                if (!this.#states) {
+                    updateAliveState = false;
+                }
 
-                    // Give 1 second to write the value
-                    setTimeout(() => {
-                        if (!isPause) {
-                            this._logger.info(`${this.namespaceLog} terminating with timeout`);
-                        }
-                        this.terminate(exitCode);
-                    }, 1_000);
-                } else {
+                const terminate = (): void => {
                     if (!isPause) {
                         this._logger.info(`${this.namespaceLog} terminating`);
                     }
                     this.terminate(exitCode);
-                }
+                };
+
+                finishUnload().then(terminate, terminate);
             }, this.common?.stopTimeout || 500);
         }
     }
@@ -2741,7 +2754,8 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * delays the fulfillment of the promise the amount of time.
-     * it will not fulfill during and after adapter shutdown
+     * It will directly fulfill without any delay during and after adapter shutdown
+     * (e.g. in an unload method)
      *
      * @param timeout - timeout in milliseconds
      * @returns promise when timeout is over
@@ -5272,7 +5286,7 @@ export class AdapterClass extends EventEmitter {
      */
     createDevice(deviceName: unknown, common: unknown, _native?: unknown, options?: unknown, callback?: unknown): any {
         this._logger.info(
-            `${this.namespaceLog} Method "createDevice" is deprecated and will be removed in js-controller 7.1, use "extendObject/setObjectNotExists" instead`,
+            `${this.namespaceLog} Method "createDevice" is deprecated and will be removed in js-controller 8.x, use "extendObject/setObjectNotExists" instead`,
         );
 
         if (typeof options === 'function') {
@@ -5375,7 +5389,7 @@ export class AdapterClass extends EventEmitter {
         callback?: unknown,
     ): any {
         this._logger.info(
-            `${this.namespaceLog} Method "createChannel" is deprecated and will be removed in js-controller 7.1, use "extendObject/setObjectNotExists" instead`,
+            `${this.namespaceLog} Method "createChannel" is deprecated and will be removed in js-controller 8.x, use "extendObject/setObjectNotExists" instead`,
         );
 
         if (typeof options === 'function') {
@@ -5486,7 +5500,7 @@ export class AdapterClass extends EventEmitter {
         callback?: unknown,
     ): any {
         this._logger.info(
-            `${this.namespaceLog} Method "createState" is deprecated and will be removed in js-controller 7.1, use "extendObject/setObjectNotExists" instead`,
+            `${this.namespaceLog} Method "createState" is deprecated and will be removed in js-controller 8.x, use "extendObject/setObjectNotExists" instead`,
         );
 
         if (typeof options === 'function') {
@@ -5675,7 +5689,7 @@ export class AdapterClass extends EventEmitter {
      */
     deleteDevice(deviceName: unknown, options: unknown, callback?: unknown): any {
         this._logger.info(
-            `${this.namespaceLog} Method "deleteDevice" is deprecated and will be removed in js-controller 7.1, use "delObject" instead`,
+            `${this.namespaceLog} Method "deleteDevice" is deprecated and will be removed in js-controller 8.x, use "delObject" instead`,
         );
 
         if (typeof options === 'function') {
@@ -6005,7 +6019,7 @@ export class AdapterClass extends EventEmitter {
      */
     deleteChannel(parentDevice: unknown, channelName: unknown, options?: unknown, callback?: unknown): any {
         this._logger.info(
-            `${this.namespaceLog} Method "deleteChannel" is deprecated and will be removed in js-controller 7.1, use "delObject" instead`,
+            `${this.namespaceLog} Method "deleteChannel" is deprecated and will be removed in js-controller 8.x, use "delObject" instead`,
         );
 
         if (typeof options === 'function') {
@@ -6121,7 +6135,7 @@ export class AdapterClass extends EventEmitter {
         callback?: unknown,
     ): any {
         this._logger.info(
-            `${this.namespaceLog} Method "deleteState" is deprecated and will be removed in js-controller 7.1, use "delObject" instead`,
+            `${this.namespaceLog} Method "deleteState" is deprecated and will be removed in js-controller 8.x, use "delObject" instead`,
         );
 
         if (typeof parentChannel === 'function' && stateName === undefined) {
@@ -10922,7 +10936,6 @@ export class AdapterClass extends EventEmitter {
                                 exitCode: EXIT_CODES.ADAPTER_REQUESTED_TERMINATION,
                                 updateAliveState: false,
                             });
-                            setTimeout(() => this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION), 4000);
                         }
                     }
                 }
@@ -11070,11 +11083,16 @@ export class AdapterClass extends EventEmitter {
                                     this.pluginHandler.getPluginConfig(pluginName) || {},
                                     thisDir,
                                 );
+                                // @ts-expect-error objects and state object version conflicts that are none
                                 this.pluginHandler.setDatabaseForPlugin(pluginName, this.#objects, this.#states);
-                                this.pluginHandler.initPlugin(pluginName, this.adapterConfig || {});
+
+                                await this.pluginHandler.initPlugin(
+                                    pluginName,
+                                    (this.adapterConfig || {}) as IoPackageFile,
+                                );
                             }
                         } else {
-                            if (!this.pluginHandler.destroy(pluginName)) {
+                            if (!(await this.pluginHandler.destroy(pluginName))) {
                                 this._logger.info(
                                     `${this.namespaceLog} Plugin ${pluginName} could not be disabled. Please restart adapter to disable it.`,
                                 );
@@ -11154,8 +11172,10 @@ export class AdapterClass extends EventEmitter {
                         if (this.connected) {
                             return;
                         } // If reconnected in the meantime, do not terminate
-                        this._logger.warn(`${this.namespaceLog} Cannot connect/reconnect to states DB. Terminating`);
-                        this.terminate(EXIT_CODES.NO_ERROR);
+                        this._logger.warn(
+                            `${this.namespaceLog} Cannot connect/reconnect to states DB. Stopping adapter.`,
+                        );
+                        this._stop({ exitCode: EXIT_CODES.NO_ERROR, updateAliveState: false });
                     }, 5000);
             },
         });
@@ -11227,8 +11247,10 @@ export class AdapterClass extends EventEmitter {
                             return;
                         } // If reconnected in the meantime, do not terminate
 
-                        this._logger.warn(`${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`);
-                        this.terminate(EXIT_CODES.NO_ERROR);
+                        this._logger.warn(
+                            `${this.namespaceLog} Cannot connect/reconnect to objects DB. Stopping adapter.`,
+                        );
+                        this._stop({ exitCode: EXIT_CODES.NO_ERROR, updateAliveState: false });
                     }, 4000);
             },
             change: async (id, obj) => {
@@ -11242,7 +11264,6 @@ export class AdapterClass extends EventEmitter {
                 if (id === `system.adapter.${this.namespace}` && obj?.common?.enabled === false) {
                     this._logger.info(`${this.namespaceLog} Adapter is disabled => stop`);
                     this._stop();
-                    setTimeout(() => this.terminate(EXIT_CODES.NO_ERROR), 4_000);
                     return;
                 }
 
@@ -11488,8 +11509,9 @@ export class AdapterClass extends EventEmitter {
         if (!this.pluginHandler) {
             return;
         }
+        // @ts-expect-error objects and state object version conflicts that are none
         this.pluginHandler.setDatabaseForPlugins(this.#objects, this.#states);
-        await this.pluginHandler.initPlugins(adapterConfig || {});
+        await this.pluginHandler.initPlugins((adapterConfig || {}) as IoPackageFile);
         if (!this.#states || !this.#objects || this.terminated) {
             // if adapterState was destroyed, we should not continue
             return;
@@ -11506,30 +11528,15 @@ export class AdapterClass extends EventEmitter {
 
                 if (!this._config.isInstall && (!process.argv || !this._config.forceIfDisabled)) {
                     const id = `system.adapter.${this.namespace}`;
-                    this.outputCount += 2;
-                    this.#states.setState(`${id}.alive`, { val: true, ack: true, expire: 30, from: id });
-                    let done = false;
-                    this.#states.setState(
-                        `${id}.connected`,
-                        {
-                            val: true,
-                            ack: true,
-                            expire: 30,
-                            from: id,
-                        },
-                        () => {
-                            if (!done) {
-                                done = true;
-                                this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
-                            }
-                        },
-                    );
-                    setTimeout(() => {
-                        if (!done) {
-                            done = true;
-                            this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
-                        }
-                    }, 1_000);
+                    await this.#setStateWithOutputCount(`${id}.alive`, { val: true, ack: true, expire: 30, from: id });
+                    await this.#setStateWithOutputCount(`${id}.connected`, {
+                        val: true,
+                        ack: true,
+                        expire: 30,
+                        from: id,
+                    });
+
+                    this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
                     return;
                 }
             }
@@ -11590,7 +11597,7 @@ export class AdapterClass extends EventEmitter {
             // @ts-expect-error
             this.config = adapterConfig.native;
             // @ts-expect-error
-            this.host = adapterConfig.common.host;
+            this.host = adapterConfig.common.host || tools.getHostName();
             // @ts-expect-error
             this.common = adapterConfig.common;
 
@@ -11635,7 +11642,7 @@ export class AdapterClass extends EventEmitter {
             this.config = adapterConfig.native || {};
             // @ts-expect-error
             this.common = adapterConfig.common || {};
-            this.host = this.common?.host || tools.getHostName() || os.hostname();
+            this.host = this.common?.host || tools.getHostName();
         }
 
         this.adapterConfig = adapterConfig;
@@ -11706,13 +11713,19 @@ export class AdapterClass extends EventEmitter {
             from: `system.adapter.${this.namespace}`,
         });
 
+        try {
+            await this.#checkObjectsWarnLimit();
+        } catch (e) {
+            this._logger.error(`${this.namespaceLog} Could not check objects warn limit: ${e.message}`);
+        }
+
         if (this._options.instance === undefined) {
             this.version = this.pack?.version
                 ? this.pack.version
                 : this.ioPack?.common
                   ? this.ioPack.common.version
                   : 'unknown';
-            // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
+
             // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
             const isNpmVersion = isInstalledFromNpm({
                 adapterName: this.name,
@@ -11815,30 +11828,32 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _exceptionHandler(err: NodeJS.ErrnoException, isUnhandledRejection?: boolean): Promise<void> {
-        // If the adapter has a callback to listen for unhandled errors
-        // give it a chance to handle the error itself instead of restarting it
-        if (typeof this._options.error === 'function') {
-            try {
-                // if the error handler in the adapter returned exactly true,
-                // we expect the error to be handled and do nothing more
-                const wasHandled = this._options.error(err);
-                if (wasHandled === true) {
-                    return;
+        if (!this._stopInProgress) {
+            // If the adapter has a callback to listen for unhandled errors
+            // give it a chance to handle the error itself instead of restarting it
+            if (typeof this._options.error === 'function') {
+                try {
+                    // if the error handler in the adapter returned exactly true,
+                    // we expect the error to be handled and do nothing more
+                    const wasHandled = this._options.error(err);
+                    if (wasHandled === true) {
+                        return;
+                    }
+                } catch (e) {
+                    console.error(`Error in adapter error handler: ${e.message}`);
                 }
-            } catch (e) {
-                console.error(`Error in adapter error handler: ${e.message}`);
             }
-        }
 
-        // catch it on Windows
-        if (this.getPortRunning && err?.message === 'listen EADDRINUSE') {
-            const { host, port, callback } = this.getPortRunning;
-            this._logger.warn(
-                `${this.namespaceLog} Port ${port}${host ? ` for host ${host}` : ''} is in use. Get next`,
-            );
+            // catch it on Windows
+            if (this.getPortRunning && err?.message === 'listen EADDRINUSE') {
+                const { host, port, callback } = this.getPortRunning;
+                this._logger.warn(
+                    `${this.namespaceLog} Port ${port}${host ? ` for host ${host}` : ''} is in use. Get next`,
+                );
 
-            setImmediate(() => this.getPort(port + 1, host, callback));
-            return;
+                setImmediate(() => this.getPort(port + 1, host, callback));
+                return;
+            }
         }
 
         if (isUnhandledRejection) {
@@ -11855,7 +11870,7 @@ export class AdapterClass extends EventEmitter {
             this._logger.error(`${this.namespaceLog} ${err.stack}`);
         }
 
-        if (err) {
+        if (err && !this._stopInProgress) {
             const message = err.code ? `Exception-Code: ${err.code}: ${err.message}` : err.message;
             this._logger.error(`${this.namespaceLog} ${message}`);
             try {
@@ -11865,16 +11880,17 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        try {
-            this._stop({
-                isPause: false,
-                isScheduled: false,
-                exitCode: EXIT_CODES.UNCAUGHT_EXCEPTION,
-                updateAliveState: false,
-            });
-            setTimeout(() => this.terminate(EXIT_CODES.UNCAUGHT_EXCEPTION), 1_000);
-        } catch (e) {
-            this._logger.error(`${this.namespaceLog} exception by stop: ${e ? e.message : e}`);
+        if (!this._stopInProgress) {
+            try {
+                this._stop({
+                    isPause: false,
+                    isScheduled: false,
+                    exitCode: EXIT_CODES.UNCAUGHT_EXCEPTION,
+                    updateAliveState: false,
+                });
+            } catch (e) {
+                this._logger.error(`${this.namespaceLog} exception by stop: ${e ? e.message : e}`);
+            }
         }
     }
 
@@ -11980,6 +11996,67 @@ export class AdapterClass extends EventEmitter {
         return new Promise(resolve => {
             this._extendObjects(objs, resolve);
         });
+    }
+
+    /**
+     * Check if the number of objects exceeds the warning limit
+     */
+    async #checkObjectsWarnLimit(): Promise<void> {
+        if (!this.#objects || !this.#states) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        const warnLimitId = `${SYSTEM_ADAPTER_PREFIX + this.namespace}.objectsWarnLimit`;
+
+        const warnLimitState = await this.#getStateWithInputCount(warnLimitId);
+
+        const objectsWarnLimit =
+            typeof warnLimitState?.val === 'number' ? warnLimitState.val : DEFAULT_OBJECTS_WARN_LIMIT;
+
+        if (warnLimitState?.ack === false) {
+            await this.#setStateWithOutputCount(warnLimitId, { val: objectsWarnLimit, ack: true });
+        }
+
+        const keys = await this.#objects.getKeysAsync(`${this.namespace}*`);
+        const objectsCount = keys?.length ?? 0;
+
+        if (objectsCount > objectsWarnLimit) {
+            const message = `This instance has ${objectsCount} objects, the limit for this instance is set to ${objectsWarnLimit}.`;
+            this._logger.warn(`${this.namespaceLog} ${message}`);
+            await this.registerNotification('system', 'numberObjectsLimitExceeded', message);
+        }
+    }
+
+    /**
+     * Get a state and automatically increase the input count
+     *
+     * @param id id of the state
+     */
+    #getStateWithInputCount(id: string): ioBroker.GetStatePromise {
+        if (!this.#states) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        this.inputCount++;
+        return this.#states.getState(id);
+    }
+
+    /**
+     * Set a state and automatically increase the output count
+     *
+     * @param id if of the state
+     * @param state state to set
+     */
+    #setStateWithOutputCount(
+        id: string,
+        state: ioBroker.SettableState | ioBroker.StateValue,
+    ): ioBroker.SetStatePromise {
+        if (!this.#states) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        this.outputCount++;
+        return this.#states.setState(id, state);
     }
 
     private async _extendObjects(tasks: Record<string, any>, callback: () => void): Promise<void> {
@@ -12104,8 +12181,7 @@ export class AdapterClass extends EventEmitter {
             // @ts-expect-error
             log: this._logger,
             iobrokerConfig: this._config,
-            // @ts-expect-error
-            parentPackage: this.pack,
+            parentPackage: this.pack!,
             controllerVersion,
         };
 

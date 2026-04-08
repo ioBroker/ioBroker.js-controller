@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,12 +6,12 @@
 
 # Type Alias: SettableObjectWorker\<T\>
 
-> **SettableObjectWorker**\<`T`\>: `T` *extends* [`AnyObject`](AnyObject.md) ? `Omit`\<`T`, `"_id"` \| `"acl"`\> & `object` : `never`
+> **SettableObjectWorker**\<`T`\> = `T` *extends* [`AnyObject`](AnyObject.md) ? `Omit`\<`T`, `"_id"` \| `"acl"`\> & `object` : `never`
+
+Defined in: [types-dev/objects.d.ts:1352](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L1352)
 
 ## Type Parameters
 
-• **T**
+### T
 
-## Defined in
-
-[types-dev/objects.d.ts:1274](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L1274)
+`T`

@@ -64,7 +64,7 @@ export function applyAliasTransformer(options: ApplyAliasTransformerOptions): io
 export function applyAliasConvenienceConversion(options: ApplyAliasConvenienceConversionOptions): ioBroker.StateValue {
     const { targetCommon, state } = options;
 
-    if (targetCommon && typeof state.val !== targetCommon.type && state.val !== null) {
+    if (targetCommon && typeof state.val !== targetCommon.type && state.val !== null && state.val !== undefined) {
         if (targetCommon.type === 'boolean') {
             const lowerVal = typeof state.val === 'string' ? state.val.toLowerCase() : state.val;
             if (lowerVal === 'off' || lowerVal === 'aus' || state.val === '0') {

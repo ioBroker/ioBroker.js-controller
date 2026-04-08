@@ -172,7 +172,7 @@ export function logger(
         prefix = userOptions.prefix || '';
         noStdout = userOptions.noStdout;
         const winstonFormats = [];
-        /** @ts-expect-error formatter arg wrongly documented */
+        // @ts-expect-error formatter arg wrongly documented
         winstonFormats.push(winston.format.timestamp({ format: timestamp }));
         if (userOptions.json === undefined || userOptions.json) {
             winstonFormats.push(winston.format.json());
@@ -410,14 +410,14 @@ export function logger(
 
     const log = winston.createLogger(options);
 
-    /** @ts-expect-error why do we override/add method to foreign instance? TODO */
+    // @ts-expect-error why do we override/add method to foreign instance? TODO
     log.getFileName = function () {
-        /** @ts-expect-error we use undocumented stuff here TODO */
+        // @ts-expect-error we use undocumented stuff here TODO
         let transport = this.transports.find(t => (t.transport && t.transport.dirname) || t.dirname);
         if (transport) {
-            /** @ts-expect-error we use undocumented stuff here TODO */
+            // @ts-expect-error we use undocumented stuff here TODO
             transport = transport.transport ? transport.transport : transport;
-            /** @ts-expect-error we use undocumented stuff here TODO */
+            // @ts-expect-error we use undocumented stuff here TODO
             return `${transport.dirname}/${transport.filename.replace('%DATE%', getDate())}`;
         }
         return '';
@@ -435,36 +435,36 @@ export function logger(
      */
     // @ts-expect-error why do we override/add method to foreign instance? TODO
     log.activateDateChecker = function (isEnabled, daysCount) {
-        /** @ts-expect-error we use undocumented stuff here TODO */
+        // @ts-expect-error we use undocumented stuff here TODO
         if (!isEnabled && this._fileChecker) {
-            /** @ts-expect-error we use undocumented stuff here TODO */
+            // @ts-expect-error we use undocumented stuff here TODO
             clearInterval(this._fileChecker);
-            /** @ts-expect-error we use undocumented stuff here TODO */
+            // @ts-expect-error we use undocumented stuff here TODO
         } else if (isEnabled && !this._fileChecker) {
             if (!daysCount) {
                 daysCount = 3;
             }
 
             // Check every hour
-            /** @ts-expect-error we use undocumented stuff here TODO */
+            // @ts-expect-error we use undocumented stuff here TODO
             this._fileChecker = setInterval(() => {
                 this.transports.forEach(transport => {
                     if (
-                        /** @ts-expect-error we use undocumented stuff here TODO */
+                        // @ts-expect-error we use undocumented stuff here TODO
                         transport.name !== 'dailyRotateFile' ||
-                        /** @ts-expect-error we use undocumented stuff here TODO */
+                        // @ts-expect-error we use undocumented stuff here TODO
                         !transport.options ||
-                        /** @ts-expect-error we use undocumented stuff here TODO */
+                        // @ts-expect-error we use undocumented stuff here TODO
                         transport.options.name !== tools.appName
                     ) {
                         return;
                     }
 
-                    /** @ts-expect-error we use undocumented stuff here TODO */
+                    // @ts-expect-error we use undocumented stuff here TODO
                     if (transport && fs.existsSync(transport.dirname)) {
                         let files;
                         try {
-                            /** @ts-expect-error we use undocumented stuff here TODO */
+                            // @ts-expect-error we use undocumented stuff here TODO
                             files = fs.readdirSync(transport.dirname);
                         } catch (e) {
                             console.error(`host.${hostname} Cannot read log directory: ${e.message}`);
@@ -485,20 +485,20 @@ export function logger(
                                             message: `host.${hostname} Delete log file ${files[i]}`,
                                         });
                                         console.log(`host.${hostname} Delete log file ${files[i]}`);
-                                        /** @ts-expect-error we use undocumented stuff here TODO */
+                                        // @ts-expect-error we use undocumented stuff here TODO
                                         fs.unlinkSync(`${transport.dirname}/${files[i]}`);
                                     } catch (e) {
                                         // there is a bug under windows, that file stays opened and cannot be deleted
                                         this.log({
                                             level: os.platform().startsWith('win') ? 'info' : 'error',
                                             message: `host.${hostname} Cannot delete file "${path.normalize(
-                                                /** @ts-expect-error we use undocumented stuff here TODO */
+                                                // @ts-expect-error we use undocumented stuff here TODO
                                                 `${transport.dirname}/${files[i]}`,
                                             )}": ${e}`,
                                         });
                                         console.log(
                                             `host.${hostname} Cannot delete file "${path.normalize(
-                                                /** @ts-expect-error we use undocumented stuff here TODO */
+                                                // @ts-expect-error we use undocumented stuff here TODO
                                                 `${transport.dirname}/${files[i]}`,
                                             )}": ${e.message}`,
                                         );

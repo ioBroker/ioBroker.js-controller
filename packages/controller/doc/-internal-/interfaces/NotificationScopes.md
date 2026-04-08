@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,18 +6,18 @@
 
 # Interface: NotificationScopes
 
+Defined in: [types-dev/index.d.ts:370](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/index.d.ts#L370)
+
 Predefined notification scopes and their categories
 
 ## Indexable
 
- \[`other`: `string`\]: `string`
+> \[`other`: `string`\]: `string`
 
 ## Properties
 
 ### system
 
-> **system**: `"memIssues"` \| `"fsIoErrors"` \| `"noDiskSpace"` \| `"accessErrors"` \| `"nonExistingFileErrors"` \| `"remoteHostErrors"` \| `"restartLoop"` \| `"fileToJsonl"`
+> **system**: `"blockedVersions"` \| `"memIssues"` \| `"fsIoErrors"` \| `"noDiskSpace"` \| `"accessErrors"` \| `"nonExistingFileErrors"` \| `"remoteHostErrors"` \| `"restartLoop"` \| `"fileToJsonl"` \| `"numberObjectsLimitExceeded"` \| `"systemRebootRequired"` \| `"dockerUpdate"` \| `"packageUpdates"` \| `"securityIssues"` \| `"databaseErrors"` \| `"automaticAdapterUpgradeSuccessful"` \| `"automaticAdapterUpgradeFailed"`
 
-#### Defined in
-
-[types-dev/index.d.ts:371](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/index.d.ts#L371)
+Defined in: [types-dev/index.d.ts:371](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/index.d.ts#L371)

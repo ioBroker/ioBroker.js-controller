@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,6 @@
 
 # Type Alias: GetHistoryResult
 
-> **GetHistoryResult**: [`State`](../interfaces/State.md) & `object`[]
+> **GetHistoryResult** = [`State`](../interfaces/State.md) & `object`[]
 
-## Defined in
-
-[types-dev/index.d.ts:482](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/index.d.ts#L482)
+Defined in: [types-dev/index.d.ts:491](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/index.d.ts#L491)

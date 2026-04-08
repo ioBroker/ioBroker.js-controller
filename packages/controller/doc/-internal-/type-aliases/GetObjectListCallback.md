@@ -1,29 +1,33 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / GetObjectListCallback
 
-# Type Alias: GetObjectListCallback()\<T\>
+# Type Alias: GetObjectListCallback\<T\>
 
-> **GetObjectListCallback**\<`T`\>: (`err`?, `result`?) => `void`
+> **GetObjectListCallback**\<`T`\> = (`err?`, `result?`) => `void`
+
+Defined in: [types-dev/index.d.ts:570](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/index.d.ts#L570)
 
 ## Type Parameters
 
-• **T** *extends* [`Object`](Object.md)
+### T
+
+`T` *extends* [`Object`](Object.md)
 
 ## Parameters
 
-• **err?**: `Error` \| `null`
+### err?
 
-• **result?**
+`Error` \| `null`
 
-• **result.rows?**: [`GetObjectListItem`](../interfaces/GetObjectListItem.md)\<`T`\>[]
+### result?
+
+#### rows
+
+[`GetObjectListItem`](../interfaces/GetObjectListItem.md)\<`T`\>[]
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[types-dev/index.d.ts:561](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/index.d.ts#L561)

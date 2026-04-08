@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,38 +6,34 @@
 
 # Interface: UserInterfaceClientSubscribeReturnType
 
+Defined in: [adapter/src/lib/\_Types.ts:147](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L147)
+
 ## Properties
 
 ### accepted
 
 > **accepted**: `boolean`
 
+Defined in: [adapter/src/lib/\_Types.ts:149](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L149)
+
 If the adapter has accepted the client subscription
-
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:149](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L149)
 
 ***
 
 ### error?
 
-> `optional` **error**: `string`
+> `optional` **error?**: `string`
+
+Defined in: [adapter/src/lib/\_Types.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L153)
 
 Optional error if not accepted
-
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L153)
 
 ***
 
 ### heartbeat?
 
-> `optional` **heartbeat**: `number`
+> `optional` **heartbeat?**: `number`
+
+Defined in: [adapter/src/lib/\_Types.ts:151](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L151)
 
 Optional heartbeat, if set, the client needs to re-subscribe every heartbeat interval
-
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:151](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L151)

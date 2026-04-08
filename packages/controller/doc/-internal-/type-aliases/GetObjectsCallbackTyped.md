@@ -1,27 +1,31 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / GetObjectsCallbackTyped
 
-# Type Alias: GetObjectsCallbackTyped()\<T\>
+# Type Alias: GetObjectsCallbackTyped\<T\>
 
-> **GetObjectsCallbackTyped**\<`T`\>: (`err`?, `objects`?) => `void`
+> **GetObjectsCallbackTyped**\<`T`\> = (`err?`, `objects?`) => `void`
+
+Defined in: [types-dev/index.d.ts:442](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/index.d.ts#L442)
 
 ## Type Parameters
 
-• **T** *extends* [`ObjectType`](ObjectType.md)
+### T
+
+`T` *extends* [`ObjectType`](ObjectType.md)
 
 ## Parameters
 
-• **err?**: `Error` \| `null`
+### err?
 
-• **objects?**: `Record`\<`string`, [`AnyObject`](AnyObject.md) & `object`\>
+`Error` \| `null`
+
+### objects?
+
+`Record`\<`string`, [`AnyObject`](AnyObject.md) & `object`\>
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[types-dev/index.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/index.d.ts#L433)

@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,15 +6,15 @@
 
 # Interface: InternalSetSessionOptions
 
+Defined in: [adapter/src/lib/\_Types.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L251)
+
 ## Properties
 
 ### callback?
 
-> `optional` **callback**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+> `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L255)
+Defined in: [adapter/src/lib/\_Types.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L255)
 
 ***
 
@@ -22,9 +22,7 @@
 
 > **data**: `Record`\<`string`, `any`\>
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:254](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L254)
+Defined in: [adapter/src/lib/\_Types.ts:254](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L254)
 
 ***
 
@@ -32,9 +30,7 @@
 
 > **id**: `string`
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:252](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L252)
+Defined in: [adapter/src/lib/\_Types.ts:252](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L252)
 
 ***
 
@@ -42,6 +38,4 @@
 
 > **ttl**: `number`
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L253)
+Defined in: [adapter/src/lib/\_Types.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L253)

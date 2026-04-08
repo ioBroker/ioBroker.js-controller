@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,15 +6,15 @@
 
 # Interface: InternalDelObjectOptions
 
+Defined in: [adapter/src/lib/\_Types.ts:422](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L422)
+
 ## Properties
 
 ### callback?
 
-> `optional` **callback**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+> `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:425](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L425)
+Defined in: [adapter/src/lib/\_Types.ts:425](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L425)
 
 ***
 
@@ -22,16 +22,12 @@
 
 > **id**: `string`
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L423)
+Defined in: [adapter/src/lib/\_Types.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L423)
 
 ***
 
 ### options?
 
-> `optional` **options**: `null` \| [`DelObjectOptions`](DelObjectOptions.md)
+> `optional` **options?**: [`DelObjectOptions`](DelObjectOptions.md) \| `null`
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/adapter/src/lib/_Types.ts#L424)
+Defined in: [adapter/src/lib/\_Types.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/adapter/src/lib/_Types.ts#L424)

@@ -32,6 +32,7 @@ import type * as DiskUsage from 'diskusage';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
 import type { WithRequired } from '@iobroker/types-dev';
+import { DEFAULT_OBJECTS_WARN_LIMIT } from '@/lib/common/constants.js';
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
@@ -385,6 +386,11 @@ function getAppName(): AppName {
 export const appNameLowerCase = 'iobroker';
 export const appName = getAppName();
 
+/**
+ * Find all own IPs (ipv4 and ipv6)
+ *
+ * The result is cached for 10 seconds.
+ */
 export function findIPs(): string[] {
     if (!lastCalculationOfIps || Date.now() - lastCalculationOfIps > 10000) {
         lastCalculationOfIps = Date.now();
@@ -402,6 +408,12 @@ export function findIPs(): string[] {
     return ownIpArr;
 }
 
+/**
+ * Find the correct path based on given path and url
+ *
+ * @param path
+ * @param url
+ */
 function findPath(path: string, url: string): string {
     if (!url) {
         return '';
@@ -525,6 +537,14 @@ export function isDocker(): boolean {
     try {
         // ioBroker docker image specific, will be created during a build process
         fs.statSync(OFFICIAL_DOCKER_FILE);
+        return true;
+    } catch {
+        // ignore error
+    }
+
+    try {
+        // check a container environment, works with Podman or CRI-O
+        fs.statSync('/run/.containerenv');
         return true;
     } catch {
         // ignore error
@@ -779,7 +799,7 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
     }
 }
 
-// Return content of the json file. Download it or read directly
+// Return content of the JSON file. Download it or read directly
 export async function getJson(
     urlOrPath: string,
     agent: string,
@@ -1466,9 +1486,13 @@ export function getRepositoryFile(
     }
 }
 
+/** Result of getRepositoryFileAsync */
 export interface RepositoryFile {
+    /** The repository JSON content */
     json: ioBroker.RepositoryJson;
+    /** Whether the repository has changed compared to the provided hash */
     changed: boolean;
+    /** The actual hash of the repository */
     hash: string;
 }
 
@@ -1496,6 +1520,7 @@ export async function getRepositoryFileAsync(
             // ignore missing hash file
         }
 
+        // If we have the actual repo and the hash matches, return it
         if (_actualRepo && !force && hash && _hash?.data && _hash.data.hash === hash) {
             data = _actualRepo;
         } else {
@@ -1528,7 +1553,7 @@ export async function getRepositoryFileAsync(
     return {
         json: data,
         changed: _hash?.data ? hash !== _hash.data.hash : true,
-        hash: _hash && _hash.data ? _hash.data.hash : '',
+        hash: _hash?.data ? _hash.data.hash : '',
     };
 }
 
@@ -3533,6 +3558,20 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 write: true,
                 desc: 'Loglevel of the adapter. Will be set on start with defined value but can be overridden during runtime',
                 role: 'state',
+            },
+            native: {},
+        },
+        {
+            _id: `${id}.objectsWarnLimit`,
+            type: 'state',
+            common: {
+                name: `${namespace} objects warn limit`,
+                type: 'number',
+                read: true,
+                write: true,
+                desc: 'If the number of objects of this adapter instance exceeds this limit, the user will receive a warning',
+                role: 'state',
+                def: DEFAULT_OBJECTS_WARN_LIMIT,
             },
             native: {},
         },

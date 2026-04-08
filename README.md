@@ -21,13 +21,13 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 - [License](#license)
 
 ## Compatibility
-* js-controller 7.x (Lucy) works with Node.js 18.x, 20.x and probably 22.x
-* js-controller 6.x (Kiera) works with Node.js 18.x, 20.x and probably 22.x
-* js-controller 5.x works with Node.js 16.x, 18.x and probably 20.x
-* js-controller 4.x works with Node.js 12.x, 14.x, 16.x (incl. up to NPM 8) and probably 18.x
-* js-controller 3.x works with Node.js 10.x, 12.x, 14.x and probably 16.x (first tests look good, NPM 7 still has some issues, so NPM6 is best)
-* js-controller 2.x works with Node.js 8.x, 10.x, 12.x and probably 14.x (untested)
-* js-controller 1.x works with Node.js 4.x, 6.x, 8.x and probably 10.x (untested)
+* js-controller 7.x (Lucy) works with Node.js 18.x, 20.x, 22.x and probably 24.x
+* js-controller 6.x (Kiera) works with Node.js 18.x, 20.x, 22.x
+* js-controller 5.x works with Node.js 16.x, 18.x, 20.x
+* js-controller 4.x works with Node.js 12.x, 14.x, 16.x (incl. up to NPM 8), 18.x
+* js-controller 3.x works with Node.js 10.x, 12.x, 14.x , 16.x (first tests look good, NPM 7 still has some issues, so NPM6 is best)
+* js-controller 2.x works with Node.js 8.x, 10.x, 12.x, 14.x (untested)
+* js-controller 1.x works with Node.js 4.x, 6.x, 8.x, 10.x (untested)
 
 Please try to stay current with your Node.js version because the support is limited in time. As of now (May 2024) all Node.js versions below 18.x are no longer supported by Node.js and considered EOL (End Of Life).
 To upgrade your Node.js version and ioBroker, please follow https://forum.iobroker.net/topic/44566/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten-2021-edition!
@@ -91,6 +91,7 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 - [Error Reporting via ioBroker Sentry](#error-reporting-via-iobroker-sentry)
 - [Notification System](#notification-system)
 - [Disk space warnings](#disk-space-warnings)
+- [Objects warn limit](#objects-warn-limit)
 - [Controlling and monitoring of adapter processes](#controlling-and-monitoring-of-adapter-processes)
 - [Multihost](#multihost)
 - [TIERS: Start instances in an ordered manner](#tiers-start-instances-in-an-ordered-manner)
@@ -109,7 +110,7 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 
 The admin adapter is installed automatically and starts a web-server that hosts the Admin UI. Default port is 8081, so just open `http://<iobroker-ip>:8081/`
 
-If port 8081 is occupied, you can install a second Admin UI on an alternate port and change the port for the first admin UI. To do so, run `iobroker add admin --enabled --port 8090` and go to the `http://<iobroker-ip>:8090/`. Of course you can change port 8090 to a different one.
+If port 8081 is occupied, you can install a second Admin UI on an alternate port and change the port for the first admin UI. To do so, run `iobroker add admin --enabled --port 8090` and go to the `http://<iobroker-ip>:8090/`. Of course, you can change port 8090 to a different one.
 
 ### Automatic adapter upgrade
 **Feature status:** New in 6.0.0
@@ -324,7 +325,7 @@ If a package fails, the response will have a value of `false` for `success` and 
 
 Currently only upgrading of packages is supported. If you need a specific OS dependency for your adapter, you can specify it inside `io-package.json` with the field `osDependencies`.
 
-### Custom install logic
+### Custom installation logic
 **Feature status:** New in 5.0.0
 
 If an adapter needs to execute custom install logic, one possibility is to use the `scripts` attribute of `package.json`. 
@@ -379,7 +380,7 @@ If needed, especially for low memory situations the memory limit for all adapter
 ```
 
 ### Directly executing TypeScript adapters
-**Feature status:** Technology preview since js-controller 3.3.0
+**Feature status:** Stable since js-controller 3.3.0
 
 The js-controller is able to execute `.ts` files, which removes the need of compiling to JavaScript first.
 To use this feature, simply define the adapter main file as the required `.ts` file.
@@ -551,6 +552,12 @@ All three are optional and can be a string or null/undefined if omitted.
 
 The js-controller will generate a notification of in the scope `system` and the category `diskSpaceIssues` on warning level, if your free disk space falls under a specified threshold. 
 By default, this threshold is 5 % of disk space. Via the state `system.host.<hostname>.diskWarning` you can override this level to any level between `0` and `100`. 
+
+### Objects warn limit
+**Feature status:** New in 7.1.0
+
+The js-controller will generate a notification of in the scope `system` and the category `numberObjectsLimitExceeded` on warning level, if your number of objects for an adapter instance exceed a specified threshold.
+By default, this is set to `5000` objects. Via the state `system.adapter.<adapter>.<instance>.objectsWarnLimit` you can override this threshold to any positive number.
 
 ### Logging
 #### Log levels
@@ -1009,7 +1016,7 @@ More details can be found at https://redis.io/topics/replication#configuration a
 
 Redis slaves will be not writable by default.
 
-In case of a crash of the master, you can reconfigure one of the slaves to be the new master and it will use the current content. After reconfiguring all slaves to sync with the new Master, the redis database is functional again.
+In case of a crash of the master, you can reconfigure one of the slaves to be the new master, and it will use the current content. After reconfiguring all slaves to sync with the new Master, the redis database is functional again.
 
 After reconfiguring Redis, you also need to update all ioBroker states/objects DB settings to connect to the new Redis Master host.
 
@@ -1409,6 +1416,6 @@ This new process and rules are introduced with js-controller 2.0 and updated to 
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2024 bluefox <dogafox@gmail.com>,
+Copyright (c) 2014-2026 bluefox <dogafox@gmail.com>,
 
 Copyright (c) 2014      hobbyquaker

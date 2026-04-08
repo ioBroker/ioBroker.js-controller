@@ -1,10 +1,12 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / RedisConnectionOptions
 
 # Interface: RedisConnectionOptions
+
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:6
 
 ## Extends
 
@@ -14,21 +16,21 @@
 
 ### backup?
 
-> `optional` **backup**: [`BackupOptions`](BackupOptions.md)
+> `optional` **backup?**: [`BackupOptions`](BackupOptions.md)
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:19
 
 #### Inherited from
 
 [`ConnectionOptions`](ConnectionOptions.md).[`backup`](ConnectionOptions.md#backup)
 
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:19
-
 ***
 
-### dataDir
+### dataDir?
 
-> **dataDir**: `string`
+> `optional` **dataDir?**: `string`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:21
 
 relative path to the data dir
 
@@ -36,23 +38,17 @@ relative path to the data dir
 
 [`ConnectionOptions`](ConnectionOptions.md).[`dataDir`](ConnectionOptions.md#datadir)
 
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:21
-
 ***
 
 ### enhancedLogging?
 
-> `optional` **enhancedLogging**: `boolean`
+> `optional` **enhancedLogging?**: `boolean`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:18
 
 #### Inherited from
 
 [`ConnectionOptions`](ConnectionOptions.md).[`enhancedLogging`](ConnectionOptions.md#enhancedlogging)
-
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:18
 
 ***
 
@@ -60,15 +56,13 @@ db-base/build/esm/lib/inMemFileDB.d.ts:18
 
 > **host**: `string` \| `string`[]
 
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:14
+
 array on sentinel
 
 #### Inherited from
 
 [`ConnectionOptions`](ConnectionOptions.md).[`host`](ConnectionOptions.md#host)
-
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:14
 
 ***
 
@@ -76,27 +70,23 @@ db-base/build/esm/lib/inMemFileDB.d.ts:14
 
 > **options**: `Record`\<`string`, `any`\>
 
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:17
+
 #### Inherited from
 
 [`ConnectionOptions`](ConnectionOptions.md).[`options`](ConnectionOptions.md#options)
-
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:17
 
 ***
 
 ### pass?
 
-> `optional` **pass**: `string`
+> `optional` **pass?**: `string`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:11
 
 #### Inherited from
 
 [`ConnectionOptions`](ConnectionOptions.md).[`pass`](ConnectionOptions.md#pass)
-
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:11
 
 ***
 
@@ -104,36 +94,30 @@ db-base/build/esm/lib/inMemFileDB.d.ts:11
 
 > **port**: `number` \| `number`[]
 
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:16
+
 array on sentinel
 
 #### Inherited from
 
 [`ConnectionOptions`](ConnectionOptions.md).[`port`](ConnectionOptions.md#port)
 
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:16
-
 ***
 
 ### redisNamespace?
 
-> `optional` **redisNamespace**: `string`
+> `optional` **redisNamespace?**: `string`
 
-#### Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:7
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:7
 
 ***
 
 ### sentinelName?
 
-> `optional` **sentinelName**: `string`
+> `optional` **sentinelName?**: `string`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:12
 
 #### Inherited from
 
 [`ConnectionOptions`](ConnectionOptions.md).[`sentinelName`](ConnectionOptions.md#sentinelname)
-
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:12

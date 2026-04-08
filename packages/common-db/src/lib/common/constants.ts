@@ -8,3 +8,5 @@ export const SYSTEM_REPOSITORIES_ID = 'system.repositories';
 export const SYSTEM_CONFIG_ID = 'system.config';
 /** Unicode symbol to be appended on endkey of getObjectView */
 export const HIGHEST_UNICODE_SYMBOL = '\u9999';
+/** Default limit for generating a warning if exceeding the number of objects per instance */
+export const DEFAULT_OBJECTS_WARN_LIMIT = 5_000;

@@ -14,5 +14,5 @@
     "enabled": true,
     "untrimmedFilePath": "./build/types.d.ts"
   },
-  "bundledPackages": []
+  "bundledPackages": ["@alcalzone/pak"]
 }

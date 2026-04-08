@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,17 +6,27 @@
 
 # Interface: RepoInfo
 
+Defined in: [types-dev/objects.d.ts:1088](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L1088)
+
 ## Properties
 
 ### name
 
 > **name**: `Required`\<[`Translated`](../type-aliases/Translated.md)\>
 
+Defined in: [types-dev/objects.d.ts:1092](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L1092)
+
 i18n name of the repository
 
-#### Defined in
+***
 
-[types-dev/objects.d.ts:1041](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L1041)
+### repoReadTime?
+
+> `optional` **repoReadTime?**: `string`
+
+Defined in: [types-dev/objects.d.ts:1096](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L1096)
+
+Time when the repository was last read/fetched
 
 ***
 
@@ -24,20 +34,16 @@ i18n name of the repository
 
 > **repoTime**: `string`
 
+Defined in: [types-dev/objects.d.ts:1094](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L1094)
+
 Time of repository update
-
-#### Defined in
-
-[types-dev/objects.d.ts:1043](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L1043)
 
 ***
 
 ### stable?
 
-> `optional` **stable**: `boolean`
+> `optional` **stable?**: `boolean`
+
+Defined in: [types-dev/objects.d.ts:1090](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L1090)
 
 If it is the official stable repository
-
-#### Defined in
-
-[types-dev/objects.d.ts:1039](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L1039)

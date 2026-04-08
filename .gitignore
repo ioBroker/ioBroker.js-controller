@@ -32,3 +32,7 @@ ioBroker
 build
 lerna-debug.log
 .nx
+
+#ignore .commitinfo created by ioBroker release script
+.commitinfo
+/.claude/settings.local.json

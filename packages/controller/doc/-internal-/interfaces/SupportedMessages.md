@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,7 +6,9 @@
 
 # Interface: SupportedMessages
 
-Object which defines if the adapter supports receiving messages via sendTo.
+Defined in: [types-dev/objects.d.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L507)
+
+Object that defines if the adapter supports receiving messages via sendTo.
 Additionally, it defines if specific messages are supported.
 If one property is enabled, the object `system.adapter.<adapterName>.<adapterInstance>.messagebox will be created to send messages to the adapter (used for email, pushover, etc...)
 
@@ -14,58 +16,48 @@ If one property is enabled, the object `system.adapter.<adapterName>.<adapterIns
 
 ### custom?
 
-> `optional` **custom**: `boolean`
+> `optional` **custom?**: `boolean`
+
+Defined in: [types-dev/objects.d.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L509)
 
 If custom messages are supported (same as legacy messagebox)
-
-#### Defined in
-
-[types-dev/objects.d.ts:493](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L493)
 
 ***
 
 ### deviceManager?
 
-> `optional` **deviceManager**: `boolean`
+> `optional` **deviceManager?**: `boolean`
 
-If adapter supports the device manager and thus responds to the corresponding messages
+Defined in: [types-dev/objects.d.ts:515](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L515)
 
-#### Defined in
-
-[types-dev/objects.d.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L499)
+If the adapter supports the device manager and thus responds to the corresponding messages
 
 ***
 
 ### getHistory?
 
-> `optional` **getHistory**: `boolean`
+> `optional` **getHistory?**: `boolean`
 
-If adapter supports getHistory message.
+Defined in: [types-dev/objects.d.ts:517](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L517)
 
-#### Defined in
-
-[types-dev/objects.d.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L501)
+If the adapter supports getHistory message.
 
 ***
 
 ### notifications?
 
-> `optional` **notifications**: `boolean`
+> `optional` **notifications?**: `boolean`
+
+Defined in: [types-dev/objects.d.ts:511](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L511)
 
 If notification handling is supported, for information, see https://github.com/foxriver76/ioBroker.notification-manager#requirements-for-messaging-adapters
-
-#### Defined in
-
-[types-dev/objects.d.ts:495](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L495)
 
 ***
 
 ### stopInstance?
 
-> `optional` **stopInstance**: `number` \| `boolean`
+> `optional` **stopInstance?**: `number` \| `boolean`
 
-If adapter supports signal stopInstance. Use number if you need more than 1000 ms for stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM).
+Defined in: [types-dev/objects.d.ts:513](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L513)
 
-#### Defined in
-
-[types-dev/objects.d.ts:497](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L497)
+If the adapter supports signal stopInstance. Use number if you need more than 1000 ms for the stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM).

@@ -1,6 +1,7 @@
 import type { TestContext } from '../_Types.js';
+import assert from 'node:assert/strict';
 
-export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
+export function register(it: Mocha.TestFunction, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} files: `;
     const testId = `testFilesObject.0`;
 
@@ -23,7 +24,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const receivedPromise = new Promise<void>(resolve => {
             context.onAdapterFileChanged = (id, _fileName, size) => {
                 if (id === objId && fileName === _fileName) {
-                    expect(size).to.be.equal(dataBinary.byteLength);
+                    assert.strictEqual(size, dataBinary.byteLength);
                     resolve();
                 }
             };
@@ -36,8 +37,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         const { file, mimeType } = await context.adapter.readFileAsync(objId, fileName);
 
-        expect(mimeType).to.be.equal('application/octet-stream');
-        expect(file.toString('utf8')).to.be.equal(dataBinary.toString('utf8'));
+        assert.strictEqual(mimeType, 'application/octet-stream');
+        assert.strictEqual(file.toString('utf8'), dataBinary.toString('utf8'));
     });
 
     it(`${testName}writeFile with textual content`, async () => {
@@ -60,8 +61,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         const { file, mimeType } = await context.adapter.readFileAsync(objId, fileName);
 
-        expect(mimeType).to.be.equal('text/plain');
-        expect(file).to.be.equal(dataText);
+        assert.strictEqual(mimeType, 'text/plain');
+        assert.strictEqual(file, dataText);
     });
 
     it(`${testName}writeFile without extension should infer text from string content`, async () => {
@@ -84,8 +85,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         const { file, mimeType } = await context.adapter.readFileAsync(objId, fileName);
 
-        expect(mimeType).to.be.equal('text/plain');
-        expect(file).to.be.equal(dataText);
+        assert.strictEqual(mimeType, 'text/plain');
+        assert.strictEqual(file, dataText);
     });
 
     it(`${testName}writeFile with known extension should be inferred`, async () => {
@@ -109,8 +110,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         const { file, mimeType } = await context.adapter.readFileAsync(objId, fileName);
 
-        expect(mimeType).to.be.equal('application/json');
-        expect(file).to.be.equal(content);
+        assert.strictEqual(mimeType, 'application/json');
+        assert.strictEqual(file, content);
     });
 
     it(`${testName}deleteFile`, async () => {
@@ -122,7 +123,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const receivedPromise = new Promise<void>(resolve => {
             context.onAdapterFileChanged = (id, _fileName, size) => {
                 if (id === objId && fileName === _fileName) {
-                    expect(size).to.be.equal(null);
+                    assert.strictEqual(size, null);
                     resolve();
                 }
             };
@@ -134,7 +135,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         try {
             await context.adapter.readFileAsync(objId, fileName);
         } catch (error) {
-            expect(error.toString()).to.be.equal('Error: Not exists');
+            assert.strictEqual(error.toString(), 'Error: Not exists');
         }
     });
 
@@ -151,22 +152,22 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 native: {},
             },
             err => {
-                expect(err).to.be.not.ok;
+                assert.ok(!err);
                 objects.writeFile(testId, 'myFile/abc.txt', 'dataInFile', err => {
                     err && console.error(`Got ${JSON.stringify(objects.getStatus())}: ${err.stack}`);
-                    expect(err).to.be.not.ok;
+                    assert.ok(!err);
 
                     objects.readFile(testId, 'myFile/abc.txt', null, (err, data, mimeType) => {
-                        expect(err).to.be.not.ok;
-                        expect(data).to.be.equal('dataInFile');
-                        expect(mimeType).to.be.equal('text/plain');
+                        assert.ok(!err);
+                        assert.strictEqual(data, 'dataInFile');
+                        assert.strictEqual(mimeType, 'text/plain');
                         objects.rm(testId, 'myFile/*', null, (err, files) => {
-                            expect(err).to.be.not.ok;
+                            assert.ok(!err);
                             const file = files!.find(f => f.file === 'abc.txt');
-                            expect(file!.file).to.be.equal('abc.txt');
-                            expect(file!.path).to.be.equal('myFile');
+                            assert.strictEqual(file!.file, 'abc.txt');
+                            assert.strictEqual(file!.path, 'myFile');
                             objects.readFile(testId, 'myFile/abc.txt', null, (err, _data, _mimeType) => {
-                                expect(err!.message).to.be.equal('Not exists');
+                                assert.strictEqual(err!.message, 'Not exists');
                                 done();
                             });
                         });
@@ -191,32 +192,32 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         await objects.writeFile(testId, fullFileName, 'dataInFile');
 
         const { file, mimeType } = await objects.readFile(testId, fullFileName, null);
-        expect(file).to.be.equal('dataInFile');
-        expect(mimeType).to.be.equal('text/plain');
+        assert.strictEqual(file, 'dataInFile');
+        assert.strictEqual(mimeType, 'text/plain');
         const files = await objects.rmAsync(testId, `${fileDir}/*`, {});
         const deletedFile = files!.find(f => f.file === fileName);
-        expect(deletedFile!.file).to.be.equal(fileName);
-        expect(deletedFile!.path).to.be.equal(fileDir);
+        assert.strictEqual(deletedFile!.file, fileName);
+        assert.strictEqual(deletedFile!.path, fileDir);
         try {
             await objects.readFile(testId, fullFileName, null);
-            expect(1).to.be.equal(2, 'Should have thrown, because file has been deleted');
+            assert.fail('Should have thrown, because file has been deleted');
         } catch (e) {
-            expect(e.message).to.be.equal('Not exists');
+            assert.strictEqual(e.message, 'Not exists');
         }
     });
 
     it(`${testName}should read directory`, done => {
         const objects = context.objects;
         objects.writeFile(testId, 'myFileA/abc1.txt', 'dataInFile', err => {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             objects.writeFile(testId, 'myFileA/abc2.txt', Buffer.from('ABC'), err => {
-                expect(err).to.be.not.ok;
+                assert.ok(!err);
                 objects.readDir(testId, 'myFileA/', null, (err, data) => {
-                    expect(err).to.be.not.ok;
-                    expect(data!.length).to.be.equal(2);
-                    expect(data![0].file).to.be.equal('abc1.txt');
-                    expect(data![1].file).to.be.equal('abc2.txt');
-                    expect(data![1].stats.size).to.be.equal(3);
+                    assert.ok(!err);
+                    assert.strictEqual(data!.length, 2);
+                    assert.strictEqual(data![0].file, 'abc1.txt');
+                    assert.strictEqual(data![1].file, 'abc2.txt');
+                    assert.strictEqual(data![1].stats.size, 3);
                     done();
                 });
             });
@@ -234,7 +235,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
 
         const res = await objects.readDirAsync(id, '');
-        expect(res).to.be.empty;
+        assert.strictEqual(res.length, 0);
     });
 
     it(`${testName}should read empty directory with path`, async () => {
@@ -242,14 +243,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const id = `${testId}.meta.files`;
 
         const res = await objects.readDirAsync(id, 'random/path');
-        expect(res).to.be.empty;
+        assert.strictEqual(res.length, 0);
     });
 
-    it(`${testName}should not read directory without meta object`, () => {
+    it(`${testName}should not read directory without meta object`, async () => {
         const objects = context.objects;
         const id = `${testId}.meta.nonExisting`;
 
-        expect(objects.readDirAsync(id, '')).to.be.eventually.rejectedWith(`${id} is not an object of type "meta"`);
+        await assert.rejects(objects.readDirAsync(id, ''), {
+            message: `${id} is not an object of type "meta"`,
+        });
     });
 
     it(`${testName}should respond with empty array if calling readDir on a single file`, async () => {
@@ -258,44 +261,44 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         await objects.writeFileAsync(testId, fileName, 'dataInFile');
         const res = await objects.readDirAsync(testId, fileName);
-        expect(res).to.be.empty;
+        assert.strictEqual(res.length, 0);
     });
 
     it(`${testName}should read file and prevent path traversing`, done => {
         const objects = context.objects;
         objects.readFile(testId, '../../myFileA/abc1.txt', null, (err, data, _mimeType) => {
-            expect(err).to.be.not.ok;
-            expect(data).to.be.equal('dataInFile');
+            assert.ok(!err);
+            assert.strictEqual(data, 'dataInFile');
             objects.readFile(testId, '/myFileA/abc1.txt', null, (err, data, _mimeType) => {
-                expect(err).to.be.not.ok;
-                expect(data).to.be.equal('dataInFile');
+                assert.ok(!err);
+                assert.strictEqual(data, 'dataInFile');
                 objects.readFile(testId, '/../../myFileA/abc1.txt', null, (err, data, _mimeType) => {
-                    expect(err).to.be.not.ok;
-                    expect(data).to.be.equal('dataInFile');
+                    assert.ok(!err);
+                    assert.strictEqual(data, 'dataInFile');
                     objects.readFile(testId, 'myFileA/../blubb/../myFileA/abc1.txt', null, (err, data, _mimeType) => {
-                        expect(err).to.be.not.ok;
-                        expect(data).to.be.equal('dataInFile');
+                        assert.ok(!err);
+                        assert.strictEqual(data, 'dataInFile');
                         objects.readFile(
                             testId,
                             '/myFileA/../blubb/../myFileA/abc1.txt',
                             null,
                             (err, data, _mimeType) => {
-                                expect(err).to.be.not.ok;
-                                expect(data).to.be.equal('dataInFile');
+                                assert.ok(!err);
+                                assert.strictEqual(data, 'dataInFile');
                                 objects.readFile(
                                     testId,
                                     '../blubb/../myFileA/abc1.txt',
                                     null,
                                     (err, data, _mimeType) => {
-                                        expect(err).to.be.not.ok;
-                                        expect(data).to.be.equal('dataInFile');
+                                        assert.ok(!err);
+                                        assert.strictEqual(data, 'dataInFile');
                                         objects.readFile(
                                             testId,
                                             '/../blubb/../myFileA/abc1.txt',
                                             null,
                                             (err, data, _mimeType) => {
-                                                expect(err).to.be.not.ok;
-                                                expect(data).to.be.equal('dataInFile');
+                                                assert.ok(!err);
+                                                assert.strictEqual(data, 'dataInFile');
                                                 done();
                                             },
                                         );
@@ -312,9 +315,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}should unlink file`, done => {
         const objects = context.objects;
         objects.unlink(testId, 'myFileA/abc1.txt', null, err => {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             objects.unlink(testId, 'myFileA/abc1.txt', null, err => {
-                expect(err!.message).to.be.equal('Not exists');
+                assert.strictEqual(err!.message, 'Not exists');
                 done();
             });
         });
@@ -323,14 +326,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}should rename file`, done => {
         const objects = context.objects;
         objects.writeFile(testId, 'myFile1/abcRename.txt', Buffer.from('abcd'), err => {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             objects.rename(testId, 'myFile1/abcRename.txt', 'myFileA/abc3.txt', null, err => {
-                expect(err).to.be.not.ok;
+                assert.ok(!err);
                 objects.readFile(testId, 'myFileA/abc3.txt', null, (err, data, _meta) => {
-                    expect(err).to.be.not.ok;
-                    expect(data!.toString('utf8')).to.be.equal('abcd');
+                    assert.ok(!err);
+                    assert.strictEqual(data!.toString('utf8'), 'abcd');
                     objects.readFile(testId, 'myFile1/abcRename.txt', null, err => {
-                        expect(err!.message).to.be.equal('Not exists');
+                        assert.strictEqual(err!.message, 'Not exists');
                         done();
                     });
                 });
@@ -341,15 +344,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}should touch file`, done => {
         const objects = context.objects;
         objects.readDir(testId, 'myFileA', null, (err, files) => {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             const file = files!.find(f => f.file === 'abc3.txt');
 
             setTimeout(() => {
                 objects.touch(testId, 'myFileA/abc3.txt', null, err => {
-                    expect(err).to.be.not.ok;
+                    assert.ok(!err);
                     objects.readDir(testId, 'myFileA', null, (_err, files) => {
                         const file1 = files!.find(f => f.file === 'abc3.txt');
-                        expect(file1!.modifiedAt).to.be.not.equal(file!.modifiedAt);
+                        assert.notStrictEqual(file1!.modifiedAt, file!.modifiedAt);
                         done();
                     });
                 });
@@ -360,7 +363,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}should create directory`, done => {
         const objects = context.objects;
         objects.mkdir(testId, `myFile${Math.round(Math.random() * 100_000)}`, null, err => {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             done();
         });
     });
@@ -368,7 +371,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}should enable file cache`, done => {
         const objects = context.objects;
         objects.enableFileCache(true, err => {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             done();
         });
     });

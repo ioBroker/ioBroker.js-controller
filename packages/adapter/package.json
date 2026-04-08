@@ -1,12 +1,12 @@
 {
     "name": "@iobroker/js-controller-adapter",
     "type": "module",
-    "version": "7.0.8-alpha.3-20250825-77e3ad19b",
+    "version": "7.1.1",
     "engines": {
         "node": ">=18.0.0"
     },
     "dependencies": {
-        "@alcalzone/pak": "^0.8.1",
+        "@alcalzone/pak": "^0.11.0",
         "@iobroker/db-objects-file": "file:../db-objects-file",
         "@iobroker/db-objects-jsonl": "file:../db-objects-jsonl",
         "@iobroker/db-objects-redis": "file:../db-objects-redis",
@@ -15,9 +15,9 @@
         "@iobroker/db-states-redis": "file:../db-states-redis",
         "@iobroker/js-controller-common": "file:../common",
         "@iobroker/js-controller-common-db": "file:../common-db",
-        "@iobroker/plugin-base": "~2.0.1",
+        "@iobroker/plugin-base": "~3.0.3",
         "deep-clone": "^3.0.3",
-        "fs-extra": "^11.1.0",
+        "fs-extra": "^11.3.2",
         "jsonwebtoken": "^9.0.0",
         "node-schedule": "^2.1.0",
         "node.extend": "^2.0.2",
@@ -37,7 +37,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/adapter"
+        "url": "https://github.com/ioBroker/ioBroker.js-controller"
     },
     "scripts": {
         "build": "tsc -b tsconfig.build.json && tsc-alias",

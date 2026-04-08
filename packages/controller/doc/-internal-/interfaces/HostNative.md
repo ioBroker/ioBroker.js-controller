@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,17 +6,21 @@
 
 # Interface: HostNative
 
+Defined in: [types-dev/objects.d.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L418)
+
 ## Properties
 
 ### hardware
 
 > **hardware**: `object`
 
+Defined in: [types-dev/objects.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L433)
+
 #### cpus
 
 > **cpus**: `Omit`\<`CpuInfo`, `"times"`\> & `Partial`\<`Pick`\<`CpuInfo`, `"times"`\>\>[]
 
-Return value of os.cpu but property `times` could be removed from every entry
+Return value of `os.cpu` but property `times` could be removed from every entry
 
 #### networkInterfaces
 
@@ -26,15 +30,13 @@ Return value of os.cpu but property `times` could be removed from every entry
 
 > **totalmem**: `number`
 
-#### Defined in
-
-[types-dev/objects.d.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L419)
-
 ***
 
 ### os
 
 > **os**: `object`
+
+Defined in: [types-dev/objects.d.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L424)
 
 #### arch
 
@@ -64,15 +66,13 @@ Return value of os.cpu but property `times` could be removed from every entry
 
 > **type**: `string`
 
-#### Defined in
-
-[types-dev/objects.d.ts:410](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L410)
-
 ***
 
 ### process
 
 > **process**: `object`
+
+Defined in: [types-dev/objects.d.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/objects.d.ts#L419)
 
 #### env
 
@@ -85,7 +85,3 @@ Return value of os.cpu but property `times` could be removed from every entry
 #### versions
 
 > **versions**: `ProcessVersions`
-
-#### Defined in
-
-[types-dev/objects.d.ts:405](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/objects.d.ts#L405)

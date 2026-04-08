@@ -36,7 +36,7 @@ type MaybeCbErrCallbackParameters<
     Exclude<CB, undefined | null> extends MaybeCbErrCallback<infer U>
         ? // If the error argument is given,
           TErr extends Error | string
-            ? //  don't require arguments, but allow passing them
+            ? //  don't require arguments but allow passing them
               U | []
             : // Otherwise, require the correct args
               U

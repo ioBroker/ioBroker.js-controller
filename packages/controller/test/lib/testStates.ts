@@ -1,6 +1,7 @@
 import type { TestContext } from '../_Types.js';
+import assert from 'node:assert/strict';
 
-export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
+export function register(it: Mocha.TestFunction, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} adapter: `;
     const gid = 'testStates';
 
@@ -23,64 +24,64 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'state',
             },
             function (err) {
-                expect(err).to.be.null;
+                assert.strictEqual(err, null);
 
                 context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, _state) {
-                    expect(err).to.be.null;
+                    assert.strictEqual(err, null);
 
                     context.adapter.setState(gid, 1, function (err) {
-                        expect(err).to.be.not.ok;
+                        assert.ok(!err);
 
                         context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
-                            expect(err).to.be.null;
-                            expect(state).to.be.ok;
-                            expect(state!.val).to.equal(1);
-                            expect(state!.ack).to.equal(false);
+                            assert.strictEqual(err, null);
+                            assert.ok(state);
+                            assert.strictEqual(state.val, 1);
+                            assert.strictEqual(state.ack, false);
 
                             context.adapter.setState(gid, 2, true, function (err) {
-                                expect(err).to.be.not.ok;
+                                assert.ok(!err);
 
                                 context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
-                                    expect(err).to.be.null;
-                                    expect(state).to.be.ok;
-                                    expect(state!.val).to.equal(2);
-                                    expect(state!.ack).to.equal(true);
+                                    assert.strictEqual(err, null);
+                                    assert.ok(state);
+                                    assert.strictEqual(state.val, 2);
+                                    assert.strictEqual(state.ack, true);
 
                                     context.adapter.setState(gid, { val: 3, ack: true }, function (err) {
-                                        expect(err).to.be.not.ok;
+                                        assert.ok(!err);
 
                                         context.states.getState(
                                             `${context.adapterShortName}.0.${gid}`,
                                             function (err, state) {
-                                                expect(err).to.be.null;
-                                                expect(state).to.be.ok;
-                                                expect(state!.val).to.equal(3);
-                                                expect(state!.ack).to.equal(true);
+                                                assert.strictEqual(err, null);
+                                                assert.ok(state);
+                                                assert.strictEqual(state.val, 3);
+                                                assert.strictEqual(state.ack, true);
 
                                                 context.adapter.setState(gid, { ack: false }, function (err) {
-                                                    expect(err).to.be.not.ok;
+                                                    assert.ok(!err);
 
                                                     context.states.getState(
                                                         `${context.adapterShortName}.0.${gid}`,
                                                         function (err, state) {
-                                                            expect(err).to.be.null;
-                                                            expect(state).to.be.ok;
-                                                            expect(state!.val).to.equal(3);
-                                                            expect(state!.ack).to.equal(false);
+                                                            assert.strictEqual(err, null);
+                                                            assert.ok(state);
+                                                            assert.strictEqual(state.val, 3);
+                                                            assert.strictEqual(state.ack, false);
 
                                                             context.adapter.setState(
                                                                 gid,
                                                                 { ack: true },
                                                                 function (err) {
-                                                                    expect(err).to.be.not.ok;
+                                                                    assert.ok(!err);
 
                                                                     context.states.getState(
                                                                         `${context.adapterShortName}.0.${gid}`,
                                                                         function (err, state) {
-                                                                            expect(err).to.be.null;
-                                                                            expect(state).to.be.ok;
-                                                                            expect(state!.val).to.equal(3);
-                                                                            expect(state!.ack).to.equal(true);
+                                                                            assert.strictEqual(err, null);
+                                                                            assert.ok(state);
+                                                                            assert.strictEqual(state.val, 3);
+                                                                            assert.strictEqual(state.ack, true);
                                                                             done();
                                                                         },
                                                                     );
@@ -105,18 +106,18 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}Get local state`, function (done) {
         this.timeout(3_000);
         context.adapter.getState(gid, function (err) {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
 
             context.adapter.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
-                expect(err).to.be.null;
-                expect(state).to.be.ok;
-                expect(state!.val).to.equal(3);
-                expect(state!.ack).to.equal(true);
+                assert.strictEqual(err, null);
+                assert.ok(state);
+                assert.strictEqual(state.val, 3);
+                assert.strictEqual(state.ack, true);
 
                 // ask for non-existing state
                 context.adapter.getState(`${gid}6`, function (err, state) {
-                    expect(err).to.be.not.ok;
-                    expect(state).to.be.null;
+                    assert.ok(!err);
+                    assert.strictEqual(state, null);
                     done();
                 });
             });
@@ -127,25 +128,25 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}Get local states`, function (done) {
         this.timeout(3_000);
         context.adapter.getStates('*', function (err, states) {
-            expect(err).to.be.not.ok;
-            expect(states).to.be.an('object');
-            expect(states![`${context.adapterShortName}.0.${gid}`]).to.be.an('object');
-            expect(states![`${context.adapterShortName}.0.${gid}`].val).to.equal(3);
-            expect(states![`${context.adapterShortName}.0.${gid}`].ack).equal(true);
+            assert.ok(!err);
+            assert.strictEqual(typeof states, 'object');
+            assert.strictEqual(typeof states![`${context.adapterShortName}.0.${gid}`], 'object');
+            assert.strictEqual(states![`${context.adapterShortName}.0.${gid}`].val, 3);
+            assert.strictEqual(states![`${context.adapterShortName}.0.${gid}`].ack, true);
 
             context.adapter.getStates('abc*', function (err, states) {
-                expect(err).to.be.not.ok;
-                expect(states).to.be.an('object');
+                assert.ok(!err);
+                assert.strictEqual(typeof states, 'object');
 
                 // no states should match
-                expect(Object.keys(states!).length).to.be.equal(0);
+                assert.strictEqual(Object.keys(states!).length, 0);
 
                 context.adapter.getStates(`${gid.substring(0, gid.length - 2)}*`, function (err, states) {
-                    expect(err).to.be.not.ok;
-                    expect(states).to.be.an('object');
-                    expect(states![`${context.adapterShortName}.0.${gid}`]).to.be.an('object');
-                    expect(states![`${context.adapterShortName}.0.${gid}`].val).to.equal(3);
-                    expect(states![`${context.adapterShortName}.0.${gid}`].ack).equal(true);
+                    assert.ok(!err);
+                    assert.strictEqual(typeof states, 'object');
+                    assert.strictEqual(typeof states![`${context.adapterShortName}.0.${gid}`], 'object');
+                    assert.strictEqual(states![`${context.adapterShortName}.0.${gid}`].val, 3);
+                    assert.strictEqual(states![`${context.adapterShortName}.0.${gid}`].ack, true);
 
                     done();
                 });
@@ -157,14 +158,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}Delete local state`, function (done) {
         this.timeout(3_000);
         context.adapter.delState(gid, function (err) {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
 
             context.adapter.getState(gid, function (err, state) {
-                expect(err).to.be.not.ok;
-                expect(state).to.be.null;
+                assert.ok(!err);
+                assert.strictEqual(state, null);
 
                 context.adapter.delState(gid, function (err) {
-                    expect(err).to.be.not.ok;
+                    assert.ok(!err);
 
                     done();
                 });
@@ -191,31 +192,31 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'state',
             },
             function (err) {
-                expect(err).to.be.null;
+                assert.strictEqual(err, null);
                 const ts = new Date().getTime() - 1000;
                 context.adapter.setState(gid, { val: 1, ts: ts, ack: false }, function (err) {
-                    expect(err).to.be.not.ok;
+                    assert.ok(!err);
                     context.adapter.setStateChanged(gid, 1, function (err, id, notChanged) {
-                        expect(err).to.be.not.ok;
+                        assert.ok(!err);
                         // redis do not return ID
-                        expect(id).to.be.equal(`${context.adapterShortName}.0.${gid}`);
-                        expect(notChanged).to.be.true;
+                        assert.strictEqual(id, `${context.adapterShortName}.0.${gid}`);
+                        assert.strictEqual(notChanged, true);
 
                         context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
-                            expect(err).to.be.not.ok;
-                            expect(state).to.be.ok;
-                            expect(state!.ts).to.be.equal(ts);
+                            assert.ok(!err);
+                            assert.ok(state);
+                            assert.strictEqual(state.ts, ts);
 
                             context.adapter.setStateChanged(gid, 1, true, function (err, id, notChanged) {
-                                expect(err).to.be.not.ok;
-                                expect(id).to.be.equal(`${context.adapterShortName}.0.${gid}`);
-                                expect(notChanged).to.be.false;
+                                assert.ok(!err);
+                                assert.strictEqual(id, `${context.adapterShortName}.0.${gid}`);
+                                assert.strictEqual(notChanged, false);
 
                                 context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
-                                    expect(err).to.be.not.ok;
-                                    expect(state).to.be.ok;
-                                    expect(state!.ack).to.be.true;
-                                    expect(state!.ts).to.be.not.equal(ts);
+                                    assert.ok(!err);
+                                    assert.ok(state);
+                                    assert.strictEqual(state.ack, true);
+                                    assert.notStrictEqual(state.ts, ts);
                                     done();
                                 });
                             });
@@ -247,15 +248,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'state',
             },
             function (err) {
-                expect(err).to.be.null;
+                assert.strictEqual(err, null);
 
                 context.states.setState(`${context.adapterShortName}.0.${sGid}`, 9, function (err) {
-                    expect(err).to.be.not.ok;
+                    assert.ok(!err);
 
                     context.onAdapterStateChanged = function (id, state) {
                         if (id === `${context.adapterShortName}.0.${sGid}`) {
-                            expect(state).to.be.ok;
-                            expect(state!.val).to.equal(10);
+                            assert.ok(state);
+                            assert.strictEqual(state.val, 10);
                             context.onAdapterStateChanged = null;
                             done();
                         }
@@ -263,7 +264,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
                     context.adapter.subscribeStates('*', function () {
                         context.states.setState(`${context.adapterShortName}.0.${sGid}`, 10, function (err) {
-                            expect(err).to.be.not.ok;
+                            assert.ok(!err);
                         });
                     });
                 });
@@ -294,8 +295,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         return new Promise(resolve => {
             context.onAdapterStateChanged = (id, state) => {
                 if (id === `${context.adapterShortName}.0.${sGid}`) {
-                    expect(state).to.be.ok;
-                    expect(state!.val).to.equal(testVal);
+                    assert.ok(state);
+                    assert.strictEqual(state.val, testVal);
                     context.onAdapterStateChanged = null;
                     resolve();
                 }
@@ -312,17 +313,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         context.onAdapterStateChanged = function (id, state) {
             if (id === `${context.adapterShortName}.0.${sGid}`) {
-                expect(state).to.be.ok;
-                expect(state!.val).to.equal(9);
+                assert.ok(state);
+                assert.strictEqual(state.val, 9);
             }
         };
 
         context.states.setState(`${context.adapterShortName}.0.${sGid}`, 9, function (err) {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
 
             context.adapter.unsubscribeStates('*', function () {
                 context.states.setState(`${context.adapterShortName}.0.${sGid}`, 10, function (err) {
-                    expect(err).to.be.not.ok;
+                    assert.ok(!err);
                 });
                 setTimeout(function () {
                     context.onAdapterStateChanged = null;
@@ -353,37 +354,37 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'state',
             },
             function (err) {
-                expect(err).to.be.null;
+                assert.strictEqual(err, null);
 
                 context.states.getState(fGid, function (err, _state) {
-                    expect(err).to.be.null;
+                    assert.strictEqual(err, null);
 
                     context.adapter.setForeignState(fGid, 1, function (err) {
-                        expect(err).to.be.not.ok;
+                        assert.ok(!err);
 
                         context.states.getState(fGid, function (err, state) {
-                            expect(err).to.be.null;
-                            expect(state).to.be.ok;
-                            expect(state!.val).to.equal(1);
-                            expect(state!.ack).to.equal(false);
+                            assert.strictEqual(err, null);
+                            assert.ok(state);
+                            assert.strictEqual(state.val, 1);
+                            assert.strictEqual(state.ack, false);
 
                             context.adapter.setForeignState(fGid, 2, true, function (err) {
-                                expect(err).to.be.not.ok;
+                                assert.ok(!err);
 
                                 context.states.getState(fGid, function (err, state) {
-                                    expect(err).to.be.null;
-                                    expect(state).to.be.ok;
-                                    expect(state!.val).to.equal(2);
-                                    expect(state!.ack).to.equal(true);
+                                    assert.strictEqual(err, null);
+                                    assert.ok(state);
+                                    assert.strictEqual(state.val, 2);
+                                    assert.strictEqual(state.ack, true);
 
                                     context.adapter.setForeignState(fGid, { val: 3, ack: true }, function (err) {
-                                        expect(err).to.be.not.ok;
+                                        assert.ok(!err);
 
                                         context.states.getState(fGid, function (err, state) {
-                                            expect(err).to.be.null;
-                                            expect(state).to.be.ok;
-                                            expect(state!.val).to.equal(3);
-                                            expect(state!.ack).to.equal(true);
+                                            assert.strictEqual(err, null);
+                                            assert.ok(state);
+                                            assert.strictEqual(state.val, 3);
+                                            assert.strictEqual(state.ack, true);
                                             done();
                                         });
                                     });
@@ -452,7 +453,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'group',
             },
             function (err) {
-                expect(err).to.be.null;
+                assert.strictEqual(err, null);
 
                 context.adapter.setForeignObject(
                     'system.user.write-only2',
@@ -496,12 +497,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 },
                             },
                             function (err) {
-                                expect(err).to.be.null;
+                                assert.strictEqual(err, null);
                                 context.adapter.setForeignState(fGid, 1, false, function (_err) {
                                     context.states.getState(fGid, function (err, state) {
-                                        expect(err).to.be.null;
-                                        expect(state).to.be.ok;
-                                        expect(state!.val).to.be.equal(1);
+                                        assert.strictEqual(err, null);
+                                        assert.ok(state);
+                                        assert.strictEqual(state.val, 1);
 
                                         context.adapter.setForeignState(
                                             fGid,
@@ -509,19 +510,19 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                             false,
                                             { user: 'system.user.write-only2' },
                                             err => {
-                                                expect(err).to.be.not.ok;
+                                                assert.ok(!err);
 
                                                 context.states.getState(fGid, (err, state) => {
-                                                    expect(err).to.be.null;
-                                                    expect(state).to.be.ok;
-                                                    expect(state!.val).to.equal(2);
-                                                    expect(state!.ack).to.equal(false);
+                                                    assert.strictEqual(err, null);
+                                                    assert.ok(state);
+                                                    assert.strictEqual(state.val, 2);
+                                                    assert.strictEqual(state.ack, false);
                                                     context.adapter.getForeignState(
                                                         fGid,
                                                         { user: 'system.user.write-only2' },
                                                         (err, state) => {
-                                                            expect(err).to.be.ok;
-                                                            expect(state).to.be.not.ok;
+                                                            assert.ok(err);
+                                                            assert.ok(!state);
                                                             done();
                                                         },
                                                     );
@@ -565,13 +566,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 },
             },
             function (err) {
-                expect(err).to.be.null;
+                assert.strictEqual(err, null);
 
                 context.states.getState(fGid, function (err, _state) {
-                    expect(err).to.be.null;
+                    assert.strictEqual(err, null);
 
                     context.adapter.setForeignState(fGid, 1, false, { user: 'system.user.write-only' }, function (err) {
-                        expect(err!.message).to.be.equal('permissionError');
+                        assert.strictEqual(err!.message, 'permissionError');
                         done();
                     });
                 });
@@ -605,10 +606,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 },
             },
             function (err) {
-                expect(err).to.be.null;
+                assert.strictEqual(err, null);
 
                 context.states.getState(fGid, function (err, _state) {
-                    expect(err).to.be.null;
+                    assert.strictEqual(err, null);
 
                     context.adapter.setForeignState(
                         fGid,
@@ -616,13 +617,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         false,
                         { user: 'system.user.write-only2' },
                         function (err) {
-                            expect(err).to.be.not.ok;
+                            assert.ok(!err);
 
                             context.states.getState(fGid, function (err, state) {
-                                expect(err).to.be.null;
-                                expect(state).to.be.ok;
-                                expect(state!.val).to.equal(1);
-                                expect(state!.ack).to.equal(false);
+                                assert.strictEqual(err, null);
+                                assert.ok(state);
+                                assert.strictEqual(state.val, 1);
+                                assert.strictEqual(state.ack, false);
                                 done();
                             });
                         },
@@ -652,31 +653,31 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'state',
             },
             function (err) {
-                expect(err).to.be.null;
+                assert.strictEqual(err, null);
                 const ts = new Date().getTime() - 1000;
                 context.adapter.setForeignState(fGid, { val: 1, ts: ts, ack: false }, function (err) {
-                    expect(err).to.be.not.ok;
+                    assert.ok(!err);
                     context.adapter.setForeignStateChanged(fGid, 1, function (err, id, notChanged) {
-                        expect(err).to.be.not.ok;
+                        assert.ok(!err);
                         // redis do not return ID
-                        expect(id).to.be.equal(fGid);
-                        expect(notChanged).to.be.true;
+                        assert.strictEqual(id, fGid);
+                        assert.strictEqual(notChanged, true);
 
                         context.states.getState(fGid, function (err, state) {
-                            expect(err).to.be.not.ok;
-                            expect(state).to.be.ok;
-                            expect(state!.ts).to.be.equal(ts);
+                            assert.ok(!err);
+                            assert.ok(state);
+                            assert.strictEqual(state.ts, ts);
 
                             context.adapter.setForeignStateChanged(fGid, 1, true, function (err, id, notChanged) {
-                                expect(err).to.be.not.ok;
-                                expect(id).to.be.equal(fGid);
-                                expect(notChanged).to.be.false;
+                                assert.ok(!err);
+                                assert.strictEqual(id, fGid);
+                                assert.strictEqual(notChanged, false);
 
                                 context.states.getState(fGid, function (err, state) {
-                                    expect(err).to.be.not.ok;
-                                    expect(state).to.be.ok;
-                                    expect(state!.ack).to.be.true;
-                                    expect(state!.ts).to.be.not.equal(ts);
+                                    assert.ok(!err);
+                                    assert.ok(state);
+                                    assert.strictEqual(state.ack, true);
+                                    assert.notStrictEqual(state.ts, ts);
                                     done();
                                 });
                             });
@@ -692,15 +693,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         this.timeout(3_000);
         const fGid = `${context.adapterShortName}1.0.${gid}`;
         context.adapter.getForeignState(fGid, function (err, state) {
-            expect(err).to.be.null;
-            expect(state).to.be.ok;
-            expect(state!.val).to.equal(3);
-            expect(state!.ack).to.equal(true);
+            assert.strictEqual(err, null);
+            assert.ok(state);
+            assert.strictEqual(state.val, 3);
+            assert.strictEqual(state.ack, true);
 
             // ask for non-existing state
             context.adapter.getForeignState(`${fGid}5`, function (err, state) {
-                expect(err).to.be.not.ok;
-                expect(state).to.be.null;
+                assert.ok(!err);
+                assert.strictEqual(state, null);
                 done();
             });
         });
@@ -710,27 +711,27 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}Get foreign states`, function (done) {
         this.timeout(3_000);
         context.adapter.getForeignStates(`${context.adapterShortName}1.0.*`, function (err, states) {
-            expect(err).to.be.not.ok;
-            expect(states).to.be.an('object');
-            expect(states![`${context.adapterShortName}1.0.${gid}`]).to.be.ok;
-            expect(states![`${context.adapterShortName}1.0.${gid}`].val).to.equal(3);
-            expect(states![`${context.adapterShortName}1.0.${gid}`].ack).equal(true);
+            assert.ok(!err);
+            assert.strictEqual(typeof states, 'object');
+            assert.ok(states![`${context.adapterShortName}1.0.${gid}`]);
+            assert.strictEqual(states![`${context.adapterShortName}1.0.${gid}`].val, 3);
+            assert.strictEqual(states![`${context.adapterShortName}1.0.${gid}`].ack, true);
 
             context.adapter.getForeignStates(`${context.adapterShortName}1.0.abc*`, function (err, states) {
-                expect(err).to.be.not.ok;
-                expect(states).to.be.an('object');
+                assert.ok(!err);
+                assert.strictEqual(typeof states, 'object');
 
                 // no states should match
-                expect(Object.keys(states!).length).to.be.equal(0);
+                assert.strictEqual(Object.keys(states!).length, 0);
 
                 context.adapter.getForeignStates(
                     `${context.adapterShortName}1.0.${gid.substring(0, gid.length - 2)}*`,
                     function (err, states) {
-                        expect(err).to.be.not.ok;
-                        expect(states).to.be.an('object');
-                        expect(states![`${context.adapterShortName}1.0.${gid}`]).to.be.ok;
-                        expect(states![`${context.adapterShortName}1.0.${gid}`].val).to.equal(3);
-                        expect(states![`${context.adapterShortName}1.0.${gid}`].ack).equal(true);
+                        assert.ok(!err);
+                        assert.strictEqual(typeof states, 'object');
+                        assert.ok(states![`${context.adapterShortName}1.0.${gid}`]);
+                        assert.strictEqual(states![`${context.adapterShortName}1.0.${gid}`].val, 3);
+                        assert.strictEqual(states![`${context.adapterShortName}1.0.${gid}`].ack, true);
 
                         done();
                     },
@@ -743,14 +744,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}Delete foreign state`, function (done) {
         this.timeout(3_000);
         context.adapter.delForeignState(`${context.adapterShortName}1.0.${gid}`, function (err) {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
 
             context.adapter.getForeignState(`${context.adapterShortName}1.0.${gid}`, function (err, state) {
-                expect(err).to.be.not.ok;
-                expect(state).to.be.not.ok;
+                assert.ok(!err);
+                assert.ok(!state);
 
                 context.adapter.delForeignState(`${context.adapterShortName}1.0.${gid}`, function (err) {
-                    expect(err).to.be.not.ok;
+                    assert.ok(!err);
 
                     done();
                 });
@@ -763,9 +764,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         this.timeout(3_000);
 
         context.adapter.getForeignState('system.adapter.test.0.memRss', (err, state) => {
-            expect(err).to.be.null;
-            expect(state).to.be.ok;
-            expect(state!.val).to.be.equal(0);
+            assert.strictEqual(err, null);
+            assert.ok(state);
+            assert.strictEqual(state.val, 0);
             done();
         });
     });
@@ -791,15 +792,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'state',
             },
             function (err) {
-                expect(err).to.be.null;
+                assert.strictEqual(err, null);
 
                 context.states.setState(sGid, 9, function (err) {
-                    expect(err).to.be.not.ok;
+                    assert.ok(!err);
 
                     context.onAdapterStateChanged = function (id, state) {
                         if (id === sGid) {
-                            expect(state).to.be.ok;
-                            expect(state!.val).to.equal(10);
+                            assert.ok(state);
+                            assert.strictEqual(state.val, 10);
                             context.onAdapterStateChanged = null;
                             done();
                         }
@@ -807,7 +808,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
                     context.adapter.subscribeForeignStates(`${context.adapterShortName}2.0.*`, function () {
                         context.states.setState(sGid, 10, function (err) {
-                            expect(err).to.be.not.ok;
+                            assert.ok(!err);
                         });
                     });
                 });
@@ -873,18 +874,18 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         context.onAdapterStateChanged = function (id, state) {
             if (id === sGid) {
-                expect(state!.val).to.be.equal(9);
+                assert.strictEqual(state!.val, 9);
             } else {
-                expect(true).to.be.false;
+                assert.strictEqual(true, false);
             }
         };
 
         context.states.setState(sGid, 9, err => {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
 
             context.adapter.unsubscribeForeignStates(`${context.adapterShortName}2.0.*`, () =>
                 context.states.setState(sGid, 10, err => {
-                    expect(err).to.be.not.ok;
+                    assert.ok(!err);
                     setTimeout(() => {
                         context.onAdapterStateChanged = null;
                         done();
@@ -915,34 +916,34 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'state',
             },
             function (err) {
-                expect(err).to.be.null;
+                assert.strictEqual(err, null);
 
                 let published = false;
                 context.onAdapterStateChanged = function (id, state) {
                     if (id === eGid) {
-                        expect(state).to.be.null;
+                        assert.strictEqual(state, null);
                         context.onAdapterStateChanged = null;
                         published = true;
                     }
                 };
 
                 context.adapter.setState(`${gid}_expire`, { val: 1, expire: 4, ack: true }, function (err) {
-                    expect(err).to.be.not.ok;
+                    assert.ok(!err);
 
                     context.adapter.getState(`${gid}_expire`, function (err, state) {
                         // read directly, should work
-                        expect(err).to.be.null;
-                        expect(state).to.be.ok;
-                        expect(state!.val).to.equal(1);
-                        expect(state!.ack).to.equal(true);
+                        assert.strictEqual(err, null);
+                        assert.ok(state);
+                        assert.strictEqual(state.val, 1);
+                        assert.strictEqual(state.ack, true);
 
                         context.adapter.subscribeForeignStates(eGid, function () {
                             setTimeout(() => {
                                 // read after timeout, should not work
                                 context.adapter.getState(`${gid}_expire`, function (err, state) {
-                                    expect(err).to.be.not.ok;
-                                    expect(state).to.be.null;
-                                    expect(published).to.be.true;
+                                    assert.ok(!err);
+                                    assert.strictEqual(state, null);
+                                    assert.strictEqual(published, true);
                                     context.adapter.unsubscribeForeignStates(eGid, () => done());
                                 });
                             }, 6000);
@@ -956,10 +957,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}Should respect from`, done => {
         // we set a state and set a custom from property
         context.adapter.setState(`${gid}stateWithFrom`, { val: 1, from: 'Paris with love' }, err => {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             context.states.getState(`${context.adapter.namespace}.${gid}stateWithFrom`, (err, state) => {
-                expect(err).to.be.not.ok;
-                expect(state!.from).to.equal('Paris with love');
+                assert.ok(!err);
+                assert.strictEqual(state!.from, 'Paris with love');
                 done();
             });
         });
@@ -968,10 +969,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}Should use default from`, done => {
         // we set a state without providing `from` property
         context.adapter.setState(`${gid}stateWithFrom`, { val: 1 }, err => {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             context.states.getState(`${context.adapter.namespace}.${gid}stateWithFrom`, (err, state) => {
-                expect(err).to.be.not.ok;
-                expect(state!.from).to.equal(`system.adapter.${context.adapter.namespace}`);
+                assert.ok(!err);
+                assert.strictEqual(state!.from, `system.adapter.${context.adapter.namespace}`);
                 done();
             });
         });
@@ -985,12 +986,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         try {
             // we set state to undefined
             await context.adapter.setStateAsync(`${gid}undefinedState`, undefined);
-            expect(1).to.be.equal(2, 'Should have thrown');
+            assert.strictEqual(1, 2, 'Should have thrown');
         } catch (e) {
             if (e.message.includes('undefined is not a valid state value')) {
                 // correct error -> now check that we have old state
                 const state = await context.adapter.getStateAsync(`${gid}undefinedState`);
-                expect(state.val).to.equal(1);
+                assert.strictEqual(state.val, 1);
             } else {
                 throw new Error(e.message);
             }
@@ -1008,10 +1009,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             channel: 'donau',
             state: 'awake',
         } as any);
-        expect(state!.val).to.equal(5);
+        assert.strictEqual(state!.val, 5);
         // check with string
         const stateTwo = await context.adapter.getStateAsync(`${gid}derGeraet.donau.awake`);
-        expect(stateTwo!.val).to.equal(5);
+        assert.strictEqual(stateTwo!.val, 5);
         return Promise.resolve();
     });
 
@@ -1036,26 +1037,24 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         await context.adapter.setStateAsync(`${gid}step`, 13, true);
 
         let state = await context.adapter.getStateAsync(`${gid}step`);
-        expect(state!.val).to.equal(15);
+        assert.strictEqual(state!.val, 15);
 
         // now with a negative value
         await context.adapter.setStateAsync(`${gid}step`, -18, true);
 
         state = await context.adapter.getStateAsync(`${gid}step`);
-        expect(state!.val).to.equal(-20);
+        assert.strictEqual(state!.val, -20);
     });
 
     it(`${testName}Should throw on invalid subscribe`, async () => {
-        expect(context.adapter.subscribeStatesAsync('hm-rpc.0.§.test')).to.be.rejectedWith(
-            /is not a valid ID pattern/g,
-            'Should throw on invalid pattern',
-        );
+        await assert.rejects(context.adapter.subscribeStatesAsync('hm-rpc.0.§.test'), /is not a valid ID pattern/);
         await context.adapter.subscribeStatesAsync('*hm-rpc.0._.**test/*');
     });
 
-    it(`${testName}sendTo with timeout should reject in time`, () => {
-        return expect(
+    it(`${testName}sendTo with timeout should reject in time`, async () => {
+        await assert.rejects(
             context.adapter.sendToAsync('testInstance.0', 'test', {}, { timeout: 500 }),
-        ).to.be.eventually.rejectedWith('Timeout exceeded', 'Should have thrown after timeout is over');
+            /Timeout exceeded/,
+        );
     });
 }

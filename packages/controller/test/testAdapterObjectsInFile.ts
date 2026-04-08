@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import assert from 'node:assert/strict';
 import { startController, stopController } from './lib/setup4controller.js';
 
 let objects = null;
@@ -39,11 +39,11 @@ describe(`${textName} Test Objects File-Redis`, function () {
         states = _states;
         // @ts-expect-error fix later
         context.objects = _objects;
-        expect(objects).to.be.ok;
-        expect(states).to.be.ok;
+        assert.ok(objects);
+        assert.ok(states);
     });
 
-    register(it, expect, context);
+    register(it, context);
 
     after(`${textName} Stop js-controller`, async function () {
         this.timeout(5_000);

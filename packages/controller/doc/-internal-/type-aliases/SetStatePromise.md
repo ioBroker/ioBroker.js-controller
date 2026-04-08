@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,6 @@
 
 # Type Alias: SetStatePromise
 
-> **SetStatePromise**: `Promise`\<[`NonNullCallbackReturnTypeOf`](NonNullCallbackReturnTypeOf.md)\<[`SetStateCallback`](SetStateCallback.md)\>\>
+> **SetStatePromise** = `Promise`\<[`NonNullCallbackReturnTypeOf`](NonNullCallbackReturnTypeOf.md)\<[`SetStateCallback`](SetStateCallback.md)\>\>
 
-## Defined in
-
-[types-dev/index.d.ts:475](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/index.d.ts#L475)
+Defined in: [types-dev/index.d.ts:484](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/index.d.ts#L484)

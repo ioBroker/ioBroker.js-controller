@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,31 +6,29 @@
 
 # Interface: ReadDirResult
 
+Defined in: [types-dev/index.d.ts:500](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/index.d.ts#L500)
+
 Contains the return values of readDir
 
 ## Properties
 
 ### acl?
 
-> `optional` **acl**: [`EvaluatedFileACL`](EvaluatedFileACL.md)
+> `optional` **acl?**: [`EvaluatedFileACL`](EvaluatedFileACL.md)
+
+Defined in: [types-dev/index.d.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/index.d.ts#L508)
 
 Access rights
-
-#### Defined in
-
-[types-dev/index.d.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/index.d.ts#L499)
 
 ***
 
 ### createdAt?
 
-> `optional` **createdAt**: `number`
+> `optional` **createdAt?**: `number`
+
+Defined in: [types-dev/index.d.ts:512](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/index.d.ts#L512)
 
 Date of creation
-
-#### Defined in
-
-[types-dev/index.d.ts:503](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/index.d.ts#L503)
 
 ***
 
@@ -38,11 +36,9 @@ Date of creation
 
 > **file**: `string`
 
+Defined in: [types-dev/index.d.ts:502](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/index.d.ts#L502)
+
 Name of the file or directory
-
-#### Defined in
-
-[types-dev/index.d.ts:493](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/index.d.ts#L493)
 
 ***
 
@@ -50,32 +46,26 @@ Name of the file or directory
 
 > **isDir**: `boolean`
 
+Defined in: [types-dev/index.d.ts:506](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/index.d.ts#L506)
+
 Whether this is a directory or a file
-
-#### Defined in
-
-[types-dev/index.d.ts:497](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/index.d.ts#L497)
 
 ***
 
 ### modifiedAt?
 
-> `optional` **modifiedAt**: `number`
+> `optional` **modifiedAt?**: `number`
+
+Defined in: [types-dev/index.d.ts:510](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/index.d.ts#L510)
 
 Date of last modification
-
-#### Defined in
-
-[types-dev/index.d.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/index.d.ts#L501)
 
 ***
 
 ### stats
 
-> **stats**: `Partial`\<`Stats`\>
+> **stats**: `Partial`\<`fs.Stats`\>
+
+Defined in: [types-dev/index.d.ts:504](https://github.com/ioBroker/ioBroker.js-controller/blob/45df59755ea2d8846a4d0c4546ada5a076ba64a1/packages/types-dev/index.d.ts#L504)
 
 File system stats
-
-#### Defined in
-
-[types-dev/index.d.ts:495](https://github.com/ioBroker/ioBroker.js-controller/blob/77e3ad19ba544ef59ab9929a52ba17e35b9cc80a/packages/types-dev/index.d.ts#L495)
