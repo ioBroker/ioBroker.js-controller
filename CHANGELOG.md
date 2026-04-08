@@ -3,12 +3,14 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (@GermanBluefox) Corrected typings
 
-## 7.1.1 (2026-04-06)
+## 7.1.1 (2026-04-06) - Milla
 * (@GermanBluefox) Corrected typing (@alcalzone/pak)
 * (@GermanBluefox) Remove chai tests and replace them with node assert tests (not relevant for end users)
 * (@adbecaf) Extended isDocker to support `.conatinerenv` file in Podman or CRI-O
-* minor changes in the documentation conserninig deprecations
+* minor changes in the documentation concerning deprecations
 
 ## 7.1.0 (2025-12-06) - Milla
 * (@copilot) Fixed adminUI, adminTab, and adminColumns configurations being incorrectly preserved during adapter uploads
@@ -44,7 +46,7 @@
 ## 7.0.4 (2024-12-04) - Lucy
 * (@Apollon77) Fixes async usage of extendObject
 * (@Apollon77) Makes setObject async save
-* (@foxriver76) deprecated `set(Foreign)ObjectAsync` as the non async methods are now working correctly with promises
+* (@foxriver76) deprecated `set(Foreign)ObjectAsync` as the non-async methods are now working correctly with promises
 * (@foxriver76) allow specifying a version on `iob upgrade self` command
 
 ## 7.0.3 (2024-11-13) - Lucy
