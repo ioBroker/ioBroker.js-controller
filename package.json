@@ -29,7 +29,7 @@
         "@iobroker/eslint-config": "^0.1.6",
         "@iobroker/types": "file:packages/types-public",
         "@iobroker/types-dev": "file:packages/types-dev",
-        "@microsoft/api-extractor": "^7.55.1",
+        "@microsoft/api-extractor": "^7.58.2",
         "@tsconfig/node22": "^22.0.0",
         "@types/debug": "^4.1.12",
         "@types/event-stream": "^4.0.6",
