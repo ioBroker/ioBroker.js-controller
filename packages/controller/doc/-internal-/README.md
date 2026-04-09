@@ -50,7 +50,7 @@
 - [DesignObject](interfaces/DesignObject.md)
 - [DeviceCommon](interfaces/DeviceCommon.md)
 - [DeviceObject](interfaces/DeviceObject.md)
-- [DevicesWidget](interfaces/DevicesWidget.md)
+- [DevicesWidgets](interfaces/DevicesWidgets.md)
 - [EnumCommon](interfaces/EnumCommon.md)
 - [EnumObject](interfaces/EnumObject.md)
 - [EvaluatedFileACL](interfaces/EvaluatedFileACL.md)
