@@ -921,7 +921,8 @@
           "properties": {
             "url": {
               "description": "Link to the file with components relative to `admin/dm-widgets` in admin or `${adapterName}` in web. Default is customDevices.js",
-              "type": "string"
+              "type": "string",
+              "default": "customDevices.js"
             },
             "components": {
               "description": "Description of the components (widgets). It could be multiple widgets in one adapter",
