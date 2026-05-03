@@ -1419,3 +1419,5 @@ The MIT License (MIT)
 Copyright (c) 2014-2026 bluefox <dogafox@gmail.com>,
 
 Copyright (c) 2014      hobbyquaker
+
+[Older changelogs can be found there](CHANGELOG_OLD.md)
