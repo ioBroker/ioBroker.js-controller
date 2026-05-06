@@ -534,8 +534,8 @@ declare global {
          * This structure defines the widgets for "devices" adapter
          */
         export interface DevicesWidgets {
-            /** Link to the file with components relatively to `admin/dm-widgets` in admin or `${adapterName}` in web */
-            url: string;
+            /** Link to the file with components relatively to `admin/dm-widgets` in admin or `${adapterName}` in web. Default is customDevices.js */
+            url?: string;
             /** Description of the components (widgets). It could be multiple widgets in one adapter */
             components: {
                 /** Name of the class */
@@ -543,7 +543,7 @@ declare global {
                 /** Title */
                 label: ioBroker.StringOrTranslated;
                 /** Description */
-                description: ioBroker.StringOrTranslated;
+                description?: ioBroker.StringOrTranslated;
                 /** Icon as a link to picture imageName.png relative to the admin folder or base64 */
                 icon: string;
             }[];
