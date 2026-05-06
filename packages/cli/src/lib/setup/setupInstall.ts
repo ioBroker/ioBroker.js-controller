@@ -879,7 +879,7 @@ export class Install {
 
         let objs: ioBroker.StateObject[];
         if (!instanceObj.common.onlyWWW && instanceObj.common.mode !== 'once') {
-            objs = tools.getInstanceIndicatorObjects(`${adapter}.${instance}`);
+            objs = tools.getInstanceIndicatorObjects(`${adapter}.${instance}`, instanceObj.common);
         } else {
             objs = [];
         }

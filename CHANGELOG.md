@@ -5,6 +5,7 @@
 -->
 ## __WORK IN PROGRESS__
 * (@GermanBluefox) Corrected typings
+* (@GermanBluefox) Provided a default object warning limit for adapters so they can apply an appropriate limit during installation: `defaultObjectsWarnLimit`
 
 ## 7.1.1 (2026-04-06) - Milla
 * (@GermanBluefox) Corrected typing (@alcalzone/pak)
