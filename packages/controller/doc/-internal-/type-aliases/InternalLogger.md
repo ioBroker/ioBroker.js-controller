@@ -8,4 +8,4 @@
 
 > **InternalLogger** = `Omit`\<[`Logger`](../interfaces/Logger.md), `"level"`\>
 
-Defined in: common-db/build/esm/lib/common/tools.d.ts:615
+Defined in: common-db/build/esm/lib/common/tools.d.ts:616

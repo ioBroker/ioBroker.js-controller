@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
+## 7.1.2 (2026-05-07)
 * (@GermanBluefox) Corrected typings
 * (@GermanBluefox) Provided a default object warning limit for adapters so they can apply an appropriate limit during installation: `defaultObjectsWarnLimit`
 
