@@ -6,7 +6,7 @@
 
 # Interface: DevicesWidgets
 
-Defined in: [types-dev/objects.d.ts:536](https://github.com/ioBroker/ioBroker.js-controller/blob/feacb179dc3edcfa0fe65100ac8cbe242bfb19d4/packages/types-dev/objects.d.ts#L536)
+Defined in: [types-dev/objects.d.ts:536](https://github.com/ioBroker/ioBroker.js-controller/blob/9a597925507d153ba52e122dc370116da14485fa/packages/types-dev/objects.d.ts#L536)
 
 This structure defines the widgets for "devices" adapter
 
@@ -16,13 +16,13 @@ This structure defines the widgets for "devices" adapter
 
 > **components**: `object`[]
 
-Defined in: [types-dev/objects.d.ts:540](https://github.com/ioBroker/ioBroker.js-controller/blob/feacb179dc3edcfa0fe65100ac8cbe242bfb19d4/packages/types-dev/objects.d.ts#L540)
+Defined in: [types-dev/objects.d.ts:540](https://github.com/ioBroker/ioBroker.js-controller/blob/9a597925507d153ba52e122dc370116da14485fa/packages/types-dev/objects.d.ts#L540)
 
 Description of the components (widgets). It could be multiple widgets in one adapter
 
-#### description
+#### description?
 
-> **description**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
+> `optional` **description?**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
 Description
 
@@ -46,10 +46,10 @@ Name of the class
 
 ***
 
-### url
+### url?
 
-> **url**: `string`
+> `optional` **url?**: `string`
 
-Defined in: [types-dev/objects.d.ts:538](https://github.com/ioBroker/ioBroker.js-controller/blob/feacb179dc3edcfa0fe65100ac8cbe242bfb19d4/packages/types-dev/objects.d.ts#L538)
+Defined in: [types-dev/objects.d.ts:538](https://github.com/ioBroker/ioBroker.js-controller/blob/9a597925507d153ba52e122dc370116da14485fa/packages/types-dev/objects.d.ts#L538)
 
-Link to the file with components relatively to `admin/dm-widgets` in admin or `${adapterName}` in web
+Link to the file with components relatively to `admin/dm-widgets` in admin or `${adapterName}` in web. Default is customDevices.js

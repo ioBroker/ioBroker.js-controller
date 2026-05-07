@@ -8,7 +8,7 @@
 
 > **UnloadHandler** = (`callback`) => `void` \| `Promise`\<`void`\>
 
-Defined in: [types-dev/index.d.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/feacb179dc3edcfa0fe65100ac8cbe242bfb19d4/packages/types-dev/index.d.ts#L408)
+Defined in: [types-dev/index.d.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/9a597925507d153ba52e122dc370116da14485fa/packages/types-dev/index.d.ts#L408)
 
 ## Parameters
 
