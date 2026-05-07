@@ -6,7 +6,7 @@
 
 # Interface: InternalFormatDateOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:204](https://github.com/ioBroker/ioBroker.js-controller/blob/feacb179dc3edcfa0fe65100ac8cbe242bfb19d4/packages/adapter/src/lib/_Types.ts#L204)
+Defined in: [adapter/src/lib/\_Types.ts:204](https://github.com/ioBroker/ioBroker.js-controller/blob/9a597925507d153ba52e122dc370116da14485fa/packages/adapter/src/lib/_Types.ts#L204)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:204](https://github.com/ioBroker/ioBroke
 
 > `optional` **\_format?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:207](https://github.com/ioBroker/ioBroker.js-controller/blob/feacb179dc3edcfa0fe65100ac8cbe242bfb19d4/packages/adapter/src/lib/_Types.ts#L207)
+Defined in: [adapter/src/lib/\_Types.ts:207](https://github.com/ioBroker/ioBroker.js-controller/blob/9a597925507d153ba52e122dc370116da14485fa/packages/adapter/src/lib/_Types.ts#L207)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [adapter/src/lib/\_Types.ts:207](https://github.com/ioBroker/ioBroke
 
 > **dateObj**: `string` \| `number` \| `Date`
 
-Defined in: [adapter/src/lib/\_Types.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/feacb179dc3edcfa0fe65100ac8cbe242bfb19d4/packages/adapter/src/lib/_Types.ts#L205)
+Defined in: [adapter/src/lib/\_Types.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/9a597925507d153ba52e122dc370116da14485fa/packages/adapter/src/lib/_Types.ts#L205)
 
 ***
 
@@ -30,4 +30,4 @@ Defined in: [adapter/src/lib/\_Types.ts:205](https://github.com/ioBroker/ioBroke
 
 > **isDuration**: `boolean`
 
-Defined in: [adapter/src/lib/\_Types.ts:206](https://github.com/ioBroker/ioBroker.js-controller/blob/feacb179dc3edcfa0fe65100ac8cbe242bfb19d4/packages/adapter/src/lib/_Types.ts#L206)
+Defined in: [adapter/src/lib/\_Types.ts:206](https://github.com/ioBroker/ioBroker.js-controller/blob/9a597925507d153ba52e122dc370116da14485fa/packages/adapter/src/lib/_Types.ts#L206)
