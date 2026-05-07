@@ -4727,7 +4727,9 @@ export class ObjectsInRedisClient {
     private _findObject(
         idOrName: string,
         type: ioBroker.CommonType | null,
-        options: CallOptions & { language?: ioBroker.Languages },
+        options: CallOptions & {
+            language?: ioBroker.Languages;
+        },
         callback?: ioBroker.FindObjectCallback,
     ): void {
         // Try to read by ID
@@ -4789,7 +4791,11 @@ export class ObjectsInRedisClient {
     findObject(
         idOrName: string,
         type: ioBroker.CommonType | null,
-        options: (CallOptions & { language?: ioBroker.Languages }) | null,
+        options:
+            | (CallOptions & {
+                  language?: ioBroker.Languages;
+              })
+            | null,
         callback: ioBroker.FindObjectCallback,
     ): void;
 
@@ -4800,13 +4806,21 @@ export class ObjectsInRedisClient {
     findObject(
         idOrName: string,
         type?: ioBroker.CommonType | null,
-        options?: (CallOptions & { language?: ioBroker.Languages }) | null,
+        options?:
+            | (CallOptions & {
+                  language?: ioBroker.Languages;
+              })
+            | null,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.FindObjectCallback>>;
 
     findObject(
         idOrName: string,
         type: ioBroker.CommonType | null,
-        options: (CallOptions & { language?: ioBroker.Languages }) | null,
+        options:
+            | (CallOptions & {
+                  language?: ioBroker.Languages;
+              })
+            | null,
         callback?: ioBroker.FindObjectCallback,
     ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.FindObjectCallback>> {
         if (typeof type === 'function') {

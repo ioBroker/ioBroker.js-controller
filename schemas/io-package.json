@@ -817,6 +817,10 @@
           "description": "Description, object for multilingual description",
           "$ref": "#/definitions/multilingual"
         },
+        "defaultObjectsWarnLimit": {
+          "description": "The custom limit for the maximum number of objects an adapter instance can create. If exceeded, a warning will be shown in the admin UI. The system default is 5000.",
+          "type": "integer"
+        },
         "messagebox": {
           "description": "true if messagebox supported. Hence, the adapter can receive sendTo messages. Up from controller v5, please use common.supportedMessages.custom = true",
           "type": "boolean"

@@ -11898,7 +11898,7 @@ export class AdapterClass extends EventEmitter {
         let objs: (IoPackageInstanceObject & { state?: unknown })[];
 
         if (instanceObj?.common && !('onlyWWW' in instanceObj.common) && instanceObj.common.mode !== 'once') {
-            objs = tools.getInstanceIndicatorObjects(this.namespace);
+            objs = tools.getInstanceIndicatorObjects(this.namespace, instanceObj.common);
         } else {
             objs = [];
         }

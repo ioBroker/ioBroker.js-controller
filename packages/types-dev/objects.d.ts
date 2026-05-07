@@ -875,6 +875,14 @@ declare global {
                 /** Load it as a TypeScript module */
                 type?: 'module';
             };
+            /**
+             * Defines the default value for objectsWarnLimit,
+             * which is the maximum number of objects that can be stored in the system.
+             * If this limit is exceeded, a warning will be shown in the admin UI.
+             * This is used to prevent performance issues caused by too many objects.
+             * The system default is actually 5000
+             */
+            defaultObjectsWarnLimit?: number;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;

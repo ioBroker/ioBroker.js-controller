@@ -3373,8 +3373,12 @@ export function removePreservedProperties(
  * Returns the array of system.adapter.<namespace>.* objects which are created for every instance
  *
  * @param namespace - adapter namespace + id, e.g., hm-rpc.0
+ * @param adapterCommon - adapter object from io-package.json
  */
-export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateObject[] {
+export function getInstanceIndicatorObjects(
+    namespace: string,
+    adapterCommon: ioBroker.AdapterCommon,
+): ioBroker.StateObject[] {
     const id = `system.adapter.${namespace}`;
 
     return [
@@ -3571,7 +3575,7 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 write: true,
                 desc: 'If the number of objects of this adapter instance exceeds this limit, the user will receive a warning',
                 role: 'state',
-                def: DEFAULT_OBJECTS_WARN_LIMIT,
+                def: adapterCommon.defaultObjectsWarnLimit ?? DEFAULT_OBJECTS_WARN_LIMIT,
             },
             native: {},
         },

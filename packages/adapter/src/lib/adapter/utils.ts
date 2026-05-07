@@ -192,7 +192,7 @@ function _getObjectAttribute(obj: Record<string, any>, attrParts: string[], inde
  *
  * @param obj - object to get the attribute from
  * @param attr - attribute name, can be complex like `attr1.attr2.attr3`
- * @return could be a value or an array
+ * @returns could be a value or an array
  */
 export function getObjectAttribute(obj: Record<string, any>, attr: string): any {
     // Optimization for 98% of the cases
