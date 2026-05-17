@@ -20,7 +20,8 @@
   ],
   "include": [
     "src/**/*.ts",
-    "src/**/*.js"
+    "src/**/*.js",
+    "test/**/*.ts"
   ],
   "exclude": [
     "build/**",
