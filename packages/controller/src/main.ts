@@ -3041,6 +3041,44 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             });
             break;
         }
+
+        case 'writeFile': {
+            // This is used to transfer some file from admin to controller, e.g. to update some adapter from file
+            if (msg.message.data) {
+                const file = Buffer.from(msg.message.data, 'base64');
+                const fileName = msg.message.fileName || `iobroker-${Date.now()}`;
+                const storeIn = msg.message.path || os.tmpdir();
+                // Take tmp directory
+                const tmpFile = path.join(storeIn, fileName);
+                try {
+                    fs.writeFileSync(tmpFile, file);
+                    sendTo(msg.from, msg.command, { path: tmpFile }, msg.callback);
+                } catch (e) {
+                    logger.error(`${hostLogPrefix} Cannot write file ${tmpFile}: ${e.message}`);
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
+            }
+            break;
+        }
+
+        case 'deleteFile': {
+            // This is used to transfer some file from admin to controller, e.g. to update some adapter from file
+            if (msg.message.data) {
+                const file = Buffer.from(msg.message.data, 'base64');
+                const fileName = msg.message.fileName || `iobroker-${Date.now()}`;
+                const storeIn = msg.message.path || os.tmpdir();
+                // Take tmp directory
+                const tmpFile = path.join(storeIn, fileName);
+                try {
+                    fs.writeFileSync(tmpFile, file);
+                    sendTo(msg.from, msg.command, { path: tmpFile }, msg.callback);
+                } catch (e) {
+                    logger.error(`${hostLogPrefix} Cannot write file ${tmpFile}: ${e.message}`);
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
+            }
+            break;
+        }
     }
 }
 
