@@ -2041,7 +2041,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     sendTo(msg.from, 'cmdExit', { id: message.id, data: exitCode }).catch(e =>
                         logger.error(`Cannot sendTo: ${e}`),
                     );
-                    // Sometimes finished command is lost, recent it
+                    // Sometimes finished command is lost, resend it
                     setTimeout(
                         () =>
                             sendTo(msg.from, 'cmdExit', { id: message.id, data: exitCode }).catch(e =>
