@@ -2003,16 +2003,112 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         case 'cmdExec': {
             const mainFile = path.join(tools.getControllerDir(), `${tools.appName.toLowerCase()}.js`);
             const args = [...getDefaultNodeArgs(mainFile), mainFile];
-            if (!msg.message.data || typeof msg.message.data !== 'string') {
+            const message: {
+                id: string;
+                data: string;
+                files?: { file: string | Buffer; name: string; doNotDelete?: boolean }[];
+            } = msg.message;
+            // Each cmdExec call gets an own temporary folder for the sent files to avoid collisions between parallel calls
+            let tmpFolder: string | undefined;
+            let keepTmpFolder = false;
+            const filesToDelete: string[] = [];
+            const exitFromCmd = (exitCode: number | null, error?: string): void => {
+                if (tmpFolder) {
+                    if (keepTmpFolder) {
+                        // Some files are marked with "doNotDelete", so delete only the other ones
+                        for (const fileName of filesToDelete) {
+                            try {
+                                fs.unlinkSync(fileName);
+                            } catch (e) {
+                                logger.error(`Cannot delete file "${fileName}": ${e.message}`);
+                            }
+                        }
+                    } else {
+                        try {
+                            fs.rmSync(tmpFolder, { recursive: true, force: true });
+                        } catch (e) {
+                            logger.error(`Cannot delete temporary folder "${tmpFolder}": ${e.message}`);
+                        }
+                    }
+                }
+                if (msg.from) {
+                    if (error) {
+                        sendTo(msg.from, 'cmdStderr', {
+                            id: message.id,
+                            data: error,
+                        }).catch(e => logger.error(`Cannot sendTo: ${e}`));
+                    }
+                    sendTo(msg.from, 'cmdExit', { id: message.id, data: exitCode }).catch(e =>
+                        logger.error(`Cannot sendTo: ${e}`),
+                    );
+                    // Sometimes finished command is lost, recent it
+                    setTimeout(
+                        () =>
+                            sendTo(msg.from, 'cmdExit', { id: message.id, data: exitCode }).catch(e =>
+                                logger.error(`Cannot sendTo: ${e}`),
+                            ),
+                        1_000,
+                    );
+                }
+            };
+
+            if (!message.data || typeof message.data !== 'string') {
                 logger.warn(
                     `${hostLogPrefix} ${
                         tools.appName
                     } Invalid cmdExec object. Expected key "data" with the command as string. Got as "data": ${JSON.stringify(
-                        msg.message.data,
+                        message.data,
                     )}`,
                 );
+                exitFromCmd(
+                    EXIT_CODES.INVALID_ARGUMENTS,
+                    'Invalid cmdExec object. Expected key "data" with the command as string',
+                );
             } else {
-                const extraArgs = msg.message.data.split(' ');
+                // cmdExec can send a files with command
+                const fileNames = new Map<string, string>();
+                if (message.files?.length) {
+                    // store files in an own temporary folder, so parallel cmdExec calls cannot overwrite each other
+                    try {
+                        tmpFolder = fs.mkdtempSync(path.join(os.tmpdir(), `${tools.appName.toLowerCase()}-cmd-`));
+                    } catch (e) {
+                        exitFromCmd(EXIT_CODES.UNKNOWN_ERROR, `Cannot create temporary folder: ${e.message}`);
+                        return;
+                    }
+                    for (const file of message.files) {
+                        if (!file.name || typeof file.name !== 'string') {
+                            exitFromCmd(EXIT_CODES.INVALID_ARGUMENTS, 'Empty file name');
+                            return;
+                        }
+                        if (file.name.includes('\\') || file.name.includes('/')) {
+                            exitFromCmd(
+                                EXIT_CODES.INVALID_ARGUMENTS,
+                                'Invalid file name: file name cannot contain \\ or /',
+                            );
+                            return;
+                        }
+                        const data = typeof file.file === 'string' ? Buffer.from(file.file, 'base64') : file.file;
+                        const fullName = path.join(tmpFolder, file.name);
+                        try {
+                            fs.writeFileSync(fullName, data);
+                        } catch (e) {
+                            exitFromCmd(
+                                EXIT_CODES.INVALID_ARGUMENTS,
+                                `Cannot write file "${fullName}": ${e.toString()}`,
+                            );
+                            return;
+                        }
+                        fileNames.set(file.name, fullName);
+                        if (file.doNotDelete) {
+                            keepTmpFolder = true;
+                        } else {
+                            filesToDelete.push(fullName);
+                        }
+                    }
+                }
+
+                // The sender refers to the sent files just by name, so replace the names with the full paths in the temporary folder
+                const extraArgs = message.data.split(' ').map(arg => fileNames.get(arg) || arg);
                 args.push(...extraArgs);
                 logger.info(`${hostLogPrefix} ${tools.appName.toLowerCase()} ${extraArgs.join(' ')}`);
 
@@ -2022,7 +2118,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         child.stdout.on('data', data => {
                             data = data.toString().replace(/\n/g, '');
                             logger.info(`${hostLogPrefix} ${tools.appName} ${data}`);
-                            msg.from && sendTo(msg.from, 'cmdStdout', { id: msg.message.id, data: data });
+                            if (msg.from) {
+                                sendTo(msg.from, 'cmdStdout', { id: message.id, data });
+                            }
                         });
                     }
 
@@ -2030,24 +2128,19 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         child.stderr.on('data', data => {
                             data = data.toString().replace(/\n/g, '');
                             logger.error(`${hostLogPrefix} ${tools.appName} ${data}`);
-                            msg.from && sendTo(msg.from, 'cmdStderr', { id: msg.message.id, data: data });
+                            if (msg.from) {
+                                sendTo(msg.from, 'cmdStderr', { id: message.id, data });
+                            }
                         });
                     }
 
                     child.on('exit', exitCode => {
                         logger.info(`${hostLogPrefix} ${tools.appName} exit ${exitCode}`);
-                        if (msg.from) {
-                            sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode });
-                            // Sometimes finished command is lost, recent it
-                            setTimeout(
-                                () => sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode }),
-                                1_000,
-                            );
-                        }
+                        exitFromCmd(exitCode);
                     });
                 } catch (e) {
                     logger.error(`${hostLogPrefix} ${tools.appName} ${e.message}`);
-                    msg.from && sendTo(msg.from, 'cmdStderr', { id: msg.message.id, data: e.message });
+                    exitFromCmd(EXIT_CODES.UNKNOWN_ERROR, e.message);
                 }
             }
 
@@ -3039,44 +3132,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 sentryObj.captureMessage(message, 'info');
             });
-            break;
-        }
-
-        case 'writeFile': {
-            // This is used to transfer some file from admin to controller, e.g. to update some adapter from file
-            if (msg.message.data) {
-                const file = Buffer.from(msg.message.data, 'base64');
-                const fileName = msg.message.fileName || `iobroker-${Date.now()}`;
-                const storeIn = msg.message.path || os.tmpdir();
-                // Take tmp directory
-                const tmpFile = path.join(storeIn, fileName);
-                try {
-                    fs.writeFileSync(tmpFile, file);
-                    sendTo(msg.from, msg.command, { path: tmpFile }, msg.callback);
-                } catch (e) {
-                    logger.error(`${hostLogPrefix} Cannot write file ${tmpFile}: ${e.message}`);
-                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
-                }
-            }
-            break;
-        }
-
-        case 'deleteFile': {
-            // This is used to transfer some file from admin to controller, e.g. to update some adapter from file
-            if (msg.message.data) {
-                const file = Buffer.from(msg.message.data, 'base64');
-                const fileName = msg.message.fileName || `iobroker-${Date.now()}`;
-                const storeIn = msg.message.path || os.tmpdir();
-                // Take tmp directory
-                const tmpFile = path.join(storeIn, fileName);
-                try {
-                    fs.writeFileSync(tmpFile, file);
-                    sendTo(msg.from, msg.command, { path: tmpFile }, msg.callback);
-                } catch (e) {
-                    logger.error(`${hostLogPrefix} Cannot write file ${tmpFile}: ${e.message}`);
-                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
-                }
-            }
             break;
         }
     }
