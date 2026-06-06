@@ -1266,6 +1266,7 @@ The following features can be checked using this method:
 * **CONTROLLER_MULTI_REPO**: indicates that the controller supports multiple repository sources, which will be combined in one (since js-controller 4.0)
 * **CONTROLLER_LICENSE_MANAGER**: js-controller can read licenses from iobroker.net (since js-controller 4.0)
 * **DEL_INSTANCE_CUSTOM**: indicates that controller is able to delete all custom attributes of an adapter and instance if it is deleted via `--custom` flag (since js-controller 4.0)
+* **CONTROLLER_CMD_EXEC_FILES**: the `cmdExec` host message supports sending files together with the command via the `files` property (since js-controller 7.2)
 
 To check if certain adapter methods itself are existing, please simply check for their existence like
 
