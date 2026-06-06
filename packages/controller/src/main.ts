@@ -2114,29 +2114,30 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 try {
                     const child = spawn(process.execPath, args, { windowsHide: true });
-                    if (child.stdout) {
-                        child.stdout.on('data', data => {
-                            data = data.toString().replace(/\n/g, '');
-                            logger.info(`${hostLogPrefix} ${tools.appName} ${data}`);
-                            if (msg.from) {
-                                sendTo(msg.from, 'cmdStdout', { id: message.id, data }).catch(e =>
-                                    logger.error(`Cannot sendTo: ${e}`),
-                                );
-                            }
-                        });
-                    }
+                    child.stdout?.on('data', data => {
+                        data = data.toString().replace(/\n/g, '');
+                        logger.info(`${hostLogPrefix} ${tools.appName} ${data}`);
+                        if (msg.from) {
+                            sendTo(msg.from, 'cmdStdout', { id: message.id, data }).catch(e =>
+                                logger.error(`Cannot sendTo: ${e}`),
+                            );
+                        }
+                    });
 
-                    if (child.stderr) {
-                        child.stderr.on('data', data => {
-                            data = data.toString().replace(/\n/g, '');
-                            logger.error(`${hostLogPrefix} ${tools.appName} ${data}`);
-                            if (msg.from) {
-                                sendTo(msg.from, 'cmdStderr', { id: message.id, data }).catch(e =>
-                                    logger.error(`Cannot sendTo: ${e}`),
-                                );
-                            }
-                        });
-                    }
+                    child.stderr?.on('data', data => {
+                        data = data.toString().replace(/\n/g, '');
+                        logger.error(`${hostLogPrefix} ${tools.appName} ${data}`);
+                        if (msg.from) {
+                            sendTo(msg.from, 'cmdStderr', { id: message.id, data }).catch(e =>
+                                logger.error(`Cannot sendTo: ${e}`),
+                            );
+                        }
+                    });
+
+                    child.on('error', error => {
+                        logger.error(`${hostLogPrefix} ${tools.appName} error: ${error.message}`);
+                        exitFromCmd(EXIT_CODES.UNKNOWN_ERROR, error.message);
+                    });
 
                     child.on('exit', exitCode => {
                         logger.info(`${hostLogPrefix} ${tools.appName} exit ${exitCode}`);
