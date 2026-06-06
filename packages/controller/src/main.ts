@@ -2119,7 +2119,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                             data = data.toString().replace(/\n/g, '');
                             logger.info(`${hostLogPrefix} ${tools.appName} ${data}`);
                             if (msg.from) {
-                                sendTo(msg.from, 'cmdStdout', { id: message.id, data });
+                                sendTo(msg.from, 'cmdStdout', { id: message.id, data }).catch(e =>
+                                    logger.error(`Cannot sendTo: ${e}`),
+                                );
                             }
                         });
                     }
