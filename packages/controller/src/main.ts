@@ -2065,7 +2065,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     'Invalid cmdExec object. Expected key "data" with the command as string',
                 );
             } else {
-                // cmdExec can send a files with command
+                // cmdExec can send files with the command
                 const fileNames = new Map<string, string>();
                 if (message.files?.length) {
                     // store files in an own temporary folder, so parallel cmdExec calls cannot overwrite each other
