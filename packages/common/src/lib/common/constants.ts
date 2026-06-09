@@ -31,5 +31,6 @@ export type SupportedFeature = (typeof SUPPORTED_FEATURES)[number];
 
 // Compile-time guarantee that the runtime list stays in sync with the public `ioBroker.SupportedFeature` type (defined in @iobroker/types-dev)
 type AssertExtends<T extends U, U> = T;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type _AssertFeaturesInSync = AssertExtends<SupportedFeature, ioBroker.SupportedFeature> &
     AssertExtends<ioBroker.SupportedFeature, SupportedFeature>;
