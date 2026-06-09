@@ -93,5 +93,14 @@ export function isInstalledFromNpm(options: IsInstalledFromNpmOptions): boolean 
  * Get the supported features for the current running controller
  */
 export function getSupportedFeatures(): SupportedFeature[] {
-    return SUPPORTED_FEATURES;
+    const features = [...SUPPORTED_FEATURES];
+
+    if (!isControllerUiUpgradeSupported()) {
+        const idx = features.indexOf('CONTROLLER_UI_UPGRADE');
+        if (idx !== -1) {
+            features.splice(idx, 1);
+        }
+    }
+
+    return features;
 }
