@@ -1,5 +1,5 @@
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
-import { appName } from '@iobroker/js-controller-common-db/tools';
+import { appName, isControllerUiUpgradeSupported } from '@iobroker/js-controller-common-db/tools';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import { SUPPORTED_FEATURES, type SupportedFeature } from './constants.js';
 
