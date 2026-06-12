@@ -1128,8 +1128,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         if (!Object.keys(packJson.overrides).length) {
             delete packJson.overrides;
         }
-        await fs.writeFile(packPath, JSON.stringify(packJson));
-
+        await fs.writeJson(packPath, packJson, { spaces: 4 });
         console.log(`Successfully removed override for "@iobroker/adapter-core"`);
     }
 
