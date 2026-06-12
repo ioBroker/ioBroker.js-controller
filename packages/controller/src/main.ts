@@ -22,6 +22,8 @@ import {
     zipFiles,
     getInstancesOrderedByStartPrio,
     isInstalledFromNpm,
+    type SupportedFeature,
+    getSupportedFeatures,
 } from '@iobroker/js-controller-common';
 import {
     SYSTEM_ADAPTER_PREFIX,
@@ -3071,7 +3073,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         .map(l => l.product)
                         .join(', ')}"`,
                 );
-                msg.callback && msg.from && sendTo(msg.from, msg.command, { result: licenses }, msg.callback);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: licenses }, msg.callback);
+                }
             } catch (e) {
                 logger.error(`${hostLogPrefix} Cannot read licenses: ${e.message}`);
 
@@ -3108,7 +3112,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         }
 
         case 'restartController': {
-            msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
+            if (msg.callback) {
+                sendTo(msg.from, msg.command, '', msg.callback);
+            }
             // let the answer be sent
             await wait(200);
             restart(() => !isStopping && stop(false));
@@ -3137,6 +3143,19 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 sentryObj.captureMessage(message, 'info');
             });
+            break;
+        }
+
+        case 'checkFeatureSupported': {
+            const feature: unknown = msg.message;
+            if (msg.callback && msg.from) {
+                if (typeof feature === 'string') {
+                    const result = getSupportedFeatures().includes(feature as SupportedFeature);
+                    sendTo(msg.from, msg.command, { result }, msg.callback);
+                } else {
+                    sendTo(msg.from, msg.command, { error: 'Invalid feature type' }, msg.callback);
+                }
+            }
             break;
         }
     }
