@@ -65,8 +65,6 @@ export interface SetupCommandOptions {
 export class Setup {
     /** Object IDs which are not allowed to exist but could be generated due to errors in the past */
     private readonly KNOWN_GARBAGE_OBJECT_IDS = ['null', 'undefined'];
-    /** Adapter core version supported by this js-controller */
-    private readonly SUPPORTED_ADAPTER_CORE_VERSION = '^3.3.2';
     /** Default name for redis sentinels */
     private readonly DEFAULT_SENTINEL_NAME = 'mymaster';
     private readonly processExit: ProcessExitCallback;
@@ -203,9 +201,9 @@ export class Setup {
         }
 
         try {
-            await this.addOrUpdateAdapterCoreRequirement();
+            await this.removeAdapterCoreRequirement();
         } catch (e) {
-            console.error(`Could not add "@iobroker/adapter-core" requirement: ${e.message}`);
+            console.error(`Could not remove "@iobroker/adapter-core" override: ${e.message}`);
         }
 
         await this._cleanupInstallation();
@@ -1110,9 +1108,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
     }
 
     /**
-     * Add or update adapter-core in supported version in the overrides field of the root package.json and call install there to apply it
+     * Remove, if required, adapter-core in the overrides field of the root package.json and call install there to apply it
      */
-    private async addOrUpdateAdapterCoreRequirement(): Promise<void> {
+    private async removeAdapterCoreRequirement(): Promise<void> {
         if (tools.isDevInstallation()) {
             return;
         }
@@ -1121,20 +1119,18 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         const packPath = path.join(rootDir, 'package.json');
         const packJson = await fs.readJson(packPath);
 
-        if (packJson.overrides?.['@iobroker/adapter-core'] === this.SUPPORTED_ADAPTER_CORE_VERSION) {
-            console.log(
-                `The supported version of "@iobroker/adapter-core" is already specified as "${this.SUPPORTED_ADAPTER_CORE_VERSION}"`,
-            );
+        if (!packJson.overrides?.['@iobroker/adapter-core']) {
+            console.log(`The  "@iobroker/adapter-core" package is already removed`);
             return;
         }
 
-        packJson.overrides = { '@iobroker/adapter-core': this.SUPPORTED_ADAPTER_CORE_VERSION };
-
+        delete packJson.overrides['@iobroker/adapter-core'];
+        if (!Object.keys(packJson.overrides).length) {
+            delete packJson.overrides;
+        }
         await fs.writeFile(packPath, JSON.stringify(packJson));
 
-        console.log(
-            `Successfully specified supported "@iobroker/adapter-core" version as "${this.SUPPORTED_ADAPTER_CORE_VERSION}"`,
-        );
+        console.log(`Successfully removed override for "@iobroker/adapter-core"`);
     }
 
     /**
