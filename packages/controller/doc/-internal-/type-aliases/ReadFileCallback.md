@@ -1,25 +1,29 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / ReadFileCallback
 
-# Type Alias: ReadFileCallback()
+# Type Alias: ReadFileCallback
 
-> **ReadFileCallback**: (`err`?, `data`?, `mimeType`?) => `void`
+> **ReadFileCallback** = (`err?`, `data?`, `mimeType?`) => `void`
+
+Defined in: [types-dev/index.d.ts:517](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/index.d.ts#L517)
 
 ## Parameters
 
-• **err?**: `NodeJS.ErrnoException` \| `null`
+### err?
 
-• **data?**: `Buffer` \| `string`
+`NodeJS.ErrnoException` \| `null`
 
-• **mimeType?**: `string`
+### data?
+
+`Buffer` \| `string`
+
+### mimeType?
+
+`string`
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[types-dev/index.d.ts:517](https://github.com/ioBroker/ioBroker.js-controller/blob/485fb08a65ed345882359c3fef3fbfb12254f194/packages/types-dev/index.d.ts#L517)

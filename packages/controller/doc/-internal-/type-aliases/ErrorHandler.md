@@ -1,21 +1,21 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / ErrorHandler
 
-# Type Alias: ErrorHandler()
+# Type Alias: ErrorHandler
 
-> **ErrorHandler**: (`err`) => `boolean`
+> **ErrorHandler** = (`err`) => `boolean`
+
+Defined in: [types-dev/index.d.ts:409](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/index.d.ts#L409)
 
 ## Parameters
 
-• **err**: `Error`
+### err
+
+`Error`
 
 ## Returns
 
 `boolean`
-
-## Defined in
-
-[types-dev/index.d.ts:409](https://github.com/ioBroker/ioBroker.js-controller/blob/485fb08a65ed345882359c3fef3fbfb12254f194/packages/types-dev/index.d.ts#L409)

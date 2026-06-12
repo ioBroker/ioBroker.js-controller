@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,12 +6,12 @@
 
 # Type Alias: GetObjectPromise\<T\>
 
-> **GetObjectPromise**\<`T`\>: `Promise`\<[`CallbackReturnTypeOf`](CallbackReturnTypeOf.md)\<[`GetObjectCallback`](GetObjectCallback.md)\<`T`\>\>\>
+> **GetObjectPromise**\<`T`\> = `Promise`\<[`CallbackReturnTypeOf`](CallbackReturnTypeOf.md)\<[`GetObjectCallback`](GetObjectCallback.md)\<`T`\>\>\>
+
+Defined in: [types-dev/index.d.ts:428](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/index.d.ts#L428)
 
 ## Type Parameters
 
-• **T** *extends* `string` = `string`
+### T
 
-## Defined in
-
-[types-dev/index.d.ts:428](https://github.com/ioBroker/ioBroker.js-controller/blob/485fb08a65ed345882359c3fef3fbfb12254f194/packages/types-dev/index.d.ts#L428)
+`T` *extends* `string` = `string`

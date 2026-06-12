@@ -1,29 +1,35 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / ExtendObjectCallback
 
-# Type Alias: ExtendObjectCallback()
+# Type Alias: ExtendObjectCallback
 
-> **ExtendObjectCallback**: (`err`?, `result`?, `id`?) => `void`
+> **ExtendObjectCallback** = (`err?`, `result?`, `id?`) => `void`
+
+Defined in: [types-dev/index.d.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/index.d.ts#L576)
 
 ## Parameters
 
-• **err?**: `Error` \| `null`
+### err?
 
-• **result?**
+`Error` \| `null`
 
-• **result.id?**: `string`
+### result?
 
-• **result.value?**: [`Object`](Object.md)
+#### id
 
-• **id?**: `string`
+`string`
+
+#### value
+
+[`Object`](Object.md)
+
+### id?
+
+`string`
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[types-dev/index.d.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/485fb08a65ed345882359c3fef3fbfb12254f194/packages/types-dev/index.d.ts#L576)

@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,9 +6,13 @@
 
 # Interface: RepositoryJson
 
+Defined in: [types-dev/objects.d.ts:1107](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1107)
+
 ## Indexable
 
- \[`adapter`: `string`\]: [`RepositoryJsonAdapterContent`](RepositoryJsonAdapterContent.md) \| [`RepoInfo`](RepoInfo.md)
+> \[`adapter`: `string`\]: [`RepositoryJsonAdapterContent`](RepositoryJsonAdapterContent.md) \| [`RepoInfo`](RepoInfo.md)
+
+Information about each adapter
 
 ## Properties
 
@@ -16,8 +20,6 @@
 
 > **\_repoInfo**: [`RepoInfo`](RepoInfo.md)
 
+Defined in: [types-dev/objects.d.ts:1109](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1109)
+
 Information about the repository: creation time, name, is it stable
-
-#### Defined in
-
-[types-dev/objects.d.ts:1081](https://github.com/ioBroker/ioBroker.js-controller/blob/485fb08a65ed345882359c3fef3fbfb12254f194/packages/types-dev/objects.d.ts#L1081)

@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,6 @@
 
 # Type Alias: StateValue
 
-> **StateValue**: `string` \| `number` \| `boolean` \| `null`
+> **StateValue** = `string` \| `number` \| `boolean` \| `null`
 
-## Defined in
-
-[types-dev/index.d.ts:58](https://github.com/ioBroker/ioBroker.js-controller/blob/485fb08a65ed345882359c3fef3fbfb12254f194/packages/types-dev/index.d.ts#L58)
+Defined in: [types-dev/index.d.ts:58](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/index.d.ts#L58)

@@ -1,7 +1,7 @@
 {
     "name": "@iobroker/js-controller-cli",
     "type": "module",
-    "version": "7.1.1-alpha.27-20260331-485fb08a6",
+    "version": "7.1.3-alpha.0-20260607-0a6edee6f",
     "engines": {
         "node": ">=18.0.0"
     },
@@ -19,6 +19,7 @@
         "promisify-child-process": "^4.1.1",
         "readline-sync": "^1.4.10",
         "semver": "^7.5.2",
+        "tar": "^7.5.11",
         "yargs": "^17.6.2"
     },
     "keywords": [

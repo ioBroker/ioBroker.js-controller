@@ -1,10 +1,11 @@
 import type { TestContext } from '../_Types.js';
+import assert from 'node:assert/strict';
 
 /**
  * Contains tests directly interacting with DB
  */
 
-export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
+export function register(it: Mocha.TestFunction, context: TestContext): void {
     const testName = `${context.name} objects: `;
 
     const namespace = 'testObject.0';
@@ -23,13 +24,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             },
             native: {},
         });
-        expect(res).to.be.ok;
-        expect(res!.id).to.be.equal(testId);
+        assert.ok(res);
+        assert.strictEqual(res.id, testId);
 
         const obj = await objects.getObjectAsync(testId);
-        expect(obj).to.be.ok;
-        expect(obj!.common.name).to.be.equal('test2');
-        expect(obj!._id).to.be.equal(testId);
+        assert.ok(obj);
+        assert.strictEqual(obj.common.name, 'test2');
+        assert.strictEqual(obj._id, testId);
         console.log(JSON.stringify(obj));
     });
 
@@ -48,12 +49,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 native: {},
             })
             .then(res => {
-                expect(res).to.be.ok;
-                expect(res!.id).to.be.equal(`${testId}async`);
+                assert.ok(res);
+                assert.strictEqual(res.id, `${testId}async`);
                 done();
             })
             .catch(err => {
-                expect(err).to.be.not.ok;
+                assert.ok(!err);
             });
     });
 
@@ -62,43 +63,43 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         objects
             .getObjectAsync(`${testId}async`)
             .then(obj => {
-                expect(obj).to.be.ok;
-                expect(obj!.common.name).to.be.equal('test1a');
-                expect(obj!._id).to.be.equal(`${testId}async`);
+                assert.ok(obj);
+                assert.strictEqual(obj.common.name, 'test1a');
+                assert.strictEqual(obj._id, `${testId}async`);
                 console.log(JSON.stringify(obj));
                 done();
             })
             .catch(err => {
-                expect(err).to.be.not.ok;
+                assert.ok(!err);
             });
     }).timeout(3_000);
 
     it(`${testName}should find object`, done => {
         const objects = context.objects;
         objects.findObject(testId, null, (err, id, idOrName) => {
-            expect(err).to.be.not.ok;
-            expect(idOrName).to.be.equal('test2');
-            expect(id).to.be.equal(testId);
+            assert.ok(!err);
+            assert.strictEqual(idOrName, 'test2');
+            assert.strictEqual(id, testId);
 
             objects.findObject('test2', null, (err, id, idOrName) => {
-                expect(err).to.be.not.ok;
-                expect(id).to.be.equal(testId);
-                expect(idOrName).to.be.equal('test2');
+                assert.ok(!err);
+                assert.strictEqual(id, testId);
+                assert.strictEqual(idOrName, 'test2');
 
                 objects.findObject('test3', null, (err, id, idOrName) => {
-                    expect(err).to.be.not.ok;
-                    expect(idOrName).to.be.equal('test3');
-                    expect(id).to.be.equal(undefined);
+                    assert.ok(!err);
+                    assert.strictEqual(idOrName, 'test3');
+                    assert.strictEqual(id, undefined);
 
                     objects.findObject('test2', 'boolean', (err, id, idOrName) => {
-                        expect(err).to.be.not.ok;
-                        expect(idOrName).to.be.equal('test2');
-                        expect(id).to.be.equal(undefined);
+                        assert.ok(!err);
+                        assert.strictEqual(idOrName, 'test2');
+                        assert.strictEqual(id, undefined);
 
                         objects.findObject('test2', 'string', (err, id, idOrName) => {
-                            expect(err).to.be.not.ok;
-                            expect(idOrName).to.be.equal('test2');
-                            expect(id).to.be.equal(testId);
+                            assert.ok(!err);
+                            assert.strictEqual(idOrName, 'test2');
+                            assert.strictEqual(id, testId);
                             done();
                         });
                     });
@@ -112,47 +113,47 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         objects
             .findObject(testId)
             .then(id => {
-                expect(id).to.be.equal(testId);
+                assert.strictEqual(id, testId);
                 return objects.findObject('test2');
             })
             .then(id => {
-                expect(id).to.be.equal(testId);
+                assert.strictEqual(id, testId);
 
                 return objects.findObject('test3');
             })
             .then(id => {
-                expect(id).to.be.equal(undefined);
+                assert.strictEqual(id, undefined);
                 return objects.findObject('test3', 'boolean');
             })
             .then(id => {
-                expect(id).to.be.equal(undefined);
+                assert.strictEqual(id, undefined);
                 return objects.findObject('test2', 'string');
             })
             .then(id => {
-                expect(id).to.be.equal(testId);
+                assert.strictEqual(id, testId);
                 done();
             })
             .catch(err => {
                 console.error(err);
-                expect(1).to.be.equal('Never happens');
+                assert.fail('Never happens');
             });
     });
 
     it(`${testName}should read objects by pattern`, done => {
         const objects = context.objects;
         objects.getObjectsByPattern(`${testId}*`, null, (err, objs) => {
-            expect(err).to.be.not.ok;
-            expect(objs?.length).to.be.equal(2);
+            assert.ok(!err);
+            assert.strictEqual(objs?.length, 2);
 
             objects.getObjectsByPattern(testId, null, (err, objs) => {
-                expect(err).to.be.not.ok;
-                expect(objs?.length).to.be.equal(1);
-                expect(typeof objs![0]).to.be.equal('object');
-                expect(objs![0]._id).to.be.equal(testId);
+                assert.ok(!err);
+                assert.strictEqual(objs?.length, 1);
+                assert.strictEqual(typeof objs[0], 'object');
+                assert.strictEqual(objs[0]._id, testId);
 
                 objects.getObjectsByPattern(`${testId}non`, null, (err, objs) => {
-                    expect(err).to.be.not.ok;
-                    expect(objs?.length).to.be.equal(0);
+                    assert.ok(!err);
+                    assert.strictEqual(objs?.length, 0);
 
                     done();
                 });
@@ -165,41 +166,41 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         objects
             .getObjectsByPattern(`${testId}*`, null)
             .then(objs => {
-                expect(objs?.length).to.be.equal(2);
+                assert.strictEqual(objs?.length, 2);
 
                 return objects.getObjectsByPattern(testId, null);
             })
             .then(objs => {
-                expect(objs?.length).to.be.equal(1);
-                expect(typeof objs![0]).to.be.equal('object');
-                expect(objs![0]._id).to.be.equal(testId);
+                assert.strictEqual(objs?.length, 1);
+                assert.strictEqual(typeof objs[0], 'object');
+                assert.strictEqual(objs[0]._id, testId);
 
                 return objects.getObjectsByPattern(`${testId}non`, null);
             })
             .then(objs => {
-                expect(objs?.length).to.be.equal(0);
+                assert.strictEqual(objs?.length, 0);
 
                 done();
             })
             .catch(_err => {
-                expect(1).to.be.equal('Never happens');
+                assert.fail('Never happens');
             });
     });
 
     it(`${testName}should read keys`, done => {
         const objects = context.objects;
         objects.getKeys(`${testId}*`, (err, keys) => {
-            expect(err).to.be.not.ok;
-            expect(keys?.length).to.be.equal(2);
+            assert.ok(!err);
+            assert.strictEqual(keys?.length, 2);
 
             objects.getKeys(testId, (err, keys) => {
-                expect(err).to.be.not.ok;
-                expect(keys?.length).to.be.equal(1);
-                expect(keys![0]).to.be.equal(testId);
+                assert.ok(!err);
+                assert.strictEqual(keys?.length, 1);
+                assert.strictEqual(keys[0], testId);
 
                 objects.getKeys(`${testId}non`, (err, keys) => {
-                    expect(err).to.be.not.ok;
-                    expect(keys?.length).to.be.equal(0);
+                    assert.ok(!err);
+                    assert.strictEqual(keys?.length, 0);
 
                     done();
                 });
@@ -212,35 +213,35 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         objects
             .getKeys(`${testId}*`)
             .then(keys => {
-                expect(keys?.length).to.be.equal(2);
+                assert.strictEqual(keys?.length, 2);
 
                 return objects.getKeys(testId);
             })
             .then(keys => {
-                expect(keys?.length).to.be.equal(1);
-                expect(keys![0]).to.be.equal(testId);
+                assert.strictEqual(keys?.length, 1);
+                assert.strictEqual(keys[0], testId);
 
                 return objects.getKeys(`${testId}non`);
             })
             .then(keys => {
-                expect(keys?.length).to.be.equal(0);
+                assert.strictEqual(keys?.length, 0);
 
                 done();
             })
             .catch(_err => {
-                expect(1).to.be.equal('Never happens');
+                assert.fail('Never happens');
             });
     });
 
     it(`${testName}should read objects`, done => {
         const objects = context.objects;
         objects.getKeys(`${testId}*`, (err, keys) => {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             objects.getObjects(keys!, (err, objs) => {
-                expect(err).to.be.not.ok;
-                expect(objs?.length).to.be.equal(2);
-                expect(objs![0]._id).to.be.equal(keys![0]);
-                expect(objs![1]._id).to.be.equal(keys![1]);
+                assert.ok(!err);
+                assert.strictEqual(objs?.length, 2);
+                assert.strictEqual(objs[0]._id, keys![0]);
+                assert.strictEqual(objs[1]._id, keys![1]);
                 done();
             });
         });
@@ -256,35 +257,35 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 return objects.getObjects(keys!);
             })
             .then(objs => {
-                expect(objs.length).to.be.equal(2);
-                expect(objs[0]._id).to.be.equal(gKeys![0]);
-                expect(objs[1]._id).to.be.equal(gKeys![1]);
+                assert.strictEqual(objs.length, 2);
+                assert.strictEqual(objs[0]._id, gKeys![0]);
+                assert.strictEqual(objs[1]._id, gKeys![1]);
                 done();
             })
             .catch(_err => {
-                expect(1).to.be.equal('Never happens');
+                assert.fail('Never happens');
             });
     });
 
     it(`${testName}should extend object`, done => {
         const objects = context.objects;
         objects.extendObject(testId, { common: { def: 'default' } }, null, (err, res, id) => {
-            expect(err).to.be.not.ok;
-            expect(id).to.be.equal(testId);
-            expect(res?.id).to.be.equal(testId);
-            expect(res?.value.common.def).to.be.equal('default');
+            assert.ok(!err);
+            assert.strictEqual(id, testId);
+            assert.strictEqual(res?.id, testId);
+            assert.strictEqual(res?.value.common.def, 'default');
 
             objects.getObject(testId, (err, obj) => {
-                expect(err).to.be.not.ok;
-                expect(obj!._id).to.be.equal(testId);
-                expect((obj!.common as ioBroker.StateCommon).def).to.be.equal('default');
-                expect(obj!.common.name).to.be.equal('test2');
+                assert.ok(!err);
+                assert.strictEqual(obj!._id, testId);
+                assert.strictEqual((obj!.common as ioBroker.StateCommon).def, 'default');
+                assert.strictEqual(obj!.common.name, 'test2');
 
                 objects.extendObject(`${namespace}.other`, { common: { def: 'default' } }, null, (err, res, id) => {
-                    expect(err).to.be.not.ok;
-                    expect(id).to.be.equal(`${namespace}.other`);
-                    expect(res!.id).to.be.equal(`${namespace}.other`);
-                    expect(res!.value.common.def).to.be.equal('default');
+                    assert.ok(!err);
+                    assert.strictEqual(id, `${namespace}.other`);
+                    assert.strictEqual(res!.id, `${namespace}.other`);
+                    assert.strictEqual(res!.value.common.def, 'default');
 
                     done();
                 });
@@ -297,17 +298,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         objects
             .extendObject(testId, { common: { def: 'default' } })
             .then(res => {
-                expect(res!.id).to.be.equal(testId);
-                expect(res!.value.common.def).to.be.equal('default');
+                assert.strictEqual(res!.id, testId);
+                assert.strictEqual(res!.value.common.def, 'default');
                 return objects.extendObject(`${namespace}.otherAsync`, { common: { def: 'default' } });
             })
             .then(res => {
-                expect(res!.id).to.be.equal(`${namespace}.otherAsync`);
-                expect(res!.value.common.def).to.be.equal('default');
+                assert.strictEqual(res!.id, `${namespace}.otherAsync`);
+                assert.strictEqual(res!.value.common.def, 'default');
                 done();
             })
             .catch(_err => {
-                expect(1).to.be.equal('Never happens');
+                assert.fail('Never happens');
             });
     });
 
@@ -315,15 +316,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const objects = context.objects;
         objects.getObjectList({ startkey: namespace, endkey: testId }, (err, res) => {
             console.log(res!.rows.map(e => e.id));
-            expect(err).to.be.not.ok;
-            expect(res!.rows.length).to.be.equal(3);
+            assert.ok(!err);
+            assert.strictEqual(res!.rows.length, 3);
             const obj = res!.rows.find(val => val.value._id === testId);
-            expect(obj!.id).to.be.equal(testId);
-            expect(obj!.value._id).to.be.equal(testId);
+            assert.strictEqual(obj!.id, testId);
+            assert.strictEqual(obj!.value._id, testId);
 
             objects.getObjectList({ startkey: '', endkey: ' ' }, (err, res) => {
-                expect(err).to.be.not.ok;
-                expect(res!.rows.length).to.be.equal(0);
+                assert.ok(!err);
+                assert.strictEqual(res!.rows.length, 0);
                 done();
             });
         });
@@ -334,20 +335,20 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         objects
             .getObjectList({ startkey: namespace, endkey: testId })
             .then(res => {
-                expect(res.rows.length).to.be.equal(3);
+                assert.strictEqual(res.rows.length, 3);
                 const obj = res.rows.find(val => val.value._id === testId);
-                expect(obj!.id).to.be.equal(testId);
-                expect(obj!.value._id).to.be.equal(testId);
+                assert.strictEqual(obj!.id, testId);
+                assert.strictEqual(obj!.value._id, testId);
                 return objects.getObjectList({ startkey: '', endkey: ' ' });
             })
             .then(res => {
                 console.log(JSON.stringify(res));
-                expect(res.rows.length).to.be.equal(0);
+                assert.strictEqual(res.rows.length, 0);
                 done();
             })
             .catch(err => {
                 console.error(err);
-                expect(1).to.be.equal('Never happens');
+                assert.fail('Never happens');
             });
     });
 
@@ -390,9 +391,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
 
         // now check that our object view contains our object
-        expect(doc.rows).to.be.an('array');
-        expect(doc.rows.length).to.be.equal(1);
-        expect(doc.rows[0].value._id).to.be.equal('testAdapter.test');
+        assert.ok(Array.isArray(doc.rows));
+        assert.strictEqual(doc.rows.length, 1);
+        assert.strictEqual(doc.rows[0].value._id, 'testAdapter.test');
 
         // @ts-expect-error put it back on
         context.objects.useSets = true;
@@ -402,7 +403,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}Should check object existence`, async () => {
         // object should not exist
         let exists = await context.objects.objectExists('test.0.objectExistenceCheck');
-        expect(exists).to.be.false;
+        assert.strictEqual(exists, false);
 
         // create object
         await context.objects.setObjectAsync('test.0.objectExistenceCheck', {
@@ -412,7 +413,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         // object should now exist
         exists = await context.objects.objectExists('test.0.objectExistenceCheck');
-        expect(exists).to.be.true;
+        assert.strictEqual(exists, true);
     });
 
     // todo chmod
@@ -421,7 +422,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}should delete object`, done => {
         const objects = context.objects;
         objects.delObject(testId, err => {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             done();
         });
     });
@@ -434,14 +435,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 done();
             })
             .catch(err => {
-                expect(err).to.be.not.ok;
+                assert.ok(!err);
             });
     });
 
     it(`${testName}should not delete non existing object`, done => {
         const objects = context.objects;
         objects.delObject(`${testId}not`, err => {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
             done();
         });
     });
@@ -454,7 +455,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 done();
             })
             .catch(err => {
-                expect(err.message).to.be.equal('Should not happen');
+                assert.strictEqual(err.message, 'Should not happen');
             });
     });
 

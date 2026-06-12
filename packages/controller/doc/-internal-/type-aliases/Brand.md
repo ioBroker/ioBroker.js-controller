@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,18 +6,20 @@
 
 # Type Alias: Brand\<B\>
 
-> **Brand**\<`B`\>: `object`
+> **Brand**\<`B`\> = `object`
+
+Defined in: [types-dev/utils.d.ts:2](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/utils.d.ts#L2)
 
 ## Type Parameters
 
-• **B**
+### B
 
-## Type declaration
+`B`
+
+## Properties
 
 ### \[\_\_\_brand\]
 
 > **\[\_\_\_brand\]**: `B`
 
-## Defined in
-
-[types-dev/utils.d.ts:2](https://github.com/ioBroker/ioBroker.js-controller/blob/485fb08a65ed345882359c3fef3fbfb12254f194/packages/types-dev/utils.d.ts#L2)
+Defined in: [types-dev/utils.d.ts:2](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/utils.d.ts#L2)

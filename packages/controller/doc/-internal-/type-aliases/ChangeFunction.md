@@ -1,23 +1,25 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / ChangeFunction
 
-# Type Alias: ChangeFunction()
+# Type Alias: ChangeFunction
 
-> **ChangeFunction**: (`id`, `object`) => `void`
+> **ChangeFunction** = (`id`, `state`) => `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:13
 
 ## Parameters
 
-• **id**: `string`
+### id
 
-• **object**: [`Object`](Object.md) \| `null`
+`string`
+
+### state
+
+[`State`](../interfaces/State.md) \| [`Message`](../interfaces/Message.md) \| `null`
 
 ## Returns
 
 `void`
-
-## Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:4

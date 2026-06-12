@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,15 +6,15 @@
 
 # Interface: ACLObject
 
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:19
+
 ## Properties
 
 ### file
 
 > **file**: `number`
 
-#### Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:24
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:24
 
 ***
 
@@ -22,9 +22,7 @@ db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:24
 
 > **object**: `number`
 
-#### Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:22
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:22
 
 ***
 
@@ -32,9 +30,7 @@ db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:22
 
 > **owner**: `string`
 
-#### Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:20
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:20
 
 ***
 
@@ -42,9 +38,7 @@ db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:20
 
 > **ownerGroup**: `string`
 
-#### Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:21
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:21
 
 ***
 
@@ -52,6 +46,4 @@ db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:21
 
 > **state**: `number`
 
-#### Defined in
-
-db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:23
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:23

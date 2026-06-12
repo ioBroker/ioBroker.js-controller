@@ -1,6 +1,7 @@
 import type { TestContext } from '../_Types.js';
+import assert from 'node:assert/strict';
 
-export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
+export function register(it: Mocha.TestFunction, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} state helpers: `;
 
     // deleteChannel
@@ -13,10 +14,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         context.adapter.deleteState('test', 'string');
 
         // @ts-expect-error invalid test case
-        return expect(context.adapter.deleteStateAsync({})).to.be.eventually.rejectedWith(
-            /needs to be of type "string" but type "object"/g,
-            'Should have thrown on invalid input',
-        );
+        await assert.rejects(context.adapter.deleteStateAsync({}), /needs to be of type "string" but type "object"/);
     });
 
     // getDevices
@@ -30,12 +28,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(`${testName}requireLog should activate corresponding state`, async () => {
         // default should be false or non-existent
         let state = await context.states.getState(`system.adapter.${context.adapter.namespace}.logging`);
-        expect(state?.val).to.be.not.ok;
+        assert.ok(!state?.val);
 
         // now activate
         await context.adapter.requireLog!(true);
         state = await context.states.getState(`system.adapter.${context.adapter.namespace}.logging`);
-        expect(state!.val).to.be.true;
+        assert.strictEqual(state!.val, true);
 
         // clean up
         await context.adapter.requireLog!(false);

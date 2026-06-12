@@ -1,6 +1,7 @@
 import type { TestContext } from '../_Types.js';
+import assert from 'node:assert/strict';
 
-export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
+export function register(it: Mocha.TestFunction, context: TestContext): void {
     const textName = `${context.name} objects: `;
 
     const secretId = 'system.adapter.userMayNotReadIt';
@@ -107,10 +108,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const objects = context.objects;
         try {
             await objects.getObject(secretId, { user: 'admin' });
-            expect(1).to.be.equal('Never happens');
+            assert.fail('Never happens');
         } catch (e) {
             console.error(e.message);
-            expect(e.message).to.be.equal('permissionError');
+            assert.strictEqual(e.message, 'permissionError');
         }
     }).timeout(2_000);
 
@@ -119,11 +120,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         return objects
             .getObject(secretId, { user: 'system.user.admin1' })
             .then(_obj => {
-                expect(1).to.be.equal('Never happens');
+                assert.fail('Never happens');
             })
             .catch(err => {
                 console.error(err.message);
-                expect(err.message).to.be.equal('permissionError');
+                assert.strictEqual(err.message, 'permissionError');
             });
     }).timeout(2_000);
 
@@ -132,11 +133,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         return objects
             .getObject(secretId, { user: 'system.user.admin' })
             .then(obj => {
-                expect(obj).to.be.ok;
+                assert.ok(obj);
             })
             .catch(err => {
                 console.error(err.message);
-                expect(1).to.be.equal('Never happens');
+                assert.fail('Never happens');
             });
     }).timeout(2_000);
 
@@ -145,10 +146,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         return objects
             .getObject(secretId, { user: 'system.user.user' })
             .then(_obj => {
-                expect(1).to.be.equal('Never happens');
+                assert.fail('Never happens');
             })
             .catch(err => {
-                expect(err.message).to.be.equal('permissionError');
+                assert.strictEqual(err.message, 'permissionError');
             });
     }).timeout(2_000);
 
@@ -168,8 +169,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
         const obj = await objects.getObjectAsync('test.defAcl');
 
-        expect(obj!.acl!.owner).to.be.equal('system.user.governor');
-        expect(obj!.acl!.ownerGroup).to.be.equal('system.group.senatorGroup');
+        assert.strictEqual(obj!.acl!.owner, 'system.user.governor');
+        assert.strictEqual(obj!.acl!.ownerGroup, 'system.group.senatorGroup');
     }).timeout(2_000);
 
     it(`${textName}default acl from system.config can be overwritten via acl`, async () => {
@@ -192,8 +193,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             },
         });
         const obj = await objects.getObjectAsync('test.overwriteAclDef');
-        expect(obj!.acl!.owner).to.be.equal('system.user.user');
-        expect(obj!.acl!.ownerGroup).to.be.equal('system.group.administrator');
+        assert.strictEqual(obj!.acl!.owner, 'system.user.user');
+        assert.strictEqual(obj!.acl!.ownerGroup, 'system.group.administrator');
     }).timeout(2_000);
 
     it(`${textName}default acl from system.config is used when user is admin`, async () => {
@@ -214,8 +215,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             { user: 'system.user.admin' },
         );
         const obj = await objects.getObjectAsync('test.aclAdmin');
-        expect(obj!.acl!.owner).to.be.equal('system.user.governor');
-        expect(obj!.acl!.ownerGroup).to.be.equal('system.group.senatorGroup');
+        assert.strictEqual(obj!.acl!.owner, 'system.user.governor');
+        assert.strictEqual(obj!.acl!.ownerGroup, 'system.group.senatorGroup');
     }).timeout(2_000);
 
     it(`${textName}default acl from system.config is used when user is admin and can be modified on the fly`, async () => {
@@ -251,7 +252,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             { user: 'system.user.admin' },
         );
         const obj = await objects.getObjectAsync('test.aclAdminChange');
-        expect(obj!.acl!.owner).to.be.equal('system.user.notGovernor');
-        expect(obj!.acl!.ownerGroup).to.be.equal('system.group.notSenatorGroup');
+        assert.strictEqual(obj!.acl!.owner, 'system.user.notGovernor');
+        assert.strictEqual(obj!.acl!.ownerGroup, 'system.group.notSenatorGroup');
     }).timeout(2_000);
 }

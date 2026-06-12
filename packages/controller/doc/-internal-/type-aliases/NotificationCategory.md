@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,46 +6,66 @@
 
 # Type Alias: NotificationCategory
 
-> **NotificationCategory**: `object`
+> **NotificationCategory** = `object`
 
-## Type declaration
+Defined in: [types-dev/objects.d.ts:1175](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1175)
+
+## Properties
 
 ### category
 
 > **category**: `"memIssues"` \| `"fsIoErrors"` \| `"noDiskSpace"` \| `"accessErrors"` \| `"nonExistingFileErrors"` \| `"remoteHostErrors"` \| `"restartLoop"` \| `"fileToJsonl"` \| `"automaticAdapterUpgradeFailed"` \| `"automaticAdapterUpgradeSuccessful"` \| `"blockedVersions"` \| `"databaseErrors"` \| `"securityIssues"` \| `"packageUpdates"` \| `"systemRebootRequired"` \| `"diskSpaceIssues"` \| `string` & `object`
 
+Defined in: [types-dev/objects.d.ts:1177](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1177)
+
 The unique category identifier
+
+***
 
 ### description
 
 > **description**: [`Translated`](Translated.md)
 
+Defined in: [types-dev/objects.d.ts:1198](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1198)
+
 The human-readable category description
+
+***
 
 ### limit
 
 > **limit**: `number`
 
+Defined in: [types-dev/objects.d.ts:1204](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1204)
+
 Deletes older messages if more than the specified amount is present for this category
+
+***
 
 ### name
 
 > **name**: [`Translated`](Translated.md)
 
+Defined in: [types-dev/objects.d.ts:1196](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1196)
+
 The human-readable category name
+
+***
 
 ### regex
 
 > **regex**: `string`[]
 
+Defined in: [types-dev/objects.d.ts:1202](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1202)
+
 If a regex is specified, the js-controller will check error messages on adapter crashes against this regex and will generate a notification of this category
+
+***
 
 ### severity
 
 > **severity**: `"info"` \| `"notify"` \| `"alert"`
 
-Allows to define the severity of the notification with `info` being the lowest `notify` representing middle priority, `alert` representing high priority and often containing critical information
+Defined in: [types-dev/objects.d.ts:1200](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1200)
 
-## Defined in
-
-[types-dev/objects.d.ts:1147](https://github.com/ioBroker/ioBroker.js-controller/blob/485fb08a65ed345882359c3fef3fbfb12254f194/packages/types-dev/objects.d.ts#L1147)
+Allows defining the severity of the notification with `info` being the lowest `notify` representing middle priority, `alert` representing high priority and often containing critical information

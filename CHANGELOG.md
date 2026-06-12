@@ -3,9 +3,22 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Added possibility to send files with cmdExec message (feature flag `CONTROLLER_CMD_EXEC_FILES`)
+* (arteck) Added icons to the log for Redis Sentinel reconnects
+* (arteck) Optimized Redis `setState` by using MULTI
+* (@GermanBluefox) Removed the overriding of the adapter-core dependency
+* (@GermanBluefox) Added possibility to check feature by controller directly (feature flag `CONTROLLER_FEATURE_REQUEST`)
+
+## 7.1.2 (2026-05-07) - Milla
+* (@GermanBluefox) Corrected typings
+* (@GermanBluefox) Provided a default object warning limit for adapters so they can apply an appropriate limit during installation: `defaultObjectsWarnLimit`
+
+## 7.1.1 (2026-04-06) - Milla
 * (@GermanBluefox) Corrected typing (@alcalzone/pak)
+* (@GermanBluefox) Remove chai tests and replace them with node assert tests (not relevant for end users)
+* (@adbecaf) Extended isDocker to support `.conatinerenv` file in Podman or CRI-O
+* minor changes in the documentation concerning deprecations
 
 ## 7.1.0 (2025-12-06) - Milla
 * (@copilot) Fixed adminUI, adminTab, and adminColumns configurations being incorrectly preserved during adapter uploads
@@ -41,7 +54,7 @@
 ## 7.0.4 (2024-12-04) - Lucy
 * (@Apollon77) Fixes async usage of extendObject
 * (@Apollon77) Makes setObject async save
-* (@foxriver76) deprecated `set(Foreign)ObjectAsync` as the non async methods are now working correctly with promises
+* (@foxriver76) deprecated `set(Foreign)ObjectAsync` as the non-async methods are now working correctly with promises
 * (@foxriver76) allow specifying a version on `iob upgrade self` command
 
 ## 7.0.3 (2024-11-13) - Lucy

@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,64 +6,96 @@
 
 # Type Alias: LocalLink
 
-> **LocalLink**: `object`
+> **LocalLink** = `object`
 
-## Type declaration
+Defined in: [types-dev/objects.d.ts:621](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L621)
+
+## Properties
 
 ### cloud?
 
-> `optional` **cloud**: `string`
+> `optional` **cloud?**: `string`
+
+Defined in: [types-dev/objects.d.ts:631](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L631)
 
 Link to the adapter if it could be shown in the free cloud, like: vis-2/index.html according to "https://iobroker.net/"
 
+***
+
 ### color?
 
-> `optional` **color**: `string`
+> `optional` **color?**: `string`
+
+Defined in: [types-dev/objects.d.ts:627](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L627)
 
 Color
 
+***
+
 ### description?
 
-> `optional` **description**: [`StringOrTranslated`](StringOrTranslated.md)
+> `optional` **description?**: [`StringOrTranslated`](StringOrTranslated.md)
+
+Defined in: [types-dev/objects.d.ts:639](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L639)
 
 Description of the link. Could be multi-language
 
+***
+
 ### icon?
 
-> `optional` **icon**: `string`
+> `optional` **icon?**: `string`
+
+Defined in: [types-dev/objects.d.ts:629](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L629)
 
 Link to icon, like "vis-2/img/favicon.png"
 
+***
+
 ### intro?
 
-> `optional` **intro**: `boolean`
+> `optional` **intro?**: `boolean`
+
+Defined in: [types-dev/objects.d.ts:635](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L635)
 
 If this link should be shown on the intro tab in admin. false = do not show
+
+***
 
 ### link
 
 > **link**: `string`
 
+Defined in: [types-dev/objects.d.ts:623](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L623)
+
 Link to the web service of this adapter, like: "%web_protocol%://%ip%:%web_port%/vis-2/edit.html"
+
+***
 
 ### name?
 
-> `optional` **name**: [`StringOrTranslated`](StringOrTranslated.md)
+> `optional` **name?**: [`StringOrTranslated`](StringOrTranslated.md)
+
+Defined in: [types-dev/objects.d.ts:625](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L625)
 
 Name of the link. Could be multi-language
 
+***
+
 ### order?
 
-> `optional` **order**: `number`
+> `optional` **order?**: `number`
+
+Defined in: [types-dev/objects.d.ts:637](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L637)
 
 Order of the card. Used on "intro" and cloud tabs to sort the links
 
+***
+
 ### pro?
 
-> `optional` **pro**: `string`
+> `optional` **pro?**: `string`
+
+Defined in: [types-dev/objects.d.ts:633](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L633)
 
 Link to the adapter if it could be shown in the pro-cloud, like: vis-2/edit.html according to "https://iobroker.pro/"
-
-## Defined in
-
-[types-dev/objects.d.ts:602](https://github.com/ioBroker/ioBroker.js-controller/blob/485fb08a65ed345882359c3fef3fbfb12254f194/packages/types-dev/objects.d.ts#L602)

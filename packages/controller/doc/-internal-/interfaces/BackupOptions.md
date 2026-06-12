@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,17 +6,17 @@
 
 # Interface: BackupOptions
 
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:28
+
 ## Properties
 
 ### disabled
 
 > **disabled**: `boolean`
 
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:30
+
 deactivates backup if true
-
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:30
 
 ***
 
@@ -24,11 +24,9 @@ db-base/build/esm/lib/inMemFileDB.d.ts:30
 
 > **files**: `number`
 
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:32
+
 minimum number of files
-
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:32
 
 ***
 
@@ -36,9 +34,7 @@ db-base/build/esm/lib/inMemFileDB.d.ts:32
 
 > **hours**: `number`
 
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:33
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:33
 
 ***
 
@@ -46,9 +42,7 @@ db-base/build/esm/lib/inMemFileDB.d.ts:33
 
 > **path**: `string`
 
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:36
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:36
 
 ***
 
@@ -56,8 +50,6 @@ db-base/build/esm/lib/inMemFileDB.d.ts:36
 
 > **period**: `number`
 
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:35
+
 minutes
-
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:35

@@ -57,7 +57,6 @@ import {
     ERROR_PERMISSION,
     NO_PROTECT_ADAPTERS,
     STATE_QUALITY,
-    type SupportedFeature,
     SYSTEM_ADMIN_GROUP,
     SYSTEM_ADMIN_USER,
 } from '@/lib/adapter/constants.js';
@@ -1640,7 +1639,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    supportsFeature(featureName: SupportedFeature): boolean;
+    supportsFeature(featureName: ioBroker.SupportedFeature): boolean;
 
     /**
      * Method to check for available Features for adapter development
@@ -1657,7 +1656,7 @@ export class AdapterClass extends EventEmitter {
      */
     supportsFeature(featureName: unknown): boolean {
         if (typeof featureName === 'string') {
-            return this.SUPPORTED_FEATURES.includes(featureName as SupportedFeature);
+            return this.SUPPORTED_FEATURES.includes(featureName as ioBroker.SupportedFeature);
         }
         return false;
     }
@@ -11898,7 +11897,7 @@ export class AdapterClass extends EventEmitter {
         let objs: (IoPackageInstanceObject & { state?: unknown })[];
 
         if (instanceObj?.common && !('onlyWWW' in instanceObj.common) && instanceObj.common.mode !== 'once') {
-            objs = tools.getInstanceIndicatorObjects(this.namespace);
+            objs = tools.getInstanceIndicatorObjects(this.namespace, instanceObj.common);
         } else {
             objs = [];
         }

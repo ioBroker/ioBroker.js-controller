@@ -1,27 +1,33 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / GetHistoryCallback
 
-# Type Alias: GetHistoryCallback()
+# Type Alias: GetHistoryCallback
 
-> **GetHistoryCallback**: (`err`, `result`?, `step`?, `sessionId`?) => `void`
+> **GetHistoryCallback** = (`err`, `result?`, `step?`, `sessionId?`) => `void`
+
+Defined in: [types-dev/index.d.ts:492](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/index.d.ts#L492)
 
 ## Parameters
 
-• **err**: `Error` \| `null`
+### err
 
-• **result?**: [`GetHistoryResult`](GetHistoryResult.md)
+`Error` \| `null`
 
-• **step?**: `number`
+### result?
 
-• **sessionId?**: `number`
+[`GetHistoryResult`](GetHistoryResult.md)
+
+### step?
+
+`number`
+
+### sessionId?
+
+`number`
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[types-dev/index.d.ts:492](https://github.com/ioBroker/ioBroker.js-controller/blob/485fb08a65ed345882359c3fef3fbfb12254f194/packages/types-dev/index.d.ts#L492)
