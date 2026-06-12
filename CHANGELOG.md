@@ -5,6 +5,8 @@
 -->
 ## __WORK IN PROGRESS__
 * (@GermanBluefox) Added possibility to send files with cmdExec message (feature flag `CONTROLLER_CMD_EXEC_FILES`)
+* (arteck) Added icons to the log for Redis Sentinel reconnects
+* (arteck) Optimized Redis `setState` by using MULTI
 * (@GermanBluefox) Removed the overriding of the adapter-core dependency
 * (@GermanBluefox) Added possibility to check feature by controller directly (feature flag `CONTROLLER_FEATURE_REQUEST`)
 
