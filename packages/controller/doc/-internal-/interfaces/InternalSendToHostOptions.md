@@ -6,7 +6,7 @@
 
 # Interface: InternalSendToHostOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:496](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/adapter/src/lib/_Types.ts#L496)
+Defined in: [adapter/src/lib/\_Types.ts:496](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L496)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:496](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: [`MessageCallback`](../type-aliases/MessageCallback.md) \| [`MessageCallbackInfo`](MessageCallbackInfo.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/adapter/src/lib/_Types.ts#L501)
+Defined in: [adapter/src/lib/\_Types.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L501)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [adapter/src/lib/\_Types.ts:501](https://github.com/ioBroker/ioBroke
 
 > **command**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/adapter/src/lib/_Types.ts#L499)
+Defined in: [adapter/src/lib/\_Types.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L499)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [adapter/src/lib/\_Types.ts:499](https://github.com/ioBroker/ioBroke
 
 > **hostName**: `string` \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:498](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/adapter/src/lib/_Types.ts#L498)
+Defined in: [adapter/src/lib/\_Types.ts:498](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L498)
 
 if null, send to all hosts
 
@@ -40,4 +40,4 @@ if null, send to all hosts
 
 > **message**: `any`
 
-Defined in: [adapter/src/lib/\_Types.ts:500](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/adapter/src/lib/_Types.ts#L500)
+Defined in: [adapter/src/lib/\_Types.ts:500](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L500)

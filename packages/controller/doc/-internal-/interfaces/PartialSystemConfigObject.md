@@ -6,7 +6,7 @@
 
 # Interface: PartialSystemConfigObject
 
-Defined in: [types-dev/objects.d.ts:1284](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/types-dev/objects.d.ts#L1284)
+Defined in: [types-dev/objects.d.ts:1284](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1284)
 
 ## Extends
 
@@ -18,7 +18,7 @@ Defined in: [types-dev/objects.d.ts:1284](https://github.com/ioBroker/ioBroker.j
 
 > `optional` **\_id?**: `string`
 
-Defined in: [types-dev/objects.d.ts:987](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/types-dev/objects.d.ts#L987)
+Defined in: [types-dev/objects.d.ts:987](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L987)
 
 The ID of this object
 
@@ -32,7 +32,7 @@ The ID of this object
 
 > `optional` **acl?**: [`ObjectACL`](ObjectACL.md)
 
-Defined in: [types-dev/objects.d.ts:994](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/types-dev/objects.d.ts#L994)
+Defined in: [types-dev/objects.d.ts:994](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L994)
 
 #### Inherited from
 
@@ -44,7 +44,7 @@ Defined in: [types-dev/objects.d.ts:994](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **common?**: `Partial`\<[`SystemConfigCommon`](SystemConfigCommon.md)\>
 
-Defined in: [types-dev/objects.d.ts:1285](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/types-dev/objects.d.ts#L1285)
+Defined in: [types-dev/objects.d.ts:1285](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1285)
 
 ***
 
@@ -52,7 +52,7 @@ Defined in: [types-dev/objects.d.ts:1285](https://github.com/ioBroker/ioBroker.j
 
 > `optional` **enums?**: `Record`\<`string`, `string` \| [`Translated`](../type-aliases/Translated.md)\>
 
-Defined in: [types-dev/objects.d.ts:993](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/types-dev/objects.d.ts#L993)
+Defined in: [types-dev/objects.d.ts:993](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L993)
 
 #### Inherited from
 
@@ -64,7 +64,7 @@ Defined in: [types-dev/objects.d.ts:993](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **from?**: `string`
 
-Defined in: [types-dev/objects.d.ts:995](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/types-dev/objects.d.ts#L995)
+Defined in: [types-dev/objects.d.ts:995](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L995)
 
 #### Inherited from
 
@@ -76,7 +76,7 @@ Defined in: [types-dev/objects.d.ts:995](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **native?**: `Record`\<`string`, `any`\>
 
-Defined in: [types-dev/objects.d.ts:991](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/types-dev/objects.d.ts#L991)
+Defined in: [types-dev/objects.d.ts:991](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L991)
 
 #### Inherited from
 
@@ -88,7 +88,7 @@ Defined in: [types-dev/objects.d.ts:991](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **nonEdit?**: [`NonEditable`](NonEditable.md)
 
-Defined in: [types-dev/objects.d.ts:1000](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/types-dev/objects.d.ts#L1000)
+Defined in: [types-dev/objects.d.ts:1000](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1000)
 
 These properties can only be edited if the correct password is provided
 
@@ -102,7 +102,7 @@ These properties can only be edited if the correct password is provided
 
 > `optional` **ts?**: `number`
 
-Defined in: [types-dev/objects.d.ts:998](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/types-dev/objects.d.ts#L998)
+Defined in: [types-dev/objects.d.ts:998](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L998)
 
 #### Inherited from
 
@@ -114,7 +114,7 @@ Defined in: [types-dev/objects.d.ts:998](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **type?**: `"config"`
 
-Defined in: [types-dev/objects.d.ts:1280](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/types-dev/objects.d.ts#L1280)
+Defined in: [types-dev/objects.d.ts:1280](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1280)
 
 #### Inherited from
 
@@ -126,7 +126,7 @@ Defined in: [types-dev/objects.d.ts:1280](https://github.com/ioBroker/ioBroker.j
 
 > `optional` **user?**: `string`
 
-Defined in: [types-dev/objects.d.ts:997](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/types-dev/objects.d.ts#L997)
+Defined in: [types-dev/objects.d.ts:997](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L997)
 
 The user who created or updated this object
 

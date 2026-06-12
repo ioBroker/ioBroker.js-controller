@@ -6,7 +6,7 @@
 
 # Interface: InternalCalculatePermissionsOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:324](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/adapter/src/lib/_Types.ts#L324)
+Defined in: [adapter/src/lib/\_Types.ts:324](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L324)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:324](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: [`CalculatePermissionsCallback`](../type-aliases/CalculatePermissionsCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:328](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/adapter/src/lib/_Types.ts#L328)
+Defined in: [adapter/src/lib/\_Types.ts:328](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L328)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [adapter/src/lib/\_Types.ts:328](https://github.com/ioBroker/ioBroke
 
 > **commandsPermissions**: [`CommandsPermissions`](../type-aliases/CommandsPermissions.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:326](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/adapter/src/lib/_Types.ts#L326)
+Defined in: [adapter/src/lib/\_Types.ts:326](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L326)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [adapter/src/lib/\_Types.ts:326](https://github.com/ioBroker/ioBroke
 
 > `optional` **options?**: `Record`\<`string`, `any`\> \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/adapter/src/lib/_Types.ts#L327)
+Defined in: [adapter/src/lib/\_Types.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L327)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: [adapter/src/lib/\_Types.ts:327](https://github.com/ioBroker/ioBroke
 
 > **user**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:325](https://github.com/ioBroker/ioBroker.js-controller/blob/02dddaf5516d05753a8e9aab3348cecbe1788c1d/packages/adapter/src/lib/_Types.ts#L325)
+Defined in: [adapter/src/lib/\_Types.ts:325](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L325)
