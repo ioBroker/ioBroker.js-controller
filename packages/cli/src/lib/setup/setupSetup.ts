@@ -1120,7 +1120,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         const packJson = await fs.readJson(packPath);
 
         if (!packJson.overrides?.['@iobroker/adapter-core']) {
-            console.log(`The  "@iobroker/adapter-core" package is already removed`);
+            console.log(`The "@iobroker/adapter-core" override is already removed`);
             return;
         }
 
