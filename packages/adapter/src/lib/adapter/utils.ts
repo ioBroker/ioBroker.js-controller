@@ -1,13 +1,12 @@
 import {
     isObject,
-    isControllerUiUpgradeSupported,
     encrypt,
     decrypt,
     appNameLowerCase,
     getRootDir,
     execAsync,
 } from '@iobroker/js-controller-common-db/tools';
-import { SUPPORTED_FEATURES, type SupportedFeature } from '@/lib/adapter/constants.js';
+import { getSupportedFeatures as getSupportedFeaturesCommon } from '@iobroker/js-controller-common';
 import path from 'node:path';
 import fs from 'fs-extra';
 
@@ -44,15 +43,8 @@ export function isMessageboxSupported(instanceCommon: ioBroker.InstanceCommon): 
 /**
  * Get the supported features for the current running controller
  */
-export function getSupportedFeatures(): SupportedFeature[] {
-    if (!isControllerUiUpgradeSupported()) {
-        const idx = SUPPORTED_FEATURES.indexOf('CONTROLLER_UI_UPGRADE');
-        if (idx !== -1) {
-            SUPPORTED_FEATURES.splice(idx, 1);
-        }
-    }
-
-    return SUPPORTED_FEATURES;
+export function getSupportedFeatures(): ioBroker.SupportedFeature[] {
+    return getSupportedFeaturesCommon();
 }
 
 /**
@@ -192,7 +184,7 @@ function _getObjectAttribute(obj: Record<string, any>, attrParts: string[], inde
  *
  * @param obj - object to get the attribute from
  * @param attr - attribute name, can be complex like `attr1.attr2.attr3`
- * @return could be a value or an array
+ * @returns could be a value or an array
  */
 export function getObjectAttribute(obj: Record<string, any>, attr: string): any {
     // Optimization for 98% of the cases

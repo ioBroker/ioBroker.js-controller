@@ -8,4 +8,4 @@
 
 > **Interval** = [`Branded`](Branded.md)\<`number`, `"Interval"`\> \| `null`
 
-Defined in: [types-dev/index.d.ts:585](https://github.com/ioBroker/ioBroker.js-controller/blob/feacb179dc3edcfa0fe65100ac8cbe242bfb19d4/packages/types-dev/index.d.ts#L585)
+Defined in: [types-dev/index.d.ts:585](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/index.d.ts#L585)

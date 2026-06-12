@@ -4,7 +4,15 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Added possibility to send files with cmdExec message (feature flag `CONTROLLER_CMD_EXEC_FILES`)
+* (arteck) Added icons to the log for Redis Sentinel reconnects
+* (arteck) Optimized Redis `setState` by using MULTI
+* (@GermanBluefox) Removed the overriding of the adapter-core dependency
+* (@GermanBluefox) Added possibility to check feature by controller directly (feature flag `CONTROLLER_FEATURE_REQUEST`)
+
+## 7.1.2 (2026-05-07) - Milla
 * (@GermanBluefox) Corrected typings
+* (@GermanBluefox) Provided a default object warning limit for adapters so they can apply an appropriate limit during installation: `defaultObjectsWarnLimit`
 
 ## 7.1.1 (2026-04-06) - Milla
 * (@GermanBluefox) Corrected typing (@alcalzone/pak)

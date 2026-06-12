@@ -307,7 +307,7 @@ Another example, if you want to ignore all updates in the `1.5.x` range, you can
 The controller can upgrade OS packages on Linux via `yum` and `apt`.
 To upgrade a package, you have to send a message to the controller with the following this example:
 
-```ts
+```typescript
 sendToHostAsync('system.host.test', 'upgradeOsPackages', {
     packages: [{
       // the package name
@@ -351,13 +351,14 @@ If changes are needed there are CLI commands available to update the hostname. L
 
 If you need to set a specific hostname before the first start of iobroker you can also edit the iobroker.json file:
 
-```
+```json5
 {
   "system": {
-    ...
-    "hostname":"local",
-    ...
+    // ...
+    "hostname": "local",
+    // ...
   },
+}
 ```
 
 ### Adapter process memory limitation
@@ -367,15 +368,15 @@ By default, the memory management is done by Node.js automatically. A Garbage Co
 
 If needed, especially for low memory situations the memory limit for all adapter processes can be set in `iobroker.json`. Only set this if really needed, and you know what you are doing. Leave the value at 0 to not set a special memory limitation.
 
-```
+```json5
 {
-...
+  // ...
   "system": {
-    ...
+    // ...
     "memoryLimitMB": 0,
-    ...
+    // ...
   },
-...
+  // ...
 }
 ```
 
@@ -572,14 +573,14 @@ The js-controller and each adapter can define their own log level. By default, `
 
 The log level for js-controller is configured in iobroker.json in the logs section:
 
-```
+```json5
 {
-  ...
+  // ...
   "log": {
     "level": "info",
-    ...
+    // ...
   }
-  ...
+  // ...
 }
 ```
 
@@ -601,9 +602,9 @@ The default logging will log file based in the log directory inside the ioBroker
 
 The logging is configured in the `iobroker.json` file and can be changed there:
 
-```
+```json5
 {
-  ...
+  // ...
   "log": {
     "level": "info",
     "maxDays": 7,
@@ -618,7 +619,8 @@ The logging is configured in the `iobroker.json` file and can be changed there:
         "maxFiles": null
       },
     },
-  ...
+    // ...
+  },
 }
 ```
 
@@ -628,19 +630,20 @@ Since js-controller 3.0 Logfiles on non-Windows-based systems are compressed in 
 
 If you do not want to compress the files, this behavior can be deactivated by `iobroker.json`:
 
-```
+```json5
 {
-  ...
+  // ...
   "log": {
-    ...
+    // ...
     "transport": {
       "file1": {
-        ...
+        // ...
         "zippedArchive": false,
-        ...
+        // ...
       },
     },
-  ...
+    // ...
+  },
 }
 ```
 
@@ -650,13 +653,13 @@ If you do not want to compress the files, this behavior can be deactivated by `i
 
 ioBroker also supports logging to a syslog server. The configuration is also stored in the `iobroker.json` configuration file. A section for syslog is pre-created but disabled by default.
 
-```
+```json5
 {
-  ...
+  // ...
   "log": {
-    ...
+    // ...
     "transport": {
-      ...
+      // ...
       "syslog1": {
         "type": "syslog",
         "enabled": false,
@@ -675,7 +678,7 @@ ioBroker also supports logging to a syslog server. The configuration is also sto
       }
     }
   }
-  ...
+  // ...
 }
 ```
 
@@ -740,14 +743,14 @@ To minimize the risk, adapter instances are run by default in compact group 1 wh
 
 To enable compact mode for a js-controller instance, you can use the new "compact" CLI commands, or you can manually change the `iobroker.json` configuration file
 
-```
+```json5
 {
-  ...
+  // ...
   "system": {
-    ...
+    // ...
     "compact":true
   }
-  ...
+  // ...
 }
 ```
 and restart the js-controller.
@@ -776,14 +779,16 @@ For adapters running in compact mode, special care must be taken to clean up use
 
 The js-controller checks the available RAM of the system before starting a new adapter process. If the available RAM is below 50/100 MB by default, an error/warn is logged. The limits can be configured in iobroker.json
 
-```
-    "system": {
-        "memLimitWarn": 100,
-        "memLimitWarnComment": "If the available RAM is below this threshold on adapter start, a warning will be logged.",
-        "memLimitError": 50,
-        "memLimitErrorComment": "If the available RAM is below this threshold on adapter start, an error will be logged."
-    }
-    ...
+```json5
+{
+  "system": {
+    "memLimitWarn": 100,
+    "memLimitWarnComment": "If the available RAM is below this threshold on adapter start, a warning will be logged.",
+    "memLimitError": 50,
+    "memLimitErrorComment": "If the available RAM is below this threshold on adapter start, an error will be logged."
+  }
+  // ...
+}
 ```
 
 Later versions of js-controller might prevent the start of a new adapter process if system resources are too low! 
@@ -793,8 +798,8 @@ Later versions of js-controller might prevent the start of a new adapter process
 
 For debugging reasons, sometimes it is necessary to start an adapter instance via the command line to get more detailed logging.
 
-To do so, manually execute the adapter's main javascript file, which is usually named `main.js` or `<adaptername>.js` (where "adaptername" is the name of the adapter):
-```
+To do so, manually execute the adapter's main JavaScript file, which is usually named `main.js` or `<adaptername>.js` (where "adaptername" is the name of the adapter):
+```bash
 node node_modules/iobroker.adaptername/main.js --force --logs
 ```
 All log output will now be printed to the console.
@@ -878,7 +883,7 @@ Alternatively, you can use Admin interface on the "Objects" tab to create aliase
 
 To create an alias object simple create a new object with an own name in the `alias.0` namespace and add the alias definition in the common section (here for an alias with the id `"alias.0.aliasName"`):
 
-```
+```json5
 {
     _id: "alias.0.aliasName",
     common: {
@@ -900,7 +905,7 @@ To create an alias object simple create a new object with an own name in the `al
 
 or using different read and write ids (supported starting js-controller 3.0, check using feature flag `ALIAS_SEPARATE_READ_WRITE_ID`):
 
-```
+```json5
 {
     _id: "alias.0.aliasName",
     common: {
@@ -913,7 +918,7 @@ or using different read and write ids (supported starting js-controller 3.0, che
             id: {
                 read: 'state.id.to.read.from',
                 write: 'state.id.to.write.to'
-            }
+            },
             read: 'val * 10 + 1',
             write: '(val - 1) / 10'
         }
@@ -940,7 +945,7 @@ Note, that alias states will be automatically scaled if the following conditions
 
 To set the alias properties without a JavaScript or in adapter code you can also use the cli commands like:
 
-```
+```bash
 iobroker object set alias.0.aliasName common.alias.id=state.id.of.target
 iobroker object set alias.0.aliasName common.alias.read="read-func"
 iobroker object set alias.0.aliasName common.alias.write="write-func"
@@ -967,23 +972,26 @@ js-controller 1.x was using socket.io as the communication protocol between the 
 
 For the objects and states databases, special additional logging of the redis protocol messages can be activated in iobroker.json
 
-```
-"objects": {
-  ...
-  "enhancedLogging": false
+```json5
+{
+  "objects": {
+    //...
+    "enhancedLogging": false
+  }
 }
 ```
 
 When not configured differently, the file databases are persisted every 15s (15000ms) after data are changed. The interval in ms can be changed by configuration in iobroker.json starting js-controller 3.0.
 > **_NOTE:_** If you do that be aware that you may lose data when the js-controller crashes unexpectedly!
 
-```
-"objects": {
-  ...
-  "writeFileInterval": 60000
+```json5
+{
+  "objects": {
+    // ...
+    "writeFileInterval": 60000
+  }
 }
 ```
-
 
 #### Redis as database
 Redis is a well-known industrial grade in-memory database optimized for speed and stability. It performs better than the ioBroker In-Memory database which is written in JavaScript.
@@ -1040,7 +1048,7 @@ It is possible to switch anytime between Redis and in-memory Javascript DB.
 
 To switch to Redis, execute the following on the console:
 
-```
+```bash
 iobroker stop
 iobroker setup custom
 ```
@@ -1196,28 +1204,32 @@ It is best practice adding the field names of encrypted fields to the protectedN
 Dependencies are defined in an array and can contain an adapter name of an object.
 
 When using the object style, you can define a semver version range for this adapter:
-```
-"dependencies": [
-      {
-        "js-controller": ">=2.0.0"
-      }
-    ],
+```json5
+{
+  "dependencies": [
+    {
+      "js-controller": ">=2.0.0"
+    }
+  ],
+}
 ```
 
 If the version do not matter and just the adapter itself needs to be present you can also use:
-```
-"dependencies": [
-      "web"
-    ],
+```json5
+{
+  "dependencies": [
+    "web"
+  ],
+}
 ```
 
 There are two types of adapter dependencies that can be defined in io-package.json and will be checked on installation and adapter start.
 
-**common.dependencies for Same Host dependencies**
+**`common.dependencies` for Same Host dependencies**
 With `common.dependencies` in io-package.json you can define if an adapter needs to be present on the same host and optionally in which version.
 This is mainly used to define the needed "js-controller" version for yor adapter and can also be relevant e.g. for web extension adapters (adapters that can be plugged in into the web adapter, so the code needs to be on the same host).
 
-**common.globalDependencies for dependencies on any Host**
+**`common.globalDependencies` for dependencies on any Host**
 With common.globalDependencies in io-package.json and starting with js-controller 3.0, you can define a global dependency that will be checked over all hosts. Irrelevant where on the system the referenced adapter is installed it needs to match the version and at least one instance needs to exist.
 This can mainly be used for more loose dependencies where adapters are split over multiple hosts but still work together, e.g. Admin. 
 
@@ -1254,6 +1266,7 @@ The following features can be checked using this method:
 * **CONTROLLER_MULTI_REPO**: indicates that the controller supports multiple repository sources, which will be combined in one (since js-controller 4.0)
 * **CONTROLLER_LICENSE_MANAGER**: js-controller can read licenses from iobroker.net (since js-controller 4.0)
 * **DEL_INSTANCE_CUSTOM**: indicates that controller is able to delete all custom attributes of an adapter and instance if it is deleted via `--custom` flag (since js-controller 4.0)
+* **CONTROLLER_CMD_EXEC_FILES**: the `cmdExec` host message supports sending files together with the command via the `files` property (since js-controller 7.2)
 
 To check if certain adapter methods itself are existing, please simply check for their existence like
 
@@ -1292,7 +1305,7 @@ Invalid entries could be:
 
 To make it possible to get such an entries, the maintenance mode was implemented.
 To make a call in maintenance mode, you must provide `options` object with the at least following attributes:
-```
+```json5
 {
     user: 'system.user.admin',
     maintenance: true,

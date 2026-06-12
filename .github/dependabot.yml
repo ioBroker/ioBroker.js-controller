@@ -2,20 +2,24 @@
 version: 2
 updates:
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "cron"
-      timezone: "Europe/Berlin"
-      cronjob: "59 3 14 * *"
+      interval: 'cron'
+      timezone: 'Europe/Berlin'
+      cronjob: '59 3 14 * *'
     open-pull-requests-limit: 15
 
-  - package-ecosystem: "npm"
+  - package-ecosystem: 'npm'
     schedule:
-      interval: "cron"
-      timezone: "Europe/Berlin"
-      cronjob: "59 3 14 * *"
+      interval: 'cron'
+      timezone: 'Europe/Berlin'
+      cronjob: '59 3 14 * *'
     open-pull-requests-limit: 15
-    versioning-strategy: "increase"
+    versioning-strategy: 'increase'
     directories:
-      - "**/*"
+      - '**/*'
+    ignore:
+      - dependency-name: '@types/node'
+        update-types:
+          - 'version-update:semver-major'

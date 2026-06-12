@@ -153,6 +153,11 @@ export class StateRedisClient {
         let connected = false;
         let reconnectCounter = 0;
         let errorLogged = false;
+        // Sentinel is in use when a list of hosts is configured
+        const isSentinel = Array.isArray(this.settings.connection.host);
+        // Becomes true after the first successful "ready" so we can tell a
+        // re-connection apart from the initial connection
+        let wasReady = false;
 
         this.settings.connection.options = this.settings.connection.options || {};
         const retry_max_delay = this.settings.connection.options.retry_max_delay || 5000;
@@ -267,6 +272,10 @@ export class StateRedisClient {
             this.settings.connection.enhancedLogging &&
                 this.log.silly(`${this.namespace} States-Redis Event end (stop=${this.stop})`);
             if (ready && typeof this.settings.disconnected === 'function') {
+                // only an unexpected disconnect is worth a warning, not an intentional shutdown
+                if (!this.stop) {
+                    this.log.warn(`❌ ${this.namespace} States database disconnected`);
+                }
                 this.settings.disconnected();
             }
         });
@@ -276,7 +285,7 @@ export class StateRedisClient {
                 this.log.silly(`${this.namespace} States-Redis Event connect (stop=${this.stop})`);
             connected = true;
             if (errorLogged) {
-                this.log.info(`${this.namespace} Objects database successfully reconnected`);
+                this.log.info(`✅ ${this.namespace} States database successfully reconnected`);
                 errorLogged = false;
             }
         });
@@ -313,6 +322,13 @@ export class StateRedisClient {
                 return;
             }
             initError = false;
+
+            if (isSentinel && wasReady) {
+                this.log.info(
+                    `✅ ${this.namespace} States DB reconnected via Redis Sentinel (master group "${this.settings.connection.options.name}")`,
+                );
+            }
+            wasReady = true;
 
             let initCounter = 0;
             if (!this.subSystem && typeof onChange === 'function') {
@@ -789,29 +805,23 @@ export class StateRedisClient {
 
         const objString = JSON.stringify(obj);
 
-        // set object in redis
-        if (expire) {
-            try {
-                await this.client.setex(this.namespaceRedis + id, expire, objString);
-                // publish event in redis
-                this.settings.connection.enhancedLogging &&
-                    this.log.silly(`${this.namespace} redis publish ${this.namespaceRedis}${id} ${objString}`);
-                await this.client.publish(this.namespaceRedis + id, objString);
-                return tools.maybeCallbackWithError(callback, null, id);
-            } catch (e) {
-                return tools.maybeCallbackWithRedisError(callback, e, id);
-            }
-        } else {
-            try {
-                await this.client.set(this.namespaceRedis + id, objString);
-                // publish event in redis
-                this.settings.connection.enhancedLogging &&
-                    this.log.silly(`${this.namespace} redis publish ${this.namespaceRedis}${id} ${objString}`);
-                await this.client.publish(this.namespaceRedis + id, objString);
-                return tools.maybeCallbackWithError(callback, null, id);
-            } catch (e) {
-                return tools.maybeCallbackWithRedisError(callback, e, id);
-            }
+        // publish event in redis
+        this.settings.connection.enhancedLogging &&
+            this.log.silly(`${this.namespace} redis publish ${this.namespaceRedis}${id} ${objString}`);
+
+        // Write the state and publish the change in a single MULTI so both are sent
+        // in one round-trip instead of two. setState is the hottest path in the
+        // system, so saving a round-trip per call adds up significantly under load.
+        const commands: string[][] = expire
+            ? [['setex', this.namespaceRedis + id, String(expire), objString]]
+            : [['set', this.namespaceRedis + id, objString]];
+        commands.push(['publish', this.namespaceRedis + id, objString]);
+
+        try {
+            await this.client.multi(commands).exec();
+            return tools.maybeCallbackWithError(callback, null, id);
+        } catch (e) {
+            return tools.maybeCallbackWithRedisError(callback, e, id);
         }
     }
 

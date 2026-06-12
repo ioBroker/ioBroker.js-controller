@@ -234,6 +234,11 @@ export class ObjectsInRedisClient {
         let connected = false;
         let reconnectCounter = 0;
         let errorLogged = false;
+        // Sentinel is in use when a list of hosts is configured
+        const isSentinel = Array.isArray(this.settings.connection.host);
+        // Becomes true after the first successful "ready" so we can tell a
+        // re-connection apart from the initial connection
+        let wasReady = false;
 
         this.settings.connection.options.retryStrategy = (reconnectCount: number): Error | number => {
             if (!ready && initError) {
@@ -334,6 +339,10 @@ export class ObjectsInRedisClient {
                 this.log.silly(`${this.namespace} Objects-Redis Event end (stop=${this.stop})`);
             }
             if (ready && typeof this.settings.disconnected === 'function') {
+                // only an unexpected disconnect is worth a warning, not an intentional shutdown
+                if (!this.stop) {
+                    this.log.warn(`❌ ${this.namespace} Objects database disconnected`);
+                }
                 this.settings.disconnected();
             }
         });
@@ -344,7 +353,7 @@ export class ObjectsInRedisClient {
             }
             connected = true;
             if (errorLogged) {
-                this.log.info(`${this.namespace} Objects database successfully reconnected`);
+                this.log.info(`✅ ${this.namespace} Objects database successfully reconnected`);
                 errorLogged = false;
             }
         });
@@ -383,6 +392,13 @@ export class ObjectsInRedisClient {
                 return;
             }
             initError = false;
+
+            if (isSentinel && wasReady) {
+                this.log.info(
+                    `✅ ${this.namespace} Objects DB reconnected via Redis Sentinel (master group "${this.settings.connection.options.name}")`,
+                );
+            }
+            wasReady = true;
 
             this.log.debug(`${this.namespace} Objects client ready ... initialize now`);
             try {
@@ -4727,7 +4743,9 @@ export class ObjectsInRedisClient {
     private _findObject(
         idOrName: string,
         type: ioBroker.CommonType | null,
-        options: CallOptions & { language?: ioBroker.Languages },
+        options: CallOptions & {
+            language?: ioBroker.Languages;
+        },
         callback?: ioBroker.FindObjectCallback,
     ): void {
         // Try to read by ID
@@ -4789,7 +4807,11 @@ export class ObjectsInRedisClient {
     findObject(
         idOrName: string,
         type: ioBroker.CommonType | null,
-        options: (CallOptions & { language?: ioBroker.Languages }) | null,
+        options:
+            | (CallOptions & {
+                  language?: ioBroker.Languages;
+              })
+            | null,
         callback: ioBroker.FindObjectCallback,
     ): void;
 
@@ -4800,13 +4822,21 @@ export class ObjectsInRedisClient {
     findObject(
         idOrName: string,
         type?: ioBroker.CommonType | null,
-        options?: (CallOptions & { language?: ioBroker.Languages }) | null,
+        options?:
+            | (CallOptions & {
+                  language?: ioBroker.Languages;
+              })
+            | null,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.FindObjectCallback>>;
 
     findObject(
         idOrName: string,
         type: ioBroker.CommonType | null,
-        options: (CallOptions & { language?: ioBroker.Languages }) | null,
+        options:
+            | (CallOptions & {
+                  language?: ioBroker.Languages;
+              })
+            | null,
         callback?: ioBroker.FindObjectCallback,
     ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.FindObjectCallback>> {
         if (typeof type === 'function') {
