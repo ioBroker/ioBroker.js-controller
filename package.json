@@ -51,7 +51,7 @@
         "@types/winston-syslog": "^2.4.0",
         "@types/yargs": "^17.0.8",
         "cpy-cli": "^4.2.0",
-        "fs-extra": "^11.3.2",
+        "fs-extra": "^11.3.5",
         "lerna": "^9.0.6",
         "mocha": "^10.4.0",
         "prettier": "^3.0.1",
