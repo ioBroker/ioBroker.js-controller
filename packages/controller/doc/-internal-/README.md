@@ -326,6 +326,7 @@
 - [StateChangeHandler](type-aliases/StateChangeHandler.md)
 - [StateValue](type-aliases/StateValue.md)
 - [StringOrTranslated](type-aliases/StringOrTranslated.md)
+- [SupportedFeature](type-aliases/SupportedFeature.md)
 - [Timeout](type-aliases/Timeout.md)
 - [TimeoutCallback](type-aliases/TimeoutCallback.md)
 - [Translated](type-aliases/Translated.md)

@@ -6,7 +6,7 @@
 
 # Interface: RepoInfo
 
-Defined in: [types-dev/objects.d.ts:1096](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1096)
+Defined in: [types-dev/objects.d.ts:1096](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/types-dev/objects.d.ts#L1096)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/objects.d.ts:1096](https://github.com/ioBroker/ioBroker.j
 
 > **name**: `Required`\<[`Translated`](../type-aliases/Translated.md)\>
 
-Defined in: [types-dev/objects.d.ts:1100](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1100)
+Defined in: [types-dev/objects.d.ts:1100](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/types-dev/objects.d.ts#L1100)
 
 i18n name of the repository
 
@@ -24,7 +24,7 @@ i18n name of the repository
 
 > `optional` **repoReadTime?**: `string`
 
-Defined in: [types-dev/objects.d.ts:1104](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1104)
+Defined in: [types-dev/objects.d.ts:1104](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/types-dev/objects.d.ts#L1104)
 
 Time when the repository was last read/fetched
 
@@ -34,7 +34,7 @@ Time when the repository was last read/fetched
 
 > **repoTime**: `string`
 
-Defined in: [types-dev/objects.d.ts:1102](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1102)
+Defined in: [types-dev/objects.d.ts:1102](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/types-dev/objects.d.ts#L1102)
 
 Time of repository update
 
@@ -44,6 +44,6 @@ Time of repository update
 
 > `optional` **stable?**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:1098](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L1098)
+Defined in: [types-dev/objects.d.ts:1098](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/types-dev/objects.d.ts#L1098)
 
 If it is the official stable repository

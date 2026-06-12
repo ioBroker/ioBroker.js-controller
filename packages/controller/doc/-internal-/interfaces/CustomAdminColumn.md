@@ -6,7 +6,7 @@
 
 # Interface: CustomAdminColumn
 
-Defined in: [types-dev/objects.d.ts:609](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L609)
+Defined in: [types-dev/objects.d.ts:609](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/types-dev/objects.d.ts#L609)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/objects.d.ts:609](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **align?**: `"left"` \| `"center"` \| `"right"`
 
-Defined in: [types-dev/objects.d.ts:616](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L616)
+Defined in: [types-dev/objects.d.ts:616](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/types-dev/objects.d.ts#L616)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [types-dev/objects.d.ts:616](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **edit?**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:614](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L614)
+Defined in: [types-dev/objects.d.ts:614](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/types-dev/objects.d.ts#L614)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [types-dev/objects.d.ts:614](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **name?**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
-Defined in: [types-dev/objects.d.ts:611](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L611)
+Defined in: [types-dev/objects.d.ts:611](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/types-dev/objects.d.ts#L611)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [types-dev/objects.d.ts:611](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **objTypes?**: [`ObjectType`](../type-aliases/ObjectType.md) \| [`ObjectType`](../type-aliases/ObjectType.md)[]
 
-Defined in: [types-dev/objects.d.ts:612](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L612)
+Defined in: [types-dev/objects.d.ts:612](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/types-dev/objects.d.ts#L612)
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: [types-dev/objects.d.ts:612](https://github.com/ioBroker/ioBroker.js
 
 > **path**: `string`
 
-Defined in: [types-dev/objects.d.ts:610](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L610)
+Defined in: [types-dev/objects.d.ts:610](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/types-dev/objects.d.ts#L610)
 
 ***
 
@@ -54,7 +54,7 @@ Defined in: [types-dev/objects.d.ts:610](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **type?**: [`CommonType`](../type-aliases/CommonType.md)
 
-Defined in: [types-dev/objects.d.ts:615](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L615)
+Defined in: [types-dev/objects.d.ts:615](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/types-dev/objects.d.ts#L615)
 
 ***
 
@@ -62,4 +62,4 @@ Defined in: [types-dev/objects.d.ts:615](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **width?**: `number`
 
-Defined in: [types-dev/objects.d.ts:613](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L613)
+Defined in: [types-dev/objects.d.ts:613](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/types-dev/objects.d.ts#L613)
