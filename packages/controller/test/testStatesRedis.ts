@@ -183,7 +183,7 @@ describe('States-Redis: Test states in Redis', function () {
                 states!.getState(testID, (err, storedState) => {
                     assert.ok(!err);
                     assert.ok(storedState);
-                    assert.strictEqual(storedState!.val, 5);
+                    assert.strictEqual(storedState.val, 5);
 
                     // ...with a TTL, so it must be gone after the expire window
                     setTimeout(() => {
@@ -212,22 +212,22 @@ describe('States-Redis: Test states in Redis', function () {
             states!.getState(testID, (err, first) => {
                 assert.ok(!err);
                 assert.ok(first);
-                const firstLc = first!.lc;
+                const firstLc = first.lc;
                 setTimeout(() => {
                     // identical value -> lc must stay, ts must advance
                     states!.setState(testID, { val: 10, ack: true }, () => {
                         states!.getState(testID, (err, second) => {
                             assert.ok(!err);
                             assert.ok(second);
-                            assert.strictEqual(second!.lc, firstLc, 'lc must not change for identical value');
-                            assert.ok(second!.ts >= first!.ts, 'ts must advance');
+                            assert.strictEqual(second.lc, firstLc, 'lc must not change for identical value');
+                            assert.ok(second.ts >= first.ts, 'ts must advance');
                             setTimeout(() => {
                                 // changed value -> lc must be bumped
                                 states!.setState(testID, { val: 20, ack: true }, () => {
                                     states!.getState(testID, (err, third) => {
                                         assert.ok(!err);
                                         assert.ok(third);
-                                        assert.notStrictEqual(third!.lc, firstLc, 'lc must change when value changes');
+                                        assert.notStrictEqual(third.lc, firstLc, 'lc must change when value changes');
                                         done();
                                     });
                                 });
