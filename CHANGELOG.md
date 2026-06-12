@@ -5,8 +5,8 @@
 -->
 ## __WORK IN PROGRESS__
 * (@GermanBluefox) Added possibility to send files with cmdExec message (feature flag `CONTROLLER_CMD_EXEC_FILES`)
-* (arteck) add icon in Log for redis reconnect(sentinel)
-* (arteck) redis setState-MULTI optimization
+* (arteck) Added icons to the log for Redis Sentinel reconnects
+* (arteck) Optimized Redis `setState` by using MULTI
 
 ## 7.1.2 (2026-05-07) - Milla
 * (@GermanBluefox) Corrected typings
