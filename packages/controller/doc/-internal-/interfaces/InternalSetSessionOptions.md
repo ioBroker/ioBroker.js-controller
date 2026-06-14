@@ -6,7 +6,7 @@
 
 # Interface: InternalSetSessionOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/adapter/src/lib/_Types.ts#L251)
+Defined in: [adapter/src/lib/\_Types.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L251)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:251](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/adapter/src/lib/_Types.ts#L255)
+Defined in: [adapter/src/lib/\_Types.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L255)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [adapter/src/lib/\_Types.ts:255](https://github.com/ioBroker/ioBroke
 
 > **data**: `Record`\<`string`, `any`\>
 
-Defined in: [adapter/src/lib/\_Types.ts:254](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/adapter/src/lib/_Types.ts#L254)
+Defined in: [adapter/src/lib/\_Types.ts:254](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L254)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [adapter/src/lib/\_Types.ts:254](https://github.com/ioBroker/ioBroke
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:252](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/adapter/src/lib/_Types.ts#L252)
+Defined in: [adapter/src/lib/\_Types.ts:252](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L252)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: [adapter/src/lib/\_Types.ts:252](https://github.com/ioBroker/ioBroke
 
 > **ttl**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/adapter/src/lib/_Types.ts#L253)
+Defined in: [adapter/src/lib/\_Types.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L253)

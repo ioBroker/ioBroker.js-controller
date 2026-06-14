@@ -6,7 +6,7 @@
 
 # Interface: AliasDetailsSource
 
-Defined in: [adapter/src/lib/\_Types.ts:215](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/adapter/src/lib/_Types.ts#L215)
+Defined in: [adapter/src/lib/\_Types.ts:215](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L215)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:215](https://github.com/ioBroker/ioBroke
 
 > `optional` **max?**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:217](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/adapter/src/lib/_Types.ts#L217)
+Defined in: [adapter/src/lib/\_Types.ts:217](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L217)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [adapter/src/lib/\_Types.ts:217](https://github.com/ioBroker/ioBroke
 
 > `optional` **min?**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:216](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/adapter/src/lib/_Types.ts#L216)
+Defined in: [adapter/src/lib/\_Types.ts:216](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L216)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [adapter/src/lib/\_Types.ts:216](https://github.com/ioBroker/ioBroke
 
 > `optional` **type?**: [`CommonType`](../type-aliases/CommonType.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:218](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/adapter/src/lib/_Types.ts#L218)
+Defined in: [adapter/src/lib/\_Types.ts:218](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L218)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: [adapter/src/lib/\_Types.ts:218](https://github.com/ioBroker/ioBroke
 
 > `optional` **unit?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/c8582fd1bb3ec1d7630b6ec1db13ec462b1d219e/packages/adapter/src/lib/_Types.ts#L219)
+Defined in: [adapter/src/lib/\_Types.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L219)
