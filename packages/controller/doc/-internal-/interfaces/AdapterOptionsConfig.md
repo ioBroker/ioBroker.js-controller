@@ -6,7 +6,7 @@
 
 # Interface: AdapterOptionsConfig
 
-Defined in: [adapter/src/lib/\_Types.ts:198](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L198)
+Defined in: [adapter/src/lib/\_Types.ts:198](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L198)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:198](https://github.com/ioBroker/ioBroke
 
 > **log**: `object`
 
-Defined in: [adapter/src/lib/\_Types.ts:199](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L199)
+Defined in: [adapter/src/lib/\_Types.ts:199](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L199)
 
 #### level
 

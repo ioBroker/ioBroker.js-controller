@@ -6,7 +6,7 @@
 
 # Interface: SendableMessage
 
-Defined in: [types-dev/index.d.ts:289](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/types-dev/index.d.ts#L289)
+Defined in: [types-dev/index.d.ts:289](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/types-dev/index.d.ts#L289)
 
 ## Extended by
 
@@ -18,7 +18,7 @@ Defined in: [types-dev/index.d.ts:289](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **callback?**: [`MessageCallbackInfo`](MessageCallbackInfo.md)
 
-Defined in: [types-dev/index.d.ts:297](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/types-dev/index.d.ts#L297)
+Defined in: [types-dev/index.d.ts:297](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/types-dev/index.d.ts#L297)
 
 Callback information. This is set when the source expects a response
 
@@ -28,7 +28,7 @@ Callback information. This is set when the source expects a response
 
 > **command**: `string`
 
-Defined in: [types-dev/index.d.ts:291](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/types-dev/index.d.ts#L291)
+Defined in: [types-dev/index.d.ts:291](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/types-dev/index.d.ts#L291)
 
 The command to be executed
 
@@ -38,7 +38,7 @@ The command to be executed
 
 > **from**: `string`
 
-Defined in: [types-dev/index.d.ts:295](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/types-dev/index.d.ts#L295)
+Defined in: [types-dev/index.d.ts:295](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/types-dev/index.d.ts#L295)
 
 The source of this message
 
@@ -48,6 +48,6 @@ The source of this message
 
 > **message**: `any`
 
-Defined in: [types-dev/index.d.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/types-dev/index.d.ts#L293)
+Defined in: [types-dev/index.d.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/types-dev/index.d.ts#L293)
 
 The message payload

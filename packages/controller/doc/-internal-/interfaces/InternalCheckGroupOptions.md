@@ -6,7 +6,7 @@
 
 # Interface: InternalCheckGroupOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:296](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L296)
+Defined in: [adapter/src/lib/\_Types.ts:296](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L296)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:296](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: [`CheckGroupCallback`](../type-aliases/CheckGroupCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:300](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L300)
+Defined in: [adapter/src/lib/\_Types.ts:300](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L300)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [adapter/src/lib/\_Types.ts:300](https://github.com/ioBroker/ioBroke
 
 > **group**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:298](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L298)
+Defined in: [adapter/src/lib/\_Types.ts:298](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L298)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [adapter/src/lib/\_Types.ts:298](https://github.com/ioBroker/ioBroke
 
 > `optional` **options?**: `Record`\<`string`, `any`\> \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:299](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L299)
+Defined in: [adapter/src/lib/\_Types.ts:299](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L299)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: [adapter/src/lib/\_Types.ts:299](https://github.com/ioBroker/ioBroke
 
 > **user**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:297](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L297)
+Defined in: [adapter/src/lib/\_Types.ts:297](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L297)
