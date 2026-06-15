@@ -8,7 +8,7 @@
 
 > **CommandsPermissionsObject** = `object`
 
-Defined in: [adapter/src/lib/\_Types.ts:307](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/adapter/src/lib/_Types.ts#L307)
+Defined in: [adapter/src/lib/\_Types.ts:307](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L307)
 
 ## Index Signature
 

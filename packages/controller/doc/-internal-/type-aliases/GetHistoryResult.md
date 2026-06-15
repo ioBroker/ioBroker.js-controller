@@ -8,4 +8,4 @@
 
 > **GetHistoryResult** = [`State`](../interfaces/State.md) & `object`[]
 
-Defined in: [types-dev/index.d.ts:517](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/types-dev/index.d.ts#L517)
+Defined in: [types-dev/index.d.ts:517](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/types-dev/index.d.ts#L517)

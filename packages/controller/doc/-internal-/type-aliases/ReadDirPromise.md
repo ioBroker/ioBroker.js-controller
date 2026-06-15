@@ -8,4 +8,4 @@
 
 > **ReadDirPromise** = `Promise`\<[`ReadDirResult`](../interfaces/ReadDirResult.md)[]\>
 
-Defined in: [types-dev/index.d.ts:541](https://github.com/ioBroker/ioBroker.js-controller/blob/3e1084b5e193c89d503d0adb2605bf9ae4601cf3/packages/types-dev/index.d.ts#L541)
+Defined in: [types-dev/index.d.ts:541](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/types-dev/index.d.ts#L541)
