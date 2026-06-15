@@ -3,6 +3,9 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (@Apollon77) Updated sentry plugin to 3.1.0
+
 ## 7.2.0 (2026-06-14)
 * (@GermanBluefox) Added possibility to send files with cmdExec message (feature flag `CONTROLLER_CMD_EXEC_FILES`)
 * (arteck) Added icons to the log for Redis Sentinel reconnects
