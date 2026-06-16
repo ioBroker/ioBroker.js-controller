@@ -6,7 +6,7 @@
 
 # Interface: InternalGetEncryptedConfigOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L352)
+Defined in: [adapter/src/lib/\_Types.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L352)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:352](https://github.com/ioBroker/ioBroke
 
 > **attribute**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:353](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L353)
+Defined in: [adapter/src/lib/\_Types.ts:353](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L353)
 
 ***
 
@@ -22,4 +22,4 @@ Defined in: [adapter/src/lib/\_Types.ts:353](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: [`GetEncryptedConfigCallback`](../type-aliases/GetEncryptedConfigCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:354](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L354)
+Defined in: [adapter/src/lib/\_Types.ts:354](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L354)

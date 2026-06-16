@@ -8,7 +8,7 @@
 
 > **CommandsPermissionsEntry** = `object`
 
-Defined in: [adapter/src/lib/\_Types.ts:303](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L303)
+Defined in: [adapter/src/lib/\_Types.ts:303](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L303)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [adapter/src/lib/\_Types.ts:303](https://github.com/ioBroker/ioBroke
 
 > **operation**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:305](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L305)
+Defined in: [adapter/src/lib/\_Types.ts:305](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L305)
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: [adapter/src/lib/\_Types.ts:305](https://github.com/ioBroker/ioBroke
 
 > **type**: `"object"` \| `"state"` \| `""` \| `"other"` \| `"file"`
 
-Defined in: [adapter/src/lib/\_Types.ts:304](https://github.com/ioBroker/ioBroker.js-controller/blob/31c2c03f7a285c1b12a59af218633d714c7959ef/packages/adapter/src/lib/_Types.ts#L304)
+Defined in: [adapter/src/lib/\_Types.ts:304](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L304)

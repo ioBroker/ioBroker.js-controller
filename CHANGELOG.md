@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
+## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling
 
 ## 7.2.1 (2026-06-15)
