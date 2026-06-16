@@ -3,6 +3,9 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (@Apollon77) Fixed Sentry session reporting disabling
+
 ## 7.2.1 (2026-06-15)
 * (@Apollon77) Updated sentry plugin to 3.1.0
 
