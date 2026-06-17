@@ -858,7 +858,7 @@ function createObjects(onConnect: () => void): void {
                                 if (proc.restartTimer) {
                                     clearTimeout(proc.restartTimer);
                                 }
-                                const restartTimeout = (proc.config.common.stopTimeout || 500) + 2_500;
+                                const restartTimeout = 2_500;
                                 proc.restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                             }
                         } else {
