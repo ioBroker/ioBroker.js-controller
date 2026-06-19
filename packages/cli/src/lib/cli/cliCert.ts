@@ -5,6 +5,9 @@ import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
 /** Command ioBroker cert ... */
 export class CLICert extends CLICommand {
+    /**
+     * @param options The command options including context and parameters
+     */
     constructor(options: CLICommandOptions) {
         super(options);
     }
@@ -12,7 +15,7 @@ export class CLICert extends CLICommand {
     /**
      * Executes a command
      *
-     * @param args
+     * @param args The command arguments (the first is the sub-command)
      */
     execute(args: any[]): void | Promise<void> {
         const { callback, showHelp } = this.options;
@@ -59,7 +62,7 @@ export class CLICert extends CLICommand {
     /**
      * View the certificates on CLI
      *
-     * @param _args
+     * @param _args The command arguments (the second is the certificate name)
      */
     view(_args: any[]): void {
         let certName = _args[1];

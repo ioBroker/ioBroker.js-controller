@@ -11,10 +11,15 @@ export type DbConnect = (
     callback?: DbConnectCallback,
 ) => void;
 
+/** Result returned once the database connection has been established */
 export interface DbConnectAsyncReturn {
+    /** The connected objects database client */
     objects: ObjectsRedisClient;
+    /** The connected states database client */
     states: StatesRedisClient;
+    /** Whether the controller is offline (no running host) */
     isOffline?: boolean;
+    /** Type of the objects database backend */
     objectsDBType: string;
     /** The iobroker.json config file */
     config: ioBroker.IoBrokerJson;
@@ -31,6 +36,8 @@ interface IoPackageCommon extends ioBroker.AdapterCommon {
         };
     };
 }
+/** An adapter object as stored in io-package.json */
 export interface IoPackage extends ioBroker.AdapterObject {
+    /** The common section including the plugins configuration */
     common: IoPackageCommon;
 }

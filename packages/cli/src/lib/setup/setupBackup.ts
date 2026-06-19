@@ -12,17 +12,25 @@ import { IoBrokerError } from './customError.js';
 import { CLIProcess } from '@/lib/cli/cliProcess.js';
 import { open, writeFile } from 'node:fs/promises';
 
+/** Options for the backup/restore command */
 export interface CLIBackupRestoreOptions {
+    /** Whether this is part of a database migration */
     dbMigration?: boolean;
+    /** The states database client */
     states: StatesRedisClient;
+    /** The objects database client */
     objects: ObjectsRedisClient;
+    /** Callback to exit the process with an exit code */
     processExit: ProcessExitCallback;
+    /** Handler to clean the database */
     cleanDatabase: CleanDatabaseHandler;
+    /** Handler to restart the controller */
     restartController: RestartController;
 }
 
 type BackupObject = Omit<ioBroker.GetObjectListItem<ioBroker.Object>, 'doc'>;
 
+/** Result returned after restoring a backup */
 export interface RestoreBackupReturnValue {
     /** Exit code of the process */
     exitCode: EXIT_CODES;
@@ -58,6 +66,7 @@ interface PreprocessObjectOptions {
     thisHostNameStartsWith: string;
 }
 
+/** Options for restoring a backup */
 export interface RestoreBackupOptions {
     /** backup name, absolute path or index */
     name: string | number;
@@ -69,6 +78,9 @@ export interface RestoreBackupOptions {
 
 const controllerDir = tools.getControllerDir();
 
+/**
+ * CLI command to create and restore ioBroker backups
+ */
 export class BackupRestore {
     private readonly hostname = tools.getHostName();
     private readonly tmpDir = path.normalize(path.join(controllerDir, 'tmp'));
@@ -93,6 +105,9 @@ export class BackupRestore {
     /** Postfix for backup name */
     private readonly BACKUP_POSTFIX = `_backup${tools.appNameLowerCase}`;
 
+    /**
+     * @param options The states/objects clients and the exit, clean and restart handlers
+     */
     constructor(options: CLIBackupRestoreOptions) {
         options = options || {};
 
@@ -138,6 +153,13 @@ export class BackupRestore {
         }
     }
 
+    /**
+     * Recursively copy a directory from the object's file storage to disk
+     *
+     * @param id The object id owning the files
+     * @param srcPath The source directory in the object's file storage
+     * @param destPath The destination directory on disk
+     */
     async copyDir(id: string, srcPath: string, destPath: string): Promise<void> {
         fs.ensureDirSync(destPath);
 
@@ -167,6 +189,12 @@ export class BackupRestore {
         return path.join(tools.getRootDir(), 'backups/');
     }
 
+    /**
+     * Copy a single file synchronously
+     *
+     * @param source The source file path
+     * @param target The target file or directory path
+     */
     copyFileSync(source: string, target: string): void {
         let targetFile = target;
 
@@ -184,6 +212,12 @@ export class BackupRestore {
         }
     }
 
+    /**
+     * Recursively copy a folder synchronously
+     *
+     * @param source The source folder path
+     * @param target The target folder path
+     */
     copyFolderRecursiveSync(source: string, target: string): void {
         let files = [];
 
@@ -735,7 +769,9 @@ export class BackupRestore {
         for await (let line of rlStates) {
             line = line.replace(this.HOSTNAME_PLACEHOLDER_REGEX, hostname);
             const state: {
+                /** The id of the state */
                 id: string;
+                /** The state value */
                 state: ioBroker.State;
             } = JSON.parse(line);
             await this._setStateHelper(state.id, state.state);

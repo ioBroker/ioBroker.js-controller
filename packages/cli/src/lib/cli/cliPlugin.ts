@@ -253,7 +253,7 @@ export class CLIPlugin extends CLICommand<CLIPluginOptions> {
 /**
  * Checks if a plugin exists and can be configured
  *
- * @param pluginName
+ * @param pluginName The name of the plugin to check
  * @param iobrokerJson The contents of iobroker.json
  * @param [adapter] (optional) - If passed, the adapter configuration will be searched for defined plugins instead of js-controller
  */

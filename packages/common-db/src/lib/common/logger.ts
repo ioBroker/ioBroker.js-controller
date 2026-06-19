@@ -123,14 +123,23 @@ class NotifierTransport extends Transport {
     }
 }
 
+/** Logger configuration options provided by the user */
 export interface UserOptions {
+    /** Minimum log level to output (e.g. silly, debug, info, warn, error) */
     level: string;
+    /** Maximum number of days rotated log files are kept before deletion */
     maxDays: number;
+    /** If true, do not output log messages to stdout */
     noStdout: boolean;
+    /** Use local time instead of UTC for the log timestamps */
     localTime?: string;
+    /** Colorize the console output */
     colorize?: boolean;
+    /** Output log entries in JSON format */
     json?: boolean;
+    /** Label prepended to every log message */
     prefix?: string;
+    /** Winston transport configurations keyed by transport name */
     transport: Record<string, any>;
 }
 
@@ -139,6 +148,14 @@ interface Options {
     transports: Transport[];
 }
 
+/**
+ * Create and configure a winston logger instance for the controller and adapters
+ *
+ * @param level Log level as a string, or a full UserOptions object with the detailed configuration
+ * @param files One or more log file paths the logger should write to
+ * @param noStdout If true, do not output log messages to stdout
+ * @param prefix Label prepended to every log message
+ */
 export function logger(
     level: string | UserOptions,
     files?: string[] | string,
@@ -430,8 +447,10 @@ export function logger(
     // This cannot be deleted, because file rotate works with the size of files and not with the time
     // TODO research and open new issue in winston-daily-rotate-file repo
     /**
-     * @param isEnabled
-     * @param daysCount
+     * Enable or disable the periodic checker that deletes outdated log files
+     *
+     * @param isEnabled Whether the periodic file checker should run
+     * @param daysCount Number of days after which old log files are deleted (defaults to 3)
      */
     // @ts-expect-error why do we override/add method to foreign instance? TODO
     log.activateDateChecker = function (isEnabled, daysCount) {

@@ -54,12 +54,18 @@ interface RepoActiveOptions {
     repoObj: ioBroker.RepositoryObject;
 }
 
+/**
+ * CLI command to manage the ioBroker repositories
+ */
 export class Repo {
     private readonly defaultSystemRepo: ioBroker.RepositoryObject;
     private readonly objects: ObjectsRedisClient;
     private readonly states: StatesRedisClient;
     private readonly controllerVersion: string;
 
+    /**
+     * @param options The objects/states clients and the controller version
+     */
     constructor(options: CLIRepoOptions) {
         if (!options?.objects) {
             throw new Error('Invalid arguments: objects is missing');

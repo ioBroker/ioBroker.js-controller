@@ -7,13 +7,16 @@ import fs from 'fs-extra';
 export class CLICompact extends CLICommand {
     private readonly config: ioBroker.IoBrokerJson = fs.readJSONSync(tools.getConfigFileName());
 
+    /**
+     * @param options The command options including context and parameters
+     */
     constructor(options: CLICommandOptions) {
         super(options);
     }
     /**
      * Executes a command
      *
-     * @param args
+     * @param args The command arguments (the first is the sub-command)
      */
     execute(args: any[]): void {
         const { callback, showHelp } = this.options;

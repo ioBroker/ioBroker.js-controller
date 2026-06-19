@@ -5,6 +5,7 @@ type Callback = (...args: any[]) => void | Promise<void>;
 type OptionalCallback = undefined | Callback;
 type Pattern = string | string[];
 
+/** Options for validating an object/state id */
 export interface ValidateIdOptions {
     /** in maintenance mode, we can access invalid ids to delete them, only works with the admin user */
     maintenance?: boolean;
@@ -12,6 +13,9 @@ export interface ValidateIdOptions {
     user?: string;
 }
 
+/**
+ * Validates arguments passed to the adapter's public methods
+ */
 export class Validator {
     private readonly objects: any;
     private readonly states: any;

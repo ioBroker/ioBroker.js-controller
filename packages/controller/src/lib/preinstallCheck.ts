@@ -120,8 +120,8 @@ function parseVersion(version: string): VersionObject {
 /**
  * Checks if v1 > v2
  *
- * @param v1
- * @param v2
+ * @param v1 The first version to compare
+ * @param v2 The second version to compare
  */
 function gt(v1: VersionObject | string, v2: VersionObject | string): boolean {
     if (typeof v1 === 'string') {
@@ -149,8 +149,8 @@ function gt(v1: VersionObject | string, v2: VersionObject | string): boolean {
 /**
  * Checks if v1 < v2
  *
- * @param v1
- * @param v2
+ * @param v1 The first version to compare
+ * @param v2 The second version to compare
  */
 function lt(v1: VersionObject | string, v2: VersionObject | string): boolean {
     if (typeof v1 === 'string') {
@@ -178,8 +178,8 @@ function lt(v1: VersionObject | string, v2: VersionObject | string): boolean {
 /**
  * Checks if v1 == v2
  *
- * @param v1
- * @param v2
+ * @param v1 The first version to compare
+ * @param v2 The second version to compare
  */
 function eq(v1: VersionObject | string, v2: VersionObject | string): boolean {
     if (typeof v1 === 'string') {
@@ -201,8 +201,8 @@ function eq(v1: VersionObject | string, v2: VersionObject | string): boolean {
 /**
  * Checks if v1 >= v2
  *
- * @param v1
- * @param v2
+ * @param v1 The first version to compare
+ * @param v2 The second version to compare
  */
 function gte(v1: VersionObject | string, v2: VersionObject | string): boolean {
     return gt(v1, v2) || eq(v1, v2);

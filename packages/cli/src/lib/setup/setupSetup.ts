@@ -46,13 +46,19 @@ const COLOR_RESET = '\x1b[0m';
 const COLOR_GREEN = '\x1b[32m';
 const CONTROLLER_DIR = tools.getControllerDir();
 
+/** Options for the setup command */
 export interface CLISetupOptions {
+    /** Handler to clean the database */
     cleanDatabase: CleanDatabaseHandler;
+    /** Callback to exit the process with an exit code */
     processExit: ProcessExitCallback;
+    /** Parsed CLI parameters */
     params: Record<string, any>;
+    /** Handler to restart the controller */
     restartController: RestartController;
 }
 
+/** Options for running the setup command */
 export interface SetupCommandOptions {
     /** Callback called afterward */
     callback: (isCreated?: boolean) => void;
@@ -62,6 +68,9 @@ export interface SetupCommandOptions {
     useRedis: boolean;
 }
 
+/**
+ * CLI command that performs the initial ioBroker setup (databases, config and objects)
+ */
 export class Setup {
     /** Object IDs which are not allowed to exist but could be generated due to errors in the past */
     private readonly KNOWN_GARBAGE_OBJECT_IDS = ['null', 'undefined'];
@@ -74,6 +83,9 @@ export class Setup {
     private readonly cleanDatabase: CleanDatabaseHandler;
     private readonly restartController: RestartController;
 
+    /**
+     * @param options Handlers for cleaning the DB, exiting and restarting, plus the CLI parameters
+     */
     constructor(options: CLISetupOptions) {
         this.processExit = options.processExit;
         this.params = options.params;
@@ -83,6 +95,11 @@ export class Setup {
         this.dbSetup = this.dbSetup.bind(this);
     }
 
+    /**
+     * Print information about the plugins configured for the controller
+     *
+     * @param systemConfig The system.config object, used to read the active repository
+     */
     async informAboutPlugins(systemConfig?: ioBroker.SystemConfigObject | null): Promise<void> {
         if (!this.states) {
             throw new Error('States not set up, call setupObjects first');
@@ -255,6 +272,13 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         }
     }
 
+    /**
+     * Create the initial set of objects and design documents in the database
+     *
+     * @param iopkg The io-package.json of the controller
+     * @param ignoreExisting Whether to proceed even if the config already exists
+     * @param callback Called once the database has been set up
+     */
     async dbSetup(iopkg: IoPackage, ignoreExisting: boolean, callback: () => void): Promise<void> {
         if (!this.objects) {
             throw new Error('Objects not set up, call setupObjects first');
@@ -682,6 +706,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         return EXIT_CODES.NO_ERROR;
     }
 
+    /**
+     * Interactively configure the databases and write the configuration file
+     */
     async setupCustom(): Promise<EXIT_CODES> {
         let config: ioBroker.IoBrokerJson;
         // read actual configuration

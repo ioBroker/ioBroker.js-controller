@@ -6,7 +6,9 @@ import { isDeepStrictEqual } from 'node:util';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import { randomBytes } from 'node:crypto';
 
+/** Options for the vendor command */
 export interface CLIVendorOptions {
+    /** The objects database client */
     objects: ObjectsRedisClient;
 }
 
@@ -98,9 +100,15 @@ interface iobVendorFile {
 
 const VENDOR_FILE = '/etc/iob-vendor.json';
 
+/**
+ * CLI command to apply vendor-specific customizations from the vendor file
+ */
 export class Vendor {
     private readonly objects: ObjectsRedisClient;
 
+    /**
+     * @param options The objects database client
+     */
     constructor(options: CLIVendorOptions) {
         this.objects = options.objects;
     }
@@ -131,7 +139,7 @@ export class Vendor {
      * @param file file path if not given, default path is used
      * @param password vendor password
      * @param javascriptPassword vendor JavaScript password
-     * @param logger
+     * @param logger Logger used to report progress and errors
      */
     async checkVendor(
         file: string | undefined,

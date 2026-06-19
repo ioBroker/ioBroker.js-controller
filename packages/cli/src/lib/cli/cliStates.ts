@@ -17,6 +17,9 @@ interface CLIStatesOptions extends CLICommandOptions {
 
 /** Command iobroker state ... */
 export class CLIStates extends CLICommand<CLIStatesOptions> {
+    /**
+     * @param options The command options including context and parameters
+     */
     constructor(options: CLIStatesOptions) {
         super(options);
     }

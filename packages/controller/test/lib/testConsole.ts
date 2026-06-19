@@ -10,6 +10,12 @@ const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__fi
 
 const iobExecutable = path.join(thisDir, '..', '..', 'iobroker.js');
 
+/**
+ * Register the console (CLI) tests on the given mocha test function
+ *
+ * @param it The mocha test function to register the tests on
+ * @param context The shared test context (adapter, states and objects clients)
+ */
 export function register(it: Mocha.TestFunction, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} console: `;
 

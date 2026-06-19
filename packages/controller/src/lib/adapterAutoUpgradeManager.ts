@@ -45,6 +45,9 @@ interface AdapterUpgradeConfiguration {
     upgradePolicy: ioBroker.AutoUpgradePolicy;
 }
 
+/**
+ * Manages automatic upgrades of adapters based on the configured upgrade policy
+ */
 export class AdapterAutoUpgradeManager {
     private readonly objects: ObjectsClient;
     private readonly states: StatesClient;
@@ -60,6 +63,9 @@ export class AdapterAutoUpgradeManager {
     /** Logger which needs to be prefixed */
     private logger: ReturnType<typeof logger>;
 
+    /**
+     * @param options The objects/states clients, logger and log prefix
+     */
     constructor(options: AdapterAutoUpgradeOptions) {
         this.objects = options.objects;
         this.states = options.states;
@@ -186,6 +192,7 @@ export class AdapterAutoUpgradeManager {
 
         const jsonContent:
             | (ioBroker.RepositoryJson & {
+                  /** Additional internal repository metadata */
                   _repoInfo?: any;
               })
             | null

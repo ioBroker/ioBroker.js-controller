@@ -49,21 +49,37 @@ interface RedisConnectionOptions extends ConnectionOptions {
     redisNamespace?: string;
 }
 
+/** Settings for the objects database client */
 export interface ObjectsSettings {
+    /** Called once the client is connected */
     connected: () => void;
+    /** Whether this client runs inside the controller */
     controller?: boolean;
+    /** Called when the connection to the primary host is lost */
     primaryHostLost?: () => void;
+    /** Called when the client gets disconnected */
     disconnected?: () => void;
+    /** Handler for system-level object changes */
     change?: ChangeFunction;
+    /** Handler for user-level object changes */
     changeUser?: ChangeFunction;
+    /** Handler for user-level file changes */
     changeFileUser?: ioBroker.FileChangeHandler;
+    /** Whether to connect to the database immediately (default true) */
     autoConnect?: boolean;
+    /** Logger instance to use */
     logger: InternalLogger;
+    /** Name of this host */
     hostname?: string;
+    /** Namespace of this client */
     namespace?: string;
+    /** Default ACL applied to newly created objects */
     defaultNewAcl?: ACLObject;
+    /** Namespace used for meta information */
     metaNamespace?: string;
+    /** Redis key prefix (defaults to "cfg") */
     redisNamespace?: string;
+    /** Connection options for the redis server */
     connection: RedisConnectionOptions;
 }
 
@@ -124,6 +140,9 @@ interface Options {
 
 type CheckFileCallback = (checkFailed: boolean, options?: CallOptions, fileOptions?: { notExists: boolean }) => void;
 
+/**
+ * Client for the objects database backed by Redis (or the in-memory redis-protocol server)
+ */
 export class ObjectsInRedisClient {
     private client: IORedis.Redis | null;
     private readonly fileNamespace: string;
@@ -151,6 +170,9 @@ export class ObjectsInRedisClient {
     private readonly userSubscriptions: Record<string, boolean>;
     private readonly systemSubscriptions: Record<string, boolean>;
 
+    /**
+     * @param settings Settings for the objects client including connection and namespaces
+     */
     constructor(settings: ObjectsSettings) {
         this.settings = settings || {};
         this.redisNamespace = `${this.settings.redisNamespace || this.settings.connection?.redisNamespace || 'cfg'}.`;
@@ -218,6 +240,9 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Connect to the objects database and set up the change and file subscriptions
+     */
     connectDb(): void {
         this.settings.connection = this.settings.connection || {};
 
@@ -863,6 +888,9 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Get the current status of the database
+     */
     getStatus(): DbStatus {
         return { type: 'redis', server: false };
     }
@@ -888,6 +916,11 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Normalize a file name by collapsing slashes and backslashes into a single forward slash
+     *
+     * @param name The file name to normalize
+     */
     normalizeFilename(name: string): string {
         return name ? name.replace(/[/\\]+/g, '/') : name;
     }
@@ -938,6 +971,13 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Build the internal redis key for a file
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param isMeta Whether to return the key of the meta entry (true) or the data entry (false)
+     */
     getFileId(id: string, name: string, isMeta?: boolean): string {
         name = this.normalizeFilename(name);
         // e.g. ekey.admin and admin/ekey.png
@@ -964,6 +1004,15 @@ export class ObjectsInRedisClient {
         return `${this.fileNamespace + id}$%$${name}${isMeta !== undefined ? (isMeta ? '$%$meta' : '$%$data') : ''}`;
     }
 
+    /**
+     * Check whether the current options have the required rights on a file
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param options The current request options including the user
+     * @param flag The access flag(s) to check for
+     * @param callback Called with whether the check failed and the effective options
+     */
     async checkFile(
         id: string,
         name: string,
@@ -1003,6 +1052,15 @@ export class ObjectsInRedisClient {
         return tools.maybeCallback(callback, true, options); // error
     }
 
+    /**
+     * Check whether the current user is allowed to access a file
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name, or null for the whole namespace
+     * @param options The current request options including the user
+     * @param flag The access flag(s) to check for
+     * @param callback Called with the effective options once the rights have been checked
+     */
     checkFileRights(
         id: string,
         name: string | null,
@@ -1031,6 +1089,11 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Set the default ACL applied to new objects and apply it to all existing objects without an ACL
+     *
+     * @param defaultNewAcl The default ACL to use, or null to use the built-in default
+     */
     async setDefaultAcl(defaultNewAcl: ACLObject | null): Promise<void> {
         this.defaultNewAcl = defaultNewAcl || {
             owner: CONSTS.SYSTEM_ADMIN_USER,
@@ -1050,6 +1113,12 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Determine the groups and effective ACL of the given user
+     *
+     * @param user The id of the user to look up
+     * @param callback Called with the user, its groups and the effective ACL
+     */
     getUserGroup(
         user: ioBroker.ObjectIDs.User,
         callback: GetUserGroupCallbackNoError,
@@ -1150,8 +1219,25 @@ export class ObjectsInRedisClient {
     }
 
     // No options provided by the user
+    /**
+     * Write data into a file of an object
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param data The data to write
+     * @param callback Called once the file has been written
+     */
     async writeFile(id: string, name: string, data: any, callback?: ioBroker.ErrorCallback): Promise<void>;
     // Options provided by the user
+    /**
+     * Write data into a file of an object
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param data The data to write
+     * @param options The current request options including the user
+     * @param callback Called once the file has been written
+     */
     async writeFile(
         id: string,
         name: string,
@@ -1160,6 +1246,15 @@ export class ObjectsInRedisClient {
         callback?: ioBroker.ErrorCallback,
     ): Promise<void>;
 
+    /**
+     * Write data into a file of an object
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param data The data to write
+     * @param options The current request options including the user, or the callback
+     * @param callback Called once the file has been written
+     */
     async writeFile(
         id: string,
         name: string,
@@ -1211,6 +1306,14 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of writeFile
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param data The data to write
+     * @param options The current request options including the user
+     */
     writeFileAsync(id: string, name: string, data: any, options?: WriteFileOptions | null): Promise<void> {
         return new Promise<void>((resolve, reject) =>
             this.writeFile(id, name, data, options, err => (err ? reject(err) : resolve())),
@@ -1237,15 +1340,38 @@ export class ObjectsInRedisClient {
     }
 
     // User has provided no callback, we will return the Promise
+    /**
+     * Read a file of an object
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param options The current request options including the user
+     */
     readFile(id: string, name: string, options?: CallOptions | null): ioBroker.ReadFilePromise;
 
     // User has provided a callback, thus we will call it
+    /**
+     * Read a file of an object
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param options The current request options including the user
+     * @param callback Called with the file content and mime type
+     */
     readFile(
         id: string,
         name: string,
         options: CallOptions | null | undefined,
         callback: ioBroker.ReadFileCallback,
     ): void;
+    /**
+     * Read a file of an object
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param options The current request options including the user, or the callback
+     * @param callback Called with the file content and mime type
+     */
     readFile(
         id: string,
         name: string,
@@ -1380,6 +1506,14 @@ export class ObjectsInRedisClient {
         await this.client.del(metaID);
     }
 
+    /**
+     * Delete a file or directory of an object
+     *
+     * @param id The id of the object owning the file
+     * @param name The file or directory name to delete
+     * @param options The current request options including the user, or the callback
+     * @param callback Called with the list of removed files
+     */
     unlink(id: string, name: string, options: CallOptions | null | undefined, callback?: ioBroker.RmCallback): void {
         if (typeof options === 'function') {
             callback = options;
@@ -1413,16 +1547,38 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of unlink
+     *
+     * @param id The id of the object owning the file
+     * @param name The file or directory name to delete
+     * @param options The current request options including the user
+     */
     unlinkAsync(id: string, name: string, options?: CallOptions): Promise<void> {
         return new Promise<void>((resolve, reject) =>
             this.unlink(id, name, options, err => (err ? reject(err) : resolve())),
         );
     }
 
+    /**
+     * Delete a file of an object (alias for unlink)
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name to delete
+     * @param options The current request options including the user
+     * @param callback Called once the file has been deleted
+     */
     delFile(id: string, name: string, options: CallOptions, callback: ioBroker.ErrorCallback): void {
         return this.unlink(id, name, options, callback);
     }
 
+    /**
+     * Promise-version of delFile
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name to delete
+     * @param options The current request options including the user
+     */
     delFileAsync(id: string, name: string, options: CallOptions): Promise<void> {
         return this.unlinkAsync(id, name, options);
     }
@@ -1586,6 +1742,14 @@ export class ObjectsInRedisClient {
         return tools.maybeCallbackWithError(callback, null, result);
     }
 
+    /**
+     * List the contents of a directory of an object
+     *
+     * @param id The id of the object owning the files
+     * @param name The directory name to list
+     * @param options The current request options including the user, or the callback
+     * @param callback Called with the directory entries
+     */
     readDir(
         id: string,
         name: string,
@@ -1623,6 +1787,13 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of readDir
+     *
+     * @param id The id of the object owning the files
+     * @param name The directory name to list
+     * @param options The current request options including the user
+     */
     readDirAsync(id: string, name: string, options?: CallOptions): ioBroker.ReadDirPromise {
         return new Promise((resolve, reject) =>
             this.readDir(id, name, options, (err, res) => (err ? reject(err) : resolve(res!))),
@@ -1757,6 +1928,15 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Rename a file or directory of an object
+     *
+     * @param id The id of the object owning the file
+     * @param oldName The current file or directory name
+     * @param newName The new file or directory name
+     * @param options The current request options including the user, or the callback
+     * @param callback Called once the file has been renamed
+     */
     rename(
         id: string,
         oldName: string,
@@ -1807,6 +1987,14 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of rename
+     *
+     * @param id The id of the object owning the file
+     * @param oldName The current file or directory name
+     * @param newName The new file or directory name
+     * @param options The current request options including the user
+     */
     renameAsync(id: string, oldName: string, newName: string, options: CallOptions): Promise<void> {
         return new Promise((resolve, reject) =>
             this.rename(id, oldName, newName, options, err => (err ? reject(err) : resolve())),
@@ -1830,6 +2018,14 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Update the modification time of a file
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param options The current request options including the user, or the callback
+     * @param callback Called once the file has been touched
+     */
     touch(id: string, name: string, options: CallOptions | null, callback: ioBroker.ErrorCallback): void {
         if (typeof options === 'function') {
             callback = options;
@@ -1855,6 +2051,13 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of touch
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param options The current request options including the user
+     */
     touchAsync(id: string, name: string, options: CallOptions): Promise<void> {
         return new Promise((resolve, reject) => this.touch(id, name, options, err => (err ? reject(err) : resolve())));
     }
@@ -1960,6 +2163,14 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Delete a file or directory of an object
+     *
+     * @param id The id of the object owning the file
+     * @param name The file or directory name to delete
+     * @param options The current request options including the user, or the callback
+     * @param callback Called with the list of removed files
+     */
     rm(id: string, name: string, options: CallOptions | null, callback: ioBroker.RmCallback): void {
         if (typeof options === 'function') {
             callback = options;
@@ -1989,6 +2200,13 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of rm
+     *
+     * @param id The id of the object owning the file
+     * @param name The file or directory name to delete
+     * @param options The current request options including the user
+     */
     rmAsync(id: string, name: string, options: CallOptions): Promise<void | ioBroker.RmResult[]> {
         return new Promise((resolve, reject) =>
             this.rm(id, name, options, (err, files) => (err ? reject(err) : resolve(files))),
@@ -1996,6 +2214,14 @@ export class ObjectsInRedisClient {
     }
 
     // simulate. redis has no dirs
+    /**
+     * Create a directory for an object's files (simulated, as redis has no real directories)
+     *
+     * @param id The id of the object owning the files
+     * @param dirName The directory name to create
+     * @param options The current request options including the user, or the callback
+     * @param callback Called once the directory has been created
+     */
     mkdir(id: string, dirName?: string, options?: CallOptions | null, callback?: ioBroker.ErrorCallback): void {
         if (typeof options === 'function') {
             callback = options;
@@ -2023,6 +2249,13 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of mkdir
+     *
+     * @param id The id of the object owning the files
+     * @param dirName The directory name to create
+     * @param options The current request options including the user
+     */
     mkdirAsync(id: string, dirName?: string, options?: CallOptions): Promise<void> {
         return new Promise((resolve, reject) =>
             this.mkdir(id, dirName, options, err => (err ? reject(err) : resolve())),
@@ -2172,6 +2405,14 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Change the owner and owner group of a file
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param options The current request options including the new owner and the user
+     * @param callback Called with the processed file(s)
+     */
     chownFile(id: string, name: string, options: CallOptions, callback: ioBroker.ChownFileCallback): void {
         if (typeof options === 'function') {
             callback = options;
@@ -2226,6 +2467,13 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of chownFile
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param options The current request options including the new owner and the user
+     */
     chownFileAsync(
         id: string,
         name: string,
@@ -2387,6 +2635,14 @@ export class ObjectsInRedisClient {
         );
     }
 
+    /**
+     * Change the file mode (permissions) of a single file
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param options The current request options including the new mode and the user, or the callback
+     * @param callback Called with the processed file
+     */
     chmodFile(id: string, name: string, options: CallOptions | null, callback: ioBroker.ChownFileCallback): void {
         if (typeof options === 'function') {
             callback = options;
@@ -2424,6 +2680,13 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of chmodFile
+     *
+     * @param id The id of the object owning the file
+     * @param name The file name
+     * @param options The current request options including the new mode and the user
+     */
     chmodFileAsync(
         id: string,
         name: string,
@@ -2435,13 +2698,33 @@ export class ObjectsInRedisClient {
     }
 
     // no options provided by user
+    /**
+     * Enable or disable the file cache
+     *
+     * @param enabled Whether the file cache should be enabled
+     * @param callback Called with the resulting cache state
+     */
     enableFileCache(enabled: boolean, callback?: (err: Error | null | undefined, res: boolean) => void): void;
     // options provided by user
+    /**
+     * Enable or disable the file cache
+     *
+     * @param enabled Whether the file cache should be enabled
+     * @param options The current request options including the user
+     * @param callback Called with the resulting cache state
+     */
     enableFileCache(
         enabled: boolean,
         options?: CallOptions,
         callback?: (err: Error | null | undefined, res: boolean) => void,
     ): void;
+    /**
+     * Enable or disable the file cache
+     *
+     * @param enabled Whether the file cache should be enabled
+     * @param options The current request options including the user, or the callback
+     * @param callback Called with the resulting cache state
+     */
     enableFileCache(
         enabled: boolean,
         options?: any,
@@ -2465,6 +2748,12 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of enableFileCache
+     *
+     * @param enabled Whether the file cache should be enabled
+     * @param options The current request options including the user
+     */
     enableFileCacheAsync(enabled: boolean, options?: CallOptions): Promise<boolean> {
         return new Promise((resolve, reject) =>
             this.enableFileCache(enabled, options, (err, res) => (err ? reject(err) : resolve(res))),
@@ -2517,6 +2806,13 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Subscribe a user to file changes of an object
+     *
+     * @param id The id of the object owning the files
+     * @param pattern One or more file name patterns to subscribe to
+     * @param options The current request options including the user
+     */
     subscribeUserFile(id: string, pattern: string | string[], options?: CallOptions | null): Promise<void> {
         return new Promise((resolve, reject) => {
             utils.checkObjectRights(this, null, null, options, 'list', err => {
@@ -2531,6 +2827,13 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Unsubscribe a user from file changes of an object
+     *
+     * @param id The id of the object owning the files
+     * @param pattern One or more file name patterns to unsubscribe from
+     * @param options The current request options including the user
+     */
     unsubscribeUserFile(id: string, pattern: string | string[], options?: CallOptions | null): Promise<void> {
         return new Promise((resolve, reject) => {
             utils.checkObjectRights(this, null, null, options, 'list', err => {
@@ -2600,8 +2903,28 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Subscribe to object changes matching the given pattern
+     *
+     * @param pattern One or more patterns to subscribe to
+     * @param callback Called once the subscription is registered
+     */
     subscribe(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Subscribe to object changes matching the given pattern
+     *
+     * @param pattern One or more patterns to subscribe to
+     * @param options The current request options including the user
+     * @param callback Called once the subscription is registered
+     */
     subscribe(pattern: string | string[], options?: CallOptions, callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Subscribe to object changes matching the given pattern
+     *
+     * @param pattern One or more patterns to subscribe to
+     * @param options The current request options including the user, or the callback
+     * @param callback Called once the subscription is registered
+     */
     subscribe(
         pattern: string | string[],
         options?: CallOptions | ioBroker.ErrorCallback | null,
@@ -2614,6 +2937,12 @@ export class ObjectsInRedisClient {
         return this.subscribeConfig(pattern, options, callback);
     }
 
+    /**
+     * Promise-version of subscribe
+     *
+     * @param pattern One or more patterns to subscribe to
+     * @param options The current request options including the user
+     */
     subscribeAsync(pattern: string | string[], options?: CallOptions): Promise<void> {
         return new Promise((resolve, reject) =>
             this.subscribe(pattern, options, err => (err ? reject(err) : resolve())),
@@ -2621,9 +2950,29 @@ export class ObjectsInRedisClient {
     }
 
     // User has called the method without providing options
+    /**
+     * Subscribe a user to object changes matching the given pattern
+     *
+     * @param pattern One or more patterns to subscribe to
+     * @param callback Called once the subscription is registered
+     */
     subscribeUser(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
     // User has called the method by providing options
+    /**
+     * Subscribe a user to object changes matching the given pattern
+     *
+     * @param pattern One or more patterns to subscribe to
+     * @param options The current request options including the user
+     * @param callback Called once the subscription is registered
+     */
     subscribeUser(pattern: string | string[], options?: CallOptions | null, callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Subscribe a user to object changes matching the given pattern
+     *
+     * @param pattern One or more patterns to subscribe to
+     * @param options The current request options including the user, or the callback
+     * @param callback Called once the subscription is registered
+     */
     subscribeUser(pattern: string | string[], options?: any, callback?: ioBroker.ErrorCallback): void {
         if (typeof options === 'function') {
             callback = options;
@@ -2637,6 +2986,12 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of subscribeUser
+     *
+     * @param pattern One or more patterns to subscribe to
+     * @param options The current request options including the user
+     */
     subscribeUserAsync(pattern: string | string[], options: CallOptions): Promise<void> {
         return new Promise((resolve, reject) =>
             this.subscribeUser(pattern, options, err => (err ? reject(err) : resolve())),
@@ -2687,9 +3042,29 @@ export class ObjectsInRedisClient {
     }
 
     // User has not provided any options
+    /**
+     * Unsubscribe from object changes matching the given pattern
+     *
+     * @param pattern One or more patterns to unsubscribe from
+     * @param callback Called once the subscription is removed
+     */
     unsubscribe(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
     // User has provided options
+    /**
+     * Unsubscribe from object changes matching the given pattern
+     *
+     * @param pattern One or more patterns to unsubscribe from
+     * @param options The current request options including the user
+     * @param callback Called once the subscription is removed
+     */
     unsubscribe(pattern: string | string[], options?: CallOptions | null, callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Unsubscribe from object changes matching the given pattern
+     *
+     * @param pattern One or more patterns to unsubscribe from
+     * @param options The current request options including the user, or the callback
+     * @param callback Called once the subscription is removed
+     */
     unsubscribe(
         pattern: string | string[],
         options?: CallOptions | ioBroker.ErrorCallback | null,
@@ -2703,12 +3078,25 @@ export class ObjectsInRedisClient {
         return this.unsubscribeConfig(pattern, options, callback);
     }
 
+    /**
+     * Promise-version of unsubscribe
+     *
+     * @param pattern One or more patterns to unsubscribe from
+     * @param options The current request options including the user
+     */
     unsubscribeAsync(pattern: string | string[], options: CallOptions): Promise<void> {
         return new Promise((resolve, reject) =>
             this.unsubscribe(pattern, options, err => (err ? reject(err) : resolve())),
         );
     }
 
+    /**
+     * Unsubscribe a user from object changes matching the given pattern
+     *
+     * @param pattern One or more patterns to unsubscribe from
+     * @param options The current request options including the user, or the callback
+     * @param callback Called once the subscription is removed
+     */
     unsubscribeUser(pattern: string | string[], options?: CallOptions | null, callback?: ioBroker.ErrorCallback): void {
         if (typeof options === 'function') {
             callback = options;
@@ -2727,6 +3115,12 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of unsubscribeUser
+     *
+     * @param pattern One or more patterns to unsubscribe from
+     * @param options The current request options including the user
+     */
     unsubscribeUserAsync(pattern: string | string[], options: CallOptions): Promise<void> {
         return new Promise<void>((resolve, reject) =>
             this.unsubscribeUser(pattern, options, err => (err ? reject(err) : resolve())),
@@ -2837,6 +3231,13 @@ export class ObjectsInRedisClient {
         );
     }
 
+    /**
+     * Change the owner and owner group of all objects matching the given pattern
+     *
+     * @param pattern The pattern of object ids whose owner should be changed
+     * @param options The current request options including the new owner and the user, or the callback
+     * @param callback Called with the list of changed objects
+     */
     chownObject(pattern: string, options: CallOptions, callback?: ioBroker.ChownObjectCallback): void | Promise<void> {
         if (typeof options === 'function') {
             callback = options;
@@ -2885,6 +3286,12 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of chownObject
+     *
+     * @param pattern The pattern of object ids whose owner should be changed
+     * @param options The current request options including the new owner and the user
+     */
     chownObjectAsync(
         pattern: string,
         options: CallOptions,
@@ -2967,6 +3374,13 @@ export class ObjectsInRedisClient {
         );
     }
 
+    /**
+     * Change the file mode (permissions) of all files matching the given pattern
+     *
+     * @param pattern The pattern of object ids whose files should be changed
+     * @param options The current request options including the new mode and the user, or the callback
+     * @param callback Called with the list of changed objects
+     */
     chmodObject(
         pattern: string,
         options: CallOptions | null,
@@ -3005,6 +3419,12 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of chmodObject
+     *
+     * @param pattern The pattern of object ids whose files should be changed
+     * @param options The current request options including the new mode and the user
+     */
     chmodObjectAsync(
         pattern: string,
         options: CallOptions,
@@ -3050,16 +3470,42 @@ export class ObjectsInRedisClient {
     }
 
     // cb version with options
+    /**
+     * Get a single object by its id
+     *
+     * @param id The id of the object to read
+     * @param options The current request options including the user
+     * @param callback Called with the read object
+     */
     getObject<T extends string>(
         id: T,
         options: Options | undefined | null,
         callback: ioBroker.GetObjectCallback<T>,
     ): void;
     // Promise version
+    /**
+     * Get a single object by its id
+     *
+     * @param id The id of the object to read
+     * @param options The current request options including the user
+     */
     getObject<T extends string>(id: T, options?: Options | null): ioBroker.GetObjectPromise<T>;
     // no options but cb
+    /**
+     * Get a single object by its id
+     *
+     * @param id The id of the object to read
+     * @param callback Called with the read object
+     */
     getObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): void;
 
+    /**
+     * Get a single object by its id
+     *
+     * @param id The id of the object to read
+     * @param options The current request options including the user, or the callback
+     * @param callback Called with the read object
+     */
     getObject<T extends string>(
         id: T,
         options?: any,
@@ -3089,9 +3535,10 @@ export class ObjectsInRedisClient {
     }
 
     /**
+     * Promise-version of getObject
      *
-     * @param id
-     * @param options
+     * @param id The id of the object to read
+     * @param options The current request options including the user
      * @deprecated use `getObject` without callback instead
      */
     getObjectAsync<T extends string>(
@@ -3183,6 +3630,14 @@ export class ObjectsInRedisClient {
     }
 
     // User has provided a callback, thus we call the callback function
+    /**
+     * Get all object ids matching the given pattern
+     *
+     * @param pattern The pattern to match object ids against
+     * @param options The current request options including the user
+     * @param callback Called with the matching keys
+     * @param dontModify If true, the returned keys are not stripped of the namespace
+     */
     getKeys(
         pattern: string,
         options: CallOptions | null | undefined,
@@ -3190,14 +3645,36 @@ export class ObjectsInRedisClient {
         dontModify?: boolean,
     ): void;
     // User has provided callback without options, we call it
+    /**
+     * Get all object ids matching the given pattern
+     *
+     * @param pattern The pattern to match object ids against
+     * @param callback Called with the matching keys
+     */
     getKeys(pattern: string, callback: ioBroker.GetKeysCallback): void;
     // User has provided no callback, we return a promise
+    /**
+     * Get all object ids matching the given pattern
+     *
+     * @param pattern The pattern to match object ids against
+     * @param options The current request options including the user
+     * @param callback Must be undefined for the promise variant
+     * @param dontModify If true, the returned keys are not stripped of the namespace
+     */
     getKeys(
         pattern: string,
         options?: CallOptions | null,
         callback?: undefined,
         dontModify?: boolean,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback>>;
+    /**
+     * Get all object ids matching the given pattern
+     *
+     * @param pattern The pattern to match object ids against
+     * @param options The current request options including the user, or the callback
+     * @param callback Called with the matching keys
+     * @param dontModify If true, the returned keys are not stripped of the namespace
+     */
     getKeys(
         pattern: string,
         options?: CallOptions | null | ioBroker.GetKeysCallback,
@@ -3223,6 +3700,12 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Promise-version of getKeys
+     *
+     * @param id The pattern to match object ids against
+     * @param options The current request options including the user
+     */
     getKeysAsync(id: string, options?: CallOptions): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback>> {
         return this.getKeys(id, options);
     }
@@ -3305,15 +3788,43 @@ export class ObjectsInRedisClient {
     }
 
     // No callback provided, we return a Promise
+    /**
+     * Get multiple objects by their ids
+     *
+     * @param keys The ids of the objects to read
+     * @param options The current request options including the user
+     */
     getObjects(keys: string[], options?: CallOptions | null): Promise<ioBroker.AnyObject[]>;
+    /**
+     * Get multiple objects by their ids
+     *
+     * @param keys The ids of the objects to read
+     * @param callback Called with the read objects
+     */
     getObjects(keys: string[], callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void): void;
     // Callback provided, thus we call it
+    /**
+     * Get multiple objects by their ids
+     *
+     * @param keys The ids of the objects to read
+     * @param options The current request options including the user
+     * @param callback Called with the read objects
+     * @param dontModify If true, the returned objects are not cloned/modified
+     */
     getObjects(
         keys: string[],
         options: CallOptions | null,
         callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void,
         dontModify?: boolean,
     ): void;
+    /**
+     * Get multiple objects by their ids
+     *
+     * @param keys The ids of the objects to read
+     * @param options The current request options including the user, or the callback
+     * @param callback Called with the read objects
+     * @param dontModify If true, the returned objects are not cloned/modified
+     */
     getObjects(
         keys: string[],
         options?: CallOptions | null,
@@ -3344,6 +3855,12 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Promise-version of getObjects
+     *
+     * @param keys The ids of the objects to read
+     * @param options The current request options including the user
+     */
     getObjectsAsync(keys: string[], options?: CallOptions | null): Promise<ioBroker.AnyObject[]> {
         return this.getObjects(keys, options);
     }
@@ -3377,12 +3894,32 @@ export class ObjectsInRedisClient {
         this._getObjects(keys, options, callback, true);
     }
 
+    /**
+     * Get all objects whose id matches the given pattern
+     *
+     * @param pattern The pattern to match object ids against
+     * @param options The current request options including the user
+     */
     getObjectsByPattern(pattern: string, options: CallOptions | null): Promise<ioBroker.AnyObject[] | void>;
+    /**
+     * Get all objects whose id matches the given pattern
+     *
+     * @param pattern The pattern to match object ids against
+     * @param options The current request options including the user
+     * @param callback Called with the matching objects
+     */
     getObjectsByPattern(
         pattern: string,
         options: CallOptions | null,
         callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void,
     ): void;
+    /**
+     * Get all objects whose id matches the given pattern
+     *
+     * @param pattern The pattern to match object ids against
+     * @param options The current request options including the user, or the callback
+     * @param callback Called with the matching objects
+     */
     getObjectsByPattern(
         pattern: string,
         options: CallOptions | null,
@@ -3410,6 +3947,12 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Promise-version of getObjectsByPattern
+     *
+     * @param pattern The pattern to match object ids against
+     * @param options The current request options including the user
+     */
     getObjectsByPatternAsync(pattern: string, options: CallOptions): Promise<ioBroker.AnyObject[] | void> {
         return new Promise((resolve, reject) =>
             this.getObjectsByPattern(pattern, options, (err, objs) => (err ? reject(err) : resolve(objs))),
@@ -3618,12 +4161,25 @@ export class ObjectsInRedisClient {
         return { id };
     }
 
+    /**
+     * Set anew or update an object
+     *
+     * @param id ID of the object
+     * @param obj The object to write
+     */
     setObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
 
     // method called without options
+    /**
+     * Set anew or update an object
+     *
+     * @param id ID of the object
+     * @param obj The object to write
+     * @param callback return function
+     */
     setObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>,
@@ -3631,6 +4187,14 @@ export class ObjectsInRedisClient {
     ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
 
     // method called with options
+    /**
+     * Set anew or update an object
+     *
+     * @param id ID of the object
+     * @param obj The object to write
+     * @param options options for access control are optional
+     * @param callback return function
+     */
     setObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>,
@@ -3644,7 +4208,7 @@ export class ObjectsInRedisClient {
      * This function writes the object into DB
      *
      * @param id ID of the object
-     * @param obj
+     * @param obj The object to write
      * @param options options for access control are optional
      * @param callback return function
      */
@@ -3682,10 +4246,11 @@ export class ObjectsInRedisClient {
     }
 
     /**
+     * Promise-version of setObject
      *
-     * @param id
-     * @param obj
-     * @param options
+     * @param id ID of the object
+     * @param obj The object to write
+     * @param options options for access control are optional
      * @deprecated use `setObject` without callback instead
      */
     setObjectAsync(
@@ -3767,12 +4332,38 @@ export class ObjectsInRedisClient {
     }
 
     // User has not passed options parameter
+    /**
+     * Delete an object
+     *
+     * @param id The id of the object to delete
+     * @param callback Called once the object has been deleted
+     */
     delObject(id: string, callback: ioBroker.ErrorCallback): void;
     // User has  passed options parameter
+    /**
+     * Delete an object
+     *
+     * @param id The id of the object to delete
+     * @param options The current request options including the user
+     * @param callback Called once the object has been deleted
+     */
     delObject(id: string, options: CallOptions | null, callback: ioBroker.ErrorCallback): void;
     // User has not passed a callback, we will return a Promise
+    /**
+     * Delete an object
+     *
+     * @param id The id of the object to delete
+     * @param options The current request options including the user
+     */
     delObject(id: string, options?: CallOptions | null): Promise<void>;
 
+    /**
+     * Delete an object
+     *
+     * @param id The id of the object to delete
+     * @param options The current request options including the user, or the callback
+     * @param callback Called once the object has been deleted
+     */
     delObject(id: string, options: CallOptions | null, callback?: ioBroker.ErrorCallback): void | Promise<void> {
         if (typeof options === 'function') {
             callback = options;
@@ -3800,6 +4391,12 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of delObject
+     *
+     * @param id The id of the object to delete
+     * @param options The current request options including the user
+     */
     delObjectAsync(id: string, options?: CallOptions): Promise<void> {
         return this.delObject(id, options);
     }
@@ -4323,6 +4920,14 @@ export class ObjectsInRedisClient {
     }
 
     // no callback provided, thus we return a result Promise
+    /**
+     * Run a predefined object view (design document) and return the matching rows
+     *
+     * @param design The design document name
+     * @param search The view name within the design document
+     * @param params Query parameters such as startkey and endkey
+     * @param options The current request options including the user
+     */
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
@@ -4331,6 +4936,15 @@ export class ObjectsInRedisClient {
     ): ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>>;
 
     // callback and options provided, we send result in callback
+    /**
+     * Run a predefined object view (design document) and return the matching rows
+     *
+     * @param design The design document name
+     * @param search The view name within the design document
+     * @param params Query parameters such as startkey and endkey
+     * @param options The current request options including the user
+     * @param callback Called with the matching rows
+     */
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
@@ -4340,6 +4954,14 @@ export class ObjectsInRedisClient {
     ): void;
 
     // callback but no options provided, we send result in callback
+    /**
+     * Run a predefined object view (design document) and return the matching rows
+     *
+     * @param design The design document name
+     * @param search The view name within the design document
+     * @param params Query parameters such as startkey and endkey
+     * @param callback Called with the matching rows
+     */
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
@@ -4347,6 +4969,15 @@ export class ObjectsInRedisClient {
         callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>,
     ): void;
 
+    /**
+     * Run a predefined object view (design document) and return the matching rows
+     *
+     * @param design The design document name
+     * @param search The view name within the design document
+     * @param params Query parameters such as startkey and endkey
+     * @param options The current request options including the user, or the callback
+     * @param callback Called with the matching rows
+     */
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
@@ -4383,6 +5014,14 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Promise-version of getObjectView
+     *
+     * @param design The design document name
+     * @param search The view name within the design document
+     * @param params Query parameters such as startkey and endkey
+     * @param options The current request options including the user
+     */
     getObjectViewAsync<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
@@ -4465,24 +5104,55 @@ export class ObjectsInRedisClient {
     }
 
     // getObjectList is called without options without callback, we return a promise
+    /**
+     * Get the list of objects matching the given parameters
+     *
+     * @param params Query parameters such as startkey and endkey
+     */
     getObjectList(params: ioBroker.GetObjectListParams): ioBroker.GetObjectListPromise;
 
     // getObjectList is called without callback, thus we return a promise
+    /**
+     * Get the list of objects matching the given parameters
+     *
+     * @param params Query parameters such as startkey and endkey
+     * @param options The current request options including the user
+     */
     getObjectList(params: ioBroker.GetObjectListParams, options?: CallOptions | null): ioBroker.GetObjectListPromise;
 
     // getObjectList is called without options with callback
+    /**
+     * Get the list of objects matching the given parameters
+     *
+     * @param params Query parameters such as startkey and endkey
+     * @param callback Called with the matching objects
+     */
     getObjectList(
         params: ioBroker.GetObjectListParams,
         callback: ioBroker.GetObjectListCallback<ioBroker.Object>,
     ): void;
 
     // getObjectList is called with options
+    /**
+     * Get the list of objects matching the given parameters
+     *
+     * @param params Query parameters such as startkey and endkey
+     * @param options The current request options including the user
+     * @param callback Called with the matching objects
+     */
     getObjectList<T extends ioBroker.GetObjectListCallback<ioBroker.Object>>(
         params: ioBroker.GetObjectListParams,
         options?: CallOptions | null,
         callback?: T,
     ): T extends ioBroker.GetObjectListCallback<ioBroker.Object> ? void : ioBroker.GetObjectListPromise;
 
+    /**
+     * Get the list of objects matching the given parameters
+     *
+     * @param params Query parameters such as startkey and endkey
+     * @param options The current request options including the user, or the callback
+     * @param callback Called with the matching objects
+     */
     getObjectList(
         params: ioBroker.GetObjectListParams,
         options?: CallOptions | null,
@@ -4517,6 +5187,12 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Promise-version of getObjectList
+     *
+     * @param params Query parameters such as startkey and endkey
+     * @param options The current request options including the user
+     */
     getObjectListAsync(params: ioBroker.GetObjectListParams, options?: CallOptions): ioBroker.GetObjectListPromise {
         return this.getObjectList(params, options);
     }
@@ -4682,17 +5358,40 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Extend an existing object with the given partial object, creating it if it does not exist
+     *
+     * @param id The id of the object to extend
+     * @param obj The partial object to merge into the existing object
+     * @param options The current request options including the user
+     */
     extendObject<T extends string>(
         id: T,
         obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options?: ioBroker.ExtendObjectOptions | null,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>>;
+    /**
+     * Extend an existing object with the given partial object, creating it if it does not exist
+     *
+     * @param id The id of the object to extend
+     * @param obj The partial object to merge into the existing object
+     * @param options The current request options including the user
+     * @param callback Called with the resulting object and its id
+     */
     extendObject<T extends string>(
         id: T,
         obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options?: ioBroker.ExtendObjectOptions | null,
         callback?: ioBroker.ExtendObjectCallback,
     ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>>;
+    /**
+     * Extend an existing object with the given partial object, creating it if it does not exist
+     *
+     * @param id The id of the object to extend
+     * @param obj The partial object to merge into the existing object
+     * @param options The current request options including the user, or the callback
+     * @param callback Called with the resulting object and its id
+     */
     extendObject<T extends string>(
         id: T,
         obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
@@ -4722,6 +5421,13 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of extendObject
+     *
+     * @param id The id of the object to extend
+     * @param obj The partial object to merge into the existing object
+     * @param options The current request options including the user
+     */
     extendObjectAsync(
         id: string,
         obj: Partial<ioBroker.AnyObject>,
@@ -4735,10 +5441,10 @@ export class ObjectsInRedisClient {
     /**
      * Returns the object id if found
      *
-     * @param idOrName
-     * @param type
-     * @param options
-     * @param callback
+     * @param idOrName The id or name to search for
+     * @param type The expected common type, or null for any
+     * @param options The current request options (may include a language)
+     * @param callback Called with the found id and the original id/name
      */
     private _findObject(
         idOrName: string,
@@ -4804,6 +5510,14 @@ export class ObjectsInRedisClient {
     }
 
     // The user has provided a callback, thus we call it
+    /**
+     * Find an object by its id or name
+     *
+     * @param idOrName The id or name to search for
+     * @param type The expected common type, or null for any
+     * @param options The current request options (may include a language)
+     * @param callback Called with the found id and the original id/name
+     */
     findObject(
         idOrName: string,
         type: ioBroker.CommonType | null,
@@ -4816,9 +5530,23 @@ export class ObjectsInRedisClient {
     ): void;
 
     // The user has provided a callback without options
+    /**
+     * Find an object by its id or name
+     *
+     * @param idOrName The id or name to search for
+     * @param type The expected common type, or null for any
+     * @param callback Called with the found id and the original id/name
+     */
     findObject(idOrName: string, type: ioBroker.CommonType | null, callback: ioBroker.FindObjectCallback): void;
 
     // No callback provided by user, we return a promise
+    /**
+     * Find an object by its id or name
+     *
+     * @param idOrName The id or name to search for
+     * @param type The expected common type, or null for any
+     * @param options The current request options (may include a language)
+     */
     findObject(
         idOrName: string,
         type?: ioBroker.CommonType | null,
@@ -4829,6 +5557,14 @@ export class ObjectsInRedisClient {
             | null,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.FindObjectCallback>>;
 
+    /**
+     * Find an object by its id or name
+     *
+     * @param idOrName The id or name to search for
+     * @param type The expected common type, or null for any
+     * @param options The current request options (may include a language), or the callback
+     * @param callback Called with the found id and the original id/name
+     */
     findObject(
         idOrName: string,
         type: ioBroker.CommonType | null,
@@ -4869,6 +5605,11 @@ export class ObjectsInRedisClient {
     }
 
     // can be called only from js-controller
+    /**
+     * Add object property paths that should be preserved when an object is overwritten (controller only)
+     *
+     * @param settings One or more property paths to preserve
+     */
     addPreserveSettings(settings: string[] | string): void {
         if (!Array.isArray(settings)) {
             settings = [settings];
@@ -4914,6 +5655,12 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Delete the whole objects database (requires admin rights)
+     *
+     * @param options The current request options including the user, or the callback
+     * @param callback Called once the database has been destroyed
+     */
     destroyDB(options: CallOptions | null | undefined, callback: ioBroker.ErrorCallback): void {
         if (typeof options === 'function') {
             callback = options;
@@ -4932,11 +5679,18 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     * Promise-version of destroyDB
+     *
+     * @param options The current request options including the user
+     */
     destroyDBAsync(options?: CallOptions): Promise<void> {
         return new Promise<void>((resolve, reject) => this.destroyDB(options, err => (err ? reject(err) : resolve())));
     }
 
-    // Destructor of the class. Called by shutting down.
+    /**
+     * Destructor of the class. Called when shutting down to close the redis connections.
+     */
     async destroy(): Promise<void> {
         this.stop = true;
         if (this.client) {
@@ -4968,6 +5722,9 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Load and register the Lua scripts used for atomic operations on the redis server
+     */
     async loadLuaScripts(): Promise<void> {
         let luaDirName;
 

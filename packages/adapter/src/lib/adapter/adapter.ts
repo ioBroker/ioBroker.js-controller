@@ -151,15 +151,23 @@ tools.ensureDNSOrder();
  * Here we define dynamically created methods
  */
 export interface AdapterClass {
+    /** Listen for state changes */
     on(event: 'stateChange', listener: ioBroker.StateChangeHandler): this;
+    /** Listen for object changes */
     on(event: 'objectChange', listener: ioBroker.ObjectChangeHandler): this;
+    /** Listen for file changes */
     on(event: 'fileChange', listener: ioBroker.FileChangeHandler): this;
+    /** Emitted when the adapter is ready */
     on(event: 'ready', listener: ioBroker.ReadyHandler): this;
+    /** Emitted when the adapter is installed */
     on(event: 'install', listener: ioBroker.ReadyHandler): this;
+    /** Emitted when the adapter is unloaded */
     on(event: 'unload', listener: ioBroker.UnloadHandler): this;
+    /** Emitted when a message is received */
     on(event: 'message', listener: ioBroker.MessageHandler): this;
     /** Only emitted for compact instances */
     on(event: 'exit', listener: (exitCode: number, reason: string) => Promise<void> | void): this;
+    /** Emitted on a new log message */
     on(event: 'log', listener: (message: ioBroker.LogMessage) => Promise<void> | void): this;
     /**
      * Extend an object and create it if it might not exist
@@ -232,6 +240,7 @@ export interface AdapterClass {
 
     /** deletes a device, its channels and states */
     deleteDeviceAsync(deviceName: string, options?: unknown): Promise<void>;
+    /** Adds a channel to an enum */
     addChannelToEnumAsync(
         enumName: string,
         addTo: string,
@@ -239,6 +248,7 @@ export interface AdapterClass {
         channelName: string,
         options?: unknown,
     ): Promise<void>;
+    /** Removes a channel from an enum */
     deleteChannelFromEnumAsync(
         enumName: string,
         parentDevice: string,
@@ -249,6 +259,7 @@ export interface AdapterClass {
     /** Returns a list of all devices in this adapter instance */
     getDevicesAsync(options?: unknown): Promise<ioBroker.DeviceObject[]>;
 
+    /** Adds a state to an enum */
     addStateToEnumAsync(
         enumName: string,
         addTo: string,
@@ -257,6 +268,7 @@ export interface AdapterClass {
         stateName: string,
         options?: unknown,
     ): Promise<void>;
+    /** Removes a state from an enum */
     deleteStateFromEnumAsync(
         enumName: string,
         parentDevice: string,
@@ -271,6 +283,7 @@ export interface AdapterClass {
         options: { mode: number | string } | Record<string, any>,
     ): Promise<{ entries: ioBroker.ChownFileResult[]; id: string }>;
     // TODO: correct types
+    /** Changes the owner of all files in the adapter directory */
     chownFileAsync(...args: any[]): Promise<any>;
     /** reads the content of directory from DB for given adapter and path */
     readDirAsync(adapterName: string | null, path: string, options?: unknown): ioBroker.ReadDirPromise;
@@ -278,10 +291,13 @@ export interface AdapterClass {
     unlinkAsync(adapterName: string | null, path: string, options?: unknown): Promise<void>;
     /** Deletes a given file */
     delFileAsync(adapterName: string | null, path: string, options?: unknown): Promise<void>;
+    /** Renames a file in the DB */
     renameAsync(adapterName: string | null, oldName: string, newName: string, options?: unknown): Promise<void>;
+    /** Creates a directory in the DB */
     mkdirAsync(adapterName: string | null, path: string, options?: unknown): Promise<void>;
     /** reads the content of directory from DB for given adapter and path */
     readFileAsync(adapterName: string | null, path: string, options?: unknown): ioBroker.ReadFilePromise;
+    /** Writes a file into the DB */
     writeFileAsync(adapterName: string | null, path: string, data: Buffer | string, options?: unknown): Promise<void>;
     /** Checks if a file exists in the DB */
     fileExistsAsync(adapterName: string | null, path: string, options?: unknown): Promise<boolean>;
@@ -350,6 +366,13 @@ export interface AdapterClass {
         options?: unknown,
     ): ioBroker.SetObjectPromise;
     // TODO: correct types
+    /**
+     * Get the certificates of the system.
+     *
+     * @param publicName name of the public certificate
+     * @param privateName name of the private key
+     * @param chainedName name of the chained certificate
+     */
     getCertificatesAsync(
         publicName?: string,
         privateName?: string,
@@ -369,11 +392,26 @@ export interface AdapterClass {
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack?: boolean,
     ): ioBroker.SetStateChangedPromise;
+    /**
+     * Writes a value (which might not belong to this adapter) into the states DB only if it has changed.
+     *
+     * @param id object ID of the state
+     * @param state simple value or object with attributes
+     * @param options optional user context
+     */
     setForeignStateChangedAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options?: unknown,
     ): ioBroker.SetStateChangedPromise;
+    /**
+     * Writes a value (which might not belong to this adapter) into the states DB only if it has changed.
+     *
+     * @param id object ID of the state
+     * @param state simple value or object with attributes
+     * @param ack is command(false) or status(true)
+     * @param options optional user context
+     */
     setForeignStateChangedAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
@@ -389,11 +427,26 @@ export interface AdapterClass {
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack?: boolean,
     ): ioBroker.SetStateChangedPromise;
+    /**
+     * Writes a value into the states DB only if it has changed.
+     *
+     * @param id object ID of the state
+     * @param state simple value or object with attributes
+     * @param options optional user context
+     */
     setStateChangedAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options?: unknown,
     ): ioBroker.SetStateChangedPromise;
+    /**
+     * Writes a value into the states DB only if it has changed.
+     *
+     * @param id object ID of the state
+     * @param state simple value or object with attributes
+     * @param ack is command(false) or status(true)
+     * @param options optional user context
+     */
     setStateChangedAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
@@ -405,6 +458,13 @@ export interface AdapterClass {
      * Sends a message to a specific host or all hosts.
      */
     sendToHostAsync(hostName: string, message: ioBroker.MessagePayload): Promise<ioBroker.Message | undefined>;
+    /**
+     * Sends a message to a specific host or all hosts.
+     *
+     * @param hostName name of the host
+     * @param command command name
+     * @param message message to send
+     */
     sendToHostAsync(
         hostName: string,
         command: string,
@@ -415,6 +475,14 @@ export interface AdapterClass {
      * Sends a message to a specific instance or all instances of some specific adapter.
      */
     sendToAsync(instanceName: string, message: ioBroker.MessagePayload): Promise<ioBroker.Message | undefined>;
+    /**
+     * Sends a message to a specific instance or all instances of some specific adapter.
+     *
+     * @param instanceName name of the instance
+     * @param command command name
+     * @param message message to send
+     * @param options optional options to control the send behaviour
+     */
     sendToAsync(
         instanceName: string,
         command: string,
@@ -426,6 +494,14 @@ export interface AdapterClass {
      * Deletes a given file
      */
     delFile(adapterName: string | null, path: string, callback: ioBroker.ErrnoCallback): void;
+    /**
+     * Deletes a given file
+     *
+     * @param adapterName adapter name, or null for the current adapter
+     * @param path path to the file
+     * @param options optional user context
+     * @param callback return result
+     */
     delFile(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback): void;
 
     /**
@@ -460,11 +536,26 @@ export interface AdapterClass {
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack?: boolean,
     ): ioBroker.SetStatePromise;
+    /**
+     * Writes a value (which might not belong to this adapter) into the states DB.
+     *
+     * @param id object ID of the state
+     * @param state simple value or object with attributes
+     * @param options optional user context
+     */
     setForeignStateAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options?: unknown,
     ): ioBroker.SetStatePromise;
+    /**
+     * Writes a value (which might not belong to this adapter) into the states DB.
+     *
+     * @param id object ID of the state
+     * @param state simple value or object with attributes
+     * @param ack is command(false) or status(true)
+     * @param options optional user context
+     */
     setForeignStateAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
@@ -481,11 +572,24 @@ export interface AdapterClass {
         enums?: ioBroker.EnumList | null,
         options?: unknown,
     ): ioBroker.GetObjectsPromiseTyped<T>;
+    /**
+     * Get foreign objects by pattern and specific type.
+     *
+     * @param pattern the pattern to match object ids against
+     * @param type restrict the result to objects of this type
+     * @param options optional user context
+     */
     getForeignObjectsAsync<T extends ioBroker.ObjectType>(
         pattern: Pattern,
         type: T,
         options?: unknown,
     ): ioBroker.GetObjectsPromiseTyped<T>;
+    /**
+     * Get foreign objects by pattern.
+     *
+     * @param pattern the pattern to match object ids against
+     * @param options optional user context
+     */
     getForeignObjectsAsync(pattern: Pattern, options?: unknown): ioBroker.GetObjectsPromise;
 
     /**
@@ -588,13 +692,32 @@ export interface AdapterClass {
      * of the parent device to filter the channels by @param options (optional) Some internal options.
      */
     getChannelsOfAsync(): Promise<ioBroker.ChannelObject[]>;
+    /**
+     * Returns a list of all channels in this adapter instance, optionally filtered by parent device.
+     *
+     * @param parentDevice Name of the parent device to filter the channels by
+     * @param options Some internal options
+     */
     getChannelsOfAsync(parentDevice: string, options?: unknown): Promise<ioBroker.ChannelObject[]>;
 
     /**
      * Returns a list of all channels in this adapter instance
      */
     getChannels(callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>): void;
+    /**
+     * Returns a list of all channels in this adapter instance
+     *
+     * @param parentDevice Name of the parent device to filter the channels by
+     * @param callback return result
+     */
     getChannels(parentDevice: string, callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>): void;
+    /**
+     * Returns a list of all channels in this adapter instance
+     *
+     * @param parentDevice Name of the parent device to filter the channels by
+     * @param options optional user context
+     * @param callback return result
+     */
     getChannels(
         parentDevice: string,
         options: unknown,
@@ -606,6 +729,12 @@ export interface AdapterClass {
      * Name of the parent device to filter the channels by @param options (optional) Some internal options.
      */
     getChannelsAsync(): Promise<ioBroker.ChannelObject[]>;
+    /**
+     * Returns a list of all channels in this adapter instance, optionally filtered by parent device.
+     *
+     * @param parentDevice Name of the parent device to filter the channels by
+     * @param options Some internal options
+     */
     getChannelsAsync(parentDevice: string, options?: unknown): Promise<ioBroker.ChannelObject[]>;
 
     /**
@@ -614,7 +743,20 @@ export interface AdapterClass {
      * Name of the parent channel to filter the channels by @param options (optional) Some internal options.
      */
     getStatesOfAsync(): Promise<ioBroker.StateObject[]>;
+    /**
+     * Returns a list of all states in this adapter instance, optionally filtered by parent device/channel.
+     *
+     * @param parentDevice Name of the parent device to filter the states by
+     * @param parentChannel Name of the parent channel to filter the states by
+     */
     getStatesOfAsync(parentDevice: string, parentChannel?: string): Promise<ioBroker.StateObject[]>;
+    /**
+     * Returns a list of all states in this adapter instance, optionally filtered by parent device/channel.
+     *
+     * @param parentDevice Name of the parent device to filter the states by
+     * @param parentChannel Name of the parent channel to filter the states by
+     * @param options Some internal options
+     */
     getStatesOfAsync(parentDevice: string, parentChannel: string, options?: unknown): Promise<ioBroker.StateObject[]>;
 }
 
@@ -769,6 +911,9 @@ export class AdapterClass extends EventEmitter {
     /** Controller for messaging related functionality */
     private readonly uiMessagingController: UserInterfaceMessagingController;
 
+    /**
+     * @param options Adapter options, or the adapter name as a string
+     */
     constructor(options: AdapterOptions | string) {
         super();
 
@@ -1285,6 +1430,12 @@ export class AdapterClass extends EventEmitter {
         return getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
     }
 
+    /**
+     * Install specified npm module
+     *
+     * @param moduleName name of the node module
+     * @param options install options including the version
+     */
     installNodeModule(moduleName: string, options: InstallNodeModuleOptions): Promise<CommandResult>;
 
     /**
@@ -1323,6 +1474,11 @@ export class AdapterClass extends EventEmitter {
         return listInstalledNodeModules(this.namespace);
     }
 
+    /**
+     * Uninstall specified npm module
+     *
+     * @param moduleName name of the node module
+     */
     uninstallNodeModule(moduleName: string): Promise<CommandResult>;
 
     /**
@@ -1337,6 +1493,12 @@ export class AdapterClass extends EventEmitter {
         return tools.uninstallNodeModule(internalModuleName);
     }
 
+    /**
+     * Import a node module which has been installed via `installNodeModule`
+     *
+     * @param moduleName name of the node module
+     * @returns the required node module
+     */
     importNodeModule(moduleName: string): Promise<unknown>;
 
     /**
@@ -1354,7 +1516,18 @@ export class AdapterClass extends EventEmitter {
     }
 
     // overload with real types
+    /**
+     * Decrypt the password/value with given key
+     *
+     * @param secretVal to use for decrypt (or value if only one parameter is given)
+     * @param value value to decrypt (if secret is provided)
+     */
     decrypt(secretVal: string, value?: string): string;
+    /**
+     * Decrypt the password/value with the system secret
+     *
+     * @param value value to decrypt
+     */
     decrypt(value: string): string;
     /**
      * Decrypt the password/value with given key
@@ -1375,7 +1548,18 @@ export class AdapterClass extends EventEmitter {
     }
 
     // overload with real types
+    /**
+     * Encrypt the password/value with given key
+     *
+     * @param secretVal to use for encrypting (or value if only one parameter is given)
+     * @param value value to encrypt (if secret is provided)
+     */
     encrypt(secretVal: string, value?: string): string;
+    /**
+     * Encrypt the password/value with the system secret
+     *
+     * @param value value to encrypt
+     */
     encrypt(value: string): string;
 
     /**
@@ -1397,8 +1581,20 @@ export class AdapterClass extends EventEmitter {
     }
 
     // real types overload
+    /**
+     * Read a session from the states DB
+     *
+     * @param id the session id
+     * @param callback return result
+     */
     getSession(id: string, callback: ioBroker.GetSessionCallback): MaybePromise;
     // unknown guard implementation
+    /**
+     * Read a session from the states DB
+     *
+     * @param id the session id
+     * @param callback return result
+     */
     getSession(id: unknown, callback: unknown): MaybePromise {
         Validator.assertString(id, 'id');
         Validator.assertCallback(callback, 'callback');
@@ -1418,9 +1614,25 @@ export class AdapterClass extends EventEmitter {
     }
 
     // overload for docs
+    /**
+     * Store a session in the states DB
+     *
+     * @param id the session id
+     * @param ttl time to live in seconds
+     * @param data the session data to store
+     * @param callback return result
+     */
     setSession(id: string, ttl: number, data: Record<string, any>, callback?: ioBroker.ErrorCallback): MaybePromise;
 
     // unknown implementation guards
+    /**
+     * Store a session in the states DB
+     *
+     * @param id the session id
+     * @param ttl time to live in seconds
+     * @param data the session data to store
+     * @param callback return result
+     */
     setSession(id: unknown, ttl: unknown, data: unknown, callback: unknown): MaybePromise {
         Validator.assertString(id, 'id');
         Validator.assertOptionalCallback(callback, 'callback');
@@ -1441,7 +1653,19 @@ export class AdapterClass extends EventEmitter {
     }
 
     // real types overload
+    /**
+     * Destroy a session in the states DB
+     *
+     * @param id the session id
+     * @param callback return result
+     */
     destroySession(id: string, callback?: ioBroker.ErrorCallback): MaybePromise;
+    /**
+     * Destroy a session in the states DB
+     *
+     * @param id the session id
+     * @param callback return result
+     */
     destroySession(id: unknown, callback: unknown): MaybePromise {
         Validator.assertString(id, 'id');
         Validator.assertOptionalCallback(callback, 'callback');
@@ -1475,7 +1699,18 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Stops the execution of adapter, but does not disable it.
+     *
+     * @param exitCode optional exit code
+     */
     terminate(exitCode?: number): never;
+    /**
+     * Stops the execution of adapter, but does not disable it.
+     *
+     * @param reason optional reason for termination
+     * @param exitCode optional exit code
+     */
     terminate(reason?: string, exitCode?: number): never;
 
     /**
@@ -1573,7 +1808,20 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Helper function to find next free port
+     *
+     * @param port port to start searching from
+     * @param host host to bind to
+     * @param callback return result
+     */
     getPort(port: number, host?: string, callback?: (port: number) => void): void;
+    /**
+     * Helper function to find next free port
+     *
+     * @param port port to start searching from
+     * @param callback return result
+     */
     getPort(port: number, callback?: (port: number) => void): void;
 
     /**
@@ -1639,6 +1887,12 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * Method to check for available Features for adapter development
+     *
+     * @param featureName the name of the feature to check
+     * @returns true/false if the feature is in the list of supported features
+     */
     supportsFeature(featureName: ioBroker.SupportedFeature): boolean;
 
     /**
@@ -1662,12 +1916,27 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Validates user and password
+     *
+     * @param user user name as text
+     * @param pw password as text
+     * @param options optional user context
+     * @param callback return result
+     */
     checkPassword(
         user: string,
         pw: string,
         options: Record<string, any>,
         callback: CheckPasswordCallback,
     ): Promise<void>;
+    /**
+     * Validates user and password
+     *
+     * @param user user name as text
+     * @param pw password as text
+     * @param callback return result
+     */
     checkPassword(user: string, pw: string, callback: CheckPasswordCallback): Promise<void>;
 
     /**
@@ -1779,6 +2048,11 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Return ID of given username
+     *
+     * @param username name of the user
+     */
     getUserID(username: string): Promise<string | undefined>;
     /**
      * Return ID of given username
@@ -1810,6 +2084,14 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Sets the user's password
+     *
+     * @param user user name as text
+     * @param pw password as text
+     * @param options optional user context
+     * @param callback return result
+     */
     setPassword(
         user: string,
         pw: string,
@@ -1817,6 +2099,13 @@ export class AdapterClass extends EventEmitter {
         callback?: ioBroker.ErrorCallback,
     ): Promise<void>;
 
+    /**
+     * Sets the user's password
+     *
+     * @param user user name as text
+     * @param pw password as text
+     * @param callback return result
+     */
     setPassword(user: string, pw: string, callback?: ioBroker.ErrorCallback): Promise<void>;
 
     /**
@@ -1916,7 +2205,22 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Returns if user exists and is in the group
+     *
+     * @param user user name as text
+     * @param group group name
+     * @param options optional user context
+     * @param callback return result
+     */
     checkGroup(user: string, group: string, options: Record<string, any>, callback?: CheckGroupCallback): Promise<void>;
+    /**
+     * Returns if user exists and is in the group
+     *
+     * @param user user name as text
+     * @param group group name
+     * @param callback return result
+     */
     checkGroup(user: string, group: string, callback?: CheckGroupCallback): Promise<void>;
 
     /**
@@ -1999,12 +2303,27 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Calculate the effective permissions of a user for the given commands
+     *
+     * @param user user name as text
+     * @param commandsPermissions the permission requirements of the commands
+     * @param options optional user context
+     * @param callback return result
+     */
     calculatePermissions(
         user: string,
         commandsPermissions: CommandsPermissions,
         options?: Record<string, any>,
         callback?: CalculatePermissionsCallback,
     ): Promise<void | ioBroker.PermissionSet>;
+    /**
+     * Calculate the effective permissions of a user for the given commands
+     *
+     * @param user user name as text
+     * @param commandsPermissions the permission requirements of the commands
+     * @param callback return result
+     */
     calculatePermissions(
         user: string,
         commandsPermissions: CommandsPermissions,
@@ -2400,6 +2719,14 @@ export class AdapterClass extends EventEmitter {
     }
 
     // public signature
+    /**
+     * Get the certificates of the system.
+     *
+     * @param publicName name of the public certificate
+     * @param privateName name of the private key
+     * @param chainedName name of the chained certificate
+     * @param callback return result
+     */
     getCertificates(
         publicName?: string,
         privateName?: string,
@@ -2550,6 +2877,11 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * Updates the adapter config with new values, merged with the existing config.
+     *
+     * @param newConfig the new configuration values to merge into the existing config
+     */
     updateConfig(newConfig: Record<string, any>): ioBroker.SetObjectPromise;
     /**
      * Updates the adapter config with new values. Only a subset of the configuration has to be provided,
@@ -2622,6 +2954,12 @@ export class AdapterClass extends EventEmitter {
         return this.setForeignObjectAsync(configObjId, obj);
     }
 
+    /**
+     * Reads the encrypted parameter from config.
+     *
+     * @param attribute the config attribute to decrypt
+     * @param callback return result
+     */
     async getEncryptedConfig(
         attribute: string,
         callback?: GetEncryptedConfigCallback,
@@ -2686,6 +3024,14 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Same as setTimeout, but it clears the running timers during the unloading process
+     *
+     * @param cb timer callback
+     * @param timeout timeout in milliseconds
+     * @param args as many arguments as needed, which will be passed to setTimeout
+     * @returns timer id
+     */
     setTimeout<TCallback extends TimeoutCallback>(
         cb: TCallback,
         timeout: number,
@@ -2730,6 +3076,11 @@ export class AdapterClass extends EventEmitter {
         return timer as unknown as ioBroker.Timeout;
     }
 
+    /**
+     * Same as clearTimeout but it checks the running timers on unload
+     *
+     * @param timer the timer object
+     */
     clearTimeout(timer: ioBroker.Timeout | undefined): void;
 
     /**
@@ -2749,6 +3100,12 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Delays the fulfillment of the promise the amount of time.
+     *
+     * @param timeout timeout in milliseconds
+     * @returns promise when timeout is over
+     */
     delay(timeout: number): Promise<void>;
 
     /**
@@ -2778,6 +3135,14 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Same as setInterval, but it clears the running intervals during the unloading process
+     *
+     * @param cb interval callback
+     * @param timeout interval in milliseconds
+     * @param args as many arguments as needed, which will be passed to setInterval
+     * @returns interval id
+     */
     setInterval<TCallback extends TimeoutCallback>(
         cb: TCallback,
         timeout: number,
@@ -2817,6 +3182,11 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Same as clearInterval but it checks the running intervals on unload
+     *
+     * @param interval interval object
+     */
     clearInterval(interval: ioBroker.Interval | undefined): void;
 
     /**
@@ -2835,12 +3205,40 @@ export class AdapterClass extends EventEmitter {
         this._intervals.delete(interval as NodeJS.Timeout);
     }
 
+    /**
+     * Creates or overwrites an object in objectDB.
+     *
+     * @param id object ID (without namespace)
+     * @param obj the object to write
+     */
     setObject(
         id: string,
         obj: ioBroker.SettableObject,
     ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    /**
+     * Creates or overwrites an object in objectDB.
+     *
+     * @param id object ID (without namespace)
+     * @param obj the object to write
+     * @param callback return result
+     */
     setObject(id: string, obj: ioBroker.SettableObject, callback: ioBroker.SetObjectCallback): void;
+    /**
+     * Creates or overwrites an object in objectDB.
+     *
+     * @param id object ID (without namespace)
+     * @param obj the object to write
+     * @param options optional user context
+     * @param callback return result
+     */
     setObject(id: string, obj: ioBroker.SettableObject, options: unknown, callback: ioBroker.SetObjectCallback): void;
+    /**
+     * Creates or overwrites an object in objectDB.
+     *
+     * @param id object ID (without namespace)
+     * @param obj the object to write
+     * @param options optional user context
+     */
     setObject(
         id: string,
         obj: ioBroker.SettableObject,
@@ -3063,6 +3461,11 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Get all states, channels and devices of this adapter.
+     *
+     * @param callback return result
+     */
     getAdapterObjects(
         callback: (objects: Record<string, ioBroker.AdapterScopedObject>) => void,
     ): Promise<Record<string, ioBroker.AdapterScopedObject> | void>;
@@ -3145,13 +3548,41 @@ export class AdapterClass extends EventEmitter {
     }
 
     // public signatures
+    /**
+     * Extend some object and create it if it does not exist
+     *
+     * @param id object ID (without namespace)
+     * @param objPart the partial object to merge into the existing object
+     */
     extendObject(id: string, objPart: ioBroker.PartialObject): ioBroker.SetObjectPromise;
+    /**
+     * Extend some object and create it if it does not exist
+     *
+     * @param id object ID (without namespace)
+     * @param objPart the partial object to merge into the existing object
+     * @param callback return result
+     */
     extendObject(id: string, objPart: ioBroker.PartialObject, callback?: ioBroker.SetObjectCallback): void;
+    /**
+     * Extend some object and create it if it does not exist
+     *
+     * @param id object ID (without namespace)
+     * @param objPart the partial object to merge into the existing object
+     * @param options optional user context
+     */
     extendObject(
         id: string,
         objPart: ioBroker.PartialObject,
         options: ioBroker.ExtendObjectOptions,
     ): ioBroker.SetObjectPromise;
+    /**
+     * Extend some object and create it if it does not exist
+     *
+     * @param id object ID (without namespace)
+     * @param objPart the partial object to merge into the existing object
+     * @param options optional user context
+     * @param callback return result
+     */
     extendObject(
         id: string,
         objPart: ioBroker.PartialObject,
@@ -3410,20 +3841,48 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Same as {@link AdapterClass.setObject}, but for any object.
+     *
+     * @param id object ID with namespace
+     * @param obj new object
+     */
     setForeignObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
     ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    /**
+     * Same as {@link AdapterClass.setObject}, but for any object.
+     *
+     * @param id object ID with namespace
+     * @param obj new object
+     * @param callback return result
+     */
     setForeignObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         callback: ioBroker.SetObjectCallback,
     ): void;
+    /**
+     * Same as {@link AdapterClass.setObject}, but for any object.
+     *
+     * @param id object ID with namespace
+     * @param obj new object
+     * @param options optional user context
+     */
     setForeignObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options: unknown,
     ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    /**
+     * Same as {@link AdapterClass.setObject}, but for any object.
+     *
+     * @param id object ID with namespace
+     * @param obj new object
+     * @param options optional user context
+     * @param callback return result
+     */
     setForeignObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
@@ -3527,21 +3986,49 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Extend any object and create it if it might not exist.
+     *
+     * @param id object ID with namespace
+     * @param objPart the partial object to merge into the existing object
+     */
     extendForeignObject<T extends string>(
         id: T,
         objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    /**
+     * Extend any object and create it if it might not exist.
+     *
+     * @param id object ID with namespace
+     * @param objPart the partial object to merge into the existing object
+     * @param callback return result
+     */
     extendForeignObject<T extends string>(
         id: T,
         objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         callback: ioBroker.SetObjectCallback,
     ): void;
+    /**
+     * Extend any object and create it if it might not exist.
+     *
+     * @param id object ID with namespace
+     * @param objPart the partial object to merge into the existing object
+     * @param options optional user context
+     * @param callback return result
+     */
     extendForeignObject<T extends string>(
         id: T,
         objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options: ioBroker.ExtendObjectOptions,
         callback: ioBroker.SetObjectCallback,
     ): void;
+    /**
+     * Extend any object and create it if it might not exist.
+     *
+     * @param id object ID with namespace
+     * @param objPart the partial object to merge into the existing object
+     * @param options optional user context
+     */
     extendForeignObject<T extends string>(
         id: T,
         objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
@@ -3735,6 +4222,12 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Checks if an object exists to the given id, id will be fixed first
+     *
+     * @param id id of the object
+     * @param options optional user context
+     */
     objectExists(id: string, options?: Record<string, any> | null): Promise<boolean | void>;
 
     /**
@@ -3762,6 +4255,12 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Checks if an object exists to the given id
+     *
+     * @param id id of the object
+     * @param options optional user context
+     */
     foreignObjectExists(id: string, options?: Record<string, any> | null): Promise<boolean | void>;
 
     /**
@@ -3789,7 +4288,20 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Get object of this instance.
+     *
+     * @param id exactly object ID (without namespace)
+     * @param callback return result
+     */
     getObject(id: string, callback: ioBroker.GetObjectCallback): void;
+    /**
+     * Get object of this instance.
+     *
+     * @param id exactly object ID (without namespace)
+     * @param options optional user context
+     * @param callback return result
+     */
     getObject(id: string, options: unknown, callback: ioBroker.GetObjectCallback): void;
 
     /**
@@ -3832,12 +4344,29 @@ export class AdapterClass extends EventEmitter {
         this.#objects.getObject(this._utils.fixId(id), options, callback);
     }
 
+    /**
+     * Read object view from DB.
+     *
+     * @param design name of the design
+     * @param search name of the view
+     * @param params object containing startkey: first id to include in result; endkey: last id to include in result
+     * @param callback return result
+     */
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
         params: ioBroker.GetObjectViewParams | null | undefined,
         callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>,
     ): void;
+    /**
+     * Read object view from DB.
+     *
+     * @param design name of the design
+     * @param search name of the view
+     * @param params object containing startkey: first id to include in result; endkey: last id to include in result
+     * @param options additional options, e.g. for permissions
+     * @param callback return result
+     */
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
@@ -3948,10 +4477,23 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Read object list from DB.
+     *
+     * @param params startkey and endkey information
+     * @param callback optional callback
+     */
     getObjectList(
         params: ioBroker.GetObjectListParams | null,
         callback: ioBroker.GetObjectListCallback<ioBroker.Object>,
     ): void;
+    /**
+     * Read object list from DB.
+     *
+     * @param params startkey and endkey information
+     * @param options additional options, e.g. for permissions
+     * @param callback optional callback
+     */
     getObjectList(
         params: ioBroker.GetObjectListParams | null,
         options: { sorted?: boolean } | Record<string, any>,
@@ -4006,8 +4548,26 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Get the enum tree.
+     *
+     * @param callback return result
+     */
     getEnum(callback: ioBroker.GetEnumCallback): void;
+    /**
+     * Get the enum tree.
+     *
+     * @param name the enum name to read
+     * @param callback return result
+     */
     getEnum(name: string, callback: ioBroker.GetEnumCallback): void;
+    /**
+     * Get the enum tree.
+     *
+     * @param name the enum name to read
+     * @param options optional user context
+     * @param callback return result
+     */
     getEnum(name: string, options: unknown, callback: ioBroker.GetEnumCallback): void;
 
     /**
@@ -4095,8 +4655,26 @@ export class AdapterClass extends EventEmitter {
     }
 
     // public signatures
+    /**
+     * Read the members of given enums.
+     *
+     * @param callback return result
+     */
     getEnums(callback: ioBroker.GetEnumsCallback): void;
+    /**
+     * Read the members of given enums.
+     *
+     * @param enumList the enum(s) to read
+     * @param callback return result
+     */
     getEnums(enumList: ioBroker.EnumList, callback: ioBroker.GetEnumsCallback): void;
+    /**
+     * Read the members of given enums.
+     *
+     * @param enumList the enum(s) to read
+     * @param options optional user context
+     * @param callback return result
+     */
     getEnums(enumList: ioBroker.EnumList, options: unknown, callback: ioBroker.GetEnumsCallback): void;
 
     /**
@@ -4242,26 +4820,76 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Get all objects matching the given pattern.
+     *
+     * @param patter the pattern to match object ids against
+     */
     getForeignObjects(patter: Pattern): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.GetObjectsCallback>>;
+    /**
+     * Get all objects matching the given pattern.
+     *
+     * @param pattern the pattern to match object ids against
+     * @param callback return result
+     */
     getForeignObjects(pattern: Pattern, callback: ioBroker.GetObjectsCallback): void;
+    /**
+     * Get all objects matching the given pattern.
+     *
+     * @param pattern the pattern to match object ids against
+     * @param options optional user context
+     * @param callback return result
+     */
     getForeignObjects(pattern: Pattern, options: unknown, callback: ioBroker.GetObjectsCallback): void;
+    /**
+     * Get all objects of the given type matching the given pattern.
+     *
+     * @param pattern the pattern to match object ids against
+     * @param type restrict the result to objects of this type
+     * @param callback return result
+     */
     getForeignObjects<T extends ioBroker.ObjectType>(
         pattern: Pattern,
         type: T,
         callback: ioBroker.GetObjectsCallbackTyped<T>,
     ): void;
+    /**
+     * Get all objects of the given type matching the given pattern.
+     *
+     * @param pattern the pattern to match object ids against
+     * @param type restrict the result to objects of this type
+     * @param enums restrict the result to objects within these enums
+     * @param callback return result
+     */
     getForeignObjects<T extends ioBroker.ObjectType>(
         pattern: Pattern,
         type: T,
         enums: ioBroker.EnumList,
         callback: ioBroker.GetObjectsCallbackTyped<T>,
     ): void;
+    /**
+     * Get all objects of the given type matching the given pattern.
+     *
+     * @param pattern the pattern to match object ids against
+     * @param type restrict the result to objects of this type
+     * @param options optional user context
+     * @param callback return result
+     */
     getForeignObjects<T extends ioBroker.ObjectType>(
         pattern: Pattern,
         type: T,
         options: unknown,
         callback: ioBroker.GetObjectsCallbackTyped<T>,
     ): void;
+    /**
+     * Get all objects of the given type matching the given pattern.
+     *
+     * @param pattern the pattern to match object ids against
+     * @param type restrict the result to objects of this type
+     * @param enums restrict the result to objects within these enums
+     * @param options optional user context
+     * @param callback return result
+     */
     getForeignObjects<T extends ioBroker.ObjectType>(
         pattern: Pattern,
         type: T,
@@ -4468,7 +5096,22 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Find any object by name or ID.
+     *
+     * @param idOrName exactly object ID or name (without namespace)
+     * @param type optional `common.type` of state: 'number', 'string', 'boolean', 'file', ...
+     * @param callback return result
+     */
     findForeignObject(idOrName: string, type: ioBroker.CommonType | null, callback: ioBroker.FindObjectCallback): void;
+    /**
+     * Find any object by name or ID.
+     *
+     * @param idOrName exactly object ID or name (without namespace)
+     * @param type optional `common.type` of state: 'number', 'string', 'boolean', 'file', ...
+     * @param options optional user context
+     * @param callback return result
+     */
     findForeignObject(
         idOrName: string,
         type: ioBroker.CommonType | null,
@@ -4541,7 +5184,7 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context with language
      * @param options.user current user
      * @param options.language language in which the search must be done for multi-language names
-     * @result if the object was found by ID it will return id and may be the multi-language name it exists. If the object was found by name it will return id and the multi-language name. If the object was not found, it will return only name that was searched for.
+     * @returns if the object was found by ID it will return id and may be the multi-language name it exists. If the object was found by name it will return id and the multi-language name. If the object was not found, it will return only name that was searched for.
      */
     findForeignObjectAsync(
         id: string,
@@ -4566,10 +5209,23 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Get any object.
+     *
+     * @param id exactly object ID (with namespace)
+     * @param callback return result
+     */
     getForeignObject<T extends string>(
         id: T,
         callback: ioBroker.GetObjectCallback<T>,
     ): void | Promise<void | ioBroker.ObjectIdToObjectType<T> | null>;
+    /**
+     * Get any object.
+     *
+     * @param id exactly object ID (with namespace)
+     * @param options optional user context
+     * @param callback return result
+     */
     getForeignObject<T extends string>(
         id: T,
         options: unknown,
@@ -4646,7 +5302,20 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * Delete an object of this instance.
+     *
+     * @param id exactly object ID (without namespace)
+     * @param callback return result
+     */
     delObject(id: string, callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Delete an object of this instance.
+     *
+     * @param id exactly object ID (without namespace)
+     * @param options optional user context. E.g. recursive option could be true
+     * @param callback return result
+     */
     delObject(id: string, options?: ioBroker.DelObjectOptions | null, callback?: ioBroker.ErrorCallback): void;
 
     /**
@@ -4705,7 +5374,20 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
+    /**
+     * Delete any object.
+     *
+     * @param id exactly object ID (with namespace)
+     * @param callback return result
+     */
     delForeignObject(id: string, callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Delete any object.
+     *
+     * @param id exactly object ID (with namespace)
+     * @param options optional user context or `{ recursive: true }` to delete all underlying objects
+     * @param callback return result
+     */
     delForeignObject(id: string, options: ioBroker.DelObjectOptions, callback?: ioBroker.ErrorCallback): void;
 
     /**
@@ -4813,7 +5495,20 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Subscribe for the changes of objects in this instance.
+     *
+     * @param pattern pattern like 'channel.*' or '*' (all objects of this adapter) - without namespaces
+     * @param callback optional returns result
+     */
     subscribeObjects(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Subscribe for the changes of objects in this instance.
+     *
+     * @param pattern pattern like 'channel.*' or '*' (all objects of this adapter) - without namespaces
+     * @param options optional user context
+     * @param callback optional returns result
+     */
     subscribeObjects(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
@@ -4855,7 +5550,20 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * Unsubscribe on the changes of objects in this instance.
+     *
+     * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
+     * @param callback optional returns result
+     */
     unsubscribeObjects(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Unsubscribe on the changes of objects in this instance.
+     *
+     * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
+     * @param options optional user context
+     * @param callback optional returns result
+     */
     unsubscribeObjects(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
@@ -4898,7 +5606,20 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Subscribe for the changes of objects in any instance.
+     *
+     * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces. You can use array of patterns
+     * @param callback optional returns result
+     */
     subscribeForeignObjects(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Subscribe for the changes of objects in any instance.
+     *
+     * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces. You can use array of patterns
+     * @param options optional user context
+     * @param callback optional returns result
+     */
     subscribeForeignObjects(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
@@ -4936,7 +5657,20 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Unsubscribe for the patterns on all objects.
+     *
+     * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
+     * @param callback optional returns result
+     */
     unsubscribeForeignObjects(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Unsubscribe for the patterns on all objects.
+     *
+     * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
+     * @param options optional user context
+     * @param callback optional returns result
+     */
     unsubscribeForeignObjects(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
@@ -4977,6 +5711,13 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Subscribe for the changes of files in specific instance.
+     *
+     * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
+     * @param pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
+     * @param options optional user context
+     */
     subscribeForeignFiles(id: string, pattern: string | string[], options?: unknown): Promise<void>;
 
     /**
@@ -5005,6 +5746,13 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Unsubscribe for the changes of files on specific instance.
+     *
+     * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
+     * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
+     * @param options optional user context
+     */
     unsubscribeForeignFiles(id: string, pattern: string | string[], options?: unknown): Promise<void>;
 
     /**
@@ -5036,11 +5784,26 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Same as {@link AdapterClass.setObject}, but with check if the object exists.
+     *
+     * @param id object ID, that must be overwritten or created.
+     * @param obj new object
+     * @param callback return result
+     */
     setObjectNotExists(
         id: string,
         obj: ioBroker.SettableObject,
         callback?: ioBroker.SetObjectCallback,
     ): Promise<void | ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>> | void;
+    /**
+     * Same as {@link AdapterClass.setObject}, but with check if the object exists.
+     *
+     * @param id object ID, that must be overwritten or created.
+     * @param obj new object
+     * @param options optional user context
+     * @param callback return result
+     */
     setObjectNotExists(
         id: string,
         obj: ioBroker.SettableObject,
@@ -5138,11 +5901,26 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Same as {@link AdapterClass.setForeignObject}, but with check if the object exists.
+     *
+     * @param id object ID, that must be overwritten or created.
+     * @param obj new object
+     * @param callback return result
+     */
     setForeignObjectNotExists<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         callback?: ioBroker.SetObjectCallback,
     ): void;
+    /**
+     * Same as {@link AdapterClass.setForeignObject}, but with check if the object exists.
+     *
+     * @param id object ID, that must be overwritten or created.
+     * @param obj new object
+     * @param options optional user context
+     * @param callback return result
+     */
     setForeignObjectNotExists<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
@@ -5276,11 +6054,11 @@ export class AdapterClass extends EventEmitter {
     ): void;
 
     /**
-     * @param deviceName
-     * @param common
-     * @param _native
-     * @param options
-     * @param callback
+     * @param deviceName the name of the device
+     * @param common the common section of the device object
+     * @param _native the native section of the device object
+     * @param options optional user context
+     * @param callback return result
      * @deprecated use `this.extendObject` instead
      */
     createDevice(deviceName: unknown, common: unknown, _native?: unknown, options?: unknown, callback?: unknown): any {
@@ -5371,12 +6149,12 @@ export class AdapterClass extends EventEmitter {
     /**
      * Name of channel must be in format "channel"
      *
-     * @param parentDevice
-     * @param channelName
-     * @param roleOrCommon
-     * @param _native
-     * @param options
-     * @param callback
+     * @param parentDevice the parent device name
+     * @param channelName the name of the channel
+     * @param roleOrCommon role string or the common section of the channel object
+     * @param _native the native section of the channel object
+     * @param options optional user context
+     * @param callback return result
      * @deprecated use `this.extendObject` instead
      */
     createChannel(
@@ -5480,13 +6258,13 @@ export class AdapterClass extends EventEmitter {
     ): void;
 
     /**
-     * @param parentDevice
-     * @param parentChannel
-     * @param stateName
-     * @param roleOrCommon
-     * @param _native
-     * @param options
-     * @param callback
+     * @param parentDevice the parent device name
+     * @param parentChannel the parent channel name
+     * @param stateName the name of the state
+     * @param roleOrCommon role string or the common section of the state object
+     * @param _native the native section of the state object
+     * @param options optional user context
+     * @param callback return result
      * @deprecated use `this.extendObject` instead
      */
     createState(
@@ -5741,6 +6519,15 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Add a channel to an enum.
+     *
+     * @param enumName the enum category (e.g. rooms, functions)
+     * @param addTo the enum id to add the channel to
+     * @param parentDevice the parent device name
+     * @param channelName the name of the channel
+     * @param callback return result
+     */
     addChannelToEnum(
         enumName: string,
         addTo: string,
@@ -5748,6 +6535,16 @@ export class AdapterClass extends EventEmitter {
         channelName: string,
         callback?: ioBroker.ErrorCallback,
     ): void;
+    /**
+     * Add a channel to an enum.
+     *
+     * @param enumName the enum category (e.g. rooms, functions)
+     * @param addTo the enum id to add the channel to
+     * @param parentDevice the parent device name
+     * @param channelName the name of the channel
+     * @param options optional user context
+     * @param callback return result
+     */
     addChannelToEnum(
         enumName: string,
         addTo: string,
@@ -5757,6 +6554,16 @@ export class AdapterClass extends EventEmitter {
         callback?: ioBroker.ErrorCallback,
     ): void;
 
+    /**
+     * Add a channel to an enum.
+     *
+     * @param enumName the enum category (e.g. rooms, functions)
+     * @param addTo the enum id to add the channel to
+     * @param parentDevice the parent device name
+     * @param channelName the name of the channel
+     * @param options optional user context
+     * @param callback return result
+     */
     addChannelToEnum(
         enumName: unknown,
         addTo: unknown,
@@ -5874,12 +6681,29 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Remove a channel from an enum.
+     *
+     * @param enumName the enum category (e.g. rooms, functions)
+     * @param parentDevice the parent device name
+     * @param channelName the name of the channel
+     * @param callback return result
+     */
     deleteChannelFromEnum(
         enumName: string,
         parentDevice: string,
         channelName: string,
         callback?: ioBroker.ErrorCallback,
     ): void;
+    /**
+     * Remove a channel from an enum.
+     *
+     * @param enumName the enum category (e.g. rooms, functions)
+     * @param parentDevice the parent device name
+     * @param channelName the name of the channel
+     * @param options optional user context
+     * @param callback return result
+     */
     deleteChannelFromEnum(
         enumName: string,
         parentDevice: string,
@@ -5888,6 +6712,15 @@ export class AdapterClass extends EventEmitter {
         callback?: ioBroker.ErrorCallback,
     ): void;
 
+    /**
+     * Remove a channel from an enum.
+     *
+     * @param enumName the enum category (e.g. rooms, functions)
+     * @param parentDevice the parent device name
+     * @param channelName the name of the channel
+     * @param options optional user context
+     * @param callback return result
+     */
     deleteChannelFromEnum(
         enumName: unknown,
         parentDevice: unknown,
@@ -6119,11 +6952,11 @@ export class AdapterClass extends EventEmitter {
     ): void;
 
     /**
-     * @param parentDevice
-     * @param parentChannel
-     * @param stateName
-     * @param options
-     * @param callback
+     * @param parentDevice the parent device name
+     * @param parentChannel the parent channel name
+     * @param stateName the name of the state
+     * @param options optional user context
+     * @param callback return result
      * @deprecated use `this.delObject` instead
      */
     deleteState(
@@ -6226,9 +7059,26 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Get all devices of this adapter.
+     *
+     * @param callback return result
+     */
     getDevices(callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>): void;
+    /**
+     * Get all devices of this adapter.
+     *
+     * @param options optional user context
+     * @param callback return result
+     */
     getDevices(options: unknown, callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>): void;
 
+    /**
+     * Get all devices of this adapter.
+     *
+     * @param options optional user context, or the callback
+     * @param callback return result
+     */
     getDevices(options: unknown, callback?: unknown): any {
         if (typeof options === 'function' && typeof callback === 'object') {
             const tmp = callback;
@@ -6280,13 +7130,38 @@ export class AdapterClass extends EventEmitter {
     }
 
     // public signature
+    /**
+     * Get all channels of this adapter or of the given device.
+     *
+     * @param callback return result
+     */
     getChannelsOf(callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>): void;
+    /**
+     * Get all channels of this adapter or of the given device.
+     *
+     * @param parentDevice the parent device name
+     * @param callback return result
+     */
     getChannelsOf(parentDevice: string, callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>): void;
+    /**
+     * Get all channels of this adapter or of the given device.
+     *
+     * @param parentDevice the parent device name
+     * @param options optional user context
+     * @param callback return result
+     */
     getChannelsOf(
         parentDevice: string,
         options: unknown,
         callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>,
     ): void;
+    /**
+     * Get all channels of this adapter or of the given device.
+     *
+     * @param parentDevice the parent device name, or the callback
+     * @param options optional user context, or the callback
+     * @param callback return result
+     */
     getChannelsOf(parentDevice: unknown, options?: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
@@ -6351,19 +7226,53 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Get all states of this adapter or of the given device/channel.
+     *
+     * @param callback return result
+     */
     getStatesOf(callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>): void;
+    /**
+     * Get all states of this adapter or of the given device/channel.
+     *
+     * @param parentDevice the parent device name
+     * @param callback return result
+     */
     getStatesOf(parentDevice: string, callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>): void;
+    /**
+     * Get all states of this adapter or of the given device/channel.
+     *
+     * @param parentDevice the parent device name
+     * @param parentChannel the parent channel name
+     * @param callback return result
+     */
     getStatesOf(
         parentDevice: string | null | undefined,
         parentChannel: string | null | undefined,
         callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>,
     ): void;
+    /**
+     * Get all states of this adapter or of the given device/channel.
+     *
+     * @param parentDevice the parent device name
+     * @param parentChannel the parent channel name
+     * @param options optional user context
+     * @param callback return result
+     */
     getStatesOf(
         parentDevice: string | null | undefined,
         parentChannel: string | null | undefined,
         options: unknown,
         callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>,
     ): void;
+    /**
+     * Get all states of this adapter or of the given device/channel.
+     *
+     * @param parentDevice the parent device name, or the callback
+     * @param parentChannel the parent channel name, or the callback
+     * @param options optional user context, or the callback
+     * @param callback return result
+     */
     getStatesOf(parentDevice: unknown, parentChannel?: unknown, options?: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
@@ -6463,6 +7372,16 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Add a state to an enum.
+     *
+     * @param enumName the enum category (e.g. rooms, functions)
+     * @param addTo the enum id to add the state to
+     * @param parentDevice the parent device name
+     * @param parentChannel the parent channel name
+     * @param stateName the name of the state
+     * @param callback return result
+     */
     addStateToEnum(
         enumName: string,
         addTo: string,
@@ -6471,6 +7390,17 @@ export class AdapterClass extends EventEmitter {
         stateName: string,
         callback?: ioBroker.ErrorCallback,
     ): void;
+    /**
+     * Add a state to an enum.
+     *
+     * @param enumName the enum category (e.g. rooms, functions)
+     * @param addTo the enum id to add the state to
+     * @param parentDevice the parent device name
+     * @param parentChannel the parent channel name
+     * @param stateName the name of the state
+     * @param options optional user context
+     * @param callback return result
+     */
     addStateToEnum(
         enumName: string,
         addTo: string,
@@ -6480,6 +7410,17 @@ export class AdapterClass extends EventEmitter {
         options: unknown,
         callback?: ioBroker.ErrorCallback,
     ): void;
+    /**
+     * Add a state to an enum.
+     *
+     * @param enumName the enum category (e.g. rooms, functions)
+     * @param addTo the enum id to add the state to
+     * @param parentDevice the parent device name
+     * @param parentChannel the parent channel name
+     * @param stateName the name of the state
+     * @param options optional user context
+     * @param callback return result
+     */
     addStateToEnum(
         enumName: unknown,
         addTo: unknown,
@@ -6610,6 +7551,15 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Remove a state from an enum.
+     *
+     * @param enumName the enum category (e.g. rooms, functions)
+     * @param parentDevice the parent device name
+     * @param parentChannel the parent channel name
+     * @param stateName the name of the state
+     * @param callback return result
+     */
     deleteStateFromEnum(
         enumName: string,
         parentDevice: string,
@@ -6617,6 +7567,16 @@ export class AdapterClass extends EventEmitter {
         stateName: string,
         callback?: ioBroker.ErrorCallback,
     ): void;
+    /**
+     * Remove a state from an enum.
+     *
+     * @param enumName the enum category (e.g. rooms, functions)
+     * @param parentDevice the parent device name
+     * @param parentChannel the parent channel name
+     * @param stateName the name of the state
+     * @param options optional user context
+     * @param callback return result
+     */
     deleteStateFromEnum(
         enumName: string,
         parentDevice: string,
@@ -6625,6 +7585,16 @@ export class AdapterClass extends EventEmitter {
         options: unknown,
         callback?: ioBroker.ErrorCallback,
     ): void;
+    /**
+     * Remove a state from an enum.
+     *
+     * @param enumName the enum category (e.g. rooms, functions)
+     * @param parentDevice the parent device name
+     * @param parentChannel the parent channel name
+     * @param stateName the name of the state
+     * @param options optional user context
+     * @param callback return result
+     */
     deleteStateFromEnum(
         enumName: unknown,
         parentDevice: unknown,
@@ -6741,6 +7711,14 @@ export class AdapterClass extends EventEmitter {
         );
     }
     // external signature
+    /**
+     * Change file access rights
+     *
+     * @param adapter adapter name, or null for the current adapter
+     * @param path path to file without adapter name
+     * @param options data with mode
+     * @param callback return result
+     */
     chmodFile(
         adapter: string | null,
         path: string,
@@ -6748,6 +7726,13 @@ export class AdapterClass extends EventEmitter {
         callback: ioBroker.ChownFileCallback,
     ): void;
 
+    /**
+     * Change file access rights
+     *
+     * @param adapter adapter name, or null for the current adapter
+     * @param path path to file without adapter name
+     * @param callback return result
+     */
     chmodFile(adapter: string | null, path: string, callback: ioBroker.ChownFileCallback): void;
 
     /**
@@ -6788,6 +7773,14 @@ export class AdapterClass extends EventEmitter {
         this.#objects.chmodFile(_adapter as any, path as any, options as any, callback as any);
     }
 
+    /**
+     * Change a file owner
+     *
+     * @param _adapter adapter name, or null for the current adapter
+     * @param path path to file without adapter name
+     * @param options data with owner and ownerGroup
+     * @param callback return result
+     */
     chownFile(
         _adapter: string,
         path: string,
@@ -6795,6 +7788,13 @@ export class AdapterClass extends EventEmitter {
         callback: (err?: Error | null, processedFiles?: any) => void,
     ): void;
 
+    /**
+     * Change a file owner
+     *
+     * @param _adapter adapter name, or null for the current adapter
+     * @param path path to file without adapter name
+     * @param callback return result
+     */
     chownFile(_adapter: string, path: string, callback: (err?: Error | null, processedFiles?: any) => void): void;
 
     /**
@@ -6836,7 +7836,22 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Read directory from DB.
+     *
+     * @param adapterName adapter name, or null for the current adapter
+     * @param path path to the directory
+     * @param callback return result
+     */
     readDir(adapterName: string | null, path: string, callback: ioBroker.ReadDirCallback): void;
+    /**
+     * Read directory from DB.
+     *
+     * @param adapterName adapter name, or null for the current adapter
+     * @param path path to the directory
+     * @param options optional user context
+     * @param callback return result
+     */
     readDir(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ReadDirCallback): void;
 
     /**
@@ -6900,8 +7915,31 @@ export class AdapterClass extends EventEmitter {
     }
 
     // public signature
+    /**
+     * Deletes a file in the DB.
+     *
+     * @param adapterName adapter name, or null for the current adapter
+     * @param path path to the file
+     * @param callback return result
+     */
     unlink(adapterName: string | null, path: string, callback: ioBroker.ErrnoCallback): void;
+    /**
+     * Deletes a file in the DB.
+     *
+     * @param adapterName adapter name, or null for the current adapter
+     * @param path path to the file
+     * @param options optional user context
+     * @param callback return result
+     */
     unlink(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback): void;
+    /**
+     * Deletes a file in the DB.
+     *
+     * @param _adapter adapter name, or null for the current adapter
+     * @param name path to the file
+     * @param options optional user context
+     * @param callback return result
+     */
     unlink(_adapter: unknown, name: unknown, options: unknown, callback?: unknown): any {
         if (_adapter === null) {
             _adapter = this.name;
@@ -6928,7 +7966,24 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Renames a file in the DB.
+     *
+     * @param adapterName adapter name, or null for the current adapter
+     * @param oldName current path to the file
+     * @param newName new path to the file
+     * @param callback return result
+     */
     rename(adapterName: string | null, oldName: string, newName: string, callback: ioBroker.ErrnoCallback): void;
+    /**
+     * Renames a file in the DB.
+     *
+     * @param adapterName adapter name, or null for the current adapter
+     * @param oldName current path to the file
+     * @param newName new path to the file
+     * @param options optional user context
+     * @param callback return result
+     */
     rename(
         adapterName: string | null,
         oldName: string,
@@ -6937,6 +7992,15 @@ export class AdapterClass extends EventEmitter {
         callback: ioBroker.ErrnoCallback,
     ): void;
 
+    /**
+     * Renames a file in the DB.
+     *
+     * @param _adapter adapter name, or null for the current adapter
+     * @param oldName current path to the file
+     * @param newName new path to the file
+     * @param options optional user context
+     * @param callback return result
+     */
     rename(_adapter: unknown, oldName: unknown, newName: unknown, options: unknown, callback?: unknown): any {
         if (_adapter === null) {
             _adapter = this.name;
@@ -6962,8 +8026,31 @@ export class AdapterClass extends EventEmitter {
         this.#objects.rename(_adapter, oldName, newName, options, callback);
     }
 
+    /**
+     * Creates a directory in the DB.
+     *
+     * @param adapterName adapter name, or null for the current adapter
+     * @param path path to the directory
+     * @param callback return result
+     */
     mkdir(adapterName: string | null, path: string, callback: ioBroker.ErrnoCallback): void;
+    /**
+     * Creates a directory in the DB.
+     *
+     * @param adapterName adapter name, or null for the current adapter
+     * @param path path to the directory
+     * @param options optional user context
+     * @param callback return result
+     */
     mkdir(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback): void;
+    /**
+     * Creates a directory in the DB.
+     *
+     * @param _adapter adapter name, or null for the current adapter
+     * @param dirname path to the directory
+     * @param options optional user context
+     * @param callback return result
+     */
     mkdir(_adapter: unknown, dirname: unknown, options: unknown, callback?: unknown): any {
         if (_adapter === null) {
             _adapter = this.name;
@@ -6988,7 +8075,22 @@ export class AdapterClass extends EventEmitter {
         this.#objects.mkdir(_adapter, dirname, options, callback);
     }
 
+    /**
+     * Read file from DB.
+     *
+     * @param adapterName adapter name, or null for the current adapter
+     * @param path path to file without adapter name
+     * @param callback return result
+     */
     readFile(adapterName: string | null, path: string, callback: ioBroker.ReadFileCallback): void;
+    /**
+     * Read file from DB.
+     *
+     * @param adapterName adapter name, or null for the current adapter
+     * @param path path to file without adapter name
+     * @param options optional user context
+     * @param callback return result
+     */
     readFile(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ReadFileCallback): void;
 
     /**
@@ -7039,7 +8141,24 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Write file to DB.
+     *
+     * @param adapterName adapter name, or null for the current adapter
+     * @param path path to the file
+     * @param data data to write
+     * @param callback return result
+     */
     writeFile(adapterName: string | null, path: string, data: Buffer | string, callback: ioBroker.ErrnoCallback): void;
+    /**
+     * Write file to DB.
+     *
+     * @param adapterName adapter name, or null for the current adapter
+     * @param path path to the file
+     * @param data data to write
+     * @param options optional user context
+     * @param callback return result
+     */
     writeFile(
         adapterName: string | null,
         path: string,
@@ -7097,8 +8216,29 @@ export class AdapterClass extends EventEmitter {
         return this.#objects.writeFile(_adapter, filename, data, options, callback);
     }
 
+    /**
+     * Checks if file exists in DB.
+     *
+     * @param adapterName adapter name
+     * @param path path to file without adapter name
+     */
     fileExists(adapterName: string | null, path: string): Promise<boolean>;
+    /**
+     * Checks if file exists in DB.
+     *
+     * @param adapterName adapter name
+     * @param path path to file without adapter name
+     * @param callback cb function if none provided, a promise is returned
+     */
     fileExists(adapterName: string | null, path: string, callback?: ioBroker.GenericCallback<boolean>): void;
+    /**
+     * Checks if file exists in DB.
+     *
+     * @param adapterName adapter name
+     * @param path path to file without adapter name
+     * @param options optional user context
+     * @param callback cb function if none provided, a promise is returned
+     */
     fileExists(
         adapterName: string | null,
         path: string,
@@ -7146,8 +8286,28 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Formats a numeric value using the given format string.
+     *
+     * @param value the value to format
+     * @param format optional format string for the decimal and thousands separator
+     */
     formatValue(value: number | string, format?: string): string;
+    /**
+     * Formats a numeric value using the given format string.
+     *
+     * @param value the value to format
+     * @param decimals number of decimals to keep
+     * @param format optional format string for the decimal and thousands separator
+     */
     formatValue(value: number | string, decimals: number, format?: string): string;
+    /**
+     * Formats a numeric value using the given format string.
+     *
+     * @param value the value to format
+     * @param decimals number of decimals to keep, or the format string
+     * @param _format optional format string for the decimal and thousands separator
+     */
     formatValue(value: unknown, decimals: unknown, _format?: unknown): any {
         if (typeof decimals !== 'number') {
             _format = decimals;
@@ -7181,9 +8341,29 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Formats a date according to the given format string.
+     *
+     * @param dateObj the date to format
+     * @param format optional format string
+     */
     formatDate(dateObj: string | Date | number, format?: string): string;
+    /**
+     * Formats a date or duration according to the given format string.
+     *
+     * @param dateObj the date to format
+     * @param isDuration whether the value represents a duration
+     * @param format optional format string
+     */
     formatDate(dateObj: string | Date | number, isDuration: boolean | string, format?: string): string;
 
+    /**
+     * Formats a date or duration according to the given format string.
+     *
+     * @param dateObj the date to format
+     * @param isDuration whether the value represents a duration, or the format string
+     * @param _format optional format string
+     */
     formatDate(dateObj: unknown, isDuration: unknown, _format?: unknown): any {
         if ((typeof isDuration === 'string' && isDuration.toLowerCase() === 'duration') || isDuration === true) {
             isDuration = true;
@@ -7335,11 +8515,27 @@ export class AdapterClass extends EventEmitter {
         return result;
     }
 
+    /**
+     * Send a message to a specific instance or all instances of some specific adapter.
+     *
+     * @param instanceName name of the instance to send the message to
+     * @param message message to send
+     * @param callback optional return result
+     */
     sendTo(
         instanceName: string,
         message: any,
         callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
     ): void;
+    /**
+     * Send a message to a specific instance or all instances of some specific adapter.
+     *
+     * @param instanceName name of the instance to send the message to
+     * @param command command name
+     * @param message message to send
+     * @param callback optional return result
+     * @param options optional options to control the send behaviour
+     */
     sendTo(
         instanceName: string,
         command: string,
@@ -7549,11 +8745,26 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * Send a message to a specific host or all hosts.
+     *
+     * @param hostName name of the host to send the message to, or null for all hosts
+     * @param message message to send
+     * @param callback optional return result
+     */
     sendToHost(
         hostName: string | null,
         message: any,
         callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
     ): void;
+    /**
+     * Send a message to a specific host or all hosts.
+     *
+     * @param hostName name of the host to send the message to, or null for all hosts
+     * @param command command name
+     * @param message message to send
+     * @param callback optional return result
+     */
     sendToHost(
         hostName: string | null,
         command: string,
@@ -7691,6 +8902,11 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * Send a message to an active UI Client
+     *
+     * @param options clientId and data options
+     */
     sendToUI(options: SendToUserInterfaceClientOptions): Promise<void>;
 
     /**
@@ -7721,6 +8937,14 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
+    /**
+     * Send notification with given scope and category to host of this adapter
+     *
+     * @param scope scope to be addressed
+     * @param category to be addressed, if a null message will be checked by regex of given scope
+     * @param message message to be stored/checked
+     * @param options Additional options for the notification, currently `contextData` is supported
+     */
     registerNotification<Scope extends keyof ioBroker.NotificationScopes>(
         scope: Scope,
         category: ioBroker.NotificationScopes[Scope] | null,
@@ -7771,23 +8995,55 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /**
+     * Writes value into states DB.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param callback return result
+     */
     setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         callback?: T,
     ): T extends unknown ? ioBroker.SetStatePromise : void;
+    /**
+     * Writes value into states DB.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param ack optional is command(false) or status(true)
+     * @param callback return result
+     */
     setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         callback?: T,
     ): T extends unknown ? ioBroker.SetStatePromise : void;
+    /**
+     * Writes value into states DB.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param options optional user context
+     * @param callback return result
+     */
     setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options?: Partial<GetUserGroupsOptions> | null,
         callback?: T,
     ): T extends unknown ? ioBroker.SetStatePromise : void;
+    /**
+     * Writes value into states DB.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param ack optional is command(false) or status(true)
+     * @param options optional user context
+     * @param callback return result
+     */
     setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
@@ -8417,23 +9673,55 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * Writes value into states DB only if the value really changed.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param callback return result
+     */
     setStateChanged(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         callback?: ioBroker.SetStateChangedCallback,
     ): void;
+    /**
+     * Writes value into states DB only if the value really changed.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param ack optional is command(false) or status(true)
+     * @param callback return result
+     */
     setStateChanged(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         callback?: ioBroker.SetStateChangedCallback,
     ): void;
+    /**
+     * Writes value into states DB only if the value really changed.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param options optional user context
+     * @param callback return result
+     */
     setStateChanged(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options: unknown,
         callback?: ioBroker.SetStateChangedCallback,
     ): void;
+    /**
+     * Writes value into states DB only if the value really changed.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param ack optional is command(false) or status(true)
+     * @param options optional user context
+     * @param callback return result
+     */
     setStateChanged(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
@@ -8559,23 +9847,55 @@ export class AdapterClass extends EventEmitter {
         return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
     }
 
+    /**
+     * Writes value into states DB for any instance.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param callback return result
+     */
     setForeignState(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         callback?: ioBroker.SetStateCallback,
     ): void;
+    /**
+     * Writes value into states DB for any instance.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param ack optional is command(false) or status(true)
+     * @param callback return result
+     */
     setForeignState(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         callback?: ioBroker.SetStateCallback,
     ): void;
+    /**
+     * Writes value into states DB for any instance.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param options optional user context
+     * @param callback return result
+     */
     setForeignState(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options: unknown,
         callback?: ioBroker.SetStateCallback,
     ): void;
+    /**
+     * Writes value into states DB for any instance.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param ack optional is command(false) or status(true)
+     * @param options optional user context
+     * @param callback return result
+     */
     setForeignState(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
@@ -8872,23 +10192,55 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * Writes value into states DB for any instance only if the value really changed.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param callback return result
+     */
     setForeignStateChanged(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         callback?: ioBroker.SetStateChangedCallback,
     ): void;
+    /**
+     * Writes value into states DB for any instance only if the value really changed.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param ack optional is command(false) or status(true)
+     * @param callback return result
+     */
     setForeignStateChanged(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         callback?: ioBroker.SetStateChangedCallback,
     ): void;
+    /**
+     * Writes value into states DB for any instance only if the value really changed.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param options optional user context
+     * @param callback return result
+     */
     setForeignStateChanged(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options: unknown,
         callback?: ioBroker.SetStateChangedCallback,
     ): void;
+    /**
+     * Writes value into states DB for any instance only if the value really changed.
+     *
+     * @param id object ID of the state.
+     * @param state simple value or object with attributes.
+     * @param ack optional is command(false) or status(true)
+     * @param options optional user context
+     * @param callback return result
+     */
     setForeignStateChanged(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
@@ -9008,7 +10360,20 @@ export class AdapterClass extends EventEmitter {
         return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
     }
 
+    /**
+     * Read value from states DB.
+     *
+     * @param id object ID of the state.
+     * @param callback return result
+     */
     getState(id: string, callback: ioBroker.GetStateCallback): void;
+    /**
+     * Read value from states DB.
+     *
+     * @param id object ID of the state.
+     * @param options optional user context
+     * @param callback return result
+     */
     getState(id: string, options: unknown, callback: ioBroker.GetStateCallback): void;
 
     /**
@@ -9039,7 +10404,20 @@ export class AdapterClass extends EventEmitter {
         return this.getForeignState(fixedId, options, callback);
     }
 
+    /**
+     * Read value from states DB for any instance and system state.
+     *
+     * @param id object ID of the state.
+     * @param callback return result
+     */
     getForeignState(id: string, callback: ioBroker.GetStateCallback): ioBroker.GetStatePromise;
+    /**
+     * Read value from states DB for any instance and system state.
+     *
+     * @param id object ID of the state.
+     * @param options optional user context
+     * @param callback return result
+     */
     getForeignState(id: string, options: unknown, callback: ioBroker.GetStateCallback): ioBroker.GetStatePromise;
 
     /**
@@ -9228,7 +10606,20 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * Read historian data for states of any instance or system state.
+     *
+     * @param id object ID of the state.
+     * @param options the query options for the history
+     * @param callback return result
+     */
     getHistory(id: string, options: ioBroker.GetHistoryOptions, callback: ioBroker.GetHistoryCallback): void;
+    /**
+     * Read historian data for states of any instance or system state.
+     *
+     * @param id object ID of the state.
+     * @param callback return result
+     */
     getHistory(id: string, callback: ioBroker.GetHistoryCallback): void;
 
     /**
@@ -9328,6 +10719,12 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
+    /**
+     * Convert ID into object with device's, channel's and state's name.
+     *
+     * @param id short or long string of ID like "stateID" or "adapterName.0.stateID".
+     * @returns parsed ID as an object
+     */
     idToDCS(id: string): {
         device: string;
         channel: string;
@@ -9363,7 +10760,20 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Deletes a state of this instance. The object is NOT deleted.
+     *
+     * @param id exactly object ID (without namespace)
+     * @param callback return result
+     */
     delState(id: string, callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Deletes a state of this instance. The object is NOT deleted.
+     *
+     * @param id exactly object ID (without namespace)
+     * @param options optional user context
+     * @param callback return result
+     */
     delState(id: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
@@ -9415,7 +10825,20 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Deletes a state of any adapter. The object is NOT deleted.
+     *
+     * @param id long string for ID like "adapterName.0.stateID".
+     * @param callback return result
+     */
     delForeignState(id: string, callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Deletes a state of any adapter. The object is NOT deleted.
+     *
+     * @param id long string for ID like "adapterName.0.stateID".
+     * @param options optional argument to describe the user context
+     * @param callback return result
+     */
     delForeignState(id: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
@@ -9474,7 +10897,20 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /**
+     * Read all states of this adapter, that pass the pattern
+     *
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
+     * @param callback return result
+     */
     getStates(pattern: Pattern, callback: ioBroker.GetStatesCallback): void;
+    /**
+     * Read all states of this adapter, that pass the pattern
+     *
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
+     * @param options optional argument to describe the user context
+     * @param callback return result
+     */
     getStates(pattern: Pattern, options: unknown, callback: ioBroker.GetStatesCallback): void;
 
     /**
@@ -9604,7 +11040,20 @@ export class AdapterClass extends EventEmitter {
         return this._processStatesSecondary(keys, null, null);
     }
 
+    /**
+     * Read all states of all adapters (and system states), that pass the pattern
+     *
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
+     * @param callback return result
+     */
     getForeignStates(pattern: Pattern, callback: ioBroker.GetStatesCallback): void;
+    /**
+     * Read all states of all adapters (and system states), that pass the pattern
+     *
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
+     * @param options optional user context
+     * @param callback return result
+     */
     getForeignStates(pattern: Pattern, options: unknown, callback: ioBroker.GetStatesCallback): void;
 
     /**
@@ -9844,7 +11293,20 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * Subscribe for changes on all states of all adapters (and system states), that pass the pattern
+     *
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
+     * @param callback optional callback
+     */
     subscribeForeignStates(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Subscribe for changes on all states of all adapters (and system states), that pass the pattern
+     *
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
+     * @param options optional argument to describe the user context
+     * @param callback optional callback
+     */
     subscribeForeignStates(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
@@ -10065,7 +11527,20 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * Unsubscribe for changes for given pattern
+     *
+     * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
+     * @param callback optional callback
+     */
     unsubscribeForeignStates(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Unsubscribe for changes for given pattern
+     *
+     * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
+     * @param options optional argument to describe the user context
+     * @param callback optional callback
+     */
     unsubscribeForeignStates(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
@@ -10215,7 +11690,20 @@ export class AdapterClass extends EventEmitter {
         return tools.maybeCallback(callback);
     }
 
+    /**
+     * Subscribe for changes on all states of this instance, that pass the pattern
+     *
+     * @param pattern string in form 'adapter.0.*' or like this. Only string allowed
+     * @param callback optional callback
+     */
     subscribeStates(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Subscribe for changes on all states of this instance, that pass the pattern
+     *
+     * @param pattern string in form 'adapter.0.*' or like this. Only string allowed
+     * @param options optional argument to describe the user context
+     * @param callback optional callback
+     */
     subscribeStates(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
@@ -10249,7 +11737,20 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
+    /**
+     * Unsubscribe for changes for given pattern for own states.
+     *
+     * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
+     * @param callback optional callback
+     */
     unsubscribeStates(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    /**
+     * Unsubscribe for changes for given pattern for own states.
+     *
+     * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
+     * @param options optional argument to describe the user context
+     * @param callback optional callback
+     */
     unsubscribeStates(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
@@ -10285,6 +11786,12 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
+    /**
+     * Return plugin instance
+     *
+     * @param name name of the plugin to return
+     * @returns plugin instance or null if not existent or not isActive
+     */
     getPluginInstance(name: string): ioBroker.Plugin | null;
 
     /**
@@ -10303,6 +11810,12 @@ export class AdapterClass extends EventEmitter {
         return this.pluginHandler.getPluginInstance(name);
     }
 
+    /**
+     * Return plugin configuration
+     *
+     * @param name name of the plugin to return
+     * @returns plugin configuration or null if not existent or not isActive
+     */
     getPluginConfig(name: string): Record<string, any> | null;
 
     /**
@@ -10347,6 +11860,13 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * This method returns the list of license that can be used by this adapter
+     *
+     * @param all if return the licenses, that used by other instances (true) or only for this instance (false)
+     * @param adapterName Return licenses for specific adapter
+     * @returns list of suitable licenses
+     */
     getSuitableLicenses(all?: boolean, adapterName?: string): Promise<any[]>;
 
     /**

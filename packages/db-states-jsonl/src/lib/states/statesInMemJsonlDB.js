@@ -39,7 +39,7 @@ import { tools } from '@iobroker/js-controller-common-db';
  * Normalizes options for the JsonlDB
  *
  * @param conf The jsonlOptions options from iobroker.json
- * @returns
+ * @returns the normalized and validated JsonlDB options
  */
 function normalizeJsonlOptions(conf = {}) {
     const ret = {
@@ -106,6 +106,9 @@ function normalizeJsonlOptions(conf = {}) {
  * including the available methods for use by js-controller directly
  */
 export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
+    /**
+     * @param settings Settings for the states database
+     */
     constructor(settings) {
         settings = settings || {};
         // Not really used
@@ -123,6 +126,9 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
         this._db = new JsonlDB(path.join(this.dataDir, settings.jsonlDB.fileName), jsonlOptions);
     }
 
+    /**
+     * Open the JSONL database, migrating from the legacy file DB if necessary
+     */
     async open() {
         if (!(await this._maybeMigrateFileDB())) {
             await this._db.open();
@@ -131,31 +137,31 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
         // Create an object-like wrapper around the internal Map
         this.dataset = new Proxy(this._db, {
             /**
-             * @param target
-             * @param prop
+             * @param target The proxied JsonlDB instance
+             * @param prop The property key being read
              */
             get(target, prop) {
                 return target.get(prop);
             },
             /**
-             * @param target
-             * @param prop
+             * @param target The proxied JsonlDB instance
+             * @param prop The property key being checked
              */
             has(target, prop) {
                 return target.has(prop);
             },
             /**
-             * @param target
-             * @param prop
-             * @param value
+             * @param target The proxied JsonlDB instance
+             * @param prop The property key being written
+             * @param value The value to store
              */
             set(target, prop, value) {
                 target.set(prop, value);
                 return true;
             },
             /**
-             * @param target
-             * @param prop
+             * @param target The proxied JsonlDB instance
+             * @param prop The property key being deleted
              */
             deleteProperty(target, prop) {
                 return target.delete(prop);
@@ -164,8 +170,8 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
                 return [...target.keys()];
             },
             /**
-             * @param target
-             * @param prop
+             * @param target The proxied JsonlDB instance
+             * @param prop The property key to describe
              */
             getOwnPropertyDescriptor(target, prop) {
                 if (!target.has(prop)) {
@@ -263,11 +269,16 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
         return true;
     }
 
+    /**
+     * Persist the state. Nothing to do here as the JSONL DB saves behind the scenes.
+     */
     async saveState() {
         // Nothing to do, the DB saves behind the scenes
     }
 
-    // Is regularly called and stores a compressed backup of the DB
+    /**
+     * Regularly called to store a compressed backup of the DB
+     */
     async saveBackup() {
         const now = Date.now();
         const tmpBackupFileName = path.join(os.tmpdir(), `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}`);
@@ -297,6 +308,9 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
         }
     }
 
+    /**
+     * Stop the backup interval, close the DB and clean up
+     */
     async destroy() {
         await super.destroy();
 

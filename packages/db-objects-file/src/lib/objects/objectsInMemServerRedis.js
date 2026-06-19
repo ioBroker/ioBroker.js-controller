@@ -851,7 +851,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
     /**
      * Return connected RedisHandlers/Connections
      *
-     * @returns
+     * @returns the currently connected RedisHandlers/Connections
      */
     getClients() {
         return this.serverConnections;
@@ -994,7 +994,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
      * Initialize Redis Server
      *
      * @param settings Settings object
-     * @returns
+     * @returns a promise that resolves once the Redis server is listening
      */
     _initRedisServer(settings) {
         return new Promise((resolve, reject) => {

@@ -55,10 +55,15 @@ interface NotEmptyErrorOptions extends Omit<NpmInstallOptions, 'isRetry'> {
     result: CommandResult;
 }
 
+/** Options for the install command */
 export interface CLIInstallOptions {
+    /** Parsed CLI parameters */
     params: Record<string, any>;
+    /** The states database client */
     states: StatesRedisClient;
+    /** The objects database client */
     objects: ObjectsRedisClient;
+    /** Callback to exit the process with an exit code */
     processExit: ProcessExitCallback;
 }
 
@@ -69,6 +74,7 @@ interface DownloadPacketReturnObject {
     packetName: string;
 }
 
+/** Options for downloading an adapter packet */
 export interface CLIDownloadPacketOptions {
     /** will stop the db before upgrade ONLY use it for controller upgrade */
     stopDb?: boolean;
@@ -86,6 +92,9 @@ interface CreateInstanceOptions {
     port?: number;
 }
 
+/**
+ * CLI command to install and download adapters and create their instances
+ */
 export class Install {
     private readonly isRootOnUnix: boolean;
     private readonly objects: ObjectsRedisClient;
@@ -96,6 +105,9 @@ export class Install {
     private upload: Upload;
     private packetManager?: PacketManager;
 
+    /**
+     * @param options The states/objects clients, CLI parameters and the process-exit callback
+     */
     constructor(options: CLIInstallOptions) {
         this.isRootOnUnix = typeof process.getuid === 'function' && process.getuid() === 0;
 
@@ -627,8 +639,8 @@ export class Install {
      * Installs given adapter
      *
      * @param adapter The adapter name
-     * @param repoUrl
-     * @param _installCount
+     * @param repoUrl Optional repository URL to install the adapter from
+     * @param _installCount Internal recursion counter limiting the number of dependency installs
      */
     async installAdapter(adapter: string, repoUrl?: string, _installCount?: number): Promise<string | void> {
         _installCount = _installCount || 0;
@@ -709,6 +721,11 @@ export class Install {
         return adapter;
     }
 
+    /**
+     * Install the OS packages required by an adapter
+     *
+     * @param osDependencies The OS dependencies declared by the adapter, keyed by platform
+     */
     async installOSPackages(osDependencies: NonNullable<ioBroker.AdapterCommon['osDependencies']>): Promise<void> {
         if (osPlatform in osDependencies) {
             try {
@@ -722,6 +739,12 @@ export class Install {
         }
     }
 
+    /**
+     * Run the custom install script of an adapter if it defines one
+     *
+     * @param adapter The adapter name
+     * @param config The adapter object containing the install configuration
+     */
     async callInstallOfAdapter(adapter: string, config: ioBroker.AdapterObject): Promise<string | void> {
         if (config.common.install) {
             // Install node modules
@@ -1012,10 +1035,10 @@ export class Install {
     /**
      * Enumerate all instances of an adapter
      *
-     * @param knownObjIDs
-     * @param notDeleted
-     * @param adapter
-     * @param instance
+     * @param knownObjIDs Accumulator of object IDs found so far
+     * @param notDeleted Accumulator of object IDs that must not be deleted
+     * @param adapter The adapter name
+     * @param instance Optional instance number to restrict the search to
      */
     private async _enumerateAdapterInstances(
         knownObjIDs: string[],
@@ -1080,9 +1103,9 @@ export class Install {
     /**
      * Enumerate all meta objects of an adapter
      *
-     * @param knownObjIDs
-     * @param adapter
-     * @param metaFilesToDelete
+     * @param knownObjIDs Accumulator of object IDs found so far
+     * @param adapter The adapter name
+     * @param metaFilesToDelete Accumulator of meta files that should be deleted
      */
     async _enumerateAdapterMeta(knownObjIDs: string[], adapter: string, metaFilesToDelete: string[]): Promise<void> {
         try {
@@ -1339,9 +1362,9 @@ export class Install {
     /**
      * Enumerate all state IDs of an adapter (or instance)
      *
-     * @param knownStateIDs
-     * @param adapter
-     * @param instance
+     * @param knownStateIDs Accumulator of state IDs found so far
+     * @param adapter The adapter name
+     * @param instance Optional instance number to restrict the search to
      */
     async _enumerateAdapterStates(knownStateIDs: string[], adapter: string, instance?: number): Promise<void> {
         for (const pattern of [
@@ -1372,8 +1395,8 @@ export class Install {
     /**
      * delete WWW pages, objects and meta files
      *
-     * @param adapter
-     * @param metaFilesToDelete
+     * @param adapter The adapter name
+     * @param metaFilesToDelete The meta files that should be deleted
      */
     private async _deleteAdapterFiles(adapter: string, metaFilesToDelete: string[]): Promise<void> {
         // special files, which are not meta (vis widgets), combined with meta object ids

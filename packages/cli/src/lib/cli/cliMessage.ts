@@ -3,6 +3,7 @@ import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 import { enumInstances } from './cliTools.js';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 
+/** Command iobroker message ... */
 export class CLIMessage extends CLICommand {
     /** @param options The CLI Message options */
     constructor(options: CLICommandOptions) {

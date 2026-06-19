@@ -20,6 +20,7 @@ export const REG_CHECK_ID = CONSTS.REG_CHECK_ID;
 const USER_STARTS_WITH = CONSTS.USER_STARTS_WITH;
 const GROUP_STARTS_WITH = CONSTS.GROUP_STARTS_WITH;
 
+/** Information about a file's mime type */
 export interface FileMimeInformation {
     /** the mime type, of the file */
     mimeType: string;
@@ -27,19 +28,31 @@ export interface FileMimeInformation {
     isBinary: boolean;
 }
 
+/** Access control list of an object, state or file */
 export interface ACLObject {
+    /** The user that owns the object */
     owner: string;
+    /** The group that owns the object */
     ownerGroup: string;
+    /** Permission bitmask for object access */
     object: number;
+    /** Permission bitmask for state access */
     state: number;
+    /** Permission bitmask for file access */
     file: number;
 }
 
+/** Metadata of a stored file */
 export interface FileObject {
+    /** Whether this is a virtual file (a directory placeholder) */
     virtualFile?: boolean;
+    /** File system stats of the file */
     stats: any;
+    /** Timestamp (ms) when the file was last modified */
     modifiedAt: number;
+    /** Timestamp (ms) when the file was created */
     createdAt: number;
+    /** Evaluated access control list of the file */
     acl: ioBroker.EvaluatedFileACL;
 }
 
@@ -123,6 +136,14 @@ export function getMimeType(ext: string, isTextData: boolean): FileMimeInformati
     return { mimeType: isTextData ? 'text/plain' : 'application/octet-stream', isBinary: !isTextData };
 }
 
+/**
+ * Check if the given options have the required rights on a file according to its ACL
+ *
+ * @param fileOptions The stored file options including its ACL
+ * @param options The current request options including the user and group
+ * @param flag The access flag(s) to check for
+ * @param defaultNewAcl The default ACL to use if the file has none yet
+ */
 export function checkFile(
     fileOptions: Record<string, any>,
     options: Record<string, any>,
@@ -178,6 +199,16 @@ export function checkFile(
     return true;
 }
 
+/**
+ * Check whether the given user is allowed to access a file and call back with the effective options
+ *
+ * @param objects The objects database client
+ * @param id The id of the object owning the file
+ * @param name The file name, or null for the whole namespace
+ * @param options The current request options including the user
+ * @param flag The access flag(s) to check for
+ * @param callback Called with the effective options once the rights have been checked
+ */
 export function checkFileRights(
     objects: any,
     id: string,
@@ -275,6 +306,13 @@ type GetUserGroupCallback = (
     acl: ioBroker.ObjectPermissions,
 ) => void;
 
+/**
+ * Determine the groups and effective ACL of the given user
+ *
+ * @param objects The objects database client
+ * @param user The id of the user to look up
+ * @param callback Called with the user, its groups and the effective ACL
+ */
 export function getUserGroup(
     objects: any,
     user: ioBroker.ObjectIDs.User,
@@ -303,6 +341,7 @@ export function getUserGroup(
         (
             err: Error,
             arr: {
+                /** The matching group objects */
                 rows: Array<ioBroker.GetObjectViewItem<ioBroker.GroupObject>>;
             },
         ) => {
@@ -331,6 +370,7 @@ export function getUserGroup(
                 (
                     err?: Error | null,
                     arr?: {
+                        /** The matching user objects */
                         rows: ioBroker.GetObjectListItem<ioBroker.UserObject>[];
                     },
                 ) => {
@@ -471,11 +511,19 @@ export function getUserGroup(
     );
 }
 
+/**
+ * Sanitize an object id and file name so they cannot escape the intended directory
+ *
+ * @param id The object id owning the file
+ * @param name The file name to sanitize
+ */
 export function sanitizePath(
     id: string,
     name: string,
 ): {
+    /** The sanitized object id */
     id: string;
+    /** The sanitized file name */
     name: string;
 } {
     if (!name) {
@@ -510,6 +558,13 @@ export function sanitizePath(
     return { id: id, name: name };
 }
 
+/**
+ * Check if the given options have the required rights on an object according to its ACL
+ *
+ * @param obj The object (or file object) to check, or null
+ * @param options The current request options including the user and group
+ * @param flag The access flag(s) to check for
+ */
 export function checkObject(
     obj: ioBroker.AnyObject | FileObject | null,
     options: Record<string, any>,
@@ -560,6 +615,16 @@ export function checkObject(
     return true; // ALL OK
 }
 
+/**
+ * Check whether the given user is allowed to access an object and call back with the effective options
+ *
+ * @param objects The objects database client
+ * @param id The id of the object, or null
+ * @param object The object to check, or null
+ * @param options The current request options including the user
+ * @param flag The access flag(s) to check for
+ * @param callback Called with the effective options once the rights have been checked
+ */
 export function checkObjectRights(
     objects: any,
     id: string | null,

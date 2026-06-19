@@ -25,7 +25,11 @@ const TRY_KILL_WAIT_MS = 5_000;
 const rootDir = tools.getControllerDir();
 const killAllScriptPath = path.join(rootDir, 'killall.sh');
 
+/** Command ioBroker process control (start/stop/restart/status) ... */
 export class CLIProcess extends CLICommand {
+    /**
+     * @param options The command options including context and parameters
+     */
     constructor(options: CLICommandOptions) {
         super(options);
     }
@@ -365,7 +369,7 @@ async function showInstanceStatus(states: StatesClient, adapterInstance: string)
  * Prints the config file to the console
  *
  * @param config the ioBroker json file content
- * @param root
+ * @param root The path of the current config section being printed
  */
 function showConfig(config: ioBroker.IoBrokerJson, root?: string[]): void {
     if (!tools.isObject(config)) {

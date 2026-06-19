@@ -4,6 +4,12 @@ import assert from 'node:assert/strict';
 
 import { spy } from 'sinon';
 
+/**
+ * Register the adapter helper tests on the given mocha test function
+ *
+ * @param it The mocha test function to register the tests on
+ * @param context The shared test context (adapter, states and objects clients)
+ */
 export function register(it: Mocha.TestFunction, context: TestContext): void {
     //adapterGetPort
     it(`${context.name} ${context.adapterShortName} adapter: find next free port`, function (done) {

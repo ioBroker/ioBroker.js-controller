@@ -59,6 +59,9 @@ interface ServerResponse {
     success?: boolean;
 }
 
+/**
+ * Manages the upgrade of a single adapter, including stopping it and serving a web UI for the upgrade progress
+ */
 export class AdapterUpgradeManager {
     /** Wait ms until adapter is stopped */
     private readonly STOP_TIMEOUT_MS = 3_000;
@@ -100,6 +103,9 @@ export class AdapterUpgradeManager {
     /** Port where the webserver should be running */
     private readonly port: number;
 
+    /**
+     * @param options Adapter name, target version, logger and webserver options
+     */
     constructor(options: AdapterUpgradeManagerOptions) {
         this.adapterName = options.adapterName;
         this.version = options.version;

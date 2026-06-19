@@ -2,6 +2,9 @@ import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient, interview } from '@iobroker/db-objects-redis';
 
+/**
+ * Get the objects database client constructor matching the configured objects DB type
+ */
 export async function getObjectsConstructor(): Promise<typeof ObjectsClient> {
     const config = fs.readJSONSync(tools.getConfigFileName());
     if (!config.objects) {

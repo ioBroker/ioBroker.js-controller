@@ -28,6 +28,9 @@ export function createAdapterStore(session: Session, defaultTtl = 3600): any {
     class AdapterStore extends Store {
         private readonly adapter: any;
 
+        /**
+         * @param options Store options including the adapter instance used to read and write sessions
+         */
         constructor(options: AdapterStoreOptions) {
             super(options);
 

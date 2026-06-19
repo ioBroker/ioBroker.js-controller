@@ -14,6 +14,7 @@ interface GetHostOptions {
 }
 
 export type TaskObject = ioBroker.SettableObject & {
+    /** Optional initial state value to set together with the object */
     state?: ioBroker.SettableState;
 };
 

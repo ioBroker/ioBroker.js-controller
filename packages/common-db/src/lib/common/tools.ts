@@ -55,6 +55,7 @@ type DockerInformation =
           isOfficial: false;
       };
 
+/** Detailed information about the host system ioBroker runs on */
 export interface HostInfo {
     /** Converted OS for human readability */
     Platform: NodeJS.Platform | 'docker' | 'Windows' | 'OSX';
@@ -120,6 +121,7 @@ interface DockerHubResponse {
     [other: string]: unknown;
 }
 
+/** Information about the available ioBroker Docker image */
 export interface DockerImageInformation {
     /** The official version like v10.0.0 */
     version: string;
@@ -293,6 +295,13 @@ export function upToDate(repoVersion: string, installedVersion: string): boolean
 }
 
 // TODO: this is only here for backward compatibility, if MULTIHOST password was still setup with old decryption
+/**
+ * Decrypt a phrase that was encrypted with the legacy aes192 algorithm
+ *
+ * @param password The password used to derive the decryption key
+ * @param data The encrypted data to decrypt
+ * @param callback Called with the decrypted string, or null on error
+ */
 export function decryptPhrase(password: string, data: any, callback: (decrypted?: null | string) => void): void {
     const decipher = crypto.createDecipher('aes192', password);
 
@@ -411,8 +420,8 @@ export function findIPs(): string[] {
 /**
  * Find the correct path based on given path and url
  *
- * @param path
- * @param url
+ * @param path The base path the url may be relative to
+ * @param url The url or relative/absolute path to resolve
  */
 function findPath(path: string, url: string): string {
     if (!url) {
@@ -750,9 +759,9 @@ export async function createUuid(objects: any): Promise<void | string> {
 /**
  * Download file to tmp or return file name directly
  *
- * @param urlOrPath
- * @param fileName
- * @param callback
+ * @param urlOrPath URL to download from, or a local file path
+ * @param fileName Target file name used when the source is downloaded to the tmp directory
+ * @param callback Called with the path to the local file
  */
 export async function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void): Promise<void> {
     // If object was read
@@ -799,7 +808,13 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
     }
 }
 
-// Return content of the JSON file. Download it or read directly
+/**
+ * Return the content of a JSON file, downloading it from a URL or reading it directly from disk
+ *
+ * @param urlOrPath URL to download the JSON from, or a local file path
+ * @param agent User agent string used for the download request
+ * @param callback Called with the parsed sources and the resolved url/path
+ */
 export async function getJson(
     urlOrPath: string,
     agent: string,
@@ -1026,6 +1041,7 @@ interface Multilingual {
     'zh-cn'?: string;
 }
 
+/** Information about an installed adapter */
 export interface AdapterInformation {
     /** this flag is only true for the js-controller */
     controller: boolean;
@@ -1118,7 +1134,7 @@ export function getInstalledInfo(hostRunningVersion?: string): Record<string, Ad
  * Reads an adapter's npm version
  *
  * @param adapter The adapter to read the npm version from. Null for the root ioBroker packet
- * @param callback
+ * @param callback Called with the npm version, or an error if the lookup failed
  */
 function getNpmVersion(adapter: string, callback?: (err: Error | null, version?: string | null) => void): void {
     adapter = adapter ? `${appName}.${adapter}` : appName;
@@ -1702,12 +1718,13 @@ function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) =
 
 const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
 
+/** Options for installing a node module */
 export interface InstallNodeModuleOptions {
-    // Whether the `--unsafe-perm` flag should be used
+    /** Whether the `--unsafe-perm` flag should be used */
     unsafePerm?: boolean;
-    // Whether to include `stderr` in the output and increase the loglevel to include more than errors
+    /** Whether to include `stderr` in the output and increase the loglevel to include more than errors */
     debug?: boolean;
-    // Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+    /** Which directory to work in. If none is given, this defaults to ioBroker's root directory. */
     cwd?: string;
 }
 
@@ -1784,10 +1801,11 @@ export async function installNodeModule(
     return pak.install([npmUrl], installOpts);
 }
 
+/** Options for uninstalling a node module */
 export interface UninstallNodeModuleOptions {
-    // Whether to include `stderr` in the output and increase the loglevel to include more than errors
+    /** Whether to include `stderr` in the output and increase the loglevel to include more than errors */
     debug?: boolean;
-    // Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+    /** Which directory to work in. If none is given, this defaults to ioBroker's root directory. */
     cwd?: string;
 }
 
@@ -1822,12 +1840,13 @@ export async function uninstallNodeModule(
     return pak.uninstall([packageName]);
 }
 
+/** Options for rebuilding native node modules */
 export interface RebuildNodeModulesOptions {
-    // Whether to include `stderr` in the output and increase the loglevel to include more than errors
+    /** Whether to include `stderr` in the output and increase the loglevel to include more than errors */
     debug?: boolean;
-    // Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+    /** Which directory to work in. If none is given, this defaults to ioBroker's root directory. */
     cwd?: string;
-    // module which should be rebuilt
+    /** module which should be rebuilt */
     module?: string;
 }
 
@@ -1859,8 +1878,11 @@ export async function rebuildNodeModules(options: RebuildNodeModulesOptions = {}
     return pak.rebuild(options.module ? [options.module] : undefined);
 }
 
+/** Information about the disk on which ioBroker is installed */
 export interface GetDiskInfoResponse {
+    /** Total size of the disk in bytes */
     'Disk size': number;
+    /** Free space on the disk in bytes */
     'Disk free': number;
 }
 
@@ -1925,7 +1947,9 @@ export async function getDiskInfo(): Promise<GetDiskInfoResponse | null> {
     return null;
 }
 
+/** Parsed information about an SSL/TLS certificate */
 export interface CertificateInfo {
+    /** path to the certificate file, or null if the certificate was passed directly */
     certificateFilename: string | null;
     /** the certificate itself */
     certificate: string;
@@ -1941,7 +1965,9 @@ export interface CertificateInfo {
     subject: Record<string, any>;
     /** server name this certificate belong to */
     dnsNames: {
+        /** Type of the subject alternative name entry */
         type: number;
+        /** Value of the subject alternative name entry */
         value: string;
     }[];
     /** this certificate can be used for the following purposes */
@@ -1957,7 +1983,7 @@ export interface CertificateInfo {
 /**
  * Returns information about a certificate
  *
- * @param cert
+ * @param cert The certificate as a PEM string, or a path to the certificate file
  * @returns certificate information object
  */
 export function getCertificateInfo(cert: string): null | CertificateInfo {
@@ -2003,8 +2029,11 @@ export function getCertificateInfo(cert: string): null | CertificateInfo {
     }
 }
 
+/** Default self-signed certificates shipped with the controller */
 export interface DefaultCertificates {
+    /** PEM encoded default private key */
     defaultPrivate: string;
+    /** PEM encoded default public certificate */
     defaultPublic: string;
 }
 
@@ -2464,6 +2493,14 @@ async function _setQualityForStates(states: any, keys: string[], quality: number
     }
 }
 
+/**
+ * Set the given quality code on all states belonging to an instance
+ *
+ * @param objects The objects database client
+ * @param states The states database client
+ * @param namespace The instance namespace whose states should be updated (e.g. "admin.0")
+ * @param q The quality code to assign to each state
+ */
 export function setQualityForInstance(objects: any, states: any, namespace: string, q: number): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         objects.getObjectView(
@@ -2526,8 +2563,7 @@ export function pattern2RegEx(pattern: string): string {
 /**
  * Checks if a pattern is valid
  *
- * @param pattern
- * @pattern pattern to check for validity
+ * @param pattern The pattern to check for validity
  */
 export function isValidPattern(pattern: string): boolean {
     pattern = pattern.replace(/\*/g, '');
@@ -2715,7 +2751,7 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
  * This function convert state values by read and write of aliases. Function is synchronous.
  * On errors, null is returned instead
  *
- * @param options
+ * @param options Source and target common/id definitions, the state to convert and a logger
  */
 export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.State | null {
     const { sourceCommon, sourceId, targetCommon, targetId, state, logger } = options;
@@ -3238,7 +3274,7 @@ export async function resolveAdapterMainFile(adapter: string): Promise<string> {
 /**
  * Returns the default nodeArgs required to execute the main file, e.g., transpile hooks for TypeScript
  *
- * @param mainFile
+ * @param mainFile Path to the adapter main file that will be executed
  * @returns default node args for cli
  */
 export function getDefaultNodeArgs(mainFile: string): string[] {
@@ -3283,9 +3319,13 @@ export function isShortGithubUrl(url: string): boolean {
     return shortGithubUrlRegex.test(url);
 }
 
+/** A short GitHub URL parsed into its separate parts */
 export interface ParsedGithubUrl {
+    /** GitHub user or organization name */
     user: string;
+    /** Repository name */
     repo: string;
+    /** Optional commit-ish (branch, tag or commit hash) */
     commit?: string;
 }
 
@@ -3584,6 +3624,11 @@ export function getInstanceIndicatorObjects(
 
 export type InternalLogger = Omit<ioBroker.Logger, 'level'>;
 
+/**
+ * Normalize a logger-like object into a complete logger, filling missing log level methods with no-ops
+ *
+ * @param log A logger or partial logger object; if falsy, a no-op logger is created
+ */
 export function getLogger(log: any): InternalLogger {
     if (!log) {
         log = {
@@ -3799,8 +3844,9 @@ export async function updateLicenses(objects: any, login: string, password: stri
     }
 }
 
+/** Options for compressing a file with GZip */
 export interface GZipFileOptions {
-    // Delete the input file after compression. Default: false.
+    /** Delete the input file after compression. Default: false. */
     deleteInput?: boolean;
 }
 /**
@@ -3845,6 +3891,7 @@ export function compressFileGZip(
     });
 }
 
+/** Result of validating a configured data directory */
 export interface DataDirValidation {
     /** if data directory is valid */
     valid: boolean;
