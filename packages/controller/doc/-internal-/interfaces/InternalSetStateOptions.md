@@ -6,7 +6,7 @@
 
 # Interface: InternalSetStateOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:436](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L436)
+Defined in: [adapter/src/lib/\_Types.ts:436](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L436)
 
 ## Extended by
 
@@ -18,7 +18,7 @@ Defined in: [adapter/src/lib/\_Types.ts:436](https://github.com/ioBroker/ioBroke
 
 > `optional` **ack?**: `boolean`
 
-Defined in: [adapter/src/lib/\_Types.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L439)
+Defined in: [adapter/src/lib/\_Types.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L439)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [adapter/src/lib/\_Types.ts:439](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: [`SetStateCallback`](../type-aliases/SetStateCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L441)
+Defined in: [adapter/src/lib/\_Types.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L441)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [adapter/src/lib/\_Types.ts:441](https://github.com/ioBroker/ioBroke
 
 > **id**: `string` \| [`IdObject`](IdObject.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L437)
+Defined in: [adapter/src/lib/\_Types.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L437)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [adapter/src/lib/\_Types.ts:437](https://github.com/ioBroker/ioBroke
 
 > `optional` **options?**: `Partial`\<[`GetUserGroupsOptions`](GetUserGroupsOptions.md)\> \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:440](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L440)
+Defined in: [adapter/src/lib/\_Types.ts:440](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L440)
 
 ***
 
@@ -50,4 +50,4 @@ Defined in: [adapter/src/lib/\_Types.ts:440](https://github.com/ioBroker/ioBroke
 
 > **state**: [`SettableState`](../type-aliases/SettableState.md) \| [`StateValue`](../type-aliases/StateValue.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:438](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L438)
+Defined in: [adapter/src/lib/\_Types.ts:438](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L438)

@@ -6,7 +6,7 @@
 
 # Interface: InternalAddStateToEnumOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:555](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L555)
+Defined in: [adapter/src/lib/\_Types.ts:555](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L555)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:555](https://github.com/ioBroker/ioBroke
 
 > **addTo**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:557](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L557)
+Defined in: [adapter/src/lib/\_Types.ts:557](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L557)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [adapter/src/lib/\_Types.ts:557](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:562](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L562)
+Defined in: [adapter/src/lib/\_Types.ts:562](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L562)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [adapter/src/lib/\_Types.ts:562](https://github.com/ioBroker/ioBroke
 
 > **enumName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:556](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L556)
+Defined in: [adapter/src/lib/\_Types.ts:556](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L556)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: [adapter/src/lib/\_Types.ts:556](https://github.com/ioBroker/ioBroke
 
 > `optional` **options?**: `Record`\<`string`, `any`\> \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:561](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L561)
+Defined in: [adapter/src/lib/\_Types.ts:561](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L561)
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: [adapter/src/lib/\_Types.ts:561](https://github.com/ioBroker/ioBroke
 
 > **parentChannel**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:559](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L559)
+Defined in: [adapter/src/lib/\_Types.ts:559](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L559)
 
 ***
 
@@ -54,7 +54,7 @@ Defined in: [adapter/src/lib/\_Types.ts:559](https://github.com/ioBroker/ioBroke
 
 > **parentDevice**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:558](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L558)
+Defined in: [adapter/src/lib/\_Types.ts:558](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L558)
 
 ***
 
@@ -62,4 +62,4 @@ Defined in: [adapter/src/lib/\_Types.ts:558](https://github.com/ioBroker/ioBroke
 
 > **stateName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:560](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L560)
+Defined in: [adapter/src/lib/\_Types.ts:560](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L560)
