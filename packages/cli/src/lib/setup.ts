@@ -2974,7 +2974,7 @@ export function execute(): void {
     void processCommand(command, args, _yargs.argv, exitApplicationSave);
 }
 
-process.on('unhandledRejection', e => {
-    console.error(`Uncaught Rejection: ${(e as Error).stack || e}`);
-    exitApplicationSave(EXIT_CODES.UNCAUGHT_EXCEPTION);
+process.on('unhandledRejection', (e: any) => {
+    console.error(`Uncaught Rejection: ${e.stack || e}`);
+    exitApplicationSave(EXIT_CODES.UNCAUGHT_EXCEPTION).catch(e => console.error(`Cannot exit: ${e.toString()}`));
 });
