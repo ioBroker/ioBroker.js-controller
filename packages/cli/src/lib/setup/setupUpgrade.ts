@@ -35,6 +35,9 @@ interface UpgradeControllerOptions {
     version?: string;
 }
 
+/**
+ * CLI command to upgrade the js-controller
+ */
 export class Upgrade {
     private readonly hostname = tools.getHostName();
     private readonly upload: Upload;
@@ -42,6 +45,9 @@ export class Upgrade {
     private readonly objects: ObjectsInRedisClient;
     private readonly processExit: ProcessExitCallback;
 
+    /**
+     * @param options The objects client, the upload/install helpers and the process-exit callback
+     */
     constructor(options: CLIUpgradeOptions) {
         options = options || {};
 

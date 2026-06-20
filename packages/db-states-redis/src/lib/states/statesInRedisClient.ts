@@ -20,8 +20,8 @@ type JSONDecoderValue = Record<string, any>;
 /**
  * Decodes a JSON with buffer value
  *
- * @param _key
- * @param value
+ * @param _key The current property key (unused, required by the JSON.parse reviver signature)
+ * @param value The value to potentially decode into a Buffer
  */
 function bufferJsonDecoder(_key: string, value: JSONDecoderValue): Buffer | JSONDecoderValue {
     if (tools.isObject(value) && value.type === 'Buffer' && value.data && Array.isArray(value.data)) {
@@ -33,26 +33,44 @@ function bufferJsonDecoder(_key: string, value: JSONDecoderValue): Buffer | JSON
 type UserChangeFunction = (id: string, state: ioBroker.State | null) => void;
 type ChangeFunction = (id: string, state: ioBroker.State | ioBroker.Message | null) => void;
 
+/** Settings for the states database client */
 export interface StatesSettings {
+    /** Called once the client is connected */
     connected?: () => void;
+    /** Called when the client gets disconnected */
     disconnected?: () => void;
+    /** Handler for user-level state changes */
     changeUser?: UserChangeFunction;
+    /** Handler for system-level state and message changes */
     change?: ChangeFunction;
+    /** Connection options for the redis server */
     connection: ConnectionOptions;
+    /** Whether to connect to the database immediately (default true) */
     autoConnect?: boolean;
+    /** Logger instance to use */
     logger?: InternalLogger;
+    /** Name of this host */
     hostname?: string;
+    /** Namespace of this client */
     namespace?: string;
+    /** Namespace used for meta information */
     metaNamespace?: string;
+    /** Namespace used for sessions */
     namespaceSession?: string;
+    /** Namespace used for log messages */
     namespaceLog?: string;
+    /** Namespace used for the message box */
     namespaceMsg?: string;
+    /** Redis key prefix (defaults to "io") */
     redisNamespace?: string;
 }
 
 /** The internal log message does not have an _id parameter */
 type LogMessageInternal = Omit<ioBroker.LogMessage, '_id'>;
 
+/**
+ * Client for the states database backed by Redis (or the in-memory redis-protocol server)
+ */
 export class StateRedisClient {
     private settings: StatesSettings;
     private readonly namespaceRedis: string;
@@ -77,6 +95,9 @@ export class StateRedisClient {
     /** System level subscriptions value true means messagebox is subscribed */
     private readonly systemSubscriptions: Record<string, RegExp | true>;
 
+    /**
+     * @param settings Settings for the states client including connection and namespaces
+     */
     constructor(settings: StatesSettings) {
         this.settings = settings || {};
         this.namespaceRedis = `${this.settings.redisNamespace || 'io'}.`;
@@ -142,6 +163,9 @@ export class StateRedisClient {
         }
     }
 
+    /**
+     * Connect to the states database and set up the change and message subscriptions
+     */
     connectDb(): void {
         this.settings.connection = this.settings.connection || {};
 
@@ -668,10 +692,19 @@ export class StateRedisClient {
         });
     }
 
+    /**
+     * Get the current status of the database
+     */
     getStatus(): DbStatus {
         return { type: 'redis', server: false };
     }
 
+    /**
+     * Set the value of a state
+     *
+     * @param id The id of the state to set
+     * @param state The value (or full state object) to set
+     */
     setState(id: string, state: ioBroker.SettableState | ioBroker.StateValue): Promise<string>;
 
     /** @deprecated migrate to promisified version (without callback) */
@@ -828,8 +861,8 @@ export class StateRedisClient {
     /**
      * Promise-version of setState
      *
-     * @param id
-     * @param state
+     * @param id The id of the state to set
+     * @param state The value (or full state object) to set
      * @deprecated use version without `Async` postfix
      */
     setStateAsync(id: string, state: ioBroker.SettableState | ioBroker.StateValue): Promise<string> {
@@ -844,7 +877,12 @@ export class StateRedisClient {
         });
     }
 
-    // Used for restore function (do not call it)
+    /**
+     * Directly set the raw stored value of a state without publishing a change (used for restore, do not call it)
+     *
+     * @param id The id of the state to set
+     * @param state The raw state object to store
+     */
     async setRawState(id: string, state: ioBroker.SettableState): Promise<string> {
         if (!id || typeof id !== 'string') {
             throw new Error(`invalid id ${JSON.stringify(id)}`);
@@ -858,7 +896,18 @@ export class StateRedisClient {
         return id;
     }
 
+    /**
+     * Get state from database
+     *
+     * @param id id of the state
+     */
     getState(id: string): ioBroker.GetStatePromise;
+    /**
+     * Get state from database
+     *
+     * @param id id of the state
+     * @param callback optional callback, leave out and use promise return type
+     */
     getState(
         id: string,
         callback?: (err: Error | null | undefined, state?: ioBroker.State | null) => void,
@@ -905,24 +954,52 @@ export class StateRedisClient {
     /**
      * Promise-version of getState
      *
-     * @param id
+     * @param id id of the state to get
      */
     getStateAsync(id: string): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void> {
         return this.getState(id);
     }
 
+    /**
+     * Get the values of multiple states
+     *
+     * @param keys The ids of the states to read
+     * @param callback Optional callback, leave out and use the promise return type
+     * @param dontModify If true, the returned states are not cloned/modified
+     */
     getStates(keys: string[], callback?: undefined, dontModify?: boolean): Promise<(ioBroker.State | null)[]>;
+    /**
+     * Get the values of multiple states
+     *
+     * @param keys The ids of the states to read
+     * @param callback Callback called with the read states
+     * @param dontModify If true, the returned states are not cloned/modified
+     */
     getStates(
         keys: string[],
         callback: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
         dontModify?: boolean,
     ): Promise<void>;
+    /**
+     * Get the values of multiple states
+     *
+     * @param keys The ids of the states to read
+     * @param callback Callback called with the read states
+     * @param dontModify If true, the returned states are not cloned/modified
+     */
     getStates(
         keys: string[],
         callback: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
         dontModify?: boolean,
     ): Promise<void>;
 
+    /**
+     * Get the values of multiple states
+     *
+     * @param keys The ids of the states to read
+     * @param callback Optional callback called with the read states
+     * @param dontModify If true, the returned states are not cloned/modified
+     */
     async getStates(
         keys: string[],
         callback?: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
@@ -1008,7 +1085,9 @@ export class StateRedisClient {
         return this._destroyDBHelper(keys || [], callback);
     }
 
-    // Destructor of the class. Called by shutting down.
+    /**
+     * Destructor of the class. Called when shutting down to close the redis connections.
+     */
     async destroy(): Promise<void> {
         this.stop = true;
         if (this.client) {
@@ -1040,6 +1119,12 @@ export class StateRedisClient {
         }
     }
 
+    /**
+     * Delete a state and publish the deletion
+     *
+     * @param id The id of the state to delete
+     * @param callback Optional callback called with the deleted id
+     */
     async delState(
         id: string,
         callback?: ioBroker.DeleteStateCallback,
@@ -1063,13 +1148,34 @@ export class StateRedisClient {
         }
     }
 
+    /**
+     * Get all state ids matching the given pattern
+     *
+     * @param pattern The pattern to match state ids against
+     * @param callback Optional callback, leave out and use the promise return type
+     * @param dontModify If true, the returned keys are not stripped of the namespace
+     */
     getKeys(
         pattern: string,
         callback?: undefined,
         dontModify?: boolean,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback>>;
+    /**
+     * Get all state ids matching the given pattern
+     *
+     * @param pattern The pattern to match state ids against
+     * @param callback Callback called with the matching keys
+     * @param dontModify If true, the returned keys are not stripped of the namespace
+     */
     getKeys(pattern: string, callback: ioBroker.GetKeysCallback, dontModify?: boolean): Promise<void>;
 
+    /**
+     * Get all state ids matching the given pattern
+     *
+     * @param pattern The pattern to match state ids against
+     * @param callback Optional callback called with the matching keys
+     * @param dontModify If true, the returned keys are not stripped of the namespace
+     */
     async getKeys(
         pattern: string,
         callback?: ioBroker.GetKeysCallback,
@@ -1098,11 +1204,24 @@ export class StateRedisClient {
         return tools.maybeCallbackWithError(callback, null, obj);
     }
 
+    /**
+     * Subscribe to state changes matching the given pattern
+     *
+     * @param pattern The pattern to subscribe to
+     * @param callback callback function (optional)
+     */
     async subscribe(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void>;
+    /**
+     * Subscribe to state changes matching the given pattern
+     *
+     * @param pattern The pattern to subscribe to
+     * @param asUser - if true it will be subscribed as user
+     * @param callback callback function (optional)
+     */
     async subscribe(pattern: string, asUser: boolean, callback?: ioBroker.ErrorCallback): Promise<void>;
 
     /**
-     * @param pattern
+     * @param pattern The pattern to subscribe to
      * @param asUser - if true it will be subscribed as user
      * @param callback callback function (optional)
      */
@@ -1145,21 +1264,36 @@ export class StateRedisClient {
     }
 
     /**
-     * @param pattern
+     * Subscribe to state changes matching the given pattern as a user
+     *
+     * @param pattern The pattern to subscribe to
      * @param callback callback function (optional)
      */
     subscribeUser(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         return this.subscribe(pattern, true, callback);
     }
 
+    /**
+     * Unsubscribe from state changes matching the given pattern
+     *
+     * @param pattern The pattern to unsubscribe from
+     * @param asUser - if true it will be unsubscribed as user
+     * @param callback callback function (optional)
+     */
     async unsubscribe(pattern: string, asUser: boolean, callback?: ioBroker.ErrorCallback): Promise<void>;
+    /**
+     * Unsubscribe from state changes matching the given pattern
+     *
+     * @param pattern The pattern to unsubscribe from
+     * @param callback callback function (optional)
+     */
     async unsubscribe(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void>;
     /**
      * Unsubscribe pattern
      *
-     * @param pattern
+     * @param pattern The pattern to unsubscribe from
      * @param asUser - if true it will be unsubscribed as user
-     * @param callback
+     * @param callback callback function (optional)
      */
     async unsubscribe(
         pattern: string,
@@ -1200,13 +1334,21 @@ export class StateRedisClient {
     }
 
     /**
-     * @param pattern
+     * Unsubscribe from state changes matching the given pattern as a user
+     *
+     * @param pattern The pattern to unsubscribe from
      * @param callback callback function (optional)
      */
     unsubscribeUser(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         return this.unsubscribe(pattern, true, callback);
     }
 
+    /**
+     * Push a message into the message box of the given id
+     *
+     * @param id The id of the message box owner
+     * @param message The message to push
+     */
     async pushMessage(id: string, message: ioBroker.SendableMessage): Promise<void> {
         if (!id || typeof id !== 'string') {
             throw new Error(`invalid id ${JSON.stringify(id)}`);
@@ -1225,6 +1367,12 @@ export class StateRedisClient {
         await this.client.publish(this.namespaceMsg + id, JSON.stringify(fullMessage));
     }
 
+    /**
+     * Subscribe to messages sent to the given id
+     *
+     * @param id The id of the message box to subscribe to
+     * @param callback callback function (optional)
+     */
     async subscribeMessage(id: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -1248,6 +1396,12 @@ export class StateRedisClient {
         }
     }
 
+    /**
+     * Unsubscribe from messages sent to the given id
+     *
+     * @param id The id of the message box to unsubscribe from
+     * @param callback callback function (optional)
+     */
     async unsubscribeMessage(id: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -1273,12 +1427,26 @@ export class StateRedisClient {
         }
     }
 
+    /**
+     * Push a log message to the given log target
+     *
+     * @param id The id of the log target
+     * @param log The log message to push
+     * @param callback Optional callback called with the generated log id
+     */
     async pushLog(
         id: string,
         log: LogMessageInternal,
         callback?: (err: Error | undefined | null, id?: string) => void,
     ): Promise<string | void>;
 
+    /**
+     * Push a log message to the given log target
+     *
+     * @param id The id of the log target
+     * @param log The log message to push
+     * @param callback Optional callback called with the generated log id
+     */
     async pushLog(
         id: string,
         log: ioBroker.LogMessage,
@@ -1303,6 +1471,12 @@ export class StateRedisClient {
         }
     }
 
+    /**
+     * Subscribe to log messages of the given id
+     *
+     * @param id The id of the log target to subscribe to
+     * @param callback callback function (optional)
+     */
     async subscribeLog(id: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -1323,6 +1497,12 @@ export class StateRedisClient {
         }
     }
 
+    /**
+     * Unsubscribe from log messages of the given id
+     *
+     * @param id The id of the log target to unsubscribe from
+     * @param callback callback function (optional)
+     */
     async unsubscribeLog(id: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -1346,6 +1526,12 @@ export class StateRedisClient {
     }
 
     // TODO: types session obj
+    /**
+     * Get a stored session by its id
+     *
+     * @param id The id of the session to read
+     * @param callback Called with the session object, or null if not found
+     */
     async getSession(
         id: string,
         callback: (err: Error | undefined | null, session?: Record<string, any> | null) => void,
@@ -1376,6 +1562,14 @@ export class StateRedisClient {
     }
 
     // TODO: types obj
+    /**
+     * Create or update a session and set its expiration
+     *
+     * @param id The id of the session
+     * @param expireS Expiration time in seconds from now
+     * @param obj The session data to store
+     * @param callback callback function (optional)
+     */
     async setSession(
         id: string,
         expireS: number,
@@ -1400,6 +1594,12 @@ export class StateRedisClient {
         }
     }
 
+    /**
+     * Destroy (delete) a session by its id
+     *
+     * @param id The id of the session to destroy
+     * @param callback callback function (optional)
+     */
     async destroySession(id: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);

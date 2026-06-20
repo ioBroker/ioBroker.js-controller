@@ -8,6 +8,9 @@ import fs from 'fs-extra';
 
 /** Command iobroker host ... */
 export class CLIHost extends CLICommand {
+    /**
+     * @param options The command options including context and parameters
+     */
     constructor(options: CLICommandOptions) {
         super(options);
     }
@@ -15,7 +18,7 @@ export class CLIHost extends CLICommand {
     /**
      * Executes a command
      *
-     * @param args
+     * @param args The command arguments (the first is the sub-command)
      */
     execute(args: any[]): void {
         const command = args[0];
@@ -36,7 +39,7 @@ export class CLIHost extends CLICommand {
     /**
      * When in single-host mode, changes the hostname of the host and all instances to the current one
      *
-     * @param _args
+     * @param _args The command arguments (unused)
      */
     self(_args: any[]): void {
         this.renameHost(undefined, os.hostname());
@@ -45,7 +48,7 @@ export class CLIHost extends CLICommand {
     /**
      * Changes the current host's hostname to the given one
      *
-     * @param args
+     * @param args The command arguments (the second is the new hostname)
      */
     set(args: any[]): void {
         const { callback } = this.options;
@@ -62,7 +65,7 @@ export class CLIHost extends CLICommand {
     /**
      * Removes the host with the given name
      *
-     * @param args
+     * @param args The command arguments (the second is the hostname to remove)
      */
     remove(args: any[]): void {
         const { callback, dbConnect } = this.options;
@@ -138,7 +141,7 @@ export class CLIHost extends CLICommand {
     /**
      * Renames the host with the given name to the current one (opposite of `set()`)
      *
-     * @param args
+     * @param args The command arguments (the second is the old hostname)
      */
     rename(args: any[]): void {
         const { callback } = this.options;

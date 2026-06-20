@@ -13,6 +13,9 @@ interface ParsedPropPathAndAssignment {
 
 /** Command iobroker object ... */
 export class CLIObjects extends CLICommand {
+    /**
+     * @param options The command options including context and parameters
+     */
     constructor(options: CLICommandOptions) {
         super(options);
     }
@@ -20,7 +23,7 @@ export class CLIObjects extends CLICommand {
     /**
      * Executes a command
      *
-     * @param args
+     * @param args The command arguments (the first is the sub-command)
      */
     execute(args: any[]): void {
         const { callback, showHelp } = this.options;
@@ -159,7 +162,7 @@ export class CLIObjects extends CLICommand {
     /**
      * Changes access rights for all objects matching the pattern
      *
-     * @param args
+     * @param args The command arguments (object mode, state mode and pattern)
      */
     chmod(args: any[]): void {
         const { callback, dbConnect } = this.options;
@@ -203,7 +206,7 @@ export class CLIObjects extends CLICommand {
     /**
      * Changes owner for all objects matching the pattern
      *
-     * @param args
+     * @param args The command arguments (user, group and pattern)
      */
     chown(args: any[]): void {
         const { callback, dbConnect } = this.options;
@@ -245,7 +248,7 @@ export class CLIObjects extends CLICommand {
     /**
      * Lists all objects matching a pattern and their access rights
      *
-     * @param args
+     * @param args The command arguments (the pattern to match)
      */
     list(args: any[]): void {
         const { callback, dbConnect } = this.options;
@@ -272,7 +275,7 @@ export class CLIObjects extends CLICommand {
     /**
      * Retrieves an object or its property from the DB and prints it
      *
-     * @param args
+     * @param args The command arguments (the object id and optional property path)
      */
     get(args: any[]): void {
         const { callback, pretty, dbConnect } = this.options;
@@ -311,7 +314,7 @@ export class CLIObjects extends CLICommand {
     /**
      * Updates an object or its property with the given value
      *
-     * @param args
+     * @param args The command arguments (the object id and the value to set)
      */
     set(args: any[]): void {
         const { callback, dbConnect } = this.options;
@@ -424,7 +427,7 @@ export class CLIObjects extends CLICommand {
     /**
      * Extends an object with the given value
      *
-     * @param args
+     * @param args The command arguments (the object id and the value to extend with)
      */
     extend(args: any[]): void {
         const { callback, dbConnect } = this.options;
@@ -500,7 +503,7 @@ export class CLIObjects extends CLICommand {
      *
      * @param objects class
      * @param ids IDs
-     * @param callback
+     * @param callback Called with the exit code once all objects have been deleted
      */
     async _deleteObjects(objects: ObjectsClient, ids: string[], callback: (exitCode: number) => void): Promise<void> {
         if (!ids || !ids.length) {
@@ -529,7 +532,7 @@ export class CLIObjects extends CLICommand {
     /**
      * Deletes an object
      *
-     * @param args
+     * @param args The command arguments (the object id to delete)
      */
     delete(args: any[]): void {
         const { callback, dbConnect } = this.options;
@@ -670,8 +673,8 @@ function normalizePropertyPath(path: string): string {
  */
 function deepSelectProperty(object: ioBroker.AnyObject, path: string): any {
     /**
-     * @param obj
-     * @param pathArr
+     * @param obj The current (sub-)object being traversed
+     * @param pathArr The remaining property path segments
      */
     function _deepSelectProperty(obj: any, pathArr: string[]): unknown {
         // are we there yet? then return obj
@@ -696,12 +699,12 @@ function deepSelectProperty(object: ioBroker.AnyObject, path: string): any {
  *
  * @param object The object to replace a property in
  * @param path The property path to search for
- * @param value
+ * @param value The value to set at the given property path
  */
 function deepSetProperty(object: ioBroker.AnyObject, path: string, value: any): void {
     /**
-     * @param obj
-     * @param pathArr
+     * @param obj The current (sub-)object being traversed
+     * @param pathArr The remaining property path segments
      */
     function _deepSetProperty(obj: any, pathArr: string[]): void {
         // are we there yet? then return obj

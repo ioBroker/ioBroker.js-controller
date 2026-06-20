@@ -6,15 +6,24 @@ import { EXIT_CODES } from '@iobroker/js-controller-common';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '../_Types.js';
 
+/** Options for the vis debug helper */
 export interface CLIVisDebugOptions {
+    /** The objects database client */
     objects: ObjectsRedisClient;
+    /** Callback to exit the process with an exit code */
     processExit: ProcessExitCallback;
 }
 
+/**
+ * Helper to upload a vis widget directory for debugging
+ */
 export class VisDebug {
     private readonly objects: ObjectsRedisClient;
     private readonly processExit: ProcessExitCallback;
 
+    /**
+     * @param options The objects client and the process-exit callback
+     */
     constructor(options: CLIVisDebugOptions) {
         this.objects = options.objects;
         this.processExit = options.processExit;

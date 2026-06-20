@@ -70,12 +70,18 @@ interface AdapterListEntry {
     'upgrade policy': ioBroker.AutoUpgradePolicy;
 }
 
+/**
+ * CLI command to list adapters, instances, objects and files
+ */
 export class List {
     private config: Record<string, any>;
     private objects: ObjectsRedisClient;
     private states: StatesRedisClient;
     private readonly processExit: (exitCode?: number) => void;
 
+    /**
+     * @param options The objects/states clients, config and process-exit callback
+     */
     constructor(options: CLIListOptions) {
         options = options || {};
 
@@ -113,6 +119,11 @@ export class List {
         return result;
     }
 
+    /**
+     * Print the table header for a file listing
+     *
+     * @param adapter Optional adapter name printed above the header
+     */
     showFileHeader(adapter?: string): void {
         if (adapter) {
             console.log(`\n-- ${adapter} --`);
@@ -122,6 +133,13 @@ export class List {
         console.log('----------------+----------+--------------+--------------+------+---------');
     }
 
+    /**
+     * Print a single file as a table row
+     *
+     * @param adapter The adapter the file belongs to
+     * @param path The directory path of the file
+     * @param file The file entry to print
+     */
     showFile(adapter: string, path: string, file: ioBroker.ReadDirResult): void {
         //drwxr-xr-x   1 odroid odroid    43 Oct  3  2013 .xsessionrc
         let text = '';
@@ -159,11 +177,19 @@ export class List {
         }
     }
 
+    /**
+     * Print the table header for an object listing
+     */
     showObjectHeader(): void {
         console.log('ObjectAC | StateAC |     User     |     Group    | ID');
         console.log('---------+---------+--------------+--------------+--------------');
     }
 
+    /**
+     * Print a single object as a table row
+     *
+     * @param obj The object to print
+     */
     showObject(obj: ioBroker.AnyObject): void {
         //drwxr-xr-x   1 odroid odroid    43 Oct  3  2013 .xsessionrc
         let text = '';
@@ -187,6 +213,14 @@ export class List {
         console.log(text);
     }
 
+    /**
+     * Recursively list the files in a directory of an adapter
+     *
+     * @param adapter The adapter the files belong to
+     * @param path The directory path to list
+     * @param allFiles Accumulator of files collected so far, or the callback
+     * @param callback Called with all collected files
+     */
     listDirectory(
         adapter: string,
         path: string | null | undefined,
@@ -256,6 +290,12 @@ export class List {
         });
     }
 
+    /**
+     * Comparator that sorts two file entries by their full path
+     *
+     * @param a The first file entry
+     * @param b The second file entry
+     */
     sortFiles(a: File, b: File): number {
         let a1 = a.path + a.file.file;
         if (a1[0] !== '/') {
@@ -268,6 +308,13 @@ export class List {
         return a1.localeCompare(b1);
     }
 
+    /**
+     * List the files of the given adapters
+     *
+     * @param adapters The adapters whose files should be listed
+     * @param filter Optional name filter, or the callback
+     * @param callback Called once all files have been listed
+     */
     listAdaptersFiles(adapters: string[], filter?: null | string, callback?: () => void): void | Promise<void> {
         if (typeof filter === 'function') {
             callback = filter;
@@ -320,6 +367,13 @@ export class List {
         }
     }
 
+    /**
+     * List items of the given type matching the filter
+     *
+     * @param type The kind of items to list (e.g. adapters, instances, objects)
+     * @param filter A filter applied to the listed items
+     * @param flags Additional flags controlling the output
+     */
     list(type: ListType, filter: string, flags: FlagObject): void {
         this.objects.getObject('system.config', (err, systemConf) => {
             const lang: ioBroker.Languages = systemConf?.common?.language || 'en';

@@ -735,7 +735,7 @@ declare global {
             /** Whether the admin tab is written in a materialized style. Required for Admin 3+ */
             materializeTab?: boolean;
             /** Whether the admin configuration dialog is written in a materialized style. Required for Admin 3+ */
-            /** @deprectaed Use adminUI with config = "materialize". But better use jsonConfig.json */
+            /** @deprecated Use adminUI with config = "materialize". But better use jsonConfig.json */
             materialize: boolean;
             /** @deprecated Use @see supportedMessages up from controller v5 */
             messagebox?: true;

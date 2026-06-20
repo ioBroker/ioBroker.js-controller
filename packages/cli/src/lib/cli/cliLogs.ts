@@ -22,6 +22,9 @@ export class CLILogs extends CLICommand {
     private readonly fileSizes = new Map<string, number>();
     private isReady = false;
 
+    /**
+     * @param options The command options including context and parameters
+     */
     constructor(options: CLICommandOptions) {
         super(options);
     }
@@ -29,7 +32,7 @@ export class CLILogs extends CLICommand {
     /**
      * Executes a command
      *
-     * @param args
+     * @param args The command arguments (the first is the sub-command)
      * @param params additional parsed CLI parameters
      */
     execute(args: any[], params: Record<string, any>): void {

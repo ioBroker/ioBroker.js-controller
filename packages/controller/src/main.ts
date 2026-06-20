@@ -432,10 +432,11 @@ function startUpdateIPs(): void {
 
 // subscribe or unsubscribe loggers
 /**
+ * Subscribe or unsubscribe a logger instance for receiving redirected log messages
  *
- * @param isActive
- * @param id
- * @param reason
+ * @param isActive Whether to subscribe (true) or unsubscribe (false) the logger
+ * @param id The id of the logger instance
+ * @param reason Human readable reason for the change, used for logging
  */
 function logRedirect(isActive: boolean, id: string, reason: string): void {
     console.log(`================================== > LOG REDIRECT ${id} => ${isActive} [${reason}]`);
@@ -479,8 +480,9 @@ function handleDisconnect(): void {
 }
 
 /**
+ * Create and initialize the states database client
  *
- * @param onConnect
+ * @param onConnect Called once the states database is connected
  */
 function createStates(onConnect: () => void): void {
     states = new States({
@@ -732,8 +734,9 @@ async function initializeController(): Promise<void> {
 
 // create "objects" object
 /**
+ * Create and initialize the objects database client
  *
- * @param onConnect
+ * @param onConnect Called once the objects database is connected
  */
 function createObjects(onConnect: () => void): void {
     objects = new Objects({
@@ -1183,10 +1186,11 @@ async function reportStatus(): Promise<void> {
 }
 
 /**
+ * Reassign the given instance objects from one host to another
  *
- * @param objs
- * @param oldHostname
- * @param newHostname
+ * @param objs The instance objects to reassign
+ * @param oldHostname The hostname the instances currently belong to
+ * @param newHostname The hostname the instances should be moved to
  */
 async function changeHost(
     objs: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[],
@@ -1219,7 +1223,7 @@ async function changeHost(
  *
  * @param instance instance id without `system.adapter.` prefix
  * @param autoInstance instance id
- * @param callback
+ * @param callback Called once the auto subscribe has been cleaned
  */
 function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.Instance, callback: () => void): void {
     inputCount++;
@@ -1261,9 +1265,10 @@ function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.I
 }
 
 /**
+ * Clean all auto subscribes of the given instance
  *
- * @param instanceID
- * @param callback
+ * @param instanceID The full instance id (e.g. "system.adapter.admin.0")
+ * @param callback Called once all auto subscribes have been cleaned
  */
 function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: () => void): void {
     const instance = instanceID.substring(15); // get name.0
@@ -1290,8 +1295,9 @@ function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: 
 }
 
 /**
+ * Delete the given objects from the objects database
  *
- * @param objs
+ * @param objs The objects to delete
  */
 async function delObjects(objs: ioBroker.GetObjectViewItem<ioBroker.AnyObject>[]): Promise<void> {
     for (const row of objs) {
@@ -1578,8 +1584,9 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
 
 // check if some IPv4 address found. If not try in 30 seconds one more time (max 10 times)
 /**
+ * Store the host IP addresses in the objects database
  *
- * @param ipList
+ * @param ipList The list of IP addresses to store; if omitted, the current addresses are determined
  */
 function setIPs(ipList?: string[]): void {
     if (isStopping) {
@@ -1636,7 +1643,7 @@ function setIPs(ipList?: string[]): void {
 /**
  * Extends objects, optionally you can provide a state at each task (does not throw)
  *
- * @param tasks
+ * @param tasks The objects to extend, each optionally carrying a state to set
  */
 async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
     for (const task of tasks) {
@@ -1839,9 +1846,9 @@ function initMessageQueue(): void {
  * Send a message to another adapter instance
  *
  * @param objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
- * @param command
- * @param message
- * @param callback
+ * @param command The command to send
+ * @param message The message payload to send
+ * @param callback Called with the response from the target instance
  */
 async function sendTo(
     objName: string,
@@ -1968,7 +1975,7 @@ async function uploadAdapter(task: UploadTask): Promise<void> {
 /**
  * Process message to controller, like execute some script
  *
- * @param msg
+ * @param msg The message to process
  */
 async function processMessage(msg: ioBroker.SendableMessage): Promise<null | void> {
     // important: Do not forget to update the list of protected commands in iobroker.admin/lib/socket.js for "socket.on('sendToHost'"
@@ -3723,10 +3730,11 @@ function installAdapters(): void {
 }
 
 /**
+ * Remove outdated error entries of a process and optionally log the remaining ones
  *
- * @param procObj
- * @param now
- * @param doOutput
+ * @param procObj The process whose errors should be cleaned
+ * @param now The current timestamp in ms, or null to keep the entries as-is
+ * @param doOutput Whether the remaining errors should be written to the log
  */
 function cleanErrors(procObj: Process, now: number | null, doOutput?: boolean): void {
     if (!procObj || !procObj.errors || !procObj.errors.length || procObj.startedAsCompactGroup) {
@@ -3890,7 +3898,7 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
  * Start given instance
  *
  * @param id - id of instance, like 'system.adapter.hm-rpc.0'
- * @param wakeUp
+ * @param wakeUp Whether the instance is being started because of a wake-up (scheduled or message) event
  */
 async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): Promise<void> {
     if (isStopping || !connected || !objects) {
@@ -4677,9 +4685,10 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     }
 
                                     /**
+                                     * Mark the given compact-mode instances as stopped
                                      *
-                                     * @param instances
-                                     * @param callback
+                                     * @param instances The instances to mark as stopped
+                                     * @param callback Called once all instances have been marked
                                      */
                                     function markCompactInstancesAsStopped(
                                         instances: ioBroker.ObjectIDs.Instance[],
@@ -5163,9 +5172,10 @@ async function stopInstance(id: string, force: boolean): Promise<void> {
 }
 
 /**
+ * Stop all running instances
  *
- * @param forceStop
- * @param callback
+ * @param forceStop Whether to force-stop the instances instead of waiting for a graceful shutdown
+ * @param callback Called once all instances have been stopped
  */
 function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => void) | null): void {
     let maxTimeout: NodeJS.Timeout | null | undefined;

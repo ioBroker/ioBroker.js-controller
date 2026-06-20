@@ -1,7 +1,7 @@
 /**
  *      States DB in memory - Server
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -34,15 +34,21 @@ import { createGzip } from 'node:zlib';
 // };
 //
 
+/** Options describing how to connect to the database server */
 export interface ConnectionOptions {
+    /** Password for authentication, if required */
     pass?: string;
+    /** Name of the sentinel master to connect to */
     sentinelName?: string;
     /** array on sentinel */
     host: string | string[];
     /** array on sentinel */
     port: number | number[];
+    /** Additional connection options passed to the database driver */
     options: Record<string, any>;
+    /** Enable more verbose connection logging */
     enhancedLogging?: boolean;
+    /** Backup configuration */
     backup?: BackupOptions;
     /** relative path to the data dir */
     dataDir?: string;
@@ -50,8 +56,11 @@ export interface ConnectionOptions {
 
 type ChangeFunction = (id: string, state: any) => void;
 
+/** Status information about the database */
 export interface DbStatus {
+    /** Type of the database backend (e.g. file, jsonl, redis) */
     type: string;
+    /** Whether this process runs the database server */
     server: boolean;
 }
 
@@ -66,8 +75,11 @@ interface BackupOptions {
     path: string;
 }
 
+/** Options describing where the database stores its files */
 export interface DbOptions {
+    /** Name of the directory used for backups */
     backupDirName: string;
+    /** Name of the database file */
     fileName: string;
 }
 
@@ -117,6 +129,9 @@ export class InMemoryFileDB {
     private log: InternalLogger;
     private readonly backupDir: string;
 
+    /**
+     * @param settings Settings for the database, the connection and backups
+     */
     constructor(settings: FileDbSettings) {
         this.settings = settings || {};
 
@@ -170,6 +185,9 @@ export class InMemoryFileDB {
         this.log.debug(`${this.namespace} Data File: ${this.datasetName}`);
     }
 
+    /**
+     * Open the database by loading the dataset from disk
+     */
     async open(): Promise<void> {
         // load values from file
         this.dataset = await this.loadDataset(this.datasetName);
@@ -252,6 +270,9 @@ export class InMemoryFileDB {
         return ret;
     }
 
+    /**
+     * Normalize the backup settings and create the backup directory
+     */
     initBackupDir(): void {
         // Interval in minutes => to milliseconds
         this.settings.backup.period =
@@ -285,7 +306,24 @@ export class InMemoryFileDB {
         fs.ensureDirSync(this.backupDir);
     }
 
+    /**
+     * Subscribe a client to changes matching the given pattern
+     *
+     * @param client The client to register the subscription for
+     * @param type The subscription type (e.g. objects or states)
+     * @param pattern One or more patterns to subscribe to
+     * @param cb Called once the subscription has been registered
+     */
     handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[], cb?: () => void): void;
+    /**
+     * Subscribe a client to changes matching the given pattern
+     *
+     * @param client The client to register the subscription for
+     * @param type The subscription type (e.g. objects or states)
+     * @param pattern One or more patterns to subscribe to
+     * @param options Subscription options
+     * @param cb Called once the subscription has been registered
+     */
     handleSubscribe(
         client: SubscriptionClient,
         type: string,
@@ -294,6 +332,15 @@ export class InMemoryFileDB {
         cb?: () => void,
     ): void;
 
+    /**
+     * Subscribe a client to changes matching the given pattern
+     *
+     * @param client The client to register the subscription for
+     * @param type The subscription type (e.g. objects or states)
+     * @param pattern One or more patterns to subscribe to
+     * @param options Subscription options, or the callback if omitted
+     * @param cb Called once the subscription has been registered
+     */
     handleSubscribe(
         client: SubscriptionClient,
         type: string,
@@ -327,6 +374,14 @@ export class InMemoryFileDB {
         typeof cb === 'function' && cb();
     }
 
+    /**
+     * Remove a client's subscription for the given pattern
+     *
+     * @param client The client whose subscription should be removed
+     * @param type The subscription type (e.g. objects or states)
+     * @param pattern One or more patterns to unsubscribe from
+     * @param cb Called once the subscription has been removed
+     */
     handleUnsubscribe(
         client: SubscriptionClient,
         type: string,
@@ -354,10 +409,23 @@ export class InMemoryFileDB {
         return tools.maybeCallback(cb);
     }
 
+    /**
+     * Publish a change to a single client. Must be implemented by a subclass that handles client communication.
+     *
+     * @param _client The client to publish to
+     * @param _type The change type (e.g. objects or states)
+     * @param _id The ID of the changed object or state
+     * @param _obj The new value of the object or state
+     */
     publishToClients(_client: SubscriptionClient, _type: string, _id: string, _obj: any): number {
         throw new Error('no communication handling implemented');
     }
 
+    /**
+     * Delete outdated backup files according to the configured retention settings
+     *
+     * @param baseFilename Base file name of the backups that should be pruned
+     */
     deleteOldBackupFiles(baseFilename: string): void {
         // delete files only if settings.backupNumber is not 0
         let files = fs.readdirSync(this.backupDir);
@@ -385,6 +453,11 @@ export class InMemoryFileDB {
         }
     }
 
+    /**
+     * Format a timestamp into a "YYYY-MM-DD_HH-MM-SS" string used for backup file names
+     *
+     * @param date Timestamp in milliseconds
+     */
     getTimeStr(date: number): string {
         const dateObj = new Date(date);
 
@@ -533,14 +606,27 @@ export class InMemoryFileDB {
         }
     }
 
+    /**
+     * Get the current status of the database
+     */
     getStatus(): DbStatus {
         return { type: 'file', server: true };
     }
 
+    /**
+     * Get the currently connected clients. Subclasses override this to return the real clients.
+     */
     getClients(): Record<string, any> {
         return {};
     }
 
+    /**
+     * Publish a change to all connected clients and local subscribers
+     *
+     * @param type The change type (e.g. objects or states)
+     * @param id The ID of the changed object or state
+     * @param obj The new value of the object or state
+     */
     publishAll(type: string, id: string, obj: any): number {
         if (id === undefined) {
             this.log.error(`${this.namespace} Can not publish empty ID`);
@@ -574,7 +660,9 @@ export class InMemoryFileDB {
         return publishCount;
     }
 
-    // Destructor of the class. Called by shutting down.
+    /**
+     * Destructor of the class. Called when shutting down to persist state and clear timers.
+     */
     async destroy(): Promise<void> {
         if (this.stateTimer) {
             clearTimeout(this.stateTimer);
