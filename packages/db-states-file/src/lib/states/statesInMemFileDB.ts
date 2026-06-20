@@ -314,7 +314,9 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param pattern The pattern of state IDs to unsubscribe from
      */
     _unsubscribeForClient(client: any, pattern: string): void {
-        void this.handleUnsubscribe(client, 'state', pattern);
+        (this.handleUnsubscribe(client, 'state', pattern) as Promise<void>).catch(e =>
+            this.log.error(`${this.namespace} Cannot unsubscribe client from states: ${e.message}`),
+        );
     }
 
     /**
@@ -334,7 +336,9 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param id The ID of the message box owner
      */
     _unsubscribeMessageForClient(client: any, id: string): void {
-        void this.handleUnsubscribe(client, 'messagebox', `messagebox.${id}`);
+        (this.handleUnsubscribe(client, 'messagebox', `messagebox.${id}`) as Promise<void>).catch(e =>
+            this.log.error(`${this.namespace} Cannot unsubscribe client from messagebox: ${e.message}`),
+        );
     }
 
     /**
@@ -354,7 +358,9 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param id The ID of the log owner
      */
     _unsubscribeLogForClient(client: any, id: string): void {
-        void this.handleUnsubscribe(client, 'log', `log.${id}`);
+        (this.handleUnsubscribe(client, 'log', `log.${id}`) as Promise<void>).catch(e =>
+            this.log.error(`${this.namespace} Cannot unsubscribe client from log: ${e.message}`),
+        );
     }
 
     /**

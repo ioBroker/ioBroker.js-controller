@@ -892,7 +892,10 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param pattern The pattern of object IDs to unsubscribe from
      */
     _unsubscribeConfigForClient(client: any, pattern: string): void {
-        void this.handleUnsubscribe(client, 'objects', pattern); // ignore options => unsubscribe may everyone
+        // ignore options => unsubscribe may everyone
+        (this.handleUnsubscribe(client, 'objects', pattern) as Promise<void>).catch(e =>
+            this.log.error(`${this.namespace} Cannot unsubscribe client from objects: ${e.message}`),
+        );
     }
 
     /**
@@ -921,7 +924,9 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         if (Array.isArray(pattern)) {
             pattern.forEach(pattern => this.handleUnsubscribe(client, 'files', `${id}$%$${pattern}`));
         } else {
-            void this.handleUnsubscribe(client, 'files', `${id}$%$${pattern}`);
+            (this.handleUnsubscribe(client, 'files', `${id}$%$${pattern}`) as Promise<void>).catch(e =>
+                this.log.error(`${this.namespace} Cannot unsubscribe client from files: ${e.message}`),
+            );
         }
     }
 

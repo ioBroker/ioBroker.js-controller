@@ -169,7 +169,7 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
 
         if (this.settings.backup && this.settings.backup.period && !this.settings.backup.disabled) {
             this._backupInterval = setInterval(() => {
-                void this.saveBackup();
+                this.saveBackup().catch(e => this.log.error(`${this.namespace} Cannot save backup: ${e.message}`));
             }, this.settings.backup.period);
         }
     }
