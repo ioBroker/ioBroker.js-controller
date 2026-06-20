@@ -3706,7 +3706,10 @@ export class ObjectsInRedisClient {
      * @param pattern The pattern to match object ids against
      * @param options The current request options including the user
      */
-    getKeysAsync(pattern: string, options?: CallOptions): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback>> {
+    getKeysAsync(
+        pattern: string,
+        options?: CallOptions,
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback>> {
         return this.getKeys(pattern, options);
     }
 
