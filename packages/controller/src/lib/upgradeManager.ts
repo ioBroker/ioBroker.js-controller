@@ -1,4 +1,4 @@
-import { type ChildProcessPromise, exec as execAsync } from 'promisify-child-process';
+import { exec as execAsync } from 'promisify-child-process';
 import { tools, logger } from '@iobroker/js-controller-common';
 import { valid } from 'semver';
 import { dbConnectAsync } from '@iobroker/js-controller-cli';
@@ -195,7 +195,7 @@ class UpgradeManager {
     /**
      * Starts the js-controller via cli
      */
-    startController(): ChildProcessPromise {
+    startController(): ReturnType<typeof execAsync> {
         if (tools.isDocker()) {
             return execAsync('/opt/scripts/maintenance.sh off -y');
         }

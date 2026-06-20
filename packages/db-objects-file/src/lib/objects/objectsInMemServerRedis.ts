@@ -1,7 +1,7 @@
 /**
  *      Objects DB in memory - Server with Redis protocol
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -68,7 +68,6 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
     constructor(settings: Record<string, any>) {
         super(settings);
 
-        this.serverConnections = {};
         this.namespaceObjects = `${
             this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg'
         }.`;

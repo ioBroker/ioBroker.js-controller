@@ -228,7 +228,8 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
 
         await this._db.open();
         this._db.clear();
-        await this._db.importJson(importFilename);
+        // importJSON expects the already-parsed object (was a filename in older jsonl-db versions)
+        this._db.importJSON(JSON.parse(fs.readFileSync(importFilename, 'utf8')));
 
         // And rename the existing files to avoid redoing the work next time
         if (fs.existsSync(jsonFileName)) {

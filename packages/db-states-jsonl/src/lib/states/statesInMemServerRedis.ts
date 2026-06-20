@@ -31,7 +31,6 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
     private readonly namespaceMsgLen: number;
     private readonly namespaceLogLen: number;
     private readonly metaNamespace: string;
-    private readonly metaNamespaceLen: number;
     private server: net.Server | undefined;
 
     /**
@@ -46,12 +45,9 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
         this.namespaceMsg = `${this.settings.namespaceMsg || 'messagebox'}.`;
         this.namespaceLog = `${this.settings.namespaceLog || 'log'}.`;
         this.namespaceSession = `${this.settings.namespaceSession || 'session'}.`;
-        //this.namespaceStatesLen  = this.namespaceStates.length;
         this.namespaceMsgLen = this.namespaceMsg.length;
         this.namespaceLogLen = this.namespaceLog.length;
-        //this.namespaceSessionlen = this.namespaceSession.length;
         this.metaNamespace = `${this.settings.metaNamespace || 'meta'}.`;
-        this.metaNamespaceLen = this.metaNamespace.length;
 
         this.open()
             .then(() => {

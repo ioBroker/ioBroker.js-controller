@@ -8,7 +8,7 @@
 // @ts-expect-error no ts module
 import extend from 'node.extend';
 import type IORedis from 'ioredis';
-import Redis from 'ioredis';
+import { Redis } from 'ioredis';
 import { tools } from '@iobroker/db-base';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -582,7 +582,7 @@ export class ObjectsInRedisClient {
                         ),
                     );
 
-                    this.subSystem.on('reconnecting', reconnectCounter =>
+                    this.subSystem.on('reconnecting', (reconnectCounter: number | string): void =>
                         this.log.silly(
                             `${this.namespace} PubSub System client Objects-Redis Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`,
                         ),
@@ -732,7 +732,7 @@ export class ObjectsInRedisClient {
                         ),
                     );
 
-                    this.sub.on('reconnecting', reconnectCounter =>
+                    this.sub.on('reconnecting', (reconnectCounter: number | string): void =>
                         this.log.silly(
                             `${this.namespace} PubSub user client Objects-Redis Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`,
                         ),
@@ -933,7 +933,7 @@ export class ObjectsInRedisClient {
     /**
      * Sets a buffer to the Redis DB
      *
-     * @param id id of the file
+     * @param id ID of the file
      * @param data content, if string is passed it will be converted to a Buffer
      */
     private async _setBinaryState(id: string, data: Buffer | string): Promise<void> {
@@ -949,11 +949,11 @@ export class ObjectsInRedisClient {
     }
 
     /**
-     * get buffer of given id from redis
+     * Get a buffer of a given ID from redis
      *
      * @param id - id of the data with namespace prefix
      */
-    private _getBinaryState(id: string): Promise<Buffer> {
+    private _getBinaryState(id: string): Promise<Buffer<ArrayBufferLike> | null> {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
@@ -962,7 +962,35 @@ export class ObjectsInRedisClient {
     }
 
     /**
-     * deletes binary state of given id from redis db
+     * Run a Lua script via EVALSHA. ioredis flattens the argument array at runtime; its types now
+     * require spread args and return `unknown`, so we keep the array-based call here and cast.
+     *
+     * @param args [sha, numkeys, ...keysAndArgs]
+     * @returns the raw script result
+     */
+    private _evalsha(args: unknown[]): Promise<any> {
+        if (!this.client) {
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
+        }
+        return (this.client.evalsha as (...a: unknown[]) => Promise<any>)(args);
+    }
+
+    /**
+     * Run a Redis SCRIPT subcommand (EXISTS/LOAD). ioredis flattens the argument array at runtime;
+     * its types now require spread args and return `unknown`, so we keep the array-based call and cast.
+     *
+     * @param args [subcommand, ...args]
+     * @returns the raw script result
+     */
+    private _script(args: unknown[]): Promise<any> {
+        if (!this.client) {
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
+        }
+        return (this.client.script as (...a: unknown[]) => Promise<any>)(args);
+    }
+
+    /**
+     * deletes binary state of a given ID from redis db
      *
      * @param id - id to delete, with namespace prefix
      */
@@ -978,9 +1006,9 @@ export class ObjectsInRedisClient {
     /**
      * Build the internal redis key for a file
      *
-     * @param id The id of the object owning the file
+     * @param id The ID of the object owning the file
      * @param name The file name
-     * @param isMeta Whether to return the key of the meta entry (true) or the data entry (false)
+     * @param isMeta Whether to return the key of the meta-entry (true) or the data entry (false)
      */
     getFileId(id: string, name: string, isMeta?: boolean): string {
         name = this.normalizeFilename(name);
@@ -1313,7 +1341,7 @@ export class ObjectsInRedisClient {
     /**
      * Promise-version of writeFile
      *
-     * @param id The id of the object owning the file
+     * @param id The ID of the object owning the file
      * @param name The file name
      * @param data The data to write
      * @param options The current request options including the user
@@ -1332,7 +1360,7 @@ export class ObjectsInRedisClient {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
-        let buffer;
+        let buffer: Buffer<ArrayBufferLike> | null | string;
         buffer = await this._getBinaryState(this.getFileId(id, name, false));
 
         const mimeType = meta?.mimeType;
@@ -1340,14 +1368,14 @@ export class ObjectsInRedisClient {
             buffer = buffer.toString();
         }
 
-        return { file: buffer, mimeType: mimeType };
+        return { file: buffer, mimeType };
     }
 
     // User has provided no callback, we will return the Promise
     /**
      * Read a file of an object
      *
-     * @param id The id of the object owning the file
+     * @param id The ID of the object owning the file
      * @param name The file name
      * @param options The current request options including the user
      */
@@ -1357,7 +1385,7 @@ export class ObjectsInRedisClient {
     /**
      * Read a file of an object
      *
-     * @param id The id of the object owning the file
+     * @param id The ID of the object owning the file
      * @param name The file name
      * @param options The current request options including the user
      * @param callback Called with the file content and mime type
@@ -1371,7 +1399,7 @@ export class ObjectsInRedisClient {
     /**
      * Read a file of an object
      *
-     * @param id The id of the object owning the file
+     * @param id The ID of the object owning the file
      * @param name The file name
      * @param options The current request options including the user, or the callback
      * @param callback Called with the file content and mime type
@@ -1406,7 +1434,7 @@ export class ObjectsInRedisClient {
             name = name.substring(1);
         }
 
-        options = options || {};
+        options ||= {};
         this.checkFileRights(id, name, options, CONSTS.ACCESS_READ, async (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
@@ -1421,9 +1449,9 @@ export class ObjectsInRedisClient {
     }
 
     /**
-     * Check if given object exists
+     * Check if a given object exists
      *
-     * @param id id of the object
+     * @param id ID of the object
      * @param options optional user context
      */
     async objectExists(id: string, options?: CallOptions | null): Promise<boolean> {
@@ -1431,7 +1459,7 @@ export class ObjectsInRedisClient {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
         if (!id || typeof id !== 'string') {
-            throw new Error(`invalid id ${JSON.stringify(id)}`);
+            throw new Error(`invalid ID ${JSON.stringify(id)}`);
         }
 
         try {
@@ -1453,9 +1481,9 @@ export class ObjectsInRedisClient {
     }
 
     /**
-     * Check if given file exists
+     * Check if a given file exists
      *
-     * @param id id of the namespace
+     * @param id ID of the namespace
      * @param name name of the file
      * @param options optional user context
      */
@@ -4490,7 +4518,7 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = await this.client.evalsha([
+                    objs = await this._evalsha([
                         this.scripts.filter,
                         6,
                         this.objNamespace,
@@ -4580,7 +4608,7 @@ export class ObjectsInRedisClient {
                 }
                 let res: string[] | [objStrings: string[], cursor: string];
                 try {
-                    res = await this.client.evalsha([
+                    res = await this._evalsha([
                         this.scripts.script,
                         5,
                         this.objNamespace,
@@ -4638,7 +4666,7 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = await this.client.evalsha([
+                    objs = await this._evalsha([
                         this.scripts.programs,
                         5,
                         `${this.objNamespace}hm-rega.`,
@@ -4693,7 +4721,7 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = await this.client.evalsha([
+                    objs = await this._evalsha([
                         this.scripts.variables,
                         5,
                         `${this.objNamespace}hm-rega.`,
@@ -4747,7 +4775,7 @@ export class ObjectsInRedisClient {
                 }
                 let objs: string[];
                 try {
-                    objs = await this.client.evalsha([
+                    objs = await this._evalsha([
                         this.scripts.custom,
                         5,
                         this.objNamespace,
@@ -5761,7 +5789,7 @@ export class ObjectsInRedisClient {
 
         let arr: any[];
         try {
-            arr = await this.client.script(hashes);
+            arr = await this._script(hashes);
             if (arr) {
                 scripts.forEach((e, i) => (scripts[i].loaded = !!arr[i]));
             }
@@ -5777,7 +5805,7 @@ export class ObjectsInRedisClient {
             if (!script.loaded) {
                 let hash;
                 try {
-                    hash = await this.client.script(['LOAD', script.text]);
+                    hash = await this._script(['LOAD', script.text]);
                     script.loaded = true;
                 } catch (e) {
                     script.loaded = false;
@@ -5920,7 +5948,7 @@ export class ObjectsInRedisClient {
         }
 
         // try to extend lock
-        return this.client.evalsha([
+        return this._evalsha([
             this.scripts.redlock_extend,
             3,
             `${this.metaNamespace}objects.primaryHost`,
@@ -5947,7 +5975,7 @@ export class ObjectsInRedisClient {
         }
 
         // try to acquire lock
-        return this.client.evalsha([
+        return this._evalsha([
             this.scripts.redlock_acquire,
             3,
             `${this.metaNamespace}objects.primaryHost`,
@@ -5985,7 +6013,7 @@ export class ObjectsInRedisClient {
         }
 
         // try to release lock
-        return this.client.evalsha([
+        return this._evalsha([
             this.scripts.redlock_release,
             4,
             `${this.metaNamespace}objects.primaryHost`,

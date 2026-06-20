@@ -540,8 +540,12 @@ declare global {
         type ReadDirCallback = (err?: NodeJS.ErrnoException | null, entries?: ReadDirResult[]) => void;
         type ReadDirPromise = Promise<ReadDirResult[]>;
 
-        type ReadFileCallback = (err?: NodeJS.ErrnoException | null, data?: Buffer | string, mimeType?: string) => void;
-        type ReadFilePromise = Promise<{ file: string | Buffer; mimeType?: string }>;
+        type ReadFileCallback = (
+            err?: NodeJS.ErrnoException | null,
+            data?: Buffer<ArrayBufferLike> | string | null,
+            mimeType?: string,
+        ) => void;
+        type ReadFilePromise = Promise<{ file: Buffer<ArrayBufferLike> | null | string; mimeType?: string }>;
 
         /** Contains the return values of chownFile */
         interface ChownFileResult {

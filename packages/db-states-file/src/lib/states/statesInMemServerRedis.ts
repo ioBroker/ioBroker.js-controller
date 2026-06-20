@@ -52,7 +52,6 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
     private readonly namespaceMsgLen: number;
     private readonly namespaceLogLen: number;
     private readonly metaNamespace: string;
-    private readonly metaNamespaceLen: number;
     private server: net.Server | undefined;
 
     /**
@@ -63,22 +62,16 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
     constructor(settings: Record<string, any>) {
         super(settings);
 
-        this.serverConnections = {};
         this.namespaceStates = `${this.settings.redisNamespace || 'io'}.`;
         this.namespaceMsg = `${this.settings.namespaceMsg || 'messagebox'}.`;
         this.namespaceLog = `${this.settings.namespaceLog || 'log'}.`;
         this.namespaceSession = `${this.settings.namespaceSession || 'session'}.`;
-        //this.namespaceStatesLen  = this.namespaceStates.length;
         this.namespaceMsgLen = this.namespaceMsg.length;
         this.namespaceLogLen = this.namespaceLog.length;
-        //this.namespaceSessionlen = this.namespaceSession.length;
         this.metaNamespace = `${this.settings.metaNamespace || 'meta'}.`;
-        this.metaNamespaceLen = this.metaNamespace.length;
 
         this.open()
-            .then(() => {
-                return this._initRedisServer(this.settings.connection);
-            })
+            .then(() => this._initRedisServer(this.settings.connection))
             .then(() => {
                 this.log.debug(
                     `${this.namespace} ${settings.secure ? 'Secure ' : ''} Redis inMem-states listening on port ${

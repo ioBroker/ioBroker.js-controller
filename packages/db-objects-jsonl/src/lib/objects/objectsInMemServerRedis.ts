@@ -67,8 +67,6 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      */
     constructor(settings: Record<string, any>) {
         super(settings);
-
-        this.serverConnections = {};
         this.namespaceObjects = `${
             this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg'
         }.`;

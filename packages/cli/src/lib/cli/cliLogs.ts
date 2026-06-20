@@ -92,7 +92,7 @@ export class CLILogs extends CLICommand {
      * @param path Which path has changed
      * @param stats Information about the file
      */
-    watchHandler(options: CLILogsOptions, event: string, path: string, stats: Record<string, any>): void {
+    watchHandler(options: CLILogsOptions, event: string, path: string, stats?: any): void {
         if (event === 'add' || !this.fileSizes.has(path)) {
             this.fileSizes.set(path, stats.size);
             if (stats.size > 0 && (this.isReady || (options.complete && this.isTodaysLogfile(path)))) {

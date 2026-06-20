@@ -1,10 +1,10 @@
 import * as tjs from 'ts-json-schema-generator';
-import path from 'node:path';
+import path, { dirname } from 'node:path';
 import fs from 'fs-extra';
 import axios from 'axios';
+import { fileURLToPath } from 'node:url';
 
-// eslint-disable-next-line unicorn/prefer-module
-const thisDir = __dirname;
+const thisDir = dirname(fileURLToPath(import.meta.url));
 
 /**
  * Update contents io iobroker.json schema
@@ -37,7 +37,7 @@ async function updateLicenseArray(): Promise<void> {
 }
 
 interface LicenseEntry {
-    /** If license is deprecated */
+    /** If the license is deprecated */
     isDeprecatedLicenseId: boolean;
     /** License ID */
     licenseId: string;
@@ -46,7 +46,7 @@ interface LicenseEntry {
 }
 
 /**
- * Get all valid and non deprecated spdx licenses
+ * Get all valid and non-deprecated spdx licenses
  */
 async function getSpdxLicenseIds(): Promise<string[] | null> {
     const url = 'https://spdx.org/licenses/licenses.json';

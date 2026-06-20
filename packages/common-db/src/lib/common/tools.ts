@@ -294,6 +294,33 @@ export function upToDate(repoVersion: string, installedVersion: string): boolean
     return semver.gte(installedVersion, repoVersion);
 }
 
+/**
+ * Derive the key and IV from a password exactly as the legacy `crypto.createCipher`/`createDecipher`
+ * functions did: OpenSSL's `EVP_BytesToKey` with MD5, a single iteration and no salt. Needed to stay
+ * compatible with data that was encrypted before `createDecipheriv` was used.
+ *
+ * @param password The password to derive the key material from (interpreted as UTF-8, like legacy Node)
+ * @param keyLen Required key length in bytes
+ * @param ivLen Required IV length in bytes
+ * @returns The derived key and IV
+ */
+function evpBytesToKeyMD5(password: string, keyLen: number, ivLen: number): { key: Buffer; iv: Buffer } {
+    const passwordBuffer = Buffer.from(password, 'utf8');
+    let material = Buffer.alloc(0);
+    let block = Buffer.alloc(0);
+    while (material.length < keyLen + ivLen) {
+        block = crypto
+            .createHash('md5')
+            .update(Buffer.concat([block, passwordBuffer]))
+            .digest();
+        material = Buffer.concat([material, block]);
+    }
+    return {
+        key: material.subarray(0, keyLen),
+        iv: material.subarray(keyLen, keyLen + ivLen),
+    };
+}
+
 // TODO: this is only here for backward compatibility, if MULTIHOST password was still setup with old decryption
 /**
  * Decrypt a phrase that was encrypted with the legacy aes192 algorithm
@@ -303,7 +330,10 @@ export function upToDate(repoVersion: string, installedVersion: string): boolean
  * @param callback Called with the decrypted string, or null on error
  */
 export function decryptPhrase(password: string, data: any, callback: (decrypted?: null | string) => void): void {
-    const decipher = crypto.createDecipher('aes192', password);
+    // `aes192` derives a 24-byte key and 16-byte IV from the password via EVP_BytesToKey (MD5, no salt),
+    // replicating what the removed `crypto.createDecipher('aes192', password)` did internally.
+    const { key, iv } = evpBytesToKeyMD5(password, 24, 16);
+    const decipher = crypto.createDecipheriv('aes-192-cbc', key, iv);
 
     try {
         let decrypted = '';
