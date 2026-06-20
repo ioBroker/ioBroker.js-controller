@@ -6,7 +6,7 @@
 
 # Interface: ObjectACL
 
-Defined in: [types-dev/objects.d.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/objects.d.ts#L25)
+Defined in: [types-dev/objects.d.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/objects.d.ts#L25)
 
 Defines access rights for a single object
 
@@ -20,7 +20,7 @@ Defines access rights for a single object
 
 > **object**: `number`
 
-Defined in: [types-dev/objects.d.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/objects.d.ts#L31)
+Defined in: [types-dev/objects.d.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/objects.d.ts#L31)
 
 Linux-type permissions defining access to this object
 
@@ -30,7 +30,7 @@ Linux-type permissions defining access to this object
 
 > **owner**: `string`
 
-Defined in: [types-dev/objects.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/objects.d.ts#L27)
+Defined in: [types-dev/objects.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/objects.d.ts#L27)
 
 Full name of the user who owns this object, e.g. "system.user.admin"
 
@@ -40,6 +40,6 @@ Full name of the user who owns this object, e.g. "system.user.admin"
 
 > **ownerGroup**: `string`
 
-Defined in: [types-dev/objects.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/objects.d.ts#L29)
+Defined in: [types-dev/objects.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/objects.d.ts#L29)
 
 Full name of the group who owns this object, e.g. "system.group.administrator"
