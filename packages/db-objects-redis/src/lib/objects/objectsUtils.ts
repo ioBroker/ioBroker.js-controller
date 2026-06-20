@@ -123,7 +123,7 @@ let groups: ioBroker.GroupObject[] = [];
  * @param ext file extension e.g. `.txt`
  * @param isTextData if content is of type string
  */
-export function getMimeType(ext: string, isTextData: boolean): FileMimeInformation {
+export function getMimeType(ext: string, isTextData?: boolean): FileMimeInformation {
     if (!ext) {
         return { mimeType: isTextData ? 'text/plain' : 'application/octet-stream', isBinary: !isTextData };
     }

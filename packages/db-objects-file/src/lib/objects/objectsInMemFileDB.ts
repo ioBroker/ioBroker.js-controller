@@ -14,21 +14,35 @@ import { tools } from '@iobroker/db-base';
 import { objectsUtils as utils } from '@iobroker/db-objects-redis';
 import deepClone from 'deep-clone';
 
+/** Constructor settings expected by the {@link InMemoryFileDB} base class */
+type InMemSettings = ConstructorParameters<typeof InMemoryFileDB>[0];
+
 /**
  * This class inherits InMemoryFileDB class and adds all relevant logic for objects
  * including the available methods for use by js-controller directly
  */
 export class ObjectsInMemoryFileDB extends InMemoryFileDB {
+    protected readonly META_ID: string;
+    protected fileOptions: Record<string, any>;
+    protected files: Record<string, any>;
+    protected writeTimer: NodeJS.Timeout | null;
+    protected writeIds: string[];
+    protected readonly preserveSettings: string[];
+    protected defaultNewAcl: any;
+    protected writeFileInterval: number;
+    protected readonly objectsDir: string;
+    protected existingMetaObjects: Record<string, boolean>;
+
     /**
      * @param settings Settings for the objects database
      */
-    constructor(settings) {
+    constructor(settings: Record<string, any>) {
         settings ||= {};
         settings.fileDB ||= {
             fileName: 'objects.json',
             backupDirName: 'backup-objects',
         };
-        super(settings);
+        super(settings as InMemSettings);
 
         if (!this.change) {
             this.change = id => {
@@ -46,7 +60,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         this.namespace = this.settings.namespace || this.settings.hostname || '';
         this.writeFileInterval =
             this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
-                ? parseInt(this.settings.connection.writeFileInterval)
+                ? parseInt(String(this.settings.connection.writeFileInterval))
                 : 5_000;
         if (!settings.jsonlDB) {
             this.log.silly(`${this.namespace} Objects DB uses file write interval of ${this.writeFileInterval} ms`);
@@ -77,7 +91,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param name The file name to normalize
      */
-    _normalizeFilename(name) {
+    _normalizeFilename(name: string): string {
         return name ? name.replace(/[/\\]+/g, '/') : name;
     }
 
@@ -88,7 +102,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The object ID whose file settings should be saved, or a boolean used as the force flag
      * @param force If true, write the settings immediately instead of debounced
      */
-    _saveFileSettings(id, force) {
+    _saveFileSettings(id?: string | boolean, force?: boolean): void {
         if (typeof id === 'boolean') {
             force = id;
             id = undefined;
@@ -134,7 +148,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param id The object ID whose file settings should be loaded
      */
-    _loadFileSettings(id) {
+    _loadFileSettings(id: string): void {
         if (!this.fileOptions[id]) {
             const location = path.join(this.objectsDir, id, '_data.json');
             if (fs.existsSync(location)) {
@@ -172,12 +186,12 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param limitId Optional object ID to limit the synchronization to
      */
-    syncFileDirectory(limitId) {
-        const resNotifies = [];
+    syncFileDirectory(limitId?: string): { numberSuccess: number; notifications: string[] } {
+        const resNotifies: string[] = [];
         let resSynced = 0;
 
-        function getAllFiles(dir) {
-            let results = [];
+        function getAllFiles(dir: string): string[] {
+            let results: string[] = [];
             const list = fs.readdirSync(dir);
             list.forEach(file => {
                 file = `${dir}/${file}`;
@@ -276,7 +290,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param data The file content
      * @param options Optional write options, or the mime type as a string
      */
-    _writeFile(id, name, data, options) {
+    _writeFile(id: string, name: string, data: any, options?: any): void {
         if (typeof options === 'string') {
             options = { mimeType: options };
         }
@@ -380,7 +394,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param name The file name
      * @param options Optional read options
      */
-    _readFile(id, name, options) {
+    _readFile(id: string, name: string, options?: any): { fileContent: any; fileMime: any } {
         if (options && options.acl) {
             options.acl = null;
         }
@@ -490,7 +504,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @returns if the object exists
      */
     // needed by server
-    _objectExists(id) {
+    _objectExists(id: string): boolean {
         if (!id || typeof id !== 'string') {
             throw new Error(`invalid id ${JSON.stringify(id)}`);
         }
@@ -512,7 +526,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @returns true if the file exists
      */
     // needed by server
-    _fileExists(id, name) {
+    _fileExists(id: string, name?: string): boolean {
         if (typeof name !== 'string') {
             name = '';
         }
@@ -539,7 +553,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @returns true if the directory exists
      */
     // special functionality only for Server (used together with SyncFileDirectory)
-    dirExists(id, name) {
+    dirExists(id: string, name?: string): boolean {
         if (typeof name !== 'string') {
             name = '';
         }
@@ -564,7 +578,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The object ID owning the file
      * @param name The file or directory name to delete
      */
-    _unlink(id, name) {
+    _unlink(id: string, name: string): void {
         const _path = utils.sanitizePath(id, name);
         id = _path.id;
         name = _path.name;
@@ -634,7 +648,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param name The directory name to list
      * @param options Optional read options
      */
-    _readDir(id, name, options) {
+    _readDir(id: string, name: string, options?: any): any[] {
         if (options && options.acl) {
             options.acl = null;
         }
@@ -662,8 +676,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         const len = name ? name.length : 0;
         for (const f of Object.keys(this.fileOptions[id])) {
             if (!name || f.substring(0, len) === name) {
-                let rest = f.substring(len);
-                rest = rest.split('/', 2);
+                const rest = f.substring(len).split('/', 2);
                 if (rest[0] && _files.indexOf(rest[0]) === -1) {
                     _files.push(rest[0]);
                 }
@@ -801,7 +814,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param oldName The current file or directory name
      * @param newName The new file or directory name
      */
-    _rename(id, oldName, newName) {
+    _rename(id: string, oldName: string, newName: string): void {
         const _path = utils.sanitizePath(id, oldName);
         id = _path.id;
         oldName = _path.name;
@@ -839,7 +852,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param obj The object to clone
      */
-    _clone(obj) {
+    _clone(obj: any): any {
         if (obj === null || obj === undefined || !tools.isObject(obj)) {
             return obj;
         }
@@ -858,7 +871,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param client The client to subscribe
      * @param pattern The pattern of meta IDs to subscribe to
      */
-    _subscribeMeta(client, pattern) {
+    _subscribeMeta(client: any, pattern: string): void {
         this.handleSubscribe(client, 'meta', pattern);
     }
 
@@ -868,7 +881,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param client The client to subscribe
      * @param pattern The pattern of object IDs to subscribe to
      */
-    _subscribeConfigForClient(client, pattern) {
+    _subscribeConfigForClient(client: any, pattern: string): void {
         this.handleSubscribe(client, 'objects', pattern);
     }
 
@@ -878,8 +891,8 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param client The client to unsubscribe
      * @param pattern The pattern of object IDs to unsubscribe from
      */
-    _unsubscribeConfigForClient(client, pattern) {
-        this.handleUnsubscribe(client, 'objects', pattern); // ignore options => unsubscribe may everyone
+    _unsubscribeConfigForClient(client: any, pattern: string): void {
+        void this.handleUnsubscribe(client, 'objects', pattern); // ignore options => unsubscribe may everyone
     }
 
     /**
@@ -889,7 +902,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The object ID owning the files
      * @param pattern One or more file name patterns to subscribe to
      */
-    _subscribeFileForClient(client, id, pattern) {
+    _subscribeFileForClient(client: any, id: string, pattern: string | string[]): void {
         if (Array.isArray(pattern)) {
             pattern.forEach(pattern => this.handleSubscribe(client, 'files', `${id}$%$${pattern}`));
         } else {
@@ -904,11 +917,11 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The object ID owning the files
      * @param pattern One or more file name patterns to unsubscribe from
      */
-    _unsubscribeFileForClient(client, id, pattern) {
+    _unsubscribeFileForClient(client: any, id: string, pattern: string | string[]): void {
         if (Array.isArray(pattern)) {
             pattern.forEach(pattern => this.handleUnsubscribe(client, 'files', `${id}$%$${pattern}`));
         } else {
-            this.handleUnsubscribe(client, 'files', `${id}$%$${pattern}`);
+            void this.handleUnsubscribe(client, 'files', `${id}$%$${pattern}`);
         }
     }
 
@@ -917,7 +930,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param id The object ID to read
      */
-    _getObject(id) {
+    _getObject(id: string): any {
         return this.dataset[id];
     }
 
@@ -926,7 +939,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param pattern The pattern to match object IDs against
      */
-    _getKeys(pattern) {
+    _getKeys(pattern: string): string[] {
         const r = new RegExp(tools.pattern2RegEx(pattern));
         const result = Object.keys(this.dataset).filter(id => r.test(id) && id !== this.META_ID);
         result.sort();
@@ -938,7 +951,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param keys The object IDs to read
      */
-    _getObjects(keys) {
+    _getObjects(keys: string[]): any[] {
         if (!keys) {
             throw new Error('no keys');
         }
@@ -949,7 +962,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Get the meta dictionary, creating it if it does not exist yet
      */
-    _ensureMetaDict() {
+    _ensureMetaDict(): Record<string, any> {
         let meta = this.dataset[this.META_ID];
         if (!meta) {
             meta = {};
@@ -964,7 +977,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The meta ID to read
      * @returns the stored meta value
      */
-    getMeta(id) {
+    getMeta(id: string): any {
         const meta = this._ensureMetaDict();
         return meta[id];
     }
@@ -975,7 +988,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The meta ID to write
      * @param value The value to store
      */
-    setMeta(id, value) {
+    setMeta(id: string, value: any): void {
         const meta = this._ensureMetaDict();
         meta[id] = value;
         // Make sure the object gets re-written, especially when using an external DB
@@ -998,7 +1011,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The object ID to set
      * @param obj The object to store
      */
-    _setObjectDirect(id, obj) {
+    _setObjectDirect(id: string, obj: any): void {
         this.dataset[id] = obj;
 
         // object updated -> if type changed to meta -> cache
@@ -1016,7 +1029,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param id unique id of the object
      */
-    _delObject(id) {
+    _delObject(id: string): void {
         const obj = this.dataset[id];
         if (!obj) {
             // Not existent, so goal reached :-)
@@ -1047,13 +1060,13 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param func The view definition containing the map function
      * @param params Query parameters such as startkey and endkey
      */
-    _applyView(func, params) {
-        const result = {
+    _applyView(func: any, params: any): { rows: any[] } {
+        const result: { rows: any[] } = {
             rows: [],
         };
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        function _emit_(id, obj) {
+        function _emit_(id: any, obj: any): void {
             result.rows.push({ id: id, value: obj });
         }
 
@@ -1102,7 +1115,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param search The view name within the design document
      * @param params Query parameters such as startkey and endkey
      */
-    _getObjectView(design, search, params) {
+    _getObjectView(design: string, search: string, params: any): { rows: any[] } {
         const designObj = this.dataset[`_design/${design}`];
         if (!designObj) {
             this.log.error(`${this.namespace} Cannot find view "${design}"`);
@@ -1118,7 +1131,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Destructor of the class. Called by shutting down.
      */
-    async destroy() {
+    async destroy(): Promise<void> {
         await super.destroy();
 
         this._saveFileSettings(true);

@@ -10,46 +10,38 @@
 import net from 'node:net';
 import { inspect } from 'node:util';
 
-import { RedisHandler } from '@iobroker/db-base';
-import { StatesInMemoryFileDB } from './statesInMemFileDB.js';
+import { RedisHandler, type ConnectionOptions } from '@iobroker/db-base';
+import { StatesInMemoryJsonlDB } from './statesInMemJsonlDB.js';
 import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
 import { EXIT_CODES } from '@iobroker/js-controller-common-db';
 
-// settings = {
-//    change:    function (id, state) {},
-//    connected: function (nameOfServer) {},
-//    logger: {
-//           silly: function (msg) {},
-//           debug: function (msg) {},
-//           info:  function (msg) {},
-//           warn:  function (msg) {},
-//           error: function (msg) {}
-//    },
-//    connection: {
-//           dataDir: 'relative path'
-//    },
-//    auth: null, //unused
-//    secure: true/false,
-//    certificates: as required by createServer
-//    port: 9000,
-//    host: localhost
-// };
-//
+/** Shape of the dynamic subscription registry attached to redis client handlers */
+type SubscriptionRegistry = Record<string, { pattern: string; regex: RegExp }[]>;
 
 /**
  * This class inherits statesInMemoryFileDB class and adds socket.io communication layer
  * to access the methods via socket.io
  */
-export class StatesInMemoryServer extends StatesInMemoryFileDB {
+export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
+    private readonly serverConnections: Record<string, RedisHandler> = {};
+    private readonly namespaceStates: string;
+    declare namespaceMsg: string;
+    private readonly namespaceLog: string;
+    private readonly namespaceSession: string;
+    private readonly namespaceMsgLen: number;
+    private readonly namespaceLogLen: number;
+    private readonly metaNamespace: string;
+    private readonly metaNamespaceLen: number;
+    private server: net.Server | undefined;
+
     /**
      * Constructor
      *
      * @param settings State and InMem-DB settings
      */
-    constructor(settings) {
+    constructor(settings: Record<string, any>) {
         super(settings);
 
-        this.serverConnections = {};
         this.namespaceStates = `${this.settings.redisNamespace || 'io'}.`;
         this.namespaceMsg = `${this.settings.namespaceMsg || 'messagebox'}.`;
         this.namespaceLog = `${this.settings.namespaceLog || 'log'}.`;
@@ -68,7 +60,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             .then(() => {
                 this.log.debug(
                     `${this.namespace} ${settings.secure ? 'Secure ' : ''} Redis inMem-states listening on port ${
-                        this.settings.connection.port || 9000
+                        (this.settings.connection.port as number) || 9000
                     }`,
                 );
 
@@ -78,7 +70,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             })
             .catch(e => {
                 this.log.error(
-                    `${this.namespace} Cannot start inMem-states on port ${this.settings.connection.port || 9000}: ${e.message}`,
+                    `${this.namespace} Cannot start inMem-states on port ${(this.settings.connection.port as number) || 9000}: ${e.message}`,
                 );
                 process.exit(EXIT_CODES.NO_CONNECTION_TO_STATES_DB);
             });
@@ -91,11 +83,11 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
      * @returns Object with namespace and the
      *                                                      ID/Array of IDs without the namespace
      */
-    _normalizeId(idWithNamespace) {
+    _normalizeId(idWithNamespace: string | string[]): { id: any; namespace: string } {
         let ns = this.namespaceStates;
         let id;
         if (Array.isArray(idWithNamespace)) {
-            const ids = [];
+            const ids: string[] = [];
             idWithNamespace.forEach(el => {
                 const { id, namespace } = this._normalizeId(el);
                 ids.push(id);
@@ -112,7 +104,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
                 }
             }
         }
-        return { id, namespace: ns };
+        return { id: id, namespace: ns };
     }
 
     /**
@@ -124,11 +116,13 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
      * @param obj Object to publish
      * @returns Publish counter 0 or 1 depending on if send out or not
      */
-    publishToClients(client, type, id, obj) {
-        if (!client._subscribe || !client._subscribe[type]) {
+    publishToClients(client: any, type: string, id: string, obj: any): number {
+        // `client` is a RedisHandler with a `_subscribe` registry attached dynamically by the base class
+        const subscriptions: SubscriptionRegistry | undefined = client._subscribe;
+        if (!subscriptions || !subscriptions[type]) {
             return 0;
         }
-        const s = client._subscribe[type];
+        const s = subscriptions[type];
 
         const found = s.find(sub => sub.regex.test(id));
 
@@ -163,8 +157,8 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
      *
      * @param handler RedisHandler instance
      */
-    _socketEvents(handler) {
-        let connectionName = null;
+    _socketEvents(handler: RedisHandler): void {
+        let connectionName: string | null = null;
         let namespaceLog = this.namespace;
 
         // Handle Redis "INFO" request
@@ -213,7 +207,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             if (namespace === this.namespaceStates) {
                 try {
                     const states = this._getStates(id);
-                    const result = states.map(el => (el ? JSON.stringify(el) : null));
+                    const result = states.map((el: any) => (el ? JSON.stringify(el) : null));
                     handler.sendArray(responseId, result);
                 } catch (err) {
                     handler.sendError(responseId, new Error(`ERROR _getStates: ${err.message}`));
@@ -270,7 +264,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
                     const state = JSON.parse(data[1].toString('utf-8'));
                     this._setStateDirect(id, state);
                     handler.sendString(responseId, 'OK');
-                } catch (err) {
+                } catch (err: any) {
                     handler.sendError(responseId, new Error(`ERROR setState id=${id}: ${err.message}`));
                 }
             } else if (namespace === this.metaNamespace) {
@@ -356,7 +350,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
                     pattern = pattern.substring(this.namespaceStates.length);
                 }
                 const keys = this._getKeys(pattern);
-                const result = keys.map(id => this.namespaceStates + id);
+                const result = keys.map((id: string) => this.namespaceStates + id);
                 handler.sendArray(responseId, result);
             } else {
                 handler.sendError(
@@ -463,27 +457,27 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
      *
      * @returns the currently connected RedisHandlers/Connections
      */
-    getClients() {
+    getClients(): Record<string, RedisHandler> {
         return this.serverConnections;
     }
 
     /**
      * Destructor of the class. Called by shutting down.
      */
-    async destroy() {
+    async destroy(): Promise<void> {
         if (this.server) {
             for (const s of Object.keys(this.serverConnections)) {
                 this.serverConnections[s].close();
                 delete this.serverConnections[s];
             }
 
-            await new Promise(resolve => {
+            await new Promise<void>(resolve => {
                 if (!this.server) {
                     return void resolve();
                 }
                 try {
                     this.server.close(() => resolve());
-                } catch (e) {
+                } catch (e: any) {
                     console.log(e.message);
                     resolve();
                 }
@@ -497,7 +491,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
      *
      * @param socket Network socket
      */
-    _initSocket(socket) {
+    _initSocket(socket: net.Socket): void {
         this.settings.connection.enhancedLogging &&
             this.log.silly(`${this.namespace} Handling new Redis States connection`);
 
@@ -525,8 +519,8 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
      * @param settings Settings object
      * @returns a promise that resolves once the Redis server is listening
      */
-    _initRedisServer(settings) {
-        return new Promise((resolve, reject) => {
+    _initRedisServer(settings: ConnectionOptions): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
             if (settings.secure) {
                 reject(new Error('Secure Redis unsupported for File-DB'));
             }
@@ -535,19 +529,23 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
                 this.server.on('error', err =>
                     this.log.info(
                         `${this.namespace} ${settings.secure ? 'Secure ' : ''} Error inMem-states listening on port ${
-                            settings.port || 9000
+                            (settings.port as number) || 9000
                         }: ${err}`,
                     ),
                 );
                 this.server.on('connection', socket => this._initSocket(socket));
 
                 this.server.listen(
-                    settings.port || 9000,
-                    settings.host === 'localhost' ? getLocalAddress() : settings.host ? settings.host : undefined,
+                    (settings.port as number) || 9000,
+                    settings.host === 'localhost'
+                        ? getLocalAddress()
+                        : settings.host
+                          ? (settings.host as string)
+                          : undefined,
                     () => resolve(),
                 );
             } catch (err) {
-                reject(err);
+                reject(err as Error);
             }
         });
     }

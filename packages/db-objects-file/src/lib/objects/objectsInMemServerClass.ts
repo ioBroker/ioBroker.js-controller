@@ -10,14 +10,21 @@
 import { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import { ObjectsInMemoryServer } from './objectsInMemServerRedis.js';
 
+/** Settings accepted by the objects client constructor */
+type ObjectsSettings = ConstructorParameters<typeof ObjectsInRedisClient>[0];
+/** Status object returned by the objects client */
+type DbStatus = ReturnType<ObjectsInRedisClient['getStatus']>;
+
 /**
  * Objects database client that also starts an in-memory server speaking the Redis protocol
  */
 export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
+    private readonly objectsServer: ObjectsInMemoryServer;
+
     /**
      * @param settings Settings for the objects client and the in-memory server
      */
-    constructor(settings) {
+    constructor(settings: ObjectsSettings) {
         settings.autoConnect = false; // delay Client connection to when we need it
         super(settings);
 
@@ -36,7 +43,7 @@ export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
     /**
      * Destroy the client first and the in-memory server afterwards
      */
-    async destroy() {
+    async destroy(): Promise<void> {
         await super.destroy(); // destroy client first
         await this.objectsServer.destroy(); // server afterwards too
     }
@@ -44,7 +51,7 @@ export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
     /**
      * Get the status as reported by the in-memory server
      */
-    getStatus() {
+    getStatus(): DbStatus {
         return this.objectsServer.getStatus(); // return Status as Server
     }
 
@@ -53,7 +60,7 @@ export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
      *
      * @param limitId Optional object ID to limit the synchronization to
      */
-    syncFileDirectory(limitId) {
+    syncFileDirectory(limitId?: string): ReturnType<ObjectsInMemoryServer['syncFileDirectory']> {
         return this.objectsServer.syncFileDirectory(limitId);
     }
 
@@ -63,7 +70,7 @@ export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
      * @param id The object ID owning the files
      * @param name The directory path to check
      */
-    dirExists(id, name) {
+    dirExists(id: string, name: string): boolean {
         return this.objectsServer.dirExists(id, name);
     }
 }

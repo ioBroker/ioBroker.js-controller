@@ -48,10 +48,16 @@ export interface ConnectionOptions {
     options: Record<string, any>;
     /** Enable more verbose connection logging */
     enhancedLogging?: boolean;
+    /** Disable the in-memory file cache and always read files from disk */
+    noFileCache?: boolean;
+    /** Whether the connection should be secured via TLS */
+    secure?: boolean;
     /** Backup configuration */
     backup?: BackupOptions;
     /** relative path to the data dir */
     dataDir?: string;
+    /** Interval in milliseconds in which the in-memory states are persisted to disk */
+    writeFileInterval?: number;
 }
 
 type ChangeFunction = (id: string, state: any) => void;
@@ -88,7 +94,7 @@ interface FileDbSettings {
     jsonlDB: DbOptions;
     backup: BackupOptions;
     change?: ChangeFunction;
-    connected: (nameOfServer: string) => void;
+    connected: (nameOfServer?: string) => void;
     logger: InternalLogger;
     connection: ConnectionOptions;
     /** unused */
@@ -100,6 +106,22 @@ interface FileDbSettings {
     host: string;
     /** logging namespace */
     namespace?: string;
+    /** Host name used as a fallback for the logging namespace */
+    hostname?: string;
+    /** Default ACL applied to newly created objects */
+    defaultNewAcl?: any;
+    /** Redis key prefix used by the in-memory server (defaults to "io") */
+    redisNamespace?: string;
+    /** Namespace used for the message box */
+    namespaceMsg?: string;
+    /** Namespace used for log messages */
+    namespaceLog?: string;
+    /** Namespace used for sessions */
+    namespaceSession?: string;
+    /** Namespace used for meta information */
+    metaNamespace?: string;
+    /** Redis key prefix used for object meta information (defaults to "meta") */
+    namespaceMeta?: string;
 }
 
 interface Subscription {
@@ -117,17 +139,17 @@ interface SubscriptionClient {
  * and general subscription and publish functionality
  */
 export class InMemoryFileDB {
-    private settings: FileDbSettings;
-    private readonly change: ChangeFunction | undefined;
+    protected settings: FileDbSettings;
+    protected change: ChangeFunction | undefined;
     protected dataset: Record<string, any>;
-    private readonly namespace: string;
+    protected namespace: string;
     private lastSave: null | number;
-    private stateTimer: NodeJS.Timeout | null;
+    protected stateTimer: NodeJS.Timeout | null;
     private callbackSubscriptionClient: SubscriptionClient;
-    private readonly dataDir: string;
+    protected readonly dataDir: string;
     private readonly datasetName: string;
-    private log: InternalLogger;
-    private readonly backupDir: string;
+    protected log: InternalLogger;
+    protected readonly backupDir: string;
 
     /**
      * @param settings Settings for the database, the connection and backups

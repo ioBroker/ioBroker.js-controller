@@ -15,7 +15,7 @@ import { objectsUtils as utils } from '@iobroker/db-objects-redis';
 import { tools } from '@iobroker/db-base';
 import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
 
-import { RedisHandler } from '@iobroker/db-base';
+import { RedisHandler, type ConnectionOptions } from '@iobroker/db-base';
 import { ObjectsInMemoryJsonlDB } from './objectsInMemJsonlDB.js';
 import { EXIT_CODES } from '@iobroker/js-controller-common-db';
 
@@ -45,12 +45,27 @@ import { EXIT_CODES } from '@iobroker/js-controller-common-db';
  * to access the methods via redis protocol
  */
 export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
+    private readonly serverConnections: Record<string, RedisHandler> = {};
+    private readonly namespaceObjects: string;
+    private readonly namespaceFile: string;
+    private readonly namespaceObj: string;
+    private readonly namespaceSet: string;
+    private readonly namespaceSetLen: number;
+    private readonly namespaceFileLen: number;
+    private readonly namespaceObjLen: number;
+    private readonly namespaceMeta: string;
+    private readonly namespaceMetaLen: number;
+    private readonly knownScripts: Record<string, any> = {};
+    private readonly normalizeFileRegex1: RegExp;
+    private readonly normalizeFileRegex2: RegExp;
+    private server: net.Server | undefined;
+
     /**
      * Constructor
      *
      * @param settings State and InMem-DB settings
      */
-    constructor(settings) {
+    constructor(settings: Record<string, any>) {
         super(settings);
 
         this.serverConnections = {};
@@ -80,7 +95,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             .then(() => {
                 this.log.debug(
                     `${this.namespace} ${settings.secure ? 'Secure ' : ''} Redis inMem-objects listening on port ${
-                        this.settings.connection.port || 9001
+                        (this.settings.connection.port as number) || 9001
                     }`,
                 );
 
@@ -90,7 +105,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             })
             .catch(e => {
                 this.log.error(
-                    `${this.namespace} Cannot start inMem-objects on port ${this.settings.connection.port || 9001}: ${e.message}`,
+                    `${this.namespace} Cannot start inMem-objects on port ${(this.settings.connection.port as number) || 9001}: ${e.message}`,
                 );
                 process.exit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
             });
@@ -103,13 +118,18 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      * @returns Object with namespace and the
      *                                                      ID/Array of IDs without the namespace
      */
-    _normalizeId(idWithNamespace) {
+    _normalizeId(idWithNamespace: string | string[]): {
+        id: any;
+        namespace: string;
+        name: string;
+        isMeta: boolean | undefined;
+    } {
         let ns = this.namespaceObjects;
         let id = null;
         let name = '';
         let isMeta;
         if (Array.isArray(idWithNamespace)) {
-            const ids = [];
+            const ids: string[] = [];
             idWithNamespace.forEach(el => {
                 const { id, namespace } = this._normalizeId(el);
                 ids.push(id);
@@ -170,13 +190,13 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      * @param obj Object to publish
      * @returns Publish counter 0 or 1 depending on if send out or not
      */
-    publishToClients(client, type, id, obj) {
+    publishToClients(client: any, type: string, id: string, obj: any): number {
         if (!client._subscribe || !client._subscribe[type]) {
             return 0;
         }
         const s = client._subscribe[type];
 
-        const found = s.find(sub => sub.regex.test(id));
+        const found = s.find((sub: any) => sub.regex.test(id));
 
         if (found) {
             if (type === 'meta') {
@@ -210,7 +230,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      * @param isMeta generate a META ID or a Data ID?
      * @returns File-ID
      */
-    getFileId(id, name, isMeta) {
+    getFileId(id: string, name: string, isMeta?: boolean): string {
         // e.g. ekey.admin and admin/ekey.png
         if (id.endsWith('.admin')) {
             if (name.startsWith('admin/')) {
@@ -229,8 +249,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      *
      * @param handler RedisHandler instance
      */
-    _socketEvents(handler) {
-        let connectionName = null;
+    _socketEvents(handler: RedisHandler): void {
+        let connectionName: string | null = null;
         let namespaceLog = this.namespace;
 
         // Handle Redis "INFO" request
@@ -261,8 +281,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             data[0] = data[0].toLowerCase();
             if (data[0] === 'exists') {
                 data.shift();
-                const scripts = [];
-                data.forEach(checksum => scripts.push(this.knownScripts[checksum] ? 1 : 0));
+                const scripts: number[] = [];
+                data.forEach((checksum: any) => scripts.push(this.knownScripts[checksum] ? 1 : 0));
                 handler.sendArray(responseId, scripts);
             } else if (data[0] === 'load') {
                 const shasum = crypto.createHash('sha1');
@@ -400,8 +420,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             const { namespace, isMeta } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
-                const keys = [];
-                data.forEach(dataId => {
+                const keys: any[] = [];
+                data.forEach((dataId: any) => {
                     const { id, namespace } = this._normalizeId(dataId);
                     if (namespace !== this.namespaceObj) {
                         keys.push(null);
@@ -423,8 +443,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             } else if (namespace === this.namespaceFile) {
                 // Handle request for Meta data for files
                 if (isMeta) {
-                    const response = [];
-                    data.forEach(dataId => {
+                    const response: any[] = [];
+                    data.forEach((dataId: any) => {
                         const { id, namespace, name } = this._normalizeId(dataId);
                         if (namespace !== this.namespaceFile) {
                             response.push(null);
@@ -545,7 +565,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                 // special handling for the primaryHost
                 if (id === 'objects.primaryHost') {
                     // we are the server -> we are primary
-                    handler.sendString(this.settings.hostname);
+                    handler.sendString(responseId, this.settings.hostname as string);
                 } else {
                     const result = this.getMeta(id);
                     if (result === undefined || result === null) {
@@ -853,27 +873,27 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      *
      * @returns the currently connected RedisHandlers/Connections
      */
-    getClients() {
+    getClients(): Record<string, RedisHandler> {
         return this.serverConnections;
     }
 
     /**
      * Destructor of the class. Called by shutting down.
      */
-    async destroy() {
+    async destroy(): Promise<void> {
         if (this.server) {
             Object.keys(this.serverConnections).forEach(s => {
                 this.serverConnections[s].close();
                 delete this.serverConnections[s];
             });
 
-            await new Promise(resolve => {
+            await new Promise<void>(resolve => {
                 if (!this.server) {
                     return void resolve();
                 }
                 try {
                     this.server.close(() => resolve());
-                } catch (e) {
+                } catch (e: any) {
                     console.log(e.message);
                     resolve();
                 }
@@ -891,10 +911,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      * @param responseId - Id where response will be sent to
      * @param isScan - if used by "SCAN" this flag should be true
      */
-    _handleScanOrKeys(handler, pattern, responseId, isScan = false) {
+    _handleScanOrKeys(handler: RedisHandler, pattern: string, responseId: any, isScan = false): void {
         const { id, namespace, name, isMeta } = this._normalizeId(pattern);
 
-        let response = [];
+        let response: string[] = [];
         if (namespace === this.namespaceObj || namespace === this.namespaceObjects) {
             try {
                 response = this._getKeys(id).map(val => this.namespaceObj + val);
@@ -970,7 +990,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      *
      * @param socket Network socket
      */
-    _initSocket(socket) {
+    _initSocket(socket: net.Socket): void {
         if (this.settings.connection.enhancedLogging) {
             this.log.silly(`${this.namespace} Handling new Redis Objects connection`);
         }
@@ -997,8 +1017,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      * @param settings Settings object
      * @returns a promise that resolves once the Redis server is listening
      */
-    _initRedisServer(settings) {
-        return new Promise((resolve, reject) => {
+    _initRedisServer(settings: ConnectionOptions): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
             if (settings.secure) {
                 reject(new Error('Secure Redis unsupported for JSONL-DB'));
             }
@@ -1007,19 +1027,23 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                 this.server.on('error', err =>
                     this.log.info(
                         `${this.namespace} ${settings.secure ? 'Secure ' : ''} Error inMem-objects listening on port ${
-                            settings.port || 9001
+                            (settings.port as number) || 9001
                         }: ${err}`,
                     ),
                 );
                 this.server.on('connection', socket => this._initSocket(socket));
 
                 this.server.listen(
-                    settings.port || 9001,
-                    settings.host === 'localhost' ? getLocalAddress() : settings.host ? settings.host : undefined,
+                    (settings.port as number) || 9001,
+                    settings.host === 'localhost'
+                        ? getLocalAddress()
+                        : settings.host
+                          ? (settings.host as string)
+                          : undefined,
                     () => resolve(),
                 );
             } catch (err) {
-                reject(err);
+                reject(err as Error);
             }
         });
     }

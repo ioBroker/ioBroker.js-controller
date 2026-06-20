@@ -8,7 +8,7 @@
  */
 
 import { ObjectsInMemoryFileDB } from '@iobroker/db-objects-file';
-import { JsonlDB } from '@alcalzone/jsonl-db';
+import { JsonlDB, type JsonlDBOptions } from '@alcalzone/jsonl-db';
 import path from 'node:path';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -20,8 +20,8 @@ import { tools } from '@iobroker/js-controller-common-db';
  * @param conf The jsonlOptions options from iobroker.json
  * @returns the normalized and validated JsonlDB options
  */
-function normalizeJsonlOptions(conf = {}) {
-    const ret = {
+function normalizeJsonlOptions(conf: Record<string, any> = {}): JsonlDBOptions<any> {
+    const ret: JsonlDBOptions<any> = {
         autoCompress: {
             // Compress when the number of uncompressed entries has grown a lot
             sizeFactor: 2,
@@ -50,7 +50,7 @@ function normalizeJsonlOptions(conf = {}) {
         const ac = conf.autoCompress;
         // Letting the DB grow more than 100x is risky
         if (typeof ac.sizeFactor === 'number' && ac.sizeFactor >= 2 && ac.sizeFactor <= 100) {
-            ret.autoCompress.sizeFactor = ac.sizeFactor;
+            ret.autoCompress!.sizeFactor = ac.sizeFactor;
         }
         // Also we should definitely compress once the DB has reached 100k lines or it might grow too big
         if (
@@ -58,14 +58,14 @@ function normalizeJsonlOptions(conf = {}) {
             ac.sizeFactorMinimumSize >= 0 &&
             ac.sizeFactorMinimumSize <= 100000
         ) {
-            ret.autoCompress.sizeFactorMinimumSize = ac.sizeFactorMinimumSize;
+            ret.autoCompress!.sizeFactorMinimumSize = ac.sizeFactorMinimumSize;
         }
     }
     if (tools.isObject(conf.throttleFS)) {
         const thr = conf.throttleFS;
         // Don't write more often than every second and write at least once every hour
         if (typeof thr.intervalMs === 'number' && thr.intervalMs >= 1000 && thr.intervalMs <= 3600000) {
-            ret.throttleFS.intervalMs = thr.intervalMs;
+            ret.throttleFS!.intervalMs = thr.intervalMs;
         }
         // Don't keep too much in memory - 100k changes are more than enough
         if (
@@ -73,7 +73,7 @@ function normalizeJsonlOptions(conf = {}) {
             thr.maxBufferedCommands >= 0 &&
             thr.maxBufferedCommands <= 100000
         ) {
-            ret.throttleFS.maxBufferedCommands = thr.maxBufferedCommands;
+            ret.throttleFS!.maxBufferedCommands = thr.maxBufferedCommands;
         }
     }
 
@@ -85,10 +85,13 @@ function normalizeJsonlOptions(conf = {}) {
  * including the available methods for use by js-controller directly
  */
 export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
+    private readonly _db: JsonlDB<any>;
+    private _backupInterval: NodeJS.Timeout | undefined;
+
     /**
      * @param settings Settings for the objects database
      */
-    constructor(settings) {
+    constructor(settings: Record<string, any>) {
         settings = settings || {};
         settings.fileDB = {
             fileName: 'objects.json',
@@ -107,7 +110,7 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
     /**
      * Open the JSONL database, migrating from the legacy file DB if necessary
      */
-    async open() {
+    async open(): Promise<void> {
         if (!(await this._maybeMigrateFileDB())) {
             await this._db.open();
         }
@@ -119,14 +122,14 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
              * @param prop The property key being read
              */
             get(target, prop) {
-                return target.get(prop);
+                return target.get(prop as string);
             },
             /**
              * @param target The proxied JsonlDB instance
              * @param prop The property key being checked
              */
             has(target, prop) {
-                return target.has(prop);
+                return target.has(prop as string);
             },
             /**
              * @param target The proxied JsonlDB instance
@@ -134,7 +137,7 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
              * @param value The value to store
              */
             set(target, prop, value) {
-                target.set(prop, value);
+                target.set(prop as string, value);
                 return true;
             },
             /**
@@ -142,7 +145,7 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
              * @param prop The property key being deleted
              */
             deleteProperty(target, prop) {
-                return target.delete(prop);
+                return target.delete(prop as string);
             },
             ownKeys(target) {
                 return [...target.keys()];
@@ -152,21 +155,21 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
              * @param prop The property key to describe
              */
             getOwnPropertyDescriptor(target, prop) {
-                if (!target.has(prop)) {
+                if (!target.has(prop as string)) {
                     return undefined;
                 }
                 return {
                     configurable: true,
                     enumerable: true,
                     writable: true,
-                    value: target.get(prop),
+                    value: target.get(prop as string),
                 };
             },
         });
 
         if (this.settings.backup && this.settings.backup.period && !this.settings.backup.disabled) {
             this._backupInterval = setInterval(() => {
-                this.saveBackup();
+                void this.saveBackup();
             }, this.settings.backup.period);
         }
     }
@@ -177,7 +180,7 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
      * @returns true if the file DB was migrated. false if not.
      * If this returns true, the jsonl DB was opened and doesn't need to be opened again.
      */
-    async _maybeMigrateFileDB() {
+    async _maybeMigrateFileDB(): Promise<boolean> {
         const jsonlFileName = path.join(this.dataDir, this.settings.jsonlDB.fileName);
         const jsonFileName = path.join(this.dataDir, this.settings.fileDB.fileName);
         const bakFileName = path.join(this.dataDir, `${this.settings.fileDB.fileName}.bak`);
@@ -189,7 +192,7 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
         try {
             const stat = fs.statSync(jsonlFileName);
             if (stat.isFile()) {
-                jsonlTimeStamp = stat.mtime;
+                jsonlTimeStamp = stat.mtimeMs;
             }
         } catch {
             // ignore
@@ -197,7 +200,7 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
         try {
             const stat = fs.statSync(jsonFileName);
             if (stat.isFile()) {
-                jsonTimeStamp = stat.mtime;
+                jsonTimeStamp = stat.mtimeMs;
             }
         } catch {
             // ignore
@@ -205,14 +208,14 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
         try {
             const stat = fs.statSync(bakFileName);
             if (stat.isFile()) {
-                bakTimeStamp = stat.mtime;
+                bakTimeStamp = stat.mtimeMs;
             }
         } catch {
             // ignore
         }
 
         // Figure out which file needs to be imported
-        let importFilename;
+        let importFilename: string;
         if (jsonTimeStamp > 0 && jsonTimeStamp >= bakTimeStamp && jsonTimeStamp >= jsonlTimeStamp) {
             importFilename = jsonFileName;
         } else if (bakTimeStamp > 0 && bakTimeStamp >= jsonTimeStamp && bakTimeStamp >= jsonlTimeStamp) {
@@ -250,14 +253,14 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
     /**
      * Persist the state. Nothing to do here as the JSONL DB saves behind the scenes.
      */
-    async saveState() {
+    async saveState(): Promise<void> {
         // Nothing to do, the DB saves behind the scenes
     }
 
     /**
      * Regularly called to store a compressed backup of the DB
      */
-    async saveBackup() {
+    async saveBackup(): Promise<void> {
         const now = Date.now();
         const tmpBackupFileName = path.join(os.tmpdir(), `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}`);
         const backupFileName = path.join(
@@ -289,7 +292,7 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
     /**
      * Stop the backup interval, close the DB and clean up
      */
-    async destroy() {
+    async destroy(): Promise<void> {
         await super.destroy();
 
         if (this._backupInterval) {
