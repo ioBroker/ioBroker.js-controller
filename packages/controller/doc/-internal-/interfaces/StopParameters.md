@@ -6,7 +6,7 @@
 
 # Interface: StopParameters
 
-Defined in: [adapter/src/lib/\_Types.ts:581](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L581)
+Defined in: [adapter/src/lib/\_Types.ts:581](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L581)
 
 ## Extended by
 
@@ -18,7 +18,7 @@ Defined in: [adapter/src/lib/\_Types.ts:581](https://github.com/ioBroker/ioBroke
 
 > `optional` **exitCode?**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:583](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L583)
+Defined in: [adapter/src/lib/\_Types.ts:583](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L583)
 
 Specify an optional exit code
 
@@ -28,6 +28,6 @@ Specify an optional exit code
 
 > `optional` **reason?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:585](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L585)
+Defined in: [adapter/src/lib/\_Types.ts:585](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L585)
 
 Specify an optional reason for stoppage

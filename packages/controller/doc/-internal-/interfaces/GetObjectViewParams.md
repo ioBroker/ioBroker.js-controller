@@ -6,7 +6,7 @@
 
 # Interface: GetObjectViewParams
 
-Defined in: [types-dev/index.d.ts:223](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/index.d.ts#L223)
+Defined in: [types-dev/index.d.ts:223](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/index.d.ts#L223)
 
 Parameters for adapter.getObjectView
 
@@ -16,7 +16,7 @@ Parameters for adapter.getObjectView
 
 > `optional` **endkey?**: `string`
 
-Defined in: [types-dev/index.d.ts:227](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/index.d.ts#L227)
+Defined in: [types-dev/index.d.ts:227](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/index.d.ts#L227)
 
 Last id to include in the return list
 
@@ -26,7 +26,7 @@ Last id to include in the return list
 
 > `optional` **include\_docs?**: `boolean`
 
-Defined in: [types-dev/index.d.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/index.d.ts#L229)
+Defined in: [types-dev/index.d.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/index.d.ts#L229)
 
 Whether docs should be included in the return list
 
@@ -36,6 +36,6 @@ Whether docs should be included in the return list
 
 > `optional` **startkey?**: `string`
 
-Defined in: [types-dev/index.d.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/index.d.ts#L225)
+Defined in: [types-dev/index.d.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/index.d.ts#L225)
 
 First id to include in the return list
