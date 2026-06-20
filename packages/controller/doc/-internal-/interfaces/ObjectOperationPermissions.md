@@ -6,7 +6,7 @@
 
 # Interface: ObjectOperationPermissions
 
-Defined in: [types-dev/index.d.ts:126](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/index.d.ts#L126)
+Defined in: [types-dev/index.d.ts:126](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/index.d.ts#L126)
 
 Defines access rights for a single object type
 
@@ -16,7 +16,7 @@ Defines access rights for a single object type
 
 > **create**: `boolean`
 
-Defined in: [types-dev/index.d.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/index.d.ts#L134)
+Defined in: [types-dev/index.d.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/index.d.ts#L134)
 
 Whether a user may create objects of this type
 
@@ -26,7 +26,7 @@ Whether a user may create objects of this type
 
 > **delete**: `boolean`
 
-Defined in: [types-dev/index.d.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/index.d.ts#L136)
+Defined in: [types-dev/index.d.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/index.d.ts#L136)
 
 Whether a user may delete objects of this type
 
@@ -36,7 +36,7 @@ Whether a user may delete objects of this type
 
 > **list**: `boolean`
 
-Defined in: [types-dev/index.d.ts:128](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/index.d.ts#L128)
+Defined in: [types-dev/index.d.ts:128](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/index.d.ts#L128)
 
 Whether a user may enumerate objects of this type
 
@@ -46,7 +46,7 @@ Whether a user may enumerate objects of this type
 
 > **read**: `boolean`
 
-Defined in: [types-dev/index.d.ts:130](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/index.d.ts#L130)
+Defined in: [types-dev/index.d.ts:130](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/index.d.ts#L130)
 
 Whether a user may read objects of this type
 
@@ -56,6 +56,6 @@ Whether a user may read objects of this type
 
 > **write**: `boolean`
 
-Defined in: [types-dev/index.d.ts:132](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/index.d.ts#L132)
+Defined in: [types-dev/index.d.ts:132](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/index.d.ts#L132)
 
 Whether a user may write objects of this type
