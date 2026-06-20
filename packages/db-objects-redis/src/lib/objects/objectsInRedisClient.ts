@@ -3707,7 +3707,7 @@ export class ObjectsInRedisClient {
      * @param options The current request options including the user
      */
     getKeysAsync(pattern: string, options?: CallOptions): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback>> {
-        return this.getKeys(id, options);
+        return this.getKeys(pattern, options);
     }
 
     private async _getObjects(
