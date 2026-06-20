@@ -92,10 +92,10 @@ export default function testAdapter(options: Record<string, any>): void {
                 dirname: `${thisDir}/`,
                 name: context.adapterShortName,
                 objectChange: (id, obj) => {
-                    context.onAdapterObjectChanged && context.onAdapterObjectChanged(id, obj);
+                    context.onAdapterObjectChanged && void context.onAdapterObjectChanged(id, obj);
                 },
                 stateChange: (id, state) => {
-                    context.onAdapterStateChanged && context.onAdapterStateChanged(id, state);
+                    context.onAdapterStateChanged && void context.onAdapterStateChanged(id, state);
                 },
                 fileChange: (id, fileName, size) =>
                     context.onAdapterFileChanged && context.onAdapterFileChanged(id, fileName, size),
@@ -106,7 +106,7 @@ export default function testAdapter(options: Record<string, any>): void {
                 },
                 message: obj => {
                     if (context.onAdapterMessage) {
-                        context.onAdapterMessage(obj);
+                        void context.onAdapterMessage(obj);
                     }
                 },
                 ready: () => {
@@ -129,7 +129,7 @@ export default function testAdapter(options: Record<string, any>): void {
             return;
         }
 
-        context.states.getState(`system.adapter.${context.adapterShortName}.0.alive`, (err, state) => {
+        void context.states.getState(`system.adapter.${context.adapterShortName}.0.alive`, (err, state) => {
             if (err) {
                 console.error(err);
             }
@@ -255,37 +255,49 @@ export default function testAdapter(options: Record<string, any>): void {
 
             let count = 0;
 
-            context.states.getState(`system.adapter.${context.adapterShortName}.0.compactMode`, function (err, state) {
-                assert.strictEqual(state!.val, true);
-                setTimeout(() => !--count && done(), 0);
-            });
+            void context.states.getState(
+                `system.adapter.${context.adapterShortName}.0.compactMode`,
+                function (err, state) {
+                    assert.strictEqual(state!.val, true);
+                    setTimeout(() => !--count && done(), 0);
+                },
+            );
 
             count++;
-            context.states.getState(`system.adapter.${context.adapterShortName}.0.connected`, function (err, state) {
-                assert.strictEqual(state!.val, true);
-                setTimeout(() => !--count && done(), 0);
-            });
+            void context.states.getState(
+                `system.adapter.${context.adapterShortName}.0.connected`,
+                function (err, state) {
+                    assert.strictEqual(state!.val, true);
+                    setTimeout(() => !--count && done(), 0);
+                },
+            );
 
             count++;
-            context.states.getState(`system.adapter.${context.adapterShortName}.0.memRss`, function (err, state) {
+            void context.states.getState(`system.adapter.${context.adapterShortName}.0.memRss`, function (err, state) {
                 assert.strictEqual(state!.val, 0);
                 setTimeout(() => !--count && done(), 0);
             });
 
             count++;
-            context.states.getState(`system.adapter.${context.adapterShortName}.0.memHeapTotal`, function (err, state) {
-                assert.strictEqual(state!.val, 0);
-                setTimeout(() => !--count && done(), 0);
-            });
+            void context.states.getState(
+                `system.adapter.${context.adapterShortName}.0.memHeapTotal`,
+                function (err, state) {
+                    assert.strictEqual(state!.val, 0);
+                    setTimeout(() => !--count && done(), 0);
+                },
+            );
 
             count++;
-            context.states.getState(`system.adapter.${context.adapterShortName}.0.memHeapUsed`, function (err, state) {
-                assert.strictEqual(state!.val, 0);
-                setTimeout(() => !--count && done(), 0);
-            });
+            void context.states.getState(
+                `system.adapter.${context.adapterShortName}.0.memHeapUsed`,
+                function (err, state) {
+                    assert.strictEqual(state!.val, 0);
+                    setTimeout(() => !--count && done(), 0);
+                },
+            );
 
             count++;
-            context.states.getState(`system.adapter.${context.adapterShortName}.0.uptime`, function (err, state) {
+            void context.states.getState(`system.adapter.${context.adapterShortName}.0.uptime`, function (err, state) {
                 assert.ok((state!.val as number) >= 0);
                 setTimeout(() => !--count && done(), 0);
             });
@@ -313,7 +325,7 @@ export default function testAdapter(options: Record<string, any>): void {
                     setTimeout(() => resolve(), 3_000 + (process.platform === 'win32' ? 5_000 : 0));
                 });
                 assert.strictEqual(context.adapter.connected, false);
-                context.adapter.stop!();
+                void context.adapter.stop!();
 
                 await new Promise<void>(resolve => {
                     setTimeout(() => resolve(), 2_000);

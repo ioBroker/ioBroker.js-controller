@@ -245,7 +245,7 @@ export class Multihost {
                                     obj!.native.secret,
                                     password.password as string,
                                 );
-                                this.showMHState(config, changed);
+                                void this.showMHState(config, changed);
                                 callback();
                             });
                         }
@@ -254,11 +254,11 @@ export class Multihost {
                     }
                 });
             } else {
-                this.showMHState(config, changed);
+                void this.showMHState(config, changed);
                 callback();
             }
         } else {
-            this.showMHState(config, changed);
+            void this.showMHState(config, changed);
             callback();
         }
     }
@@ -269,7 +269,7 @@ export class Multihost {
     status(): void {
         const config = this.getConfig();
         config.multihostService = config.multihostService || { enabled: false, secure: true };
-        this.showMHState(config, false);
+        void this.showMHState(config, false);
     }
 
     /**

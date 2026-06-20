@@ -188,7 +188,7 @@ export class UserInterfaceMessagingController {
 
             this.handlers.delete(clientId);
             if (this.unsubscribeCallback) {
-                this.unsubscribeCallback({ clientId, message: msg, reason });
+                void this.unsubscribeCallback({ clientId, message: msg, reason });
             }
         }
     }
@@ -223,7 +223,7 @@ export class UserInterfaceMessagingController {
         this.heartbeatTimers.delete(clientId);
 
         if (this.unsubscribeCallback) {
-            this.unsubscribeCallback({ clientId, reason: 'timeout' });
+            void this.unsubscribeCallback({ clientId, reason: 'timeout' });
         }
     }
 }

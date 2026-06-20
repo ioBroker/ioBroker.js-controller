@@ -86,7 +86,7 @@ function checkNpmVersion(): Promise<string> {
     });
 }
 
-checkNpmVersion()
+void checkNpmVersion()
     .catch(err => {
         console.error(`Could not check npm version: ${err.message}`);
         console.error('Assuming that correct version is installed.');

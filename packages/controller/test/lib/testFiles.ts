@@ -147,7 +147,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
     it(`${testName}should create and read file with callback`, done => {
         const objects = context.objects;
-        objects.setObject(
+        void objects.setObject(
             testId,
             {
                 type: 'meta',
@@ -159,7 +159,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             },
             err => {
                 assert.ok(!err);
-                objects.writeFile(testId, 'myFile/abc.txt', 'dataInFile', err => {
+                void objects.writeFile(testId, 'myFile/abc.txt', 'dataInFile', err => {
                     err && console.error(`Got ${JSON.stringify(objects.getStatus())}: ${err.stack}`);
                     assert.ok(!err);
 
@@ -214,9 +214,9 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
     it(`${testName}should read directory`, done => {
         const objects = context.objects;
-        objects.writeFile(testId, 'myFileA/abc1.txt', 'dataInFile', err => {
+        void objects.writeFile(testId, 'myFileA/abc1.txt', 'dataInFile', err => {
             assert.ok(!err);
-            objects.writeFile(testId, 'myFileA/abc2.txt', Buffer.from('ABC'), err => {
+            void objects.writeFile(testId, 'myFileA/abc2.txt', Buffer.from('ABC'), err => {
                 assert.ok(!err);
                 objects.readDir(testId, 'myFileA/', null, (err, data) => {
                     assert.ok(!err);
@@ -331,9 +331,9 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
     it(`${testName}should rename file`, done => {
         const objects = context.objects;
-        objects.writeFile(testId, 'myFile1/abcRename.txt', Buffer.from('abcd'), err => {
+        void objects.writeFile(testId, 'myFile1/abcRename.txt', Buffer.from('abcd'), err => {
             assert.ok(!err);
-            objects.rename(testId, 'myFile1/abcRename.txt', 'myFileA/abc3.txt', null, err => {
+            void objects.rename(testId, 'myFile1/abcRename.txt', 'myFileA/abc3.txt', null, err => {
                 assert.ok(!err);
                 objects.readFile(testId, 'myFileA/abc3.txt', null, (err, data, _meta) => {
                     assert.ok(!err);

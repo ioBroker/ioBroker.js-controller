@@ -351,7 +351,7 @@ export function getUserGroup(
             groups = [];
             if (arr) {
                 // Read all groups
-                for (const g in arr.rows) {
+                for (let g = 0; g < arr.rows.length; g++) {
                     const val = arr.rows[g].value;
                     if (!val) {
                         continue;
@@ -653,7 +653,7 @@ export function checkObjectRights(
             options.acl = acl || {};
             options.groups = groups;
             options.group = groups ? groups[0] : null;
-            checkObjectRights(objects, id, object, options, flag, callback);
+            void checkObjectRights(objects, id, object, options, flag, callback);
         });
     }
 

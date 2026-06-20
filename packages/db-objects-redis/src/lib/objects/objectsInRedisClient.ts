@@ -515,7 +515,11 @@ export class ObjectsInRedisClient {
                                         ) {
                                             this.defaultNewAcl = deepClone(obj.common.defaultNewAcl);
                                             if (this.settings.controller) {
-                                                this.setDefaultAcl(this.defaultNewAcl);
+                                                this.setDefaultAcl(this.defaultNewAcl).catch(e =>
+                                                    this.log.error(
+                                                        `${this.namespace} Cannot set default ACL: ${e.message}`,
+                                                    ),
+                                                );
                                             }
                                         }
 
@@ -1432,7 +1436,7 @@ export class ObjectsInRedisClient {
 
         try {
             await new Promise<void>((resolve, reject) => {
-                utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_LIST, err => {
+                void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_LIST, err => {
                     if (err) {
                         reject(err);
                     } else {
@@ -1783,7 +1787,7 @@ export class ObjectsInRedisClient {
             if (!options.acl.file.list) {
                 return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
             }
-            this._readDir(id, name, options, callback);
+            void this._readDir(id, name, options, callback);
         });
     }
 
@@ -1983,7 +1987,7 @@ export class ObjectsInRedisClient {
             if (!options.acl.file.write) {
                 return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
             }
-            this._rename(id, oldName, newName, options, callback, meta);
+            void this._rename(id, oldName, newName, options, callback, meta);
         });
     }
 
@@ -2245,7 +2249,7 @@ export class ObjectsInRedisClient {
             // we create a dummy file (for file this file exists to store meta data) - do not override passed options
             options = { ...options, virtualFile: true };
             const realName = dirName + (dirName.endsWith('/') ? '' : '/');
-            this.writeFile(id, `${realName}_data.json`, '', options, callback);
+            void this.writeFile(id, `${realName}_data.json`, '', options, callback);
         });
     }
 
@@ -2400,7 +2404,7 @@ export class ObjectsInRedisClient {
                 });
             }
         }
-        this._chownFileHelper(keysFiltered, objsFiltered, options, err => {
+        void this._chownFileHelper(keysFiltered, objsFiltered, options, err => {
             return tools.maybeCallbackWithError(callback, err, processed);
         });
     }
@@ -2445,7 +2449,7 @@ export class ObjectsInRedisClient {
 
         if (!options.ownerGroup) {
             // get user group
-            this.getUserGroup(options.owner, (user, groups) => {
+            void this.getUserGroup(options.owner, (user, groups) => {
                 if (!groups || !groups[0]) {
                     return tools.maybeCallbackWithError(callback, `user "${options.owner}" belongs to no group`);
                 }
@@ -2504,7 +2508,7 @@ export class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
-        for (const i in keys) {
+        for (let i = 0; i < keys.length; i++) {
             const id = keys[i];
             const meta = metas[i];
             meta.acl.permissions = options.mode;
@@ -2630,7 +2634,7 @@ export class ObjectsInRedisClient {
                 });
             }
         }
-        this._chmodFileHelper(keysFiltered, objsFiltered, options, err =>
+        void this._chmodFileHelper(keysFiltered, objsFiltered, options, err =>
             tools.maybeCallbackWithError(callback, err, processed),
         );
     }
@@ -2739,7 +2743,7 @@ export class ObjectsInRedisClient {
             options.acl = null;
         }
 
-        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, _options) => {
+        void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, _options) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -2815,7 +2819,7 @@ export class ObjectsInRedisClient {
      */
     subscribeUserFile(id: string, pattern: string | string[], options?: CallOptions | null): Promise<void> {
         return new Promise((resolve, reject) => {
-            utils.checkObjectRights(this, null, null, options, 'list', err => {
+            void utils.checkObjectRights(this, null, null, options, 'list', err => {
                 if (err) {
                     reject(err);
                 } else {
@@ -2836,7 +2840,7 @@ export class ObjectsInRedisClient {
      */
     unsubscribeUserFile(id: string, pattern: string | string[], options?: CallOptions | null): Promise<void> {
         return new Promise((resolve, reject) => {
-            utils.checkObjectRights(this, null, null, options, 'list', err => {
+            void utils.checkObjectRights(this, null, null, options, 'list', err => {
                 if (err) {
                     reject(err);
                 } else {
@@ -2895,7 +2899,7 @@ export class ObjectsInRedisClient {
         options?: CallOptions | null,
         callback?: ioBroker.ErrorCallback,
     ): void {
-        utils.checkObjectRights(this, null, null, options, 'list', err => {
+        void utils.checkObjectRights(this, null, null, options, 'list', err => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             }
@@ -2978,7 +2982,7 @@ export class ObjectsInRedisClient {
             callback = options;
             options = null;
         }
-        utils.checkObjectRights(this, null, null, options, 'list', err => {
+        void utils.checkObjectRights(this, null, null, options, 'list', err => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             }
@@ -3028,7 +3032,7 @@ export class ObjectsInRedisClient {
         options?: CallOptions | null,
         callback?: ioBroker.ErrorCallback,
     ): void {
-        utils.checkObjectRights(this, null, null, options, 'list', async err => {
+        void utils.checkObjectRights(this, null, null, options, 'list', async err => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             }
@@ -3102,7 +3106,7 @@ export class ObjectsInRedisClient {
             callback = options;
             options = null;
         }
-        utils.checkObjectRights(this, null, null, options, 'list', async err => {
+        void utils.checkObjectRights(this, null, null, options, 'list', async err => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -3264,18 +3268,18 @@ export class ObjectsInRedisClient {
 
         if (!options.ownerGroup) {
             // get user group
-            this.getUserGroup(options.owner, (user, groups /* , permissions*/) => {
+            void this.getUserGroup(options.owner, (user, groups /* , permissions*/) => {
                 if (!groups || !groups[0]) {
                     return tools.maybeCallbackWithError(callback, `user "${options.owner}" belongs to no group`);
                 }
                 options.ownerGroup = groups[0];
 
-                this.chownObject(pattern, options, callback);
+                void this.chownObject(pattern, options, callback);
             });
             return;
         }
 
-        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
+        void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             }
@@ -3408,7 +3412,7 @@ export class ObjectsInRedisClient {
             options.mode = parseInt(options.mode, 16);
         }
 
-        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
+        void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             }
@@ -3525,7 +3529,7 @@ export class ObjectsInRedisClient {
             if (options?.acl) {
                 options.acl = null;
             }
-            utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
+            void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 }
@@ -3691,7 +3695,7 @@ export class ObjectsInRedisClient {
             );
         }
         if (typeof callback === 'function') {
-            utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
+            void utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 }
@@ -3846,7 +3850,7 @@ export class ObjectsInRedisClient {
             options.acl = null;
         }
         if (typeof callback === 'function') {
-            utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
+            void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 }
@@ -3891,7 +3895,7 @@ export class ObjectsInRedisClient {
         if (this.settings.connection.enhancedLogging) {
             this.log.silly(`${this.namespace} redis keys ${keys.length} ${pattern}`);
         }
-        this._getObjects(keys, options, callback, true);
+        void this._getObjects(keys, options, callback, true);
     }
 
     /**
@@ -3938,7 +3942,7 @@ export class ObjectsInRedisClient {
             options.acl = null;
         }
         if (typeof callback === 'function') {
-            utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
+            void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 }
@@ -4231,7 +4235,7 @@ export class ObjectsInRedisClient {
             options.acl = null;
         }
 
-        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, async err => {
+        void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, async err => {
             // do not use options from checkObjectRights because this will mess up configured default acl
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
@@ -4378,7 +4382,7 @@ export class ObjectsInRedisClient {
         if (options?.acl) {
             options.acl = null;
         }
-        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_DELETE, async (err, options) => {
+        void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_DELETE, async (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -5000,7 +5004,7 @@ export class ObjectsInRedisClient {
         }
 
         if (typeof callback === 'function') {
-            utils.checkObjectRights(this, null, null, options, 'list', async (err, options) => {
+            void utils.checkObjectRights(this, null, null, options, 'list', async (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 }
@@ -5173,7 +5177,7 @@ export class ObjectsInRedisClient {
         }
 
         if (typeof callback === 'function') {
-            utils.checkObjectRights(this, null, null, options, 'list', async (err, options) => {
+            void utils.checkObjectRights(this, null, null, options, 'list', async (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 }
@@ -5276,7 +5280,7 @@ export class ObjectsInRedisClient {
                         } else {
                             options.ownerGroup = groups[0];
                         }
-                        this._extendObject(id, obj, options, callback);
+                        void this._extendObject(id, obj, options, callback);
                     });
                 }
             }
@@ -5412,7 +5416,7 @@ export class ObjectsInRedisClient {
             options.acl = null;
         }
 
-        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
+        void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             }
@@ -5455,14 +5459,14 @@ export class ObjectsInRedisClient {
         callback?: ioBroker.FindObjectCallback,
     ): void {
         // Try to read by ID
-        this._getObject(idOrName, options, (err, obj) => {
+        void this._getObject(idOrName, options, (err, obj) => {
             // Assume it is ID
             if (obj && utils.checkObject(obj, options, CONSTS.ACCESS_READ) && (!type || obj.common?.type === type)) {
                 return tools.maybeCallbackWithError(callback, null, idOrName, obj.common.name);
             }
 
             // Get all objects that this user may read
-            this._getKeys(
+            void this._getKeys(
                 '*',
                 options,
                 async (err, keys) => {
@@ -5595,7 +5599,7 @@ export class ObjectsInRedisClient {
         }
 
         if (typeof callback === 'function') {
-            utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_LIST, (err, options) => {
+            void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_LIST, (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 }
@@ -5668,7 +5672,7 @@ export class ObjectsInRedisClient {
         }
         options = options || {};
 
-        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
+        void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             }

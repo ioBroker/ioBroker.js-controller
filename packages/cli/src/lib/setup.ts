@@ -542,13 +542,13 @@ async function processCommand(
         case 'start':
         case 'stop': {
             const procCommand = new CLIProcess(commandOptions);
-            procCommand[command](args);
+            void procCommand[command](args);
             break;
         }
 
         case 'debug': {
             const debugCommand = new CLIDebug(commandOptions);
-            debugCommand.execute(args);
+            void debugCommand.execute(args);
             break;
         }
 
@@ -562,12 +562,12 @@ async function processCommand(
         case 'r':
         case 'restart': {
             const procCommand = new CLIProcess(commandOptions);
-            procCommand.restart(args);
+            void procCommand.restart(args);
             break;
         }
 
         case '_restart':
-            restartController();
+            void restartController();
             callback();
             break;
 
@@ -668,7 +668,7 @@ async function processCommand(
                             // Create a new instance of the cert command,
                             // but use the resolve method as a callback
                             const cert = new CLICert({ ...commandOptions, callback: resolve });
-                            cert.create();
+                            void cert.create();
                         });
                     }
 
@@ -1135,13 +1135,13 @@ async function processCommand(
             });
 
             if (params.yes || params.y || params.Y) {
-                unsetup(params, callback);
+                void unsetup(params, callback);
             } else {
                 rl.question('UUID will be deleted. Are you sure? [y/N]: ', answer => {
                     rl.close();
                     answer = answer.toLowerCase();
                     if (answer === 'y' || answer === 'yes' || answer === 'ja' || answer === 'j') {
-                        unsetup(params, callback);
+                        void unsetup(params, callback);
                     } else {
                         console.log('Nothing deleted');
                         return void callback();
@@ -1261,7 +1261,7 @@ async function processCommand(
                     } catch {
                         // ignore
                     }
-                    restartController();
+                    void restartController();
                     console.log(`Restarting ${tools.appName}...`);
                     callback();
                 });
@@ -1833,7 +1833,7 @@ async function processCommand(
                         return void callback();
                     });
                 } else if (command === 'set' || command === 'passwd') {
-                    users.setUserPassword(user, password, err => {
+                    void users.setUserPassword(user, password, err => {
                         if (err) {
                             console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -2036,7 +2036,7 @@ async function processCommand(
                     objects,
                     processExit: callback,
                 });
-                users.setUserPassword(user, password, (err: any) => {
+                void users.setUserPassword(user, password, (err: any) => {
                     if (err) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -2174,7 +2174,7 @@ async function processCommand(
                 if (changed) {
                     obj.from = `system.host.${tools.getHostName()}.cli`;
                     obj.ts = new Date().getTime();
-                    objects.setObject(`system.adapter.${instance}`, obj, () => {
+                    void objects.setObject(`system.adapter.${instance}`, obj, () => {
                         console.log(`Instance settings for "${instance}" are changed.`);
                         return void callback();
                     });
@@ -2208,7 +2208,7 @@ async function processCommand(
                     processExit: callback,
                 });
 
-                visDebug.enableDebug(widgetset);
+                void visDebug.enableDebug(widgetset);
             });
             break;
         }
@@ -2337,7 +2337,7 @@ async function processCommand(
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
 
-                    objects.writeFile(adapt, destFilename, data, _err => {
+                    void objects.writeFile(adapt, destFilename, data, _err => {
                         console.log(`File "${toRead}" stored as "${destFilename}"`);
                         return void callback(EXIT_CODES.NO_ERROR);
                     });
@@ -2512,7 +2512,7 @@ async function processCommand(
                                 const parts = row.id.split('.');
                                 // ignore system.host.name.alive and so on
                                 if (parts.length === 3) {
-                                    states.pushMessage(row.id, {
+                                    void states.pushMessage(row.id, {
                                         command: 'checkLogging',
                                         message: null,
                                         from: 'console',
@@ -2708,7 +2708,7 @@ async function processCommand(
                         callback();
                     });
                 } else if (cmd === 'c' || cmd === 'connect') {
-                    mh.connect(parseInt(args[1]), args[2], (err: any) => {
+                    void mh.connect(parseInt(args[1]), args[2], (err: any) => {
                         if (err) {
                             console.error(err);
                         }
@@ -2747,7 +2747,7 @@ async function processCommand(
 
         case 'cert': {
             const certCommand = new CLICert(commandOptions);
-            certCommand.execute(args);
+            void certCommand.execute(args);
             break;
         }
 
@@ -2919,7 +2919,7 @@ async function unsetup(params: Record<string, any>, callback: ExitCodeCb): Promi
                 obj.from = `system.host.${tools.getHostName()}.cli`;
                 obj.ts = new Date().getTime();
 
-                objects.setObject(SYSTEM_CONFIG_ID, obj, err => {
+                void objects.setObject(SYSTEM_CONFIG_ID, obj, err => {
                     if (err) {
                         console.log(`not found: ${err.message}`);
                         return void callback(EXIT_CODES.CANNOT_SET_OBJECT);
@@ -2971,10 +2971,10 @@ export function execute(): void {
         args.push(process.argv[i]);
     }
 
-    processCommand(command, args, _yargs.argv, exitApplicationSave);
+    void processCommand(command, args, _yargs.argv, exitApplicationSave);
 }
 
 process.on('unhandledRejection', (e: any) => {
     console.error(`Uncaught Rejection: ${e.stack || e}`);
-    exitApplicationSave(EXIT_CODES.UNCAUGHT_EXCEPTION);
+    void exitApplicationSave(EXIT_CODES.UNCAUGHT_EXCEPTION);
 });

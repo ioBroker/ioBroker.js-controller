@@ -1164,7 +1164,7 @@ function getIoPack(
     name: string,
     callback: (sources: Record<string, any>, name: string) => void,
 ): void {
-    getJson(sources[name].meta, '', ioPack => {
+    void getJson(sources[name].meta, '', ioPack => {
         const packUrl = sources[name].meta.replace('io-package.json', 'package.json');
         if (!ioPack) {
             if (sources._helper) {
@@ -1175,7 +1175,7 @@ function getIoPack(
             }
         } else {
             setImmediate(() => {
-                getJson(packUrl, '', pack => {
+                void getJson(packUrl, '', pack => {
                     const version = sources[name].version;
                     const type = sources[name].type;
                     // If installed from git or something else,
@@ -1464,12 +1464,12 @@ export function getRepositoryFile(
         }
 
         // load hash of file first to not load the whole 1MB of sources
-        _checkRepositoryFileHash(urlOrPath, additionalInfo, (err, sources, actualSourcesHash) => {
+        void _checkRepositoryFileHash(urlOrPath, additionalInfo, (err, sources, actualSourcesHash) => {
             if (!err && sources) {
                 // Source file was not changed
                 typeof callback === 'function' && callback(err, sources, actualSourcesHash);
             } else {
-                getJson(urlOrPath, agent, sources => {
+                void getJson(urlOrPath, agent, sources => {
                     if (sources) {
                         for (const s of Object.keys(sources)) {
                             if (additionalInfo[s] && additionalInfo[s].published) {

@@ -32,74 +32,77 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             function (err) {
                 assert.strictEqual(err, null);
 
-                context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, _state) {
+                void context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, _state) {
                     assert.strictEqual(err, null);
 
-                    context.adapter.setState(gid, 1, function (err) {
+                    void context.adapter.setState(gid, 1, function (err) {
                         assert.ok(!err);
 
-                        context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
+                        void context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
                             assert.strictEqual(err, null);
                             assert.ok(state);
                             assert.strictEqual(state.val, 1);
                             assert.strictEqual(state.ack, false);
 
-                            context.adapter.setState(gid, 2, true, function (err) {
+                            void context.adapter.setState(gid, 2, true, function (err) {
                                 assert.ok(!err);
 
-                                context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
-                                    assert.strictEqual(err, null);
-                                    assert.ok(state);
-                                    assert.strictEqual(state.val, 2);
-                                    assert.strictEqual(state.ack, true);
+                                void context.states.getState(
+                                    `${context.adapterShortName}.0.${gid}`,
+                                    function (err, state) {
+                                        assert.strictEqual(err, null);
+                                        assert.ok(state);
+                                        assert.strictEqual(state.val, 2);
+                                        assert.strictEqual(state.ack, true);
 
-                                    context.adapter.setState(gid, { val: 3, ack: true }, function (err) {
-                                        assert.ok(!err);
+                                        void context.adapter.setState(gid, { val: 3, ack: true }, function (err) {
+                                            assert.ok(!err);
 
-                                        context.states.getState(
-                                            `${context.adapterShortName}.0.${gid}`,
-                                            function (err, state) {
-                                                assert.strictEqual(err, null);
-                                                assert.ok(state);
-                                                assert.strictEqual(state.val, 3);
-                                                assert.strictEqual(state.ack, true);
+                                            void context.states.getState(
+                                                `${context.adapterShortName}.0.${gid}`,
+                                                function (err, state) {
+                                                    assert.strictEqual(err, null);
+                                                    assert.ok(state);
+                                                    assert.strictEqual(state.val, 3);
+                                                    assert.strictEqual(state.ack, true);
 
-                                                context.adapter.setState(gid, { ack: false }, function (err) {
-                                                    assert.ok(!err);
+                                                    void context.adapter.setState(gid, { ack: false }, function (err) {
+                                                        assert.ok(!err);
 
-                                                    context.states.getState(
-                                                        `${context.adapterShortName}.0.${gid}`,
-                                                        function (err, state) {
-                                                            assert.strictEqual(err, null);
-                                                            assert.ok(state);
-                                                            assert.strictEqual(state.val, 3);
-                                                            assert.strictEqual(state.ack, false);
+                                                        void context.states.getState(
+                                                            `${context.adapterShortName}.0.${gid}`,
+                                                            function (err, state) {
+                                                                assert.strictEqual(err, null);
+                                                                assert.ok(state);
+                                                                assert.strictEqual(state.val, 3);
+                                                                assert.strictEqual(state.ack, false);
 
-                                                            context.adapter.setState(
-                                                                gid,
-                                                                { ack: true },
-                                                                function (err) {
-                                                                    assert.ok(!err);
+                                                                void context.adapter.setState(
+                                                                    gid,
+                                                                    { ack: true },
+                                                                    function (err) {
+                                                                        assert.ok(!err);
 
-                                                                    context.states.getState(
-                                                                        `${context.adapterShortName}.0.${gid}`,
-                                                                        function (err, state) {
-                                                                            assert.strictEqual(err, null);
-                                                                            assert.ok(state);
-                                                                            assert.strictEqual(state.val, 3);
-                                                                            assert.strictEqual(state.ack, true);
-                                                                            done();
-                                                                        },
-                                                                    );
-                                                                },
-                                                            );
-                                                        },
-                                                    );
-                                                });
-                                            },
-                                        );
-                                    });
-                                });
+                                                                        void context.states.getState(
+                                                                            `${context.adapterShortName}.0.${gid}`,
+                                                                            function (err, state) {
+                                                                                assert.strictEqual(err, null);
+                                                                                assert.ok(state);
+                                                                                assert.strictEqual(state.val, 3);
+                                                                                assert.strictEqual(state.ack, true);
+                                                                                done();
+                                                                            },
+                                                                        );
+                                                                    },
+                                                                );
+                                                            },
+                                                        );
+                                                    });
+                                                },
+                                            );
+                                        });
+                                    },
+                                );
                             });
                         });
                     });
@@ -200,7 +203,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             function (err) {
                 assert.strictEqual(err, null);
                 const ts = new Date().getTime() - 1000;
-                context.adapter.setState(gid, { val: 1, ts: ts, ack: false }, function (err) {
+                void context.adapter.setState(gid, { val: 1, ts: ts, ack: false }, function (err) {
                     assert.ok(!err);
                     context.adapter.setStateChanged(gid, 1, function (err, id, notChanged) {
                         assert.ok(!err);
@@ -208,7 +211,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                         assert.strictEqual(id, `${context.adapterShortName}.0.${gid}`);
                         assert.strictEqual(notChanged, true);
 
-                        context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
+                        void context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
                             assert.ok(!err);
                             assert.ok(state);
                             assert.strictEqual(state.ts, ts);
@@ -218,13 +221,16 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                                 assert.strictEqual(id, `${context.adapterShortName}.0.${gid}`);
                                 assert.strictEqual(notChanged, false);
 
-                                context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
-                                    assert.ok(!err);
-                                    assert.ok(state);
-                                    assert.strictEqual(state.ack, true);
-                                    assert.notStrictEqual(state.ts, ts);
-                                    done();
-                                });
+                                void context.states.getState(
+                                    `${context.adapterShortName}.0.${gid}`,
+                                    function (err, state) {
+                                        assert.ok(!err);
+                                        assert.ok(state);
+                                        assert.strictEqual(state.ack, true);
+                                        assert.notStrictEqual(state.ts, ts);
+                                        done();
+                                    },
+                                );
                             });
                         });
                     });
@@ -256,7 +262,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             function (err) {
                 assert.strictEqual(err, null);
 
-                context.states.setState(`${context.adapterShortName}.0.${sGid}`, 9, function (err) {
+                void context.states.setState(`${context.adapterShortName}.0.${sGid}`, 9, function (err) {
                     assert.ok(!err);
 
                     context.onAdapterStateChanged = function (id, state) {
@@ -269,7 +275,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                     };
 
                     context.adapter.subscribeStates('*', function () {
-                        context.states.setState(`${context.adapterShortName}.0.${sGid}`, 10, function (err) {
+                        void context.states.setState(`${context.adapterShortName}.0.${sGid}`, 10, function (err) {
                             assert.ok(!err);
                         });
                     });
@@ -308,7 +314,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                 }
             };
 
-            context.adapter.setState(sGid, testVal);
+            void context.adapter.setState(sGid, testVal);
         });
     });
 
@@ -324,11 +330,11 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             }
         };
 
-        context.states.setState(`${context.adapterShortName}.0.${sGid}`, 9, function (err) {
+        void context.states.setState(`${context.adapterShortName}.0.${sGid}`, 9, function (err) {
             assert.ok(!err);
 
             context.adapter.unsubscribeStates('*', function () {
-                context.states.setState(`${context.adapterShortName}.0.${sGid}`, 10, function (err) {
+                void context.states.setState(`${context.adapterShortName}.0.${sGid}`, 10, function (err) {
                     assert.ok(!err);
                 });
                 setTimeout(function () {
@@ -344,7 +350,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     it(`${testName}Set foreign state`, function (done) {
         this.timeout(3_000);
         const fGid = `${context.adapterShortName}1.0.${gid}`;
-        context.objects.setObject(
+        void context.objects.setObject(
             fGid,
             {
                 common: {
@@ -362,13 +368,13 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             function (err) {
                 assert.strictEqual(err, null);
 
-                context.states.getState(fGid, function (err, _state) {
+                void context.states.getState(fGid, function (err, _state) {
                     assert.strictEqual(err, null);
 
                     context.adapter.setForeignState(fGid, 1, function (err) {
                         assert.ok(!err);
 
-                        context.states.getState(fGid, function (err, state) {
+                        void context.states.getState(fGid, function (err, state) {
                             assert.strictEqual(err, null);
                             assert.ok(state);
                             assert.strictEqual(state.val, 1);
@@ -377,7 +383,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                             context.adapter.setForeignState(fGid, 2, true, function (err) {
                                 assert.ok(!err);
 
-                                context.states.getState(fGid, function (err, state) {
+                                void context.states.getState(fGid, function (err, state) {
                                     assert.strictEqual(err, null);
                                     assert.ok(state);
                                     assert.strictEqual(state.val, 2);
@@ -386,7 +392,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                                     context.adapter.setForeignState(fGid, { val: 3, ack: true }, function (err) {
                                         assert.ok(!err);
 
-                                        context.states.getState(fGid, function (err, state) {
+                                        void context.states.getState(fGid, function (err, state) {
                                             assert.strictEqual(err, null);
                                             assert.ok(state);
                                             assert.strictEqual(state.val, 3);
@@ -480,7 +486,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                         },
                     },
                     function (_err) {
-                        context.objects.setObject(
+                        void context.objects.setObject(
                             fGid,
                             {
                                 common: {
@@ -505,7 +511,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                             function (err) {
                                 assert.strictEqual(err, null);
                                 context.adapter.setForeignState(fGid, 1, false, function (_err) {
-                                    context.states.getState(fGid, function (err, state) {
+                                    void context.states.getState(fGid, function (err, state) {
                                         assert.strictEqual(err, null);
                                         assert.ok(state);
                                         assert.strictEqual(state.val, 1);
@@ -518,12 +524,12 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                                             err => {
                                                 assert.ok(!err);
 
-                                                context.states.getState(fGid, (err, state) => {
+                                                void context.states.getState(fGid, (err, state) => {
                                                     assert.strictEqual(err, null);
                                                     assert.ok(state);
                                                     assert.strictEqual(state.val, 2);
                                                     assert.strictEqual(state.ack, false);
-                                                    context.adapter.getForeignState(
+                                                    void context.adapter.getForeignState(
                                                         fGid,
                                                         { user: 'system.user.write-only2' },
                                                         (err, state) => {
@@ -550,7 +556,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         this.timeout(3_000);
         const fGid = `${context.adapterShortName}3.1.${gid}`;
 
-        context.objects.setObject(
+        void context.objects.setObject(
             fGid,
             {
                 common: {
@@ -574,7 +580,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             function (err) {
                 assert.strictEqual(err, null);
 
-                context.states.getState(fGid, function (err, _state) {
+                void context.states.getState(fGid, function (err, _state) {
                     assert.strictEqual(err, null);
 
                     context.adapter.setForeignState(fGid, 1, false, { user: 'system.user.write-only' }, function (err) {
@@ -590,7 +596,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     it(`${testName}Set foreign state with acl write only`, function (done) {
         this.timeout(3_000);
         const fGid = `${context.adapterShortName}3.0.${gid}`;
-        context.objects.setObject(
+        void context.objects.setObject(
             fGid,
             {
                 common: {
@@ -614,7 +620,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             function (err) {
                 assert.strictEqual(err, null);
 
-                context.states.getState(fGid, function (err, _state) {
+                void context.states.getState(fGid, function (err, _state) {
                     assert.strictEqual(err, null);
 
                     context.adapter.setForeignState(
@@ -625,7 +631,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                         function (err) {
                             assert.ok(!err);
 
-                            context.states.getState(fGid, function (err, state) {
+                            void context.states.getState(fGid, function (err, state) {
                                 assert.strictEqual(err, null);
                                 assert.ok(state);
                                 assert.strictEqual(state.val, 1);
@@ -669,7 +675,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                         assert.strictEqual(id, fGid);
                         assert.strictEqual(notChanged, true);
 
-                        context.states.getState(fGid, function (err, state) {
+                        void context.states.getState(fGid, function (err, state) {
                             assert.ok(!err);
                             assert.ok(state);
                             assert.strictEqual(state.ts, ts);
@@ -679,7 +685,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                                 assert.strictEqual(id, fGid);
                                 assert.strictEqual(notChanged, false);
 
-                                context.states.getState(fGid, function (err, state) {
+                                void context.states.getState(fGid, function (err, state) {
                                     assert.ok(!err);
                                     assert.ok(state);
                                     assert.strictEqual(state.ack, true);
@@ -698,14 +704,14 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     it(`${testName}Get foreign state`, function (done) {
         this.timeout(3_000);
         const fGid = `${context.adapterShortName}1.0.${gid}`;
-        context.adapter.getForeignState(fGid, function (err, state) {
+        void context.adapter.getForeignState(fGid, function (err, state) {
             assert.strictEqual(err, null);
             assert.ok(state);
             assert.strictEqual(state.val, 3);
             assert.strictEqual(state.ack, true);
 
             // ask for non-existing state
-            context.adapter.getForeignState(`${fGid}5`, function (err, state) {
+            void context.adapter.getForeignState(`${fGid}5`, function (err, state) {
                 assert.ok(!err);
                 assert.strictEqual(state, null);
                 done();
@@ -752,7 +758,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         context.adapter.delForeignState(`${context.adapterShortName}1.0.${gid}`, function (err) {
             assert.ok(!err);
 
-            context.adapter.getForeignState(`${context.adapterShortName}1.0.${gid}`, function (err, state) {
+            void context.adapter.getForeignState(`${context.adapterShortName}1.0.${gid}`, function (err, state) {
                 assert.ok(!err);
                 assert.ok(!state);
 
@@ -769,7 +775,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     it(`${testName}Get System State`, function (done) {
         this.timeout(3_000);
 
-        context.adapter.getForeignState('system.adapter.test.0.memRss', (err, state) => {
+        void context.adapter.getForeignState('system.adapter.test.0.memRss', (err, state) => {
             assert.strictEqual(err, null);
             assert.ok(state);
             assert.strictEqual(state.val, 0);
@@ -800,7 +806,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             function (err) {
                 assert.strictEqual(err, null);
 
-                context.states.setState(sGid, 9, function (err) {
+                void context.states.setState(sGid, 9, function (err) {
                     assert.ok(!err);
 
                     context.onAdapterStateChanged = function (id, state) {
@@ -813,7 +819,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                     };
 
                     context.adapter.subscribeForeignStates(`${context.adapterShortName}2.0.*`, function () {
-                        context.states.setState(sGid, 10, function (err) {
+                        void context.states.setState(sGid, 10, function (err) {
                             assert.ok(!err);
                         });
                     });
@@ -868,7 +874,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
             // set one wrong state at the beginning
             for (const id of [`${context.adapterShortName}3.0.${gid}81`, ...stateIds]) {
-                context.states.setState(id, 10);
+                void context.states.setState(id, 10);
             }
         });
     }).timeout(3_000);
@@ -886,7 +892,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             }
         };
 
-        context.states.setState(sGid, 9, err => {
+        void context.states.setState(sGid, 9, err => {
             assert.ok(!err);
 
             context.adapter.unsubscribeForeignStates(`${context.adapterShortName}2.0.*`, () =>
@@ -933,7 +939,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                     }
                 };
 
-                context.adapter.setState(`${gid}_expire`, { val: 1, expire: 4, ack: true }, function (err) {
+                void context.adapter.setState(`${gid}_expire`, { val: 1, expire: 4, ack: true }, function (err) {
                     assert.ok(!err);
 
                     context.adapter.getState(`${gid}_expire`, function (err, state) {
@@ -962,9 +968,9 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
     it(`${testName}Should respect from`, done => {
         // we set a state and set a custom from property
-        context.adapter.setState(`${gid}stateWithFrom`, { val: 1, from: 'Paris with love' }, err => {
+        void context.adapter.setState(`${gid}stateWithFrom`, { val: 1, from: 'Paris with love' }, err => {
             assert.ok(!err);
-            context.states.getState(`${context.adapter.namespace}.${gid}stateWithFrom`, (err, state) => {
+            void context.states.getState(`${context.adapter.namespace}.${gid}stateWithFrom`, (err, state) => {
                 assert.ok(!err);
                 assert.strictEqual(state!.from, 'Paris with love');
                 done();
@@ -974,9 +980,9 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
     it(`${testName}Should use default from`, done => {
         // we set a state without providing `from` property
-        context.adapter.setState(`${gid}stateWithFrom`, { val: 1 }, err => {
+        void context.adapter.setState(`${gid}stateWithFrom`, { val: 1 }, err => {
             assert.ok(!err);
-            context.states.getState(`${context.adapter.namespace}.${gid}stateWithFrom`, (err, state) => {
+            void context.states.getState(`${context.adapter.namespace}.${gid}stateWithFrom`, (err, state) => {
                 assert.ok(!err);
                 assert.strictEqual(state!.from, `system.adapter.${context.adapter.namespace}`);
                 done();

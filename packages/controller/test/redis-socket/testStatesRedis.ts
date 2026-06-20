@@ -47,7 +47,7 @@ describe('States-Redis-Socket: Test states', () => {
                 onChange: (id: string, state: ioBroker.State) => {
                     console.log(`Redis-state-Socket changed. ${id}`);
                     if (onStatesChanged) {
-                        onStatesChanged(id, state);
+                        void onStatesChanged(id, state);
                     }
                 },
             },
@@ -55,7 +55,7 @@ describe('States-Redis-Socket: Test states', () => {
 
         objects = _objects;
         states = _states!;
-        states.subscribe('*');
+        void states.subscribe('*');
         assert.ok(objects);
         assert.ok(states);
         await new Promise<void>(resolve => {
@@ -76,7 +76,7 @@ describe('States-Redis-Socket: Test states', () => {
                 assert.ok(state.ts);
                 assert.strictEqual(state.q, 0);
 
-                states!.getState(testID, (err, _state) => {
+                void states!.getState(testID, (err, _state) => {
                     const state = _state!;
                     assert.ok(!err);
                     assert.ok(state);
@@ -89,7 +89,7 @@ describe('States-Redis-Socket: Test states', () => {
             }
         };
 
-        states!.setState(testID, 1, function (err) {
+        void states!.setState(testID, 1, function (err) {
             assert.ok(!err);
         });
     });

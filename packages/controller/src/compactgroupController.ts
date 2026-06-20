@@ -13,4 +13,4 @@ if (isNaN(compactGroup) || compactGroup < 1) {
     process.exit();
 }
 
-init(compactGroup);
+void init(compactGroup);

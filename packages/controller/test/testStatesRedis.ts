@@ -44,7 +44,7 @@ describe('States-Redis: Test states in Redis', function () {
                 onChange: (id: string, state: ioBroker.State) => {
                     console.log(`Redis-state changed. ${id}`);
                     if (onStatesChanged) {
-                        onStatesChanged(id, state);
+                        void onStatesChanged(id, state);
                     }
                 },
             },
@@ -52,7 +52,7 @@ describe('States-Redis: Test states in Redis', function () {
 
         objects = _objects;
         states = _states;
-        states!.subscribe('*');
+        void states!.subscribe('*');
         assert.ok(objects);
         assert.ok(states);
         await new Promise<void>(resolve => {
@@ -70,7 +70,7 @@ describe('States-Redis: Test states in Redis', function () {
                 assert.ok(state.ts);
                 assert.strictEqual(state.q, 0);
 
-                states!.getState(testID, (err, state) => {
+                void states!.getState(testID, (err, state) => {
                     assert.ok(!err);
                     assert.ok(state);
                     assert.strictEqual(state.val, 1);
@@ -82,7 +82,7 @@ describe('States-Redis: Test states in Redis', function () {
             }
         };
 
-        states!.setState(testID, 1, err => {
+        void states!.setState(testID, 1, err => {
             assert.ok(!err);
         });
     }).timeout(10000);
@@ -110,7 +110,7 @@ describe('States-Redis: Test states in Redis', function () {
             }
         };
 
-        states!.setState(testID, 2);
+        void states!.setState(testID, 2);
     }).timeout(10_000);
 
     it('States-Redis: should setState with object state parameters', done => {
@@ -136,7 +136,7 @@ describe('States-Redis: Test states in Redis', function () {
             }
         };
 
-        states!.setState(testID, { val: 3, ack: true, ts: 123456, q: 1 });
+        void states!.setState(testID, { val: 3, ack: true, ts: 123456, q: 1 });
     }).timeout(10_000);
 
     it('States-Redis: should setState with object state parameters ignoring null ts', done => {
@@ -165,7 +165,7 @@ describe('States-Redis: Test states in Redis', function () {
         };
 
         // @ts-expect-error ignore types here for ts to test the case
-        states!.setState(testID, { val: 4, ack: true, ts: null, q: 1 });
+        void states!.setState(testID, { val: 4, ack: true, ts: null, q: 1 });
     }).timeout(10_000);
 
     it('States-Redis: should setState with expire (setex + publish in one MULTI)', done => {
@@ -180,14 +180,14 @@ describe('States-Redis: Test states in Redis', function () {
                 assert.strictEqual(state.ack, true);
 
                 // SETEX inside the MULTI stored the value...
-                states!.getState(testID, (err, storedState) => {
+                void states!.getState(testID, (err, storedState) => {
                     assert.ok(!err);
                     assert.ok(storedState);
                     assert.strictEqual(storedState.val, 5);
 
                     // ...with a TTL, so it must be gone after the expire window
                     setTimeout(() => {
-                        states!.getState(testID, (err, expiredState) => {
+                        void states!.getState(testID, (err, expiredState) => {
                             assert.ok(!err);
                             assert.strictEqual(expiredState, null);
                             done();
@@ -197,7 +197,7 @@ describe('States-Redis: Test states in Redis', function () {
             }
         };
 
-        states!.setState(testID, { val: 5, ack: true, expire: 1 }, err => {
+        void states!.setState(testID, { val: 5, ack: true, expire: 1 }, err => {
             assert.ok(!err);
         });
     }).timeout(10_000);
@@ -208,23 +208,23 @@ describe('States-Redis: Test states in Redis', function () {
         // is identical and is bumped only when the value actually changes.
         onStatesChanged = null;
         const testID = 'testObject.0.testLc';
-        states!.setState(testID, { val: 10, ack: true }, () => {
-            states!.getState(testID, (err, first) => {
+        void states!.setState(testID, { val: 10, ack: true }, () => {
+            void states!.getState(testID, (err, first) => {
                 assert.ok(!err);
                 assert.ok(first);
                 const firstLc = first.lc;
                 setTimeout(() => {
                     // identical value -> lc must stay, ts must advance
-                    states!.setState(testID, { val: 10, ack: true }, () => {
-                        states!.getState(testID, (err, second) => {
+                    void states!.setState(testID, { val: 10, ack: true }, () => {
+                        void states!.getState(testID, (err, second) => {
                             assert.ok(!err);
                             assert.ok(second);
                             assert.strictEqual(second.lc, firstLc, 'lc must not change for identical value');
                             assert.ok(second.ts >= first.ts, 'ts must advance');
                             setTimeout(() => {
                                 // changed value -> lc must be bumped
-                                states!.setState(testID, { val: 20, ack: true }, () => {
-                                    states!.getState(testID, (err, third) => {
+                                void states!.setState(testID, { val: 20, ack: true }, () => {
+                                    void states!.getState(testID, (err, third) => {
                                         assert.ok(!err);
                                         assert.ok(third);
                                         assert.notStrictEqual(third.lc, firstLc, 'lc must change when value changes');

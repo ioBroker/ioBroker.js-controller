@@ -326,7 +326,7 @@ export class MHServer {
                         const data = JSON.parse(this.buffer[id]);
                         this.buffer[id] = '';
                         if (data) {
-                            this.process(data, rinfo);
+                            void this.process(data, rinfo);
                         }
                     } catch {
                         // may be not yet complete.

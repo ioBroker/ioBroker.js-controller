@@ -148,7 +148,7 @@ export async function startController(options: Record<string, any>): Promise<Sta
                 },
             connected: () => {
                 if (settingsStates.connection.type === 'redis') {
-                    states!.destroyDB(() => {
+                    void states!.destroyDB(() => {
                         console.log('States ok');
                         isStatesConnected = true;
                         if (isObjectConnected && objects) {

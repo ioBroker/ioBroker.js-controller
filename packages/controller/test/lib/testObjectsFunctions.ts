@@ -51,7 +51,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     it(`${testName}Check if objects will not be created without mandatory attribute type`, function (done) {
         this.timeout(3_000);
         const id = 'myTestObjectNoType';
-        context.adapter.setObject(
+        void context.adapter.setObject(
             id,
             {
                 common: {
@@ -76,7 +76,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
     // getAdapterObjects
     it(`${testName}Read all objects of adapter`, function (done) {
-        context.adapter.getAdapterObjects(objects => {
+        void context.adapter.getAdapterObjects(objects => {
             assert.ok(objects);
             assert.ok(objects[`${context.adapterShortName}.0.${gid}`]);
             assert.strictEqual(objects[`${context.adapterShortName}.0.${gid}`].type, 'state');
@@ -324,13 +324,13 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
     // getForeignObject
     it(`${testName}Check get foreign object`, function (done) {
-        context.adapter.getForeignObject(`${context.adapterShortName}f.0.${gid}`, function (err, obj) {
+        void context.adapter.getForeignObject(`${context.adapterShortName}f.0.${gid}`, function (err, obj) {
             assert.strictEqual(err, null);
 
             assert.ok(obj);
             assert.strictEqual(obj.type, 'state');
             assert.strictEqual(obj.native.attr1, '11');
-            context.adapter.getForeignObject(gid, function (err, obj1) {
+            void context.adapter.getForeignObject(gid, function (err, obj1) {
                 assert.ok(!err);
 
                 assert.strictEqual(obj1, null);
@@ -377,7 +377,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             function (err) {
                 assert.strictEqual(err, null);
 
-                context.adapter.getForeignObject('system.adapter.tesla.0', function (err, obj) {
+                void context.adapter.getForeignObject('system.adapter.tesla.0', function (err, obj) {
                     assert.ok(!err);
                     assert.ok(obj);
                     assert.ok(obj.native);
@@ -434,27 +434,30 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             function (err) {
                 assert.strictEqual(err, null);
 
-                context.adapter.getForeignObject(`system.adapter.${context.adapterShortName}.0`, function (err, obj) {
-                    assert.ok(!err);
-                    assert.ok(obj);
-                    assert.ok(obj.native);
-                    assert.strictEqual(obj.common.name, 'tesla');
-                    assert.strictEqual(obj.native.model, 'S P85D');
-                    assert.strictEqual(obj.native.password, 'winning');
-                    assert.strictEqual(obj.native.username, 'tesla');
-                    assert.strictEqual(obj.native.complex.password, 'winning');
-                    assert.strictEqual(obj.native.attrArray[0].password, 'winning1');
-                    assert.strictEqual(obj.native.attrArray[1].password, 'winning2');
-                    assert.strictEqual(obj._id, `system.adapter.${context.adapterShortName}.0`);
-                    done();
-                });
+                void context.adapter.getForeignObject(
+                    `system.adapter.${context.adapterShortName}.0`,
+                    function (err, obj) {
+                        assert.ok(!err);
+                        assert.ok(obj);
+                        assert.ok(obj.native);
+                        assert.strictEqual(obj.common.name, 'tesla');
+                        assert.strictEqual(obj.native.model, 'S P85D');
+                        assert.strictEqual(obj.native.password, 'winning');
+                        assert.strictEqual(obj.native.username, 'tesla');
+                        assert.strictEqual(obj.native.complex.password, 'winning');
+                        assert.strictEqual(obj.native.attrArray[0].password, 'winning1');
+                        assert.strictEqual(obj.native.attrArray[1].password, 'winning2');
+                        assert.strictEqual(obj._id, `system.adapter.${context.adapterShortName}.0`);
+                        done();
+                    },
+                );
             },
         );
     });
 
     // setObjectNotExists
     it(`${testName}Try to set existing object`, function (done) {
-        context.adapter.setObjectNotExists(
+        void context.adapter.setObjectNotExists(
             gid,
             {
                 type: 'state',
@@ -478,7 +481,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                     assert.ok(obj1!.native);
                     assert.ok(!obj1!.native.pparam);
 
-                    context.adapter.setObjectNotExists(
+                    void context.adapter.setObjectNotExists(
                         `${gid}A`,
                         {
                             common: {
@@ -530,7 +533,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             function (err) {
                 assert.strictEqual(err, null);
 
-                context.adapter.getForeignObject(`${context.adapterShortName}.0.${gid}`, function (err, obj1) {
+                void context.adapter.getForeignObject(`${context.adapterShortName}.0.${gid}`, function (err, obj1) {
                     assert.strictEqual(err, null);
 
                     assert.ok(obj1!.native);
@@ -554,7 +557,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                         function (err) {
                             assert.strictEqual(err, null);
 
-                            context.adapter.getForeignObject(
+                            void context.adapter.getForeignObject(
                                 `${context.adapterShortName}ff.0.${gid}`,
                                 function (err, obj1) {
                                     assert.strictEqual(err, null);
@@ -613,7 +616,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                     },
                     err => {
                         assert.strictEqual(err, null);
-                        context.adapter.getForeignObject(`${context.adapterShortName}.0.${gid}`, (err, obj1) => {
+                        void context.adapter.getForeignObject(`${context.adapterShortName}.0.${gid}`, (err, obj1) => {
                             assert.strictEqual(err, null);
 
                             assert.ok(obj1!.common.custom!.material);
@@ -671,7 +674,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                     },
                     err => {
                         assert.strictEqual(err, null);
-                        context.adapter.getForeignObject(id, (err, obj1) => {
+                        void context.adapter.getForeignObject(id, (err, obj1) => {
                             assert.strictEqual(err, null);
 
                             assert.ok(!obj1!.common.custom);
@@ -729,7 +732,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                     },
                     err => {
                         assert.strictEqual(err, null);
-                        context.adapter.getForeignObject(id, (err, obj1) => {
+                        void context.adapter.getForeignObject(id, (err, obj1) => {
                             assert.strictEqual(err, null);
 
                             assert.ok(!obj1!.common.custom);
@@ -744,7 +747,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     // getObjectView
     it(`${testName}Try to get object view`, done => {
         // create the view
-        context.adapter
+        void context.adapter
             .setForeignObjectAsync('_design/hm-rpc', {
                 language: 'javascript',
                 type: 'design',
@@ -760,7 +763,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             })
             .then(() => {
                 // now let's create an object matching the view
-                context.adapter
+                void context.adapter
                     .setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
                         type: 'meta',
                         common: {
@@ -882,7 +885,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     // getObjectList
     it(`${testName}Try to get object list`, done => {
         // let's create an object matching the list
-        context.adapter
+        void context.adapter
             .setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
                 type: 'meta',
                 common: {
@@ -923,7 +926,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     // getObjectListAsync
     it(`${testName}Try to get object list async`, done => {
         // let's create an object matching the list
-        context.adapter
+        void context.adapter
             .setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
                 type: 'meta',
                 common: {
@@ -937,7 +940,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             })
             .then(() => {
                 // now lets get our object
-                context.adapter
+                void context.adapter
                     .getObjectListAsync({
                         startkey: 'hm-rpc.meta.VALUES',
                         endkey: 'hm-rpc.meta.VALUES.\u9999',
@@ -947,7 +950,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                         assert.strictEqual(res.rows[0].id, 'hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19');
 
                         // and try a non-existing pattern
-                        context.adapter.getObjectListAsync({ startkey: '', endkey: '_' }).then(res => {
+                        void context.adapter.getObjectListAsync({ startkey: '', endkey: '_' }).then(res => {
                             assert.strictEqual(res.rows.length, 0);
                             done();
                         });
@@ -979,7 +982,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         context.adapter.delForeignObject(`${context.adapterShortName}f.0.${gid}`, function (err) {
             assert.ok(!err);
 
-            context.adapter.getForeignObject(`${context.adapterShortName}f.0.${gid}`, function (err, obj) {
+            void context.adapter.getForeignObject(`${context.adapterShortName}f.0.${gid}`, function (err, obj) {
                 assert.ok(!err);
 
                 assert.strictEqual(obj, null);
@@ -1005,7 +1008,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             type: 'enum',
         };
         // create our object
-        objects.setObject(
+        void objects.setObject(
             'tesla.0.model',
             {
                 type: 'state',
@@ -1020,7 +1023,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             },
             () => {
                 // now create the enum with an object as member
-                objects.setObject('enum.rooms.living_room', enumObj, () => {
+                void objects.setObject('enum.rooms.living_room', enumObj, () => {
                     // delete the object via adapter method
                     context.adapter.delForeignObject('tesla.0.model', () => {
                         // now get an enum object
@@ -1050,7 +1053,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                     done();
                 }
             };
-            context.adapter.setObjectNotExists(
+            void context.adapter.setObjectNotExists(
                 gid,
                 {
                     common: {
@@ -1291,7 +1294,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     it(`${testName}Try to access system configuration`, function (done) {
         this.timeout(3_000);
 
-        context.adapter.getForeignObject('system.config', (err, obj) => {
+        void context.adapter.getForeignObject('system.config', (err, obj) => {
             assert.strictEqual(err, null);
             assert.ok(obj);
             setTimeout(function () {

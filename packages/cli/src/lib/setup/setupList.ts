@@ -337,7 +337,7 @@ export class List {
                     .filter(f => !filter || `${f.path}/${f.file.file}`.startsWith(filter))
                     .forEach(f => this.showFile(f.adapter, f.path, f.file));
 
-                this.listAdaptersFiles(adapters, filter, callback);
+                void this.listAdaptersFiles(adapters, filter, callback);
             });
         } else {
             return tools.maybeCallback(callback);
@@ -356,7 +356,7 @@ export class List {
         } else {
             const task = lines.shift() as IdValueObject;
             const id = `${task.id}.alive`;
-            this.states.getState(id, (err, state) => {
+            void this.states.getState(id, (err, state) => {
                 if (state && state.val) {
                     result.push(`+ ${task.value}`);
                 } else if (!flags.alive) {
@@ -407,7 +407,7 @@ export class List {
 
                 case 'states':
                 case 's':
-                    this.states.getKeys(filter || '*', (err, keys) => {
+                    void this.states.getKeys(filter || '*', (err, keys) => {
                         if (err) {
                             console.error(err);
                             return void this.processExit(EXIT_CODES.CANNOT_GET_STATES);
@@ -417,7 +417,7 @@ export class List {
                             return void this.processExit();
                         }
 
-                        this.states.getStates(keys, (err, states) => {
+                        void this.states.getStates(keys, (err, states) => {
                             if (err || !states) {
                                 console.error(err);
                                 return void this.processExit(EXIT_CODES.CANNOT_GET_STATES);
@@ -809,12 +809,12 @@ export class List {
                                 this.processExit();
                                 return;
                             }
-                            this.states.getKeys('system.host.*', (err, keys) => {
+                            void this.states.getKeys('system.host.*', (err, keys) => {
                                 if (!keys) {
                                     this.processExit();
                                     return;
                                 }
-                                this.states.getStates(keys, (err, states) => {
+                                void this.states.getStates(keys, (err, states) => {
                                     if (!states) {
                                         this.processExit();
                                         return;
@@ -943,7 +943,7 @@ export class List {
                             names.shift();
                         }
 
-                        this.listAdaptersFiles(adapters, names ? names.join('/') : null, () => this.processExit());
+                        void this.listAdaptersFiles(adapters, names ? names.join('/') : null, () => this.processExit());
                     });
                     break;
             }

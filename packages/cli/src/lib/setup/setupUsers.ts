@@ -50,7 +50,7 @@ export class Users {
             if (obj) {
                 return tools.maybeCallbackWithError(callback, 'User yet exists');
             }
-            this.objects.setObject(
+            void this.objects.setObject(
                 `system.user.${_user}`,
                 {
                     type: 'user',
@@ -113,7 +113,7 @@ export class Users {
                 obj.common.password = res ?? '';
                 obj.from = `system.host.${tools.getHostName()}.cli`;
                 obj.ts = Date.now();
-                this.objects.setObject(`system.user.${_user}`, obj, err => {
+                void this.objects.setObject(`system.user.${_user}`, obj, err => {
                     return tools.maybeCallbackWithError(callback, err);
                 });
             });
@@ -186,7 +186,7 @@ export class Users {
                                     count++;
                                     groups.rows[i].value.from = `system.host.${tools.getHostName()}.cli`;
                                     groups.rows[i].value.ts = Date.now();
-                                    this.objects.setObject(groups.rows[i].value._id, groups.rows[i].value, err => {
+                                    void this.objects.setObject(groups.rows[i].value._id, groups.rows[i].value, err => {
                                         if (!--count) {
                                             return tools.maybeCallbackWithError(callback, err);
                                         }
@@ -236,7 +236,7 @@ export class Users {
                     obj.common.members.push(_user);
                     obj.from = `system.host.${tools.getHostName()}.cli`;
                     obj.ts = Date.now();
-                    this.objects.setObject(groupName, obj, err => {
+                    void this.objects.setObject(groupName, obj, err => {
                         return tools.maybeCallbackWithError(callback, err);
                     });
                 } else {
@@ -420,7 +420,7 @@ export class Users {
             obj.common.enabled = enable;
             obj.from = `system.host.${tools.getHostName()}.cli`;
             obj.ts = Date.now();
-            this.objects.setObject(obj._id, obj, err => {
+            void this.objects.setObject(obj._id, obj, err => {
                 return tools.maybeCallbackWithError(callback, err);
             });
         });
@@ -570,7 +570,7 @@ export class Users {
             obj.common.enabled = enable;
             obj.from = `system.host.${tools.getHostName()}.cli`;
             obj.ts = Date.now();
-            this.objects.setObject(obj._id, obj, err => {
+            void this.objects.setObject(obj._id, obj, err => {
                 return tools.maybeCallbackWithError(callback, err);
             });
         });
@@ -644,7 +644,7 @@ export class Users {
             obj.common.members.splice(pos, 1);
             obj.from = `system.host.${tools.getHostName()}.cli`;
             obj.ts = Date.now();
-            this.objects.setObject(obj._id, obj, err => {
+            void this.objects.setObject(obj._id, obj, err => {
                 return tools.maybeCallbackWithError(callback, err);
             });
         });

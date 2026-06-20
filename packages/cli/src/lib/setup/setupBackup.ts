@@ -1100,7 +1100,7 @@ export class BackupRestore {
                 // List all available backups
                 console.log('Please specify one of the backup names:');
 
-                for (const t in backups) {
+                for (let t = 0; t < backups.length; t++) {
                     console.log(`${backups[t]} or ${backups[t].replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`);
                 }
             } else {
@@ -1117,7 +1117,7 @@ export class BackupRestore {
                 console.log('No matching backup found');
                 if (backups.length) {
                     console.log('Please specify one of the backup names:');
-                    for (const t in backups) {
+                    for (let t = 0; t < backups.length; t++) {
                         console.log(
                             `${backups[t]} or ${backups[t].replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`,
                         );

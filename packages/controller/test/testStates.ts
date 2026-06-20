@@ -42,14 +42,14 @@ describe('States: Test states in File-Redis', function () {
                 dataDir: dataDir,
                 onChange: (id: string, state: ioBroker.State) => {
                     console.log(`state changed. ${id}`);
-                    onStatesChanged && onStatesChanged(id, state);
+                    onStatesChanged && void onStatesChanged(id, state);
                 },
             },
         });
 
         objects = _objects;
         states = _states;
-        states!.subscribe('*');
+        void states!.subscribe('*');
         assert.ok(objects);
         assert.ok(states);
     });
@@ -64,7 +64,7 @@ describe('States: Test states in File-Redis', function () {
                 assert.ok(state.ts);
                 assert.strictEqual(state.q, 0);
 
-                states!.getState(testID, (err, state) => {
+                void states!.getState(testID, (err, state) => {
                     assert.ok(!err);
                     assert.ok(state);
                     assert.strictEqual(state.val, 1);
@@ -76,7 +76,7 @@ describe('States: Test states in File-Redis', function () {
             }
         };
 
-        states!.setState(testID, 1, err => assert.ok(!err));
+        void states!.setState(testID, 1, err => assert.ok(!err));
     });
 
     it('States: should setState async', done => {
@@ -100,7 +100,7 @@ describe('States: Test states in File-Redis', function () {
             }
         };
 
-        states!.setStateAsync(testID, 2);
+        void states!.setStateAsync(testID, 2);
     });
 
     after('States: Stop js-controller', async function () {

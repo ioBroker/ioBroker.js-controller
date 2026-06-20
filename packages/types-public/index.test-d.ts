@@ -141,24 +141,24 @@ function unloadHandler(callback: ioBroker.EmptyCallback): void {
 }
 
 // Test the most important methods
-adapter.setState('state.name', 'value');
-adapter.setState('state.name', 'value', true);
-adapter.setState('state.name', 'value', (err, id) => {});
-adapter.setState('state.name', { val: 'value', ack: true });
-adapter.setState('state.name', { val: 'value', ack: true }, (_err, _id) => {});
-adapter.setState('state.name', { val: 'value', ack: true, q: adapter.constants.STATE_QUALITY.BAD });
+void adapter.setState('state.name', 'value');
+void adapter.setState('state.name', 'value', true);
+void adapter.setState('state.name', 'value', (err, id) => {});
+void adapter.setState('state.name', { val: 'value', ack: true });
+void adapter.setState('state.name', { val: 'value', ack: true }, (_err, _id) => {});
+void adapter.setState('state.name', { val: 'value', ack: true, q: adapter.constants.STATE_QUALITY.BAD });
 // @ts-expect-error invalid quality
-adapter.setState('state.name', { val: 'value', ack: true, q: 1234 });
+void adapter.setState('state.name', { val: 'value', ack: true, q: 1234 });
 
 // setState without callback is returning a promise
-adapter.setState('state.name', true, true).then(id => id.toLowerCase());
-adapter.setState('state.name', true).then(id => id.toLowerCase());
-adapter.setState('state.name', true, {}).then(id => id.toLowerCase());
-adapter.setState('state.name', true, true, {}).then(id => id.toLowerCase());
+void adapter.setState('state.name', true, true).then(id => id.toLowerCase());
+void adapter.setState('state.name', true).then(id => id.toLowerCase());
+void adapter.setState('state.name', true, {}).then(id => id.toLowerCase());
+void adapter.setState('state.name', true, true, {}).then(id => id.toLowerCase());
 
-adapter.setStateAsync('state.name', 'value').then(id => id.toLowerCase());
-adapter.setStateAsync('state.name', 'value', true).then(id => id.toLowerCase());
-adapter.setStateAsync('state.name', { val: 'value', ack: true }).then(id => id.toLowerCase());
+void adapter.setStateAsync('state.name', 'value').then(id => id.toLowerCase());
+void adapter.setStateAsync('state.name', 'value', true).then(id => id.toLowerCase());
+void adapter.setStateAsync('state.name', { val: 'value', ack: true }).then(id => id.toLowerCase());
 
 adapter.setStateChanged('state.name', 'value');
 adapter.setStateChanged('state.name', 'value', true);
@@ -166,9 +166,9 @@ adapter.setStateChanged('state.name', 'value', (_err, _id) => {});
 adapter.setStateChanged('state.name', { val: 'value', ack: true });
 adapter.setStateChanged('state.name', { val: 'value', ack: true }, (_err, _id) => {});
 
-adapter.setStateChangedAsync('state.name', 'value').then(id => id.toLowerCase());
-adapter.setStateChangedAsync('state.name', 'value', true).then(id => id.toLowerCase());
-adapter.setStateChangedAsync('state.name', { val: 'value', ack: true }).then(id => id.toLowerCase());
+void adapter.setStateChangedAsync('state.name', 'value').then(id => id.toLowerCase());
+void adapter.setStateChangedAsync('state.name', 'value', true).then(id => id.toLowerCase());
+void adapter.setStateChangedAsync('state.name', { val: 'value', ack: true }).then(id => id.toLowerCase());
 
 adapter.setForeignState('state.name', 'value');
 adapter.setForeignState('state.name', 'value', true);
@@ -176,9 +176,9 @@ adapter.setForeignState('state.name', 'value', (_err, _id) => {});
 adapter.setForeignState('state.name', { val: 'value', ack: true });
 adapter.setForeignState('state.name', { val: 'value', ack: true }, (_err, _id) => {});
 
-adapter.setForeignStateAsync('state.name', 'value').then(id => id.toLowerCase());
-adapter.setForeignStateAsync('state.name', 'value', true).then(id => id.toLowerCase());
-adapter.setForeignStateAsync('state.name', { val: 'value', ack: true }).then(id => id.toLowerCase());
+void adapter.setForeignStateAsync('state.name', 'value').then(id => id.toLowerCase());
+void adapter.setForeignStateAsync('state.name', 'value', true).then(id => id.toLowerCase());
+void adapter.setForeignStateAsync('state.name', { val: 'value', ack: true }).then(id => id.toLowerCase());
 
 adapter.setForeignStateChanged('state.name', 'value');
 adapter.setForeignStateChanged('state.name', 'value', true);
@@ -186,56 +186,56 @@ adapter.setForeignStateChanged('state.name', 'value', (_err, _id) => {});
 adapter.setForeignStateChanged('state.name', { val: 'value', ack: true });
 adapter.setForeignStateChanged('state.name', { val: 'value', ack: true }, (_err, _id) => {});
 
-adapter.setForeignStateChangedAsync('state.name', 'value').then(id => id.toLowerCase());
-adapter.setForeignStateChangedAsync('state.name', 'value', true).then(id => id.toLowerCase());
-adapter.setForeignStateChangedAsync('state.name', { val: 'value', ack: true }).then(id => id.toLowerCase());
+void adapter.setForeignStateChangedAsync('state.name', 'value').then(id => id.toLowerCase());
+void adapter.setForeignStateChangedAsync('state.name', 'value', true).then(id => id.toLowerCase());
+void adapter.setForeignStateChangedAsync('state.name', { val: 'value', ack: true }).then(id => id.toLowerCase());
 
 adapter.getState('state.id', (err, state) => state && state.from.toLowerCase());
-adapter.getStateAsync('state.id').then(state => state && state.from.toLowerCase());
-adapter.getForeignState('state.id', (err, state) => state && state.from.toLowerCase());
-adapter.getForeignStateAsync('state.id').then(state => state && state.from.toLowerCase());
+void adapter.getStateAsync('state.id').then(state => state && state.from.toLowerCase());
+void adapter.getForeignState('state.id', (err, state) => state && state.from.toLowerCase());
+void adapter.getForeignStateAsync('state.id').then(state => state && state.from.toLowerCase());
 
-adapter.setObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} });
+void adapter.setObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} });
 adapter.setObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (_err, _id) => {});
-adapter.setForeignObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} });
+void adapter.setForeignObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} });
 adapter.setForeignObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (_err, _id) => {});
 
-adapter
+void adapter
     .setObjectAsync('obj.id', { type: 'device', common: { name: 'foo' }, native: {} })
     .then(({ id }) => id.toLowerCase());
-adapter
+void adapter
     .setForeignObjectAsync('obj.id', { type: 'device', common: { name: 'foo' }, native: {} })
     .then(({ id }) => id.toLowerCase());
 
-adapter.setObjectNotExists('obj.id', { type: 'device', common: { name: 'foo' }, native: {} });
-adapter.setObjectNotExists('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (err, _id) => {});
+void adapter.setObjectNotExists('obj.id', { type: 'device', common: { name: 'foo' }, native: {} });
+void adapter.setObjectNotExists('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (err, _id) => {});
 adapter.setForeignObjectNotExists('obj.id', { type: 'device', common: { name: 'foo' }, native: {} });
 adapter.setForeignObjectNotExists('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (_err, _id) => {});
 
-adapter
+void adapter
     .setObjectNotExistsAsync('obj.id', { type: 'device', common: { name: 'foo' }, native: {} })
     .then(({ id }) => id.toLowerCase());
-adapter
+void adapter
     .setForeignObjectNotExistsAsync('obj.id', { type: 'device', common: { name: 'foo' }, native: {} })
     .then(({ id }) => id.toLowerCase());
 
 adapter.getObject('obj.id', (_err, _obj) => {});
-adapter.getForeignObject('obj.id', (_err, _obj) => {});
+void adapter.getForeignObject('obj.id', (_err, _obj) => {});
 
-adapter.getObjectAsync('obj.id').then(obj => obj && obj._id.toLowerCase());
-adapter.getForeignObjectAsync('obj.id').then(obj => obj && obj._id.toLowerCase());
+void adapter.getObjectAsync('obj.id').then(obj => obj && obj._id.toLowerCase());
+void adapter.getForeignObjectAsync('obj.id').then(obj => obj && obj._id.toLowerCase());
 
 adapter.getForeignObjects('*', (err, objs) => objs!.foo._id.toLowerCase());
 // getForeignObjectsAsync always returns a Record when it doesn't throw
-adapter.getForeignObjectsAsync('*').then(objs => objs.foo._id.toLowerCase());
+void adapter.getForeignObjectsAsync('*').then(objs => objs.foo._id.toLowerCase());
 // If an object type was specified, the returned objects have the correct type
-adapter.getForeignObjectsAsync('*', 'adapter').then(objs => {
+void adapter.getForeignObjectsAsync('*', 'adapter').then(objs => {
     objs[0].type; // $ExpectType "adapter"
 });
 
 // Check that required properties are enforced
 // OK:
-adapter.setObject('id', {
+void adapter.setObject('id', {
     _id: 'id',
     type: 'state',
     common: {
@@ -253,7 +253,7 @@ adapter.setObject('id', {
     ts: Date.now(),
 });
 
-adapter.setObject(
+void adapter.setObject(
     'id',
     // missing property type
     // @ts-expect-error
@@ -273,7 +273,7 @@ adapter.setObject(
     },
 );
 
-adapter.setObject(
+void adapter.setObject(
     'id',
     // missing property common
     // @ts-expect-error
@@ -285,7 +285,7 @@ adapter.setObject(
     },
 );
 
-adapter.setObject(
+void adapter.setObject(
     'id',
     // missing property common.role
     // @ts-expect-error
@@ -314,7 +314,7 @@ adapter.setObject(
 // });
 
 // Check that name as object is okay:
-adapter.extendForeignObject('id', {
+void adapter.extendForeignObject('id', {
     common: {
         name: {
             en: 'foobar',
@@ -324,7 +324,7 @@ adapter.extendForeignObject('id', {
 });
 
 // Check that `preserve` is typed correctly
-adapter.extendObject(
+void adapter.extendObject(
     'id',
     {},
     {
@@ -333,14 +333,14 @@ adapter.extendObject(
         undocumented: true,
     },
 );
-adapter.extendObject(
+void adapter.extendObject(
     'id',
     {},
     {
         preserve: { common: { name: true } },
     },
 );
-adapter.extendForeignObject(
+void adapter.extendForeignObject(
     'id',
     {},
     {
@@ -355,7 +355,7 @@ adapter.getObjectView('system', 'admin', { startkey: 'foo', endkey: 'bar' }, (er
     // https://github.com/microsoft/dtslint/issues/352
     docs!.rows[0].value?._id; // $ExpectType string | undefined
 });
-adapter.getObjectViewAsync('system', 'admin', { startkey: 'foo', endkey: 'bar' }).then(docs => {
+void adapter.getObjectViewAsync('system', 'admin', { startkey: 'foo', endkey: 'bar' }).then(docs => {
     docs.rows[0].id; // $ExpectType string
     // FIXME: This should check for ioBroker.Object | null instead, but dtslint with TS4.7 is broken
     // https://github.com/microsoft/dtslint/issues/352
@@ -367,7 +367,7 @@ adapter.getObjectView('system', 'admin', { startkey: 'foo', endkey: 'bar' }, (er
     // https://github.com/microsoft/dtslint/issues/352
     docs!.rows[0].value?._id; // $ExpectType string | undefined
 });
-adapter.getObjectViewAsync('system', 'admin', { startkey: 'foo', endkey: 'bar' }).then(docs => {
+void adapter.getObjectViewAsync('system', 'admin', { startkey: 'foo', endkey: 'bar' }).then(docs => {
     docs.rows[0].id; // $ExpectType string
     // FIXME: This should check for ioBroker.Object | null instead, but dtslint with TS4.7 is broken
     // https://github.com/microsoft/dtslint/issues/352
@@ -377,18 +377,18 @@ adapter.getObjectView('hm-rpc', 'foo', { startkey: 'foo', endkey: 'bar' }, (err,
     docs!.rows[0].id; // $ExpectType string
     docs!.rows[0].value; // $ExpectType any
 });
-adapter.getObjectViewAsync('hm-rpc', 'admin', { startkey: 'foo', endkey: 'bar' }).then(docs => {
+void adapter.getObjectViewAsync('hm-rpc', 'admin', { startkey: 'foo', endkey: 'bar' }).then(docs => {
     docs.rows[0].id; // $ExpectType string
     docs.rows[0].value; // $ExpectType any
 });
 // And without repetition some of the special ones:
-adapter.getObjectViewAsync('system', 'instance', { startkey: 'foo', endkey: 'bar' }).then(docs => {
+void adapter.getObjectViewAsync('system', 'instance', { startkey: 'foo', endkey: 'bar' }).then(docs => {
     docs.rows[0].value.type; // $ExpectType "instance"
 });
-adapter.getObjectViewAsync('system', 'state', { startkey: 'foo', endkey: 'bar' }).then(docs => {
+void adapter.getObjectViewAsync('system', 'state', { startkey: 'foo', endkey: 'bar' }).then(docs => {
     docs.rows[0].value.type; // $ExpectType "state"
 });
-adapter.getObjectViewAsync('system', 'custom', { startkey: 'foo', endkey: 'bar' }).then(docs => {
+void adapter.getObjectViewAsync('system', 'custom', { startkey: 'foo', endkey: 'bar' }).then(docs => {
     docs.rows[0].value; // $ExpectType Record<string, any> | null
 });
 
@@ -398,10 +398,10 @@ adapter.getObjectList({ startkey: 'foo', endkey: 'bar' }, {}, (err, result) => {
 adapter.getObjectList({ startkey: 'foo', endkey: 'bar' }, (err, result) => {
     result && result.rows[0] && result.rows[0].id.toLowerCase();
 });
-adapter.getObjectListAsync({ startkey: 'foo', endkey: 'bar' }, {}).then(result => {
+void adapter.getObjectListAsync({ startkey: 'foo', endkey: 'bar' }, {}).then(result => {
     result && result.rows[0] && result.rows[0].id.toLowerCase();
 });
-adapter.getObjectListAsync({ startkey: 'foo', endkey: 'bar' }).then(result => {
+void adapter.getObjectListAsync({ startkey: 'foo', endkey: 'bar' }).then(result => {
     result && result.rows[0] && result.rows[0].id.toLowerCase();
 });
 
@@ -465,10 +465,10 @@ adapter.sendTo('foo.0', 'message', handleMessageResponse);
 adapter.sendTo('foo.0', 'command', { msg: 'message' }, handleMessageResponse);
 adapter.sendTo('foo.0', { msg: 'message' }, handleMessageResponse);
 
-adapter.sendToAsync('foo.0', 'command', 'message').then(handleMessageResponse);
-adapter.sendToAsync('foo.0', 'message').then(handleMessageResponse);
-adapter.sendToAsync('foo.0', 'command', { msg: 'message' }).then(handleMessageResponse);
-adapter.sendToAsync('foo.0', { msg: 'message' }).then(handleMessageResponse);
+void adapter.sendToAsync('foo.0', 'command', 'message').then(handleMessageResponse);
+void adapter.sendToAsync('foo.0', 'message').then(handleMessageResponse);
+void adapter.sendToAsync('foo.0', 'command', { msg: 'message' }).then(handleMessageResponse);
+void adapter.sendToAsync('foo.0', { msg: 'message' }).then(handleMessageResponse);
 
 adapter.sendToHost('host-foo', 'command', 'message');
 adapter.sendToHost('host-foo', 'message');
@@ -480,10 +480,10 @@ adapter.sendToHost('host-foo', 'message', handleMessageResponse);
 adapter.sendToHost('host-foo', 'command', { msg: 'message' }, handleMessageResponse);
 adapter.sendToHost('host-foo', { msg: 'message' }, handleMessageResponse);
 
-adapter.sendToHostAsync('host-foo', 'command', 'message').then(handleMessageResponse);
-adapter.sendToHostAsync('host-foo', 'message').then(handleMessageResponse);
-adapter.sendToHostAsync('host-foo', 'command', { msg: 'message' }).then(handleMessageResponse);
-adapter.sendToHostAsync('host-foo', { msg: 'message' }).then(handleMessageResponse);
+void adapter.sendToHostAsync('host-foo', 'command', 'message').then(handleMessageResponse);
+void adapter.sendToHostAsync('host-foo', 'message').then(handleMessageResponse);
+void adapter.sendToHostAsync('host-foo', 'command', { msg: 'message' }).then(handleMessageResponse);
+void adapter.sendToHostAsync('host-foo', { msg: 'message' }).then(handleMessageResponse);
 
 function handleError(_err?: string): void {}
 adapter.subscribeStates('*', handleError);
@@ -558,7 +558,7 @@ function _repro3(): void {
             deviceList; // $ExpectType DeviceObject[]
         }
     });
-    adapter.getDevicesAsync().then(list => {
+    void adapter.getDevicesAsync().then(list => {
         list; // $ExpectType DeviceObject[]
     });
     adapter.getChannels((error, channelList) => {
@@ -566,10 +566,10 @@ function _repro3(): void {
             channelList; // $ExpectType ChannelObject[]
         }
     });
-    adapter.getChannelsAsync().then(list => {
+    void adapter.getChannelsAsync().then(list => {
         list; // $ExpectType ChannelObject[]
     });
-    adapter.getChannelsOfAsync().then(list => {
+    void adapter.getChannelsOfAsync().then(list => {
         list; // $ExpectType ChannelObject[]
     });
     adapter.getStatesOf((error, stateList) => {
@@ -577,7 +577,7 @@ function _repro3(): void {
             stateList; // $ExpectType StateObject[]
         }
     });
-    adapter.getStatesOfAsync().then(list => {
+    void adapter.getStatesOfAsync().then(list => {
         list; // $ExpectType StateObject[]
     });
 }
@@ -595,88 +595,88 @@ const _folderObj: ioBroker.FolderObject = {
 
 // This used to be an error: https://github.com/ioBroker/ioBroker.js-controller/issues/782
 // With JS-Controller 3.3 it no longer is.
-adapter.setState('id', { ack: false });
+void adapter.setState('id', { ack: false });
 // @ts-expect-error
-adapter.setState('id', {});
+void adapter.setState('id', {});
 
 // null is a valid state value
-adapter.setState('id', null);
+void adapter.setState('id', null);
 adapter.setForeignState('id', null);
-adapter.setStateAsync('id', null);
-adapter.setForeignStateAsync('id', null);
+void adapter.setStateAsync('id', null);
+void adapter.setForeignStateAsync('id', null);
 adapter.setStateChanged('id', null);
 adapter.setForeignStateChanged('id', null);
-adapter.setStateChangedAsync('id', null);
-adapter.setForeignStateChangedAsync('id', null);
+void adapter.setStateChangedAsync('id', null);
+void adapter.setForeignStateChangedAsync('id', null);
 
 // Objects and arrays are not valid state values
 // @ts-expect-error
-adapter.setState('id', { an: 'object' });
+void adapter.setState('id', { an: 'object' });
 // @ts-expect-error
 adapter.setForeignState('id', { an: 'object' });
 // @ts-expect-error
-adapter.setStateAsync('id', { an: 'object' });
+void adapter.setStateAsync('id', { an: 'object' });
 // @ts-expect-error
-adapter.setForeignStateAsync('id', { an: 'object' });
+void adapter.setForeignStateAsync('id', { an: 'object' });
 // @ts-expect-error
 adapter.setStateChanged('id', { an: 'object' });
 // @ts-expect-error
 adapter.setForeignStateChanged('id', { an: 'object' });
 // @ts-expect-error
-adapter.setStateChangedAsync('id', { an: 'object' });
+void adapter.setStateChangedAsync('id', { an: 'object' });
 // @ts-expect-error
-adapter.setForeignStateChangedAsync('id', { an: 'object' });
+void adapter.setForeignStateChangedAsync('id', { an: 'object' });
 // @ts-expect-error
-adapter.setState('id', ['an', 'array']);
+void adapter.setState('id', ['an', 'array']);
 // @ts-expect-error
 adapter.setForeignState('id', ['an', 'array']);
 // @ts-expect-error
-adapter.setStateAsync('id', ['an', 'array']);
+void adapter.setStateAsync('id', ['an', 'array']);
 // @ts-expect-error
-adapter.setForeignStateAsync('id', ['an', 'array']);
+void adapter.setForeignStateAsync('id', ['an', 'array']);
 // @ts-expect-error
 adapter.setStateChanged('id', ['an', 'array']);
 // @ts-expect-error
 adapter.setForeignStateChanged('id', ['an', 'array']);
 // @ts-expect-error
-adapter.setStateChangedAsync('id', ['an', 'array']);
+void adapter.setStateChangedAsync('id', ['an', 'array']);
 // @ts-expect-error
-adapter.setForeignStateChangedAsync('id', ['an', 'array']);
+void adapter.setForeignStateChangedAsync('id', ['an', 'array']);
 // @ts-expect-error
-adapter.setState('id', { val: { an: 'object' } });
+void adapter.setState('id', { val: { an: 'object' } });
 // @ts-expect-error
 adapter.setForeignState('id', { val: { an: 'object' } });
 // @ts-expect-error
-adapter.setStateAsync('id', { val: { an: 'object' } });
+void adapter.setStateAsync('id', { val: { an: 'object' } });
 // @ts-expect-error
-adapter.setForeignStateAsync('id', { val: { an: 'object' } });
+void adapter.setForeignStateAsync('id', { val: { an: 'object' } });
 // @ts-expect-error
 adapter.setStateChanged('id', { val: { an: 'object' } });
 // @ts-expect-error
 adapter.setForeignStateChanged('id', { val: { an: 'object' } });
 // @ts-expect-error
-adapter.setStateChangedAsync('id', { val: { an: 'object' } });
+void adapter.setStateChangedAsync('id', { val: { an: 'object' } });
 // @ts-expect-error
-adapter.setForeignStateChangedAsync('id', { val: { an: 'object' } });
+void adapter.setForeignStateChangedAsync('id', { val: { an: 'object' } });
 // @ts-expect-error
-adapter.setState('id', { val: ['an', 'array'] });
+void adapter.setState('id', { val: ['an', 'array'] });
 // @ts-expect-error
 adapter.setForeignState('id', { val: ['an', 'array'] });
 // @ts-expect-error
-adapter.setStateAsync('id', { val: ['an', 'array'] });
+void adapter.setStateAsync('id', { val: ['an', 'array'] });
 // @ts-expect-error
-adapter.setForeignStateAsync('id', { val: ['an', 'array'] });
+void adapter.setForeignStateAsync('id', { val: ['an', 'array'] });
 // @ts-expect-error
 adapter.setStateChanged('id', { val: ['an', 'array'] });
 // @ts-expect-error
 adapter.setForeignStateChanged('id', { val: ['an', 'array'] });
 // @ts-expect-error
-adapter.setStateChangedAsync('id', { val: ['an', 'array'] });
+void adapter.setStateChangedAsync('id', { val: ['an', 'array'] });
 // @ts-expect-error
-adapter.setForeignStateChangedAsync('id', { val: ['an', 'array'] });
+void adapter.setForeignStateChangedAsync('id', { val: ['an', 'array'] });
 
 // Allow alias states
-adapter
+void adapter
     .getForeignObjectAsync('adapter.0.stateId')
     .then(
         obj =>
@@ -685,7 +685,7 @@ adapter
             (typeof obj.common.alias?.id === 'string' || typeof obj.common.alias?.id.read === 'string'),
     );
 
-adapter.getObjectAsync('id').then(obj => {
+void adapter.getObjectAsync('id').then(obj => {
     // Allow accessing unknown properties - the user is on its own here
     obj && obj.common && obj.common.alias && obj.common.alias.id;
     obj && obj.common && obj.common.unit && obj.common.workingID;
@@ -731,11 +731,11 @@ adapter.clearInterval(adapter.setTimeout(() => {}, 10));
 // @ts-expect-error
 adapter.clearTimeout(adapter.setInterval(() => {}, 10));
 
-adapter.sendToUI({ data: 'blabla', clientId: '123-456-789' });
+void adapter.sendToUI({ data: 'blabla', clientId: '123-456-789' });
 // @ts-expect-error clientId has to be string
-adapter.sendToUI({ data: 'blabla', clientId: 12 });
+void adapter.sendToUI({ data: 'blabla', clientId: 12 });
 // send to all clients
-adapter.sendToUI({ data: [1, 2, 3] });
+void adapter.sendToUI({ data: [1, 2, 3] });
 
 // Error callbacks were changed to Error objects
 adapter.delFile(null, 'foo', err => {
@@ -766,7 +766,7 @@ adapter.FORBIDDEN_CHARS = /_/;
 
     const config: PCF8574Config = undefined as any;
 
-    adapter.extendObject(`some state`, {
+    void adapter.extendObject(`some state`, {
         type: 'state',
         common: {
             name: `some name`,
@@ -976,12 +976,12 @@ async () => {
 
 // Ensure that setForeignObject tries to resolve a specific object type
 () => {
-    adapter.setForeignObject('system.host.my-hostname', {
+    void adapter.setForeignObject('system.host.my-hostname', {
         // @ts-expect-error
         type: 'not-host',
     });
 
-    adapter.setForeignObject('admin.0.maybe-channel', {
+    void adapter.setForeignObject('admin.0.maybe-channel', {
         type: 'channel',
         common: {
             name: 'A channel',
@@ -989,7 +989,7 @@ async () => {
         native: {},
     });
 
-    adapter.setForeignObject(null! as string, null! as ioBroker.Object);
+    void adapter.setForeignObject(null! as string, null! as ioBroker.Object);
 };
 
 // Test convenience types for subsets of SettableObject
@@ -1028,12 +1028,12 @@ async () => {
 
 // Test registerNotification
 // @ts-expect-error known scope can only have defined category
-adapter.registerNotification('system', 'unknown', 'This is a problem!');
-adapter.registerNotification('system', 'accessErrors', 'This is a problem!');
-adapter.registerNotification('system', null, 'This is a problem!');
+void adapter.registerNotification('system', 'unknown', 'This is a problem!');
+void adapter.registerNotification('system', 'accessErrors', 'This is a problem!');
+void adapter.registerNotification('system', null, 'This is a problem!');
 // unknown scopes can have any category null | string
-adapter.registerNotification('someAdapter', null, 'This is a notification!');
-adapter.registerNotification('someAdapter', 'unknown', 'This is a notification!');
+void adapter.registerNotification('someAdapter', null, 'This is a notification!');
+void adapter.registerNotification('someAdapter', 'unknown', 'This is a notification!');
 
 // https://github.com/ioBroker/adapter-core/issues/429
 adapter.namespace === 'foo-bar.0';
@@ -1042,7 +1042,7 @@ adapter.namespace === 'foooooo.10';
 adapter.namespace === 'foo.bar.0';
 // @ts-expect-error
 adapter.namespace === 'foo-bar.a';
-adapter.getForeignObjectAsync(`system.adapter.${adapter.namespace}`).then(o => {
+void adapter.getForeignObjectAsync(`system.adapter.${adapter.namespace}`).then(o => {
     // $ExpectType InstanceObject
     o!;
 });

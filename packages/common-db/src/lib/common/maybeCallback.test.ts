@@ -55,7 +55,7 @@ import { maybeCallback, maybeCallbackWithError, maybeCallbackWithRedisError } fr
     // maybeCallbackWithError, callback only takes an argument that's not compatible with Error
     const cb = (err?: number): void => {};
     // @ts-expect-error
-    maybeCallbackWithError(cb, null);
+    void maybeCallbackWithError(cb, null);
 };
 
 () => {
@@ -100,22 +100,22 @@ import { maybeCallback, maybeCallbackWithError, maybeCallbackWithRedisError } fr
     const cb = undefined as (() => void) | undefined;
 
     // No error, but also no arguments
-    maybeCallbackWithError(cb, null);
+    void maybeCallbackWithError(cb, null);
 
     // No error, but with superfluous arguments
     // @ts-expect-error
-    maybeCallbackWithError(cb, null, 'why', 'are', 'you', 'calling', 'me', 'with', 'arguments');
+    void maybeCallbackWithError(cb, null, 'why', 'are', 'you', 'calling', 'me', 'with', 'arguments');
 
     // No error, but forgot the error argument
     // @ts-expect-error
-    maybeCallbackWithError(cb);
+    void maybeCallbackWithError(cb);
 
     // Has an error, no arguments
-    maybeCallbackWithError(cb, 'this is an error');
+    void maybeCallbackWithError(cb, 'this is an error');
 
     // Has an error, but with superfluous arguments
     // @ts-expect-error
-    maybeCallbackWithError(cb, 'this is an error', 'why', 'are', 'you', 'calling', 'me', 'with', 'arguments');
+    void maybeCallbackWithError(cb, 'this is an error', 'why', 'are', 'you', 'calling', 'me', 'with', 'arguments');
 };
 
 async () => {
@@ -123,14 +123,14 @@ async () => {
     const cb = undefined;
 
     // No error, but also no arguments
-    maybeCallbackWithError(cb, null);
+    void maybeCallbackWithError(cb, null);
 
     // No error, we don't know that the arguments are too many
     const p1: [string, number] = await maybeCallbackWithError(cb, null, 'one', 2);
 
     // No error, but forgot the error argument
     // @ts-expect-error
-    maybeCallbackWithError(cb);
+    void maybeCallbackWithError(cb);
 
     // Has an error, no arguments
     const p2: never = await maybeCallbackWithError(cb, 'this is an error');
@@ -202,7 +202,7 @@ async () => {
     // maybeCallbackWithRedisError, callback only takes an argument that's not compatible with Error
     const cb = (err?: number): void => {};
     // @ts-expect-error
-    maybeCallbackWithRedisError(cb, null);
+    void maybeCallbackWithRedisError(cb, null);
 };
 
 () => {
@@ -281,11 +281,11 @@ async () => {
     const cb = undefined as (() => void) | undefined;
 
     // OK
-    maybeCallback(cb);
+    void maybeCallback(cb);
 
     // With superfluous arguments
     // @ts-expect-error
-    maybeCallback(cb, 'why', 'are', 'you', 'calling', 'me', 'with', 'arguments');
+    void maybeCallback(cb, 'why', 'are', 'you', 'calling', 'me', 'with', 'arguments');
 };
 
 async () => {

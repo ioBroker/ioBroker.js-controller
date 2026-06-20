@@ -278,7 +278,7 @@ export class CLIStates extends CLICommand<CLIStatesOptions> {
                             }
 
                             // write target
-                            states.setState(
+                            void states.setState(
                                 aliasId,
                                 tools.formatAliasValue({
                                     sourceCommon: obj.common as ioBroker.StateCommon,
@@ -336,7 +336,7 @@ export class CLIStates extends CLICommand<CLIStatesOptions> {
                         }
                     }
 
-                    states.setState(id, newVal, err => {
+                    void states.setState(id, newVal, err => {
                         if (err) {
                             CLI.error.unknown(err.message);
                             return void callback(1); // ?
@@ -365,7 +365,7 @@ export class CLIStates extends CLICommand<CLIStatesOptions> {
         dbConnect(params => {
             const { states } = params;
 
-            states.delState(id, err => {
+            void states.delState(id, err => {
                 if (err) {
                     CLI.error.stateNotFound(id, err.message);
                     return void callback(3);

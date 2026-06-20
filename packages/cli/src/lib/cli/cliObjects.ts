@@ -192,12 +192,12 @@ export class CLIObjects extends CLICommand {
         dbConnect(params => {
             const { objects, states } = params;
 
-            objects.chmodObject(
+            void objects.chmodObject(
                 pattern,
                 { user: 'system.user.admin', object: modeObject, state: modeState },
                 (err, processed) => {
                     // Print the new object rights
-                    this.printObjectList(objects, states, err?.message, processed);
+                    void this.printObjectList(objects, states, err?.message, processed);
                 },
             );
         });
@@ -234,12 +234,12 @@ export class CLIObjects extends CLICommand {
         dbConnect(params => {
             const { objects, states } = params;
 
-            objects.chownObject(
+            void objects.chownObject(
                 pattern,
                 { user: 'system.user.admin', owner: user, ownerGroup: group },
                 (err, processed) => {
                     // Print the new object rights
-                    this.printObjectList(objects, states, err?.message, processed);
+                    void this.printObjectList(objects, states, err?.message, processed);
                 },
             );
         });
@@ -261,7 +261,7 @@ export class CLIObjects extends CLICommand {
             const { objects, states } = params;
 
             objects.getObjectList(pattern, { user: 'system.user.admin', sorted: true }, (err, processed) => {
-                this.printObjectList(
+                void this.printObjectList(
                     objects,
                     states,
                     err?.message,
@@ -336,7 +336,7 @@ export class CLIObjects extends CLICommand {
             const { objects } = params;
 
             const doSetObject = (obj: any): void => {
-                objects.setObject(id, obj, err => {
+                void objects.setObject(id, obj, err => {
                     if (err) {
                         CLI.error.cannotUpdateObject(id, err.message);
                         return void callback(1);
@@ -449,7 +449,7 @@ export class CLIObjects extends CLICommand {
         dbConnect(params => {
             const { objects } = params;
 
-            objects.extendObject(id, value as any, null, err => {
+            void objects.extendObject(id, value as any, null, err => {
                 if (err) {
                     CLI.error.cannotUpdateObject(id, err.message);
                     return void callback(1);
@@ -574,14 +574,14 @@ export class CLIObjects extends CLICommand {
                             answer === 'да' ||
                             answer === 'д'
                         ) {
-                            this._deleteObjects(objects, ids, callback);
+                            void this._deleteObjects(objects, ids, callback);
                         } else {
                             console.log('Aborted.');
                             return void callback(3);
                         }
                     });
                 } else {
-                    this._deleteObjects(objects, ids, callback);
+                    void this._deleteObjects(objects, ids, callback);
                 }
             } else {
                 // only one object

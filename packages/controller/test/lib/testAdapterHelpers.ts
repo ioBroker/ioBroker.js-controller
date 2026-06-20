@@ -49,12 +49,12 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         assert.throws(() => context.adapter.checkPassword('claus', '1234'), /checkPassword: no callback/);
 
         //User doesnt exists
-        context.adapter.checkPassword('claus', '1234', function (res) {
+        void context.adapter.checkPassword('claus', '1234', function (res) {
             assert.strictEqual(res, false);
         });
 
         //Wrong password
-        context.adapter.checkPassword('admin', '1234', function (res) {
+        void context.adapter.checkPassword('admin', '1234', function (res) {
             assert.strictEqual(res, false);
         });
 

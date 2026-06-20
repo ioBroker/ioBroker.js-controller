@@ -29,9 +29,11 @@ function updateIobJSON(): void {
 async function updateLicenseArray(): Promise<void> {
     // get all allowed licenses as array
     const licenses = await getSpdxLicenseIds();
-    const ioPackSchema = fs.readJSONSync(path.join(thisDir, 'io-package.json'));
-    ioPackSchema.definitions.license.enum = licenses;
-    fs.writeJSONSync(path.join(thisDir, 'io-package.json'), ioPackSchema, { spaces: 2 });
+    if (licenses) {
+        const ioPackSchema = fs.readJSONSync(path.join(thisDir, 'io-package.json'));
+        ioPackSchema.definitions.license.enum = licenses;
+        fs.writeJSONSync(path.join(thisDir, 'io-package.json'), ioPackSchema, { spaces: 2 });
+    }
 }
 
 interface LicenseEntry {
@@ -46,18 +48,23 @@ interface LicenseEntry {
 /**
  * Get all valid and non deprecated spdx licenses
  */
-async function getSpdxLicenseIds(): Promise<string[]> {
+async function getSpdxLicenseIds(): Promise<string[] | null> {
     const url = 'https://spdx.org/licenses/licenses.json';
 
-    const res = await axios.get(url);
-
-    const { licenses } = res.data as { licenses: LicenseEntry[] };
-
-    // filter out deprecated and invalid licenses
-    return licenses
-        .filter(licenseEntry => !licenseEntry.licenseId.endsWith('+') && !licenseEntry.isDeprecatedLicenseId)
-        .map(licenseEntry => licenseEntry.licenseId);
+    try {
+        const res = await axios.get(url);
+        const { licenses } = res.data as { licenses: LicenseEntry[] };
+        // filter out deprecated and invalid licenses
+        return licenses
+            .filter(licenseEntry => !licenseEntry.licenseId.endsWith('+') && !licenseEntry.isDeprecatedLicenseId)
+            .map(licenseEntry => licenseEntry.licenseId);
+    } catch (e) {
+        console.warn(`Cannot update spdx licenses list. Not critical: ${(e as Error).message}`);
+        return null;
+    }
 }
 
 updateIobJSON();
-updateLicenseArray();
+updateLicenseArray().catch(e =>
+    console.warn(`Cannot update spdx licenses list. Not critical: ${(e as Error).message}`),
+);

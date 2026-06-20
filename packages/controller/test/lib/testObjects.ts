@@ -271,7 +271,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
     it(`${testName}should extend object`, done => {
         const objects = context.objects;
-        objects.extendObject(testId, { common: { def: 'default' } }, null, (err, res, id) => {
+        void objects.extendObject(testId, { common: { def: 'default' } }, null, (err, res, id) => {
             assert.ok(!err);
             assert.strictEqual(id, testId);
             assert.strictEqual(res?.id, testId);
@@ -283,14 +283,19 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                 assert.strictEqual((obj!.common as ioBroker.StateCommon).def, 'default');
                 assert.strictEqual(obj!.common.name, 'test2');
 
-                objects.extendObject(`${namespace}.other`, { common: { def: 'default' } }, null, (err, res, id) => {
-                    assert.ok(!err);
-                    assert.strictEqual(id, `${namespace}.other`);
-                    assert.strictEqual(res!.id, `${namespace}.other`);
-                    assert.strictEqual(res!.value.common.def, 'default');
+                void objects.extendObject(
+                    `${namespace}.other`,
+                    { common: { def: 'default' } },
+                    null,
+                    (err, res, id) => {
+                        assert.ok(!err);
+                        assert.strictEqual(id, `${namespace}.other`);
+                        assert.strictEqual(res!.id, `${namespace}.other`);
+                        assert.strictEqual(res!.value.common.def, 'default');
 
-                    done();
-                });
+                        done();
+                    },
+                );
             });
         });
     });

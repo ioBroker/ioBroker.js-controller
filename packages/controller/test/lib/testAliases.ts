@@ -208,7 +208,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                             },
                         },
                         () => {
-                            context.adapter.getForeignState(gAliasID, (err, state) => {
+                            void context.adapter.getForeignState(gAliasID, (err, state) => {
                                 // It must be scaled from -100, 2, 100
                                 // to                     0, 51, 100 %
                                 assert.strictEqual((state!.val as number).toFixed(3), '51.000');
@@ -323,7 +323,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
     it(`${testName}Write alias state`, done => {
         context.adapter.setForeignState(gAliasID, 10, false, () => {
-            context.adapter.getForeignState(gid, (err, state) => {
+            void context.adapter.getForeignState(gid, (err, state) => {
                 // It must be scaled from 0, 10, 100
                 // to                     -100, -80, 100
                 assert.strictEqual((state!.val as number).toFixed(3), '-80.000');
@@ -376,7 +376,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                             type: 'state',
                         },
                         () => {
-                            context.adapter.getForeignState(`${gAliasID}C`, (err, state) => {
+                            void context.adapter.getForeignState(`${gAliasID}C`, (err, state) => {
                                 // It must be converted 2 * 10 + 1
                                 assert.strictEqual((state!.val as number).toFixed(3), '21.000');
 
@@ -384,7 +384,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
                                 context.adapter.setForeignState(`${gAliasID}C`, 41, true, err => {
                                     assert.ok(!err);
-                                    context.adapter.getForeignState(`${gid}C`, (err, state) => {
+                                    void context.adapter.getForeignState(`${gid}C`, (err, state) => {
                                         assert.strictEqual((state!.val as number).toFixed(3), '4.000');
 
                                         assert.strictEqual(state!.ack, true);
@@ -458,7 +458,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         };
 
         context.adapter.unsubscribeForeignStates(gAliasID, () => {
-            context.states.setState(gid, 10, err => {
+            void context.states.setState(gid, 10, err => {
                 assert.ok(!err);
                 setTimeout(() => done(), 500);
             });
@@ -493,7 +493,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         parts.pop();
 
         context.adapter.unsubscribeForeignStates(`${parts.join('.')}.*`, () => {
-            context.states.setState(gid, 10, err => {
+            void context.states.setState(gid, 10, err => {
                 assert.ok(!err);
                 setTimeout(() => done(), 500);
             });
@@ -578,7 +578,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         };
 
         context.adapter.unsubscribeForeignStates([gAliasID, gid], () => {
-            context.states.setState(gid, 10, err => {
+            void context.states.setState(gid, 10, err => {
                 assert.ok(!err);
                 setTimeout(() => done(), 500);
             });
@@ -626,7 +626,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                                 // -200, 10 , 200 => 0, 52.5, 100
                                 assert.strictEqual(state.val, 52.5);
                                 context.adapter.unsubscribeForeignStates(gAliasID, () => {
-                                    context.states.setState(`${gid}A`, 11, () => {
+                                    void context.states.setState(`${gid}A`, 11, () => {
                                         done();
                                     });
                                 });
@@ -636,8 +636,8 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                         // give some time to update subscribes
                         setTimeout(() => {
                             // this change must be ignored
-                            context.states.setState(gid, 20, () => {
-                                context.states.setState(`${gid}A`, 10);
+                            void context.states.setState(gid, 20, () => {
+                                void context.states.setState(`${gid}A`, 10);
                             });
                         }, 100);
                     },
@@ -764,7 +764,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                                     };
 
                                     // 4. changes must come for alias and independent state
-                                    context.states.setState(`${gid}NotAlias`, 2, () =>
+                                    void context.states.setState(`${gid}NotAlias`, 2, () =>
                                         context.states.setState(`${gid}Star`, 10, () => {
                                             // go to B:
                                         }),
@@ -828,7 +828,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                             };
                             // give adapter time to update alias subscription
                             setTimeout(() => {
-                                context.states.setState(`${gid}afterSub`, 50);
+                                void context.states.setState(`${gid}afterSub`, 50);
                             }, 100);
                         },
                     );
@@ -895,7 +895,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
                                 // give adapter time to update alias subscription
                                 setTimeout(() => {
-                                    context.states.setState(`${gid}partialOrig`, 50);
+                                    void context.states.setState(`${gid}partialOrig`, 50);
                                 }, 100);
                             },
                         );
@@ -973,19 +973,29 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                                     context.adapter.setForeignState(`${gid}readOrig`, 5, err => {
                                         assert.ok(!err);
                                         // check that our alias has val of read state
-                                        context.adapter.getForeignState(`${gAliasID}aliasReadWrite`, (err, state) => {
-                                            assert.ok(!err);
-                                            assert.strictEqual(state!.val, 5);
-                                            // now set the alias
-                                            context.adapter.setForeignState(`${gAliasID}aliasReadWrite`, -2, err => {
+                                        void context.adapter.getForeignState(
+                                            `${gAliasID}aliasReadWrite`,
+                                            (err, state) => {
                                                 assert.ok(!err);
-                                                context.adapter.getForeignState(`${gid}writeOrig`, (err, state) => {
-                                                    assert.ok(!err);
-                                                    assert.strictEqual(state!.val, -2);
-                                                    done();
-                                                });
-                                            });
-                                        });
+                                                assert.strictEqual(state!.val, 5);
+                                                // now set the alias
+                                                context.adapter.setForeignState(
+                                                    `${gAliasID}aliasReadWrite`,
+                                                    -2,
+                                                    err => {
+                                                        assert.ok(!err);
+                                                        void context.adapter.getForeignState(
+                                                            `${gid}writeOrig`,
+                                                            (err, state) => {
+                                                                assert.ok(!err);
+                                                                assert.strictEqual(state!.val, -2);
+                                                                done();
+                                                            },
+                                                        );
+                                                    },
+                                                );
+                                            },
+                                        );
                                     });
                                 },
                             );

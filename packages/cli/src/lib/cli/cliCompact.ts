@@ -212,7 +212,7 @@ export class CLICompact extends CLICommand {
 
                 obj.from = `system.host.${tools.getHostName()}.cli`;
                 obj.ts = new Date().getTime();
-                objects.setObject(`system.adapter.${instance}`, obj, err => {
+                void objects.setObject(`system.adapter.${instance}`, obj, err => {
                     if (err) {
                         console.log(err);
                     }

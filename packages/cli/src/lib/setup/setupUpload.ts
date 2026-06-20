@@ -198,7 +198,7 @@ export class Upload {
                 callback();
             }
             callback = null;
-            this.states.unsubscribeMessage(from);
+            void this.states.unsubscribeMessage(from);
             // @ts-expect-error todo: I don't think this works
             this.states.onChange = null;
         }, 60_000);
@@ -213,14 +213,14 @@ export class Upload {
                     callback(msg && msg.message);
                     callback = null;
                     clearTimeout(timeout);
-                    this.states.unsubscribeMessage(from);
+                    void this.states.unsubscribeMessage(from);
                     // @ts-expect-error
                     this.states.onChange = null;
                 }
             }
         };
 
-        this.states.subscribeMessage(from, () => {
+        void this.states.subscribeMessage(from, () => {
             const obj = {
                 command,
                 message: message,
@@ -240,7 +240,7 @@ export class Upload {
             this.callbacks[`_${obj.callback.id}`] = { cb: callback };
 
             // we cannot receive answers from hosts in CLI, so this command is "fire and forget"
-            this.states.pushMessage(host, obj);
+            void this.states.pushMessage(host, obj);
         });
     }
 

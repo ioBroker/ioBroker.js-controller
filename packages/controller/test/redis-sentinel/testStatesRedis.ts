@@ -48,7 +48,7 @@ describe('States-Redis-Sentinel: Test states', function () {
                 onChange: (id: string, state: ioBroker.State) => {
                     console.log(`Redis-state-Sentinel changed. ${id}`);
                     if (onStatesChanged) {
-                        onStatesChanged(id, state);
+                        void onStatesChanged(id, state);
                     }
                 },
             },
@@ -56,7 +56,7 @@ describe('States-Redis-Sentinel: Test states', function () {
 
         objects = _objects;
         states = _states;
-        states!.subscribe('*');
+        void states!.subscribe('*');
         assert.ok(objects);
         assert.ok(states);
         await new Promise<void>(resolve => {
@@ -76,7 +76,7 @@ describe('States-Redis-Sentinel: Test states', function () {
                 assert.ok(state.ts);
                 assert.strictEqual(state.q, 0);
 
-                states!.getState(testID, (err, state) => {
+                void states!.getState(testID, (err, state) => {
                     assert.ok(!err);
                     assert.ok(state);
                     assert.strictEqual(state.val, 1);
@@ -88,7 +88,7 @@ describe('States-Redis-Sentinel: Test states', function () {
             }
         };
 
-        states!.setState(testID, 1, function (err) {
+        void states!.setState(testID, 1, function (err) {
             assert.ok(!err);
         });
     });
@@ -113,7 +113,7 @@ describe('States-Redis-Sentinel: Test states', function () {
                 assert.ok(state.ts);
                 assert.strictEqual(state.q, 0);
 
-                states!.getState(testID, (err, state) => {
+                void states!.getState(testID, (err, state) => {
                     assert.ok(!err);
                     assert.ok(state);
                     assert.strictEqual(state.val, sendCounter - 1);
@@ -144,7 +144,7 @@ describe('States-Redis-Sentinel: Test states', function () {
 
         const stateInterval = setInterval(() => {
             console.log(`Set state: ${sendCounter}`);
-            states!.setState(testID, sendCounter++, function (err) {
+            void states!.setState(testID, sendCounter++, function (err) {
                 assert.ok(!err);
             });
         }, 1_000);
