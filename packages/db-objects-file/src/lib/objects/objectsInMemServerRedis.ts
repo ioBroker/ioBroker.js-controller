@@ -893,8 +893,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 }
                 try {
                     this.server.close(() => resolve());
-                } catch (e: any) {
-                    console.log(e.message);
+                } catch (e) {
+                    console.log((e as Error).message);
                     resolve();
                 }
             });
