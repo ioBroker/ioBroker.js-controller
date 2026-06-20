@@ -2952,7 +2952,7 @@ async function restartController(): Promise<void> {
 }
 
 /**
- * Method which should be called from CLI to initialize the handling of all args
+ * Method that should be called from CLI to initialize the handling of all args
  */
 export function execute(): void {
     // direct call
