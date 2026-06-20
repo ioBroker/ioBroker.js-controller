@@ -1883,7 +1883,9 @@ async function setMeta(): Promise<void> {
                         // terminate ioBroker to restart the controller as UUID probably changed
                         logger.info(`${hostLogPrefix} Restart js-controller because vendor information updated`);
                         await wait(200);
-                        void restart(() => !isStopping && stop(false));
+                        restart(() => !isStopping && stop(false)).catch(e =>
+                            logger.error(`${hostLogPrefix} Cannot restart controller: ${e.message}`),
+                        );
                     }
                 }
             }
@@ -3185,7 +3187,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             if (restartRequired) {
                 logger.info(`${hostLogPrefix} Restart js-controller because desired after package upgrade`);
                 await wait(200);
-                void restart(() => !isStopping && stop(false));
+                restart(() => !isStopping && stop(false)).catch(e =>
+                    logger.error(`${hostLogPrefix} Cannot restart controller: ${e.message}`),
+                );
             }
             break;
         }
@@ -3196,7 +3200,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             }
             // let the answer be sent
             await wait(200);
-            void restart(() => !isStopping && stop(false));
+            restart(() => !isStopping && stop(false)).catch(e =>
+                logger.error(`${hostLogPrefix} Cannot restart controller: ${e.message}`),
+            );
             break;
         }
 
@@ -6269,5 +6275,5 @@ async function disableBlocklistedInstances(): Promise<void> {
 // eslint-disable-next-line unicorn/prefer-module
 const modulePath = url.fileURLToPath(import.meta.url || `file://${__filename}`);
 if (process.argv[1] === modulePath) {
-    void init();
+    init().catch(e => logger.error(`${hostLogPrefix} Cannot initialize controller: ${e.message}`));
 }

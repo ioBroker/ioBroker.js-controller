@@ -1418,7 +1418,7 @@ export class AdapterClass extends EventEmitter {
         this.unsubscribeStatesAsync = tools.promisify(this.unsubscribeStates, this);
 
         this.setExecutableCapabilities = tools.setExecutableCapabilities;
-        void this._init();
+        this._init().catch(e => this._logger.error(`${this.namespaceLog} Cannot initialize adapter: ${e.message}`));
     }
 
     /**
@@ -2871,7 +2871,7 @@ export class AdapterClass extends EventEmitter {
     restart(): void {
         if (this.stop) {
             this._logger.warn(`${this.namespaceLog} Restart initiated`);
-            void this.stop();
+            this.stop().catch(e => this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`));
         } else {
             this._logger.warn(`${this.namespaceLog} Cannot initiate restart, because this.stop is not defined`);
         }
@@ -12493,12 +12493,12 @@ export class AdapterClass extends EventEmitter {
                         }
                         // by deletion of state, stop this instance
                         if (sigKillVal !== process.pid && !this._config.forceIfDisabled) {
-                            void this._stop({
+                            this._stop({
                                 isPause: false,
                                 isScheduled: false,
                                 exitCode: EXIT_CODES.ADAPTER_REQUESTED_TERMINATION,
                                 updateAliveState: false,
-                            });
+                            }).catch(e => this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`));
                         }
                     }
                 }
@@ -12739,7 +12739,9 @@ export class AdapterClass extends EventEmitter {
                         this._logger.warn(
                             `${this.namespaceLog} Cannot connect/reconnect to states DB. Stopping adapter.`,
                         );
-                        void this._stop({ exitCode: EXIT_CODES.NO_ERROR, updateAliveState: false });
+                        this._stop({ exitCode: EXIT_CODES.NO_ERROR, updateAliveState: false }).catch(e =>
+                            this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`),
+                        );
                     }, 5000);
             },
         });
@@ -12814,7 +12816,9 @@ export class AdapterClass extends EventEmitter {
                         this._logger.warn(
                             `${this.namespaceLog} Cannot connect/reconnect to objects DB. Stopping adapter.`,
                         );
-                        void this._stop({ exitCode: EXIT_CODES.NO_ERROR, updateAliveState: false });
+                        this._stop({ exitCode: EXIT_CODES.NO_ERROR, updateAliveState: false }).catch(e =>
+                            this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`),
+                        );
                     }, 4000);
             },
             change: async (id, obj) => {
@@ -12827,7 +12831,9 @@ export class AdapterClass extends EventEmitter {
                 // If desired, that adapter must be terminated
                 if (id === `system.adapter.${this.namespace}` && obj?.common?.enabled === false) {
                     this._logger.info(`${this.namespaceLog} Adapter is disabled => stop`);
-                    void this._stop();
+                    this._stop().catch(e =>
+                        this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`),
+                    );
                     return;
                 }
 
@@ -13369,7 +13375,9 @@ export class AdapterClass extends EventEmitter {
                 this._logger.debug(`${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`);
                 this._restartScheduleJob = this._schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
                     this._logger.info(`${this.namespaceLog} Scheduled restart.`);
-                    void this._stop({ isPause: false, isScheduled: true });
+                    this._stop({ isPause: false, isScheduled: true }).catch(e =>
+                        this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`),
+                    );
                 });
             }
         }
@@ -13472,12 +13480,12 @@ export class AdapterClass extends EventEmitter {
 
         if (!this._stopInProgress) {
             try {
-                void this._stop({
+                this._stop({
                     isPause: false,
                     isScheduled: false,
                     exitCode: EXIT_CODES.UNCAUGHT_EXCEPTION,
                     updateAliveState: false,
-                });
+                }).catch(e => this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`));
             } catch (e) {
                 this._logger.error(`${this.namespaceLog} exception by stop: ${e ? e.message : e}`);
             }
