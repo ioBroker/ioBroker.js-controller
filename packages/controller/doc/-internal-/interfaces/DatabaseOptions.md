@@ -6,7 +6,9 @@
 
 # Interface: DatabaseOptions
 
-Defined in: [types-dev/config.d.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/config.d.ts#L49)
+Defined in: [types-dev/config.d.ts:50](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/config.d.ts#L50)
+
+Configuration of a database connection (objects or states)
 
 ## Extended by
 
@@ -19,7 +21,9 @@ Defined in: [types-dev/config.d.ts:49](https://github.com/ioBroker/ioBroker.js-c
 
 > **backup**: [`DatabaseBackupOptions`](DatabaseBackupOptions.md)
 
-Defined in: [types-dev/config.d.ts:76](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/config.d.ts#L76)
+Defined in: [types-dev/config.d.ts:90](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/config.d.ts#L90)
+
+Backup configuration for the database
 
 ***
 
@@ -27,7 +31,9 @@ Defined in: [types-dev/config.d.ts:76](https://github.com/ioBroker/ioBroker.js-c
 
 > **connectTimeout**: `number`
 
-Defined in: [types-dev/config.d.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/config.d.ts#L55)
+Defined in: [types-dev/config.d.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/config.d.ts#L60)
+
+Maximum time in milliseconds to wait for a connection to be established
 
 ***
 
@@ -35,7 +41,9 @@ Defined in: [types-dev/config.d.ts:55](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **dataDir?**: `string`
 
-Defined in: [types-dev/config.d.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/config.d.ts#L57)
+Defined in: [types-dev/config.d.ts:64](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/config.d.ts#L64)
+
+Directory where the database files are stored, relative to the controller dir
 
 ***
 
@@ -43,7 +51,9 @@ Defined in: [types-dev/config.d.ts:57](https://github.com/ioBroker/ioBroker.js-c
 
 > **host**: `string` \| `string`[]
 
-Defined in: [types-dev/config.d.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/config.d.ts#L53)
+Defined in: [types-dev/config.d.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/config.d.ts#L56)
+
+Host name(s) or IP address(es) of the database server
 
 ***
 
@@ -51,7 +61,9 @@ Defined in: [types-dev/config.d.ts:53](https://github.com/ioBroker/ioBroker.js-c
 
 > **jsonlOptions**: [`JsonlOptions`](JsonlOptions.md)
 
-Defined in: [types-dev/config.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/config.d.ts#L77)
+Defined in: [types-dev/config.d.ts:92](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/config.d.ts#L92)
+
+Options specific to the JSONL database backend
 
 ***
 
@@ -59,27 +71,39 @@ Defined in: [types-dev/config.d.ts:77](https://github.com/ioBroker/ioBroker.js-c
 
 > **options**: `object`
 
-Defined in: [types-dev/config.d.ts:58](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/config.d.ts#L58)
+Defined in: [types-dev/config.d.ts:66](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/config.d.ts#L66)
+
+Low-level connection options passed to the database driver
 
 #### auth\_pass
 
 > **auth\_pass**: `string`
 
+Password used to authenticate against the database
+
 #### db
 
 > **db**: `number`
+
+Redis database index to use
 
 #### family
 
 > **family**: `number`
 
+IP stack to use (4 for IPv4, 6 for IPv6)
+
 #### retry\_max\_count
 
 > **retry\_max\_count**: `number`
 
+Maximum number of reconnection attempts
+
 #### retry\_max\_delay
 
 > **retry\_max\_delay**: `number`
+
+Maximum delay in milliseconds between reconnection attempts
 
 #### tls?
 
@@ -117,7 +141,9 @@ Needs to be false with self-signed certs
 
 > **port**: `number` \| `number`[]
 
-Defined in: [types-dev/config.d.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/config.d.ts#L54)
+Defined in: [types-dev/config.d.ts:58](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/config.d.ts#L58)
+
+Port(s) of the database server
 
 ***
 
@@ -125,7 +151,9 @@ Defined in: [types-dev/config.d.ts:54](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **sentinelName?**: `string`
 
-Defined in: [types-dev/config.d.ts:52](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/config.d.ts#L52)
+Defined in: [types-dev/config.d.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/config.d.ts#L54)
+
+Name of the sentinel master to connect to
 
 ***
 
@@ -133,7 +161,7 @@ Defined in: [types-dev/config.d.ts:52](https://github.com/ioBroker/ioBroker.js-c
 
 > **type**: `"file"` \| `"jsonl"` \| `"redis"`
 
-Defined in: [types-dev/config.d.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/config.d.ts#L51)
+Defined in: [types-dev/config.d.ts:52](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/config.d.ts#L52)
 
 Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel].
 
@@ -143,4 +171,6 @@ Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 63
 
 > **writeFileInterval**: `number`
 
-Defined in: [types-dev/config.d.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/config.d.ts#L56)
+Defined in: [types-dev/config.d.ts:62](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/config.d.ts#L62)
+
+Interval in milliseconds between flushing the in-memory database to file

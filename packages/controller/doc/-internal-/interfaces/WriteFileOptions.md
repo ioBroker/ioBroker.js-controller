@@ -6,7 +6,7 @@
 
 # Interface: WriteFileOptions
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:35
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:51
 
 ## Extends
 
@@ -22,7 +22,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:35
 
 > `optional` **acl?**: `any`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:32
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:48
 
 #### Inherited from
 
@@ -34,7 +34,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:32
 
 > `optional` **group?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:28
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:44
 
 #### Inherited from
 
@@ -46,7 +46,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:28
 
 > `optional` **groups?**: `string`[]
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:27
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:43
 
 #### Inherited from
 
@@ -58,7 +58,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:27
 
 > `optional` **mimeType?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:36
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:52
 
 ***
 
@@ -66,7 +66,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:36
 
 > `optional` **owner?**: `` `system.user.${string}` ``
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:30
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:46
 
 #### Inherited from
 
@@ -78,7 +78,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:30
 
 > `optional` **ownerGroup?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:31
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:47
 
 #### Inherited from
 
@@ -90,7 +90,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:31
 
 > `optional` **user?**: `` `system.user.${string}` ``
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:29
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:45
 
 #### Inherited from
 
