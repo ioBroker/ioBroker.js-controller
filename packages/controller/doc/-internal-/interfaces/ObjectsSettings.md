@@ -6,7 +6,9 @@
 
 # Interface: ObjectsSettings
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:9
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:10
+
+Settings for the objects database client
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:9
 
 > `optional` **autoConnect?**: `boolean`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:17
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:26
+
+Whether to connect to the database immediately (default true)
 
 ***
 
@@ -22,7 +26,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:17
 
 > `optional` **change?**: [`ChangeFunction`](../type-aliases/ChangeFunction-1.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:14
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:20
+
+Handler for system-level object changes
 
 ***
 
@@ -30,7 +36,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:14
 
 > `optional` **changeFileUser?**: [`FileChangeHandler`](../type-aliases/FileChangeHandler.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:16
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:24
+
+Handler for user-level file changes
 
 ***
 
@@ -38,7 +46,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:16
 
 > `optional` **changeUser?**: [`ChangeFunction`](../type-aliases/ChangeFunction-1.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:15
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:22
+
+Handler for user-level object changes
 
 ***
 
@@ -46,7 +56,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:15
 
 > **connected**: () => `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:10
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:12
+
+Called once the client is connected
 
 #### Returns
 
@@ -58,7 +70,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:10
 
 > **connection**: [`RedisConnectionOptions`](RedisConnectionOptions.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:24
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:40
+
+Connection options for the redis server
 
 ***
 
@@ -66,7 +80,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:24
 
 > `optional` **controller?**: `boolean`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:11
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:14
+
+Whether this client runs inside the controller
 
 ***
 
@@ -74,7 +90,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:11
 
 > `optional` **defaultNewAcl?**: [`ACLObject`](ACLObject.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:21
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:34
+
+Default ACL applied to newly created objects
 
 ***
 
@@ -82,7 +100,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:21
 
 > `optional` **disconnected?**: () => `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:13
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:18
+
+Called when the client gets disconnected
 
 #### Returns
 
@@ -94,7 +114,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:13
 
 > `optional` **hostname?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:19
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:30
+
+Name of this host
 
 ***
 
@@ -102,7 +124,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:19
 
 > **logger**: [`InternalLogger`](../type-aliases/InternalLogger.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:18
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:28
+
+Logger instance to use
 
 ***
 
@@ -110,7 +134,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:18
 
 > `optional` **metaNamespace?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:22
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:36
+
+Namespace used for meta information
 
 ***
 
@@ -118,7 +144,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:22
 
 > `optional` **namespace?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:20
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:32
+
+Namespace of this client
 
 ***
 
@@ -126,7 +154,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:20
 
 > `optional` **primaryHostLost?**: () => `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:12
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:16
+
+Called when the connection to the primary host is lost
 
 #### Returns
 
@@ -138,4 +168,6 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:12
 
 > `optional` **redisNamespace?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:23
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:38
+
+Redis key prefix (defaults to "cfg")

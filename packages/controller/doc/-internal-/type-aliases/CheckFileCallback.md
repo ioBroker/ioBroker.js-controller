@@ -8,7 +8,7 @@
 
 > **CheckFileCallback** = (`checkFailed`, `options?`, `fileOptions?`) => `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:43
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:59
 
 ## Parameters
 

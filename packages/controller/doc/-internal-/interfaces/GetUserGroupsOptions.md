@@ -6,11 +6,15 @@
 
 # Interface: GetUserGroupsOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:242](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L242)
+Defined in: [adapter/src/lib/\_Types.ts:299](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L299)
+
+Options for resolving the groups of a user
 
 ## Indexable
 
 > \[`other`: `string`\]: `any`
+
+Additional request options
 
 ## Properties
 
@@ -18,4 +22,6 @@ Defined in: [adapter/src/lib/\_Types.ts:242](https://github.com/ioBroker/ioBroke
 
 > **user**: `` `system.user.${string}` ``
 
-Defined in: [adapter/src/lib/\_Types.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L243)
+Defined in: [adapter/src/lib/\_Types.ts:301](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L301)
+
+The user whose groups should be resolved
