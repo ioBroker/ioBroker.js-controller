@@ -80,7 +80,8 @@
             "memLimitError",
             "// memLimitError"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "description": "System-wide controller settings"
         },
         "multihostService": {
           "type": "object",
@@ -104,13 +105,16 @@
             "password",
             "persist"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "description": "Configuration of the multihost service used to connect several ioBroker hosts"
         },
         "objects": {
-          "$ref": "#/definitions/ObjectsDatabaseOptions"
+          "$ref": "#/definitions/ObjectsDatabaseOptions",
+          "description": "Configuration of the objects database"
         },
         "states": {
-          "$ref": "#/definitions/StatesDatabaseOptions"
+          "$ref": "#/definitions/StatesDatabaseOptions",
+          "description": "Configuration of the states database"
         },
         "log": {
           "type": "object",
@@ -134,14 +138,16 @@
             "noStdout",
             "transport"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "description": "Logging configuration"
         },
         "dataDir": {
           "type": "string",
           "description": "Always relative to iobroker.js-controller/"
         },
         "// dataDir": {
-          "type": "string"
+          "type": "string",
+          "description": "Comment/hint shown next to the dataDir setting in the JSON config"
         },
         "plugins": {
           "type": "object",
@@ -156,10 +162,12 @@
               "enabled"
             ],
             "additionalProperties": {}
-          }
+          },
+          "description": "Controller plugins configuration keyed by plugin name"
         },
         "// dnsResolution": {
-          "type": "string"
+          "type": "string",
+          "description": "Comment/hint shown next to the dnsResolution setting in the JSON config"
         },
         "dnsResolution": {
           "type": "string",
@@ -198,7 +206,8 @@
           "description": "Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel]."
         },
         "sentinelName": {
-          "type": "string"
+          "type": "string",
+          "description": "Name of the sentinel master to connect to"
         },
         "host": {
           "anyOf": [
@@ -211,7 +220,8 @@
                 "type": "string"
               }
             }
-          ]
+          ],
+          "description": "Host name(s) or IP address(es) of the database server"
         },
         "port": {
           "anyOf": [
@@ -224,34 +234,43 @@
                 "type": "number"
               }
             }
-          ]
+          ],
+          "description": "Port(s) of the database server"
         },
         "connectTimeout": {
-          "type": "number"
+          "type": "number",
+          "description": "Maximum time in milliseconds to wait for a connection to be established"
         },
         "writeFileInterval": {
-          "type": "number"
+          "type": "number",
+          "description": "Interval in milliseconds between flushing the in-memory database to file"
         },
         "dataDir": {
-          "type": "string"
+          "type": "string",
+          "description": "Directory where the database files are stored, relative to the controller dir"
         },
         "options": {
           "type": "object",
           "properties": {
             "auth_pass": {
-              "type": "string"
+              "type": "string",
+              "description": "Password used to authenticate against the database"
             },
             "retry_max_delay": {
-              "type": "number"
+              "type": "number",
+              "description": "Maximum delay in milliseconds between reconnection attempts"
             },
             "retry_max_count": {
-              "type": "number"
+              "type": "number",
+              "description": "Maximum number of reconnection attempts"
             },
             "db": {
-              "type": "number"
+              "type": "number",
+              "description": "Redis database index to use"
             },
             "family": {
-              "type": "number"
+              "type": "number",
+              "description": "IP stack to use (4 for IPv4, 6 for IPv6)"
             },
             "tls": {
               "type": "object",
@@ -284,16 +303,20 @@
             "db",
             "family"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "description": "Low-level connection options passed to the database driver"
         },
         "backup": {
-          "$ref": "#/definitions/DatabaseBackupOptions"
+          "$ref": "#/definitions/DatabaseBackupOptions",
+          "description": "Backup configuration for the database"
         },
         "jsonlOptions": {
-          "$ref": "#/definitions/JsonlOptions"
+          "$ref": "#/definitions/JsonlOptions",
+          "description": "Options specific to the JSONL database backend"
         },
         "noFileCache": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Disable the in-memory file cache for objects"
         }
       },
       "required": [
@@ -307,7 +330,8 @@
         "type",
         "writeFileInterval"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "description": "Configuration of the objects database connection"
     },
     "DatabaseBackupOptions": {
       "type": "object",
@@ -454,7 +478,8 @@
           "description": "Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel]."
         },
         "sentinelName": {
-          "type": "string"
+          "type": "string",
+          "description": "Name of the sentinel master to connect to"
         },
         "host": {
           "anyOf": [
@@ -467,7 +492,8 @@
                 "type": "string"
               }
             }
-          ]
+          ],
+          "description": "Host name(s) or IP address(es) of the database server"
         },
         "port": {
           "anyOf": [
@@ -480,34 +506,43 @@
                 "type": "number"
               }
             }
-          ]
+          ],
+          "description": "Port(s) of the database server"
         },
         "connectTimeout": {
-          "type": "number"
+          "type": "number",
+          "description": "Maximum time in milliseconds to wait for a connection to be established"
         },
         "writeFileInterval": {
-          "type": "number"
+          "type": "number",
+          "description": "Interval in milliseconds between flushing the in-memory database to file"
         },
         "dataDir": {
-          "type": "string"
+          "type": "string",
+          "description": "Directory where the database files are stored, relative to the controller dir"
         },
         "options": {
           "type": "object",
           "properties": {
             "auth_pass": {
-              "type": "string"
+              "type": "string",
+              "description": "Password used to authenticate against the database"
             },
             "retry_max_delay": {
-              "type": "number"
+              "type": "number",
+              "description": "Maximum delay in milliseconds between reconnection attempts"
             },
             "retry_max_count": {
-              "type": "number"
+              "type": "number",
+              "description": "Maximum number of reconnection attempts"
             },
             "db": {
-              "type": "number"
+              "type": "number",
+              "description": "Redis database index to use"
             },
             "family": {
-              "type": "number"
+              "type": "number",
+              "description": "IP stack to use (4 for IPv4, 6 for IPv6)"
             },
             "tls": {
               "type": "object",
@@ -540,13 +575,16 @@
             "db",
             "family"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "description": "Low-level connection options passed to the database driver"
         },
         "backup": {
-          "$ref": "#/definitions/DatabaseBackupOptions"
+          "$ref": "#/definitions/DatabaseBackupOptions",
+          "description": "Backup configuration for the database"
         },
         "jsonlOptions": {
-          "$ref": "#/definitions/JsonlOptions"
+          "$ref": "#/definitions/JsonlOptions",
+          "description": "Options specific to the JSONL database backend"
         },
         "maxQueue": {
           "type": "number",
@@ -564,7 +602,8 @@
         "type",
         "writeFileInterval"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "description": "Configuration of the states database connection"
     },
     "global.ioBroker.LogLevel": {
       "type": "string",

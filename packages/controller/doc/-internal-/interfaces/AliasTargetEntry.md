@@ -6,7 +6,9 @@
 
 # Interface: AliasTargetEntry
 
-Defined in: [adapter/src/lib/\_Types.ts:222](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L222)
+Defined in: [adapter/src/lib/\_Types.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L265)
+
+A single target of an alias
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: [adapter/src/lib/\_Types.ts:222](https://github.com/ioBroker/ioBroke
 
 > **alias**: \{ `id`: `string` \| \{ `read`: `string`; `write`: `string`; \}; `read?`: `string`; `write?`: `string`; \} \| `undefined`
 
-Defined in: [adapter/src/lib/\_Types.ts:223](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L223)
+Defined in: [adapter/src/lib/\_Types.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L267)
+
+Alias definition of the target's common section
 
 #### Union Members
 
@@ -50,7 +54,9 @@ An optional conversion function when reading, e.g. `"(val * 9/5) + 32"`
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:224](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L224)
+Defined in: [adapter/src/lib/\_Types.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L269)
+
+The id of the target state
 
 ***
 
@@ -58,7 +64,9 @@ Defined in: [adapter/src/lib/\_Types.ts:224](https://github.com/ioBroker/ioBroke
 
 > `optional` **max?**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:227](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L227)
+Defined in: [adapter/src/lib/\_Types.ts:275](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L275)
+
+Maximum value of the target
 
 ***
 
@@ -66,7 +74,9 @@ Defined in: [adapter/src/lib/\_Types.ts:227](https://github.com/ioBroker/ioBroke
 
 > `optional` **min?**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:228](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L228)
+Defined in: [adapter/src/lib/\_Types.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L277)
+
+Minimum value of the target
 
 ***
 
@@ -74,7 +84,9 @@ Defined in: [adapter/src/lib/\_Types.ts:228](https://github.com/ioBroker/ioBroke
 
 > **pattern**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L225)
+Defined in: [adapter/src/lib/\_Types.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L271)
+
+The subscription pattern of the target
 
 ***
 
@@ -82,7 +94,9 @@ Defined in: [adapter/src/lib/\_Types.ts:225](https://github.com/ioBroker/ioBroke
 
 > `optional` **type?**: [`CommonType`](../type-aliases/CommonType.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:226](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L226)
+Defined in: [adapter/src/lib/\_Types.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L273)
+
+Common type of the target
 
 ***
 
@@ -90,4 +104,6 @@ Defined in: [adapter/src/lib/\_Types.ts:226](https://github.com/ioBroker/ioBroke
 
 > `optional` **unit?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L229)
+Defined in: [adapter/src/lib/\_Types.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L279)
+
+Unit of the target value

@@ -6,7 +6,9 @@
 
 # Interface: InternalCheckPasswordOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:276](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L276)
+Defined in: [adapter/src/lib/\_Types.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L351)
+
+Options for checking a user's password
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: [adapter/src/lib/\_Types.ts:276](https://github.com/ioBroker/ioBroke
 
 > **callback**: [`CheckPasswordCallback`](../type-aliases/CheckPasswordCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:280](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L280)
+Defined in: [adapter/src/lib/\_Types.ts:359](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L359)
+
+Called with the result of the check
 
 ***
 
@@ -22,7 +26,9 @@ Defined in: [adapter/src/lib/\_Types.ts:280](https://github.com/ioBroker/ioBroke
 
 > `optional` **options?**: `Record`\<`string`, `any`\> \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L279)
+Defined in: [adapter/src/lib/\_Types.ts:357](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L357)
+
+Optional settings including the user context
 
 ***
 
@@ -30,7 +36,9 @@ Defined in: [adapter/src/lib/\_Types.ts:279](https://github.com/ioBroker/ioBroke
 
 > **pw**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:278](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L278)
+Defined in: [adapter/src/lib/\_Types.ts:355](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L355)
+
+The password to verify
 
 ***
 
@@ -38,4 +46,6 @@ Defined in: [adapter/src/lib/\_Types.ts:278](https://github.com/ioBroker/ioBroke
 
 > **user**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L277)
+Defined in: [adapter/src/lib/\_Types.ts:353](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L353)
+
+The user to check

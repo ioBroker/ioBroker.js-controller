@@ -6,7 +6,7 @@
 
 # Interface: Options
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:38
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:54
 
 ## Indexable
 
@@ -18,6 +18,6 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:38
 
 > `optional` **user?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:40
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:56
 
 The user id for database operations

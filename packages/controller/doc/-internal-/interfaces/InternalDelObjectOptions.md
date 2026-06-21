@@ -6,7 +6,9 @@
 
 # Interface: InternalDelObjectOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:422](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L422)
+Defined in: [adapter/src/lib/\_Types.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L576)
+
+Options for deleting an object
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: [adapter/src/lib/\_Types.ts:422](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:425](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L425)
+Defined in: [adapter/src/lib/\_Types.ts:582](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L582)
+
+Called once the object has been deleted
 
 ***
 
@@ -22,7 +26,9 @@ Defined in: [adapter/src/lib/\_Types.ts:425](https://github.com/ioBroker/ioBroke
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L423)
+Defined in: [adapter/src/lib/\_Types.ts:578](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L578)
+
+The id of the object
 
 ***
 
@@ -30,4 +36,6 @@ Defined in: [adapter/src/lib/\_Types.ts:423](https://github.com/ioBroker/ioBroke
 
 > `optional` **options?**: [`DelObjectOptions`](DelObjectOptions.md) \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L424)
+Defined in: [adapter/src/lib/\_Types.ts:580](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L580)
+
+Options controlling the deletion
