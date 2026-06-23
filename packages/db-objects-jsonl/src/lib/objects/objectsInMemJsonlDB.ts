@@ -23,8 +23,10 @@ import { tools } from '@iobroker/js-controller-common-db';
  * @param conf The jsonlOptions options from iobroker.json
  * @returns the normalized and validated JsonlDB options
  */
-function normalizeJsonlOptions(conf: Record<string, any> = {}): JsonlDBOptions<any> {
-    const ret: JsonlDBOptions<any> = {
+function normalizeJsonlOptions(
+    conf: Partial<JsonlDBOptions<ioBroker.AnyObject | ioBroker.DesignObject>> = {},
+): JsonlDBOptions<ioBroker.AnyObject | ioBroker.DesignObject> {
+    const ret: JsonlDBOptions<ioBroker.AnyObject | ioBroker.DesignObject> = {
         autoCompress: {
             // Compress when the number of uncompressed entries has grown a lot
             sizeFactor: 2,
@@ -49,26 +51,31 @@ function normalizeJsonlOptions(conf: Record<string, any> = {}): JsonlDBOptions<a
     };
 
     // Be really careful what we allow here. Incorrect settings may cause problems in production.
-    if (tools.isObject(conf.autoCompress)) {
+    if (conf.autoCompress && typeof conf.autoCompress === 'object') {
         const ac = conf.autoCompress;
-        // Letting the DB grow more than 100x is risky
+        if (!ret.autoCompress) {
+            throw new Error('Unexpected autoCompress');
+        } // Letting the DB grow more than 100x is risky
         if (typeof ac.sizeFactor === 'number' && ac.sizeFactor >= 2 && ac.sizeFactor <= 100) {
-            ret.autoCompress!.sizeFactor = ac.sizeFactor;
+            ret.autoCompress.sizeFactor = ac.sizeFactor;
         }
-        // Also we should definitely compress once the DB has reached 100k lines or it might grow too big
+        // Also we should definitely compress once the DB has reached 100k lines, or it might grow too big
         if (
             typeof ac.sizeFactorMinimumSize === 'number' &&
             ac.sizeFactorMinimumSize >= 0 &&
             ac.sizeFactorMinimumSize <= 100000
         ) {
-            ret.autoCompress!.sizeFactorMinimumSize = ac.sizeFactorMinimumSize;
+            ret.autoCompress.sizeFactorMinimumSize = ac.sizeFactorMinimumSize;
         }
     }
-    if (tools.isObject(conf.throttleFS)) {
+    if (conf.throttleFS && typeof conf.throttleFS === 'object') {
         const thr = conf.throttleFS;
+        if (!ret.throttleFS) {
+            throw new Error('Unexpected throttle fs');
+        }
         // Don't write more often than every second and write at least once every hour
         if (typeof thr.intervalMs === 'number' && thr.intervalMs >= 1000 && thr.intervalMs <= 3600000) {
-            ret.throttleFS!.intervalMs = thr.intervalMs;
+            ret.throttleFS.intervalMs = thr.intervalMs;
         }
         // Don't keep too much in memory - 100k changes are more than enough
         if (
@@ -76,7 +83,7 @@ function normalizeJsonlOptions(conf: Record<string, any> = {}): JsonlDBOptions<a
             thr.maxBufferedCommands >= 0 &&
             thr.maxBufferedCommands <= 100000
         ) {
-            ret.throttleFS!.maxBufferedCommands = thr.maxBufferedCommands;
+            ret.throttleFS.maxBufferedCommands = thr.maxBufferedCommands;
         }
     }
 
