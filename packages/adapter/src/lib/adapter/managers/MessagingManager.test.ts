@@ -68,3 +68,41 @@ describe('MessagingManager.sendTo', () => {
         }
     });
 });
+
+describe('MessagingManager.assertSendToHost', () => {
+    it('defaults command to "send" and accepts null hostName (broadcast)', () => {
+        const mgr = new MessagingManager(makeDeps());
+        const v = mgr.assertSendToHost(null, { x: 1 }, undefined);
+        assert.equal(v.ok, true);
+        if (v.ok) {
+            assert.equal(v.value.hostName, null);
+            assert.equal(v.value.command, 'send');
+        }
+    });
+});
+
+describe('MessagingManager.sendToHost', () => {
+    it('calls pushMessage with the host name and correct obj shape when a callback is provided', async () => {
+        const pushMessage = sinon.stub().resolves();
+        const subscribeMessage = sinon.stub();
+        const fakeStates = { pushMessage, subscribeMessage } as any;
+        const fakeCommon = {
+            supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
+        } as any;
+        const deps = makeDeps({ getStates: () => fakeStates, getCommon: () => fakeCommon });
+        const mgr = new MessagingManager(deps);
+
+        const cb = sinon.spy();
+        const v = mgr.assertSendToHost('myhost', 'myCommand', { data: 42 }, cb);
+        assert.equal(v.ok, true);
+        if (v.ok) {
+            await mgr.sendToHost(v.value);
+        }
+
+        assert.equal(pushMessage.calledOnce, true);
+        const [targetId, sentObj] = pushMessage.firstCall.args as [string, ioBroker.Message];
+        assert.equal(targetId, 'system.host.myhost');
+        assert.equal(sentObj.from, 'system.adapter.test.0');
+        assert.equal(sentObj.command, 'myCommand');
+    });
+});
