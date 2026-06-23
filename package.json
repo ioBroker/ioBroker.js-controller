@@ -84,6 +84,7 @@
         "test-redis-socket": "mocha packages/controller/test/redis-socket/*.ts --exit",
         "test-redis-sentinel": "mocha packages/controller/test/redis-sentinel/*.ts --exit",
         "test-types-check": "tsc --project packages/controller/tsconfig.check.json",
-        "test-types": "npm run test-types-check && npm run test --workspace=@iobroker/types"
+        "test-types": "npm run test-types-check && npm run test --workspace=@iobroker/types",
+        "test-adapter": "mocha --no-config --node-option \"import=./packages/adapter/register-test.mjs\" \"packages/adapter/src/lib/adapter/managers/**/*.test.ts\" --exit"
     }
 }
