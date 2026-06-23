@@ -117,7 +117,6 @@ export class MessagingManager {
             );
         }
 
-        // If not specific instance
         if (!instanceName.match(/\.[0-9]+$/)) {
             const objects = this.deps.getObjects();
             if (!objects) {
@@ -127,7 +126,6 @@ export class MessagingManager {
             }
 
             try {
-                // Send it to all instances of adapter
                 const res = await objects.getObjectView('system', 'instance', {
                     startkey: `${instanceName}.`,
                     endkey: `${instanceName}.香`,
@@ -182,7 +180,6 @@ export class MessagingManager {
 
                     this.#callbacks.set(callbackId, { cb: callback, time: Date.now(), timer });
 
-                    // delete too old callbacks IDs
                     const now = Date.now();
                     for (const [_id, cb] of this.#callbacks) {
                         if (now - cb.time > 3_600_000) {
@@ -190,7 +187,6 @@ export class MessagingManager {
                         }
                     }
                 } else {
-                    // callback is an object
                     obj.callback = callback;
                     obj.callback.ack = true;
                 }
@@ -247,6 +243,45 @@ export class MessagingManager {
             };
         } catch (e) {
             return { ok: false, error: e instanceof Error ? e : new Error(String(e)) };
+        }
+    }
+
+    /**
+     * Resolves a stored callback for an acked messagebox reply. Returns true if a stored callback was consumed.
+     *
+     * @param obj incoming message object from the messagebox
+     */
+    resolveCallback(obj: ioBroker.Message): boolean {
+        let callbackObj: MessageCallbackObject | undefined;
+        if (obj.callback?.id) {
+            callbackObj = this.#callbacks.get(obj.callback.id);
+        }
+        if (obj.callback?.ack && obj.callback.id && callbackObj) {
+            if (typeof callbackObj.cb === 'function') {
+                callbackObj.cb(obj.message);
+                if (callbackObj.timer) {
+                    clearTimeout(callbackObj.timer);
+                }
+                this.#callbacks.delete(obj.callback.id);
+            }
+            const now = Date.now();
+            for (const [id, callback] of this.#callbacks) {
+                if (now - callback.time > 3_600_000) {
+                    this.#callbacks.delete(id);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Clears all pending callbacks and their timers (used on stop).
+     */
+    clearPendingCallbacks(): void {
+        if (this.#callbacks.size) {
+            this.#callbacks.forEach(callbackObj => clearTimeout(callbackObj.timer));
+            this.#callbacks.clear();
         }
     }
 

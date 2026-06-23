@@ -106,3 +106,39 @@ describe('MessagingManager.sendToHost', () => {
         assert.equal(sentObj.command, 'myCommand');
     });
 });
+
+describe('MessagingManager callback registry', () => {
+    it('resolveCallback invokes and removes a stored callback on ack', async () => {
+        const fakeStates = {
+            pushMessage: sinon.stub().resolves(),
+            subscribeMessage: sinon.stub(),
+        } as any;
+        const fakeCommon = {
+            supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
+        } as any;
+        const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates, getCommon: () => fakeCommon }));
+        const cb = sinon.spy();
+        const v = mgr.assertSendTo('inst.0', 'cmd', { a: 1 }, cb, { timeout: 5000 });
+        assert.equal(v.ok, true);
+        if (v.ok) {
+            await mgr.sendTo(v.value);
+        }
+        const callbackId = 1;
+        const handled = mgr.resolveCallback({
+            command: 'cmd',
+            message: { ok: true },
+            from: 'system.host.x',
+            callback: { ack: true, id: callbackId, time: Date.now() },
+        } as any);
+        assert.equal(handled, true);
+        assert.equal(cb.calledOnceWithExactly({ ok: true }), true);
+        // second resolve for the same id is a no-op
+        assert.equal(mgr.resolveCallback({ callback: { ack: true, id: callbackId } } as any), false);
+    });
+
+    it('clearPendingCallbacks empties the registry', () => {
+        const mgr = new MessagingManager(makeDeps());
+        mgr.clearPendingCallbacks();
+        assert.equal(mgr.resolveCallback({ callback: { ack: true, id: 999 } } as any), false);
+    });
+});
