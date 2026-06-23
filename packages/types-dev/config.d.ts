@@ -1,6 +1,3 @@
-import { NatMap, PreferredSlaves, RedisOptions, SecureContextOptions } from 'ioredis';
-import { ConnectionOptions } from 'tls';
-
 interface DatabaseBackupOptions {
     disabled: boolean;
     /** Minimal number of backup files, after the deletion will be executed according to backupTime settings */
