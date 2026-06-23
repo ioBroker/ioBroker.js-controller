@@ -362,24 +362,6 @@ export class InMemoryFileDB<TObject, THandler extends SubscriptionClient = Subsc
      * @param client The client to register the subscription for
      * @param type The subscription type (e.g. objects or states)
      * @param pattern One or more patterns to subscribe to
-     * @param cb Called once the subscription has been registered
-     */
-    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[], cb?: () => void): void;
-    /**
-     * Subscribe a client to changes matching the given pattern
-     *
-     * @param client The client to register the subscription for
-     * @param type The subscription type (e.g. objects or states)
-     * @param pattern One or more patterns to subscribe to
-     */
-    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[]): void;
-
-    /**
-     * Subscribe a client to changes matching the given pattern
-     *
-     * @param client The client to register the subscription for
-     * @param type The subscription type (e.g. objects or states)
-     * @param pattern One or more patterns to subscribe to
      */
     handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[]): void {
         client._subscribe ||= {};
