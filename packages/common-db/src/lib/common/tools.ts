@@ -1299,7 +1299,7 @@ function _getRepositoryFile(
         }
         if (helper.timeout) {
             clearTimeout(helper.timeout);
-            helper.timeout;
+            helper.timeout = null;
         }
         for (const __name of Object.keys(sources)) {
             if ((sources[__name] as ioBroker.RepositoryJsonAdapterContent).processed !== undefined) {
