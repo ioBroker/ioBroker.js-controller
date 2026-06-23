@@ -60,7 +60,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         this.namespace = this.settings.namespace || this.settings.hostname || '';
         this.writeFileInterval =
             this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
-                ? parseInt(String(this.settings.connection.writeFileInterval))
+                ? this.settings.connection.writeFileInterval
                 : 5_000;
         if (!settings.jsonlDB) {
             this.log.silly(`${this.namespace} Objects DB uses file write interval of ${this.writeFileInterval} ms`);

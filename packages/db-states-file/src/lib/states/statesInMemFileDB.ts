@@ -70,7 +70,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
         this.ONE_DAY_IN_SECS = 24 * 60 * 60 * 1_000;
         this.writeFileInterval =
             this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
-                ? parseInt(String(this.settings.connection.writeFileInterval))
+                ? this.settings.connection.writeFileInterval
                 : 30_000;
         if (settings.jsonlDB) {
             this.log.silly(`${this.namespace} States DB uses file write interval of ${this.writeFileInterval} ms`);
