@@ -1,23 +1,25 @@
 /**
  *      Objects DB in memory - Server with Redis protocol
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
+/// <reference types="@iobroker/types-dev" />
 
 import net from 'node:net';
 import fs from 'fs-extra';
 import path from 'node:path';
 import crypto from 'node:crypto';
+
 import { objectsUtils as utils } from '@iobroker/db-objects-redis';
 import { tools } from '@iobroker/db-base';
 import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
-
-import { RedisHandler, type ConnectionOptions } from '@iobroker/db-base';
-import { ObjectsInMemoryJsonlDB } from './objectsInMemJsonlDB.js';
+import { RedisHandler, type ConnectionOptions, type FileDbSettings } from '@iobroker/db-base';
 import { EXIT_CODES } from '@iobroker/js-controller-common-db';
+
+import { ObjectsInMemoryJsonlDB } from './objectsInMemJsonlDB.js';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -44,7 +46,17 @@ import { EXIT_CODES } from '@iobroker/js-controller-common-db';
  * This class inherits statesInMemoryJsonlDB class and adds redis communication layer
  * to access the methods via redis protocol
  */
-export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
+export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB<
+    RedisHandler & {
+        _subscribe?: Record<
+            string,
+            {
+                pattern: string;
+                regex: RegExp;
+            }[]
+        >;
+    }
+> {
     private readonly serverConnections: Record<string, RedisHandler> = {};
     private readonly namespaceObjects: string;
     private readonly namespaceFile: string;
@@ -65,10 +77,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      *
      * @param settings State and InMem-DB settings
      */
-    constructor(settings: Record<string, any>) {
+    constructor(settings: FileDbSettings<ioBroker.AnyObject | ioBroker.DesignObject>) {
         super(settings);
 
-        this.serverConnections = {};
         this.namespaceObjects = `${
             this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg'
         }.`;
@@ -82,8 +93,6 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         this.namespaceObjLen = this.namespaceObj.length;
         this.namespaceMeta = `${this.settings.namespaceMeta || 'meta'}.`;
         this.namespaceMetaLen = this.namespaceMeta.length;
-
-        this.knownScripts = {};
 
         this.normalizeFileRegex1 = new RegExp('^(.*)\\$%\\$(.*)\\$%\\$(meta|data)$');
         this.normalizeFileRegex2 = new RegExp('^(.*)\\$%\\$(.*)\\/?\\*$');

@@ -1,16 +1,14 @@
 /**
  *      States DB in memory - Server
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
+/// <reference types="@iobroker/types-dev" />
 
-import { InMemoryFileDB, tools } from '@iobroker/db-base';
-
-/** Constructor settings expected by the {@link InMemoryFileDB} base class */
-type InMemSettings = ConstructorParameters<typeof InMemoryFileDB>[0];
+import { InMemoryFileDB, tools, type FileDbSettings } from '@iobroker/db-base';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -37,10 +35,20 @@ type InMemSettings = ConstructorParameters<typeof InMemoryFileDB>[0];
  * This class inherits InMemoryFileDB class and adds all relevant logic for states
  * including the available methods for use by js-controller directly
  */
-export class StatesInMemoryFileDB extends InMemoryFileDB {
+export class StatesInMemoryFileDB<
+    THandler extends {
+        _subscribe?: Record<
+            string,
+            {
+                pattern: string;
+                regex: RegExp;
+            }[]
+        >;
+    },
+> extends InMemoryFileDB<ioBroker.State | Record<string, string>, THandler> {
     protected readonly META_ID: string;
     protected logs: Record<string, any>;
-    protected session: Record<string, any>;
+    protected session: Record<string, Record<string, any>>;
     protected globalMessageId: number;
     protected globalLogId: number;
     protected stateExpires: Record<string, NodeJS.Timeout>;
@@ -51,13 +59,12 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
     /**
      * @param settings Settings for the states database
      */
-    constructor(settings: Record<string, any>) {
-        settings = settings || {};
-        settings.fileDB = settings.fileDB || {
+    constructor(settings: FileDbSettings<ioBroker.State | Record<string, any>>) {
+        settings.fileDB ??= {
             fileName: 'states.json',
             backupDirName: 'backup-objects',
         };
-        super(settings as InMemSettings);
+        super(settings);
 
         this.META_ID = '**META**';
         this.logs = {};
@@ -90,7 +97,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
         });
         // Set as expire all states that could expire
         Object.entries(this.dataset).forEach(([id, obj]) => {
-            if (obj && obj.expire) {
+            if ((obj as ioBroker.State)?.expire) {
                 this._expireState(id, true);
             }
         });
@@ -127,7 +134,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param id The ID of the session to expire
      */
     _expireSession(id: string): void {
-        if (this.sessionExpires[id] && this.sessionExpires[id].timeout) {
+        if (this.sessionExpires[id]?.timeout) {
             clearTimeout(this.sessionExpires[id].timeout);
             delete this.sessionExpires[id];
         }
@@ -171,8 +178,8 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      *
      * @param id The state ID to read
      */
-    _getState(id: string): any {
-        return this.dataset[id];
+    _getState(id: string): ioBroker.State {
+        return this.dataset[id] as ioBroker.State;
     }
 
     /**
@@ -199,12 +206,12 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
     }
 
     /**
-     * Sets given value to id in metaNamespace
+     * Sets given value to ID in metaNamespace
      *
      * @param id The meta ID to write
      * @param value The value to store
      */
-    setMeta(id: string, value: any): void {
+    setMeta(id: string, value: string): void {
         const meta = this._ensureMetaDict();
         meta[id] = value;
         // Make sure the object gets re-written, especially when using an external DB
@@ -228,19 +235,17 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param obj The state object to store
      * @param expire Optional expiration time in seconds
      */
-    _setStateDirect(id: string, obj: any, expire?: number): void {
+    _setStateDirect(id: string, obj: ioBroker.State, expire?: number): void {
         if (this.stateExpires[id]) {
             clearTimeout(this.stateExpires[id]);
             delete this.stateExpires[id];
         }
+        this.dataset[id] = obj;
 
         if (expire) {
             this.stateExpires[id] = setTimeout(() => this._expireState(id), expire * 1000);
-
-            obj.expire = true;
+            this.dataset[id].expire = 1;
         }
-        this.dataset[id] = obj;
-
         // If val === undefined, the state was just created and not filled with value
         if (obj.val !== undefined) {
             setImmediate(() => {
@@ -410,10 +415,10 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      *
      * @param id The session ID
      * @param expire Expiration time in seconds from now
-     * @param obj The session data to store
+     * @param sessionData The session data to store
      */
-    _setSession(id: string, expire: number, obj: any): void {
-        this.session[id] = obj || {};
+    _setSession(id: string, expire: number, sessionData: Record<string, any>): void {
+        this.session[id] = sessionData || {};
 
         if (this.sessionExpires[id] && this.sessionExpires[id].timeout) {
             clearTimeout(this.sessionExpires[id].timeout);

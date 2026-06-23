@@ -103,7 +103,7 @@ export class RedisHandler extends EventEmitter {
         this.resp = new Resp(respOptions);
 
         this.resp.on('error', (err: any) => {
-            this.log.error(`${this.socketId} (Init=${this.initialized}) Redis error:${err}`);
+            this.log.error(`${this.socketId} (Init=${this.initialized}) Redis error: ${err}`);
             if (this.initialized) {
                 this.sendError(null, new Error(`PARSER ERROR ${err}`)); // TODO
             } else {
@@ -214,7 +214,7 @@ export class RedisHandler extends EventEmitter {
     }
 
     /**
-     * Check if the response to a certain command can be send out directly or
+     * Check if the response to a certain command can be sent out directly or
      * if it needs to wait till earlier responses are ready
      *
      * @param responseId ID of the response

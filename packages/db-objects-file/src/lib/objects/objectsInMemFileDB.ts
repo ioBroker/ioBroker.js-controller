@@ -6,25 +6,69 @@
  *      MIT License
  *
  */
+/// <reference types="@iobroker/types-dev" />
 
 import fs from 'fs-extra';
 import path from 'node:path';
-import { InMemoryFileDB } from '@iobroker/db-base';
+import { InMemoryFileDB, type FileDbSettings } from '@iobroker/db-base';
 import { tools } from '@iobroker/db-base';
 import { objectsUtils as utils } from '@iobroker/db-objects-redis';
 import deepClone from 'deep-clone';
 
-/** Constructor settings expected by the {@link InMemoryFileDB} base class */
-type InMemSettings = ConstructorParameters<typeof InMemoryFileDB>[0];
+/** Options accepted by the file access methods (or, for writes, a mime type string) */
+interface FileAccessOptions {
+    /** Access control list / permission context (cleared internally before use) */
+    acl?: any;
+    /** User that owns a newly created file, or the user whose access is being checked */
+    user?: string;
+    /** Group that owns a newly created file */
+    group?: string;
+    /** Groups the requesting user belongs to (used for permission checks) */
+    groups?: string[];
+    /** File permission bitmask for a newly created file */
+    mode?: number;
+    /** Explicit mime type to store with the file */
+    mimeType?: string;
+    /** Bypass the in-memory file cache and read from disk */
+    noFileCache?: boolean;
+    /** Whether directory listings should be filtered by the user's permissions */
+    filter?: boolean;
+}
+
+interface Subscription {
+    pattern: string;
+    regex: RegExp;
+}
+
+interface SubscriptionClient {
+    _subscribe?: Record<string, Subscription[]>;
+}
+
+interface FileOptions {
+    createdAt?: number;
+    acl: {
+        owner: string;
+        ownerGroup: string;
+        permissions: number; // 0x644
+        read?: boolean;
+        write?: boolean;
+    };
+    mimeType: string;
+    binary?: boolean;
+    modifiedAt?: number;
+}
 
 /**
  * This class inherits InMemoryFileDB class and adds all relevant logic for objects
  * including the available methods for use by js-controller directly
  */
-export class ObjectsInMemoryFileDB extends InMemoryFileDB {
+export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends InMemoryFileDB<
+    ioBroker.AnyObject | ioBroker.DesignObject,
+    THandler
+> {
     protected readonly META_ID: string;
-    protected fileOptions: Record<string, any>;
-    protected files: Record<string, any>;
+    protected fileOptions: { [id: string]: { [fileName: string]: FileOptions } };
+    protected files: { [id: string]: { [fileName: string]: string | Buffer } };
     protected writeTimer: NodeJS.Timeout | null;
     protected writeIds: string[];
     protected readonly preserveSettings: string[];
@@ -36,19 +80,16 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * @param settings Settings for the objects database
      */
-    constructor(settings: Record<string, any>) {
-        settings ||= {};
-        settings.fileDB ||= {
+    constructor(settings: FileDbSettings<ioBroker.AnyObject>) {
+        settings.fileDB ??= {
             fileName: 'objects.json',
             backupDirName: 'backup-objects',
         };
-        super(settings as InMemSettings);
+        super(settings);
 
-        if (!this.change) {
-            this.change = id => {
-                this.log.silly(`${this.namespace} objects change: ${id} ${JSON.stringify(this.change)}`);
-            };
-        }
+        this.change ||= id => {
+            this.log.silly(`${this.namespace} objects change: ${id} ${JSON.stringify(this.change)}`);
+        };
 
         this.META_ID = '**META**';
         this.fileOptions = {};
@@ -71,17 +112,9 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         // cached meta information for file operations
         this.existingMetaObjects = {};
 
-        // Handle some < js-controller 2.0 broken objects and correct them
-        for (const obj of Object.values(this.dataset)) {
-            if (tools.isObject(obj) && obj.acl && obj.acl.permissions && !obj.acl.object) {
-                obj.acl.object = obj.acl.permissions;
-                delete obj.acl.permissions;
-            }
-        }
-
         // init default new acl
-        const configObj = this.dataset['system.config'];
-        if (configObj && configObj.common && configObj.common.defaultNewAcl) {
+        const configObj: ioBroker.SystemConfigObject = this.dataset['system.config'] as ioBroker.SystemConfigObject;
+        if (configObj?.common?.defaultNewAcl) {
             this.defaultNewAcl = deepClone(configObj.common.defaultNewAcl);
         }
     }
@@ -108,9 +141,13 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             id = undefined;
         }
 
-        id !== undefined && !this.writeIds.includes(id) && this.writeIds.push(id);
+        if (id !== undefined && !this.writeIds.includes(id)) {
+            this.writeIds.push(id);
+        }
 
-        this.writeTimer && clearTimeout(this.writeTimer);
+        if (this.writeTimer) {
+            clearTimeout(this.writeTimer);
+        }
 
         // if store immediately
         if (force) {
@@ -290,11 +327,11 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param data The file content
      * @param options Optional write options, or the mime type as a string
      */
-    _writeFile(id: string, name: string, data: any, options?: any): void {
+    _writeFile(id: string, name: string, data: Buffer | string, options?: FileAccessOptions | string): void {
         if (typeof options === 'string') {
             options = { mimeType: options };
         }
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -302,11 +339,11 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         id = _path.id;
         name = _path.name;
 
-        options = options || {};
+        options ||= {};
 
         this._loadFileSettings(id);
 
-        this.files[id] = this.files[id] || {};
+        this.files[id] ||= {};
 
         try {
             if (!fs.existsSync(this.objectsDir)) {
@@ -330,8 +367,8 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         const _mimeType = mime.mimeType;
         const isBinary = mime.isBinary;
 
-        this.fileOptions[id][name] = this.fileOptions[id][name] || { createdAt: Date.now() };
-        this.fileOptions[id][name].acl = this.fileOptions[id][name].acl || {
+        this.fileOptions[id][name] ||= { createdAt: Date.now() } as FileOptions;
+        this.fileOptions[id][name].acl ||= {
             owner: options.user || (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
             ownerGroup:
                 options.group ||
@@ -345,10 +382,8 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         this.fileOptions[id][name].mimeType = options.mimeType || _mimeType;
         this.fileOptions[id][name].binary = isBinary;
-        this.fileOptions[id][name].acl.ownerGroup =
-            this.fileOptions[id][name].acl.ownerGroup ||
-            (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-            utils.CONSTS.SYSTEM_ADMIN_GROUP;
+        this.fileOptions[id][name].acl.ownerGroup ||=
+            (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP;
         this.fileOptions[id][name].modifiedAt = Date.now();
 
         try {
@@ -383,7 +418,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 this.publishAll('files', `${id}$%$${name}`, size);
             },
             name,
-            data.byteLength,
+            Buffer.byteLength(data),
         );
     }
 
@@ -394,8 +429,12 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param name The file name
      * @param options Optional read options
      */
-    _readFile(id: string, name: string, options?: any): { fileContent: any; fileMime: any } {
-        if (options && options.acl) {
+    _readFile(
+        id: string,
+        name: string,
+        options?: FileAccessOptions,
+    ): { fileContent: Buffer | string; fileMime: string } {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -403,17 +442,17 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         id = _path.id;
         name = _path.name;
 
-        options = options || {};
+        options ||= {};
         try {
             this._loadFileSettings(id);
 
-            this.files[id] = this.files[id] || {};
+            this.files[id] ||= {};
 
             if (!this.files[id][name] || this.settings.connection.noFileCache || options.noFileCache) {
                 const location = path.join(this.objectsDir, id, name);
                 if (fs.existsSync(location)) {
                     // Create description object if not exists
-                    this.fileOptions[id][name] = this.fileOptions[id][name] || {
+                    this.fileOptions[id][name] ||= {
                         acl: {
                             owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
                             ownerGroup:
@@ -425,10 +464,11 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                                     utils.CONSTS.ACCESS_GROUP_ALL |
                                     utils.CONSTS.ACCESS_EVERY_ALL, // 777
                         },
-                    };
+                    } as FileOptions;
+                    // convert from old format
                     if (typeof this.fileOptions[id][name] !== 'object') {
                         this.fileOptions[id][name] = {
-                            mimeType: this.fileOptions[id][name],
+                            mimeType: this.fileOptions[id][name] as unknown as string,
                             acl: {
                                 owner:
                                     (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
@@ -452,10 +492,8 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                         this.fileOptions[id][name].mimeType = mimeType.mimeType;
                     }
 
-                    if (!this.fileOptions[id][name].binary) {
-                        if (this.files[id][name]) {
-                            this.files[id][name] = this.files[id][name].toString();
-                        }
+                    if (!this.fileOptions[id][name].binary && this.files[id][name]) {
+                        this.files[id][name] = this.files[id][name].toString();
                     }
                 } else {
                     if (this.fileOptions[id][name] !== undefined) {
@@ -648,7 +686,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param name The directory name to list
      * @param options Optional read options
      */
-    _readDir(id: string, name: string, options?: any): any[] {
+    _readDir(id: string, name: string, options?: FileAccessOptions): any[] {
         if (options && options.acl) {
             options.acl = null;
         }
@@ -707,24 +745,21 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             if (fs.existsSync(path.join(location, file))) {
                 try {
                     const stats = fs.statSync(path.join(location, file));
-                    const acl =
-                        this.fileOptions[id][name + file] && this.fileOptions[id][name + file].acl
-                            ? deepClone(this.fileOptions[id][name + file].acl) // copy settings
-                            : {
-                                  read: true,
-                                  write: true,
-                                  owner:
-                                      (this.defaultNewAcl && this.defaultNewAcl.owner) ||
-                                      utils.CONSTS.SYSTEM_ADMIN_USER,
-                                  ownerGroup:
-                                      (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                      utils.CONSTS.SYSTEM_ADMIN_GROUP,
-                                  permissions:
-                                      (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
-                                      utils.CONSTS.ACCESS_USER_RW |
-                                          utils.CONSTS.ACCESS_GROUP_READ |
-                                          utils.CONSTS.ACCESS_EVERY_READ,
-                              };
+                    const acl = this.fileOptions[id][name + file]?.acl
+                        ? deepClone(this.fileOptions[id][name + file].acl) // copy settings
+                        : {
+                              read: true,
+                              write: true,
+                              owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
+                              ownerGroup:
+                                  (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
+                                  utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                              permissions:
+                                  (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                                  utils.CONSTS.ACCESS_USER_RW |
+                                      utils.CONSTS.ACCESS_GROUP_READ |
+                                      utils.CONSTS.ACCESS_EVERY_READ,
+                          };
 
                     // if filter for user
                     if (options.filter && acl) {
@@ -749,11 +784,11 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
                         if (
                             options.user !== utils.CONSTS.SYSTEM_ADMIN_USER &&
-                            options.groups.includes(utils.CONSTS.SYSTEM_ADMIN_GROUP)
+                            options.groups?.includes(utils.CONSTS.SYSTEM_ADMIN_GROUP)
                         ) {
                             if (acl.owner !== options.user) {
                                 // Check if the user is in the group
-                                if (options.groups.includes(acl.ownerGroup)) {
+                                if (options.groups?.includes(acl.ownerGroup)) {
                                     // Check group rights
                                     if (!(acl.permissions & utils.CONSTS.ACCESS_GROUP_RW)) {
                                         continue;
@@ -993,7 +1028,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The meta ID to write
      * @param value The value to store
      */
-    setMeta(id: string, value: any): void {
+    setMeta(id: string, value: string): void {
         const meta = this._ensureMetaDict();
         meta[id] = value;
         // Make sure the object gets re-written, especially when using an external DB
@@ -1026,7 +1061,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         setImmediate(() => this.publishAll('objects', id, obj));
 
-        this.stateTimer = this.stateTimer || setTimeout(() => this.saveState(), this.writeFileInterval);
+        this.stateTimer ||= setTimeout(() => this.saveState(), this.writeFileInterval);
     }
 
     /**
@@ -1041,7 +1076,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             return;
         }
 
-        if (obj.common?.dontDelete) {
+        if ((obj.common as ioBroker.ObjectCommon)?.dontDelete) {
             throw new Error('Object is marked as non deletable');
         }
 
@@ -1121,12 +1156,12 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param params Query parameters such as startkey and endkey
      */
     _getObjectView(design: string, search: string, params: any): { rows: any[] } {
-        const designObj = this.dataset[`_design/${design}`];
+        const designObj: ioBroker.DesignObject = this.dataset[`_design/${design}`] as ioBroker.DesignObject;
         if (!designObj) {
             this.log.error(`${this.namespace} Cannot find view "${design}"`);
             throw new Error(`Cannot find view "${design}"`);
         }
-        if (!(designObj.views && designObj.views[search])) {
+        if (!designObj.views?.[search]) {
             this.log.warn(`${this.namespace} Cannot find search "${search}" in "${design}"`);
             throw new Error(`Cannot find search "${search}" in "${design}"`);
         }

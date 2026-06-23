@@ -2550,21 +2550,20 @@ export class AdapterClass extends EventEmitter {
                             for (const type of Object.keys(gAcl)) {
                                 // fix bug. Some version have user instead of users.
                                 if (type === 'user') {
-                                    // @ts-expect-error fix it
-                                    acl.users = acl.users || {};
+                                    acl.users ||= {} as ioBroker.PermissionSet['users'];
                                 } else {
-                                    // @ts-expect-error fix it
-                                    acl[type] = acl[type] || {};
+                                    // @ts-expect-error fix later
+                                    acl[type] ||= {};
                                 }
                                 // @ts-expect-error fix it
                                 for (const op of Object.keys(gAcl[type])) {
                                     // fix error
                                     if (type === 'user') {
-                                        // @ts-expect-error fix it
-                                        acl.users[op] = acl.users[op] || gAcl.user[op];
+                                        // @ts-expect-error fix later
+                                        acl.users[op] ||= gAcl.user[op];
                                     } else {
-                                        // @ts-expect-error fix it
-                                        acl[type][op] = acl[type][op] || gAcl[type][op];
+                                        // @ts-expect-error fix later
+                                        acl[type][op] ||= gAcl[type][op];
                                     }
                                 }
                             }
@@ -4416,7 +4415,7 @@ export class AdapterClass extends EventEmitter {
         Validator.assertString(design, 'design');
         Validator.assertString(search, 'search');
         Validator.assertOptionalCallback(callback, 'callback');
-        params = params || {};
+        params ||= {};
         Validator.assertObject(params, 'params');
         if (options !== null && options !== undefined) {
             Validator.assertObject(options, 'options');

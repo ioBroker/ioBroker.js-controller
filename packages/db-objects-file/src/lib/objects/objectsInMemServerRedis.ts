@@ -16,7 +16,7 @@ import { tools } from '@iobroker/db-base';
 import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
 import { EXIT_CODES } from '@iobroker/js-controller-common-db';
 
-import { RedisHandler, type ConnectionOptions } from '@iobroker/db-base';
+import { RedisHandler, type ConnectionOptions, type FileDbSettings } from '@iobroker/db-base';
 import { ObjectsInMemoryFileDB } from './objectsInMemFileDB.js';
 
 // settings = {
@@ -39,12 +39,21 @@ import { ObjectsInMemoryFileDB } from './objectsInMemFileDB.js';
 //    host: localhost
 // };
 //
-
 /**
  * This class inherits statesInMemoryFileDB class and adds redis communication layer
  * to access the methods via redis protocol
  */
-export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
+export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<
+    RedisHandler & {
+        _subscribe?: Record<
+            string,
+            {
+                pattern: string;
+                regex: RegExp;
+            }[]
+        >;
+    }
+> {
     private readonly serverConnections: Record<string, RedisHandler> = {};
     private readonly namespaceObjects: string;
     private readonly namespaceFile: string;
@@ -65,10 +74,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
      *
      * @param settings State and InMem-DB settings
      */
-    constructor(settings: Record<string, any>) {
+    constructor(settings: FileDbSettings<ioBroker.AnyObject>) {
         super(settings);
 
-        this.serverConnections = {};
         this.namespaceObjects = `${
             this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg'
         }.`;
@@ -83,15 +91,11 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         this.namespaceMeta = `${this.settings.namespaceMeta || 'meta'}.`;
         this.namespaceMetaLen = this.namespaceMeta.length;
 
-        this.knownScripts = {};
-
         this.normalizeFileRegex1 = new RegExp('^(.*)\\$%\\$(.*)\\$%\\$(meta|data)$');
         this.normalizeFileRegex2 = new RegExp('^(.*)\\$%\\$(.*)\\/?\\*$');
 
         this.open()
-            .then(() => {
-                return this._initRedisServer(this.settings.connection);
-            })
+            .then(() => this._initRedisServer(this.settings.connection))
             .then(() => {
                 this.log.debug(
                     `${this.namespace} ${settings.secure ? 'Secure ' : ''} Redis inMem-objects listening on port ${

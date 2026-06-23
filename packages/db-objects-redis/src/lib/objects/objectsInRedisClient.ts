@@ -2,7 +2,7 @@
  * Object DB in REDIS - Client
  *
  * MIT License
- * Written by bluefox <dogafox@gmail.com>, 2014-2024
+ * Written by bluefox <dogafox@gmail.com>, 2014-2026
  *
  */
 // @ts-expect-error no ts module
@@ -295,7 +295,7 @@ export class ObjectsInRedisClient {
         if (this.settings.connection.port === 0) {
             // Port = 0 means unix socket
             // initiate a unix socket connection
-            this.settings.connection.options.path = this.settings.connection.host;
+            this.settings.connection.options.path = this.settings.connection.host as string;
             this.log.debug(
                 `${this.namespace} Redis Objects: Use File Socket for connection: ${this.settings.connection.options.path}`,
             );
@@ -322,19 +322,19 @@ export class ObjectsInRedisClient {
             this.settings.connection.options.host = this.settings.connection.host;
             this.settings.connection.options.port = this.settings.connection.port;
             this.log.debug(
-                `${this.namespace} Redis Objects: Use Redis connection: ${this.settings.connection.options.host}:${this.settings.connection.options.port}`,
+                `${this.namespace} Redis Objects: Use Redis connection: ${this.settings.connection.options.host}:${this.settings.connection.options.port as number}`,
             );
         }
         this.settings.connection.options.db = this.settings.connection.options.db || 0;
         this.settings.connection.options.family = this.settings.connection.options.family || 0;
         this.settings.connection.options.password =
-            this.settings.connection.options.auth_pass || this.settings.connection.pass || null;
+            this.settings.connection.options.auth_pass || this.settings.connection.pass || undefined;
 
         this.settings.connection.options.autoResubscribe = false; // We do our own resubscribe because other sometimes not work
         // REDIS does not allow whitespaces, we have some because of pid
         this.settings.connection.options.connectionName = this.namespace.replace(/\s/g, '');
 
-        this.client = new Redis(this.settings.connection.options);
+        this.client = new Redis(this.settings.connection.options as Redis.RedisOptions);
 
         this.client.on('error', error => {
             if (this.settings.connection.enhancedLogging) {
@@ -350,7 +350,7 @@ export class ObjectsInRedisClient {
                 // It seems we have a socket.io server
                 if (error.message.startsWith('Protocol error, got "H" as reply type byte.')) {
                     this.log.error(
-                        `${this.namespace} Could not connect to objects database at ${this.settings.connection.options.host}:${this.settings.connection.options.port} (invalid protocol). Please make sure the configured IP and port points to a host running JS-Controller >= 2.0. and that the port is not occupied by other software!`,
+                        `${this.namespace} Could not connect to objects database at ${this.settings.connection.options.host as string}:${this.settings.connection.options.port as number} (invalid protocol). Please make sure the configured IP and port points to a host running JS-Controller >= 2.0. and that the port is not occupied by other software!`,
                     );
                 }
                 return;
@@ -404,7 +404,7 @@ export class ObjectsInRedisClient {
             if (reconnectCounter > 2) {
                 // fallback logic for nodejs <10
                 this.log.error(
-                    `${this.namespace} The DB port  ${this.settings.connection.options.port} is occupied by something that is not a Redis protocol server. Please check other software running on this port or, if you use iobroker, make sure to update to js-controller 2.0 or higher!`,
+                    `${this.namespace} The DB port  ${this.settings.connection.options.port as number} is occupied by something that is not a Redis protocol server. Please check other software running on this port or, if you use iobroker, make sure to update to js-controller 2.0 or higher!`,
                 );
                 return;
             }
@@ -436,7 +436,7 @@ export class ObjectsInRedisClient {
             if (!this.subSystem && typeof onChange === 'function') {
                 initCounter++;
                 this.log.debug(`${this.namespace} Objects create System PubSub Client`);
-                this.subSystem = new Redis(this.settings.connection.options);
+                this.subSystem = new Redis(this.settings.connection.options as Redis.RedisOptions);
 
                 if (typeof this.settings.primaryHostLost === 'function') {
                     try {
@@ -642,7 +642,7 @@ export class ObjectsInRedisClient {
             if (!this.sub && (typeof onChangeUser === 'function' || typeof onChangeFileUser === 'function')) {
                 initCounter++;
                 this.log.debug(`${this.namespace} Objects create User PubSub Client`);
-                this.sub = new Redis(this.settings.connection.options);
+                this.sub = new Redis(this.settings.connection.options as Redis.RedisOptions);
 
                 this.sub.on('pmessage', (pattern, channel, message) => {
                     setImmediate(() => {
@@ -5986,7 +5986,7 @@ export class ObjectsInRedisClient {
             4,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,
-            this.settings.connection.options.db,
+            this.settings.connection.options.db as number,
             `${this.metaNamespace}objects.primaryHost`,
         ]);
     }

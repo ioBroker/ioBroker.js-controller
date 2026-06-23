@@ -167,7 +167,7 @@ export class StateRedisClient {
      * Connect to the states database and set up the change and message subscriptions
      */
     connectDb(): void {
-        this.settings.connection = this.settings.connection || {};
+        this.settings.connection ||= {} as ConnectionOptions;
 
         const onChange = this.settings.change; // on change handler
         const onChangeUser = this.settings.changeUser; // on change handler for User events
@@ -183,10 +183,10 @@ export class StateRedisClient {
         // re-connection apart from the initial connection
         let wasReady = false;
 
-        this.settings.connection.options = this.settings.connection.options || {};
+        this.settings.connection.options ||= {} as ioBroker.ObjectsDatabaseOptions['options'];
         const retry_max_delay = this.settings.connection.options.retry_max_delay || 5000;
         const retry_max_count = this.settings.connection.options.retry_max_count || 19;
-        this.settings.connection.options.retryStrategy = (reconnectCount: number) => {
+        this.settings.connection.options.retryStrategy = (reconnectCount: number): number | Error => {
             if (!ready && initError) {
                 return new Error('No more tries');
             }
@@ -217,7 +217,7 @@ export class StateRedisClient {
                 return new Error('Retry time exhausted');
             }
             if (options.times_connected > 10) {
-                // End reconnecting with built in error
+                // End reconnecting with built-in error
                 return undefined;
             }
             // reconnect after
@@ -229,7 +229,7 @@ export class StateRedisClient {
         if (this.settings.connection.port === 0) {
             // Port = 0 means unix socket
             // initiate a unix socket connection
-            this.settings.connection.options.path = this.settings.connection.host;
+            this.settings.connection.options.path = this.settings.connection.host as string;
             this.log.debug(
                 `${this.namespace} Redis States: Use File Socket for connection: ${this.settings.connection.options.path}`,
             );
@@ -253,7 +253,7 @@ export class StateRedisClient {
             this.settings.connection.options.host = this.settings.connection.host;
             this.settings.connection.options.port = this.settings.connection.port;
             this.log.debug(
-                `${this.namespace} Redis States: Use Redis connection: ${this.settings.connection.options.host}:${this.settings.connection.options.port}`,
+                `${this.namespace} Redis States: Use Redis connection: ${this.settings.connection.options.host}:${this.settings.connection.options.port as number}`,
             );
         }
         if (this.settings.connection.options.db === undefined) {
@@ -263,12 +263,12 @@ export class StateRedisClient {
             this.settings.connection.options.family = 0;
         }
         this.settings.connection.options.password =
-            this.settings.connection.options.auth_pass || this.settings.connection.pass || null;
+            this.settings.connection.options.auth_pass || this.settings.connection.pass || undefined;
         this.settings.connection.options.autoResubscribe = false; // We do our own resubscribe because other sometimes not work
         // REDIS does not allow whitespaces, we have some because of pid
         this.settings.connection.options.connectionName = this.namespace.replace(/\s/g, '');
 
-        this.client = new Redis(this.settings.connection.options);
+        this.client = new Redis(this.settings.connection.options as Redis.RedisOptions);
 
         this.client.on('error', error => {
             this.settings.connection.enhancedLogging &&
@@ -283,7 +283,7 @@ export class StateRedisClient {
                 // Seems we have a socket.io server
                 if (error.message.startsWith('Protocol error, got "H" as reply type byte.')) {
                     this.log.error(
-                        `${this.namespace} Could not connect to states database at ${this.settings.connection.options.host}:${this.settings.connection.options.port} (invalid protocol). Please make sure the configured IP and port points to a host running JS-Controller >= 2.0. and that the port is not occupied by other software!`,
+                        `${this.namespace} Could not connect to states database at ${this.settings.connection.options.host as string}:${this.settings.connection.options.port as number} (invalid protocol). Please make sure the configured IP and port points to a host running JS-Controller >= 2.0. and that the port is not occupied by other software!`,
                     );
                 }
                 return;
@@ -331,7 +331,7 @@ export class StateRedisClient {
             if (reconnectCounter > 2) {
                 // fallback logic for nodejs <10
                 this.log.error(
-                    `${this.namespace} The DB port  ${this.settings.connection.options.port} is occupied by something that is not a Redis protocol server. Please check other software running on this port or, if you use iobroker, make sure to update to js-controller 2.0 or higher!`,
+                    `${this.namespace} The DB port  ${this.settings.connection.options.port as number} is occupied by something that is not a Redis protocol server. Please check other software running on this port or, if you use iobroker, make sure to update to js-controller 2.0 or higher!`,
                 );
                 return;
             }
@@ -366,7 +366,7 @@ export class StateRedisClient {
                 }
 
                 this.log.debug(`${this.namespace} States create System PubSub Client`);
-                this.subSystem = new Redis(this.settings.connection.options);
+                this.subSystem = new Redis(this.settings.connection.options as Redis.RedisOptions);
 
                 if (typeof onChange === 'function') {
                     this.subSystem.on('pmessage', (pattern, channel, message) => {
@@ -556,7 +556,7 @@ export class StateRedisClient {
                 initCounter++;
 
                 this.log.debug(`${this.namespace} States create User PubSub Client`);
-                this.sub = new Redis(this.settings.connection.options);
+                this.sub = new Redis(this.settings.connection.options as Redis.RedisOptions);
 
                 this.sub.on('pmessage', (pattern, channel, message) => {
                     setImmediate(() => {
@@ -1586,8 +1586,9 @@ export class StateRedisClient {
 
         try {
             await this.client.setex(this.namespaceSession + id, expireS, JSON.stringify(obj));
-            this.settings.connection.enhancedLogging &&
+            if (this.settings.connection.enhancedLogging) {
                 this.log.silly(`${this.namespace} redis setex ${id} ${expireS} ${JSON.stringify(obj)}`);
+            }
             return tools.maybeCallback(callback);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);

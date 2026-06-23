@@ -10,7 +10,7 @@
 import net from 'node:net';
 import { inspect } from 'node:util';
 
-import { RedisHandler, type ConnectionOptions } from '@iobroker/db-base';
+import { RedisHandler, type ConnectionOptions, type FileDbSettings } from '@iobroker/db-base';
 import { StatesInMemoryFileDB } from './statesInMemFileDB.js';
 import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
 import { EXIT_CODES } from '@iobroker/js-controller-common-db';
@@ -43,7 +43,17 @@ type SubscriptionRegistry = Record<string, { pattern: string; regex: RegExp }[]>
  * This class inherits statesInMemoryFileDB class and adds socket.io communication layer
  * to access the methods via socket.io
  */
-export class StatesInMemoryServer extends StatesInMemoryFileDB {
+export class StatesInMemoryServer extends StatesInMemoryFileDB<
+    RedisHandler & {
+        _subscribe?: Record<
+            string,
+            {
+                pattern: string;
+                regex: RegExp;
+            }[]
+        >;
+    }
+> {
     private readonly serverConnections: Record<string, RedisHandler> = {};
     private readonly namespaceStates: string;
     private readonly namespaceMsg: string;
@@ -52,7 +62,6 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
     private readonly namespaceMsgLen: number;
     private readonly namespaceLogLen: number;
     private readonly metaNamespace: string;
-    private readonly metaNamespaceLen: number;
     private server: net.Server | undefined;
 
     /**
@@ -60,20 +69,16 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
      *
      * @param settings State and InMem-DB settings
      */
-    constructor(settings: Record<string, any>) {
+    constructor(settings: FileDbSettings<ioBroker.State | Record<string, string>>) {
         super(settings);
 
-        this.serverConnections = {};
         this.namespaceStates = `${this.settings.redisNamespace || 'io'}.`;
         this.namespaceMsg = `${this.settings.namespaceMsg || 'messagebox'}.`;
         this.namespaceLog = `${this.settings.namespaceLog || 'log'}.`;
         this.namespaceSession = `${this.settings.namespaceSession || 'session'}.`;
-        //this.namespaceStatesLen  = this.namespaceStates.length;
         this.namespaceMsgLen = this.namespaceMsg.length;
         this.namespaceLogLen = this.namespaceLog.length;
-        //this.namespaceSessionlen = this.namespaceSession.length;
         this.metaNamespace = `${this.settings.metaNamespace || 'meta'}.`;
-        this.metaNamespaceLen = this.metaNamespace.length;
 
         this.open()
             .then(() => {
