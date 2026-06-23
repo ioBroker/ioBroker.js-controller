@@ -2087,14 +2087,15 @@ async function processCommand(
                 author: 'bluefox <dogafox@gmail.com>',
             };
 
-            // @ts-expect-error todo fix it
-            tools.getRepositoryFile(null, null, (_err, sources, _sourcesHash) => {
+            tools.getRepositoryFile((_err, sources, _sourcesHash) => {
                 if (sources) {
                     for (const s in sources) {
                         if (Object.prototype.hasOwnProperty.call(sources, s)) {
-                            if (sources[s].url) {
+                            if ((sources[s] as ioBroker.RepositoryJsonAdapterContent).url) {
                                 if (!json.dependencies[`${tools.appName}.${s}`]) {
-                                    json.optionalDependencies[`${tools.appName}.${s}`] = sources[s].url;
+                                    json.optionalDependencies[`${tools.appName}.${s}`] = (
+                                        sources[s] as ioBroker.RepositoryJsonAdapterContent
+                                    ).url!;
                                 }
                             } else {
                                 if (!json.dependencies[`${tools.appName}.${s}`]) {

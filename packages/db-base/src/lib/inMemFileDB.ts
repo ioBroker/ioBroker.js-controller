@@ -116,8 +116,6 @@ export interface FileDbSettings<TObject> {
     auth?: null;
     /** Whether the server connection should be secured via TLS */
     secure?: boolean;
-    /** as required by createServer TODO: if createServer is typed, add type */
-    certificates?: any;
     /** Port the in-memory server listens on */
     port?: number;
     /** Host the in-memory server binds to */

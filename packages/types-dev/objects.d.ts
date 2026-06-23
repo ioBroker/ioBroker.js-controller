@@ -1088,7 +1088,19 @@ declare global {
             unsafePerm?: boolean;
             /** If given, the packet name differs from the adapter name, e.g. because it is a scoped package */
             packetName?: string;
+            /** Link to package */
+            meta: string;
+            /** List of licenses */
+            licenses?: { type: string; url: string }[];
+            /** Normally by admin is a ISO string with published date */
+            published?: string;
 
+            /** Link to adapter repo */
+            url?: string;
+            /** Adapter icon */
+            icon?: string;
+            /** Internally used flag */
+            processed?: boolean;
             /** Other Adapter related properties, not important for this implementation */
             [other: string]: unknown;
         }
