@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import sinon from 'sinon';
 import { MessagingManager, type MessagingManagerDeps } from './MessagingManager.js';
 
 function makeDeps(over: Partial<MessagingManagerDeps> = {}): MessagingManagerDeps {
@@ -18,5 +19,52 @@ describe('MessagingManager', () => {
     it('constructs with injected deps', () => {
         const mgr = new MessagingManager(makeDeps());
         assert.ok(mgr instanceof MessagingManager);
+    });
+});
+
+describe('MessagingManager.assertSendTo', () => {
+    it('shuffles (message, callback) when command omitted', () => {
+        const mgr = new MessagingManager(makeDeps());
+        const cb = () => {};
+        const v = mgr.assertSendTo('inst.0', { a: 1 }, cb);
+        assert.equal(v.ok, true);
+        if (v.ok) {
+            assert.equal(v.value.command, 'send');
+            assert.deepEqual(v.value.message, { a: 1 });
+            assert.equal(v.value.callback, cb);
+        }
+    });
+
+    it('returns an error result for a non-string instanceName', () => {
+        const mgr = new MessagingManager(makeDeps());
+        const v = mgr.assertSendTo(42, 'cmd', { a: 1 });
+        assert.equal(v.ok, false);
+        if (!v.ok) {
+            assert.match(v.error.message, /instanceName/);
+        }
+    });
+});
+
+describe('MessagingManager.sendTo', () => {
+    it('stores a callback and times it out', async () => {
+        const clock = sinon.useFakeTimers();
+        try {
+            // a specific instanceName triggers a single pushMessage to that instance
+            const fakeStates = { pushMessage: sinon.stub().resolves(), subscribeMessage: sinon.stub() } as any;
+            const fakeCommon = { supportedMessages: { custom: false, object: false, state: false, deviceManager: false } } as any;
+            const deps = makeDeps({ getStates: () => fakeStates, getCommon: () => fakeCommon });
+            const mgr = new MessagingManager(deps);
+            const cb = sinon.spy();
+            const v = mgr.assertSendTo('inst.0', 'cmd', { a: 1 }, cb, { timeout: 1000 });
+            assert.equal(v.ok, true);
+            if (v.ok) {
+                await mgr.sendTo(v.value);
+            }
+            clock.tick(1001);
+            assert.equal(cb.calledOnce, true);
+            assert.ok(cb.firstCall.args[0] instanceof Error);
+        } finally {
+            clock.restore();
+        }
     });
 });
