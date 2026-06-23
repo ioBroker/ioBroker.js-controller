@@ -4,14 +4,14 @@ import { MessagingManager, type MessagingManagerDeps } from './MessagingManager.
 
 function makeDeps(over: Partial<MessagingManagerDeps> = {}): MessagingManagerDeps {
     return {
-        namespace: 'test.0',
-        namespaceLog: 'test.0',
+        getNamespace: () => 'test.0',
+        getNamespaceLog: () => 'test.0',
         logger: { silly() {}, debug() {}, info() {}, warn() {}, error() {} } as any,
         uiMessagingController: {} as any,
         getStates: () => null,
         getObjects: () => null,
         getCommon: () => undefined,
-        host: 'localhost',
+        getHost: () => 'localhost',
         ...over,
     };
 }
@@ -26,7 +26,7 @@ describe('MessagingManager', () => {
 describe('MessagingManager.assertSendTo', () => {
     it('shuffles (message, callback) when command omitted', () => {
         const mgr = new MessagingManager(makeDeps());
-        const cb = () => {};
+        const cb = (): void => {};
         const v = mgr.assertSendTo('inst.0', { a: 1 }, cb);
         assert.equal(v.ok, true);
         if (v.ok) {
@@ -52,7 +52,9 @@ describe('MessagingManager.sendTo', () => {
         try {
             // a specific instanceName triggers a single pushMessage to that instance
             const fakeStates = { pushMessage: sinon.stub().resolves(), subscribeMessage: sinon.stub() } as any;
-            const fakeCommon = { supportedMessages: { custom: false, object: false, state: false, deviceManager: false } } as any;
+            const fakeCommon = {
+                supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
+            } as any;
             const deps = makeDeps({ getStates: () => fakeStates, getCommon: () => fakeCommon });
             const mgr = new MessagingManager(deps);
             const cb = sinon.spy();
@@ -153,9 +155,7 @@ describe('MessagingManager.registerNotification', () => {
     it('pushes an addNotification message to the host', async () => {
         const pushMessage = sinon.stub().resolves();
         const fakeStates = { pushMessage } as any;
-        const mgr = new MessagingManager(
-            makeDeps({ getStates: () => fakeStates, host: 'myhost' }),
-        );
+        const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates, getHost: () => 'myhost' }));
         await mgr.registerNotification('iobroker', 'memUsage', 'test message');
         assert.equal(pushMessage.calledOnce, true);
         const [target, obj] = pushMessage.firstCall.args as [string, { command: string; message: unknown }];

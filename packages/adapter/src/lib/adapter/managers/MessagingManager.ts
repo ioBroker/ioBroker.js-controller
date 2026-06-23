@@ -15,17 +15,37 @@ import { Validator } from '../validator.js';
 import { tools } from '@iobroker/js-controller-common';
 import { isMessageboxSupported } from '@/lib/adapter/utils.js';
 
-export type Validated<T> = { ok: true; value: T } | { ok: false; error: Error };
+export type Validated<T> =
+    | {
+          /** Discriminant: validation succeeded */
+          ok: true;
+          /** Validated and normalized value */
+          value: T;
+      }
+    | {
+          /** Discriminant: validation failed */
+          ok: false;
+          /** Validation error */
+          error: Error;
+      };
 
 /** Dependencies injected into MessagingManager at construction time. */
 export interface MessagingManagerDeps {
-    readonly namespace: `${string}.${number}`;
-    readonly namespaceLog: string;
+    /** Returns the current adapter namespace (re-derived during init), e.g. `"adapter.0"` */
+    getNamespace: () => `${string}.${number}`;
+    /** Returns the current namespace string used in log messages (re-derived during init) */
+    getNamespaceLog: () => string;
+    /** Logger instance */
     readonly logger: Winston.Logger;
+    /** Controller for UI messaging */
     readonly uiMessagingController: UserInterfaceMessagingController;
-    readonly host: string;
+    /** Returns the current host name (late-bound; may be undefined before init) */
+    getHost: () => string | undefined;
+    /** Returns the current states DB client */
     getStates: () => StatesInRedisClient | null | undefined;
+    /** Returns the current objects DB client */
     getObjects: () => ObjectsInRedisClient | null | undefined;
+    /** Returns the current adapter common config */
     getCommon: () => ioBroker.InstanceCommon | undefined;
 }
 
@@ -35,6 +55,9 @@ export class MessagingManager {
     #callbackId = 1;
     #mboxSubscribed = false;
 
+    /**
+     * @param deps Dependencies injected at construction time
+     */
     constructor(private readonly deps: MessagingManagerDeps) {}
 
     /**
@@ -68,7 +91,7 @@ export class MessagingManager {
                 Validator.assertOptionalCallback(callback, 'callback');
             }
             if (options !== undefined) {
-                Validator.assertObject(options, 'options');
+                Validator.assertObject<SendToOptions>(options, 'options');
             }
             return {
                 ok: true,
@@ -76,7 +99,7 @@ export class MessagingManager {
                     instanceName,
                     command,
                     message,
-                    options: options as SendToOptions | undefined,
+                    options,
                     callback: callback as ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
                 },
             };
@@ -97,7 +120,7 @@ export class MessagingManager {
         const obj: ioBroker.SendableMessage = {
             command,
             message,
-            from: `system.adapter.${this.deps.namespace}`,
+            from: `system.adapter.${this.deps.getNamespace()}`,
         };
 
         if (!instanceName) {
@@ -111,25 +134,29 @@ export class MessagingManager {
 
         const states = this.deps.getStates();
         if (!states) {
-            this.deps.logger.info(`${this.deps.namespaceLog} sendTo not processed because States database not connected`);
+            this.deps.logger.info(
+                `${this.deps.getNamespaceLog()} sendTo not processed because States database not connected`,
+            );
             // @ts-expect-error TODO it could also be the cb object
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         if (typeof message !== 'object') {
             this.deps.logger.silly(
-                `${this.deps.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.deps.namespace}: ${message}`,
+                `${this.deps.getNamespaceLog()} sendTo "${command}" to ${instanceName} from system.adapter.${this.deps.getNamespace()}: ${message}`,
             );
         } else {
             this.deps.logger.silly(
-                `${this.deps.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.deps.namespace}`,
+                `${this.deps.getNamespaceLog()} sendTo "${command}" to ${instanceName} from system.adapter.${this.deps.getNamespace()}`,
             );
         }
 
         if (!instanceName.match(/\.[0-9]+$/)) {
             const objects = this.deps.getObjects();
             if (!objects) {
-                this.deps.logger.info(`${this.deps.namespaceLog} sendTo not processed because Objects database not connected`);
+                this.deps.logger.info(
+                    `${this.deps.getNamespaceLog()} sendTo not processed because Objects database not connected`,
+                );
                 // @ts-expect-error TODO it could also be the cb object
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
@@ -159,7 +186,7 @@ export class MessagingManager {
                     // force subscribe even no messagebox enabled
                     if (!isMessageboxSupported(this.deps.getCommon()!) && !this.#mboxSubscribed) {
                         this.#mboxSubscribed = true;
-                        states.subscribeMessage(`system.adapter.${this.deps.namespace}`);
+                        states.subscribeMessage(`system.adapter.${this.deps.getNamespace()}`);
                     }
 
                     obj.callback = {
@@ -244,7 +271,7 @@ export class MessagingManager {
             return {
                 ok: true,
                 value: {
-                    hostName: hostName as string | null,
+                    hostName,
                     command,
                     message,
                     callback: callback as ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
@@ -300,6 +327,11 @@ export class MessagingManager {
      * @param options clientId and data options
      */
     sendToUI(options: SendToUserInterfaceClientOptions): Promise<void>;
+    /**
+     * @internal
+     * @param options clientId and data options
+     */
+    sendToUI(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void>;
     sendToUI(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void> {
         const states = this.deps.getStates();
         if (!states) {
@@ -338,11 +370,19 @@ export class MessagingManager {
         message: string,
         options?: NotificationOptions,
     ): Promise<void>;
+    /**
+     * @internal
+     * @param scope notification scope
+     * @param category notification category
+     * @param message notification message
+     * @param options additional notification options
+     */
+    registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void>;
     async registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void> {
         const states = this.deps.getStates();
         if (!states) {
             this.deps.logger.info(
-                `${this.deps.namespaceLog} registerNotification not processed because States database not connected`,
+                `${this.deps.getNamespaceLog()} registerNotification not processed because States database not connected`,
             );
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -363,13 +403,13 @@ export class MessagingManager {
                 scope,
                 category,
                 message,
-                instance: this.deps.namespace,
+                instance: this.deps.getNamespace(),
                 contextData: options?.contextData,
             },
-            from: `system.adapter.${this.deps.namespace}`,
+            from: `system.adapter.${this.deps.getNamespace()}`,
         };
 
-        await states.pushMessage(`system.host.${this.deps.host}`, obj as any);
+        await states.pushMessage(`system.host.${this.deps.getHost()}`, obj as any);
     }
 
     /**
@@ -380,11 +420,13 @@ export class MessagingManager {
     async sendToHost(opts: InternalSendToHostOptions): Promise<void> {
         const { command, message, callback } = opts;
         let { hostName } = opts;
-        const obj: Partial<ioBroker.Message> = { command, message, from: `system.adapter.${this.deps.namespace}` };
+        const obj: Partial<ioBroker.Message> = { command, message, from: `system.adapter.${this.deps.getNamespace()}` };
 
         const states = this.deps.getStates();
         if (!states) {
-            this.deps.logger.info(`${this.deps.namespaceLog} sendToHost not processed because States database not connected`);
+            this.deps.logger.info(
+                `${this.deps.getNamespaceLog()} sendToHost not processed because States database not connected`,
+            );
             // @ts-expect-error TODO it could also be the cb object
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -397,7 +439,7 @@ export class MessagingManager {
             const objects = this.deps.getObjects();
             if (!objects) {
                 this.deps.logger.info(
-                    `${this.deps.namespaceLog} sendToHost not processed because Objects database not connected`,
+                    `${this.deps.getNamespaceLog()} sendToHost not processed because Objects database not connected`,
                 );
                 // @ts-expect-error TODO it could also be the cb object
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
@@ -436,7 +478,7 @@ export class MessagingManager {
                     // force subscribe even no messagebox enabled
                     if (!isMessageboxSupported(this.deps.getCommon()!) && !this.#mboxSubscribed) {
                         this.#mboxSubscribed = true;
-                        states.subscribeMessage(`system.adapter.${this.deps.namespace}`);
+                        states.subscribeMessage(`system.adapter.${this.deps.getNamespace()}`);
                     }
 
                     obj.callback = {
