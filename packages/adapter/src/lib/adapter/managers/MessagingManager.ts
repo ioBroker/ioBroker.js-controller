@@ -2,7 +2,15 @@ import type Winston from 'winston';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { UserInterfaceMessagingController } from '../userInterfaceMessagingController.js';
-import type { InternalSendToHostOptions, InternalSendToOptions, MessageCallbackObject, SendToOptions } from '../../_Types.js';
+import type {
+    AllPropsUnknown,
+    InternalSendToHostOptions,
+    InternalSendToOptions,
+    MessageCallbackObject,
+    NotificationOptions,
+    SendToOptions,
+    SendToUserInterfaceClientOptions,
+} from '../../_Types.js';
 import { Validator } from '../validator.js';
 import { tools } from '@iobroker/js-controller-common';
 import { isMessageboxSupported } from '@/lib/adapter/utils.js';
@@ -15,6 +23,7 @@ export interface MessagingManagerDeps {
     readonly namespaceLog: string;
     readonly logger: Winston.Logger;
     readonly uiMessagingController: UserInterfaceMessagingController;
+    readonly host: string;
     getStates: () => StatesInRedisClient | null | undefined;
     getObjects: () => ObjectsInRedisClient | null | undefined;
     getCommon: () => ioBroker.InstanceCommon | undefined;
@@ -283,6 +292,84 @@ export class MessagingManager {
             this.#callbacks.forEach(callbackObj => clearTimeout(callbackObj.timer));
             this.#callbacks.clear();
         }
+    }
+
+    /**
+     * Sends a message to a single UI client, or broadcasts to all connected UI clients when `clientId` is omitted.
+     *
+     * @param options clientId and data options
+     */
+    sendToUI(options: SendToUserInterfaceClientOptions): Promise<void>;
+    sendToUI(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void> {
+        const states = this.deps.getStates();
+        if (!states) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        const { clientId, data } = options;
+
+        if (clientId === undefined) {
+            return this.deps.uiMessagingController.sendToAllClients({
+                data,
+                states,
+            });
+        }
+
+        Validator.assertString(clientId, 'clientId');
+
+        return this.deps.uiMessagingController.sendToClient({
+            clientId,
+            data,
+            states,
+        });
+    }
+
+    /**
+     * Sends an addNotification command to the host of this adapter instance.
+     *
+     * @param scope notification scope
+     * @param category notification category, or `null` to match by scope regex
+     * @param message notification message
+     * @param options additional notification options
+     */
+    registerNotification<Scope extends keyof ioBroker.NotificationScopes>(
+        scope: Scope,
+        category: ioBroker.NotificationScopes[Scope] | null,
+        message: string,
+        options?: NotificationOptions,
+    ): Promise<void>;
+    async registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void> {
+        const states = this.deps.getStates();
+        if (!states) {
+            this.deps.logger.info(
+                `${this.deps.namespaceLog} registerNotification not processed because States database not connected`,
+            );
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        Validator.assertString(scope, 'scope');
+        if (category !== null) {
+            Validator.assertString(category, 'category');
+        }
+        Validator.assertString(message, 'message');
+
+        if (options !== undefined) {
+            Validator.assertObject<NotificationOptions>(options, 'options');
+        }
+
+        const obj = {
+            command: 'addNotification',
+            message: {
+                scope,
+                category,
+                message,
+                instance: this.deps.namespace,
+                contextData: options?.contextData,
+            },
+            from: `system.adapter.${this.deps.namespace}`,
+        };
+
+        await states.pushMessage(`system.host.${this.deps.host}`, obj as any);
     }
 
     /**

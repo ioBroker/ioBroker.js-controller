@@ -11,6 +11,7 @@ function makeDeps(over: Partial<MessagingManagerDeps> = {}): MessagingManagerDep
         getStates: () => null,
         getObjects: () => null,
         getCommon: () => undefined,
+        host: 'localhost',
         ...over,
     };
 }
@@ -104,6 +105,67 @@ describe('MessagingManager.sendToHost', () => {
         assert.equal(targetId, 'system.host.myhost');
         assert.equal(sentObj.from, 'system.adapter.test.0');
         assert.equal(sentObj.command, 'myCommand');
+    });
+});
+
+describe('MessagingManager.sendToUI', () => {
+    it('delegates a single-client send to uiMessagingController.sendToClient', async () => {
+        const sendToClient = sinon.stub().resolves();
+        const sendToAllClients = sinon.stub().resolves();
+        const fakeStates = {} as any;
+        const mgr = new MessagingManager(
+            makeDeps({
+                getStates: () => fakeStates,
+                uiMessagingController: { sendToClient, sendToAllClients } as any,
+            }),
+        );
+        await mgr.sendToUI({ clientId: 'client-1', data: { foo: 'bar' } });
+        assert.equal(sendToClient.calledOnce, true);
+        assert.equal(sendToAllClients.called, false);
+        const [opts] = sendToClient.firstCall.args as [{ states: unknown }];
+        assert.equal(opts.states, fakeStates);
+    });
+
+    it('broadcasts to all clients when clientId is omitted', async () => {
+        const sendToClient = sinon.stub().resolves();
+        const sendToAllClients = sinon.stub().resolves();
+        const fakeStates = {} as any;
+        const mgr = new MessagingManager(
+            makeDeps({
+                getStates: () => fakeStates,
+                uiMessagingController: { sendToClient, sendToAllClients } as any,
+            }),
+        );
+        await mgr.sendToUI({ data: { foo: 'bar' } });
+        assert.equal(sendToAllClients.calledOnce, true);
+        assert.equal(sendToClient.called, false);
+        const [opts] = sendToAllClients.firstCall.args as [{ states: unknown }];
+        assert.equal(opts.states, fakeStates);
+    });
+
+    it('throws when states database is not connected', () => {
+        const mgr = new MessagingManager(makeDeps({ getStates: () => null }));
+        assert.throws(() => mgr.sendToUI({ data: 'test' }));
+    });
+});
+
+describe('MessagingManager.registerNotification', () => {
+    it('pushes an addNotification message to the host', async () => {
+        const pushMessage = sinon.stub().resolves();
+        const fakeStates = { pushMessage } as any;
+        const mgr = new MessagingManager(
+            makeDeps({ getStates: () => fakeStates, host: 'myhost' }),
+        );
+        await mgr.registerNotification('iobroker', 'memUsage', 'test message');
+        assert.equal(pushMessage.calledOnce, true);
+        const [target, obj] = pushMessage.firstCall.args as [string, { command: string; message: unknown }];
+        assert.equal(target, 'system.host.myhost');
+        assert.equal(obj.command, 'addNotification');
+    });
+
+    it('throws when states database is not connected', async () => {
+        const mgr = new MessagingManager(makeDeps({ getStates: () => null }));
+        await assert.rejects(() => mgr.registerNotification('iobroker', 'memUsage', 'msg'));
     });
 });
 
