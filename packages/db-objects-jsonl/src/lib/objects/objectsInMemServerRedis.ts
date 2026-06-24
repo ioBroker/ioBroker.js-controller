@@ -1002,8 +1002,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB<RedisHandlerIn
                 acl?: {
                     read?: boolean;
                     write?: boolean;
-                    owner: string;
-                    ownerGroup: string;
+                    owner: ioBroker.ObjectIDs.User;
+                    ownerGroup: ioBroker.ObjectIDs.Group;
                     permissions: number;
                 };
                 notExists?: boolean;

@@ -991,8 +991,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInt
                     acl?: {
                         read?: boolean;
                         write?: boolean;
-                        owner: string;
-                        ownerGroup: string;
+                        owner: ioBroker.ObjectIDs.User;
+                        ownerGroup: ioBroker.ObjectIDs.Group;
                         permissions: number;
                     };
                     modifiedAt?: number | undefined;

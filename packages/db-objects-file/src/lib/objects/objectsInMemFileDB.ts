@@ -19,8 +19,8 @@ import deepClone from 'deep-clone';
 interface FileAccessOptions {
     /** Access control list / permission context (cleared internally before use) */
     acl?: {
-        owner: string;
-        ownerGroup: string;
+        owner: ioBroker.ObjectIDs.User;
+        ownerGroup: ioBroker.ObjectIDs.Group;
         file: {
             read?: boolean;
             write?: boolean;
@@ -28,11 +28,11 @@ interface FileAccessOptions {
         }; // 0x644
     } | null;
     /** User that owns a newly created file, or the user whose access is being checked */
-    user?: string;
+    user?: ioBroker.ObjectIDs.User;
     /** Group that owns a newly created file */
-    group?: string;
+    group?: ioBroker.ObjectIDs.Group;
     /** Groups the requesting user belongs to (used for permission checks) */
-    groups?: string[];
+    groups?: ioBroker.ObjectIDs.Group[];
     /** File permission bitmask for a newly created file */
     mode?: number;
     /** Explicit mime type to store with the file */
@@ -55,8 +55,8 @@ interface SubscriptionClient {
 export interface FileOptions {
     createdAt?: number;
     acl: {
-        owner: string;
-        ownerGroup: string;
+        owner: ioBroker.ObjectIDs.User;
+        ownerGroup: ioBroker.ObjectIDs.Group;
         permissions: number; // 0x644
         read?: boolean;
         write?: boolean;
@@ -84,8 +84,8 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
         object: number;
         state: number;
         file: number;
-        owner: string;
-        ownerGroup: string;
+        owner: ioBroker.ObjectIDs.User;
+        ownerGroup: ioBroker.ObjectIDs.Group;
     } | null;
     private readonly writeFileInterval: number;
     protected readonly objectsDir: string;
@@ -693,8 +693,8 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
         acl: {
             read?: boolean;
             write?: boolean;
-            owner: string;
-            ownerGroup: string;
+            owner: ioBroker.ObjectIDs.User;
+            ownerGroup: ioBroker.ObjectIDs.Group;
             permissions: number;
         };
         notExists?: boolean;
@@ -759,8 +759,8 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
             acl: {
                 read?: boolean;
                 write?: boolean;
-                owner: string;
-                ownerGroup: string;
+                owner: ioBroker.ObjectIDs.User;
+                ownerGroup: ioBroker.ObjectIDs.Group;
                 permissions: number;
             };
             modifiedAt: number | undefined;

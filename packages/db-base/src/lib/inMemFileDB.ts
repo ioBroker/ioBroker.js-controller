@@ -129,8 +129,8 @@ export interface FileDbSettings<TObject> {
         object: number;
         state: number;
         file: number;
-        owner: string;
-        ownerGroup: string;
+        owner: ioBroker.ObjectIDs.User;
+        ownerGroup: ioBroker.ObjectIDs.Group;
     };
     /** Redis key prefix used by the in-memory server (defaults to "io") */
     redisNamespace?: string;
