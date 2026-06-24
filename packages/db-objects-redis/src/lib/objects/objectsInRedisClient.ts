@@ -5277,7 +5277,7 @@ export class ObjectsInRedisClient {
      */
     getObjectList(
         params: ioBroker.GetObjectListParams,
-        options?: { user?: ioBroker.ObjectIDs.User } | null,
+        options?: { user?: ioBroker.ObjectIDs.User; sorted?: boolean } | null,
     ): ioBroker.GetObjectListPromise;
 
     // getObjectList is called without options with callback
@@ -5302,7 +5302,7 @@ export class ObjectsInRedisClient {
      */
     getObjectList<T extends ioBroker.GetObjectListCallback<ioBroker.Object>>(
         params: ioBroker.GetObjectListParams,
-        options?: { user?: ioBroker.ObjectIDs.User } | null,
+        options?: { user?: ioBroker.ObjectIDs.User; sorted?: boolean } | null,
         callback?: T,
     ): T extends ioBroker.GetObjectListCallback<ioBroker.Object> ? void : ioBroker.GetObjectListPromise;
 
@@ -5315,7 +5315,10 @@ export class ObjectsInRedisClient {
      */
     getObjectList(
         params: ioBroker.GetObjectListParams,
-        options?: { user?: ioBroker.ObjectIDs.User } | null | ioBroker.GetObjectListCallback<ioBroker.Object>,
+        options?:
+            | { user?: ioBroker.ObjectIDs.User; sorted?: boolean }
+            | null
+            | ioBroker.GetObjectListCallback<ioBroker.Object>,
         callback?: ioBroker.GetObjectListCallback<ioBroker.Object>,
     ): void | ioBroker.GetObjectListPromise {
         if (typeof options === 'function') {
@@ -5351,7 +5354,7 @@ export class ObjectsInRedisClient {
      */
     getObjectListAsync(
         params: ioBroker.GetObjectListParams,
-        options?: { user?: ioBroker.ObjectIDs.User; checked?: true },
+        options?: { user?: ioBroker.ObjectIDs.User; checked?: true; sorted?: boolean } | null,
     ): ioBroker.GetObjectListPromise {
         return this.getObjectList(params, options);
     }

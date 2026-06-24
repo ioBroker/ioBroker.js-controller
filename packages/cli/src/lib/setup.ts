@@ -1,12 +1,14 @@
 import fs from 'fs-extra';
-import { tools } from '@iobroker/js-controller-common';
-import { EXIT_CODES } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'node:util';
 import Debug from 'debug';
-import { objectsDbHasServer, isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common';
 import path from 'node:path';
 import yargs from 'yargs/yargs';
+
+import { tools } from '@iobroker/js-controller-common';
+import { EXIT_CODES } from '@iobroker/js-controller-common';
+import { objectsDbHasServer, isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common';
+
 import * as CLITools from '@/lib/cli/cliTools.js';
 import { CLIHost } from '@/lib/cli/cliHost.js';
 import { CLIStates } from '@/lib/cli/cliStates.js';
@@ -1659,8 +1661,8 @@ async function processCommand(
         }
 
         case 'chown': {
-            let user = args[0];
-            let group: string | undefined = args[1];
+            let user = args[0] as ioBroker.ObjectIDs.User;
+            let group: ioBroker.ObjectIDs.Group | undefined = args[1] as ioBroker.ObjectIDs.Group;
             let pattern = args[2];
 
             if (!pattern) {
@@ -1709,7 +1711,7 @@ async function processCommand(
                                         '*',
                                         {
                                             user: 'system.user.admin',
-                                            owner: user as ioBroker.ObjectIDs.User,
+                                            owner: user,
                                             ownerGroup: group,
                                         },
                                         // @ts-expect-error todo _id should not exist how to handle
@@ -1758,7 +1760,7 @@ async function processCommand(
                         path,
                         {
                             user: 'system.user.admin',
-                            owner: user as ioBroker.ObjectIDs.User,
+                            owner: user,
                             ownerGroup: group,
                         },
                         async (err, processed) => {
@@ -1792,7 +1794,7 @@ async function processCommand(
             const command = args[0] || '';
             let user = args[1] || '';
 
-            if (user && user.startsWith('system.user.')) {
+            if (user?.startsWith('system.user.')) {
                 user = user.substring('system.user.'.length);
             }
 
@@ -1884,10 +1886,10 @@ async function processCommand(
             let group = args[1] || '';
             let user = args[2] || '';
 
-            if (group && group.startsWith('system.group.')) {
+            if (group?.startsWith('system.group.')) {
                 group = group.substring('system.group.'.length);
             }
-            if (user && user.startsWith('system.user.')) {
+            if (user?.startsWith('system.user.')) {
                 user = user.substring('system.user.'.length);
             }
             if (!command) {
@@ -2198,7 +2200,7 @@ async function processCommand(
 
         case 'visdebug': {
             let widgetset = args[0];
-            if (widgetset && widgetset.startsWith('vis-')) {
+            if (widgetset?.startsWith('vis-')) {
                 widgetset = widgetset.substring(4);
             }
             const { VisDebug } = await import('./setup/setupVisDebug.js');
@@ -2276,7 +2278,9 @@ async function processCommand(
                     }
 
                     objects.readFile(adapt, parts.join('/'), null, (err, data) => {
-                        err && console.error(err);
+                        if (err) {
+                            console.error(err);
+                        }
                         if (data) {
                             const destFilename = path.join('/');
                             fs.writeFileSync(destFilename, data);
@@ -2362,8 +2366,11 @@ async function processCommand(
                     }
 
                     objects.unlink(adapt, parts.join('/'), null, err => {
-                        err && console.error(err);
-                        !err && console.log(`File "${toDelete}" was deleted`);
+                        if (err) {
+                            console.error(err);
+                        } else {
+                            console.log(`File "${toDelete}" was deleted`);
+                        }
                         return void callback(EXIT_CODES.NO_ERROR);
                     });
                 } else if (cmd === 'sync') {
