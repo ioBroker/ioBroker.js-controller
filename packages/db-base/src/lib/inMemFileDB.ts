@@ -162,11 +162,11 @@ interface SubscriptionClient {
 export class InMemoryFileDB<TObject, THandler extends SubscriptionClient = SubscriptionClient> {
     protected settings: FileDbSettings<TObject>;
     protected change: ChangeFunction<TObject> | undefined;
-    protected dataset: Record<string, TObject | MetaObject>;
+    protected dataset: Record<string, TObject | MetaObject> = {};
     protected namespace: string;
-    private lastSave: null | number;
-    protected stateTimer: NodeJS.Timeout | null;
-    private callbackSubscriptionClient: SubscriptionClient;
+    private lastSave: null | number = null;
+    protected stateTimer: NodeJS.Timeout | null = null;
+    private callbackSubscriptionClient: SubscriptionClient = {};
     protected readonly dataDir: string;
     private readonly datasetName: string;
     protected log: InternalLogger;
@@ -180,11 +180,7 @@ export class InMemoryFileDB<TObject, THandler extends SubscriptionClient = Subsc
 
         this.change = this.settings.change;
 
-        this.dataset = {};
-
         this.namespace = this.settings.namespace || '';
-        this.lastSave = null;
-        this.callbackSubscriptionClient = {};
 
         this.settings.backup = this.settings.connection.backup || {
             disabled: false, // deactivates
@@ -209,8 +205,6 @@ export class InMemoryFileDB<TObject, THandler extends SubscriptionClient = Subsc
         this.datasetName = path.join(this.dataDir, fileName);
         const parts = path.dirname(this.datasetName);
         fs.ensureDirSync(parts);
-
-        this.stateTimer = null;
 
         this.backupDir = backup.path || path.join(this.dataDir, fileDbOptions.backupDirName);
 

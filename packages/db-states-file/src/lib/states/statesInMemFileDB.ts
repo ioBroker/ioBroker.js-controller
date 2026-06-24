@@ -47,10 +47,7 @@ export class StatesInMemoryFileDB<
     },
 > extends InMemoryFileDB<ioBroker.State | Record<string, string>, THandler> {
     private readonly META_ID: string = '**META**';
-    private logs: Record<string, any> = {};
     private session: Record<string, Record<string, any>> = {};
-    private globalMessageId: number = Math.round(Math.random() * 100_000_000);
-    private globalLogId: number = Math.round(Math.random() * 100_000_000);
     protected stateExpires: Record<string, NodeJS.Timeout> = {};
     protected sessionExpires: Record<string, { sessionEnd: number; timeout: NodeJS.Timeout | null }> = {};
     private readonly ONE_DAY_IN_SECS: number = 24 * 60 * 60 * 1_000;

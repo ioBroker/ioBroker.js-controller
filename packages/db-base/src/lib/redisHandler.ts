@@ -58,14 +58,14 @@ type ResponseId = number | null;
 export class RedisHandler extends EventEmitter {
     private readonly socket: Socket;
     private readonly logScope: string;
-    private readonly handleBuffers: boolean;
+    private readonly handleBuffers;
     private readonly options: RedisHandlerOptions;
     private readonly log: InternalLogger;
     private readonly socketId: string;
-    private initialized: boolean;
-    private stop: boolean;
-    private readonly activeMultiCalls: MultiCallElement[];
-    private readonly writeQueue: WriteQueueElement[];
+    private initialized = false;
+    private stop = false;
+    private readonly activeMultiCalls: MultiCallElement[] = [];
+    private readonly writeQueue: WriteQueueElement[] = [];
     private responseId: number = 0;
     private readonly resp: any;
 
@@ -78,7 +78,7 @@ export class RedisHandler extends EventEmitter {
     constructor(socket: Socket, options: RedisHandlerOptions) {
         super();
 
-        options = options || {};
+        options ||= {} as RedisHandlerOptions;
         this.options = options;
         this.log = options.log || console;
         this.logScope = options.logScope || '';
@@ -88,21 +88,16 @@ export class RedisHandler extends EventEmitter {
         this.socket = socket;
 
         this.socketId = `${this.logScope + socket.remoteAddress}:${socket.remotePort}`;
-        this.initialized = false;
-        this.stop = false;
-
-        this.activeMultiCalls = [];
-        this.writeQueue = [];
 
         this.handleBuffers = false;
-        const respOptions: Record<string, any> = {};
+        const respOptions: { bufBulk?: boolean } = {};
         if (options.handleAsBuffers) {
             this.handleBuffers = true;
             respOptions.bufBulk = true;
         }
         this.resp = new Resp(respOptions);
 
-        this.resp.on('error', (err: any) => {
+        this.resp.on('error', (err: Error) => {
             this.log.error(`${this.socketId} (Init=${this.initialized}) Redis error: ${err}`);
             if (this.initialized) {
                 this.sendError(null, new Error(`PARSER ERROR ${err}`)); // TODO

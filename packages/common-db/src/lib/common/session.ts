@@ -96,7 +96,7 @@ export function createAdapterStore(session: Session, defaultTtl = 3600): any {
                     ? Math.round((sess as SessionData).cookie.originalMaxAge / 1000)
                     : defaultTtl;
             }
-            ttl = ttl || defaultTtl;
+            ttl ||= defaultTtl;
             this.adapter.setSession(
                 sid as string,
                 ttl as number,

@@ -841,7 +841,7 @@ export class AdapterClass extends EventEmitter {
     private inputCount: number = 0;
     private outputCount: number = 0;
     /** The cache of users */
-    private users: Record<ioBroker.ObjectIDs.User, { groups: any; acl: any }> = {}; // todo
+    private users: Record<ioBroker.ObjectIDs.User, { groups: ioBroker.ObjectIDs.Group[]; acl: any }> = {}; // todo
     /** The cache of user groups */
     private groups: Record<string, Partial<ioBroker.GroupObject>> = {};
     /** An array of instances, that support auto subscribe */
@@ -2095,7 +2095,7 @@ export class AdapterClass extends EventEmitter {
     setPassword(
         user: string,
         pw: string,
-        options: Record<string, any>,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
         callback?: ioBroker.ErrorCallback,
     ): Promise<void>;
 
@@ -2163,7 +2163,7 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        this.getForeignObject(options.user, options, (err, obj) => {
+        this.getForeignObject(options.user, options.options, (err, obj) => {
             if (err || !obj) {
                 return tools.maybeCallbackWithError(options.callback, 'User does not exist');
             }
@@ -2286,11 +2286,11 @@ export class AdapterClass extends EventEmitter {
         if (options.group && !options.group.startsWith('system.group.')) {
             options.group = `system.group.${options.group}`;
         }
-        this.getForeignObject(options.user, options, (err, obj) => {
+        this.getForeignObject(options.user, options.options, (err, obj) => {
             if (err || !obj) {
                 return tools.maybeCallback(options.callback, false);
             }
-            this.getForeignObject(options.group, options, (err, obj) => {
+            this.getForeignObject(options.group, options.options, (err, obj) => {
                 if (err || !obj) {
                     return tools.maybeCallback(options.callback, false);
                 }
@@ -4805,9 +4805,7 @@ export class AdapterClass extends EventEmitter {
                             if (!parts[2]) {
                                 continue;
                             }
-                            if (!result[`${parts[0]}.${parts[1]}`]) {
-                                result[`${parts[0]}.${parts[1]}`] = {};
-                            }
+                            result[`${parts[0]}.${parts[1]}`] ||= {};
                             result[`${parts[0]}.${parts[1]}`][row.id] = row.value;
                         }
                     }
@@ -5227,7 +5225,7 @@ export class AdapterClass extends EventEmitter {
      */
     getForeignObject<T extends string>(
         id: T,
-        options: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
         callback: ioBroker.GetObjectCallback<T>,
     ): void | Promise<void | ioBroker.ObjectIdToObjectType<T> | null>;
 
@@ -5278,14 +5276,13 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            const obj = await this.#objects.getObjectAsync(options.id, options);
+            const obj = await this.#objects.getObjectAsync(options.id, options.options);
             // remove protectedNative if not admin, not cloud or not own adapter
             if (
                 obj &&
                 'protectedNative' in obj &&
                 Array.isArray(obj.protectedNative) &&
-                obj._id &&
-                obj._id.startsWith('system.adapter.') &&
+                obj._id?.startsWith('system.adapter.') &&
                 obj.native &&
                 !NO_PROTECT_ADAPTERS.includes(this.name) &&
                 this.name !== obj._id.split('.')[2]
@@ -6093,15 +6090,15 @@ export class AdapterClass extends EventEmitter {
             deviceName,
             _native,
             callback,
-            options,
+            options: options as { user?: ioBroker.ObjectIDs.User } | null | undefined,
         });
     }
 
     private _createDevice(_options: InternalCreateDeviceOptions): void {
         let { common, deviceName, _native } = _options;
         const { callback, options } = _options;
-        common = common || {};
-        common.name = common.name || deviceName;
+        common ||= {};
+        common.name ||= deviceName;
 
         deviceName = deviceName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
         _native = _native || {};
@@ -8041,7 +8038,16 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    mkdir(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback): void;
+    mkdir(
+        adapterName: string | null,
+        path: string,
+        options: {
+            user?: ioBroker.ObjectIDs.User;
+            owner?: ioBroker.ObjectIDs.User;
+            ownerGroup?: ioBroker.ObjectIDs.Group;
+        },
+        callback: ioBroker.ErrnoCallback,
+    ): void;
     /**
      * Creates a directory in the DB.
      *
@@ -9303,7 +9309,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (!userAcl) {
-            // User does not exists
+            // User does not exist
             this._logger.error(`${this.namespaceLog} unknown user "${options.user}"`);
             return options;
         }
@@ -10990,7 +10996,10 @@ export class AdapterClass extends EventEmitter {
      * @param keys all ids of the getStates call
      * @param targetObjs the target objects (e.g. alias objects or the actual objects)
      */
-    private async _processStates(keys: string[], targetObjs: ioBroker.StateObject[]): ioBroker.GetStatesPromise {
+    private async _processStates(
+        keys: string[],
+        targetObjs: (ioBroker.StateObject | null)[] | undefined,
+    ): ioBroker.GetStatesPromise {
         const aliasIndexes: number[] = [];
         const aliasIds: string[] = [];
         /** Target objects with null placeholders for non-alias keys */
@@ -11125,7 +11134,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, e);
                 }
             } else {
-                const res = await this._processStates(pattern, options?._objects);
+                const res = await this._processStates(pattern, options._objects);
                 return tools.maybeCallbackWithError(callback, null, res);
             }
         } else {

@@ -1069,9 +1069,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
             this.publishAll('meta', id, value);
         });
 
-        if (!this.stateTimer) {
-            this.stateTimer = setTimeout(() => this.saveState(), this.writeFileInterval);
-        }
+        this.stateTimer ||= setTimeout(() => this.saveState(), this.writeFileInterval);
     }
 
     /**

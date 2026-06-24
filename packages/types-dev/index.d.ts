@@ -150,9 +150,9 @@ declare global {
         /** Defined the complete set of access rights a user has */
         interface PermissionSet extends ObjectPermissions {
             /** The name of the user this ACL is for */
-            user: string;
+            user: ioBroker.ObjectIDs.User;
             /** The name of the groups this ACL was merged from */
-            groups: string[];
+            groups: ioBroker.ObjectIDs.Group[];
             /** The access rights for certain commands */
             other: {
                 execute: boolean;
@@ -377,8 +377,7 @@ declare global {
         interface DelObjectOptions {
             /** Whether all child objects should be deleted as well */
             recursive?: boolean;
-            // Allow non-documented properties
-            [other: string]: unknown;
+            user?: ioBroker.ObjectIDs.User;
         }
 
         interface ExtendObjectOptionsPreserve {
@@ -388,8 +387,9 @@ declare global {
         interface ExtendObjectOptions {
             /** Which properties of the original object should be preserved */
             preserve?: ExtendObjectOptionsPreserve;
-            // Allow non-documented properties
-            [other: string]: unknown;
+            user?: ioBroker.ObjectIDs.User;
+            owner?: ioBroker.ObjectIDs.User;
+            ownerGroup?: ioBroker.ObjectIDs.Group;
         }
 
         /** Predefined notification scopes and their categories */
@@ -527,7 +527,9 @@ declare global {
             /** Name of the file or directory */
             file: string;
             /** File system stats */
-            stats: Partial<fs.Stats>;
+            stats: {
+                size?: number;
+            };
             /** Whether this is a directory or a file */
             isDir: boolean;
             /** Access rights */
@@ -550,15 +552,17 @@ declare global {
             /** Name of the file or directory */
             file: string;
             /** File system stats */
-            stats: fs.Stats;
+            stats?: {
+                size?: number;
+            };
             /** Whether this is a directory or a file */
             isDir: boolean;
             /** Access rights */
-            acl: FileACL;
+            acl: EvaluatedFileACL;
             /** Date of last modification */
-            modifiedAt: number;
+            modifiedAt?: number;
             /** Date of creation */
-            createdAt: number;
+            createdAt?: number;
         }
         type ChownFileCallback = (err?: NodeJS.ErrnoException | null, processed?: ChownFileResult[]) => void;
 
