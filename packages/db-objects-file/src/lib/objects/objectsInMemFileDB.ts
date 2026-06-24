@@ -10,7 +10,7 @@
 
 import fs from 'fs-extra';
 import path from 'node:path';
-import { InMemoryFileDB, type FileDbSettings } from '@iobroker/db-base';
+import { InMemoryFileDB, type FileDbSettings, type MetaObject } from '@iobroker/db-base';
 import { tools } from '@iobroker/db-base';
 import { objectsUtils as utils } from '@iobroker/db-objects-redis';
 import deepClone from 'deep-clone';
@@ -18,7 +18,15 @@ import deepClone from 'deep-clone';
 /** Options accepted by the file access methods (or, for writes, a mime type string) */
 interface FileAccessOptions {
     /** Access control list / permission context (cleared internally before use) */
-    acl?: any;
+    acl?: {
+        owner: string;
+        ownerGroup: string;
+        file: {
+            read?: boolean;
+            write?: boolean;
+            permissions?: number;
+        }; // 0x644
+    } | null;
     /** User that owns a newly created file, or the user whose access is being checked */
     user?: string;
     /** Group that owns a newly created file */
@@ -44,7 +52,7 @@ interface SubscriptionClient {
     _subscribe?: Record<string, Subscription[]>;
 }
 
-interface FileOptions {
+export interface FileOptions {
     createdAt?: number;
     acl: {
         owner: string;
@@ -56,6 +64,7 @@ interface FileOptions {
     mimeType: string;
     binary?: boolean;
     modifiedAt?: number;
+    stats?: fs.Stats;
 }
 
 /**
@@ -66,21 +75,27 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
     ioBroker.AnyObject | ioBroker.DesignObject,
     THandler
 > {
-    protected readonly META_ID: string;
-    protected fileOptions: { [id: string]: { [fileName: string]: FileOptions } };
-    protected files: { [id: string]: { [fileName: string]: string | Buffer } };
-    protected writeTimer: NodeJS.Timeout | null;
-    protected writeIds: string[];
-    protected readonly preserveSettings: string[];
-    protected defaultNewAcl: any;
-    protected writeFileInterval: number;
+    private readonly META_ID = '**META**';
+    protected readonly fileOptions: { [id: string]: { [fileName: string]: FileOptions } } = {};
+    private readonly files: { [id: string]: { [fileName: string]: string | Buffer } } = {};
+    private writeTimer: NodeJS.Timeout | null = null;
+    private writeIds: string[] = [];
+    protected readonly defaultNewAcl: {
+        object: number;
+        state: number;
+        file: number;
+        owner: string;
+        ownerGroup: string;
+    } | null;
+    private readonly writeFileInterval: number;
     protected readonly objectsDir: string;
-    protected existingMetaObjects: Record<string, boolean>;
+    // cached meta information for file operations
+    private existingMetaObjects: Record<string, boolean> = {};
 
     /**
      * @param settings Settings for the objects database
      */
-    constructor(settings: FileDbSettings<ioBroker.AnyObject>) {
+    constructor(settings: FileDbSettings<ioBroker.AnyObject | ioBroker.DesignObject>) {
         settings.fileDB ??= {
             fileName: 'objects.json',
             backupDirName: 'backup-objects',
@@ -91,12 +106,6 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
             this.log.silly(`${this.namespace} objects change: ${id} ${JSON.stringify(this.change)}`);
         };
 
-        this.META_ID = '**META**';
-        this.fileOptions = {};
-        this.files = {};
-        this.writeTimer = null;
-        this.writeIds = [];
-        this.preserveSettings = ['custom'];
         this.defaultNewAcl = this.settings.defaultNewAcl || null;
         this.namespace = this.settings.namespace || this.settings.hostname || '';
         this.writeFileInterval =
@@ -108,9 +117,6 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
         }
 
         this.objectsDir = path.join(this.dataDir, 'files');
-
-        // cached meta information for file operations
-        this.existingMetaObjects = {};
 
         // init default new acl
         const configObj: ioBroker.SystemConfigObject = this.dataset['system.config'] as ioBroker.SystemConfigObject;
@@ -233,7 +239,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
             list.forEach(file => {
                 file = `${dir}/${file}`;
                 const stat = fs.statSync(file);
-                if (stat && stat.isDirectory()) {
+                if (stat?.isDirectory()) {
                     /* Recurse into a subdirectory */
                     results = results.concat(getAllFiles(file));
                 } else {
@@ -246,7 +252,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
 
         const res = this._getObjectView('system', 'meta', null);
 
-        // collect meta ids to generate warning if non existing
+        // collect meta ids to generate warning if non-existing
         const metaIds = res.rows.map(obj => obj.id).filter(id => !limitId || limitId === id);
 
         if (!fs.existsSync(this.objectsDir)) {
@@ -292,12 +298,10 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
                     this.fileOptions[dir][localFile] = {
                         createdAt: fileStat.ctimeMs,
                         acl: {
-                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-                            ownerGroup:
-                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                            owner: this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+                            ownerGroup: this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
                             permissions:
-                                (this.defaultNewAcl && this.defaultNewAcl.file) ||
+                                this.defaultNewAcl?.file ||
                                 utils.CONSTS.ACCESS_USER_RW |
                                     utils.CONSTS.ACCESS_GROUP_READ |
                                     utils.CONSTS.ACCESS_EVERY_READ, // 0x644
@@ -311,7 +315,9 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
             });
             this._saveFileSettings(dir);
             resSynced += dirSynced;
-            dirSynced && resNotifies.push(`Added ${dirSynced} Files in Directory "${dir}"`);
+            if (dirSynced) {
+                resNotifies.push(`Added ${dirSynced} Files in Directory "${dir}"`);
+            }
         });
         return {
             numberSuccess: resSynced,
@@ -369,21 +375,17 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
 
         this.fileOptions[id][name] ||= { createdAt: Date.now() } as FileOptions;
         this.fileOptions[id][name].acl ||= {
-            owner: options.user || (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-            ownerGroup:
-                options.group ||
-                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                utils.CONSTS.SYSTEM_ADMIN_GROUP,
+            owner: options.user || this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+            ownerGroup: options.group || this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
             permissions:
                 options.mode ||
-                (this.defaultNewAcl && this.defaultNewAcl.file) ||
+                this.defaultNewAcl?.file ||
                 utils.CONSTS.ACCESS_USER_RW | utils.CONSTS.ACCESS_GROUP_READ | utils.CONSTS.ACCESS_EVERY_READ, // 0x644
         };
 
         this.fileOptions[id][name].mimeType = options.mimeType || _mimeType;
         this.fileOptions[id][name].binary = isBinary;
-        this.fileOptions[id][name].acl.ownerGroup ||=
-            (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP;
+        this.fileOptions[id][name].acl.ownerGroup ||= this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP;
         this.fileOptions[id][name].modifiedAt = Date.now();
 
         try {
@@ -454,12 +456,10 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
                     // Create description object if not exists
                     this.fileOptions[id][name] ||= {
                         acl: {
-                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-                            ownerGroup:
-                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                            owner: this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+                            ownerGroup: this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
                             permissions:
-                                (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                                this.defaultNewAcl?.file ||
                                 utils.CONSTS.ACCESS_USER_ALL |
                                     utils.CONSTS.ACCESS_GROUP_ALL |
                                     utils.CONSTS.ACCESS_EVERY_ALL, // 777
@@ -470,13 +470,10 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
                         this.fileOptions[id][name] = {
                             mimeType: this.fileOptions[id][name] as unknown as string,
                             acl: {
-                                owner:
-                                    (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-                                ownerGroup:
-                                    (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                    utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                                owner: this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+                                ownerGroup: this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
                                 permissions:
-                                    (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                                    this.defaultNewAcl?.file ||
                                     utils.CONSTS.ACCESS_USER_ALL |
                                         utils.CONSTS.ACCESS_GROUP_ALL |
                                         utils.CONSTS.ACCESS_EVERY_ALL, // 777
@@ -508,11 +505,10 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
             if (this.fileOptions[id][name] && !this.fileOptions[id][name].acl) {
                 // all files belong to admin by default, but everyone can edit it
                 this.fileOptions[id][name].acl = {
-                    owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-                    ownerGroup:
-                        (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                    owner: this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+                    ownerGroup: this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
                     permissions:
-                        (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                        this.defaultNewAcl?.file ||
                         utils.CONSTS.ACCESS_USER_ALL | utils.CONSTS.ACCESS_GROUP_ALL | utils.CONSTS.ACCESS_EVERY_RW, // 776
                 };
             }
@@ -642,7 +638,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
                 if (this.fileOptions[id]) {
                     delete this.fileOptions[id];
                 }
-                if (this.files[id] && this.files[id]) {
+                if (this.files[id]) {
                     delete this.files[id];
                 }
             } else {
@@ -654,10 +650,10 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
                     throw e;
                 }
 
-                if (this.fileOptions[id][name]) {
+                if (this.fileOptions[id]?.[name]) {
                     delete this.fileOptions[id][name];
                 }
-                if (this.files[id] && this.files[id][name]) {
+                if (this.files[id]?.[name]) {
                     delete this.files[id][name];
                 }
 
@@ -686,8 +682,27 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      * @param name The directory name to list
      * @param options Optional read options
      */
-    _readDir(id: string, name: string, options?: FileAccessOptions): any[] {
-        if (options && options.acl) {
+    _readDir(
+        id: string,
+        name: string,
+        options?: FileAccessOptions,
+    ): {
+        file: string;
+        stats: fs.Stats;
+        isDir: boolean;
+        acl: {
+            read?: boolean;
+            write?: boolean;
+            owner: string;
+            ownerGroup: string;
+            permissions: number;
+        };
+        notExists?: boolean;
+        virtualFile?: boolean;
+        modifiedAt: number | undefined;
+        createdAt: undefined | number;
+    }[] {
+        if (options?.acl) {
             options.acl = null;
         }
         if ((id === '' || id === '/' || id === '*') && (name === '' || name === '*')) {
@@ -698,9 +713,9 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
             name = _path.name;
         }
 
-        options = options || {};
+        options ||= {};
         // Find all files and directories starts with name
-        const _files = [];
+        const _files: string[] = [];
 
         if (id && id === '*') {
             id = '';
@@ -715,7 +730,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
         for (const f of Object.keys(this.fileOptions[id])) {
             if (!name || f.substring(0, len) === name) {
                 const rest = f.substring(len).split('/', 2);
-                if (rest[0] && _files.indexOf(rest[0]) === -1) {
+                if (rest[0] && !_files.includes(rest[0])) {
                     _files.push(rest[0]);
                 }
             }
@@ -728,7 +743,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
                 if (dirFiles[i] === '..' || dirFiles[i] === '.') {
                     continue;
                 }
-                if (dirFiles[i] !== '_data.json' && _files.indexOf(dirFiles[i]) === -1) {
+                if (dirFiles[i] !== '_data.json' && !_files.includes(dirFiles[i])) {
                     _files.push(dirFiles[i]);
                 }
             }
@@ -737,7 +752,22 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
         }
 
         _files.sort();
-        const res = [];
+        const res: {
+            file: string;
+            stats: fs.Stats;
+            isDir: boolean;
+            acl: {
+                read?: boolean;
+                write?: boolean;
+                owner: string;
+                ownerGroup: string;
+                permissions: number;
+            };
+            modifiedAt: number | undefined;
+            createdAt: undefined | number;
+            notExists?: boolean;
+            virtualFile?: boolean;
+        }[] = [];
         for (const file of _files) {
             if (file === '..' || file === '.') {
                 continue;
@@ -750,12 +780,10 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
                         : {
                               read: true,
                               write: true,
-                              owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-                              ownerGroup:
-                                  (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                  utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                              owner: this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+                              ownerGroup: this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
                               permissions:
-                                  (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                                  this.defaultNewAcl?.file ||
                                   utils.CONSTS.ACCESS_USER_RW |
                                       utils.CONSTS.ACCESS_GROUP_READ |
                                       utils.CONSTS.ACCESS_EVERY_READ,
@@ -764,7 +792,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
                     // if filter for user
                     if (options.filter && acl) {
                         // If user may not write
-                        if (!options.acl.file.write) {
+                        if (!options.acl?.file.write) {
                             // write
                             acl.permissions &= ~(
                                 utils.CONSTS.ACCESS_USER_WRITE |
@@ -773,7 +801,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
                             );
                         }
                         // If user may not read
-                        if (!options.acl.file.read) {
+                        if (!options.acl?.file.read) {
                             // read
                             acl.permissions &= ~(
                                 utils.CONSTS.ACCESS_USER_READ |
@@ -819,9 +847,9 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
 
                     res.push({
                         file,
-                        stats: stats,
+                        stats,
                         isDir: stats.isDirectory(),
-                        acl: acl,
+                        acl,
                         modifiedAt: this.fileOptions[id][name + file]
                             ? this.fileOptions[id][name + file].modifiedAt
                             : undefined,
@@ -887,7 +915,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      *
      * @param obj The object to clone
      */
-    _clone(obj: any): any {
+    _clone<T>(obj: T): T {
         if (obj === null || obj === undefined || !tools.isObject(obj)) {
             return obj;
         }
@@ -895,7 +923,8 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
         const temp = obj.constructor(); // changed
 
         for (const key of Object.keys(obj)) {
-            temp[key] = this._clone(obj[key]);
+            // @ts-expect-error known problem
+            temp[key] = this._clone<any>(obj[key]);
         }
         return temp;
     }
@@ -906,7 +935,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      * @param client The client to subscribe
      * @param pattern The pattern of meta IDs to subscribe to
      */
-    _subscribeMeta(client: any, pattern: string): void {
+    _subscribeMeta(client: THandler, pattern: string): void {
         this.handleSubscribe(client, 'meta', pattern);
     }
 
@@ -916,7 +945,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      * @param client The client to subscribe
      * @param pattern The pattern of object IDs to subscribe to
      */
-    _subscribeConfigForClient(client: any, pattern: string): void {
+    _subscribeConfigForClient(client: THandler, pattern: string): void {
         this.handleSubscribe(client, 'objects', pattern);
     }
 
@@ -926,7 +955,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      * @param client The client to unsubscribe
      * @param pattern The pattern of object IDs to unsubscribe from
      */
-    _unsubscribeConfigForClient(client: any, pattern: string): void {
+    _unsubscribeConfigForClient(client: THandler, pattern: string): void {
         // ignore options => unsubscribe may everyone
         (this.handleUnsubscribe(client, 'objects', pattern) as Promise<void>).catch(e =>
             this.log.error(`${this.namespace} Cannot unsubscribe client from objects: ${e.message}`),
@@ -940,7 +969,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      * @param id The object ID owning the files
      * @param pattern One or more file name patterns to subscribe to
      */
-    _subscribeFileForClient(client: any, id: string, pattern: string | string[]): void {
+    _subscribeFileForClient(client: THandler, id: string, pattern: string | string[]): void {
         if (Array.isArray(pattern)) {
             pattern.forEach(pattern => this.handleSubscribe(client, 'files', `${id}$%$${pattern}`));
         } else {
@@ -955,7 +984,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      * @param id The object ID owning the files
      * @param pattern One or more file name patterns to unsubscribe from
      */
-    _unsubscribeFileForClient(client: any, id: string, pattern: string | string[]): void {
+    _unsubscribeFileForClient(client: THandler, id: string, pattern: string | string[]): void {
         if (Array.isArray(pattern)) {
             pattern.forEach(pattern => this.handleUnsubscribe(client, 'files', `${id}$%$${pattern}`));
         } else {
@@ -970,7 +999,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      *
      * @param id The object ID to read
      */
-    _getObject(id: string): any {
+    _getObject(id: string): ioBroker.AnyObject | ioBroker.DesignObject | MetaObject | undefined {
         return this.dataset[id];
     }
 
@@ -991,19 +1020,19 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      *
      * @param keys The object IDs to read
      */
-    _getObjects(keys: string[]): any[] {
+    _getObjects(keys: (string | null)[]): (ioBroker.AnyObject | ioBroker.DesignObject | MetaObject | undefined)[] {
         if (!keys) {
             throw new Error('no keys');
         }
 
-        return keys.map(id => this.dataset[id]);
+        return keys.map(id => (id ? this.dataset[id] : undefined));
     }
 
     /**
      * Get the meta dictionary, creating it if it does not exist yet
      */
-    _ensureMetaDict(): Record<string, any> {
-        let meta = this.dataset[this.META_ID];
+    _ensureMetaDict(): MetaObject {
+        let meta = this.dataset[this.META_ID] as MetaObject;
         if (!meta) {
             meta = {};
             this.dataset[this.META_ID] = meta;
@@ -1017,7 +1046,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      * @param id The meta ID to read
      * @returns the stored meta value
      */
-    getMeta(id: string): any {
+    getMeta(id: string): string {
         const meta = this._ensureMetaDict();
         return meta[id];
     }
@@ -1051,7 +1080,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      * @param id The object ID to set
      * @param obj The object to store
      */
-    _setObjectDirect(id: string, obj: any): void {
+    _setObjectDirect(id: string, obj: ioBroker.AnyObject | ioBroker.DesignObject | MetaObject): void {
         this.dataset[id] = obj;
 
         // object updated -> if type changed to meta -> cache
@@ -1100,14 +1129,42 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      * @param func The view definition containing the map function
      * @param params Query parameters such as startkey and endkey
      */
-    _applyView(func: any, params: any): { rows: any[] } {
-        const result: { rows: any[] } = {
+    _applyView(
+        func: {
+            map: string;
+            reduce?: '_stats';
+        },
+        params?: {
+            startkey?: string;
+            endkey?: string;
+            include_docs?: boolean;
+        } | null,
+    ): {
+        rows: {
+            id: string;
+            value:
+                | ioBroker.AnyObject
+                | ioBroker.DesignObject
+                | MetaObject
+                | { max: ioBroker.AnyObject | ioBroker.DesignObject | MetaObject | null };
+        }[];
+    } {
+        const result: {
+            rows: {
+                id: string;
+                value:
+                    | ioBroker.AnyObject
+                    | ioBroker.DesignObject
+                    | MetaObject
+                    | { max: ioBroker.AnyObject | ioBroker.DesignObject | MetaObject | null };
+            }[];
+        } = {
             rows: [],
         };
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        function _emit_(id: any, obj: any): void {
-            result.rows.push({ id: id, value: obj });
+        function _emit_(id: string, value: ioBroker.AnyObject | ioBroker.DesignObject | MetaObject): void {
+            result.rows.push({ id, value });
         }
 
         const f = eval(`(${func.map.replace(/emit/g, '_emit_')})`);
@@ -1132,14 +1189,14 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
         }
         // Calculate max
         if (func.reduce === '_stats') {
-            let max = null;
+            let max: ioBroker.AnyObject | ioBroker.DesignObject | MetaObject | null = null;
             for (const row of result.rows) {
                 if (max === null || row.value > max) {
-                    max = row.value;
+                    max = row.value as ioBroker.AnyObject | ioBroker.DesignObject | MetaObject;
                 }
             }
             if (max !== null) {
-                result.rows = [{ id: '_stats', value: { max: max } }];
+                result.rows = [{ id: '_stats', value: { max } }];
             } else {
                 result.rows = [];
             }
@@ -1155,7 +1212,24 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      * @param search The view name within the design document
      * @param params Query parameters such as startkey and endkey
      */
-    _getObjectView(design: string, search: string, params: any): { rows: any[] } {
+    _getObjectView(
+        design: string,
+        search: string,
+        params?: {
+            startkey?: string;
+            endkey?: string;
+            include_docs?: boolean;
+        } | null,
+    ): {
+        rows: {
+            id: string;
+            value:
+                | ioBroker.AnyObject
+                | ioBroker.DesignObject
+                | MetaObject
+                | { max: ioBroker.AnyObject | ioBroker.DesignObject | MetaObject | null };
+        }[];
+    } {
         const designObj: ioBroker.DesignObject = this.dataset[`_design/${design}`] as ioBroker.DesignObject;
         if (!designObj) {
             this.log.error(`${this.namespace} Cannot find view "${design}"`);

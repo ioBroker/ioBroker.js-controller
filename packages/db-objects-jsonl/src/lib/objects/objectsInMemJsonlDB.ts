@@ -187,7 +187,7 @@ export class ObjectsInMemoryJsonlDB<
             },
         }) as unknown as Record<string, ioBroker.AnyObject | ioBroker.DesignObject>;
 
-        if (this.settings.backup && this.settings.backup.period && !this.settings.backup.disabled) {
+        if (this.settings.backup?.period && !this.settings.backup.disabled) {
             this._backupInterval = setInterval(() => {
                 this.saveBackup().catch(e => this.log.error(`${this.namespace} Cannot save backup: ${e.message}`));
             }, this.settings.backup.period);

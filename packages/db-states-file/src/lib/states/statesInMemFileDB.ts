@@ -46,15 +46,15 @@ export class StatesInMemoryFileDB<
         >;
     },
 > extends InMemoryFileDB<ioBroker.State | Record<string, string>, THandler> {
-    protected readonly META_ID: string;
-    protected logs: Record<string, any>;
-    protected session: Record<string, Record<string, any>>;
-    protected globalMessageId: number;
-    protected globalLogId: number;
-    protected stateExpires: Record<string, NodeJS.Timeout>;
-    protected sessionExpires: Record<string, { sessionEnd: number; timeout: NodeJS.Timeout | null }>;
-    protected readonly ONE_DAY_IN_SECS: number;
-    protected writeFileInterval: number;
+    private readonly META_ID: string = '**META**';
+    private logs: Record<string, any> = {};
+    private session: Record<string, Record<string, any>> = {};
+    private globalMessageId: number = Math.round(Math.random() * 100_000_000);
+    private globalLogId: number = Math.round(Math.random() * 100_000_000);
+    protected stateExpires: Record<string, NodeJS.Timeout> = {};
+    protected sessionExpires: Record<string, { sessionEnd: number; timeout: NodeJS.Timeout | null }> = {};
+    private readonly ONE_DAY_IN_SECS: number = 24 * 60 * 60 * 1_000;
+    private readonly writeFileInterval: number;
 
     /**
      * @param settings Settings for the states database
@@ -66,15 +66,6 @@ export class StatesInMemoryFileDB<
         };
         super(settings);
 
-        this.META_ID = '**META**';
-        this.logs = {};
-        this.session = {};
-        this.globalMessageId = Math.round(Math.random() * 100_000_000);
-        this.globalLogId = Math.round(Math.random() * 100_000_000);
-
-        this.stateExpires = {};
-        this.sessionExpires = {};
-        this.ONE_DAY_IN_SECS = 24 * 60 * 60 * 1_000;
         this.writeFileInterval =
             this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
                 ? this.settings.connection.writeFileInterval

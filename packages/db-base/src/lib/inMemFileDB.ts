@@ -431,7 +431,7 @@ export class InMemoryFileDB<TObject, THandler extends SubscriptionClient = Subsc
         _client: SubscriptionClient,
         _type: string,
         _id: string,
-        _obj: TObject | string | null | FileSize,
+        _obj: TObject | string | null | FileSize | MetaObject,
     ): number {
         throw new Error('no communication handling implemented');
     }
@@ -644,7 +644,7 @@ export class InMemoryFileDB<TObject, THandler extends SubscriptionClient = Subsc
      * @param id The ID of the changed object or state
      * @param obj The new value of the object or state
      */
-    publishAll(type: string, id: string, obj: TObject | string | null | FileSize): number {
+    publishAll(type: string, id: string, obj: TObject | string | null | FileSize | MetaObject): number {
         if (id === undefined) {
             this.log.error(`${this.namespace} Can not publish empty ID`);
             return 0;
