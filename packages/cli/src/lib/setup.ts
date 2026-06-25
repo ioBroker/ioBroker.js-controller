@@ -5,9 +5,13 @@ import Debug from 'debug';
 import path from 'node:path';
 import yargs from 'yargs/yargs';
 
-import { tools } from '@iobroker/js-controller-common';
-import { EXIT_CODES } from '@iobroker/js-controller-common';
-import { objectsDbHasServer, isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common';
+import {
+    tools,
+    EXIT_CODES,
+    objectsDbHasServer,
+    isLocalObjectsDbServer,
+    isLocalStatesDbServer,
+} from '@iobroker/js-controller-common';
 
 import * as CLITools from '@/lib/cli/cliTools.js';
 import { CLIHost } from '@/lib/cli/cliHost.js';

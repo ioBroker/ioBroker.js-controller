@@ -1,19 +1,19 @@
-import type { DbConnectAsyncReturn, DbConnectCallback } from '../_Types.js';
+import path from 'node:path';
 import fs from 'fs-extra';
+
 import {
+    tools,
+    EXIT_CODES,
     getObjectsConstructor,
     getStatesConstructor,
     objectsDbHasServer,
     statesDbHasServer,
 } from '@iobroker/js-controller-common';
-import { EXIT_CODES } from '@iobroker/js-controller-common';
-import { tools } from '@iobroker/js-controller-common';
 import { setTimeout as wait } from 'node:timers/promises';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
-import path from 'node:path';
-import type { InternalAdapterJsonConfig, PluginHandlerSettings } from '@iobroker/plugin-base';
-import { PluginHandler } from '@iobroker/plugin-base';
+import { PluginHandler, type InternalAdapterJsonConfig, type PluginHandlerSettings } from '@iobroker/plugin-base';
+import type { DbConnectAsyncReturn, DbConnectCallback } from '../_Types.js';
 
 let pluginHandler: InstanceType<typeof PluginHandler>;
 let Objects: typeof ObjectsInRedisClient | null; // constructor

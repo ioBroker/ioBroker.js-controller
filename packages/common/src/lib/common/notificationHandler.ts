@@ -211,15 +211,12 @@ export class NotificationHandler {
             });
 
             for (const entry of res.rows) {
-                if (!entry.value) {
-                    continue;
-                }
-                if (entry.value.notifications) {
+                if (entry.value?.notifications) {
                     // check that instance has notification settings
                     await this.addConfig(entry.value.notifications);
                 }
 
-                if (entry.value.common && entry.value.common.host === this.host) {
+                if (entry.value?.common.host === this.host) {
                     // if it's on our current host
                     instancesOnHost.push(entry.id);
                 }

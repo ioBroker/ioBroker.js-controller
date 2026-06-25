@@ -9,8 +9,9 @@ import {
     isLocalStatesDbServer,
     isLocalObjectsDbServer,
     getInstancesOrderedByStartPrio,
+    tools,
+    EXIT_CODES,
 } from '@iobroker/js-controller-common';
-import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import * as CLI from '@/lib/cli/messages.js';
 import { CLICommand } from '@/lib/cli/cliCommand.js';
 import { getObjectFrom, getInstanceName, normalizeAdapterName, enumInstances } from '@/lib/cli/cliTools.js';

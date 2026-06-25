@@ -1,7 +1,6 @@
 import fs from 'fs-extra';
-import { tools } from '@iobroker/js-controller-common';
 import path from 'node:path';
-import { EXIT_CODES } from '@iobroker/js-controller-common';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '../_Types.js';

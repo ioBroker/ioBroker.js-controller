@@ -421,7 +421,7 @@ export type AllPropsUnknown<T> = { [K in keyof T]: unknown };
 /** Options for calculating the permissions of a user */
 export interface InternalCalculatePermissionsOptions {
     /** The user to calculate the permissions for */
-    user: string;
+    user: ioBroker.ObjectIDs.User;
     /** The permission requirements of the commands */
     commandsPermissions: CommandsPermissions;
     /** Optional settings including the user context */

@@ -120,7 +120,13 @@ declare global {
             state?: string;
         }
 
-        type Session = any; // TODO: implement
+        type Session = {
+            cookie?: {
+                originalMaxAge?: number;
+                maxAge?: number;
+            };
+            [key: string]: any;
+        };
 
         /** Defines access rights for a single object type */
         interface ObjectOperationPermissions {
@@ -371,7 +377,7 @@ declare global {
             /** when using aggregate method `integral` defines the interpolation method (defaults to `none`). */
             integralInterpolation?: 'none' | 'linear';
             /** If user is set, it will be checked if this user may read the variable */
-            user?: `system.user.${string}`;
+            user?: ioBroker.ObjectIDs.User;
         }
 
         interface DelObjectOptions {
@@ -609,7 +615,7 @@ declare global {
             id?: string,
         ) => void;
 
-        type GetSessionCallback = (session: Session) => void;
+        type GetSessionCallback = (session: Session | null) => void;
 
         type Timeout = Branded<number, 'Timeout'> | null; // or null to not allow native clearTimeout
         type Interval = Branded<number, 'Interval'> | null; // or null to not allow native clearInterval

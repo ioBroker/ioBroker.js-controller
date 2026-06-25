@@ -83,7 +83,7 @@ type ChangeFunction<TObject> = (id: string, obj: TObject) => void;
 /** Status information about the database */
 export interface DbStatus {
     /** Type of the database backend (e.g. file, jsonl, redis) */
-    type: string;
+    type: 'file' | 'redis' | 'jsonl';
     /** Whether this process runs the database server */
     server: boolean;
 }

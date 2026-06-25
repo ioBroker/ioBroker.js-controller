@@ -123,29 +123,6 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInt
      * @returns Object with namespace and the
      *                                                      ID/Array of IDs without the namespace
      */
-    _normalizeIds(idWithNamespace: string[]): {
-        id: (string | null)[];
-        namespace: string;
-        name: string;
-        isMeta?: boolean;
-    } {
-        let ns = this.namespaceObjects;
-        const ids: (string | null)[] = [];
-        idWithNamespace.forEach(el => {
-            const { id, namespace } = this._normalizeId(el);
-            ids.push(id);
-            ns = namespace; // we ignore the pot. case from arrays with different namespaces
-        });
-        return { id: ids, namespace: ns, name: '' };
-    }
-
-    /**
-     * Separate Namespace from ID and return both
-     *
-     * @param idWithNamespace ID or Array of IDs containing a redis namespace and the real ID
-     * @returns Object with namespace and the
-     *                                                      ID/Array of IDs without the namespace
-     */
     _normalizeId(idWithNamespace: string): {
         id: string | null;
         namespace: string;
@@ -302,8 +279,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInt
         });
 
         // Handle Redis "SCRIPT" request
-        handler.on('script', (data, responseId) => {
-            data[0] = data[0].toLowerCase();
+        handler.on('script', (data: [command: 'exists' | 'load', buffer: string], responseId) => {
+            data[0] = data[0].toLowerCase() as 'exists' | 'load';
             if (data[0] === 'exists') {
                 data.shift();
                 const scripts: number[] = [];
@@ -319,7 +296,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInt
                 const scriptFunc = data[1].match(/^-- func: (.+)$/m);
                 if (scriptDesign?.[1]) {
                     const design = scriptDesign[1];
-                    let search = null;
+                    let search: string | undefined;
                     const scriptSearch = data[1].match(/^-- search: ([a-z0-9A-Z-.]*)\s/m);
                     if (scriptSearch?.[1]) {
                         search = scriptSearch[1];
@@ -359,74 +336,87 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInt
                     handler.sendError(responseId, new Error(`Unknown LUA script ${data[1]}`));
                 }
             } else {
-                handler.sendError(responseId, new Error(`Unsupported Script command ${data[0]}`));
+                handler.sendError(responseId, new Error(`Unsupported Script command ${data[0] as string}`));
             }
         });
 
         // Handle Redis "EVALSHA" request
-        handler.on('evalsha', (data, responseId) => {
-            if (!this.knownScripts[data[0]]) {
-                return void handler.sendError(responseId, new Error(`Unknown Script ${data[0]}`));
-            }
-            if (this.knownScripts[data[0]].design) {
-                const scriptDesign: string = this.knownScripts[data[0]].design!;
-                if (typeof data[2] === 'string' && data[2].startsWith(this.namespaceObj) && data.length > 4) {
-                    let scriptSearch = this.knownScripts[data[0]].search;
-                    if (scriptDesign === 'system' && !scriptSearch && data[5]) {
-                        scriptSearch = data[5];
-                    }
-                    if (!scriptSearch) {
-                        scriptSearch = 'state';
-                    }
-                    if (this.settings.connection.enhancedLogging) {
-                        this.log.silly(
-                            `${namespaceLog} Script transformed into getObjectView: design=${scriptDesign}, search=${scriptSearch}`,
-                        );
-                    }
-                    let objs;
-                    try {
-                        objs = this._getObjectView(scriptDesign, scriptSearch, {
-                            startkey: data[3],
-                            endkey: data[4],
-                            include_docs: true,
-                        });
-                    } catch (err) {
-                        return void handler.sendError(
-                            responseId,
-                            new Error(`_getObjectView Error for ${scriptDesign}/${scriptSearch}: ${err.message}`),
-                        );
-                    }
+        handler.on(
+            'evalsha',
+            (
+                data: [
+                    scriptId: string,
+                    ignore: string,
+                    name: string,
+                    startkey: string,
+                    endkey: string,
+                    search: string,
+                ],
+                responseId,
+            ) => {
+                if (!this.knownScripts[data[0]]) {
+                    return void handler.sendError(responseId, new Error(`Unknown Script ${data[0]}`));
+                }
+                if (this.knownScripts[data[0]].design) {
+                    const scriptDesign: string = this.knownScripts[data[0]].design!;
+                    if (typeof data[2] === 'string' && data[2].startsWith(this.namespaceObj) && data.length > 4) {
+                        let scriptSearch = this.knownScripts[data[0]].search;
+                        if (scriptDesign === 'system' && !scriptSearch && data[5]) {
+                            scriptSearch = data[5];
+                        }
+                        if (!scriptSearch) {
+                            scriptSearch = 'state';
+                        }
+                        if (this.settings.connection.enhancedLogging) {
+                            this.log.silly(
+                                `${namespaceLog} Script transformed into getObjectView: design=${scriptDesign}, search=${scriptSearch}`,
+                            );
+                        }
+                        let objs;
+                        try {
+                            objs = this._getObjectView(scriptDesign, scriptSearch, {
+                                startkey: data[3],
+                                endkey: data[4],
+                                include_docs: true,
+                            });
+                        } catch (err) {
+                            return void handler.sendError(
+                                responseId,
+                                new Error(`_getObjectView Error for ${scriptDesign}/${scriptSearch}: ${err.message}`),
+                            );
+                        }
 
+                        const res = objs.rows.map(obj =>
+                            JSON.stringify(this.dataset[(obj.value as ioBroker.AnyObject)._id || obj.id]),
+                        );
+                        handler.sendArray(responseId, res);
+                    }
+                } else if (this.knownScripts[data[0]].func && data.length > 4) {
+                    const scriptFunc = { map: this.knownScripts[data[0]].func!.replace('%1', data[5]) };
+                    if (this.settings.connection.enhancedLogging) {
+                        this.log.silly(`${namespaceLog} Script transformed into _applyView: func=${scriptFunc.map}`);
+                    }
+                    const objs = this._applyView(scriptFunc, {
+                        startkey: data[3],
+                        endkey: data[4],
+                        include_docs: true,
+                    });
                     const res = objs.rows.map(obj =>
                         JSON.stringify(this.dataset[(obj.value as ioBroker.AnyObject)._id || obj.id]),
                     );
-                    handler.sendArray(responseId, res);
-                }
-            } else if (this.knownScripts[data[0]].func && data.length > 4) {
-                const scriptFunc = { map: this.knownScripts[data[0]].func!.replace('%1', data[5]) };
-                if (this.settings.connection.enhancedLogging) {
-                    this.log.silly(`${namespaceLog} Script transformed into _applyView: func=${scriptFunc.map}`);
-                }
-                const objs = this._applyView(scriptFunc, {
-                    startkey: data[3],
-                    endkey: data[4],
-                    include_docs: true,
-                });
-                const res = objs.rows.map(obj =>
-                    JSON.stringify(this.dataset[(obj.value as ioBroker.AnyObject)._id || obj.id]),
-                );
 
-                return void handler.sendArray(responseId, res);
-            } else if (this.knownScripts[data[0]].redlock) {
-                // just return a dummy
-                return void handler.sendArray(responseId, [0]);
-            } else {
-                handler.sendError(responseId, new Error(`Unknown LUA script eval call ${JSON.stringify(data)}`));
-            }
-        });
+                    return void handler.sendArray(responseId, res);
+                } else if (this.knownScripts[data[0]].redlock) {
+                    // just return a dummy
+                    return void handler.sendArray(responseId, [0]);
+                } else {
+                    handler.sendError(responseId, new Error(`Unknown LUA script eval call ${JSON.stringify(data)}`));
+                }
+            },
+        );
 
         // Handle Redis "PUBLISH" request
-        handler.on('publish', (data, responseId) => {
+        handler.on('publish', (data: [addr: string, obj: string], responseId) => {
             const { id, namespace } = this._normalizeId(data[0]);
 
             if (
@@ -443,7 +433,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInt
         });
 
         // Handle Redis "MGET" requests
-        handler.on('mget', (data, responseId) => {
+        handler.on('mget', (data: string[], responseId) => {
             if (!data?.length) {
                 return void handler.sendArray(responseId, []);
             }
@@ -462,14 +452,14 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInt
                     }
                     keys.push(id);
                 });
-                let result;
+                let result: (ioBroker.AnyObject | ioBroker.DesignObject | Record<string, string> | undefined)[];
                 try {
                     result = this._getObjects(keys);
                 } catch (err) {
                     return void handler.sendError(responseId, new Error(`ERROR _getObjects: ${err.message}`));
                 }
-                result = result.map(el => (el ? JSON.stringify(el) : null));
-                handler.sendArray(responseId, result);
+                const resultObjs = result.map(el => (el ? JSON.stringify(el) : null));
+                handler.sendArray(responseId, resultObjs);
             } else if (namespace === this.namespaceFile) {
                 // Handle request for Metadata for files
                 if (isMeta) {
@@ -973,7 +963,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInt
                 return void handler.sendError(responseId, e);
             }
 
-            // if scan, we send the cursor as first argument
+            // if "scan", we send the cursor as first argument
             if (namespace !== this.namespaceObjects) {
                 // When it was not the full DB namespace send out response
                 return void handler.sendArray(responseId, isScan ? ['0', response] : response);
@@ -984,7 +974,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInt
             if (isMeta === undefined) {
                 let res: {
                     file: string;
-                    stats: fs.Stats;
+                    stats: { size?: number };
                     isDir: boolean;
                     virtualFile?: boolean;
                     notExists?: boolean;
@@ -1004,7 +994,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInt
                         res = [
                             {
                                 file: '_data.json',
-                                stats: {} as fs.Stats,
+                                stats: {},
                                 isDir: false,
                                 virtualFile: true,
                                 notExists: true,

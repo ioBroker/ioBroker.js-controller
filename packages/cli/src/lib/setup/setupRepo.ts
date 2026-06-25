@@ -1,11 +1,12 @@
-import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import axios from 'axios';
 import fs from 'fs-extra';
+import path from 'node:path';
+
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
-import { BETA_REPO_URL, isIntegerLikeInput, isVersionIgnored, STABLE_REPO_URL } from '@/lib/setup/utils.js';
-import path from 'node:path';
 import { SYSTEM_CONFIG_ID, SYSTEM_REPOSITORIES_ID } from '@iobroker/js-controller-common-db/constants';
+import { BETA_REPO_URL, isIntegerLikeInput, isVersionIgnored, STABLE_REPO_URL } from '@/lib/setup/utils.js';
 
 /** The options passed to the Repo constructor */
 export interface CLIRepoOptions {

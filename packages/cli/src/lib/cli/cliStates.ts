@@ -4,6 +4,7 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import * as CLI from '@/lib/cli/messages.js';
 import { formatValue } from '@/lib/cli/cliTools.js';
 import * as rl from 'readline-sync';
+import { getLogger } from '@iobroker/js-controller-common-db/tools';
 
 const ALIAS_STARTS_WITH = 'alias.';
 
@@ -171,7 +172,7 @@ export class CLIStates extends CLICommand<CLIStatesOptions> {
                                         sourceCommon: sourceObj?.common as ioBroker.StateCommon | undefined,
                                         targetCommon: targetObj.common as ioBroker.StateCommon,
                                         state,
-                                        logger: console,
+                                        logger: getLogger(),
                                         logNamespace: '',
                                         sourceId: sourceObj?._id,
                                         targetId: targetObj._id,
@@ -284,7 +285,7 @@ export class CLIStates extends CLICommand<CLIStatesOptions> {
                                     sourceCommon: obj.common as ioBroker.StateCommon,
                                     targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
                                     state: newVal as ioBroker.State,
-                                    logger: console,
+                                    logger: getLogger(),
                                     logNamespace: '',
                                     sourceId: obj._id,
                                     targetId: targetObj?._id,

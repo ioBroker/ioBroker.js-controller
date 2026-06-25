@@ -1,7 +1,7 @@
 /**
  *      States DB in redis - Client
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *      Copyright 2013-2014 hobbyquaker
  *
  *      MIT License
@@ -75,25 +75,25 @@ export class StateRedisClient {
     private settings: StatesSettings;
     private readonly namespaceRedis: string;
     private readonly namespaceRedisL: number;
-    namespaceMsg: string;
+    private readonly namespaceMsg: string;
     private readonly namespaceLog: string;
     private readonly namespaceSession: string;
     private readonly metaNamespace: string;
-    private globalMessageId: number;
-    private globalLogId: number;
+    private globalMessageId = Math.round(Math.random() * 100_000_000);
+    private globalLogId = Math.round(Math.random() * 100_000_000);
     private readonly namespace: string;
-    private readonly supportedProtocolVersions: string[];
-    private stop: boolean;
-    private client: IORedis.Redis | null;
+    private readonly supportedProtocolVersions: string[] = ['4'];
+    private stop = false;
+    private client: IORedis.Redis | null = null;
     /** Client for user events */
-    private sub: IORedis.Redis | null;
+    private sub: IORedis.Redis | null = null;
     /** Client for system events */
-    private subSystem: IORedis.Redis | null;
+    private subSystem: IORedis.Redis | null = null;
     private log: InternalLogger;
     private activeProtocolVersion?: string;
-    private readonly userSubscriptions: Record<string, RegExp>;
+    private readonly userSubscriptions: Record<string, RegExp> = {};
     /** System level subscriptions value true means messagebox is subscribed */
-    private readonly systemSubscriptions: Record<string, RegExp | true>;
+    private readonly systemSubscriptions: Record<string, RegExp | true> = {};
 
     /**
      * @param settings Settings for the states client including connection and namespaces
@@ -107,19 +107,7 @@ export class StateRedisClient {
         this.namespaceSession = `${this.settings.namespaceSession || 'session'}.`;
         this.metaNamespace = `${this.settings.metaNamespace || 'meta'}.`;
 
-        this.globalMessageId = Math.round(Math.random() * 100_000_000);
-        this.globalLogId = Math.round(Math.random() * 100_000_000);
         this.namespace = this.settings.namespace || this.settings.hostname || '';
-
-        this.supportedProtocolVersions = ['4'];
-
-        this.stop = false;
-        this.client = null;
-        this.sub = null;
-        this.subSystem = null;
-
-        this.userSubscriptions = {};
-        this.systemSubscriptions = {};
 
         this.log = tools.getLogger(this.settings.logger);
 
@@ -137,7 +125,7 @@ export class StateRedisClient {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        let protoVersion;
+        let protoVersion: string | null = null;
         try {
             protoVersion = await this.client.get(`${this.metaNamespace}states.protocolVersion`);
         } catch (e) {
@@ -1534,8 +1522,8 @@ export class StateRedisClient {
      */
     async getSession(
         id: string,
-        callback: (err: Error | undefined | null, session?: Record<string, any> | null) => void,
-    ): Promise<Record<string, any> | null | void> {
+        callback: (err: Error | undefined | null, session?: ioBroker.Session | null) => void,
+    ): Promise<ioBroker.Session | null | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1573,7 +1561,7 @@ export class StateRedisClient {
     async setSession(
         id: string,
         expireS: number,
-        obj: Record<string, any>,
+        obj: ioBroker.Session,
         callback?: ioBroker.ErrorCallback,
     ): Promise<void> {
         if (!id || typeof id !== 'string') {

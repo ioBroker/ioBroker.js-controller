@@ -14,9 +14,8 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 
 import { objectsUtils as utils } from '@iobroker/db-objects-redis';
-import { type MetaObject, tools } from '@iobroker/db-base';
 import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
-import { RedisHandler, type ConnectionOptions, type FileDbSettings } from '@iobroker/db-base';
+import { RedisHandler, type ConnectionOptions, type FileDbSettings, type MetaObject, tools } from '@iobroker/db-base';
 import { EXIT_CODES } from '@iobroker/js-controller-common-db';
 
 import { ObjectsInMemoryJsonlDB } from './objectsInMemJsonlDB.js';
@@ -124,31 +123,6 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB<RedisHandlerIn
     /**
      * Separate Namespace from ID and return both
      *
-     * @param idsWithNamespace Array of IDs containing a redis namespace and the real ID
-     * @returns Object with namespace and the
-     *                                                      ID/Array of IDs without the namespace
-     */
-    _normalizeIds(idsWithNamespace: string[]): {
-        id: (string | null)[];
-        namespace: string;
-        name: string;
-        isMeta?: boolean;
-    } {
-        let ns = this.namespaceObjects;
-        const ids: (string | null)[] = [];
-        if (Array.isArray(idsWithNamespace)) {
-            idsWithNamespace.forEach(el => {
-                const { id, namespace } = this._normalizeId(el);
-                ids.push(id);
-                ns = namespace; // we ignore the pot. case from arrays with different namespaces
-            });
-        }
-        return { id: ids, namespace: ns, name: '' };
-    }
-
-    /**
-     * Separate Namespace from ID and return both
-     *
      * @param idWithNamespace ID or Array of IDs containing a redis namespace and the real ID
      * @returns Object with namespace and the
      *                                                      ID/Array of IDs without the namespace
@@ -160,7 +134,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB<RedisHandlerIn
         isMeta: boolean | undefined;
     } {
         let ns = this.namespaceObjects;
-        let id = null;
+        let id: string | null = null;
         let name = '';
         let isMeta;
         if (typeof idWithNamespace === 'string') {
@@ -997,15 +971,11 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB<RedisHandlerIn
             // Handle request to get metadata keys
             let res: {
                 file: string;
-                stats: fs.Stats;
-                isDir: boolean;
-                acl?: {
-                    read?: boolean;
-                    write?: boolean;
-                    owner: ioBroker.ObjectIDs.User;
-                    ownerGroup: ioBroker.ObjectIDs.Group;
-                    permissions: number;
+                stats: {
+                    size?: number;
                 };
+                isDir: boolean;
+                acl?: ioBroker.EvaluatedFileACL;
                 notExists?: boolean;
                 virtualFile?: boolean;
                 modifiedAt?: number | undefined;

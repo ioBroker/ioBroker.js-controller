@@ -54,13 +54,7 @@ interface SubscriptionClient {
 
 export interface FileOptions {
     createdAt?: number;
-    acl: {
-        owner: ioBroker.ObjectIDs.User;
-        ownerGroup: ioBroker.ObjectIDs.Group;
-        permissions: number; // 0x644
-        read?: boolean;
-        write?: boolean;
-    };
+    acl: ioBroker.FileACL;
     mimeType: string;
     binary?: boolean;
     modifiedAt?: number;
@@ -688,15 +682,11 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
         options?: FileAccessOptions,
     ): {
         file: string;
-        stats: fs.Stats;
-        isDir: boolean;
-        acl: {
-            read?: boolean;
-            write?: boolean;
-            owner: ioBroker.ObjectIDs.User;
-            ownerGroup: ioBroker.ObjectIDs.Group;
-            permissions: number;
+        stats: {
+            size?: number;
         };
+        isDir: boolean;
+        acl: ioBroker.EvaluatedFileACL;
         notExists?: boolean;
         virtualFile?: boolean;
         modifiedAt: number | undefined;
@@ -754,15 +744,11 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
         _files.sort();
         const res: {
             file: string;
-            stats: fs.Stats;
-            isDir: boolean;
-            acl: {
-                read?: boolean;
-                write?: boolean;
-                owner: ioBroker.ObjectIDs.User;
-                ownerGroup: ioBroker.ObjectIDs.Group;
-                permissions: number;
+            stats: {
+                size?: number;
             };
+            isDir: boolean;
+            acl: ioBroker.EvaluatedFileACL;
             modifiedAt: number | undefined;
             createdAt: undefined | number;
             notExists?: boolean;
@@ -775,8 +761,10 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
             if (fs.existsSync(path.join(location, file))) {
                 try {
                     const stats = fs.statSync(path.join(location, file));
-                    const acl = this.fileOptions[id][name + file]?.acl
-                        ? deepClone(this.fileOptions[id][name + file].acl) // copy settings
+                    const acl: ioBroker.EvaluatedFileACL = this.fileOptions[id][name + file]?.acl
+                        ? deepClone<ioBroker.EvaluatedFileACL>(
+                              this.fileOptions[id][name + file].acl as ioBroker.EvaluatedFileACL,
+                          ) // copy settings
                         : {
                               read: true,
                               write: true,

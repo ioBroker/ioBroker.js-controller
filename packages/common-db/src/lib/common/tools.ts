@@ -1,37 +1,40 @@
-import fs from 'fs-extra';
 import path from 'node:path';
 import semver from 'semver';
 import os from 'node:os';
-import forge from 'node-forge';
-import deepClone from 'deep-clone';
-import { type ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
+import crypto from 'node:crypto';
 import { createInterface } from 'node:readline';
 import { PassThrough } from 'node:stream';
-import type { CommandResult, InstallOptions, PackageManager } from '@alcalzone/pak';
-import { detectPackageManager, packageManagers } from '@alcalzone/pak';
-import { EXIT_CODES } from '@/lib/common/exitCodes.js';
 import zlib from 'node:zlib';
-import { password } from '@/lib/common/password.js';
-import jwt from 'jsonwebtoken';
-import axios from 'axios';
-import crypto from 'node:crypto';
-import type { ExecOptions } from 'node:child_process';
-import { exec } from 'node:child_process';
+import { exec, type ExecOptions } from 'node:child_process';
 import { URLSearchParams } from 'node:url';
 import events from 'node:events';
+import { setDefaultResultOrder } from 'node:dns';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
+
+import forge from 'node-forge';
+import fs from 'fs-extra';
+import deepClone from 'deep-clone';
+import { type ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
+import type { CommandResult, InstallOptions, PackageManager } from '@alcalzone/pak';
+import { detectPackageManager, packageManagers } from '@alcalzone/pak';
+import jwt from 'jsonwebtoken';
+import axios from 'axios';
 // @ts-expect-error has no types
 import extend from 'node.extend';
-import { setDefaultResultOrder } from 'node:dns';
+import type * as DiskUsage from 'diskusage';
+
+import { EXIT_CODES } from '@/lib/common/exitCodes.js';
+import { password } from '@/lib/common/password.js';
 import {
     applyAliasAutoScaling,
     applyAliasConvenienceConversion,
     applyAliasTransformer,
 } from '@/lib/common/aliasProcessing.js';
-import type * as DiskUsage from 'diskusage';
-import * as url from 'node:url';
-import { createRequire } from 'node:module';
 import type { WithRequired } from '@iobroker/types-dev';
 import { DEFAULT_OBJECTS_WARN_LIMIT } from '@/lib/common/constants.js';
+// Cannot use import here because of cyclical dependency
+// import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 type ObjectsRedisClient = any;
 type StatesRedisClient = any;
 
@@ -96,12 +99,12 @@ interface FormatAliasValueOptions {
     /** State to format */
     state: ioBroker.State | null | undefined;
     /** Logger used for logging */
-    logger: any;
+    logger: InternalLogger;
     /** Prefix for log messages */
     logNamespace: string;
-    /** Id of the source object, used for logging */
+    /** ID of the source object, used for logging */
     sourceId?: string;
-    /** Id of the target object, used for logging */
+    /** ID of the target object, used for logging */
     targetId?: string;
 }
 
@@ -303,7 +306,11 @@ export function upToDate(repoVersion: string, installedVersion: string): boolean
  * @param data The encrypted data to decrypt
  * @param callback Called with the decrypted string, or null on error
  */
-export function decryptPhrase(password: string, data: any, callback: (decrypted?: null | string) => void): void {
+export function decryptPhrase(
+    password: string,
+    data: string | Buffer,
+    callback: (decrypted?: null | string) => void,
+): void {
     const decipher = crypto.createDecipher('aes192', password);
 
     try {
@@ -635,7 +642,7 @@ async function uuid(givenMac?: string): Promise<string> {
  * @param newUuid the new UUID to set
  * @param _objects the objects DB instance
  */
-async function updateUuid(newUuid: string, _objects: any): Promise<string> {
+async function updateUuid(newUuid: string, _objects: ObjectsRedisClient): Promise<string> {
     let _uuid = await uuid('');
     _uuid = newUuid || _uuid;
     // Add vendor prefix to UUID
@@ -684,7 +691,7 @@ async function updateUuid(newUuid: string, _objects: any): Promise<string> {
  * @param objects - objects DB
  * @returns uuid if successfully created/updated
  */
-export async function createUuid(objects: any): Promise<void | string> {
+export async function createUuid(objects: ObjectsRedisClient): Promise<void | string> {
     const userObj: ioBroker.UserObject = await objects.getObject('system.user.admin');
     if (!userObj) {
         await new Promise<void>(resolve => {
@@ -1515,9 +1522,7 @@ export function getHostName(): string {
  *            }
  *        </code></pre>
  */
-function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) => void): void {
-    const { exec } = require('node:child_process');
-
+function getSystemNpmVersion(callback?: (err?: Error | null, version?: string | null) => void): void {
     // remove local node_modules\.bin dir from a path
     // or we potentially get a wrong npm version
     const newEnv = Object.assign({}, process.env);
@@ -1541,7 +1546,7 @@ function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) =
         exec(
             'npm -v',
             { encoding: 'utf8', env: newEnv, windowsHide: true },
-            (error: any, stdout: string | undefined | null) => {
+            (error: Error | null, stdout: string | undefined | null) => {
                 //, stderr) {
                 if (timeout) {
                     clearTimeout(timeout);
@@ -2001,7 +2006,7 @@ function makeid(length: number): string {
  *
  * @param objects db
  */
-export async function getHostInfo(objects: any): Promise<HostInfo> {
+export async function getHostInfo(objects: ObjectsRedisClient): Promise<HostInfo> {
     if (!diskusage) {
         try {
             diskusage = require('diskusage');
@@ -2010,17 +2015,17 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
         }
     }
 
-    const systemConfig: ioBroker.OtherObject = await objects.getObjectAsync('system.config');
-    const systemRepos: ioBroker.OtherObject = await objects.getObjectAsync('system.repositories');
+    const systemConfig: ioBroker.SystemConfigObject = await objects.getObjectAsync('system.config');
+    const systemRepos: ioBroker.RepositoryObject = await objects.getObjectAsync('system.repositories');
 
     // Check if repositories exist
-    const allRepos: Record<string, any> = {};
+    const allRepos: ioBroker.RepositoryJson = {} as ioBroker.RepositoryJson;
     if (systemRepos?.native?.repositories && systemConfig) {
         const repos: string[] = Array.isArray(systemConfig.common.activeRepo)
             ? systemConfig.common.activeRepo
             : [systemConfig.common.activeRepo];
         repos
-            .filter(repo => systemRepos.native.repositories[repo] && systemRepos.native.repositories[repo].json)
+            .filter(repo => systemRepos.native.repositories[repo]?.json)
             .forEach(repo => Object.assign(allRepos, systemRepos.native.repositories[repo].json));
     }
 
@@ -2048,7 +2053,7 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
         time: dateObj.getTime(),
         timeOffset: dateObj.getTimezoneOffset(),
         NPM: npmVersion,
-        'adapters count': Object.keys(allRepos).length,
+        'adapters count': Object.keys(allRepos).length - 1, // do not count _repoInfo
     };
 
     if (data.Platform === 'win32') {
@@ -2331,7 +2336,7 @@ export function promisifyNoError(
     };
 }
 
-async function _setQualityForStates(states: any, keys: string[], quality: number): Promise<void> {
+async function _setQualityForStates(states: StatesRedisClient, keys: string[], quality: number): Promise<void> {
     for (const key of keys) {
         try {
             await states.setState(key, { ack: null, q: quality });
@@ -2349,7 +2354,12 @@ async function _setQualityForStates(states: any, keys: string[], quality: number
  * @param namespace The instance namespace whose states should be updated (e.g. "admin.0")
  * @param q The quality code to assign to each state
  */
-export function setQualityForInstance(objects: any, states: any, namespace: string, q: number): Promise<void> {
+export function setQualityForInstance(
+    objects: ObjectsRedisClient,
+    states: StatesRedisClient,
+    namespace: string,
+    q: number,
+): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         objects.getObjectView(
             'system',
@@ -2673,25 +2683,25 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
  * @param allEnums objects with all enums to use - if not provided all enums will be queried
  * @returns Promise All objects are tried to be updated - reject will happen as soon as one fails with the error of the first fail
  */
-export async function removeIdFromAllEnums(objects: any, id: string, allEnums?: Record<string, any>): Promise<void> {
-    if (!allEnums) {
-        allEnums = await getAllEnums(objects);
-    }
+export async function removeIdFromAllEnums(
+    objects: ObjectsRedisClient,
+    id: string,
+    allEnums?: Record<string, ioBroker.EnumObject>,
+): Promise<void> {
+    allEnums ||= await getAllEnums(objects);
 
     let error = null;
     for (const [enumId, enumObj] of Object.entries(allEnums)) {
         const idx = enumObj.common.members ? enumObj.common.members.indexOf(id) : -1;
         if (idx !== -1) {
             // the id is in the enum now we have to remove it
-            enumObj.common.members.splice(idx, 1);
+            enumObj.common.members!.splice(idx, 1);
             try {
                 await objects.setObjectAsync(enumId, enumObj);
                 // update cache directly to prevent race conditions when sending many delete in a short time
                 allEnums[enumId] = enumObj;
             } catch (err) {
-                if (!error) {
-                    error = err;
-                }
+                error ||= err;
             }
         }
     }
@@ -2740,13 +2750,13 @@ export function parseDependencies(
  * @param extend (optional) if true checks allow more optional cases for extendObject calls
  * @throws Error if a property has the wrong type or `obj.type` is non-existing
  */
-export function validateGeneralObjectProperties(obj: any, extend?: boolean): void {
+export function validateGeneralObjectProperties(obj: ioBroker.SettableObject, extend?: boolean): void {
     if (!obj || (obj.type === undefined && !extend)) {
         throw new Error(`obj.type has to exist`);
     }
 
     if (obj.type !== undefined && typeof obj.type !== 'string') {
-        throw new Error(`obj.type has an invalid type! Expected "string", received "${typeof obj.type}"`);
+        throw new Error(`obj.type has an invalid type! Expected "string", received "${typeof (obj as any).type}"`);
     }
 
     if (obj.native !== undefined && !isObject(obj.native)) {
@@ -2793,10 +2803,10 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         throw new Error(`obj.common.name has an invalid type! Expected "string", received "${typeof obj.common.name}"`);
     }
 
-    if (obj.common.type !== undefined) {
-        if (typeof obj.common.type !== 'string') {
+    if ((obj.common as ioBroker.StateCommon).type !== undefined) {
+        if (typeof (obj.common as ioBroker.StateCommon).type !== 'string') {
             throw new Error(
-                `obj.common.type has an invalid type! Expected "string", received "${typeof obj.common.type}"`,
+                `obj.common.type has an invalid type! Expected "string", received "${typeof (obj.common as ioBroker.StateCommon).type}"`,
             );
         }
 
@@ -2854,6 +2864,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
                         (obj.common.type === 'mixed' && typeof obj.common.def !== 'object') ||
                         (obj.common.type !== 'object' && obj.common.type === typeof obj.common.def) ||
                         (obj.common.type === 'array' && typeof obj.common.def === 'string') ||
+                        // @ts-expect-error deprecated
                         (obj.common.type === 'json' && typeof obj.common.def === 'string') ||
                         (obj.common.type === 'object' && typeof obj.common.def === 'string')
                     )
@@ -2878,15 +2889,21 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         }
     }
 
-    if (obj.common.read !== undefined && typeof obj.common.read !== 'boolean') {
+    if (
+        (obj.common as ioBroker.StateCommon).read !== undefined &&
+        typeof (obj.common as ioBroker.StateCommon).read !== 'boolean'
+    ) {
         throw new Error(
-            `obj.common.read has an invalid type! Expected "boolean", received "${typeof obj.common.read}"`,
+            `obj.common.read has an invalid type! Expected "boolean", received "${typeof (obj.common as ioBroker.StateCommon).read}"`,
         );
     }
 
-    if (obj.common.write !== undefined && typeof obj.common.write !== 'boolean') {
+    if (
+        (obj.common as ioBroker.StateCommon).write !== undefined &&
+        typeof (obj.common as ioBroker.StateCommon).write !== 'boolean'
+    ) {
         throw new Error(
-            `obj.common.write has an invalid type! Expected "boolean", received "${typeof obj.common.write}"`,
+            `obj.common.write has an invalid type! Expected "boolean", received "${typeof (obj.common as ioBroker.StateCommon).write}"`,
         );
     }
 
@@ -2913,13 +2930,13 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
     // common.states needs to be a real object or an array
     if (
-        obj.common.states !== null && // we allow null for deletion TODO: implement https://github.com/ioBroker/ioBroker.js-controller/issues/1735
-        obj.common.states !== undefined &&
-        !isObject(obj.common.states) &&
-        !Array.isArray(obj.common.states)
+        (obj.common as ioBroker.StateCommon).states !== null && // we allow null for deletion TODO: implement https://github.com/ioBroker/ioBroker.js-controller/issues/1735
+        (obj.common as ioBroker.StateCommon).states !== undefined &&
+        !isObject((obj.common as ioBroker.StateCommon).states) &&
+        !Array.isArray((obj.common as ioBroker.StateCommon).states)
     ) {
         throw new Error(
-            `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`,
+            `obj.common.states has an invalid type! Expected "object", received "${typeof (obj.common as ioBroker.StateCommon).states}"`,
         );
     }
 }
@@ -2931,7 +2948,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
  * @param objects class redis objects
  * @returns array of IDs
  */
-export async function getAllInstances(adapters: string[], objects: any): Promise<string[]> {
+export async function getAllInstances(adapters: string[], objects: ObjectsRedisClient): Promise<string[]> {
     const instances: string[] = [];
 
     for (let i = 0; i < adapters.length; i++) {
@@ -2945,10 +2962,8 @@ export async function getAllInstances(adapters: string[], objects: any): Promise
                     instances.push(inst[j]);
                 }
             }
-        } else {
-            if (!instances.includes(adapters[i])) {
-                instances.push(adapters[i]);
-            }
+        } else if (!instances.includes(adapters[i])) {
+            instances.push(adapters[i]);
         }
     }
 
@@ -2966,8 +2981,8 @@ type GetObjectViewResult<TObject extends ioBroker.AnyObject = ioBroker.Object> =
  * @param objects - objects db
  * @returns Promise
  */
-export async function getAllEnums(objects: any): Promise<Record<string, ioBroker.EnumObject>> {
-    const allEnums: Record<string, any> = {};
+export async function getAllEnums(objects: ObjectsRedisClient): Promise<Record<string, ioBroker.EnumObject>> {
+    const allEnums: Record<string, ioBroker.EnumObject> = {};
     const res: GetObjectViewResult<ioBroker.EnumObject> = await objects.getObjectViewAsync('system', 'enum', {
         startkey: 'enum.',
         endkey: 'enum.\u9999',
@@ -2990,7 +3005,7 @@ export async function getAllEnums(objects: any): Promise<Record<string, ioBroker
  */
 export async function getInstances<TWithObjects extends boolean>(
     adapter: string,
-    objects: any,
+    objects: ObjectsRedisClient,
     withObjects: TWithObjects,
 ): Promise<TWithObjects extends true ? ioBroker.InstanceObject[] : ioBroker.ObjectIDs.Instance[]> {
     const arr = await objects.getObjectListAsync({
@@ -3477,7 +3492,7 @@ export type InternalLogger = Omit<ioBroker.Logger, 'level'>;
  *
  * @param log A logger or partial logger object; if falsy, a no-op logger is created
  */
-export function getLogger(log: any): InternalLogger {
+export function getLogger(log?: InternalLogger): InternalLogger {
     if (!log) {
         log = {
             silly: function (_msg: string) {
@@ -3578,7 +3593,23 @@ export async function setExecutableCapabilities(
  * @param password Decoded password for ioBroker.net
  * @returns array of all licenses stored on iobroker.net
  */
-async function _readLicenses(login: string, password: string): Promise<any[]> {
+async function _readLicenses(
+    login: string,
+    password: string,
+): Promise<
+    {
+        json: string;
+        id: string;
+        email: string;
+        product: string;
+        version: string;
+        invoice: string;
+        uuid: string;
+        time: string;
+        validTill: string;
+        usedBy?: string;
+    }[]
+> {
     const config = {
         headers: { Authorization: `Basic ${Buffer.from(`${login}:${password}`).toString('base64')}` },
         timeout: 4_000,
@@ -3617,15 +3648,32 @@ async function _readLicenses(login: string, password: string): Promise<any[]> {
  * @param password Decoded password for ioBroker.net
  * @returns array of all licenses stored on iobroker.net
  */
-export async function updateLicenses(objects: any, login: string, password: string): Promise<any[]> {
+export async function updateLicenses(
+    objects: ObjectsRedisClient,
+    login: string,
+    password: string,
+): Promise<
+    {
+        json: string;
+        id: string;
+        email: string;
+        product: string;
+        version: string;
+        invoice: string;
+        uuid: string;
+        time: string;
+        validTill: string;
+        usedBy?: string;
+    }[]
+> {
     // if login and password provided in the message, just try to read without saving it in system.licenses
     if (login && password) {
-        return _readLicenses(login, password);
+        return await _readLicenses(login, password);
     }
     // get actual object
     const systemLicenses: ioBroker.Object = await objects.getObjectAsync('system.licenses');
     // If password and login exist
-    if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
+    if (systemLicenses?.native?.password && systemLicenses.native.login) {
         try {
             // get the secret to decode the password
             const systemConfig: ioBroker.Object = await objects.getObjectAsync('system.config');
@@ -3642,7 +3690,18 @@ export async function updateLicenses(objects: any, login: string, password: stri
             const licenses = await _readLicenses(systemLicenses.native.login, password);
             // save licenses to system.licenses and remember the time.
             // merge the information together
-            const oldLicenses: any[] = systemLicenses.native.licenses || [];
+            const oldLicenses: {
+                json: string;
+                id: string;
+                email: string;
+                product: string;
+                version: string;
+                invoice: string;
+                uuid: string;
+                time: string;
+                validTill: string;
+                usedBy?: string;
+            }[] = systemLicenses.native.licenses || [];
             systemLicenses.native.licenses = licenses;
             oldLicenses.forEach(oldLicense => {
                 if (oldLicense.usedBy) {
@@ -3662,12 +3721,7 @@ export async function updateLicenses(objects: any, login: string, password: stri
             // if password is invalid
             if (err.message.includes('Authentication required') || err.message.includes('Cannot decode password:')) {
                 // clear existing licenses if exist
-                if (
-                    systemLicenses &&
-                    systemLicenses.native &&
-                    systemLicenses.native.licenses &&
-                    systemLicenses.native.licenses.length
-                ) {
+                if (systemLicenses?.native?.licenses?.length) {
                     systemLicenses.native.licenses = [];
                     systemLicenses.native.readTime = new Date().toISOString();
                     await objects.setObjectAsync('system.licenses', systemLicenses);
@@ -3678,12 +3732,7 @@ export async function updateLicenses(objects: any, login: string, password: stri
         }
     } else {
         // if password or login are empty => clear existing licenses if exist
-        if (
-            systemLicenses &&
-            systemLicenses.native &&
-            systemLicenses.native.licenses &&
-            systemLicenses.native.licenses.length
-        ) {
+        if (systemLicenses?.native?.licenses?.length) {
             systemLicenses.native.licenses = [];
             systemLicenses.native.readTime = new Date().toISOString();
             await objects.setObjectAsync('system.licenses', systemLicenses);
@@ -3943,9 +3992,9 @@ export function getPidsFileName(): string {
 }
 
 /**
- * Get all ioBroker process ids
+ * Get all ioBroker process IDs
  *
- * @returns process ids or empty array if no process running
+ * @returns process IDs or empty array if no process running
  */
 export async function getPids(): Promise<number[]> {
     let pids: number[] = [];

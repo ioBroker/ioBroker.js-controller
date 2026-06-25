@@ -45,9 +45,9 @@ export class StatesInMemoryFileDB<
             }[]
         >;
     },
-> extends InMemoryFileDB<ioBroker.State | Record<string, string>, THandler> {
+> extends InMemoryFileDB<ioBroker.State | ioBroker.Session, THandler> {
     private readonly META_ID: string = '**META**';
-    private session: Record<string, Record<string, any>> = {};
+    private session: Record<string, ioBroker.Session> = {};
     protected stateExpires: Record<string, NodeJS.Timeout> = {};
     protected sessionExpires: Record<string, { sessionEnd: number; timeout: NodeJS.Timeout | null }> = {};
     private readonly ONE_DAY_IN_SECS: number = 24 * 60 * 60 * 1_000;
@@ -56,7 +56,7 @@ export class StatesInMemoryFileDB<
     /**
      * @param settings Settings for the states database
      */
-    constructor(settings: FileDbSettings<ioBroker.State | Record<string, any>>) {
+    constructor(settings: FileDbSettings<ioBroker.State | ioBroker.Session>) {
         settings.fileDB ??= {
             fileName: 'states.json',
             backupDirName: 'backup-objects',
@@ -90,9 +90,7 @@ export class StatesInMemoryFileDB<
             }
         });
 
-        if (!this.stateTimer) {
-            this.stateTimer = setTimeout(() => this.saveState(), this.writeFileInterval);
-        }
+        this.stateTimer ||= setTimeout(() => this.saveState(), this.writeFileInterval);
     }
 
     /**
@@ -151,7 +149,7 @@ export class StatesInMemoryFileDB<
      *
      * @param keys The state IDs to read
      */
-    _getStates(keys: string[]): any[] {
+    _getStates(keys: string[]): (ioBroker.State | ioBroker.Session | null)[] {
         if (!keys || !Array.isArray(keys)) {
             throw new Error('no keys');
         }
@@ -173,8 +171,8 @@ export class StatesInMemoryFileDB<
     /**
      * Get the meta dictionary, creating it if it does not exist yet
      */
-    _ensureMetaDict(): Record<string, any> {
-        let meta = this.dataset[this.META_ID];
+    _ensureMetaDict(): Record<string, string> {
+        let meta: Record<string, string> = this.dataset[this.META_ID] as Record<string, string>;
         if (!meta) {
             meta = {};
             this.dataset[this.META_ID] = meta;
@@ -188,7 +186,7 @@ export class StatesInMemoryFileDB<
      * @param id The meta ID to read
      * @returns the stored meta value
      */
-    getMeta(id: string): any {
+    getMeta(id: string): string {
         const meta = this._ensureMetaDict();
         return meta[id];
     }
@@ -211,9 +209,7 @@ export class StatesInMemoryFileDB<
             this.publishAll('meta', id, value);
         });
 
-        if (!this.stateTimer) {
-            this.stateTimer = setTimeout(() => this.saveState(), this.writeFileInterval);
-        }
+        this.stateTimer ||= setTimeout(() => this.saveState(), this.writeFileInterval);
     }
 
     /**
@@ -286,7 +282,7 @@ export class StatesInMemoryFileDB<
      * @param client The client to subscribe
      * @param pattern The pattern of state IDs to subscribe to
      */
-    _subscribeForClient(client: any, pattern: string): void {
+    _subscribeForClient(client: THandler, pattern: string): void {
         this.handleSubscribe(client, 'state', pattern);
     }
 
@@ -296,7 +292,7 @@ export class StatesInMemoryFileDB<
      * @param client The client to subscribe
      * @param pattern The pattern of meta IDs to subscribe to
      */
-    _subscribeMeta(client: any, pattern: string): void {
+    _subscribeMeta(client: THandler, pattern: string): void {
         this.handleSubscribe(client, 'meta', pattern);
     }
 
@@ -306,7 +302,7 @@ export class StatesInMemoryFileDB<
      * @param client The client to unsubscribe
      * @param pattern The pattern of state IDs to unsubscribe from
      */
-    _unsubscribeForClient(client: any, pattern: string): void {
+    _unsubscribeForClient(client: THandler, pattern: string): void {
         (this.handleUnsubscribe(client, 'state', pattern) as Promise<void>).catch(e =>
             this.log.error(`${this.namespace} Cannot unsubscribe client from states: ${e.message}`),
         );
@@ -318,7 +314,7 @@ export class StatesInMemoryFileDB<
      * @param client The client to subscribe
      * @param id The ID of the message box owner
      */
-    _subscribeMessageForClient(client: any, id: string): void {
+    _subscribeMessageForClient(client: THandler, id: string): void {
         this.handleSubscribe(client, 'messagebox', `messagebox.${id}`);
     }
 
@@ -328,7 +324,7 @@ export class StatesInMemoryFileDB<
      * @param client The client to unsubscribe
      * @param id The ID of the message box owner
      */
-    _unsubscribeMessageForClient(client: any, id: string): void {
+    _unsubscribeMessageForClient(client: THandler, id: string): void {
         (this.handleUnsubscribe(client, 'messagebox', `messagebox.${id}`) as Promise<void>).catch(e =>
             this.log.error(`${this.namespace} Cannot unsubscribe client from messagebox: ${e.message}`),
         );
@@ -340,7 +336,7 @@ export class StatesInMemoryFileDB<
      * @param client The client to subscribe
      * @param id The ID of the log owner
      */
-    _subscribeLogForClient(client: any, id: string): void {
+    _subscribeLogForClient(client: THandler, id: string): void {
         this.handleSubscribe(client, 'log', `log.${id}`);
     }
 
@@ -350,7 +346,7 @@ export class StatesInMemoryFileDB<
      * @param client The client to unsubscribe
      * @param id The ID of the log owner
      */
-    _unsubscribeLogForClient(client: any, id: string): void {
+    _unsubscribeLogForClient(client: THandler, id: string): void {
         (this.handleUnsubscribe(client, 'log', `log.${id}`) as Promise<void>).catch(e =>
             this.log.error(`${this.namespace} Cannot unsubscribe client from log: ${e.message}`),
         );
@@ -361,7 +357,7 @@ export class StatesInMemoryFileDB<
      *
      * @param id The session ID to read
      */
-    _getSession(id: string): any {
+    _getSession(id: string): ioBroker.Session {
         return this.session[id];
     }
 
@@ -405,7 +401,7 @@ export class StatesInMemoryFileDB<
      * @param expire Expiration time in seconds from now
      * @param sessionData The session data to store
      */
-    _setSession(id: string, expire: number, sessionData: Record<string, any>): void {
+    _setSession(id: string, expire: number, sessionData: ioBroker.Session): void {
         this.session[id] = sessionData || {};
 
         if (this.sessionExpires[id] && this.sessionExpires[id].timeout) {

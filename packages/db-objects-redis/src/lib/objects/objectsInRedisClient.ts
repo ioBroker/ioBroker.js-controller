@@ -9,15 +9,16 @@
 import extend from 'node.extend';
 import type IORedis from 'ioredis';
 import Redis from 'ioredis';
-import { tools } from '@iobroker/db-base';
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { isDeepStrictEqual } from 'node:util';
 import deepClone from 'deep-clone';
+import semver from 'semver';
+
+import { tools } from '@iobroker/db-base';
 import type { ACLObject, FileObject, GetUserGroupPromiseReturn, UserContext } from '@/lib/objects/objectsUtils.js';
 import * as utils from '@/lib/objects/objectsUtils.js';
-import semver from 'semver';
 import * as CONSTS from '@/lib/objects/constants.js';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB';
@@ -100,7 +101,7 @@ interface MetaObject {
         size?: number;
     };
     isDir?: boolean;
-    acl?: any;
+    acl?: ioBroker.FileACL;
 }
 
 interface ChmodMetaObject extends MetaObject {
@@ -149,7 +150,7 @@ export class ObjectsInRedisClient {
      * @param settings Settings for the objects client including connection and namespaces
      */
     constructor(settings: ObjectsSettings) {
-        this.settings = settings || {};
+        this.settings = settings || ({} as ObjectsSettings);
         this.redisNamespace = `${this.settings.redisNamespace || this.settings.connection?.redisNamespace || 'cfg'}.`;
         this.fileNamespace = `${this.redisNamespace}f.`;
         this.fileNamespaceL = this.fileNamespace.length;
@@ -1349,15 +1350,14 @@ export class ObjectsInRedisClient {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
-        let buffer;
-        buffer = await this._getBinaryState(this.getFileId(id, name, false));
+        let file: Buffer<ArrayBufferLike> | string = await this._getBinaryState(this.getFileId(id, name, false));
 
         const mimeType = meta?.mimeType;
-        if (meta && !meta.binary && buffer) {
-            buffer = buffer.toString();
+        if (meta && !meta.binary && file) {
+            file = file.toString();
         }
 
-        return { file: buffer, mimeType: mimeType };
+        return { file, mimeType };
     }
 
     // User has provided no callback, we will return the Promise
@@ -2352,8 +2352,8 @@ export class ObjectsInRedisClient {
         if (!meta.isDir && !meta.notExists) {
             // it is a file
             const metaID = this.getFileId(id, name, true);
-            meta.acl.owner = options.owner;
-            meta.acl.ownerGroup = options.ownerGroup;
+            meta.acl!.owner = options.owner;
+            meta.acl!.ownerGroup = options.ownerGroup;
             try {
                 await this.client.set(metaID, JSON.stringify(meta));
             } catch (e) {
@@ -2367,7 +2367,7 @@ export class ObjectsInRedisClient {
                     file: file,
                     stats: meta.stats,
                     isDir: false,
-                    acl: meta.acl || {},
+                    acl: (meta.acl as ioBroker.EvaluatedFileACL) || ({} as ioBroker.EvaluatedFileACL),
                     modifiedAt: meta.modifiedAt,
                     createdAt: meta.createdAt,
                 },
@@ -2601,7 +2601,7 @@ export class ObjectsInRedisClient {
         if (!meta.isDir && !meta.notExists) {
             // it is a file
             const metaID = this.getFileId(id, name, true);
-            meta.acl.permissions = options.mode;
+            meta.acl!.permissions = options.mode;
             try {
                 await this.client.set(metaID, JSON.stringify(meta));
             } catch (e) {
@@ -2610,13 +2610,13 @@ export class ObjectsInRedisClient {
 
             const nameArr = name.split('/');
             const file = nameArr.pop() as string;
-            const res = [
+            const res: ioBroker.ChownFileResult[] = [
                 {
                     path: nameArr.join('/'),
-                    file: file,
+                    file,
                     stats: meta.stats,
                     isDir: false,
-                    acl: meta.acl || {},
+                    acl: (meta.acl as ioBroker.EvaluatedFileACL) || ({} as ioBroker.EvaluatedFileACL),
                     modifiedAt: meta.modifiedAt,
                     createdAt: meta.createdAt,
                 },
@@ -4491,7 +4491,11 @@ export class ObjectsInRedisClient {
      * @param options The current request options including the user
      * @param callback Called once the object has been deleted
      */
-    delObject(id: string, options: { user?: ioBroker.ObjectIDs.User } | null, callback: ioBroker.ErrorCallback): void;
+    delObject(
+        id: string,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        callback: ioBroker.ErrorCallback,
+    ): void;
     // User has not passed a callback, we will return a Promise
     /**
      * Delete an object
@@ -5139,7 +5143,10 @@ export class ObjectsInRedisClient {
         design: Design,
         search: Search,
         params?: ioBroker.GetObjectViewParams,
-        options?: any,
+        options?:
+            | { user?: ioBroker.ObjectIDs.User }
+            | null
+            | ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>,
         callback?: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>,
     ): void | ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>> {
         if (typeof options === 'function') {
@@ -5150,10 +5157,6 @@ export class ObjectsInRedisClient {
             return new Promise((resolve, reject) =>
                 this.getObjectView(design, search, params, options, (err, obj) => (err ? reject(err) : resolve(obj!))),
             );
-        }
-
-        if (options?.acl) {
-            options.acl = null;
         }
 
         if (typeof callback === 'function') {
@@ -5935,9 +5938,8 @@ export class ObjectsInRedisClient {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        let arr: any[];
         try {
-            arr = await this.client.script(hashes);
+            const arr: string[] = await this.client.script(hashes);
             if (arr) {
                 scripts.forEach((e, i) => (scripts[i].loaded = !!arr[i]));
             }
