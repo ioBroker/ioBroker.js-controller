@@ -143,53 +143,57 @@ export class StatesInMemoryJsonlDB<
              * @param target The proxied JsonlDB instance
              * @param prop The property key being read
              */
-            get(target, prop) {
-                return target.get(prop as string);
+            get(target: JsonlDB<ioBroker.State | Record<string, string>>, prop: string) {
+                return target.get(prop);
             },
             /**
              * @param target The proxied JsonlDB instance
              * @param prop The property key being checked
              */
-            has(target, prop) {
-                return target.has(prop as string);
+            has(target: JsonlDB<ioBroker.State | Record<string, string>>, prop: string) {
+                return target.has(prop);
             },
             /**
              * @param target The proxied JsonlDB instance
              * @param prop The property key being written
              * @param value The value to store
              */
-            set(target, prop, value) {
-                target.set(prop as string, value);
+            set(
+                target: JsonlDB<ioBroker.State | Record<string, string>>,
+                prop: string,
+                value: ioBroker.State | Record<string, string>,
+            ) {
+                target.set(prop, value);
                 return true;
             },
             /**
              * @param target The proxied JsonlDB instance
              * @param prop The property key being deleted
              */
-            deleteProperty(target, prop) {
-                return target.delete(prop as string);
+            deleteProperty(target: JsonlDB<ioBroker.State | Record<string, string>>, prop: string) {
+                return target.delete(prop);
             },
-            ownKeys(target) {
+            ownKeys(target: JsonlDB<ioBroker.State | Record<string, string>>) {
                 return [...target.keys()];
             },
             /**
              * @param target The proxied JsonlDB instance
              * @param prop The property key to describe
              */
-            getOwnPropertyDescriptor(target, prop) {
-                if (!target.has(prop as string)) {
+            getOwnPropertyDescriptor(target: JsonlDB<ioBroker.State | Record<string, string>>, prop: string) {
+                if (!target.has(prop)) {
                     return undefined;
                 }
                 return {
                     configurable: true,
                     enumerable: true,
                     writable: true,
-                    value: target.get(prop as string),
+                    value: target.get(prop),
                 };
             },
         }) as unknown as Record<string, ioBroker.State | Record<string, string>>;
 
-        if (this.settings.backup && this.settings.backup.period && !this.settings.backup.disabled) {
+        if (this.settings.backup?.period && !this.settings.backup.disabled) {
             this._backupInterval = setInterval(() => {
                 this.saveBackup().catch(e => this.log.error(`${this.namespace} Cannot save backup: ${e.message}`));
             }, this.settings.backup.period);

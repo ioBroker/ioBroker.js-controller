@@ -141,48 +141,52 @@ export class ObjectsInMemoryJsonlDB<
              * @param target The proxied JsonlDB instance
              * @param prop The property key being read
              */
-            get(target, prop) {
-                return target.get(prop as string);
+            get(target: JsonlDB<ioBroker.AnyObject | ioBroker.DesignObject>, prop: string) {
+                return target.get(prop);
             },
             /**
              * @param target The proxied JsonlDB instance
              * @param prop The property key being checked
              */
-            has(target, prop) {
-                return target.has(prop as string);
+            has(target: JsonlDB<ioBroker.AnyObject | ioBroker.DesignObject>, prop: string) {
+                return target.has(prop);
             },
             /**
              * @param target The proxied JsonlDB instance
              * @param prop The property key being written
              * @param value The value to store
              */
-            set(target, prop, value) {
-                target.set(prop as string, value);
+            set(
+                target: JsonlDB<ioBroker.AnyObject | ioBroker.DesignObject>,
+                prop: string,
+                value: ioBroker.AnyObject | ioBroker.DesignObject,
+            ) {
+                target.set(prop, value);
                 return true;
             },
             /**
              * @param target The proxied JsonlDB instance
              * @param prop The property key being deleted
              */
-            deleteProperty(target, prop) {
-                return target.delete(prop as string);
+            deleteProperty(target: JsonlDB<ioBroker.AnyObject | ioBroker.DesignObject>, prop: string) {
+                return target.delete(prop);
             },
-            ownKeys(target) {
+            ownKeys(target: JsonlDB<ioBroker.AnyObject | ioBroker.DesignObject>) {
                 return [...target.keys()];
             },
             /**
              * @param target The proxied JsonlDB instance
              * @param prop The property key to describe
              */
-            getOwnPropertyDescriptor(target, prop) {
-                if (!target.has(prop as string)) {
+            getOwnPropertyDescriptor(target: JsonlDB<ioBroker.AnyObject | ioBroker.DesignObject>, prop: string) {
+                if (!target.has(prop)) {
                     return undefined;
                 }
                 return {
                     configurable: true,
                     enumerable: true,
                     writable: true,
-                    value: target.get(prop as string),
+                    value: target.get(prop),
                 };
             },
         }) as unknown as Record<string, ioBroker.AnyObject | ioBroker.DesignObject>;
