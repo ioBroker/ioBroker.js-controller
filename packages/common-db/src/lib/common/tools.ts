@@ -2750,7 +2750,10 @@ export function parseDependencies(
  * @param extend (optional) if true checks allow more optional cases for extendObject calls
  * @throws Error if a property has the wrong type or `obj.type` is non-existing
  */
-export function validateGeneralObjectProperties(obj: ioBroker.SettableObject, extend?: boolean): void {
+export function validateGeneralObjectProperties(
+    obj: ioBroker.SettableObject | null | undefined,
+    extend?: boolean,
+): void {
     if (!obj || (obj.type === undefined && !extend)) {
         throw new Error(`obj.type has to exist`);
     }

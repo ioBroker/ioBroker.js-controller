@@ -2,7 +2,7 @@ import net from 'node:net';
 import os from 'node:os';
 import { EventEmitter } from 'node:events';
 import { join } from 'node:path';
-import jwt from 'jsonwebtoken';
+import jwt, { type JwtPayload } from 'jsonwebtoken';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import semver from 'semver';
@@ -209,33 +209,49 @@ export interface AdapterClass {
     /** Returns a list of objects with id between params.startkey and params.endkey */
     getObjectListAsync(
         params: ioBroker.GetObjectListParams | null,
-        options?: { sorted?: boolean } | Record<string, any>,
+        options?: { sorted?: boolean; user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.GetObjectListPromise;
     /** Returns the enum tree, filtered by the optional enum name */
-    getEnumAsync(name: string, options?: unknown): Promise<{ result: Record<string, any>; requestEnum: string }>;
+    getEnumAsync(
+        name: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<{ result: Record<string, ioBroker.EnumObject>; requestEnum: string }>;
     /** Returns the enum tree, filtered by the optional enum name */
-    getEnumsAsync(enumList?: ioBroker.EnumList, options?: unknown): ioBroker.GetEnumsPromise;
+    getEnumsAsync(
+        enumList?: ioBroker.EnumList,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.GetEnumsPromise;
     /** Deletes an object from the object db */
     delObjectAsync(id: string, options?: ioBroker.DelObjectOptions): Promise<void>;
     /** Deletes an object (which might not belong to this adapter) from the object db */
     delForeignObjectAsync(id: string, options?: ioBroker.DelObjectOptions): Promise<void>;
     /** Subscribe to changes of objects in this instance */
-    subscribeObjectsAsync(pattern: string, options?: unknown): Promise<void>;
+    subscribeObjectsAsync(pattern: string, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<void>;
     /** Unsubscribe from changes of objects in this instance */
-    unsubscribeObjectsAsync(pattern: string, options?: unknown): Promise<void>;
+    unsubscribeObjectsAsync(pattern: string, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<void>;
     /** Read a value from the states DB. */
-    getStateAsync(id: string, options?: unknown): ioBroker.GetStatePromise;
+    getStateAsync(id: string, options?: { user?: ioBroker.ObjectIDs.User } | null): ioBroker.GetStatePromise;
     /** Subscribe to changes of objects (which might not belong to this adapter) */
-    subscribeForeignObjectsAsync(pattern: string | string[], options?: unknown): Promise<void>;
+    subscribeForeignObjectsAsync(
+        pattern: string | string[],
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Unsubscribe from changes of objects (which might not belong to this adapter) */
-    unsubscribeForeignObjectsAsync(pattern: string | string[], options?: unknown): Promise<void>;
+    unsubscribeForeignObjectsAsync(
+        pattern: string | string[],
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Creates an object in the object db. Existing objects are not overwritten. */
-    setObjectNotExistsAsync(id: string, obj: ioBroker.SettableObject, options?: unknown): ioBroker.SetObjectPromise;
+    setObjectNotExistsAsync(
+        id: string,
+        obj: ioBroker.SettableObject,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.SetObjectPromise;
     /** Creates an object (which might not belong to this adapter) in the object db. Existing objects are not overwritten. */
     setForeignObjectNotExistsAsync<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetObjectPromise;
 
     /** deletes a device, its channels and states */
@@ -246,18 +262,18 @@ export interface AdapterClass {
         addTo: string,
         parentDevice: string,
         channelName: string,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<void>;
     /** Removes a channel from an enum */
     deleteChannelFromEnumAsync(
         enumName: string,
         parentDevice: string,
         channelName: string,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<void>;
 
     /** Returns a list of all devices in this adapter instance */
-    getDevicesAsync(options?: unknown): Promise<ioBroker.DeviceObject[]>;
+    getDevicesAsync(options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<ioBroker.DeviceObject[]>;
 
     /** Adds a state to an enum */
     addStateToEnumAsync(
@@ -266,7 +282,7 @@ export interface AdapterClass {
         parentDevice: string,
         parentChannel: string,
         stateName: string,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<void>;
     /** Removes a state from an enum */
     deleteStateFromEnumAsync(
@@ -274,33 +290,77 @@ export interface AdapterClass {
         parentDevice: string,
         parentChannel: string,
         stateName: string,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<void>;
     /** Changes access rights of all files in the adapter directory */
     chmodFileAsync(
         adapter: string | null,
         path: string,
-        options: { mode: number | string } | Record<string, any>,
+        options: { mode: number | string; user?: ioBroker.ObjectIDs.User },
     ): Promise<{ entries: ioBroker.ChownFileResult[]; id: string }>;
     // TODO: correct types
     /** Changes the owner of all files in the adapter directory */
     chownFileAsync(...args: any[]): Promise<any>;
     /** reads the content of directory from DB for given adapter and path */
-    readDirAsync(adapterName: string | null, path: string, options?: unknown): ioBroker.ReadDirPromise;
+    readDirAsync(
+        adapterName: string | null,
+        path: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.ReadDirPromise;
     /** Deletes a given file */
-    unlinkAsync(adapterName: string | null, path: string, options?: unknown): Promise<void>;
+    unlinkAsync(
+        adapterName: string | null,
+        path: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Deletes a given file */
-    delFileAsync(adapterName: string | null, path: string, options?: unknown): Promise<void>;
+    delFileAsync(
+        adapterName: string | null,
+        path: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Renames a file in the DB */
-    renameAsync(adapterName: string | null, oldName: string, newName: string, options?: unknown): Promise<void>;
+    renameAsync(
+        adapterName: string | null,
+        oldName: string,
+        newName: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Creates a directory in the DB */
-    mkdirAsync(adapterName: string | null, path: string, options?: unknown): Promise<void>;
+    mkdirAsync(
+        adapterName: string | null,
+        path: string,
+        options?: {
+            user?: ioBroker.ObjectIDs.User;
+            owner?: ioBroker.ObjectIDs.User;
+            ownerGroup?: ioBroker.ObjectIDs.Group;
+        } | null,
+    ): Promise<void>;
     /** reads the content of directory from DB for given adapter and path */
-    readFileAsync(adapterName: string | null, path: string, options?: unknown): ioBroker.ReadFilePromise;
+    readFileAsync(
+        adapterName: string | null,
+        path: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.ReadFilePromise;
     /** Writes a file into the DB */
-    writeFileAsync(adapterName: string | null, path: string, data: Buffer | string, options?: unknown): Promise<void>;
+    writeFileAsync(
+        adapterName: string | null,
+        path: string,
+        data: Buffer | string,
+        options?: {
+            virtualFile?: boolean;
+            user?: ioBroker.ObjectIDs.User;
+            group?: ioBroker.ObjectIDs.Group;
+            mode?: number;
+            mimeType?: string;
+        } | null,
+    ): Promise<void>;
     /** Checks if a file exists in the DB */
-    fileExistsAsync(adapterName: string | null, path: string, options?: unknown): Promise<boolean>;
+    fileExistsAsync(
+        adapterName: string | null,
+        path: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<boolean>;
 
     /** Read historian data for states of any instance or system state. */
     getHistoryAsync(
@@ -312,49 +372,66 @@ export interface AdapterClass {
         sessionId?: number;
     }>;
     /** Deletes a state from the states DB, but not the associated object. Consider using deleteState instead */
-    delStateAsync(id: string, options?: unknown): Promise<void>;
+    delStateAsync(id: string, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<void>;
     /** Deletes a state from the states DB, but not the associated object */
-    delForeignStateAsync(id: string, options?: unknown): Promise<void>;
+    delForeignStateAsync(id: string, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<void>;
     /** Read all states of this adapter that match the given pattern */
-    getStatesAsync(pattern: string, options?: unknown): ioBroker.GetStatesPromise;
+    getStatesAsync(pattern: string, options?: { user?: ioBroker.ObjectIDs.User } | null): ioBroker.GetStatesPromise;
     /** Read all states (which might not belong to this adapter) which match the given pattern */
-    getForeignStatesAsync(pattern: Pattern, options?: unknown): ioBroker.GetStatesPromise;
+    getForeignStatesAsync(
+        pattern: Pattern,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.GetStatesPromise;
     /** Subscribe to changes of states (which might not belong to this adapter) */
-    subscribeForeignStatesAsync(pattern: string | string[], options?: unknown): Promise<void>;
+    subscribeForeignStatesAsync(
+        pattern: string | string[],
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Subscribe from changes of states (which might not belong to this adapter) */
-    unsubscribeForeignStatesAsync(pattern: string | string[], options?: unknown): Promise<void>;
+    unsubscribeForeignStatesAsync(
+        pattern: string | string[],
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Subscribe to changes of states in this instance */
-    subscribeStatesAsync(pattern: Pattern, options?: unknown): Promise<void>;
+    subscribeStatesAsync(pattern: Pattern, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<void>;
     /** Subscribe from changes of states in this instance */
-    unsubscribeStatesAsync(pattern: Pattern, options?: unknown): Promise<void>;
+    unsubscribeStatesAsync(pattern: Pattern, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<void>;
     /**
      * Helper function that looks for the first free TCP port starting with the given one.
      */
     getPortAsync(port: number): Promise<number>;
     /** Read a value (which might not belong to this adapter) from the state's DB. */
-    getForeignStateAsync(id: string, options?: unknown): ioBroker.GetStatePromise;
+    getForeignStateAsync(id: string, options?: { user?: ioBroker.ObjectIDs.User } | null): ioBroker.GetStatePromise;
     /** Validates username and password */
     checkPasswordAsync(
         user: string,
         password: string,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<[isPasswordCorrect: boolean, user: `system.user.${string}`]>;
     /** Sets a new password for the given user */
-    setPasswordAsync(user: string, password: string, options?: unknown): Promise<void>;
+    setPasswordAsync(
+        user: string,
+        password: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** <INTERNAL> Checks if a user exists and is in the given group. */
-    checkGroupAsync(user: string, group: string, options?: unknown): Promise<boolean>;
+    checkGroupAsync(user: string, group: string, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<boolean>;
     /** <INTERNAL> Determines the users permissions */
     calculatePermissionsAsync(
         user: string,
         commandsPermissions: CommandsPermissions,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<ioBroker.PermissionSet>;
     /**
      * Creates or overwrites an object in the object db
      *
      * @deprecated use `adapter.setObject` without a callback instead
      */
-    setObjectAsync(id: string, obj: ioBroker.SettableObject, options?: unknown): ioBroker.SetObjectPromise;
+    setObjectAsync(
+        id: string,
+        obj: ioBroker.SettableObject,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.SetObjectPromise;
     /**
      * Creates or overwrites an object (which might not belong to this adapter) in the object db
      *
@@ -363,9 +440,8 @@ export interface AdapterClass {
     setForeignObjectAsync<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetObjectPromise;
-    // TODO: correct types
     /**
      * Get the certificates of the system.
      *
@@ -382,7 +458,10 @@ export interface AdapterClass {
     getAdapterObjectsAsync(): Promise<Record<string, ioBroker.AdapterScopedObject>>;
 
     /** Reads an object (which might not belong to this adapter) from the object db*/
-    getForeignObjectAsync<T extends string>(id: T, options?: unknown): ioBroker.GetObjectPromise<T>;
+    getForeignObjectAsync<T extends string>(
+        id: T,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.GetObjectPromise<T>;
 
     /**
      * Writes a value (which might not belong to this adapter) into the states DB only if it has changed.
@@ -402,7 +481,7 @@ export interface AdapterClass {
     setForeignStateChangedAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetStateChangedPromise;
     /**
      * Writes a value (which might not belong to this adapter) into the states DB only if it has changed.
@@ -416,7 +495,7 @@ export interface AdapterClass {
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
-        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetStateChangedPromise;
 
     /**
@@ -437,7 +516,7 @@ export interface AdapterClass {
     setStateChangedAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetStateChangedPromise;
     /**
      * Writes a value into the states DB only if it has changed.
@@ -451,7 +530,7 @@ export interface AdapterClass {
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
-        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetStateChangedPromise;
 
     /**
@@ -551,7 +630,7 @@ export interface AdapterClass {
     setForeignStateAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetStatePromise;
     /**
      * Writes a value (which might not belong to this adapter) into the states DB.
@@ -831,7 +910,7 @@ export class AdapterClass extends EventEmitter {
     private readonly logList = new Set<string>();
     private readonly aliases = new Map<string, AliasDetails>();
     private readonly aliasPatterns = new Set<string>();
-    private enums: Record<string, any> = {};
+    private enums: Record<string, ioBroker.EnumObject> = {};
     private eventLoopLags: number[] = [];
     private overwriteLogLevel: boolean = false;
     adapterReady: boolean = false;
@@ -857,7 +936,7 @@ export class AdapterClass extends EventEmitter {
     log!: Log;
     performStrictObjectChecks: boolean;
     private readonly _logger: Winston.Logger;
-    private _restartScheduleJob: any;
+    private _restartScheduleJob: NodeSchedule.Job | null = null;
     private _schedule?: typeof NodeSchedule;
     private namespaceLog: string;
     namespace: `${string}.${number}`;
@@ -898,7 +977,7 @@ export class AdapterClass extends EventEmitter {
     /** contents of iobroker.json if required via AdapterOptions */
     systemConfig?: InternalAdapterJsonConfig;
     /** the configured date format of system.config, only available if requested via AdapterOptions `useFormatDate` */
-    dateFormat?: any;
+    dateFormat?: string;
     /** if float comma instead of dot is used, only available if requested via AdapterOptions `useFormatDate` */
     isFloatComma?: boolean;
     /** configured language of system.config, only available if requested via AdapterOptions `useFormatDate` */
@@ -927,7 +1006,7 @@ export class AdapterClass extends EventEmitter {
      * @param isActive - if log subscription should be activated or deactivated
      * @param options - options passed to setState e.g. user permissions
      */
-    requireLog?: (isActive: boolean, options?: Partial<GetUserGroupsOptions>) => Promise<void> | void;
+    requireLog?: (isActive: boolean, options?: { user?: ioBroker.ObjectIDs.User } | null) => Promise<void> | void;
     private logOffTimer?: NodeJS.Timeout | null;
     private logRequired?: boolean;
     private patterns?: Record<string, { regex: string }>;
@@ -1653,7 +1732,7 @@ export class AdapterClass extends EventEmitter {
      * @param data the session data to store
      * @param callback return result
      */
-    setSession(id: string, ttl: number, data: Record<string, any>, callback?: ioBroker.ErrorCallback): MaybePromise;
+    setSession(id: string, ttl: number, data: ioBroker.Session, callback?: ioBroker.ErrorCallback): MaybePromise;
 
     // unknown implementation guards
     /**
@@ -1718,7 +1797,7 @@ export class AdapterClass extends EventEmitter {
 
     private async _getObjectsByArray(
         keys: string[],
-        options?: Record<string, any> | null,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<(ioBroker.AnyObject | null)[]> {
         try {
             return await this.#objects!.getObjects(keys, options);
@@ -2943,9 +3022,9 @@ export class AdapterClass extends EventEmitter {
 
         // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
-        let obj;
+        let obj: ioBroker.InstanceObject | undefined | null;
         try {
-            obj = await this.getForeignObjectAsync(configObjId);
+            obj = (await this.getForeignObjectAsync(configObjId)) as ioBroker.InstanceObject | undefined | null;
         } catch (e) {
             this._logger.error(`${this.namespaceLog} Updating the adapter config failed: ${e.message}`);
         }
@@ -3462,7 +3541,7 @@ export class AdapterClass extends EventEmitter {
     private async _setObjectWithDefaultValue(
         id: string,
         obj: ioBroker.SettableObject,
-        options?: Record<string, any> | null,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.SetObjectCallback,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> {
         if (!this.#objects) {
@@ -3537,7 +3616,7 @@ export class AdapterClass extends EventEmitter {
     ): Promise<Record<string, ioBroker.AdapterScopedObject> | void> {
         const ret: Record<string, ioBroker.AdapterScopedObject> = {};
         // Adds result rows to the return object
-        const addRows = (rows: any[] | undefined): void => {
+        const addRows = (rows: { id: string; value: ioBroker.AdapterScopedObject }[] | undefined): void => {
             if (rows) {
                 for (const { id, value } of rows) {
                     ret[id] = value;
@@ -3787,7 +3866,7 @@ export class AdapterClass extends EventEmitter {
             ) {
                 oldObj.native.repositories = [];
             }
-            if (options.obj.common && 'members' in options.obj.common && oldObj.common && oldObj.common.members) {
+            if (options.obj.common && 'members' in options.obj.common && oldObj.common?.members) {
                 oldObj.common.members = [];
             }
             if (
@@ -3798,27 +3877,24 @@ export class AdapterClass extends EventEmitter {
             ) {
                 oldObj.native.certificates = [];
             }
-            if (options.obj.native && 'devices' in options.obj.native && oldObj.native && oldObj.native.devices) {
+            if (options.obj.native && 'devices' in options.obj.native && oldObj.native?.devices) {
                 oldObj.native.devices = [];
             }
 
-            options.obj.from = options.obj.from || `system.adapter.${this.namespace}`;
-            options.obj.user = options.obj.user || (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
-            options.obj.ts = options.obj.ts || Date.now();
+            options.obj.from ||= `system.adapter.${this.namespace}`;
+            options.obj.user ||= (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
+            options.obj.ts ||= Date.now();
 
             options.obj = extend(true, oldObj, options.obj);
 
             // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
             return this.#objects.setObject(options.id, options.obj, options.options, options.callback);
         }
-        options.obj.from = options.obj.from || `system.adapter.${this.namespace}`;
-        options.obj.user = options.obj.user || (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
-        options.obj.ts = options.obj.ts || Date.now();
+        options.obj.from ||= `system.adapter.${this.namespace}`;
+        options.obj.user ||= (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
+        options.obj.ts ||= Date.now();
 
-        if (
-            (options.obj.type && options.obj.type === 'state') ||
-            (!options.obj.type && oldObj && oldObj.type === 'state')
-        ) {
+        if (options.obj?.type === 'state' || (!options.obj.type && oldObj?.type === 'state')) {
             if (
                 options.obj.common &&
                 'custom' in options.obj.common &&
@@ -3852,7 +3928,7 @@ export class AdapterClass extends EventEmitter {
             if (options.obj.type === 'state' || oldObj.type === 'state') {
                 if (options.obj.common && 'def' in options.obj.common && options.obj.common.def !== undefined) {
                     defState = options.obj.common.def;
-                } else if (oldObj.common && oldObj.common.def !== undefined) {
+                } else if (oldObj.common?.def !== undefined) {
                     defState = oldObj.common.def;
                 }
             }
@@ -4109,7 +4185,7 @@ export class AdapterClass extends EventEmitter {
         Validator.assertOptionalCallback(callback, 'callback');
 
         try {
-            this._utils.validateId(id, true, null);
+            this._utils.validateId(id as string, true, null);
         } catch (e) {
             return tools.maybeCallbackWithError(callback, e);
         }
@@ -4300,9 +4376,9 @@ export class AdapterClass extends EventEmitter {
 
         id = this._utils.fixId(id);
 
-        this._utils.validateId(id, false, null);
+        this._utils.validateId(id as string, false, null);
 
-        return this.#objects.objectExists(id, options);
+        return this.#objects.objectExists(id as string, options);
     }
 
     // external signature
@@ -4551,7 +4627,7 @@ export class AdapterClass extends EventEmitter {
      */
     getObjectList(
         params: ioBroker.GetObjectListParams | null,
-        options: { sorted?: boolean } | Record<string, any>,
+        options: { sorted?: boolean; user?: ioBroker.ObjectIDs.User },
         callback: ioBroker.GetObjectListCallback<ioBroker.Object>,
     ): void;
 
@@ -5100,7 +5176,7 @@ export class AdapterClass extends EventEmitter {
             this._logger.warn(`Cannot get enums on getForeignObjects: ${e.message}`);
         }
 
-        const list: Record<string, any> = {};
+        const list: Record<string, ioBroker.AnyObject> = {};
 
         for (let i = 0; i < objs.length; i++) {
             const obj = objs[i];
@@ -5233,12 +5309,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._utils.validateId(id, true, null);
+            this._utils.validateId(id as string, true, null);
         } catch (e) {
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        this.#objects.findObject(id, type as ioBroker.CommonType | null, options || {}, callback);
+        this.#objects.findObject(id as string, type as ioBroker.CommonType | null, options || {}, callback);
     }
 
     /**
@@ -5327,12 +5403,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._utils.validateId(id, true, options);
+            this._utils.validateId(id as string, true, options);
         } catch (e) {
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        return this._getForeignObject({ id, options, callback });
+        return this._getForeignObject({ id: id as string, options, callback });
     }
 
     private async _getForeignObject(options: InternalGetObjectOptions): Promise<void | ioBroker.AnyObject | null> {
@@ -5347,11 +5423,10 @@ export class AdapterClass extends EventEmitter {
             const obj = await this.#objects.getObjectAsync(options.id, options.options);
             // remove protectedNative if not admin, not cloud or not own adapter
             if (
-                obj &&
+                obj?.native &&
                 'protectedNative' in obj &&
                 Array.isArray(obj.protectedNative) &&
                 obj._id?.startsWith('system.adapter.') &&
-                obj.native &&
                 !NO_PROTECT_ADAPTERS.includes(this.name) &&
                 this.name !== obj._id.split('.')[2]
             ) {
@@ -5409,33 +5484,38 @@ export class AdapterClass extends EventEmitter {
         this.delForeignObject(id, options, callback);
     }
 
-    private _deleteObjects(
-        tasks: { id: string; [other: string]: any }[],
+    private async _deleteObjects(
+        tasks: { id: string; state?: boolean }[],
         options?: { user?: ioBroker.ObjectIDs.User } | null,
         cb?: () => void,
-    ): void | Promise<void> {
+    ): Promise<void> {
         if (!tasks?.length) {
             return tools.maybeCallback(cb);
         }
-        const task = tasks.shift();
-        this.#objects!.delObject(task!.id, options, async err => {
-            if (err) {
-                return tools.maybeCallbackWithError(cb, err);
-            }
-            if (task!.state) {
+        try {
+            for (const task of tasks) {
+                await new Promise<void>((resolve, reject) =>
+                    this.#objects!.delObject(task.id, options, err => {
+                        err ? reject(err) : resolve();
+                    }),
+                );
+                if (task.state) {
+                    try {
+                        await this.delForeignStateAsync(task.id, options);
+                    } catch (e) {
+                        this._logger.warn(`${this.namespaceLog} Could not remove state of ${task.id}: ${e.message}`);
+                    }
+                }
                 try {
-                    await this.delForeignStateAsync(task!.id, options);
+                    await tools.removeIdFromAllEnums(this.#objects, task.id, this.enums);
                 } catch (e) {
-                    this._logger.warn(`${this.namespaceLog} Could not remove state of ${task!.id}: ${e.message}`);
+                    this._logger.warn(`${this.namespaceLog} Could not remove ${task.id} from enums: ${e.message}`);
                 }
             }
-            try {
-                await tools.removeIdFromAllEnums(this.#objects, task!.id, this.enums);
-            } catch (e) {
-                this._logger.warn(`${this.namespaceLog} Could not remove ${task!.id} from enums: ${e.message}`);
-            }
-            setImmediate(() => this._deleteObjects(tasks, options, cb));
-        });
+        } catch (err) {
+            return tools.maybeCallbackWithError(cb, err);
+        }
+        return tools.maybeCallback(cb);
     }
 
     /**
@@ -5515,13 +5595,12 @@ export class AdapterClass extends EventEmitter {
                 const selector = { startkey: `${id}.`, endkey: `${id}.\u9999` };
                 // read all underlying states
                 this.#objects!.getObjectList(selector, options, (err, res) => {
-                    res &&
-                        res.rows.forEach(
-                            (item: ioBroker.GetObjectListItem<ioBroker.Object>) =>
-                                !tasks.find(task => task.id === item.id) &&
-                                (!item.value || !item.value.common || !item.value.common.dontDelete) && // exclude objects with dontDelete flag
-                                tasks.push({ id: item.id, state: item.value && item.value.type === 'state' }),
-                        );
+                    res?.rows.forEach(
+                        (item: ioBroker.GetObjectListItem<ioBroker.Object>) =>
+                            !tasks.find(task => task.id === item.id) &&
+                            !item.value?.common?.dontDelete && // exclude objects with dontDelete flag
+                            tasks.push({ id: item.id, state: item.value?.type === 'state' }),
+                    );
                     this._deleteObjects(tasks, options, callback);
                 });
             });
@@ -5529,7 +5608,8 @@ export class AdapterClass extends EventEmitter {
             this.#objects!.getObject(id, options, async (err, obj) => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
-                } else if (obj) {
+                }
+                if (obj) {
                     // do not allow deletion of objects with dontDelete flag
                     if (obj.common?.dontDelete) {
                         return tools.maybeCallbackWithError(callback, new Error('not deletable'));
@@ -5926,13 +6006,13 @@ export class AdapterClass extends EventEmitter {
         Validator.assertObject(obj, 'obj');
 
         try {
-            this._utils.validateId(id, false, null);
+            this._utils.validateId(id as string, false, null);
         } catch (e) {
             return tools.maybeCallbackWithError(callback, e);
         }
 
         return this._setObjectNotExists({
-            id: this.fixForbiddenCharsInId(this._utils.fixId(id)),
+            id: this.fixForbiddenCharsInId(this._utils.fixId(id as string)),
             obj: obj as any,
             options,
             callback,
@@ -6384,19 +6464,20 @@ export class AdapterClass extends EventEmitter {
             roleOrCommon = undefined;
         }
 
-        let common: any = {};
+        let common: ioBroker.StateCommon = {} as ioBroker.StateCommon;
         if (typeof roleOrCommon === 'string') {
             common = {
                 read: true,
                 write: false,
                 name: '',
                 role: roleOrCommon,
+                type: 'mixed',
             };
         } else if (tools.isObject(roleOrCommon)) {
-            common = roleOrCommon;
+            common = roleOrCommon as ioBroker.StateCommon;
         }
 
-        _native = _native || {};
+        _native ||= {};
 
         Validator.assertObject(common, 'common');
         Validator.assertString(stateName, 'stateName');
@@ -6415,10 +6496,10 @@ export class AdapterClass extends EventEmitter {
         const { _native, common, callback, options } = _options;
         let { parentChannel, parentDevice, stateName } = _options;
 
-        common.name = common.name || stateName;
+        common.name ||= stateName;
 
-        common.read = common.read === undefined ? true : common.read;
-        common.write = common.write === undefined ? false : common.write;
+        common.read ??= true;
+        common.write ??= false;
 
         if (!common.role) {
             this._logger.error(
@@ -6500,20 +6581,27 @@ export class AdapterClass extends EventEmitter {
             id,
             {
                 type: 'state',
-                common: common as any,
-                native: _native as any,
+                common: common as ioBroker.StateCommon,
+                native: _native,
             },
             options,
             err => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
-                } else if (common.def !== undefined) {
+                }
+                if (common.def !== undefined) {
                     this.getState(id, null, (err, state) => {
                         if (!state) {
                             if (common.defAck !== undefined) {
-                                this.setState(id, common.def, common.defAck, options, callback as any);
+                                this.setState(
+                                    id,
+                                    common.def,
+                                    common.defAck,
+                                    options,
+                                    callback as ioBroker.SetStateCallback,
+                                );
                             } else {
-                                this.setState(id, common.def, options, callback as any);
+                                this.setState(id, common.def, options, callback as ioBroker.SetStateCallback);
                             }
                         } else {
                             return tools.maybeCallback(callback);
@@ -6522,7 +6610,7 @@ export class AdapterClass extends EventEmitter {
                 } else {
                     this.getState(id, null, (err, state) => {
                         if (!state) {
-                            this.setState(id, null, true, options, callback as any);
+                            this.setState(id, null, true, options, callback as ioBroker.SetStateCallback);
                         } else {
                             return tools.maybeCallback(callback);
                         }
@@ -7890,7 +7978,7 @@ export class AdapterClass extends EventEmitter {
             // fallback option for ownerGroup
             group?: ioBroker.ObjectIDs.Group;
         },
-        callback: (err?: Error | null, processedFiles?: any) => void,
+        callback: (err?: Error | null, processedFiles?: ioBroker.ChownFileResult[]) => void,
     ): void;
 
     /**
@@ -7900,7 +7988,11 @@ export class AdapterClass extends EventEmitter {
      * @param path path to file without adapter name
      * @param callback return result
      */
-    chownFile(_adapter: string, path: string, callback: (err?: Error | null, processedFiles?: any) => void): void;
+    chownFile(
+        _adapter: string,
+        path: string,
+        callback: (err?: Error | null, processedFiles?: ioBroker.ChownFileResult[]) => void,
+    ): void;
 
     /**
      * Change a file owner
@@ -9179,7 +9271,7 @@ export class AdapterClass extends EventEmitter {
     setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options?: Partial<GetUserGroupsOptions> | null,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: T,
     ): T extends unknown ? ioBroker.SetStatePromise : void;
     /**
@@ -9195,7 +9287,7 @@ export class AdapterClass extends EventEmitter {
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
-        options?: Partial<GetUserGroupsOptions> | null,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: T,
     ): T extends unknown ? ioBroker.SetStatePromise : void;
 
@@ -9285,12 +9377,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._utils.validateId(id, false, null);
+            this._utils.validateId(id as string, false, null);
         } catch (e) {
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        const fixedId = this._utils.fixId(id, false);
+        const fixedId = this._utils.fixId(id as string, false);
         let stateObj: ioBroker.SettableState;
 
         if (tools.isObject(state)) {
@@ -9474,8 +9566,7 @@ export class AdapterClass extends EventEmitter {
         // read all groups for this user
         this.users[options.user] = {
             groups: options.groups,
-            // @ts-expect-error TODO: UserCommon has no acl
-            acl: userAcl.common?.acl || {},
+            acl: {},
         };
         await this._getGroups(options.groups);
         // combine all rights
@@ -9487,9 +9578,9 @@ export class AdapterClass extends EventEmitter {
             const group = this.groups[gName];
 
             if (group.common?.acl?.file) {
-                if (!user.acl || !user.acl.file) {
-                    user.acl = user.acl || {};
-                    user.acl.file = user.acl.file || {};
+                if (!user.acl?.file) {
+                    user.acl ||= {};
+                    user.acl.file ||= {};
 
                     user.acl.file.create = group.common.acl.file.create;
                     user.acl.file.read = group.common.acl.file.read;
@@ -9497,18 +9588,18 @@ export class AdapterClass extends EventEmitter {
                     user.acl.file.delete = group.common.acl.file.delete;
                     user.acl.file.list = group.common.acl.file.list;
                 } else {
-                    user.acl.file.create = user.acl.file.create || group.common.acl.file.create;
-                    user.acl.file.read = user.acl.file.read || group.common.acl.file.read;
-                    user.acl.file.write = user.acl.file.write || group.common.acl.file.write;
-                    user.acl.file.delete = user.acl.file.delete || group.common.acl.file.delete;
-                    user.acl.file.list = user.acl.file.list || group.common.acl.file.list;
+                    user.acl.file.create ||= group.common.acl.file.create;
+                    user.acl.file.read ||= group.common.acl.file.read;
+                    user.acl.file.write ||= group.common.acl.file.write;
+                    user.acl.file.delete ||= group.common.acl.file.delete;
+                    user.acl.file.list ||= group.common.acl.file.list;
                 }
             }
 
             if (group.common?.acl?.object) {
                 if (!user.acl || !user.acl.object) {
-                    user.acl = user.acl || {};
-                    user.acl.object = user.acl.object || {};
+                    user.acl ||= {};
+                    user.acl.object ||= {};
 
                     user.acl.object.create = group.common.acl.object.create;
                     user.acl.object.read = group.common.acl.object.read;
@@ -9516,18 +9607,18 @@ export class AdapterClass extends EventEmitter {
                     user.acl.object.delete = group.common.acl.object.delete;
                     user.acl.object.list = group.common.acl.object.list;
                 } else {
-                    user.acl.object.create = user.acl.object.create || group.common.acl.object.create;
-                    user.acl.object.read = user.acl.object.read || group.common.acl.object.read;
-                    user.acl.object.write = user.acl.object.write || group.common.acl.object.write;
-                    user.acl.object.delete = user.acl.object.delete || group.common.acl.object.delete;
-                    user.acl.object.list = user.acl.object.list || group.common.acl.object.list;
+                    user.acl.object.create ||= group.common.acl.object.create;
+                    user.acl.object.read ||= group.common.acl.object.read;
+                    user.acl.object.write ||= group.common.acl.object.write;
+                    user.acl.object.delete ||= group.common.acl.object.delete;
+                    user.acl.object.list ||= group.common.acl.object.list;
                 }
             }
 
             if (group.common?.acl?.users) {
                 if (!user.acl || !user.acl.users) {
-                    user.acl = user.acl || {};
-                    user.acl.users = user.acl.users || {};
+                    user.acl ||= {};
+                    user.acl.users ||= {};
 
                     user.acl.users.create = group.common.acl.users.create;
                     user.acl.users.read = group.common.acl.users.read;
@@ -9535,17 +9626,17 @@ export class AdapterClass extends EventEmitter {
                     user.acl.users.delete = group.common.acl.users.delete;
                     user.acl.users.list = group.common.acl.users.list;
                 } else {
-                    user.acl.users.create = user.acl.users.create || group.common.acl.users.create;
-                    user.acl.users.read = user.acl.users.read || group.common.acl.users.read;
-                    user.acl.users.write = user.acl.users.write || group.common.acl.users.write;
-                    user.acl.users.delete = user.acl.users.delete || group.common.acl.users.delete;
-                    user.acl.users.list = user.acl.users.list || group.common.acl.users.list;
+                    user.acl.users.create ||= group.common.acl.users.create;
+                    user.acl.users.read ||= group.common.acl.users.read;
+                    user.acl.users.write ||= group.common.acl.users.write;
+                    user.acl.users.delete ||= group.common.acl.users.delete;
+                    user.acl.users.list ||= group.common.acl.users.list;
                 }
             }
             if (group.common?.acl?.state) {
                 if (!user.acl || !user.acl.state) {
-                    user.acl = user.acl || {};
-                    user.acl.state = user.acl.state || {};
+                    user.acl ||= {};
+                    user.acl.state ||= {};
 
                     user.acl.state.create = group.common.acl.state.create;
                     user.acl.state.read = group.common.acl.state.read;
@@ -9553,11 +9644,11 @@ export class AdapterClass extends EventEmitter {
                     user.acl.state.delete = group.common.acl.state.delete;
                     user.acl.state.list = group.common.acl.state.list;
                 } else {
-                    user.acl.state.create = user.acl.state.create || group.common.acl.state.create;
-                    user.acl.state.read = user.acl.state.read || group.common.acl.state.read;
-                    user.acl.state.write = user.acl.state.write || group.common.acl.state.write;
-                    user.acl.state.delete = user.acl.state.delete || group.common.acl.state.delete;
-                    user.acl.state.list = user.acl.state.list || group.common.acl.state.list;
+                    user.acl.state.create ||= group.common.acl.state.create;
+                    user.acl.state.read ||= group.common.acl.state.read;
+                    user.acl.state.write ||= group.common.acl.state.write;
+                    user.acl.state.delete ||= group.common.acl.state.delete;
+                    user.acl.state.list ||= group.common.acl.state.list;
                 }
             }
         }
@@ -9565,21 +9656,31 @@ export class AdapterClass extends EventEmitter {
         return options;
     }
 
-    private _checkState(obj: ioBroker.StateObject, options: Record<string, any>, command: CheckStateCommand): boolean {
+    private _checkState(
+        obj: ioBroker.StateObject,
+        options: Partial<GetUserGroupsOptions>,
+        command: CheckStateCommand,
+    ): boolean {
         const limitToOwnerRights = options.limitToOwnerRights === true;
         if (obj?.acl) {
-            obj.acl.state = obj.acl.state || obj.acl.object;
+            obj.acl.state ||= obj.acl.object;
 
             if (obj.acl.state) {
+                if (!options.acl) {
+                    this._logger.warn(
+                        `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
+                    );
+                    return false;
+                }
                 // If user is owner
                 if (options.user === obj.acl.owner) {
                     if (command === 'setState' || command === 'delState') {
-                        if (command === 'delState' && !options.acl.state.delete) {
+                        if (command === 'delState' && !options.acl.state!.delete) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
                             return false;
-                        } else if (command === 'setState' && !options.acl.state.write) {
+                        } else if (command === 'setState' && !options.acl.state!.write) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
@@ -9591,7 +9692,7 @@ export class AdapterClass extends EventEmitter {
                             return false;
                         }
                     } else if (command === 'getState') {
-                        if (!(obj.acl.state & ACCESS_USER_READ) || !options.acl.state.read) {
+                        if (!(obj.acl.state & ACCESS_USER_READ) || !options.acl.state!.read) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
@@ -9602,14 +9703,14 @@ export class AdapterClass extends EventEmitter {
                             `${this.namespaceLog} Called unknown command on "${obj._id}": ${command as any}`,
                         );
                     }
-                } else if (options.groups.includes(obj.acl.ownerGroup) && !limitToOwnerRights) {
+                } else if (options.groups?.includes(obj.acl.ownerGroup) && !limitToOwnerRights) {
                     if (command === 'setState' || command === 'delState') {
-                        if (command === 'delState' && !options.acl.state.delete) {
+                        if (command === 'delState' && !options.acl.state!.delete) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
                             return false;
-                        } else if (command === 'setState' && !options.acl.state.write) {
+                        } else if (command === 'setState' && !options.acl.state!.write) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
@@ -9621,7 +9722,7 @@ export class AdapterClass extends EventEmitter {
                             return false;
                         }
                     } else if (command === 'getState') {
-                        if (!(obj.acl.state & ACCESS_GROUP_READ) || !options.acl.state.read) {
+                        if (!(obj.acl.state & ACCESS_GROUP_READ) || !options.acl.state!.read) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
@@ -9634,12 +9735,12 @@ export class AdapterClass extends EventEmitter {
                     }
                 } else if (!limitToOwnerRights) {
                     if (command === 'setState' || command === 'delState') {
-                        if (command === 'delState' && !options.acl.state.delete) {
+                        if (command === 'delState' && !options.acl.state!.delete) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
                             return false;
-                        } else if (command === 'setState' && !options.acl.state.write) {
+                        } else if (command === 'setState' && !options.acl.state!.write) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
@@ -9651,7 +9752,7 @@ export class AdapterClass extends EventEmitter {
                             return false;
                         }
                     } else if (command === 'getState') {
-                        if (!(obj.acl.state & ACCESS_EVERY_READ) || !options.acl.state.read) {
+                        if (!(obj.acl.state & ACCESS_EVERY_READ) || !options.acl.state!.read) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user}"on "${obj._id}" : ${command}`,
                             );
@@ -9941,12 +10042,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._utils.validateId(id, false, null);
+            this._utils.validateId(id as string, false, null);
         } catch (e) {
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        const fixedId = this._utils.fixId(id, false);
+        const fixedId = this._utils.fixId(id as string, false);
 
         let stateObj: ioBroker.SettableState;
 
@@ -10119,7 +10220,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._utils.validateId(id, true, null);
+            this._utils.validateId(id as string, true, null);
         } catch (e) {
             return tools.maybeCallbackWithError(callback as ioBroker.SetStateCallback, e);
         }
@@ -10138,7 +10239,7 @@ export class AdapterClass extends EventEmitter {
 
         if ((state as ioBroker.State).val === undefined && !Object.keys(state as ioBroker.State).length) {
             // undefined is not allowed as state.val -> return
-            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${id}"`);
+            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${id as string}"`);
             // TODO: reactivate line below + test in in next controller version (02.05.2021)
             // return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
@@ -10236,7 +10337,7 @@ export class AdapterClass extends EventEmitter {
                         aliasId,
                         tools.formatAliasValue({
                             sourceCommon: obj?.common,
-                            targetCommon: targetObj?.common as any,
+                            targetCommon: targetObj?.common as Partial<ioBroker.StateCommon>,
                             state: state as ioBroker.State,
                             logger: this._logger,
                             logNamespace: this.namespaceLog,
@@ -10509,7 +10610,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._utils.validateId(id, true, null);
+            this._utils.validateId(id as string, true, null);
         } catch (e) {
             return tools.maybeCallbackWithError(callback as ioBroker.SetStateChangedCallback, e);
         }
@@ -10531,7 +10632,7 @@ export class AdapterClass extends EventEmitter {
             !Object.keys(state as ioBroker.SettableState).length
         ) {
             // undefined is not allowed as state.val -> return
-            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${id}"`);
+            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${id as string}"`);
             // TODO: reactivate line below + test in in next controller version (02.05.2021)
             // return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
@@ -10548,7 +10649,7 @@ export class AdapterClass extends EventEmitter {
         (state as ioBroker.SettableState).user =
             (options as { user?: ioBroker.ObjectIDs.User })?.user || SYSTEM_ADMIN_USER;
 
-        id = this.fixForbiddenCharsInId(id);
+        id = this.fixForbiddenCharsInId(id as string);
 
         if (
             (options as { user?: ioBroker.ObjectIDs.User })?.user &&
@@ -12126,15 +12227,6 @@ export class AdapterClass extends EventEmitter {
      * @param adapterName Return licenses for specific adapter
      * @returns list of suitable licenses
      */
-    getSuitableLicenses(all?: boolean, adapterName?: string): Promise<any[]>;
-
-    /**
-     * This method returns the list of license that can be used by this adapter
-     *
-     * @param all if return the licenses, that used by other instances (true) or only for this instance (false)
-     * @param adapterName Return licenses for specific adapter
-     * @returns list of suitable licenses
-     */
     async getSuitableLicenses(all?: boolean, adapterName?: string): Promise<SuitableLicense[]> {
         const licenses: SuitableLicense[] = [];
         try {
@@ -12163,7 +12255,10 @@ export class AdapterClass extends EventEmitter {
 
                 for (const license of obj.native.licenses as Omit<SuitableLicense, 'decoded'>[]) {
                     try {
-                        const decoded: any = jwt.verify(license.json, cert);
+                        const decoded: JwtPayload & SuitableLicense['decoded'] = jwt.verify(
+                            license.json,
+                            cert,
+                        ) as JwtPayload & SuitableLicense['decoded'];
                         if (
                             decoded.name &&
                             (!decoded.valid_till ||
@@ -12192,7 +12287,7 @@ export class AdapterClass extends EventEmitter {
                                             continue;
                                         }
                                     }
-                                } else if (decoded.version && decoded.version !== version) {
+                                } else if (decoded.version && (decoded.version as number) !== version) {
                                     // Licenses for adapter versions >=2 need to match to the adapter major version,
                                     // which means that a new major version requires new licenses if it would be "included"
                                     //  in the last purchase
@@ -12524,7 +12619,7 @@ export class AdapterClass extends EventEmitter {
         this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
 
         if (this._options.logTransporter) {
-            this.requireLog = async (isActive, options) => {
+            this.requireLog = async (isActive: boolean, options?: { user?: ioBroker.ObjectIDs.User } | null) => {
                 if (!this.#states) {
                     return;
                 }
@@ -12759,7 +12854,7 @@ export class AdapterClass extends EventEmitter {
 
                 // someone subscribes or unsubscribes from adapter
                 if (this._options.subscribable && id === `system.adapter.${this.namespace}.subscribes`) {
-                    let subs: Record<string, any>;
+                    let subs: Record<string, { regex: string }>;
                     try {
                         subs = JSON.parse((state && (state.val as string)) || '{}');
                         Object.keys(subs).forEach(p => (subs[p].regex = tools.pattern2RegEx(p)));
@@ -13234,7 +13329,7 @@ export class AdapterClass extends EventEmitter {
         const killRes = await this.#states.getState(`system.adapter.${this.namespace}.sigKill`);
 
         if (killRes?.val !== undefined) {
-            killRes.val = parseInt(killRes.val as any, 10);
+            killRes.val = parseInt(killRes.val as string, 10);
         }
         if (!this._config.isInstall && this.startedInCompactMode && killRes && !killRes.ack && killRes.val === -1) {
             this._logger.error(
@@ -13247,7 +13342,7 @@ export class AdapterClass extends EventEmitter {
             !this.startedInCompactMode &&
             killRes?.from?.startsWith('system.host.') &&
             killRes.ack &&
-            !isNaN(killRes.val as any) &&
+            !isNaN(killRes.val) &&
             killRes.val !== process.pid
         ) {
             this._logger.error(
@@ -13427,9 +13522,8 @@ export class AdapterClass extends EventEmitter {
 
         this._utils = new Validator(
             this.#objects,
-            this.#states,
             this.namespaceLog,
-            this._logger,
+            this._logger as ioBroker.Logger,
             this.namespace,
             this._namespaceRegExp,
         );
@@ -13673,7 +13767,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _createInstancesObjects(instanceObj: ioBroker.InstanceObject): Promise<void> {
-        let objs: (IoPackageInstanceObject & { state?: unknown })[];
+        let objs: (IoPackageInstanceObject & { state?: ioBroker.StateValue })[];
 
         if (instanceObj?.common && !('onlyWWW' in instanceObj.common) && instanceObj.common.mode !== 'once') {
             objs = tools.getInstanceIndicatorObjects(this.namespace, instanceObj.common);
@@ -13683,7 +13777,7 @@ export class AdapterClass extends EventEmitter {
 
         if (instanceObj && 'instanceObjects' in instanceObj) {
             for (const instObj of instanceObj.instanceObjects) {
-                const obj: IoPackageInstanceObject & { state?: unknown } = instObj;
+                const obj: IoPackageInstanceObject & { state?: ioBroker.StateValue } = instObj;
 
                 const allowedTopLevelTypes: ioBroker.ObjectType[] = ['meta', 'device'];
 
@@ -13837,20 +13931,23 @@ export class AdapterClass extends EventEmitter {
         return this.#states.setState(id, state);
     }
 
-    private async _extendObjects(tasks: Record<string, any>, callback: () => void): Promise<void> {
-        if (!tasks || !tasks.length) {
+    private async _extendObjects(
+        tasks: (IoPackageInstanceObject & { state?: ioBroker.StateValue })[],
+        callback: () => void,
+    ): Promise<void> {
+        if (!tasks?.length) {
             return tools.maybeCallback(callback);
         }
         const task = tasks.shift();
-        const state = task.state;
+        const state = task!.state;
         if (state !== undefined) {
-            delete task.state;
+            delete task!.state;
         }
 
         try {
             tools.validateGeneralObjectProperties(task, true);
         } catch (e) {
-            this._logger.error(`${this.namespaceLog} Object ${task._id} is invalid: ${e.message}`);
+            this._logger.error(`${this.namespaceLog} Object ${task!._id} is invalid: ${e.message}`);
             return tools.maybeCallbackWithError(callback, e);
         }
 
@@ -13865,7 +13962,7 @@ export class AdapterClass extends EventEmitter {
         const options = { preserve: { common: ['name'], native: true } };
 
         try {
-            await this.extendForeignObjectAsync(task._id, task, options);
+            await this.extendForeignObjectAsync(task!._id, task!, options);
         } catch {
             // ignore
         }
@@ -13879,7 +13976,7 @@ export class AdapterClass extends EventEmitter {
             }
             this.outputCount++;
             this.#states.setState(
-                task._id,
+                task!._id,
                 {
                     val: state,
                     from: `system.adapter.${this.namespace}`,

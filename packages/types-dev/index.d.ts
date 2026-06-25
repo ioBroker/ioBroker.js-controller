@@ -468,7 +468,7 @@ declare global {
         ) => void;
         type GetEnumsPromise = Promise<NonNullCallbackReturnTypeOf<GetEnumsCallback>>;
 
-        type GetObjectsCallback = (err?: Error | null, objects?: Record<string, ioBroker.Object>) => void;
+        type GetObjectsCallback = (err?: Error | null, objects?: Record<string, ioBroker.AnyObject | null>) => void;
         type GetObjectsPromise = Promise<NonNullCallbackReturnTypeOf<GetObjectsCallback>>;
 
         type GetObjectsCallbackTyped<T extends ObjectType> = (

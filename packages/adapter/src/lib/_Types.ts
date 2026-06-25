@@ -5,8 +5,8 @@ export interface AdapterOptions {
         subs: Record<
             string,
             {
-                /** Compiled regular expression of the subscription pattern */
-                regex: RegExp;
+                /** String with regular expression of the subscription pattern */
+                regex: string;
             }
         >,
     ) => void;
@@ -101,7 +101,7 @@ export interface SuitableLicense {
         email: string;
         /** Free text comment */
         comment: string;
-        /** License type, eg private */
+        /** License type, e.g. private */
         type: string;
         /** Adapter name */
         name: string;
@@ -141,7 +141,7 @@ export interface SuitableLicense {
         /** Issued-at timestamp of the JWT */
         iat: number;
         /** Version for which this license is valid */
-        version: string;
+        version: string | number;
         /** License is only valid for given UUID */
         uuid?: string;
         /** If it is a free license or not */
@@ -200,7 +200,7 @@ export type UserInterfaceClientRemoveMessage =
     | (Omit<ioBroker.Message, 'message' | 'command'> & {
           /** Command identifying this as a client unsubscribe message */
           command: 'clientUnsubscribe';
-          /** Details of the unsubscribe */
+          /** Details of the "unsubscribe" */
           message: {
               /** Reason for unsubscribing */
               reason: MessageUnsubscribeReason;
@@ -302,7 +302,8 @@ export interface GetUserGroupsOptions {
     groups?: ioBroker.ObjectIDs.Group[];
     _objects?: (ioBroker.StateObject | null)[];
     checked?: boolean;
-    acl: any;
+    acl: Omit<ioBroker.PermissionSet, 'user' | 'groups'>;
+    limitToOwnerRights?: boolean;
 }
 
 export type CheckStateCommand = 'getState' | 'setState' | 'delState';
@@ -316,7 +317,7 @@ export interface InternalSetSessionOptions {
     /** Time to live in seconds */
     ttl: number;
     /** The session data to store */
-    data: Record<string, any>;
+    data: ioBroker.Session;
     /** Called once the session has been stored */
     callback?: ioBroker.ErrorCallback;
 }
@@ -491,13 +492,13 @@ export interface InternalDelStateOptions {
 }
 
 /** Options for reading an object */
-export interface InternalGetObjectOptions {
+export interface InternalGetObjectOptions<T extends string = string> {
     /** The id of the object */
     id: string;
     /** Optional settings including the user context */
     options: { user?: ioBroker.ObjectIDs.User } | null | undefined;
     /** Called with the object */
-    callback?: ioBroker.GetObjectCallback<any>;
+    callback?: ioBroker.GetObjectCallback<T>;
 }
 
 /** Options for reading the history of a state */
@@ -666,6 +667,7 @@ export interface InternalAddChannelToEnumOptions {
 export interface SendToOptions {
     /** Method throws or calls error cb, if callback not called in time, works for single targets only */
     timeout?: number;
+    user?: ioBroker.ObjectIDs.User;
 }
 
 /** Options for sending a message to another instance */
