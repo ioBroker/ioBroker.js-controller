@@ -236,7 +236,7 @@ declare global {
         }
 
         /** Parameters for adapter.getObjectList */
-        type GetObjectListParams = GetObjectViewParams;
+        type GetObjectListParams = GetObjectViewParams | undefined;
 
         type LogLevel = 'silly' | 'debug' | 'info' | 'warn' | 'error';
         interface Logger {
@@ -533,7 +533,7 @@ declare global {
             /** Name of the file or directory */
             file: string;
             /** File system stats */
-            stats: {
+            stats?: {
                 size?: number;
             };
             /** Whether this is a directory or a file */

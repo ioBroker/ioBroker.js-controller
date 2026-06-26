@@ -19,31 +19,31 @@ export interface CLICommandParams {
     /** Force the operation even if it would normally be refused */
     force?: boolean;
     /** Password to use */
-    password?: any;
+    password?: string;
     /** Restrict the operation to the given group */
-    ingroup?: any;
+    ingroup?: string;
     /** Short alias for the version flag */
-    v?: any;
+    v?: string;
     /** Show the version */
-    version?: any;
+    version?: string | number;
     /** Timeout in milliseconds */
-    timeout?: any;
+    timeout?: number;
     /** Only include enabled instances */
-    enabled?: any;
+    enabled?: boolean;
     /** Only include disabled instances */
-    disabled?: any;
+    disabled?: boolean;
     /** Port to use */
-    port?: any;
+    port?: number;
     /** Use SSL */
-    ssl?: any;
+    ssl?: boolean;
     /** IP address to bind to */
-    ip?: any;
+    ip?: string;
     /** Only include updatable adapters */
-    updatable?: any;
+    updatable?: boolean;
     /** Host to operate on */
-    host?: any;
+    host?: string;
     /** Certificate to use */
-    cert?: any;
+    cert?: string;
     /** Working directory */
     cwd?: string;
     /** File system path */

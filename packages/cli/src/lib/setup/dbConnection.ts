@@ -241,15 +241,14 @@ export async function dbConnect(
 
             console.log('No connection to databases possible ...');
             if (onlyCheck) {
-                callback &&
-                    callback({
-                        // TODO types: allow null if onlyCheck is true
-                        objects: null as any,
-                        states: null as any,
-                        isOffline: true,
-                        objectsDBType: config.objects.type,
-                        config,
-                    });
+                callback?.({
+                    // TODO types: allow null if onlyCheck is true
+                    objects: null as any,
+                    states: null as any,
+                    isOffline: true,
+                    objectsDBType: config.objects.type,
+                    config,
+                });
                 callback = undefined;
             } else {
                 return void exitApplicationSave(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);

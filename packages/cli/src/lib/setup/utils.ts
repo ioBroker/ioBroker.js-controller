@@ -16,11 +16,8 @@ interface GetRepositoryOptions {
  *
  * @param options Repository specific options
  */
-export async function getRepository(
-    options: GetRepositoryOptions,
-): Promise<Record<string, ioBroker.RepositoryJsonAdapterContent>> {
-    const { objects } = options;
-    const { repoName } = options;
+export async function getRepository(options: GetRepositoryOptions): Promise<ioBroker.RepositoryJson> {
+    const { objects, repoName } = options;
 
     let repoNameOrArray: string | string[] | undefined = repoName;
     if (!repoName || repoName === 'auto') {
@@ -32,7 +29,7 @@ export async function getRepository(
 
     const systemRepos = (await objects.getObject('system.repositories'))!;
 
-    const allSources: Record<string, ioBroker.RepositoryJsonAdapterContent> = {};
+    const allSources: ioBroker.RepositoryJson = {} as ioBroker.RepositoryJson;
     let changed = false;
     let anyFound = false;
     for (const repoUrl of repoArr) {

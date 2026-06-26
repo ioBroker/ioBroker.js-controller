@@ -4,6 +4,9 @@ import { isDeepStrictEqual } from 'node:util';
 import Debug from 'debug';
 import path from 'node:path';
 import yargs from 'yargs/yargs';
+import * as url from 'node:url';
+import * as events from 'node:events';
+import { createRequire } from 'node:module';
 
 import {
     tools,
@@ -12,6 +15,7 @@ import {
     isLocalObjectsDbServer,
     isLocalStatesDbServer,
 } from '@iobroker/js-controller-common';
+import { SYSTEM_CONFIG_ID, SYSTEM_REPOSITORIES_ID } from '@iobroker/js-controller-common-db/constants';
 
 import * as CLITools from '@/lib/cli/cliTools.js';
 import { CLIHost } from '@/lib/cli/cliHost.js';
@@ -36,14 +40,11 @@ import {
 } from '@/lib/setup/utils.js';
 import { dbConnect, dbConnectAsync, exitApplicationSave } from '@/lib/setup/dbConnection.js';
 import { IoBrokerError } from '@/lib/setup/customError.js';
-import type { ListType } from '@/lib/setup/setupList.js';
-import * as url from 'node:url';
-import * as events from 'node:events';
+import { List, type ListType } from '@/lib/setup/setupList.js';
+import * as formatters from '@/lib/setup/formatters.js';
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
-import { createRequire } from 'node:module';
-import { SYSTEM_CONFIG_ID, SYSTEM_REPOSITORIES_ID } from '@iobroker/js-controller-common-db/constants';
 // eslint-disable-next-line unicorn/prefer-module
 const require = createRequire(import.meta.url || `file://${__filename}`);
 
@@ -536,7 +537,7 @@ function showHelp(): void {
 async function processCommand(
     command: string | number,
     args: string[],
-    params: Record<string, any>,
+    params: Record<string, string | boolean | number>,
     callback: ExitCodeCb,
 ): Promise<void> {
     const commandContext: CLICommandContext = { dbConnect, callback, showHelp };
@@ -619,8 +620,8 @@ async function processCommand(
             }
 
             // and as --flag
-            isRedis = params.redis || isRedis;
-            isFirst = params.first || isFirst;
+            isRedis = (params.redis as boolean) || isRedis;
+            isFirst = (params.first as boolean) || isFirst;
 
             setup.setup({
                 callback: async () => {
@@ -836,22 +837,22 @@ async function processCommand(
             dbConnect(params, async ({ objects }) => {
                 try {
                     const data = await tools.getHostInfo(objects);
-                    const formatters = await import('./setup/formatters.js');
-                    const formatInfo = {
-                        Uptime: formatters.formatSeconds,
-                        'System uptime': formatters.formatSeconds,
-                        RAM: formatters.formatRam,
-                        Speed: formatters.formatSpeed,
-                        'Disk size': formatters.formatBytes,
-                        'Disk free': formatters.formatBytes,
-                    };
 
-                    for (const attr of Object.keys(data)) {
+                    for (const attr in data) {
+                        let info: string;
+                        if (attr === 'Uptime' || attr === 'System uptime') {
+                            info = formatters.formatSeconds(data[attr as keyof tools.HostInfo] as number);
+                        } else if (attr === 'RAM') {
+                            info = formatters.formatRam(data[attr as keyof tools.HostInfo] as number);
+                        } else if (attr === 'Speed') {
+                            info = formatters.formatSpeed(data[attr as keyof tools.HostInfo] as number);
+                        } else if (attr === 'Disk size' || attr === 'Disk free') {
+                            info = formatters.formatBytes(data[attr as keyof tools.HostInfo] as number);
+                        } else {
+                            info = data[attr as keyof tools.HostInfo] as string;
+                        }
                         console.log(
-                            `${attr}${attr.length < 16 ? new Array(16 - attr.length).join(' ') : ''}: ${
-                                // @ts-expect-error todo would need checks
-                                formatInfo[attr] ? formatInfo[attr](data[attr]) : data[attr] || ''
-                            }`,
+                            `${attr}${attr.length < 16 ? new Array(16 - attr.length).join(' ') : ''}: ${info || ''}`,
                         );
                     }
                 } catch (err) {
@@ -1207,7 +1208,7 @@ async function processCommand(
                             const version = adapter.split('@')[1];
 
                             await upgrade.upgradeController({
-                                forceDowngrade: params.force || params.f,
+                                forceDowngrade: (params.force as boolean) || (params.f as boolean),
                                 controllerRunning: !!hostAlive?.val,
                                 version,
                             });
@@ -1215,8 +1216,8 @@ async function processCommand(
                             await upgrade.upgradeAdapter(
                                 '',
                                 adapter,
-                                params.force || params.f,
-                                params.y || params.yes,
+                                (params.force as boolean) || (params.f as boolean),
+                                (params.y as boolean) || (params.yes as boolean),
                                 false,
                             );
                         }
@@ -1236,7 +1237,7 @@ async function processCommand(
                             links,
                             Object.keys(links).sort(),
                             false,
-                            params.y || params.yes,
+                            (params.y as boolean) || (params.yes as boolean),
                         );
                         return void callback();
                     } catch (e) {
@@ -1358,8 +1359,7 @@ async function processCommand(
 
         case 'l':
         case 'list': {
-            dbConnect(params, async ({ objects, states }) => {
-                const { List } = await import('./setup/setupList.js');
+            dbConnect(params, ({ objects, states }) => {
                 const list = new List({
                     states,
                     objects,
@@ -1377,7 +1377,7 @@ async function processCommand(
                 console.log('No file path found. Example: "touch /vis-2.0/main/*"');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
-            dbConnect(params, ({ states, objects }) => {
+            dbConnect(params, ({ objects }) => {
                 // extract id
                 pattern = pattern.replace(/\\/g, '/');
                 if (pattern[0] === '/') {
@@ -1390,47 +1390,31 @@ async function processCommand(
                             startkey: 'system.adapter.',
                             endkey: 'system.adapter.\u9999',
                         },
-                        (err, arr) => {
+                        async (err, arr) => {
                             if (!err && arr?.rows) {
-                                const files: any[] = [];
-                                let count = 0;
+                                const files: string[] = [];
                                 for (const row of arr.rows) {
-                                    if (row.value.type !== 'adapter') {
+                                    const rowTyped = row.value as ioBroker.AdapterObject | ioBroker.InstanceObject;
+                                    if (rowTyped.type !== 'adapter') {
                                         continue;
                                     }
-                                    count++;
-                                    objects.touch(
-                                        row.value.common.name,
-                                        '*',
-                                        { user: 'system.user.admin' },
-                                        // @ts-expect-error todo this looks wrong, we have no cb args other than err
-                                        async (err, processed, _id) => {
-                                            if (!err && processed) {
-                                                files.push({ id: _id, processed: processed });
+                                    await new Promise<void>(resolve =>
+                                        objects.touch(rowTyped.common.name, '*', { user: 'system.user.admin' }, err => {
+                                            if (!err) {
+                                                files.push(rowTyped.common.name);
+                                            } else {
+                                                console.warn(`Cannot touch file ${rowTyped.common.name}`);
                                             }
-                                            if (!--count) {
-                                                const { List } = await import('./setup/setupList.js');
-                                                const list = new List({
-                                                    states,
-                                                    objects,
-                                                    processExit: callback,
-                                                });
-                                                files.sort((a, b) => a.id.localeCompare(b.id));
-
-                                                for (const file of files) {
-                                                    for (const processedFile of processed) {
-                                                        list.showFile(file.id, processedFile.path, processedFile);
-                                                    }
-                                                }
-                                                setTimeout(callback, 1_000);
-                                            }
-                                        },
+                                            resolve();
+                                        }),
                                     );
                                 }
-                                if (!count) {
-                                    console.log('Nothing found');
-                                    return void callback();
+                                files.sort((a, b) => a.localeCompare(b));
+
+                                for (const file of files) {
+                                    console.log(`Touched ${file}`);
                                 }
+                                setTimeout(callback, 1_000);
                             }
                         },
                     );
@@ -1439,22 +1423,11 @@ async function processCommand(
                     const id = parts.shift()!;
                     const path = parts.join('/');
 
-                    // @ts-expect-error todo processed should not exist, how to proceed?
-                    objects.touch(id, path, { user: 'system.user.admin' }, async (err, processed) => {
+                    objects.touch(id, path, { user: 'system.user.admin' }, err => {
                         if (err) {
                             console.error(err);
                         } else {
-                            if (processed) {
-                                const { List } = await import('./setup/setupList.js');
-                                const list = new List({
-                                    states,
-                                    objects,
-                                    processExit: callback,
-                                });
-                                for (const processedFile of processed) {
-                                    list.showFile(id, processedFile.path, processedFile);
-                                }
-                            }
+                            console.log(`Touched ${id}/${path}`);
                         }
                         setTimeout(callback, 1_000);
                     });
@@ -1470,7 +1443,7 @@ async function processCommand(
                 console.log('No file path found. Example: "touch /vis-2.0/main/*"');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
-            dbConnect(params, ({ objects, states }) => {
+            dbConnect(params, ({ objects }) => {
                 // extract id
                 pattern = pattern.replace(/\\/g, '/');
                 if (pattern[0] === '/') {
@@ -1483,48 +1456,36 @@ async function processCommand(
                             startkey: 'system.adapter.',
                             endkey: 'system.adapter.\u9999',
                         },
-                        (err, arr) => {
+                        async (err, arr) => {
                             if (!err && arr?.rows) {
-                                const files: any[] = [];
-                                let count = 0;
+                                const files: { id: string; processed: ioBroker.RmResult[] }[] = [];
                                 for (const row of arr.rows) {
-                                    if (row.value.type !== 'adapter') {
+                                    const rowTyped = row.value as ioBroker.AdapterObject | ioBroker.InstanceObject;
+                                    if (rowTyped.type !== 'adapter') {
                                         continue;
                                     }
-                                    count++;
-                                    objects.rm(
-                                        row.value.common.name,
-                                        '*',
-                                        { user: 'system.user.admin' },
-                                        // @ts-expect-error todo id should not exist according to types check it
-                                        async (err, processed, _id) => {
-                                            if (!err && processed) {
-                                                files.push({ id: _id, processed: processed });
-                                            }
-                                            if (!--count) {
-                                                const { List } = await import('./setup/setupList.js');
-                                                const list = new List({
-                                                    states,
-                                                    objects,
-                                                    processExit: callback,
-                                                });
-                                                files.sort((a, b) => a.id.localeCompare(b.id));
-
-                                                list.showFileHeader();
-                                                for (const file of files) {
-                                                    for (const processedFile of processed) {
-                                                        list.showFile(file.id, processedFile.path, processedFile);
-                                                    }
+                                    await new Promise<void>(resolve =>
+                                        objects.rm(
+                                            rowTyped.common.name,
+                                            '*',
+                                            { user: 'system.user.admin' },
+                                            (err, processed) => {
+                                                if (!err && processed) {
+                                                    files.push({ id: rowTyped.common.name, processed });
                                                 }
-                                                setTimeout(callback, 1_000);
-                                            }
-                                        },
+                                                resolve();
+                                            },
+                                        ),
                                     );
                                 }
-                                if (!count) {
-                                    console.log('Nothing found');
-                                    return void callback();
+                                files.sort((a, b) => a.id.localeCompare(b.id));
+
+                                for (const file of files) {
+                                    for (const processedFile of file.processed) {
+                                        console.log(`Removed ${processedFile.path}/${processedFile.file}`);
+                                    }
                                 }
+                                setTimeout(callback, 1_000);
                             }
                         },
                     );
@@ -1533,21 +1494,13 @@ async function processCommand(
                     const id = parts.shift()!;
                     const path = parts.join('/');
 
-                    objects.rm(id, path, { user: 'system.user.admin' }, async (err, processed) => {
+                    objects.rm(id, path, { user: 'system.user.admin' }, (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const { List } = await import('./setup/setupList.js');
-                                const list = new List({
-                                    states,
-                                    objects,
-                                    processExit: callback,
-                                });
-                                list.showFileHeader();
                                 for (const file of processed) {
-                                    // @ts-expect-error todo types adjustment needed
-                                    list.showFile(id, file.path, file);
+                                    console.log(`Removed ${file.path}/${file.file}`);
                                 }
                             }
                         }
@@ -1586,51 +1539,45 @@ async function processCommand(
                             startkey: 'system.adapter.',
                             endkey: 'system.adapter.\u9999',
                         },
-                        (err, arr) => {
+                        async (err, arr) => {
                             if (!err && arr?.rows) {
-                                const files: any[] = [];
-                                let count = 0;
+                                const files: { id: string; processed: ioBroker.ChownFileResult[] }[] = [];
                                 for (const row of arr.rows) {
-                                    if (row.value.type !== 'adapter') {
+                                    const rowTyped = row.value as ioBroker.AdapterObject | ioBroker.InstanceObject;
+                                    if (rowTyped.type !== 'adapter') {
                                         continue;
                                     }
-                                    count++;
-                                    objects.chmodFile(
-                                        row.value.common.name,
-                                        '*',
-                                        {
-                                            user: 'system.user.admin',
-                                            mode,
-                                        },
-                                        // @ts-expect-error todo _id should not exist how to handle
-                                        async (err, processed, _id) => {
-                                            if (!err && processed) {
-                                                files.push({ id: _id, processed: processed });
-                                            }
-                                            if (!--count) {
-                                                const { List } = await import('./setup/setupList.js');
-                                                const list = new List({
-                                                    states,
-                                                    objects,
-                                                    processExit: callback,
-                                                });
-                                                files.sort((a, b) => a.id.localeCompare(b.id));
-
-                                                list.showFileHeader();
-                                                for (const file of files) {
-                                                    for (const processedFile of file.processed) {
-                                                        list.showFile(file.id, processedFile.path, processedFile);
-                                                    }
+                                    await new Promise<void>(resolve =>
+                                        objects.chmodFile(
+                                            rowTyped.common.name,
+                                            '*',
+                                            {
+                                                user: 'system.user.admin',
+                                                mode,
+                                            },
+                                            (err, processed) => {
+                                                if (!err && processed) {
+                                                    files.push({ id: rowTyped.common.name, processed });
                                                 }
-                                                setTimeout(callback, 1_000);
-                                            }
-                                        },
+                                                resolve();
+                                            },
+                                        ),
                                     );
                                 }
-                                if (!count) {
-                                    console.log('Nothing found');
-                                    return void callback();
+                                const list = new List({
+                                    states,
+                                    objects,
+                                    processExit: callback,
+                                });
+                                files.sort((a, b) => a.id.localeCompare(b.id));
+
+                                list.showFileHeader();
+                                for (const file of files) {
+                                    for (const processedFile of file.processed) {
+                                        list.showFile(file.id, processedFile.path, processedFile);
+                                    }
                                 }
+                                setTimeout(callback, 1_000);
                             }
                         },
                     );
@@ -1639,12 +1586,11 @@ async function processCommand(
                     const id = parts.shift()!;
                     const path = parts.join('/');
 
-                    objects.chmodFile(id, path, { user: 'system.user.admin', mode: mode }, async (err, processed) => {
+                    objects.chmodFile(id, path, { user: 'system.user.admin', mode: mode }, (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const { List } = await import('./setup/setupList.js');
                                 const list = new List({
                                     states,
                                     objects,
@@ -1652,7 +1598,6 @@ async function processCommand(
                                 });
                                 list.showFileHeader();
                                 for (const file of processed) {
-                                    // @ts-expect-error todo types adjustment needed
                                     list.showFile(id, file.path, file);
                                 }
                             }
@@ -1677,7 +1622,8 @@ async function processCommand(
             if (!user) {
                 CLIError.requiredArgumentMissing('user', 'chown user /vis-2.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            } else if (user.substring(12) !== 'system.user.') {
+            }
+            if (user.substring(12) !== 'system.user.') {
                 user = `system.user.${user}`;
             }
             if (group && group.substring(13) !== 'system.group.') {
@@ -1701,56 +1647,50 @@ async function processCommand(
                             startkey: 'system.adapter.',
                             endkey: 'system.adapter.\u9999',
                         },
-                        (err, arr) => {
+                        async (err, arr) => {
                             if (!err && arr?.rows) {
-                                const files: any[] = [];
-                                let count = 0;
+                                const files: { id: string; processed: ioBroker.ChownFileResult[] }[] = [];
                                 for (const row of arr.rows) {
-                                    if (row.value.type !== 'adapter') {
+                                    const rowTyped = row.value as ioBroker.AdapterObject | ioBroker.InstanceObject;
+                                    if (rowTyped.type !== 'adapter') {
                                         continue;
                                     }
-                                    count++;
-                                    objects.chownFile(
-                                        row.value.common.name,
-                                        '*',
-                                        {
-                                            user: 'system.user.admin',
-                                            owner: user,
-                                            ownerGroup: group,
-                                        },
-                                        // @ts-expect-error todo _id should not exist how to handle
-                                        async (err, processed, _id) => {
-                                            if (!err && processed) {
-                                                files.push({ id: _id, processed: processed });
-                                            }
-                                            if (!--count) {
-                                                const { List } = await import('./setup/setupList.js');
-                                                const list = new List({
-                                                    states,
-                                                    objects,
-                                                    processExit: callback,
-                                                });
-                                                files.sort((a, b) => a.id.localeCompare(b.id));
-
-                                                list.showFileHeader();
-                                                for (let k = 0; k < files.length; k++) {
-                                                    for (let t = 0; t < files[k].processed.length; t++) {
-                                                        list.showFile(
-                                                            files[k].id,
-                                                            files[k].processed[t].path,
-                                                            files[k].processed[t],
-                                                        );
-                                                    }
+                                    await new Promise<void>(resolve =>
+                                        objects.chownFile(
+                                            rowTyped.common.name,
+                                            '*',
+                                            {
+                                                user: 'system.user.admin',
+                                                owner: user,
+                                                ownerGroup: group,
+                                            },
+                                            (err, processed) => {
+                                                if (!err && processed) {
+                                                    files.push({ id: rowTyped.common.name, processed });
                                                 }
-                                                setTimeout(callback, 1_000);
-                                            }
-                                        },
+                                                resolve();
+                                            },
+                                        ),
                                     );
                                 }
-                                if (!count) {
+                                if (!files.length) {
                                     console.log('Nothing found');
                                     return void callback();
                                 }
+                                const list = new List({
+                                    states,
+                                    objects,
+                                    processExit: callback,
+                                });
+                                files.sort((a, b) => a.id.localeCompare(b.id));
+
+                                list.showFileHeader();
+                                for (let k = 0; k < files.length; k++) {
+                                    for (let t = 0; t < files[k].processed.length; t++) {
+                                        list.showFile(files[k].id, files[k].processed[t].path, files[k].processed[t]);
+                                    }
+                                }
+                                setTimeout(callback, 1_000);
                             }
                         },
                     );
@@ -1767,13 +1707,12 @@ async function processCommand(
                             owner: user,
                             ownerGroup: group,
                         },
-                        async (err, processed) => {
+                        (err, processed) => {
                             if (err) {
                                 console.error(err);
                             } else {
                                 // call here list
                                 if (processed) {
-                                    const { List } = await import('./setup/setupList.js');
                                     const list = new List({
                                         states,
                                         objects,
@@ -1781,7 +1720,6 @@ async function processCommand(
                                     });
                                     list.showFileHeader();
                                     for (const file of processed) {
-                                        // @ts-expect-error todo types adjustment needed
                                         list.showFile(id, file.path, file);
                                     }
                                 }
@@ -1808,11 +1746,12 @@ async function processCommand(
                     objects,
                     processExit: callback,
                 });
-                const password = params.password;
-                const group = params.ingroup || 'system.group.administrator';
+                const password = params.password as string;
+                const group: ioBroker.ObjectIDs.Group =
+                    (params.ingroup as ioBroker.ObjectIDs.Group) || 'system.group.administrator';
 
                 if (command === 'add') {
-                    users.addUserPrompt(user, group, password, (err: any) => {
+                    users.addUserPrompt(user, group, password, (err: Error | null | undefined) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1821,7 +1760,7 @@ async function processCommand(
                         return void callback();
                     });
                 } else if (command === 'del' || command === 'delete') {
-                    users.delUser(user, (err: any) => {
+                    users.delUser(user, (err: Error | null | undefined) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1919,7 +1858,7 @@ async function processCommand(
                         console.warn('Please define user name: "group useradd groupName userName"');
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     }
-                    users.addUserToGroup(user, group, (err: any) => {
+                    users.addUserToGroup(user, group, (err: Error | null | undefined) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1932,7 +1871,7 @@ async function processCommand(
                         console.warn('Please define user name: "group userdel groupName userName"');
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     }
-                    users.removeUserFromGroup(user, group, (err: any) => {
+                    users.removeUserFromGroup(user, group, (err: Error | null | undefined) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1949,7 +1888,7 @@ async function processCommand(
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     }
                 } else if (command === 'del' || command === 'delete') {
-                    users.delGroup(group, (err: any) => {
+                    users.delGroup(group, (err: Error | null | undefined) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1974,7 +1913,7 @@ async function processCommand(
                         return void callback();
                     });
                 } else if (command === 'enable' || command === 'e') {
-                    users.enableGroup(group, true, (err: any) => {
+                    users.enableGroup(group, true, (err: Error | null | undefined) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1983,7 +1922,7 @@ async function processCommand(
                         return void callback();
                     });
                 } else if (command === 'disable' || command === 'd') {
-                    users.enableGroup(group, false, (err: any) => {
+                    users.enableGroup(group, false, (err: Error | null | undefined) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -2012,8 +1951,8 @@ async function processCommand(
 
         case 'adduser': {
             const user = args[0];
-            const group = params.ingroup || 'system.group.administrator';
-            const password = params.password;
+            const group = (params.ingroup as ioBroker.ObjectIDs.Group) || 'system.group.administrator';
+            const password = params.password as string;
 
             dbConnect(params, async ({ objects }) => {
                 const { Users } = await import('./setup/setupUsers.js');
@@ -2021,7 +1960,7 @@ async function processCommand(
                     objects,
                     processExit: callback,
                 });
-                users.addUserPrompt(user, group, password, (err: any) => {
+                users.addUserPrompt(user, group, password, (err: Error | null | undefined) => {
                     if (err) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -2035,14 +1974,14 @@ async function processCommand(
 
         case 'passwd': {
             const user = args[0];
-            const password = params.password;
+            const password = params.password as string;
             dbConnect(params, async ({ objects }) => {
                 const { Users } = await import('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
                     processExit: callback,
                 });
-                users.setUserPassword(user, password, (err: any) => {
+                users.setUserPassword(user, password, (err: Error | null | undefined) => {
                     if (err) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -2066,7 +2005,7 @@ async function processCommand(
                     objects,
                     processExit: callback,
                 });
-                users.delUser(user, (err: any) => {
+                users.delUser(user, (err: Error | null | undefined) => {
                     if (err) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -2414,8 +2353,7 @@ async function processCommand(
                         const { numberSuccess, notifications } = objects.syncFileDirectory(args[1]);
                         console.log(`${numberSuccess} file(s) successfully synchronized with ioBroker storage`);
                         if (notifications.length) {
-                            console.log();
-                            console.log('The following notifications happened during sync: ');
+                            console.log('\nThe following notifications happened during sync: ');
                             notifications.forEach((el: string) => console.log(`- ${el}`));
                         }
                         return void callback(EXIT_CODES.NO_ERROR);
@@ -2460,12 +2398,12 @@ async function processCommand(
 
         case 'v':
         case 'version': {
-            const adapter = params.adapter;
+            const adapter = params.adapter as string;
 
             if (params.ignore) {
                 try {
                     const { objects } = await dbConnectAsync(false, params);
-                    await ignoreVersion({ adapterName: adapter, version: params.ignore, objects });
+                    await ignoreVersion({ adapterName: adapter, version: params.ignore as string, objects });
                 } catch (e) {
                     console.error(e.message);
                     callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
@@ -2692,7 +2630,7 @@ async function processCommand(
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     }
                 } else if (cmd === 'e' || cmd === 'enable') {
-                    mh.enable(true, async (err: any) => {
+                    mh.enable(true, async (err: Error | null | undefined) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
@@ -2706,7 +2644,7 @@ async function processCommand(
                         callback();
                     });
                 } else if (cmd === 'd' || cmd === 'disable') {
-                    mh.enable(false, async (err: any) => {
+                    mh.enable(false, async (err: Error | null | undefined) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
@@ -2720,7 +2658,7 @@ async function processCommand(
                         callback();
                     });
                 } else if (cmd === 'c' || cmd === 'connect') {
-                    mh.connect(parseInt(args[1]), args[2], (err: any) => {
+                    mh.connect(parseInt(args[1]), args[2], (err: Error | null | undefined) => {
                         if (err) {
                             console.error(err);
                         }
@@ -2884,9 +2822,8 @@ async function cleanDatabase(isDeleteDb: boolean): Promise<number> {
 
     if (isDeleteDb) {
         await objects.destroyDBAsync();
-        // Clean up states
-        const keysCount = await delStates();
-        return keysCount;
+        // Clean up states and return keys count
+        return await delStates();
     }
     // Clean only objects, not the views
     let ids: string[] = [];
@@ -2907,7 +2844,7 @@ async function cleanDatabase(isDeleteDb: boolean): Promise<number> {
     return keysCount;
 }
 
-async function unsetup(params: Record<string, any>, callback: ExitCodeCb): Promise<void> {
+async function unsetup(params: Record<string, string | number | boolean>, callback: ExitCodeCb): Promise<void> {
     const { objects } = await dbConnectAsync(false, params);
 
     objects.delObject('system.meta.uuid', err => {
@@ -2969,8 +2906,13 @@ async function restartController(): Promise<void> {
 export function execute(): void {
     // direct call
     const _yargs = initYargs();
-    // @ts-expect-error todo fix it
-    const command = _yargs.argv._[0];
+    const command = (
+        _yargs.argv as {
+            [x: string]: unknown;
+            _: (string | number)[];
+            $0: string;
+        }
+    )._[0];
 
     const args: string[] = [];
 
@@ -2983,7 +2925,7 @@ export function execute(): void {
         args.push(process.argv[i]);
     }
 
-    processCommand(command, args, _yargs.argv, exitApplicationSave);
+    processCommand(command, args, _yargs.argv as Record<string, string | boolean | number>, exitApplicationSave);
 }
 
 process.on('unhandledRejection', (e: any) => {

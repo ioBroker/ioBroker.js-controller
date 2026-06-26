@@ -1101,6 +1101,12 @@ declare global {
             icon?: string;
             /** Internally used flag */
             processed?: boolean;
+            /** History */
+            news: { [version: string]: ioBroker.Translated };
+            /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter on the same host. */
+            dependencies: Dependencies;
+            /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter in the whole system. */
+            globalDependencies: Dependencies;
             /** Other Adapter related properties, not important for this implementation */
             [other: string]: unknown;
         }

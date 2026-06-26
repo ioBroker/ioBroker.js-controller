@@ -8825,7 +8825,7 @@ export class AdapterClass extends EventEmitter {
         return this._sendTo({
             instanceName,
             command,
-            message,
+            message: message as ioBroker.Message,
             options,
             callback: callback as ioBroker.MessageCallbackInfo | ioBroker.MessageCallback,
         });
@@ -9045,7 +9045,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         return this._sendToHost({
-            hostName,
+            hostName: hostName as string,
             command,
             message,
             callback: callback as ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,

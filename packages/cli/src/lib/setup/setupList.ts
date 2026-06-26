@@ -346,17 +346,17 @@ export class List {
     private _readOnlineState(
         lines: IdValueObject[],
         flags: FlagObject,
-        cb: (res: any[]) => void,
-        _result?: any[],
+        cb: (res: string[]) => void,
+        _result?: string[],
     ): void {
         const result = _result || [];
-        if (!lines || !lines.length) {
+        if (!lines?.length) {
             cb(result);
         } else {
             const task = lines.shift() as IdValueObject;
             const id = `${task.id}.alive`;
-            this.states.getState(id, (err, state) => {
-                if (state && state.val) {
+            this.states.getState(id, (_err, state) => {
+                if (state?.val) {
                     result.push(`+ ${task.value}`);
                 } else if (!flags.alive) {
                     result.push(`  ${task.value}`);

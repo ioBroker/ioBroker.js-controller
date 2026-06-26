@@ -2361,10 +2361,10 @@ export class ObjectsInRedisClient {
             }
             const nameArr = name.split('/');
             const file = nameArr.pop() as string;
-            const res = [
+            const res: ioBroker.ChownFileResult[] = [
                 {
                     path: nameArr.join('/'),
-                    file: file,
+                    file,
                     stats: meta.stats,
                     isDir: false,
                     acl: (meta.acl as ioBroker.EvaluatedFileACL) || ({} as ioBroker.EvaluatedFileACL),

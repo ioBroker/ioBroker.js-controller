@@ -589,16 +589,52 @@ export class Users {
         } else {
             // TODO: shoudln't it have some default acl? TS is worrying
             await this.objects.setObject(`system.group.${_group}`, {
+                _id: `system.group.${_group}`,
                 type: 'group',
                 common: {
                     name: group,
                     enabled: true,
                     members: [],
+                    acl: {
+                        file: {
+                            read: false,
+                            list: false,
+                            write: false,
+                            create: false,
+                            delete: false,
+                        },
+                        object: {
+                            read: false,
+                            list: false,
+                            write: false,
+                            create: false,
+                            delete: false,
+                        },
+                        users: {
+                            read: false,
+                            list: false,
+                            write: false,
+                            create: false,
+                            delete: false,
+                        },
+                        state: {
+                            read: false,
+                            list: false,
+                            write: false,
+                            create: false,
+                            delete: false,
+                        },
+                        other: {
+                            execute: false,
+                            sendto: false,
+                            http: false,
+                        },
+                    },
                 },
                 from: `system.host.${tools.getHostName()}.cli`,
                 ts: Date.now(),
                 native: {},
-            } as any);
+            } as ioBroker.GroupObject);
         }
     }
 

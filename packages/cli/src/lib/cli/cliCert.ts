@@ -17,7 +17,7 @@ export class CLICert extends CLICommand {
      *
      * @param args The command arguments (the first is the sub-command)
      */
-    execute(args: any[]): void | Promise<void> {
+    execute(args: string[]): void | Promise<void> {
         const { callback, showHelp } = this.options;
         const command = args[0];
 
@@ -64,11 +64,8 @@ export class CLICert extends CLICommand {
      *
      * @param _args The command arguments (the second is the certificate name)
      */
-    view(_args: any[]): void {
-        let certName = _args[1];
-        if (certName === undefined) {
-            certName = 'defaultPublic';
-        }
+    view(_args: string[]): void {
+        const certName = _args[1] ?? 'defaultPublic';
         const { callback, dbConnect } = this.options;
         dbConnect(params => {
             const { objects } = params;
