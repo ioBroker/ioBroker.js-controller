@@ -118,7 +118,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             assert.fail('Never happens');
         } catch (e) {
             console.error(e.message);
-            assert.strictEqual(e.message, 'permissionError');
+            assert.strictEqual(e.message, 'invalid user name: admin');
         }
     }).timeout(2_000);
 

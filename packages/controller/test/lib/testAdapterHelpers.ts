@@ -218,10 +218,9 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     it(`${context.name} ${context.adapterShortName} adapter utils: check fixId`, () => {
         const utils = new Validator(
             context.objects,
-            context.states,
             // @ts-expect-error internal access
             context.adapter.namespaceLog,
-            console,
+            console as unknown as ioBroker.Logger,
             context.adapter.namespace,
             // @ts-expect-error internal access
             context.adapter._namespaceRegExp,
