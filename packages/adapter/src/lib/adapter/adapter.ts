@@ -4259,11 +4259,7 @@ export class AdapterClass extends EventEmitter {
             if (obj.common && 'members' in obj.common && (oldObj as ioBroker.EnumObject).common?.members) {
                 (oldObj as ioBroker.EnumObject).common.members = [];
             }
-            if (
-                obj.native &&
-                'certificates' in obj.native &&
-                (oldObj.native as Record<string, any>)?.certificates
-            ) {
+            if (obj.native && 'certificates' in obj.native && (oldObj.native as Record<string, any>)?.certificates) {
                 (oldObj.native as Record<string, any>).certificates = [];
             }
             if (obj.native && 'devices' in obj.native && (oldObj.native as Record<string, any>)?.devices) {
