@@ -178,8 +178,8 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                     attr1: '1',
                     attr2: '2',
                     attr3: '3',
-                    repositories: ['R1'],
-                    certificates: ['C1'],
+                    repositories: { R1: { link: 'http://R1' } },
+                    certificates: { C1: 'cert-R1' },
                     devices: ['D1'],
                 },
             },
@@ -211,7 +211,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                     attr4: '4', // add
                     // special cases for native (obj.native.repositories || obj.native.certificates || obj.native.devices)
                     // and commons (obj.common.members)
-                    repositories: ['R2'],
+                    repositories: { R2: { link: 'http://R2' } },
                     devices: ['D2'],
                 },
             },
@@ -227,11 +227,13 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                     assert.strictEqual(obj.native.attr3, '3');
                     assert.strictEqual(obj.native.attr4, '4');
 
-                    assert.strictEqual(obj.native.repositories.length, 1);
-                    assert.strictEqual(obj.native.repositories[0], 'R2');
+                    // repositories was in the extend payload -> replaced (R1 dropped, only R2)
+                    assert.deepStrictEqual(Object.keys(obj.native.repositories), ['R2']);
+                    assert.ok(obj.native.repositories.R2);
 
-                    assert.strictEqual(obj.native.certificates.length, 1);
-                    assert.strictEqual(obj.native.certificates[0], 'C1');
+                    // certificates was NOT in the extend payload -> preserved (C1 stays)
+                    assert.deepStrictEqual(Object.keys(obj.native.certificates), ['C1']);
+                    assert.ok(obj.native.certificates.C1);
 
                     assert.strictEqual(obj.native.devices.length, 1);
                     assert.strictEqual(obj.native.devices[0], 'D2');

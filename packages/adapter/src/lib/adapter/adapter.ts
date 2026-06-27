@@ -3864,7 +3864,7 @@ export class AdapterClass extends EventEmitter {
                 oldObj.native &&
                 oldObj.native.repositories
             ) {
-                oldObj.native.repositories = [];
+                oldObj.native.repositories = {};
             }
             if (options.obj.common && 'members' in options.obj.common && oldObj.common?.members) {
                 oldObj.common.members = [];
@@ -3875,7 +3875,7 @@ export class AdapterClass extends EventEmitter {
                 oldObj.native &&
                 oldObj.native.certificates
             ) {
-                oldObj.native.certificates = [];
+                oldObj.native.certificates = {};
             }
             if (options.obj.native && 'devices' in options.obj.native && oldObj.native?.devices) {
                 oldObj.native.devices = [];
@@ -4254,13 +4254,13 @@ export class AdapterClass extends EventEmitter {
                 'repositories' in obj.native &&
                 (oldObj as ioBroker.RepositoryObject).native?.repositories
             ) {
-                (oldObj.native as Record<string, any>).repositories = [];
+                (oldObj.native as Record<string, any>).repositories = {};
             }
             if (obj.common && 'members' in obj.common && (oldObj as ioBroker.EnumObject).common?.members) {
                 (oldObj as ioBroker.EnumObject).common.members = [];
             }
             if (obj.native && 'certificates' in obj.native && (oldObj.native as Record<string, any>)?.certificates) {
-                (oldObj.native as Record<string, any>).certificates = [];
+                (oldObj.native as Record<string, any>).certificates = {};
             }
             if (obj.native && 'devices' in obj.native && (oldObj.native as Record<string, any>)?.devices) {
                 (oldObj.native as Record<string, any>).devices = [];
