@@ -1089,7 +1089,7 @@ declare global {
             /** If given, the packet name differs from the adapter name, e.g. because it is a scoped package */
             packetName?: string;
             /** Link to package */
-            meta?: string;
+            meta: string;
             /** List of licenses */
             licenses?: { type: string; url: string }[];
             /** Normally by admin is a ISO string with published date */
@@ -1102,11 +1102,11 @@ declare global {
             /** Internally used flag */
             processed?: boolean;
             /** History */
-            news?: { [version: string]: ioBroker.Translated };
+            news: { [version: string]: ioBroker.Translated };
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter on the same host. */
-            dependencies?: Dependencies;
+            dependencies: Dependencies;
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter in the whole system. */
-            globalDependencies?: Dependencies;
+            globalDependencies: Dependencies;
             /** Other Adapter related properties, not important for this implementation */
             [other: string]: unknown;
         }

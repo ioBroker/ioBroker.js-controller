@@ -5033,6 +5033,7 @@ export class ObjectsInRedisClient {
                 }
             }
             if (max !== null) {
+                // @ts-expect-error the _stats reduce result is not a regular object value
                 rows = [{ id: '_stats', value: { max } }];
             } else {
                 rows = [];
