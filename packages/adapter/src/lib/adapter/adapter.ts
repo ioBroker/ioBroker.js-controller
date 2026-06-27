@@ -3858,23 +3858,13 @@ export class AdapterClass extends EventEmitter {
                 this._logger.error(`${this.namespaceLog} Object ${options.id} not exist!`);
                 oldObj = {};
             }
-            if (
-                options.obj.native &&
-                'repositories' in options.obj.native &&
-                oldObj.native &&
-                oldObj.native.repositories
-            ) {
+            if (options.obj.native && 'repositories' in options.obj.native && oldObj.native?.repositories) {
                 oldObj.native.repositories = {};
             }
             if (options.obj.common && 'members' in options.obj.common && oldObj.common?.members) {
                 oldObj.common.members = [];
             }
-            if (
-                options.obj.native &&
-                'certificates' in options.obj.native &&
-                oldObj.native &&
-                oldObj.native.certificates
-            ) {
+            if (options.obj.native && 'certificates' in options.obj.native && oldObj.native?.certificates) {
                 oldObj.native.certificates = {};
             }
             if (options.obj.native && 'devices' in options.obj.native && oldObj.native?.devices) {
