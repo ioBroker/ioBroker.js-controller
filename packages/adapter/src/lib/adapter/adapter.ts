@@ -3864,7 +3864,7 @@ export class AdapterClass extends EventEmitter {
                 oldObj.native &&
                 oldObj.native.repositories
             ) {
-                oldObj.native.repositories = {};
+                oldObj.native.repositories = [];
             }
             if (options.obj.common && 'members' in options.obj.common && oldObj.common?.members) {
                 oldObj.common.members = [];
@@ -4254,7 +4254,7 @@ export class AdapterClass extends EventEmitter {
                 'repositories' in obj.native &&
                 (oldObj as ioBroker.RepositoryObject).native?.repositories
             ) {
-                (oldObj as ioBroker.RepositoryObject).native.repositories = {};
+                (oldObj.native as Record<string, any>).repositories = [];
             }
             if (obj.common && 'members' in obj.common && (oldObj as ioBroker.EnumObject).common?.members) {
                 (oldObj as ioBroker.EnumObject).common.members = [];

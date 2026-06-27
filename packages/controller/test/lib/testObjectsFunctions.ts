@@ -265,8 +265,11 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             assert.strictEqual(err, null);
 
             assert.ok(objs);
-            assert.strictEqual(objs![`${context.adapterShortName}f.0.${gid}`]!.type, 'state');
-            assert.strictEqual((objs![`${context.adapterShortName}f.0.${gid}`]!.native as Record<string, any>).attr1, '11');
+            assert.strictEqual(objs[`${context.adapterShortName}f.0.${gid}`]!.type, 'state');
+            assert.strictEqual(
+                (objs[`${context.adapterShortName}f.0.${gid}`]!.native as Record<string, any>).attr1,
+                '11',
+            );
             done();
         });
     });
@@ -278,9 +281,9 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         const objs = await context.adapter.getForeignObjects([id, id2]);
 
         assert.ok(objs);
-        assert.strictEqual(objs![id]!.type, 'state');
-        assert.strictEqual((objs![id]!.native as Record<string, any>).attr1, '11');
-        assert.strictEqual(objs![id2]!.type, 'state');
+        assert.strictEqual(objs[id]!.type, 'state');
+        assert.strictEqual(objs[id]!.native.attr1, '11');
+        assert.strictEqual(objs[id2]!.type, 'state');
     });
 
     it(`${testName}Check get foreign objects - default enum functionality`, async () => {
@@ -294,10 +297,10 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
         assert.ok(objs);
 
-        const obj = objs![id]!;
+        const obj = objs[id]!;
 
         assert.strictEqual(obj.type, 'state');
-        assert.strictEqual((obj.native as Record<string, any>).attr1, '11');
+        assert.strictEqual(obj.native.attr1, '11');
         assert.ok(obj.enums);
         assert.strictEqual((obj.enums['enum.rooms.kitchen'] as ioBroker.Translated).en, 'Kitchen');
     });

@@ -990,12 +990,12 @@ export class ObjectsInRedisClient {
      */
     async checkFileAsync(
         id: string,
-        name: string,
+        name: string | null,
         userContext: UserContext,
         flag: CONSTS.GenericAccessFlags,
     ): Promise<FileObject | null> {
         // read file settings from redis
-        const fileId = this.getFileId(id, name, true);
+        const fileId = this.getFileId(id, name ?? '', true);
         if (!fileId) {
             if (!utils.checkFile({ notExists: true }, userContext, flag as number, this.defaultNewAcl)) {
                 return null;
