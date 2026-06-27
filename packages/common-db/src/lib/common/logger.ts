@@ -37,12 +37,18 @@ try {
     //console.log('No seq support');
 }
 
+/** Log entry information passed through the winston formatting pipeline */
 export interface LogInfo extends TransformableInfo {
+    /** Additional structured properties attached to the log entry */
     props?: {
+        /** Host name the log entry originates from */
         Hostname?: string;
+        /** Source (adapter/component) of the log entry */
         Source?: string;
+        /** Process ID that produced the log entry */
         Pid?: string;
     };
+    /** Timestamp of the log entry */
     timestamp: string;
 }
 

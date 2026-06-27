@@ -989,7 +989,7 @@ export class ObjectsInRedisClient {
      *
      * @param id The id of the object owning the file
      * @param name The file name
-     * @param options The current request options including the user
+     * @param userContext The resolved user context used for permission checks
      * @param flag The access flag(s) to check for
      */
     async checkFileAsync(
@@ -2012,6 +2012,7 @@ export class ObjectsInRedisClient {
      * @param oldName The current file or directory name
      * @param newName The new file or directory name
      * @param options The current request options including the user
+     * @param options.user The user on whose behalf the operation is performed
      */
     renameAsync(
         id: string,
@@ -2082,6 +2083,7 @@ export class ObjectsInRedisClient {
      * @param id The id of the object owning the file
      * @param name The file name
      * @param options The current request options including the user
+     * @param options.user The user on whose behalf the operation is performed
      */
     touchAsync(id: string, name: string, options: { user?: ioBroker.ObjectIDs.User }): Promise<void> {
         return new Promise((resolve, reject) => this.touch(id, name, options, err => (err ? reject(err) : resolve())));
@@ -2233,6 +2235,7 @@ export class ObjectsInRedisClient {
      * @param id The id of the object owning the file
      * @param name The file or directory name to delete
      * @param options The current request options including the user
+     * @param options.user The user on whose behalf the operation is performed
      */
     rmAsync(
         id: string,
@@ -2461,6 +2464,10 @@ export class ObjectsInRedisClient {
      * @param id The id of the object owning the file
      * @param name The file name
      * @param options The current request options including the new owner and the user
+     * @param options.owner The new owner (user) of the object
+     * @param options.user The user on whose behalf the operation is performed
+     * @param options.ownerGroup The new owner group of the object
+     * @param options.group Fallback owner group of the object
      * @param callback Called with the processed file(s)
      */
     chownFile(
@@ -2536,6 +2543,9 @@ export class ObjectsInRedisClient {
      * @param id The id of the object owning the file
      * @param name The file name
      * @param options The current request options including the new owner and the user
+     * @param options.user The user on whose behalf the operation is performed
+     * @param options.owner The new owner (user) of the object
+     * @param options.ownerGroup The new owner group of the object
      */
     chownFileAsync(
         id: string,
@@ -2556,6 +2566,8 @@ export class ObjectsInRedisClient {
      * @param keys Key names to handle
      * @param metas Objects for the keys to handle
      * @param options options
+     * @param options.user The user on whose behalf the operation is performed
+     * @param options.mode The new permission mode to apply
      * @param callback callback function
      */
     private async _chmodFileHelper(
@@ -2712,6 +2724,8 @@ export class ObjectsInRedisClient {
      * @param id The id of the object owning the file
      * @param name The file name
      * @param options The current request options including the new mode and the user, or the callback
+     * @param options.user The user on whose behalf the operation is performed
+     * @param options.mode The new permission mode to apply
      * @param callback Called with the processed file
      */
     chmodFile(
@@ -2759,6 +2773,8 @@ export class ObjectsInRedisClient {
      * @param id The id of the object owning the file
      * @param name The file name
      * @param options The current request options including the new mode and the user
+     * @param options.user The user on whose behalf the operation is performed
+     * @param options.mode The new permission mode to apply
      */
     chmodFileAsync(
         id: string,
@@ -3354,6 +3370,10 @@ export class ObjectsInRedisClient {
      *
      * @param pattern The pattern of object ids whose owner should be changed
      * @param options The current request options including the new owner and the user, or the callback
+     * @param options.user The user on whose behalf the operation is performed
+     * @param options.owner The new owner (user) of the object
+     * @param options.ownerGroup The new owner group of the object
+     * @param options.group Fallback owner group of the object
      * @param callback Called with the list of changed objects
      */
     chownObject(
@@ -3415,6 +3435,10 @@ export class ObjectsInRedisClient {
      *
      * @param pattern The pattern of object ids whose owner should be changed
      * @param options The current request options including the new owner and the user
+     * @param options.user The user on whose behalf the operation is performed
+     * @param options.owner The new owner (user) of the object
+     * @param options.ownerGroup The new owner group of the object
+     * @param options.group Fallback owner group of the object
      */
     chownObjectAsync(
         pattern: string,
@@ -3517,6 +3541,10 @@ export class ObjectsInRedisClient {
      *
      * @param pattern The pattern of object ids whose files should be changed
      * @param options The current request options including the new mode and the user, or the callback
+     * @param options.mode The new permission mode to apply
+     * @param options.user The user on whose behalf the operation is performed
+     * @param options.object The new permission mode for objects
+     * @param options.state The new permission mode for states
      * @param callback Called with the list of changed objects
      */
     chmodObject(
@@ -3556,6 +3584,10 @@ export class ObjectsInRedisClient {
      *
      * @param pattern The pattern of object ids whose files should be changed
      * @param options The current request options including the new mode and the user
+     * @param options.mode The new permission mode to apply
+     * @param options.user The user on whose behalf the operation is performed
+     * @param options.object The new permission mode for objects
+     * @param options.state The new permission mode for states
      */
     chmodObjectAsync(
         pattern: string,
@@ -3841,6 +3873,7 @@ export class ObjectsInRedisClient {
      *
      * @param pattern The pattern to match object ids against
      * @param options The current request options including the user
+     * @param options.user The user on whose behalf the operation is performed
      */
     getKeysAsync(
         pattern: string,
@@ -4100,6 +4133,7 @@ export class ObjectsInRedisClient {
      *
      * @param pattern The pattern to match object ids against
      * @param options The current request options including the user
+     * @param options.user The user on whose behalf the operation is performed
      */
     getObjectsByPatternAsync(
         pattern: string,
@@ -4551,6 +4585,7 @@ export class ObjectsInRedisClient {
      *
      * @param id The id of the object to delete
      * @param options The current request options including the user
+     * @param options.user The user on whose behalf the operation is performed
      */
     delObjectAsync(id: string, options?: { user?: ioBroker.ObjectIDs.User }): Promise<void> {
         return this.delObject(id, options);
@@ -5185,6 +5220,7 @@ export class ObjectsInRedisClient {
      * @param search The view name within the design document
      * @param params Query parameters such as startkey and endkey
      * @param options The current request options including the user
+     * @param options.user The user on whose behalf the operation is performed
      */
     getObjectViewAsync<Design extends string = string, Search extends string = string>(
         design: Design,
@@ -5610,6 +5646,9 @@ export class ObjectsInRedisClient {
      * @param idOrName The id or name to search for
      * @param type The expected common type, or null for any
      * @param options The current request options (may include a language)
+     * @param options.language The language to use for translations
+     * @param options.user The user on whose behalf the operation is performed
+     * @param userContext The resolved user context used for permission checks
      * @param callback Called with the found id and the original id/name
      */
     private _findObject(
@@ -5873,6 +5912,7 @@ export class ObjectsInRedisClient {
      * Promise-version of destroyDB
      *
      * @param options The current request options including the user
+     * @param options.user The user on whose behalf the operation is performed
      */
     destroyDBAsync(options?: { user?: ioBroker.ObjectIDs.User }): Promise<void> {
         return new Promise<void>((resolve, reject) => this.destroyDB(options, err => (err ? reject(err) : resolve())));

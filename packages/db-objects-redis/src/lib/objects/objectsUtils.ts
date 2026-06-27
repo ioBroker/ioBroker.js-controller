@@ -23,11 +23,17 @@ export const REG_CHECK_ID = CONSTS.REG_CHECK_ID;
 const USER_STARTS_WITH = CONSTS.USER_STARTS_WITH;
 const GROUP_STARTS_WITH = CONSTS.GROUP_STARTS_WITH;
 
+/** Resolved user context used for permission checks */
 export interface UserContext {
+    /** The user the request is performed as */
     user: ioBroker.ObjectIDs.User;
+    /** The primary group of the user */
     group: ioBroker.ObjectIDs.Group;
+    /** All groups the user belongs to */
     groups: ioBroker.ObjectIDs.Group[];
+    /** The resolved access rights of the user */
     acl: ioBroker.ObjectPermissions;
+    /** Whether the permissions have already been checked */
     checked?: boolean;
 }
 
@@ -67,9 +73,13 @@ export interface FileObject {
     createdAt?: number;
     /** Evaluated access control list of the file */
     acl?: ioBroker.EvaluatedFileACL;
+    /** Whether the entry is a directory */
     isDir?: boolean;
+    /** Whether the file does not exist */
     notExists?: boolean;
+    /** MIME type of the file */
     mimeType?: string;
+    /** Whether the file content is binary */
     binary?: boolean;
 }
 
@@ -164,6 +174,9 @@ export function getMimeType(ext: string, isTextData?: boolean): FileMimeInformat
  * Check if the given options have the required rights on a file according to its ACL
  *
  * @param fileOptions The stored file options including its ACL
+ * @param fileOptions.mimeType MIME type of the file
+ * @param fileOptions.notExists Whether the file does not exist yet
+ * @param fileOptions.acl Access control list stored for the file
  * @param userContext The current request options including the user and group
  * @param flag The access flag(s) to check for
  * @param defaultNewAcl The default ACL to use if the file has none yet

@@ -299,10 +299,15 @@ export interface SetStateChangedResult {
 export interface GetUserGroupsOptions {
     /** The user whose groups should be resolved */
     user: ioBroker.ObjectIDs.User;
+    /** Groups the user belongs to (resolved automatically if not provided) */
     groups?: ioBroker.ObjectIDs.Group[];
+    /** Pre-loaded user and group objects used to resolve the groups */
     _objects?: (ioBroker.StateObject | null)[];
+    /** Whether the groups have already been resolved */
     checked?: boolean;
+    /** Access rights of the user, without the user and groups themselves */
     acl: Omit<ioBroker.PermissionSet, 'user' | 'groups'>;
+    /** If set, the resolved rights are limited to those of the object owner */
     limitToOwnerRights?: boolean;
 }
 
@@ -667,6 +672,7 @@ export interface InternalAddChannelToEnumOptions {
 export interface SendToOptions {
     /** Method throws or calls error cb, if callback not called in time, works for single targets only */
     timeout?: number;
+    /** The user on whose behalf the message is sent */
     user?: ioBroker.ObjectIDs.User;
 }
 

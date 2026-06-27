@@ -52,12 +52,19 @@ interface SubscriptionClient {
     _subscribe?: Record<string, Subscription[]>;
 }
 
+/** Metadata stored for a single file in an object's file storage */
 export interface FileOptions {
+    /** Timestamp when the file was created */
     createdAt?: number;
+    /** Access control list of the file */
     acl: ioBroker.FileACL;
+    /** MIME type of the file */
     mimeType: string;
+    /** Whether the file content is binary */
     binary?: boolean;
+    /** Timestamp when the file was last modified */
     modifiedAt?: number;
+    /** File system stats of the file */
     stats?: fs.Stats;
 }
 
@@ -1114,6 +1121,8 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      * Apply a view's map function over all objects and collect the matching rows
      *
      * @param func The view definition containing the map function
+     * @param func.map The map function source as a string
+     * @param func.reduce Optional reduce function identifier (e.g. "_stats")
      * @param params Query parameters such as startkey and endkey
      */
     _applyView(
