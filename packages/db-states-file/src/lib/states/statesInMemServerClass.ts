@@ -11,11 +11,6 @@ import { Client as StatesInRedisClient, type StatesSettings } from '@iobroker/db
 import { StatesInMemoryServer } from './statesInMemServerRedis.js';
 import { type DbStatus } from '@iobroker/db-base';
 
-/** Settings accepted by the states client constructor */
-type StatesSettings = ConstructorParameters<typeof StatesInRedisClient>[0];
-/** Status object returned by the states client */
-type DbStatus = ReturnType<StatesInRedisClient['getStatus']>;
-
 /**
  * States database client that also starts an in-memory server speaking the Redis protocol
  */

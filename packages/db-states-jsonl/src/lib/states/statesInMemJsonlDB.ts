@@ -113,7 +113,7 @@ export class StatesInMemoryJsonlDB<
      * @param settings Settings for the states database
      */
     constructor(settings: FileDbSettings<ioBroker.State | Record<string, string>>) {
-        settings ||= {};
+        settings ||= {} as FileDbSettings<ioBroker.State | Record<string, string>>;
         // Not really used
         settings.fileDB = {
             fileName: 'states.json',

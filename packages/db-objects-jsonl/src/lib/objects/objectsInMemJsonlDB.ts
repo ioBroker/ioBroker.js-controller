@@ -8,8 +8,6 @@
  */
 /// <reference types="@iobroker/types-dev" />
 
-import { ObjectsInMemoryFileDB } from '@iobroker/db-objects-file';
-import { JsonlDB } from '@alcalzone/jsonl-db';
 import path from 'node:path';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -114,7 +112,7 @@ export class ObjectsInMemoryJsonlDB<
      * @param settings Settings for the objects database
      */
     constructor(settings: FileDbSettings<ioBroker.AnyObject | ioBroker.DesignObject>) {
-        settings ||= {};
+        settings ||= {} as FileDbSettings<ioBroker.AnyObject | ioBroker.DesignObject>;
         settings.fileDB = {
             fileName: 'objects.json',
             backupDirName: 'backup-objects',

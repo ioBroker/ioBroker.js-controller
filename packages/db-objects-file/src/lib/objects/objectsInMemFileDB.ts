@@ -90,7 +90,7 @@ export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends 
      * @param settings Settings for the objects database
      */
     constructor(settings: FileDbSettings<ioBroker.AnyObject | ioBroker.DesignObject>) {
-        settings ||= {};
+        settings ||= {} as FileDbSettings<ioBroker.AnyObject | ioBroker.DesignObject>;
         settings.fileDB ??= {
             fileName: 'objects.json',
             backupDirName: 'backup-objects',

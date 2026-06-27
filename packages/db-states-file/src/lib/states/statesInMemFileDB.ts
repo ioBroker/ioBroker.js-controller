@@ -57,7 +57,7 @@ export class StatesInMemoryFileDB<
      * @param settings Settings for the states database
      */
     constructor(settings: FileDbSettings<ioBroker.State | ioBroker.Session>) {
-        settings ||= {};
+        settings ||= {} as FileDbSettings<ioBroker.State | ioBroker.Session>;
         settings.fileDB ??= {
             fileName: 'states.json',
             backupDirName: 'backup-objects',

@@ -1720,7 +1720,9 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallback(options.callback, null);
         }
 
-        void this.#states.getSession(options.id, (err, session) => tools.maybeCallback(options.callback, session || null));
+        void this.#states.getSession(options.id, (err, session) =>
+            tools.maybeCallback(options.callback, session || null),
+        );
     }
 
     // overload for docs
@@ -5587,7 +5589,7 @@ export class AdapterClass extends EventEmitter {
                             !item.value?.common?.dontDelete && // exclude objects with dontDelete flag
                             tasks.push({ id: item.id, state: item.value?.type === 'state' }),
                     );
-                    this._deleteObjects(tasks, options, callback);
+                    void this._deleteObjects(tasks, options, callback);
                 });
             });
         } else {
@@ -10360,7 +10362,11 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 this.outputCount++;
-                void this.#states.setState(id as string, state as ioBroker.State, callback as ioBroker.SetStateCallback);
+                void this.#states.setState(
+                    id as string,
+                    state as ioBroker.State,
+                    callback as ioBroker.SetStateCallback,
+                );
             }
         } else {
             // write alias
@@ -10477,7 +10483,11 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 this.outputCount++;
-                void this.#states.setState(id as string, state as ioBroker.State, callback as ioBroker.SetStateCallback);
+                void this.#states.setState(
+                    id as string,
+                    state as ioBroker.State,
+                    callback as ioBroker.SetStateCallback,
+                );
             }
         }
     }
