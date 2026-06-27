@@ -6,7 +6,9 @@
 
 # Interface: UserInterfaceClientSubscribeReturnType
 
-Defined in: [adapter/src/lib/\_Types.ts:147](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L147)
+Defined in: [adapter/src/lib/\_Types.ts:165](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L165)
+
+Result returned by the adapter when a UI client subscribes
 
 ## Properties
 
@@ -14,7 +16,7 @@ Defined in: [adapter/src/lib/\_Types.ts:147](https://github.com/ioBroker/ioBroke
 
 > **accepted**: `boolean`
 
-Defined in: [adapter/src/lib/\_Types.ts:149](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L149)
+Defined in: [adapter/src/lib/\_Types.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L167)
 
 If the adapter has accepted the client subscription
 
@@ -24,7 +26,7 @@ If the adapter has accepted the client subscription
 
 > `optional` **error?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L153)
+Defined in: [adapter/src/lib/\_Types.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L171)
 
 Optional error if not accepted
 
@@ -34,6 +36,6 @@ Optional error if not accepted
 
 > `optional` **heartbeat?**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:151](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L151)
+Defined in: [adapter/src/lib/\_Types.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L169)
 
 Optional heartbeat, if set, the client needs to re-subscribe every heartbeat interval

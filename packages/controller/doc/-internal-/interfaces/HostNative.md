@@ -6,7 +6,7 @@
 
 # Interface: HostNative
 
-Defined in: [types-dev/objects.d.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/objects.d.ts#L418)
+Defined in: [types-dev/objects.d.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/objects.d.ts#L418)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/objects.d.ts:418](https://github.com/ioBroker/ioBroker.js
 
 > **hardware**: `object`
 
-Defined in: [types-dev/objects.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/objects.d.ts#L433)
+Defined in: [types-dev/objects.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/objects.d.ts#L433)
 
 #### cpus
 
@@ -36,7 +36,7 @@ Return value of `os.cpu` but property `times` could be removed from every entry
 
 > **os**: `object`
 
-Defined in: [types-dev/objects.d.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/objects.d.ts#L424)
+Defined in: [types-dev/objects.d.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/objects.d.ts#L424)
 
 #### arch
 
@@ -72,7 +72,7 @@ Defined in: [types-dev/objects.d.ts:424](https://github.com/ioBroker/ioBroker.js
 
 > **process**: `object`
 
-Defined in: [types-dev/objects.d.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/types-dev/objects.d.ts#L419)
+Defined in: [types-dev/objects.d.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/objects.d.ts#L419)
 
 #### env
 

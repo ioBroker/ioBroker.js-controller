@@ -6,7 +6,7 @@
 
 # Interface: CallOptions
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:26
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:42
 
 ## Extended by
 
@@ -22,7 +22,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:26
 
 > `optional` **acl?**: `any`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:32
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:48
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:32
 
 > `optional` **group?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:28
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:44
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:28
 
 > `optional` **groups?**: `string`[]
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:27
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:43
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:27
 
 > `optional` **owner?**: `` `system.user.${string}` ``
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:30
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:46
 
 ***
 
@@ -54,7 +54,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:30
 
 > `optional` **ownerGroup?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:31
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:47
 
 ***
 
@@ -62,4 +62,4 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:31
 
 > `optional` **user?**: `` `system.user.${string}` ``
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:29
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:45

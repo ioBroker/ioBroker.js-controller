@@ -8,6 +8,8 @@
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:6
 
+Options describing how to connect to the database server
+
 ## Extends
 
 - [`ConnectionOptions`](ConnectionOptions.md)
@@ -18,7 +20,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:6
 
 > `optional` **backup?**: [`BackupOptions`](BackupOptions.md)
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:19
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:25
+
+Backup configuration
 
 #### Inherited from
 
@@ -30,7 +34,7 @@ Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:19
 
 > `optional` **dataDir?**: `string`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:21
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:27
 
 relative path to the data dir
 
@@ -44,7 +48,9 @@ relative path to the data dir
 
 > `optional` **enhancedLogging?**: `boolean`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:18
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:23
+
+Enable more verbose connection logging
 
 #### Inherited from
 
@@ -56,7 +62,7 @@ Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:18
 
 > **host**: `string` \| `string`[]
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:14
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:17
 
 array on sentinel
 
@@ -70,7 +76,9 @@ array on sentinel
 
 > **options**: `Record`\<`string`, `any`\>
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:17
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:21
+
+Additional connection options passed to the database driver
 
 #### Inherited from
 
@@ -82,7 +90,9 @@ Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:17
 
 > `optional` **pass?**: `string`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:11
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:13
+
+Password for authentication, if required
 
 #### Inherited from
 
@@ -94,7 +104,7 @@ Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:11
 
 > **port**: `number` \| `number`[]
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:16
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:19
 
 array on sentinel
 
@@ -116,7 +126,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:7
 
 > `optional` **sentinelName?**: `string`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:12
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:15
+
+Name of the sentinel master to connect to
 
 #### Inherited from
 

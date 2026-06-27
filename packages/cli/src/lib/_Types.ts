@@ -2,7 +2,7 @@ import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
 export type ProcessExitCallback = (exitCode: number) => void;
-export type CleanDatabaseHandler = (isDeleteDb: boolean) => any;
+export type CleanDatabaseHandler = (isDeleteDb: boolean) => Promise<number>;
 export type DbConnectCallback = (params: DbConnectAsyncReturn) => void;
 
 export type DbConnect = (

@@ -223,7 +223,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                     assert.strictEqual(data!.length, 2);
                     assert.strictEqual(data![0].file, 'abc1.txt');
                     assert.strictEqual(data![1].file, 'abc2.txt');
-                    assert.strictEqual(data![1].stats.size, 3);
+                    assert.strictEqual(data![1].stats!.size, 3);
                     done();
                 });
             });

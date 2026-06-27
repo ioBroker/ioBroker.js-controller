@@ -7,8 +7,9 @@
  *
  */
 
-import { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
+import { Client as StatesInRedisClient, type StatesSettings } from '@iobroker/db-states-redis';
 import { StatesInMemoryServer } from './statesInMemServerRedis.js';
+import { type DbStatus } from '@iobroker/db-base';
 
 /** Settings accepted by the states client constructor */
 type StatesSettings = ConstructorParameters<typeof StatesInRedisClient>[0];

@@ -30,7 +30,7 @@ export class CLIPlugin extends CLICommand<CLIPluginOptions> {
      *
      * @param args parsed cli args
      */
-    execute(args: any[]): void {
+    execute(args: string[]): void {
         const { callback, showHelp } = this.options;
         const command = args[0];
 
@@ -56,7 +56,7 @@ export class CLIPlugin extends CLICommand<CLIPluginOptions> {
      * @param args the parsed CLI args
      * @param enabled if plugin should be enabled
      */
-    set(args: any[], enabled: boolean): void {
+    set(args: string[], enabled: boolean): void {
         const { callback, dbConnect } = this.options;
         const pluginName: string = args[1];
         if (!pluginName) {
@@ -75,7 +75,7 @@ export class CLIPlugin extends CLICommand<CLIPluginOptions> {
             }
         } else {
             // Use host if no adapter was specified and fallback to the current one
-            hostname = this.options.host;
+            hostname = this.options.host as string;
             if (!hostname || hostname === 'this') {
                 hostname = tools.getHostName();
             }
@@ -166,7 +166,7 @@ export class CLIPlugin extends CLICommand<CLIPluginOptions> {
      *
      * @param args the parsed CLI arguments
      */
-    status(args: any[]): void {
+    status(args: string[]): void {
         const { callback, dbConnect } = this.options;
         const pluginName = args[1];
         if (!pluginName) {
@@ -185,7 +185,7 @@ export class CLIPlugin extends CLICommand<CLIPluginOptions> {
             }
         } else {
             // Use host if no adapter was specified and fallback to the current one
-            hostname = this.options.host;
+            hostname = this.options.host as string;
             if (!hostname || hostname === 'this') {
                 hostname = tools.getHostName();
             }

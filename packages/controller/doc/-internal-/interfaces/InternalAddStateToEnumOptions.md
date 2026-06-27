@@ -6,7 +6,9 @@
 
 # Interface: InternalAddStateToEnumOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:555](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L555)
+Defined in: [adapter/src/lib/\_Types.ts:792](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L792)
+
+Options for adding a state to an enum
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: [adapter/src/lib/\_Types.ts:555](https://github.com/ioBroker/ioBroke
 
 > **addTo**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:557](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L557)
+Defined in: [adapter/src/lib/\_Types.ts:796](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L796)
+
+The enum id to add the state to
 
 ***
 
@@ -22,7 +26,9 @@ Defined in: [adapter/src/lib/\_Types.ts:557](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:562](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L562)
+Defined in: [adapter/src/lib/\_Types.ts:806](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L806)
+
+Called once the state has been added
 
 ***
 
@@ -30,7 +36,9 @@ Defined in: [adapter/src/lib/\_Types.ts:562](https://github.com/ioBroker/ioBroke
 
 > **enumName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:556](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L556)
+Defined in: [adapter/src/lib/\_Types.ts:794](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L794)
+
+The category of the enum (e.g. rooms, functions)
 
 ***
 
@@ -38,7 +46,9 @@ Defined in: [adapter/src/lib/\_Types.ts:556](https://github.com/ioBroker/ioBroke
 
 > `optional` **options?**: `Record`\<`string`, `any`\> \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:561](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L561)
+Defined in: [adapter/src/lib/\_Types.ts:804](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L804)
+
+Optional settings including the user context
 
 ***
 
@@ -46,7 +56,9 @@ Defined in: [adapter/src/lib/\_Types.ts:561](https://github.com/ioBroker/ioBroke
 
 > **parentChannel**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:559](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L559)
+Defined in: [adapter/src/lib/\_Types.ts:800](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L800)
+
+The parent channel name
 
 ***
 
@@ -54,7 +66,9 @@ Defined in: [adapter/src/lib/\_Types.ts:559](https://github.com/ioBroker/ioBroke
 
 > **parentDevice**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:558](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L558)
+Defined in: [adapter/src/lib/\_Types.ts:798](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L798)
+
+The parent device name
 
 ***
 
@@ -62,4 +76,6 @@ Defined in: [adapter/src/lib/\_Types.ts:558](https://github.com/ioBroker/ioBroke
 
 > **stateName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:560](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L560)
+Defined in: [adapter/src/lib/\_Types.ts:802](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L802)
+
+The name of the state

@@ -1,19 +1,15 @@
 /**
  *      States DB in memory - Server with Redis protocol
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 
-import { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import { Client as ObjectsInRedisClient, type ObjectsSettings } from '@iobroker/db-objects-redis';
 import { ObjectsInMemoryServer } from './objectsInMemServerRedis.js';
-
-/** Settings accepted by the objects client constructor */
-type ObjectsSettings = ConstructorParameters<typeof ObjectsInRedisClient>[0];
-/** Status object returned by the objects client */
-type DbStatus = ReturnType<ObjectsInRedisClient['getStatus']>;
+import { type DbStatus } from '@iobroker/db-base';
 
 /**
  * Objects database client that also starts an in-memory server speaking the Redis protocol
@@ -60,7 +56,7 @@ export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
      *
      * @param limitId Optional object ID to limit the synchronization to
      */
-    syncFileDirectory(limitId?: string): ReturnType<ObjectsInMemoryServer['syncFileDirectory']> {
+    syncFileDirectory(limitId?: string): { numberSuccess: number; notifications: string[] } {
         return this.objectsServer.syncFileDirectory(limitId);
     }
 

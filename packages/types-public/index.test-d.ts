@@ -225,9 +225,9 @@ void adapter.getForeignObject('obj.id', (_err, _obj) => {});
 void adapter.getObjectAsync('obj.id').then(obj => obj && obj._id.toLowerCase());
 void adapter.getForeignObjectAsync('obj.id').then(obj => obj && obj._id.toLowerCase());
 
-adapter.getForeignObjects('*', (err, objs) => objs!.foo._id.toLowerCase());
+adapter.getForeignObjects('*', (err, objs) => objs!.foo?._id.toLowerCase());
 // getForeignObjectsAsync always returns a Record when it doesn't throw
-void adapter.getForeignObjectsAsync('*').then(objs => objs.foo._id.toLowerCase());
+void adapter.getForeignObjectsAsync('*').then(objs => objs.foo?._id.toLowerCase());
 // If an object type was specified, the returned objects have the correct type
 void adapter.getForeignObjectsAsync('*', 'adapter').then(objs => {
     objs[0].type; // $ExpectType "adapter"
@@ -249,7 +249,7 @@ void adapter.setObject('id', {
     },
     native: {},
     from: 'me',
-    user: 'also me',
+    user: 'system.user.also-me',
     ts: Date.now(),
 });
 
@@ -329,8 +329,6 @@ void adapter.extendObject(
     {},
     {
         preserve: { common: ['name'] },
-        // And that undocumented options are allowed
-        undocumented: true,
     },
 );
 void adapter.extendObject(
@@ -407,7 +405,6 @@ void adapter.getObjectListAsync({ startkey: 'foo', endkey: 'bar' }).then(result 
 
 adapter.delObject('foo');
 adapter.delObject('foo', { recursive: true });
-adapter.delObject('foo', { someWeirdOption: 1 });
 
 adapter.subscribeObjects('*');
 adapter.subscribeStates('*');
@@ -485,7 +482,7 @@ void adapter.sendToHostAsync('host-foo', 'message').then(handleMessageResponse);
 void adapter.sendToHostAsync('host-foo', 'command', { msg: 'message' }).then(handleMessageResponse);
 void adapter.sendToHostAsync('host-foo', { msg: 'message' }).then(handleMessageResponse);
 
-function handleError(_err?: string): void {}
+function handleError(_err?: Error | null): void {}
 adapter.subscribeStates('*', handleError);
 adapter.subscribeForeignStates('*', handleError);
 adapter.unsubscribeStates('*', handleError);

@@ -10,7 +10,7 @@
 import net from 'node:net';
 import { inspect } from 'node:util';
 
-import { RedisHandler, type ConnectionOptions } from '@iobroker/db-base';
+import { RedisHandler, type ConnectionOptions, type FileDbSettings } from '@iobroker/db-base';
 import { StatesInMemoryJsonlDB } from './statesInMemJsonlDB.js';
 import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
 import { EXIT_CODES } from '@iobroker/js-controller-common-db';
@@ -18,20 +18,29 @@ import { EXIT_CODES } from '@iobroker/js-controller-common-db';
 /** Shape of the dynamic subscription registry attached to redis client handlers */
 type SubscriptionRegistry = Record<string, { pattern: string; regex: RegExp }[]>;
 
+type RedisHandlerInternal = RedisHandler & {
+    _subscribe?: Record<
+        string,
+        {
+            pattern: string;
+            regex: RegExp;
+        }[]
+    >;
+};
+
 /**
  * This class inherits statesInMemoryFileDB class and adds socket.io communication layer
  * to access the methods via socket.io
  */
-export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
+export class StatesInMemoryServer extends StatesInMemoryJsonlDB<RedisHandlerInternal> {
     private readonly serverConnections: Record<string, RedisHandler> = {};
     private readonly namespaceStates: string;
-    declare namespaceMsg: string;
+    private readonly namespaceMsg: string;
     private readonly namespaceLog: string;
     private readonly namespaceSession: string;
     private readonly namespaceMsgLen: number;
     private readonly namespaceLogLen: number;
     private readonly metaNamespace: string;
-    private readonly metaNamespaceLen: number;
     private server: net.Server | undefined;
 
     /**
@@ -39,24 +48,19 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
      *
      * @param settings State and InMem-DB settings
      */
-    constructor(settings: Record<string, any>) {
+    constructor(settings: FileDbSettings<ioBroker.State | Record<string, string>>) {
         super(settings);
 
         this.namespaceStates = `${this.settings.redisNamespace || 'io'}.`;
         this.namespaceMsg = `${this.settings.namespaceMsg || 'messagebox'}.`;
         this.namespaceLog = `${this.settings.namespaceLog || 'log'}.`;
         this.namespaceSession = `${this.settings.namespaceSession || 'session'}.`;
-        //this.namespaceStatesLen  = this.namespaceStates.length;
         this.namespaceMsgLen = this.namespaceMsg.length;
         this.namespaceLogLen = this.namespaceLog.length;
-        //this.namespaceSessionlen = this.namespaceSession.length;
         this.metaNamespace = `${this.settings.metaNamespace || 'meta'}.`;
-        this.metaNamespaceLen = this.metaNamespace.length;
 
         this.open()
-            .then(() => {
-                return this._initRedisServer(this.settings.connection);
-            })
+            .then(() => this._initRedisServer(this.settings.connection))
             .then(() => {
                 this.log.debug(
                     `${this.namespace} ${settings.secure ? 'Secure ' : ''} Redis inMem-states listening on port ${
@@ -80,31 +84,39 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
      * Separate Namespace from ID and return both
      *
      * @param idWithNamespace ID or Array of IDs containing a redis namespace and the real ID
-     * @returns Object with namespace and the
-     *                                                      ID/Array of IDs without the namespace
+     * @returns Object with namespace and the Array of IDs without the namespace
      */
-    _normalizeId(idWithNamespace: string | string[]): { id: any; namespace: string } {
+    _normalizeIds(idWithNamespace: string[]): { ids: string[]; namespace: string } {
         let ns = this.namespaceStates;
-        let id;
+        const ids: string[] = [];
         if (Array.isArray(idWithNamespace)) {
-            const ids: string[] = [];
+            const ids = [];
             idWithNamespace.forEach(el => {
                 const { id, namespace } = this._normalizeId(el);
                 ids.push(id);
                 ns = namespace; // we ignore the pot. case from arrays with different namespaces
             });
-            id = ids;
-        } else {
-            id = idWithNamespace;
-            const pointIdx = idWithNamespace.indexOf('.');
-            if (pointIdx !== -1) {
-                ns = idWithNamespace.substr(0, pointIdx + 1);
-                if (ns === this.namespaceStates || ns === this.metaNamespace) {
-                    id = idWithNamespace.substr(pointIdx + 1);
-                }
+        }
+        return { ids, namespace: ns };
+    }
+
+    /**
+     * Separate Namespace from ID and return both
+     *
+     * @param idWithNamespace ID or Array of IDs containing a redis namespace and the real ID
+     * @returns Object with namespace and the ID without the namespace
+     */
+    _normalizeId(idWithNamespace: string): { id: string; namespace: string } {
+        let ns = this.namespaceStates;
+        let id = idWithNamespace;
+        const pointIdx = idWithNamespace.indexOf('.');
+        if (pointIdx !== -1) {
+            ns = idWithNamespace.substr(0, pointIdx + 1);
+            if (ns === this.namespaceStates || ns === this.metaNamespace) {
+                id = idWithNamespace.substr(pointIdx + 1);
             }
         }
-        return { id: id, namespace: ns };
+        return { id, namespace: ns };
     }
 
     /**
@@ -116,7 +128,12 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
      * @param obj Object to publish
      * @returns Publish counter 0 or 1 depending on if send out or not
      */
-    publishToClients(client: any, type: string, id: string, obj: any): number {
+    publishToClients(
+        client: RedisHandlerInternal,
+        type: string,
+        id: string,
+        obj: ioBroker.State | Record<string, string>,
+    ): number {
         // `client` is a RedisHandler with a `_subscribe` registry attached dynamically by the base class
         const subscriptions: SubscriptionRegistry | undefined = client._subscribe;
         if (!subscriptions || !subscriptions[type]) {
@@ -128,12 +145,12 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
 
         if (found) {
             if (type === 'meta') {
-                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
+                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${JSON.stringify(obj)}`);
                 const sendPattern = this.metaNamespace + found.pattern;
                 const sendId = this.metaNamespace + id;
                 client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
             } else {
-                let objString;
+                let objString: string;
                 try {
                     objString = JSON.stringify(obj);
                 } catch (e) {
@@ -199,15 +216,15 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
 
         // Handle Redis "MGET" request for state namespace
         handler.on('mget', (data, responseId) => {
-            if (!data || !data[0]) {
+            if (!data?.[0]) {
                 return void handler.sendArray(responseId, []);
             }
-            const { id, namespace } = this._normalizeId(data);
+            const { ids, namespace } = this._normalizeIds(data);
 
             if (namespace === this.namespaceStates) {
                 try {
-                    const states = this._getStates(id);
-                    const result = states.map((el: any) => (el ? JSON.stringify(el) : null));
+                    const states = this._getStates(ids);
+                    const result = states.map(el => (el ? JSON.stringify(el) : null));
                     handler.sendArray(responseId, result);
                 } catch (err) {
                     handler.sendError(responseId, new Error(`ERROR _getStates: ${err.message}`));
@@ -264,8 +281,8 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
                     const state = JSON.parse(data[1].toString('utf-8'));
                     this._setStateDirect(id, state);
                     handler.sendString(responseId, 'OK');
-                } catch (err: any) {
-                    handler.sendError(responseId, new Error(`ERROR setState id=${id}: ${err.message}`));
+                } catch (err) {
+                    handler.sendError(responseId, new Error(`ERROR setState id=${id}: ${(err as Error).message}`));
                 }
             } else if (namespace === this.metaNamespace) {
                 this.setMeta(id, data[1].toString('utf-8'));

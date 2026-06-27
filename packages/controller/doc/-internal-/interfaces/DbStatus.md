@@ -6,7 +6,9 @@
 
 # Interface: DbStatus
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:24
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:31
+
+Status information about the database
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:24
 
 > **server**: `boolean`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:26
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:35
+
+Whether this process runs the database server
 
 ***
 
@@ -22,4 +26,6 @@ Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:26
 
 > **type**: `string`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:25
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:33
+
+Type of the database backend (e.g. file, jsonl, redis)

@@ -6,7 +6,9 @@
 
 # Interface: InternalCreateStateOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:448](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L448)
+Defined in: [adapter/src/lib/\_Types.ts:620](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L620)
+
+Options for creating a state
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: [adapter/src/lib/\_Types.ts:448](https://github.com/ioBroker/ioBroke
 
 > **\_native**: `Record`\<`string`, `any`\>
 
-Defined in: [adapter/src/lib/\_Types.ts:453](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L453)
+Defined in: [adapter/src/lib/\_Types.ts:630](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L630)
+
+The native section of the state object
 
 ***
 
@@ -22,7 +26,9 @@ Defined in: [adapter/src/lib/\_Types.ts:453](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: [`SetObjectCallback`](../type-aliases/SetObjectCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:455](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L455)
+Defined in: [adapter/src/lib/\_Types.ts:634](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L634)
+
+Called once the state has been created
 
 ***
 
@@ -30,7 +36,9 @@ Defined in: [adapter/src/lib/\_Types.ts:455](https://github.com/ioBroker/ioBroke
 
 > **common**: `Partial`\<[`StateCommon`](StateCommon.md)\>
 
-Defined in: [adapter/src/lib/\_Types.ts:452](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L452)
+Defined in: [adapter/src/lib/\_Types.ts:628](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L628)
+
+The common section of the state object
 
 ***
 
@@ -38,7 +46,9 @@ Defined in: [adapter/src/lib/\_Types.ts:452](https://github.com/ioBroker/ioBroke
 
 > `optional` **options?**: `Record`\<`string`, `any`\> \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L454)
+Defined in: [adapter/src/lib/\_Types.ts:632](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L632)
+
+Optional settings including the user context
 
 ***
 
@@ -46,7 +56,9 @@ Defined in: [adapter/src/lib/\_Types.ts:454](https://github.com/ioBroker/ioBroke
 
 > **parentChannel**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:450](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L450)
+Defined in: [adapter/src/lib/\_Types.ts:624](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L624)
+
+The parent channel name
 
 ***
 
@@ -54,7 +66,9 @@ Defined in: [adapter/src/lib/\_Types.ts:450](https://github.com/ioBroker/ioBroke
 
 > **parentDevice**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L449)
+Defined in: [adapter/src/lib/\_Types.ts:622](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L622)
+
+The parent device name
 
 ***
 
@@ -62,4 +76,6 @@ Defined in: [adapter/src/lib/\_Types.ts:449](https://github.com/ioBroker/ioBroke
 
 > **stateName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:451](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L451)
+Defined in: [adapter/src/lib/\_Types.ts:626](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L626)
+
+The name of the state

@@ -6,6 +6,7 @@
  *      MIT License
  *
  */
+/// <reference types="@iobroker/types-dev" />
 
 import fs from 'fs-extra';
 import path from 'node:path';
@@ -33,6 +34,19 @@ import { createGzip } from 'node:zlib';
 //    host: localhost
 // };
 //
+interface BackupOptions {
+    /** deactivates backup if true */
+    disabled: boolean;
+    /** minimum number of files */
+    files: number;
+    hours: number;
+    /** minutes */
+    period: number;
+    path: string;
+}
+
+export type MetaObject = Record<string, string>;
+export type FileSize = number;
 
 /** Options describing how to connect to the database server */
 export interface ConnectionOptions {
@@ -45,7 +59,11 @@ export interface ConnectionOptions {
     /** array on sentinel */
     port: number | number[];
     /** Additional connection options passed to the database driver */
-    options: Record<string, any>;
+    options: ioBroker.ObjectsDatabaseOptions['options'];
+    /** Options forwarded to the JSONL database backend */
+    jsonlOptions?: ioBroker.ObjectsDatabaseOptions['jsonlOptions'];
+    /** Redis key prefix used by the in-memory server */
+    redisNamespace?: string;
     /** Enable more verbose connection logging */
     enhancedLogging?: boolean;
     /** Disable the in-memory file cache and always read files from disk */
@@ -60,25 +78,14 @@ export interface ConnectionOptions {
     writeFileInterval?: number;
 }
 
-type ChangeFunction = (id: string, state: any) => void;
+type ChangeFunction<TObject> = (id: string, obj: TObject) => void;
 
 /** Status information about the database */
 export interface DbStatus {
     /** Type of the database backend (e.g. file, jsonl, redis) */
-    type: string;
+    type: 'file' | 'redis' | 'jsonl';
     /** Whether this process runs the database server */
     server: boolean;
-}
-
-interface BackupOptions {
-    /** deactivates backup if true */
-    disabled: boolean;
-    /** minimum number of files */
-    files: number;
-    hours: number;
-    /** minutes */
-    period: number;
-    path: string;
 }
 
 /** Options describing where the database stores its files */
@@ -89,27 +96,42 @@ export interface DbOptions {
     fileName: string;
 }
 
-interface FileDbSettings {
-    fileDB: DbOptions;
-    jsonlDB: DbOptions;
-    backup: BackupOptions;
-    change?: ChangeFunction;
+/** Settings accepted by the in-memory database classes and their subclasses */
+export interface FileDbSettings<TObject> {
+    /** File DB storage options (filled in by the subclass constructor before `super()`) */
+    fileDB?: DbOptions;
+    /** JSONL DB storage options (only set by the JSONL backend; only the file name is used) */
+    jsonlDB?: Pick<DbOptions, 'fileName'>;
+    /** Backup options (derived from `connection.backup` by the base constructor) */
+    backup?: BackupOptions;
+    /** Callback invoked when a value in the database changes */
+    change?: ChangeFunction<TObject>;
+    /** Callback invoked once the database server is ready */
     connected: (nameOfServer?: string) => void;
-    logger: InternalLogger;
+    /** Logger instance (or logger configuration) used for all database logging */
+    logger?: InternalLogger;
+    /** Options describing how to connect to the database server */
     connection: ConnectionOptions;
     /** unused */
     auth?: null;
-    secure: boolean;
-    /** as required by createServer TODO: if createServer is typed, add type */
-    certificates: any;
-    port: number;
-    host: string;
+    /** Whether the server connection should be secured via TLS */
+    secure?: boolean;
+    /** Port the in-memory server listens on */
+    port?: number;
+    /** Host the in-memory server binds to */
+    host?: string;
     /** logging namespace */
     namespace?: string;
     /** Host name used as a fallback for the logging namespace */
     hostname?: string;
     /** Default ACL applied to newly created objects */
-    defaultNewAcl?: any;
+    defaultNewAcl?: {
+        object: number;
+        state: number;
+        file: number;
+        owner: ioBroker.ObjectIDs.User;
+        ownerGroup: ioBroker.ObjectIDs.Group;
+    };
     /** Redis key prefix used by the in-memory server (defaults to "io") */
     redisNamespace?: string;
     /** Namespace used for the message box */
@@ -127,7 +149,6 @@ interface FileDbSettings {
 interface Subscription {
     pattern: string;
     regex: RegExp;
-    options: any;
 }
 
 interface SubscriptionClient {
@@ -138,14 +159,14 @@ interface SubscriptionClient {
  * The parent of the class structure, which provides basic JSON storage
  * and general subscription and publish functionality
  */
-export class InMemoryFileDB {
-    protected settings: FileDbSettings;
-    protected change: ChangeFunction | undefined;
-    protected dataset: Record<string, any>;
+export class InMemoryFileDB<TObject, THandler extends SubscriptionClient = SubscriptionClient> {
+    protected settings: FileDbSettings<TObject>;
+    protected change: ChangeFunction<TObject> | undefined;
+    protected dataset: Record<string, TObject | MetaObject> = {};
     protected namespace: string;
-    private lastSave: null | number;
-    protected stateTimer: NodeJS.Timeout | null;
-    private callbackSubscriptionClient: SubscriptionClient;
+    private lastSave: null | number = null;
+    protected stateTimer: NodeJS.Timeout | null = null;
+    private callbackSubscriptionClient: SubscriptionClient = {};
     protected readonly dataDir: string;
     private readonly datasetName: string;
     protected log: InternalLogger;
@@ -154,16 +175,12 @@ export class InMemoryFileDB {
     /**
      * @param settings Settings for the database, the connection and backups
      */
-    constructor(settings: FileDbSettings) {
-        this.settings = settings || {};
+    constructor(settings: FileDbSettings<TObject>) {
+        this.settings = settings;
 
         this.change = this.settings.change;
 
-        this.dataset = {};
-
         this.namespace = this.settings.namespace || '';
-        this.lastSave = null;
-        this.callbackSubscriptionClient = {};
 
         this.settings.backup = this.settings.connection.backup || {
             disabled: false, // deactivates
@@ -172,6 +189,7 @@ export class InMemoryFileDB {
             period: 120, // minutes
             path: '', // use default path
         };
+        const backup: BackupOptions = this.settings.backup;
 
         this.dataDir = this.settings.connection.dataDir || tools.getDefaultDataDir();
         if (!path.isAbsolute(this.dataDir)) {
@@ -179,18 +197,20 @@ export class InMemoryFileDB {
         }
         this.dataDir = this.dataDir.replace(/\\/g, '/');
 
-        const fileName = this.settings.jsonlDB ? this.settings.jsonlDB.fileName : this.settings.fileDB.fileName;
+        const fileDbOptions = this.settings.fileDB;
+        if (!fileDbOptions) {
+            throw new Error(`${this.namespace} No fileDB storage options were provided`);
+        }
+        const fileName = this.settings.jsonlDB ? this.settings.jsonlDB.fileName : fileDbOptions.fileName;
         this.datasetName = path.join(this.dataDir, fileName);
         const parts = path.dirname(this.datasetName);
         fs.ensureDirSync(parts);
 
-        this.stateTimer = null;
-
-        this.backupDir = this.settings.backup.path || path.join(this.dataDir, this.settings.fileDB.backupDirName);
+        this.backupDir = backup.path || path.join(this.dataDir, fileDbOptions.backupDirName);
 
         this.log = tools.getLogger(this.settings.logger);
 
-        if (!this.settings.backup.disabled) {
+        if (!backup.disabled) {
             try {
                 this.initBackupDir();
             } catch (e) {
@@ -200,7 +220,7 @@ export class InMemoryFileDB {
                 this.log.error(
                     'This leads to an increased risk of data loss, please check that the configured backup directory is available and restart the controller',
                 );
-                this.settings.backup.disabled = true;
+                backup.disabled = true;
             }
         }
 
@@ -221,7 +241,7 @@ export class InMemoryFileDB {
      * @param datasetName Filename of the file to load
      * @returns obj read data, normally as object
      */
-    async loadDatasetFile(datasetName: string): Promise<Record<string, any>> {
+    async loadDatasetFile(datasetName: string): Promise<Record<string, TObject>> {
         if (!(await fs.pathExists(datasetName))) {
             throw new Error(`Database file ${datasetName} does not exists.`);
         }
@@ -234,7 +254,7 @@ export class InMemoryFileDB {
      * @param datasetName Filename of the file to load
      * @returns obj dataset read as object
      */
-    async loadDataset(datasetName: string): Promise<Record<string, any>> {
+    async loadDataset(datasetName: string): Promise<Record<string, TObject>> {
         let ret = {};
         try {
             ret = await this.loadDatasetFile(datasetName);
@@ -296,36 +316,38 @@ export class InMemoryFileDB {
      * Normalize the backup settings and create the backup directory
      */
     initBackupDir(): void {
+        // Create backup directory
+        fs.ensureDirSync(this.backupDir);
+
+        const backup = this.settings.backup;
+        if (!backup) {
+            return;
+        }
         // Interval in minutes => to milliseconds
-        this.settings.backup.period =
-            this.settings.backup.period === undefined ? 120 : parseInt(String(this.settings.backup.period));
-        if (isNaN(this.settings.backup.period)) {
-            this.settings.backup.period = 120;
+        backup.period = backup.period === undefined ? 120 : parseInt(String(backup.period));
+        if (isNaN(backup.period)) {
+            backup.period = 120;
         }
         // Node.js timeouts overflow after roughly 24 days, defaulting to 1 millisecond, which causes chaos.
         // If a user configured the backup this way, we use our default of 120 minutes instead.
         const maxTimeoutMinutes = Math.floor((2 ** 31 - 1) / 60000);
-        if (this.settings.backup.period > maxTimeoutMinutes) {
+        if (backup.period > maxTimeoutMinutes) {
             this.log.warn(
-                `${this.namespace} Configured backup period ${this.settings.backup.period} is larger than the supported maximum of ${maxTimeoutMinutes} minutes. Defaulting to 120 minutes.`,
+                `${this.namespace} Configured backup period ${backup.period} is larger than the supported maximum of ${maxTimeoutMinutes} minutes. Defaulting to 120 minutes.`,
             );
-            this.settings.backup.period = 120;
+            backup.period = 120;
         }
-        this.settings.backup.period *= 60_000;
+        backup.period *= 60_000;
 
-        this.settings.backup.files =
-            this.settings.backup.files === undefined ? 24 : parseInt(String(this.settings.backup.files));
-        if (isNaN(this.settings.backup.files)) {
-            this.settings.backup.files = 24;
+        backup.files = backup.files === undefined ? 24 : parseInt(String(backup.files));
+        if (isNaN(backup.files)) {
+            backup.files = 24;
         }
 
-        this.settings.backup.hours =
-            this.settings.backup.hours === undefined ? 48 : parseInt(String(this.settings.backup.hours));
-        if (isNaN(this.settings.backup.hours)) {
-            this.settings.backup.hours = 48;
+        backup.hours = backup.hours === undefined ? 48 : parseInt(String(backup.hours));
+        if (isNaN(backup.hours)) {
+            backup.hours = 48;
         }
-        // Create backup directory
-        fs.ensureDirSync(this.backupDir);
     }
 
     /**
@@ -334,48 +356,10 @@ export class InMemoryFileDB {
      * @param client The client to register the subscription for
      * @param type The subscription type (e.g. objects or states)
      * @param pattern One or more patterns to subscribe to
-     * @param cb Called once the subscription has been registered
      */
-    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[], cb?: () => void): void;
-    /**
-     * Subscribe a client to changes matching the given pattern
-     *
-     * @param client The client to register the subscription for
-     * @param type The subscription type (e.g. objects or states)
-     * @param pattern One or more patterns to subscribe to
-     * @param options Subscription options
-     * @param cb Called once the subscription has been registered
-     */
-    handleSubscribe(
-        client: SubscriptionClient,
-        type: string,
-        pattern: string | string[],
-        options: any,
-        cb?: () => void,
-    ): void;
-
-    /**
-     * Subscribe a client to changes matching the given pattern
-     *
-     * @param client The client to register the subscription for
-     * @param type The subscription type (e.g. objects or states)
-     * @param pattern One or more patterns to subscribe to
-     * @param options Subscription options, or the callback if omitted
-     * @param cb Called once the subscription has been registered
-     */
-    handleSubscribe(
-        client: SubscriptionClient,
-        type: string,
-        pattern: string | string[],
-        options: any,
-        cb?: () => void,
-    ): void {
-        if (typeof options === 'function') {
-            cb = options;
-            options = undefined;
-        }
-        client._subscribe = client._subscribe || {};
-        client._subscribe[type] = client._subscribe[type] || [];
+    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[]): void {
+        client._subscribe ||= {};
+        client._subscribe[type] ||= [];
 
         const s = client._subscribe[type];
 
@@ -385,15 +369,13 @@ export class InMemoryFileDB {
                     return;
                 }
 
-                s.push({ pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options });
+                s.push({ pattern, regex: new RegExp(tools.pattern2RegEx(pattern)) });
             });
         } else {
             if (!s.find(sub => sub.pattern === pattern)) {
-                s.push({ pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options });
+                s.push({ pattern, regex: new RegExp(tools.pattern2RegEx(pattern)) });
             }
         }
-
-        typeof cb === 'function' && cb();
     }
 
     /**
@@ -439,7 +421,12 @@ export class InMemoryFileDB {
      * @param _id The ID of the changed object or state
      * @param _obj The new value of the object or state
      */
-    publishToClients(_client: SubscriptionClient, _type: string, _id: string, _obj: any): number {
+    publishToClients(
+        _client: SubscriptionClient,
+        _type: string,
+        _id: string,
+        _obj: TObject | string | null | FileSize | MetaObject,
+    ): number {
         throw new Error('no communication handling implemented');
     }
 
@@ -452,11 +439,11 @@ export class InMemoryFileDB {
         // delete files only if settings.backupNumber is not 0
         let files = fs.readdirSync(this.backupDir);
         files.sort();
-        const limit = Date.now() - this.settings.backup.hours * 3600000;
+        const limit = Date.now() - (this.settings.backup?.hours ?? 48) * 3600000;
 
         files = files.filter(f => f.endsWith(`${baseFilename}.gz`));
 
-        while (files.length > this.settings.backup.files) {
+        while (files.length > (this.settings.backup?.files ?? 24)) {
             const file = files.shift();
             if (!file) {
                 continue;
@@ -518,7 +505,7 @@ export class InMemoryFileDB {
         try {
             const jsonString = await this.saveDataset();
 
-            if (!this.settings.backup.disabled && jsonString) {
+            if (!this.settings.backup?.disabled && jsonString) {
                 this.saveBackup(jsonString);
             }
         } finally {
@@ -597,12 +584,14 @@ export class InMemoryFileDB {
         const now = Date.now();
 
         // makes backups only if settings.backupInterval is not 0
-        if (this.settings.backup.period && (!this.lastSave || now - this.lastSave > this.settings.backup.period)) {
+        const fileName = this.settings.fileDB?.fileName;
+        if (
+            fileName &&
+            this.settings.backup?.period &&
+            (!this.lastSave || now - this.lastSave > this.settings.backup.period)
+        ) {
             this.lastSave = now;
-            const backFileName = path.join(
-                this.backupDir,
-                `${this.getTimeStr(now)}_${this.settings.fileDB.fileName}.gz`,
-            );
+            const backFileName = path.join(this.backupDir, `${this.getTimeStr(now)}_${fileName}.gz`);
 
             try {
                 if (!fs.existsSync(backFileName)) {
@@ -620,7 +609,7 @@ export class InMemoryFileDB {
                     compress.end();
 
                     // analyse older files
-                    this.deleteOldBackupFiles(this.settings.fileDB.fileName);
+                    this.deleteOldBackupFiles(fileName);
                 }
             } catch (e) {
                 this.log.error(`${this.namespace} Cannot save backup ${backFileName}: ${e.message}`);
@@ -638,7 +627,7 @@ export class InMemoryFileDB {
     /**
      * Get the currently connected clients. Subclasses override this to return the real clients.
      */
-    getClients(): Record<string, any> {
+    getClients(): Record<string, THandler> {
         return {};
     }
 
@@ -649,7 +638,7 @@ export class InMemoryFileDB {
      * @param id The ID of the changed object or state
      * @param obj The new value of the object or state
      */
-    publishAll(type: string, id: string, obj: any): number {
+    publishAll(type: string, id: string, obj: TObject | string | null | FileSize | MetaObject): number {
         if (id === undefined) {
             this.log.error(`${this.namespace} Can not publish empty ID`);
             return 0;

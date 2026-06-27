@@ -8,4 +8,4 @@
 
 > **GetUserGroupPromiseReturn** = \[`string`, `string`[], [`ObjectPermissions`](../interfaces/ObjectPermissions.md)\]
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:43
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:74

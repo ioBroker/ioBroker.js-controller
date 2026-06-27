@@ -2,7 +2,7 @@ import net from 'node:net';
 import os from 'node:os';
 import { EventEmitter } from 'node:events';
 import { join } from 'node:path';
-import jwt from 'jsonwebtoken';
+import jwt, { type JwtPayload } from 'jsonwebtoken';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import semver from 'semver';
@@ -209,33 +209,49 @@ export interface AdapterClass {
     /** Returns a list of objects with id between params.startkey and params.endkey */
     getObjectListAsync(
         params: ioBroker.GetObjectListParams | null,
-        options?: { sorted?: boolean } | Record<string, any>,
+        options?: { sorted?: boolean; user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.GetObjectListPromise;
     /** Returns the enum tree, filtered by the optional enum name */
-    getEnumAsync(name: string, options?: unknown): Promise<{ result: Record<string, any>; requestEnum: string }>;
+    getEnumAsync(
+        name: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<{ result: Record<string, ioBroker.EnumObject>; requestEnum: string }>;
     /** Returns the enum tree, filtered by the optional enum name */
-    getEnumsAsync(enumList?: ioBroker.EnumList, options?: unknown): ioBroker.GetEnumsPromise;
+    getEnumsAsync(
+        enumList?: ioBroker.EnumList,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.GetEnumsPromise;
     /** Deletes an object from the object db */
     delObjectAsync(id: string, options?: ioBroker.DelObjectOptions): Promise<void>;
     /** Deletes an object (which might not belong to this adapter) from the object db */
     delForeignObjectAsync(id: string, options?: ioBroker.DelObjectOptions): Promise<void>;
     /** Subscribe to changes of objects in this instance */
-    subscribeObjectsAsync(pattern: string, options?: unknown): Promise<void>;
+    subscribeObjectsAsync(pattern: string, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<void>;
     /** Unsubscribe from changes of objects in this instance */
-    unsubscribeObjectsAsync(pattern: string, options?: unknown): Promise<void>;
+    unsubscribeObjectsAsync(pattern: string, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<void>;
     /** Read a value from the states DB. */
-    getStateAsync(id: string, options?: unknown): ioBroker.GetStatePromise;
+    getStateAsync(id: string, options?: { user?: ioBroker.ObjectIDs.User } | null): ioBroker.GetStatePromise;
     /** Subscribe to changes of objects (which might not belong to this adapter) */
-    subscribeForeignObjectsAsync(pattern: string | string[], options?: unknown): Promise<void>;
+    subscribeForeignObjectsAsync(
+        pattern: string | string[],
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Unsubscribe from changes of objects (which might not belong to this adapter) */
-    unsubscribeForeignObjectsAsync(pattern: string | string[], options?: unknown): Promise<void>;
+    unsubscribeForeignObjectsAsync(
+        pattern: string | string[],
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Creates an object in the object db. Existing objects are not overwritten. */
-    setObjectNotExistsAsync(id: string, obj: ioBroker.SettableObject, options?: unknown): ioBroker.SetObjectPromise;
+    setObjectNotExistsAsync(
+        id: string,
+        obj: ioBroker.SettableObject,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.SetObjectPromise;
     /** Creates an object (which might not belong to this adapter) in the object db. Existing objects are not overwritten. */
     setForeignObjectNotExistsAsync<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetObjectPromise;
 
     /** deletes a device, its channels and states */
@@ -246,18 +262,18 @@ export interface AdapterClass {
         addTo: string,
         parentDevice: string,
         channelName: string,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<void>;
     /** Removes a channel from an enum */
     deleteChannelFromEnumAsync(
         enumName: string,
         parentDevice: string,
         channelName: string,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<void>;
 
     /** Returns a list of all devices in this adapter instance */
-    getDevicesAsync(options?: unknown): Promise<ioBroker.DeviceObject[]>;
+    getDevicesAsync(options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<ioBroker.DeviceObject[]>;
 
     /** Adds a state to an enum */
     addStateToEnumAsync(
@@ -266,7 +282,7 @@ export interface AdapterClass {
         parentDevice: string,
         parentChannel: string,
         stateName: string,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<void>;
     /** Removes a state from an enum */
     deleteStateFromEnumAsync(
@@ -274,33 +290,77 @@ export interface AdapterClass {
         parentDevice: string,
         parentChannel: string,
         stateName: string,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<void>;
     /** Changes access rights of all files in the adapter directory */
     chmodFileAsync(
         adapter: string | null,
         path: string,
-        options: { mode: number | string } | Record<string, any>,
+        options: { mode: number | string; user?: ioBroker.ObjectIDs.User },
     ): Promise<{ entries: ioBroker.ChownFileResult[]; id: string }>;
     // TODO: correct types
     /** Changes the owner of all files in the adapter directory */
     chownFileAsync(...args: any[]): Promise<any>;
     /** reads the content of directory from DB for given adapter and path */
-    readDirAsync(adapterName: string | null, path: string, options?: unknown): ioBroker.ReadDirPromise;
+    readDirAsync(
+        adapterName: string | null,
+        path: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.ReadDirPromise;
     /** Deletes a given file */
-    unlinkAsync(adapterName: string | null, path: string, options?: unknown): Promise<void>;
+    unlinkAsync(
+        adapterName: string | null,
+        path: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Deletes a given file */
-    delFileAsync(adapterName: string | null, path: string, options?: unknown): Promise<void>;
+    delFileAsync(
+        adapterName: string | null,
+        path: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Renames a file in the DB */
-    renameAsync(adapterName: string | null, oldName: string, newName: string, options?: unknown): Promise<void>;
+    renameAsync(
+        adapterName: string | null,
+        oldName: string,
+        newName: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Creates a directory in the DB */
-    mkdirAsync(adapterName: string | null, path: string, options?: unknown): Promise<void>;
+    mkdirAsync(
+        adapterName: string | null,
+        path: string,
+        options?: {
+            user?: ioBroker.ObjectIDs.User;
+            owner?: ioBroker.ObjectIDs.User;
+            ownerGroup?: ioBroker.ObjectIDs.Group;
+        } | null,
+    ): Promise<void>;
     /** reads the content of directory from DB for given adapter and path */
-    readFileAsync(adapterName: string | null, path: string, options?: unknown): ioBroker.ReadFilePromise;
+    readFileAsync(
+        adapterName: string | null,
+        path: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.ReadFilePromise;
     /** Writes a file into the DB */
-    writeFileAsync(adapterName: string | null, path: string, data: Buffer | string, options?: unknown): Promise<void>;
+    writeFileAsync(
+        adapterName: string | null,
+        path: string,
+        data: Buffer | string,
+        options?: {
+            virtualFile?: boolean;
+            user?: ioBroker.ObjectIDs.User;
+            group?: ioBroker.ObjectIDs.Group;
+            mode?: number;
+            mimeType?: string;
+        } | null,
+    ): Promise<void>;
     /** Checks if a file exists in the DB */
-    fileExistsAsync(adapterName: string | null, path: string, options?: unknown): Promise<boolean>;
+    fileExistsAsync(
+        adapterName: string | null,
+        path: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<boolean>;
 
     /** Read historian data for states of any instance or system state. */
     getHistoryAsync(
@@ -312,49 +372,66 @@ export interface AdapterClass {
         sessionId?: number;
     }>;
     /** Deletes a state from the states DB, but not the associated object. Consider using deleteState instead */
-    delStateAsync(id: string, options?: unknown): Promise<void>;
+    delStateAsync(id: string, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<void>;
     /** Deletes a state from the states DB, but not the associated object */
-    delForeignStateAsync(id: string, options?: unknown): Promise<void>;
+    delForeignStateAsync(id: string, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<void>;
     /** Read all states of this adapter that match the given pattern */
-    getStatesAsync(pattern: string, options?: unknown): ioBroker.GetStatesPromise;
+    getStatesAsync(pattern: string, options?: { user?: ioBroker.ObjectIDs.User } | null): ioBroker.GetStatesPromise;
     /** Read all states (which might not belong to this adapter) which match the given pattern */
-    getForeignStatesAsync(pattern: Pattern, options?: unknown): ioBroker.GetStatesPromise;
+    getForeignStatesAsync(
+        pattern: Pattern,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.GetStatesPromise;
     /** Subscribe to changes of states (which might not belong to this adapter) */
-    subscribeForeignStatesAsync(pattern: string | string[], options?: unknown): Promise<void>;
+    subscribeForeignStatesAsync(
+        pattern: string | string[],
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Subscribe from changes of states (which might not belong to this adapter) */
-    unsubscribeForeignStatesAsync(pattern: string | string[], options?: unknown): Promise<void>;
+    unsubscribeForeignStatesAsync(
+        pattern: string | string[],
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** Subscribe to changes of states in this instance */
-    subscribeStatesAsync(pattern: Pattern, options?: unknown): Promise<void>;
+    subscribeStatesAsync(pattern: Pattern, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<void>;
     /** Subscribe from changes of states in this instance */
-    unsubscribeStatesAsync(pattern: Pattern, options?: unknown): Promise<void>;
+    unsubscribeStatesAsync(pattern: Pattern, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<void>;
     /**
      * Helper function that looks for the first free TCP port starting with the given one.
      */
     getPortAsync(port: number): Promise<number>;
     /** Read a value (which might not belong to this adapter) from the state's DB. */
-    getForeignStateAsync(id: string, options?: unknown): ioBroker.GetStatePromise;
+    getForeignStateAsync(id: string, options?: { user?: ioBroker.ObjectIDs.User } | null): ioBroker.GetStatePromise;
     /** Validates username and password */
     checkPasswordAsync(
         user: string,
         password: string,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<[isPasswordCorrect: boolean, user: `system.user.${string}`]>;
     /** Sets a new password for the given user */
-    setPasswordAsync(user: string, password: string, options?: unknown): Promise<void>;
+    setPasswordAsync(
+        user: string,
+        password: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** <INTERNAL> Checks if a user exists and is in the given group. */
-    checkGroupAsync(user: string, group: string, options?: unknown): Promise<boolean>;
+    checkGroupAsync(user: string, group: string, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<boolean>;
     /** <INTERNAL> Determines the users permissions */
     calculatePermissionsAsync(
         user: string,
         commandsPermissions: CommandsPermissions,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<ioBroker.PermissionSet>;
     /**
      * Creates or overwrites an object in the object db
      *
      * @deprecated use `adapter.setObject` without a callback instead
      */
-    setObjectAsync(id: string, obj: ioBroker.SettableObject, options?: unknown): ioBroker.SetObjectPromise;
+    setObjectAsync(
+        id: string,
+        obj: ioBroker.SettableObject,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.SetObjectPromise;
     /**
      * Creates or overwrites an object (which might not belong to this adapter) in the object db
      *
@@ -363,9 +440,8 @@ export interface AdapterClass {
     setForeignObjectAsync<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetObjectPromise;
-    // TODO: correct types
     /**
      * Get the certificates of the system.
      *
@@ -382,7 +458,10 @@ export interface AdapterClass {
     getAdapterObjectsAsync(): Promise<Record<string, ioBroker.AdapterScopedObject>>;
 
     /** Reads an object (which might not belong to this adapter) from the object db*/
-    getForeignObjectAsync<T extends string>(id: T, options?: unknown): ioBroker.GetObjectPromise<T>;
+    getForeignObjectAsync<T extends string>(
+        id: T,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.GetObjectPromise<T>;
 
     /**
      * Writes a value (which might not belong to this adapter) into the states DB only if it has changed.
@@ -402,7 +481,7 @@ export interface AdapterClass {
     setForeignStateChangedAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetStateChangedPromise;
     /**
      * Writes a value (which might not belong to this adapter) into the states DB only if it has changed.
@@ -416,7 +495,7 @@ export interface AdapterClass {
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetStateChangedPromise;
 
     /**
@@ -437,7 +516,7 @@ export interface AdapterClass {
     setStateChangedAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetStateChangedPromise;
     /**
      * Writes a value into the states DB only if it has changed.
@@ -451,7 +530,7 @@ export interface AdapterClass {
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetStateChangedPromise;
 
     /**
@@ -502,7 +581,12 @@ export interface AdapterClass {
      * @param options optional user context
      * @param callback return result
      */
-    delFile(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback): void;
+    delFile(
+        adapterName: string | null,
+        path: string,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        callback: ioBroker.ErrnoCallback,
+    ): void;
 
     /**
      * Writes a value into the states DB.
@@ -518,14 +602,14 @@ export interface AdapterClass {
     setStateAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options?: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
     ): ioBroker.SetStatePromise;
     /** @deprecated use `adapter.setState` without callback instead */
     setStateAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
-        options: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
     ): ioBroker.SetStatePromise;
 
     /**
@@ -546,7 +630,7 @@ export interface AdapterClass {
     setForeignStateAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetStatePromise;
     /**
      * Writes a value (which might not belong to this adapter) into the states DB.
@@ -560,7 +644,7 @@ export interface AdapterClass {
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
-        options: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
     ): ioBroker.SetStatePromise;
 
     /**
@@ -570,7 +654,7 @@ export interface AdapterClass {
         pattern: Pattern,
         type: T,
         enums?: ioBroker.EnumList | null,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.GetObjectsPromiseTyped<T>;
     /**
      * Get foreign objects by pattern and specific type.
@@ -582,7 +666,7 @@ export interface AdapterClass {
     getForeignObjectsAsync<T extends ioBroker.ObjectType>(
         pattern: Pattern,
         type: T,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.GetObjectsPromiseTyped<T>;
     /**
      * Get foreign objects by pattern.
@@ -590,7 +674,10 @@ export interface AdapterClass {
      * @param pattern the pattern to match object ids against
      * @param options optional user context
      */
-    getForeignObjectsAsync(pattern: Pattern, options?: unknown): ioBroker.GetObjectsPromise;
+    getForeignObjectsAsync(
+        pattern: Pattern,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): ioBroker.GetObjectsPromise;
 
     /**
      * creates an object with type device
@@ -609,7 +696,7 @@ export interface AdapterClass {
         deviceName: string,
         common: Partial<ioBroker.DeviceCommon>,
         native: Record<string, any>,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetObjectPromise;
 
     /**
@@ -635,7 +722,7 @@ export interface AdapterClass {
         channelName: string,
         roleOrCommon: string | Partial<ioBroker.ChannelCommon>,
         native: Record<string, any>,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetObjectPromise;
 
     /**
@@ -664,7 +751,7 @@ export interface AdapterClass {
         stateName: string,
         roleOrCommon: string | Partial<ioBroker.StateCommon>,
         native: Record<string, any>,
-        options?: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): ioBroker.SetObjectPromise;
 
     /**
@@ -672,9 +759,13 @@ export interface AdapterClass {
      *
      * @deprecated use `this.delObject` instead
      */
-    deleteChannelAsync(channelName: string, options?: unknown): Promise<void>;
+    deleteChannelAsync(channelName: string, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<void>;
     /** @deprecated use `this.delObject` instead */
-    deleteChannelAsync(parentDevice: string, channelName: string, options?: unknown): Promise<void>;
+    deleteChannelAsync(
+        parentDevice: string,
+        channelName: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
 
     /**
      * Deletes a state. It must have been created with createState
@@ -683,9 +774,18 @@ export interface AdapterClass {
      */
     deleteStateAsync(stateName: string, options?: unknown): Promise<void>;
     /** @deprecated use `this.delObject` instead */
-    deleteStateAsync(parentChannel: string, stateName: string, options?: unknown): Promise<void>;
+    deleteStateAsync(
+        parentChannel: string,
+        stateName: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
     /** @deprecated use `this.delObject` instead */
-    deleteStateAsync(parentDevice: string, parentChannel: string, stateName: string, options?: unknown): Promise<void>;
+    deleteStateAsync(
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<void>;
 
     /**
      * Returns a list of all channels in this adapter instance @param parentDevice (optional) Name
@@ -698,7 +798,10 @@ export interface AdapterClass {
      * @param parentDevice Name of the parent device to filter the channels by
      * @param options Some internal options
      */
-    getChannelsOfAsync(parentDevice: string, options?: unknown): Promise<ioBroker.ChannelObject[]>;
+    getChannelsOfAsync(
+        parentDevice: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<ioBroker.ChannelObject[]>;
 
     /**
      * Returns a list of all channels in this adapter instance
@@ -720,7 +823,7 @@ export interface AdapterClass {
      */
     getChannels(
         parentDevice: string,
-        options: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
         callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>,
     ): void;
 
@@ -735,7 +838,10 @@ export interface AdapterClass {
      * @param parentDevice Name of the parent device to filter the channels by
      * @param options Some internal options
      */
-    getChannelsAsync(parentDevice: string, options?: unknown): Promise<ioBroker.ChannelObject[]>;
+    getChannelsAsync(
+        parentDevice: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<ioBroker.ChannelObject[]>;
 
     /**
      * Returns a list of all states in this adapter instance @param parentDevice (optional)
@@ -757,7 +863,11 @@ export interface AdapterClass {
      * @param parentChannel Name of the parent channel to filter the states by
      * @param options Some internal options
      */
-    getStatesOfAsync(parentDevice: string, parentChannel: string, options?: unknown): Promise<ioBroker.StateObject[]>;
+    getStatesOfAsync(
+        parentDevice: string,
+        parentChannel: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+    ): Promise<ioBroker.StateObject[]>;
 }
 
 /**
@@ -800,7 +910,7 @@ export class AdapterClass extends EventEmitter {
     private readonly logList = new Set<string>();
     private readonly aliases = new Map<string, AliasDetails>();
     private readonly aliasPatterns = new Set<string>();
-    private enums: Record<string, any> = {};
+    private enums: Record<string, ioBroker.EnumObject> = {};
     private eventLoopLags: number[] = [];
     private overwriteLogLevel: boolean = false;
     adapterReady: boolean = false;
@@ -826,7 +936,7 @@ export class AdapterClass extends EventEmitter {
     log!: Log;
     performStrictObjectChecks: boolean;
     private readonly _logger: Winston.Logger;
-    private _restartScheduleJob: any;
+    private _restartScheduleJob: NodeSchedule.Job | null = null;
     private _schedule?: typeof NodeSchedule;
     private namespaceLog: string;
     namespace: `${string}.${number}`;
@@ -841,7 +951,7 @@ export class AdapterClass extends EventEmitter {
     private inputCount: number = 0;
     private outputCount: number = 0;
     /** The cache of users */
-    private users: Record<ioBroker.ObjectIDs.User, { groups: any; acl: any }> = {}; // todo
+    private users: Record<ioBroker.ObjectIDs.User, { groups: ioBroker.ObjectIDs.Group[]; acl: any }> = {}; // todo
     /** The cache of user groups */
     private groups: Record<string, Partial<ioBroker.GroupObject>> = {};
     /** An array of instances, that support auto subscribe */
@@ -867,7 +977,7 @@ export class AdapterClass extends EventEmitter {
     /** contents of iobroker.json if required via AdapterOptions */
     systemConfig?: InternalAdapterJsonConfig;
     /** the configured date format of system.config, only available if requested via AdapterOptions `useFormatDate` */
-    dateFormat?: any;
+    dateFormat?: string;
     /** if float comma instead of dot is used, only available if requested via AdapterOptions `useFormatDate` */
     isFloatComma?: boolean;
     /** configured language of system.config, only available if requested via AdapterOptions `useFormatDate` */
@@ -896,7 +1006,7 @@ export class AdapterClass extends EventEmitter {
      * @param isActive - if log subscription should be activated or deactivated
      * @param options - options passed to setState e.g. user permissions
      */
-    requireLog?: (isActive: boolean, options?: Partial<GetUserGroupsOptions>) => Promise<void> | void;
+    requireLog?: (isActive: boolean, options?: { user?: ioBroker.ObjectIDs.User } | null) => Promise<void> | void;
     private logOffTimer?: NodeJS.Timeout | null;
     private logRequired?: boolean;
     private patterns?: Record<string, { regex: string }>;
@@ -1607,10 +1717,10 @@ export class AdapterClass extends EventEmitter {
         if (!this.#states) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(`${this.namespaceLog} getSession not processed because States database not connected`);
-            return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallback(options.callback, null);
         }
 
-        void this.#states.getSession(options.id, options.callback);
+        void this.#states.getSession(options.id, (err, session) => tools.maybeCallback(options.callback, session || null));
     }
 
     // overload for docs
@@ -1622,7 +1732,7 @@ export class AdapterClass extends EventEmitter {
      * @param data the session data to store
      * @param callback return result
      */
-    setSession(id: string, ttl: number, data: Record<string, any>, callback?: ioBroker.ErrorCallback): MaybePromise;
+    setSession(id: string, ttl: number, data: ioBroker.Session, callback?: ioBroker.ErrorCallback): MaybePromise;
 
     // unknown implementation guards
     /**
@@ -1687,11 +1797,10 @@ export class AdapterClass extends EventEmitter {
 
     private async _getObjectsByArray(
         keys: string[],
-        options?: Record<string, any> | null,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<(ioBroker.AnyObject | null)[]> {
         try {
-            const res = await this.#objects!.getObjects(keys, options);
-            return res;
+            return await this.#objects!.getObjects(keys, options);
         } catch (e) {
             this._logger.error(`Could not get objects by array: ${e.message}`);
             return [];
@@ -1927,7 +2036,7 @@ export class AdapterClass extends EventEmitter {
     checkPassword(
         user: string,
         pw: string,
-        options: Record<string, any>,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
         callback: CheckPasswordCallback,
     ): Promise<void>;
     /**
@@ -2095,7 +2204,7 @@ export class AdapterClass extends EventEmitter {
     setPassword(
         user: string,
         pw: string,
-        options: Record<string, any>,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
         callback?: ioBroker.ErrorCallback,
     ): Promise<void>;
 
@@ -2163,7 +2272,7 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        void this.getForeignObject(options.user, options, (err, obj) => {
+        void this.getForeignObject(options.user, options.options, (err, obj) => {
             if (err || !obj) {
                 return tools.maybeCallbackWithError(options.callback, 'User does not exist');
             }
@@ -2213,7 +2322,12 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    checkGroup(user: string, group: string, options: Record<string, any>, callback?: CheckGroupCallback): Promise<void>;
+    checkGroup(
+        user: string,
+        group: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+        callback?: CheckGroupCallback,
+    ): Promise<void>;
     /**
      * Returns if user exists and is in the group
      *
@@ -2286,11 +2400,11 @@ export class AdapterClass extends EventEmitter {
         if (options.group && !options.group.startsWith('system.group.')) {
             options.group = `system.group.${options.group}`;
         }
-        void this.getForeignObject(options.user, options, (err, obj) => {
+        void this.getForeignObject(options.user, options.options, (err, obj) => {
             if (err || !obj) {
                 return tools.maybeCallback(options.callback, false);
             }
-            void this.getForeignObject(options.group, options, (err, obj) => {
+            void this.getForeignObject(options.group, options.options, (err, obj) => {
                 if (err || !obj) {
                     return tools.maybeCallback(options.callback, false);
                 }
@@ -2314,7 +2428,7 @@ export class AdapterClass extends EventEmitter {
     calculatePermissions(
         user: string,
         commandsPermissions: CommandsPermissions,
-        options?: Record<string, any>,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: CalculatePermissionsCallback,
     ): Promise<void | ioBroker.PermissionSet>;
     /**
@@ -2429,7 +2543,7 @@ export class AdapterClass extends EventEmitter {
         options: unknown,
         callback?: unknown,
     ): Promise<void | ioBroker.PermissionSet> {
-        user = user || '';
+        user ||= '';
 
         if (typeof options === 'function') {
             callback = options;
@@ -2445,7 +2559,12 @@ export class AdapterClass extends EventEmitter {
         }
         Validator.assertOptionalCallback(callback, 'callback');
 
-        return this._calculatePermissions({ user, commandsPermissions, options, callback });
+        return this._calculatePermissions({
+            user: user as ioBroker.ObjectIDs.User,
+            commandsPermissions,
+            options,
+            callback,
+        });
     }
 
     private async _calculatePermissions(
@@ -2478,7 +2597,7 @@ export class AdapterClass extends EventEmitter {
                 userId = this.usernames[user].id as ioBroker.ObjectIDs.User;
             }
         } else {
-            userId = user as ioBroker.ObjectIDs.User;
+            userId = user;
         }
 
         // read all groups
@@ -2550,21 +2669,20 @@ export class AdapterClass extends EventEmitter {
                             for (const type of Object.keys(gAcl)) {
                                 // fix bug. Some version have user instead of users.
                                 if (type === 'user') {
-                                    // @ts-expect-error fix it
-                                    acl.users = acl.users || {};
+                                    acl.users ||= {} as ioBroker.PermissionSet['users'];
                                 } else {
-                                    // @ts-expect-error fix it
-                                    acl[type] = acl[type] || {};
+                                    // @ts-expect-error fix later
+                                    acl[type] ||= {};
                                 }
                                 // @ts-expect-error fix it
                                 for (const op of Object.keys(gAcl[type])) {
                                     // fix error
                                     if (type === 'user') {
-                                        // @ts-expect-error fix it
-                                        acl.users[op] = acl.users[op] || gAcl.user[op];
+                                        // @ts-expect-error fix later
+                                        acl.users[op] ||= gAcl.user[op];
                                     } else {
-                                        // @ts-expect-error fix it
-                                        acl[type][op] = acl[type][op] || gAcl[type][op];
+                                        // @ts-expect-error fix later
+                                        acl[type][op] ||= gAcl[type][op];
                                     }
                                 }
                             }
@@ -2904,9 +3022,9 @@ export class AdapterClass extends EventEmitter {
 
         // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
-        let obj;
+        let obj: ioBroker.InstanceObject | undefined | null;
         try {
-            obj = await this.getForeignObjectAsync(configObjId);
+            obj = (await this.getForeignObjectAsync(configObjId)) as ioBroker.InstanceObject | undefined | null;
         } catch (e) {
             this._logger.error(`${this.namespaceLog} Updating the adapter config failed: ${e.message}`);
         }
@@ -3231,7 +3349,12 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    setObject(id: string, obj: ioBroker.SettableObject, options: unknown, callback: ioBroker.SetObjectCallback): void;
+    setObject(
+        id: string,
+        obj: ioBroker.SettableObject,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        callback: ioBroker.SetObjectCallback,
+    ): void;
     /**
      * Creates or overwrites an object in objectDB.
      *
@@ -3242,7 +3365,7 @@ export class AdapterClass extends EventEmitter {
     setObject(
         id: string,
         obj: ioBroker.SettableObject,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
     /**
      * Creates or overwrites an object in objectDB.
@@ -3418,7 +3541,7 @@ export class AdapterClass extends EventEmitter {
     private async _setObjectWithDefaultValue(
         id: string,
         obj: ioBroker.SettableObject,
-        options?: Record<string, any> | null,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.SetObjectCallback,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> {
         if (!this.#objects) {
@@ -3427,7 +3550,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            tools.validateGeneralObjectProperties(obj, false);
+            tools.validateGeneralObjectProperties(obj as ioBroker.AnyObject, false);
         } catch (e) {
             await this.reportDeprecation({
                 deprecationMessage: `Object ${id} is invalid: ${e.message}`,
@@ -3493,7 +3616,7 @@ export class AdapterClass extends EventEmitter {
     ): Promise<Record<string, ioBroker.AdapterScopedObject> | void> {
         const ret: Record<string, ioBroker.AdapterScopedObject> = {};
         // Adds result rows to the return object
-        const addRows = (rows: any[] | undefined): void => {
+        const addRows = (rows: { id: string; value: ioBroker.AdapterScopedObject }[] | undefined): void => {
             if (rows) {
                 for (const { id, value } of rows) {
                     ret[id] = value;
@@ -3684,7 +3807,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            tools.validateGeneralObjectProperties(options.obj, true);
+            tools.validateGeneralObjectProperties(options.obj as ioBroker.AnyObject, true);
         } catch (e) {
             await this.reportDeprecation({
                 deprecationMessage: `Object ${options.id} is invalid: ${e.message}`,
@@ -3735,46 +3858,33 @@ export class AdapterClass extends EventEmitter {
                 this._logger.error(`${this.namespaceLog} Object ${options.id} not exist!`);
                 oldObj = {};
             }
-            if (
-                options.obj.native &&
-                'repositories' in options.obj.native &&
-                oldObj.native &&
-                oldObj.native.repositories
-            ) {
-                oldObj.native.repositories = [];
+            if (options.obj.native && 'repositories' in options.obj.native && oldObj.native?.repositories) {
+                oldObj.native.repositories = {};
             }
-            if (options.obj.common && 'members' in options.obj.common && oldObj.common && oldObj.common.members) {
+            if (options.obj.common && 'members' in options.obj.common && oldObj.common?.members) {
                 oldObj.common.members = [];
             }
-            if (
-                options.obj.native &&
-                'certificates' in options.obj.native &&
-                oldObj.native &&
-                oldObj.native.certificates
-            ) {
-                oldObj.native.certificates = [];
+            if (options.obj.native && 'certificates' in options.obj.native && oldObj.native?.certificates) {
+                oldObj.native.certificates = {};
             }
-            if (options.obj.native && 'devices' in options.obj.native && oldObj.native && oldObj.native.devices) {
+            if (options.obj.native && 'devices' in options.obj.native && oldObj.native?.devices) {
                 oldObj.native.devices = [];
             }
 
-            options.obj.from = options.obj.from || `system.adapter.${this.namespace}`;
-            options.obj.user = options.obj.user || (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
-            options.obj.ts = options.obj.ts || Date.now();
+            options.obj.from ||= `system.adapter.${this.namespace}`;
+            options.obj.user ||= (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
+            options.obj.ts ||= Date.now();
 
             options.obj = extend(true, oldObj, options.obj);
 
             // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
             return this.#objects.setObject(options.id, options.obj, options.options, options.callback);
         }
-        options.obj.from = options.obj.from || `system.adapter.${this.namespace}`;
-        options.obj.user = options.obj.user || (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
-        options.obj.ts = options.obj.ts || Date.now();
+        options.obj.from ||= `system.adapter.${this.namespace}`;
+        options.obj.user ||= (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
+        options.obj.ts ||= Date.now();
 
-        if (
-            (options.obj.type && options.obj.type === 'state') ||
-            (!options.obj.type && oldObj && oldObj.type === 'state')
-        ) {
+        if (options.obj?.type === 'state' || (!options.obj.type && oldObj?.type === 'state')) {
             if (
                 options.obj.common &&
                 'custom' in options.obj.common &&
@@ -3808,7 +3918,7 @@ export class AdapterClass extends EventEmitter {
             if (options.obj.type === 'state' || oldObj.type === 'state') {
                 if (options.obj.common && 'def' in options.obj.common && options.obj.common.def !== undefined) {
                     defState = options.obj.common.def;
-                } else if (oldObj.common && oldObj.common.def !== undefined) {
+                } else if (oldObj.common?.def !== undefined) {
                     defState = oldObj.common.def;
                 }
             }
@@ -3873,7 +3983,7 @@ export class AdapterClass extends EventEmitter {
     setForeignObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
     ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
     /**
      * Same as {@link AdapterClass.setObject}, but for any object.
@@ -3886,7 +3996,7 @@ export class AdapterClass extends EventEmitter {
     setForeignObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.SetObjectCallback,
     ): void | Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
 
@@ -4065,7 +4175,7 @@ export class AdapterClass extends EventEmitter {
         Validator.assertOptionalCallback(callback, 'callback');
 
         try {
-            this._utils.validateId(id, true, null);
+            this._utils.validateId(id as string, true, null);
         } catch (e) {
             return tools.maybeCallbackWithError(callback, e);
         }
@@ -4105,7 +4215,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         // Read whole object
-        let oldObj;
+        let oldObj: ioBroker.AnyObject | null | undefined;
         try {
             oldObj = await this.#objects.getObjectAsync(id, options);
         } catch (e) {
@@ -4127,35 +4237,38 @@ export class AdapterClass extends EventEmitter {
         ) {
             if (!oldObj) {
                 this._logger.error(`${this.namespaceLog} Object ${id} not exist!`);
-                oldObj = {};
+                oldObj = {} as ioBroker.AnyObject;
             }
-            if (obj.native && 'repositories' in obj.native && oldObj.native && oldObj.native.repositories) {
-                oldObj.native.repositories = [];
+            if (
+                obj.native &&
+                'repositories' in obj.native &&
+                (oldObj as ioBroker.RepositoryObject).native?.repositories
+            ) {
+                (oldObj.native as Record<string, any>).repositories = {};
             }
-            if (obj.common && 'members' in obj.common && oldObj.common && oldObj.common.members) {
-                oldObj.common.members = [];
+            if (obj.common && 'members' in obj.common && (oldObj as ioBroker.EnumObject).common?.members) {
+                (oldObj as ioBroker.EnumObject).common.members = [];
             }
-            if (obj.native && 'certificates' in obj.native && oldObj.native && oldObj.native.certificates) {
-                oldObj.native.certificates = [];
+            if (obj.native && 'certificates' in obj.native && (oldObj.native as Record<string, any>)?.certificates) {
+                (oldObj.native as Record<string, any>).certificates = {};
             }
-            if (obj.native && 'devices' in obj.native && oldObj.native && oldObj.native.devices) {
-                oldObj.native.devices = [];
+            if (obj.native && 'devices' in obj.native && (oldObj.native as Record<string, any>)?.devices) {
+                (oldObj.native as Record<string, any>).devices = [];
             }
 
-            obj.from = obj.from || `system.adapter.${this.namespace}`;
-            obj.user = obj.user || options?.user || SYSTEM_ADMIN_USER;
-            obj.ts = obj.ts || Date.now();
+            obj.from ||= `system.adapter.${this.namespace}`;
+            obj.user ||= options?.user || SYSTEM_ADMIN_USER;
+            obj.ts ||= Date.now();
 
             obj = extend(true, oldObj, obj);
 
-            // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
-            return this.#objects.setObject(id, obj, options, callback);
+            return this.#objects.setObject(id, obj as any, options, callback);
         }
-        obj.from = obj.from || `system.adapter.${this.namespace}`;
-        obj.user = obj.user || options?.user || SYSTEM_ADMIN_USER;
-        obj.ts = obj.ts || Date.now();
+        obj.from ||= `system.adapter.${this.namespace}`;
+        obj.user ||= options?.user || SYSTEM_ADMIN_USER;
+        obj.ts ||= Date.now();
 
-        if ((obj.type && obj.type === 'state') || (!obj.type && oldObj && oldObj.type === 'state')) {
+        if ((obj.type && obj.type === 'state') || (!obj.type && oldObj?.type === 'state')) {
             if (
                 obj.common &&
                 'custom' in obj.common &&
@@ -4187,10 +4300,10 @@ export class AdapterClass extends EventEmitter {
             const cbObj = await this.#objects.extendObjectAsync(id, obj, options || {});
             if (cbObj?.value.type === 'state') {
                 let defState;
-                if (obj.common && 'def' in obj.common && obj.common.def !== undefined) {
-                    defState = obj.common.def;
-                } else if (oldObj.common && oldObj.common.def !== undefined) {
-                    defState = oldObj.common.def;
+                if (obj.common && 'def' in obj.common && (obj.common as ioBroker.StateCommon)?.def !== undefined) {
+                    defState = (obj.common as ioBroker.StateCommon).def;
+                } else if ((oldObj.common as ioBroker.StateCommon)?.def !== undefined) {
+                    defState = (oldObj.common as ioBroker.StateCommon).def;
                 }
                 if (defState !== undefined) {
                     let currentStateObj;
@@ -4228,7 +4341,7 @@ export class AdapterClass extends EventEmitter {
      * @param id id of the object
      * @param options optional user context
      */
-    objectExists(id: string, options?: Record<string, any> | null): Promise<boolean | void>;
+    objectExists(id: string, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<boolean | void>;
 
     /**
      * Checks if an object exists to the given id, id will be fixed first
@@ -4249,9 +4362,9 @@ export class AdapterClass extends EventEmitter {
 
         id = this._utils.fixId(id);
 
-        this._utils.validateId(id, false, null);
+        this._utils.validateId(id as string, false, null);
 
-        return this.#objects.objectExists(id, options);
+        return this.#objects.objectExists(id as string, options);
     }
 
     // external signature
@@ -4302,7 +4415,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    getObject(id: string, options: unknown, callback: ioBroker.GetObjectCallback): void;
+    getObject(
+        id: string,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        callback: ioBroker.GetObjectCallback,
+    ): void;
 
     /**
      * Get object of this instance.
@@ -4371,7 +4488,7 @@ export class AdapterClass extends EventEmitter {
         design: Design,
         search: Search,
         params: ioBroker.GetObjectViewParams | null | undefined,
-        options: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
         callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>,
     ): void;
 
@@ -4416,7 +4533,7 @@ export class AdapterClass extends EventEmitter {
         Validator.assertString(design, 'design');
         Validator.assertString(search, 'search');
         Validator.assertOptionalCallback(callback, 'callback');
-        params = params || {};
+        params ||= {};
         Validator.assertObject(params, 'params');
         if (options !== null && options !== undefined) {
             Validator.assertObject(options, 'options');
@@ -4496,7 +4613,7 @@ export class AdapterClass extends EventEmitter {
      */
     getObjectList(
         params: ioBroker.GetObjectListParams | null,
-        options: { sorted?: boolean } | Record<string, any>,
+        options: { sorted?: boolean; user?: ioBroker.ObjectIDs.User },
         callback: ioBroker.GetObjectListCallback<ioBroker.Object>,
     ): void;
 
@@ -4568,7 +4685,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    getEnum(name: string, options: unknown, callback: ioBroker.GetEnumCallback): void;
+    getEnum(
+        name: string,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        callback: ioBroker.GetEnumCallback,
+    ): void;
 
     /**
      * Get the enum tree.
@@ -4675,7 +4796,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    getEnums(enumList: ioBroker.EnumList, options: unknown, callback: ioBroker.GetEnumsCallback): void;
+    getEnums(
+        enumList: ioBroker.EnumList,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        callback: ioBroker.GetEnumsCallback,
+    ): void;
 
     /**
      * Read the members of given enums.
@@ -4806,9 +4931,7 @@ export class AdapterClass extends EventEmitter {
                             if (!parts[2]) {
                                 continue;
                             }
-                            if (!result[`${parts[0]}.${parts[1]}`]) {
-                                result[`${parts[0]}.${parts[1]}`] = {};
-                            }
+                            result[`${parts[0]}.${parts[1]}`] ||= {};
                             result[`${parts[0]}.${parts[1]}`][row.id] = row.value;
                         }
                     }
@@ -4840,7 +4963,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    getForeignObjects(pattern: Pattern, options: unknown, callback: ioBroker.GetObjectsCallback): void;
+    getForeignObjects(
+        pattern: Pattern,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        callback: ioBroker.GetObjectsCallback,
+    ): void;
     /**
      * Get all objects of the given type matching the given pattern.
      *
@@ -4878,7 +5005,7 @@ export class AdapterClass extends EventEmitter {
     getForeignObjects<T extends ioBroker.ObjectType>(
         pattern: Pattern,
         type: T,
-        options: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
         callback: ioBroker.GetObjectsCallbackTyped<T>,
     ): void;
     /**
@@ -4894,7 +5021,7 @@ export class AdapterClass extends EventEmitter {
         pattern: Pattern,
         type: T,
         enums: ioBroker.EnumList | null,
-        options: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
         callback: ioBroker.GetObjectsCallbackTyped<T>,
     ): void;
     /**
@@ -5035,7 +5162,7 @@ export class AdapterClass extends EventEmitter {
             this._logger.warn(`Cannot get enums on getForeignObjects: ${e.message}`);
         }
 
-        const list: Record<string, any> = {};
+        const list: Record<string, ioBroker.AnyObject> = {};
 
         for (let i = 0; i < objs.length; i++) {
             const obj = objs[i];
@@ -5168,12 +5295,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._utils.validateId(id, true, null);
+            this._utils.validateId(id as string, true, null);
         } catch (e) {
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        this.#objects.findObject(id, type as ioBroker.CommonType | null, options || {}, callback);
+        this.#objects.findObject(id as string, type as ioBroker.CommonType | null, options || {}, callback);
     }
 
     /**
@@ -5228,7 +5355,7 @@ export class AdapterClass extends EventEmitter {
      */
     getForeignObject<T extends string>(
         id: T,
-        options: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
         callback: ioBroker.GetObjectCallback<T>,
     ): void | Promise<void | ioBroker.ObjectIdToObjectType<T> | null>;
 
@@ -5262,12 +5389,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._utils.validateId(id, true, options);
+            this._utils.validateId(id as string, true, options);
         } catch (e) {
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        return this._getForeignObject({ id, options, callback });
+        return this._getForeignObject({ id: id as string, options, callback });
     }
 
     private async _getForeignObject(options: InternalGetObjectOptions): Promise<void | ioBroker.AnyObject | null> {
@@ -5279,15 +5406,13 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            const obj = await this.#objects.getObjectAsync(options.id, options);
+            const obj = await this.#objects.getObjectAsync(options.id, options.options);
             // remove protectedNative if not admin, not cloud or not own adapter
             if (
-                obj &&
+                obj?.native &&
                 'protectedNative' in obj &&
                 Array.isArray(obj.protectedNative) &&
-                obj._id &&
-                obj._id.startsWith('system.adapter.') &&
-                obj.native &&
+                obj._id?.startsWith('system.adapter.') &&
                 !NO_PROTECT_ADAPTERS.includes(this.name) &&
                 this.name !== obj._id.split('.')[2]
             ) {
@@ -5345,33 +5470,38 @@ export class AdapterClass extends EventEmitter {
         this.delForeignObject(id, options, callback);
     }
 
-    private _deleteObjects(
-        tasks: { id: string; [other: string]: any }[],
-        options: Record<string, any>,
+    private async _deleteObjects(
+        tasks: { id: string; state?: boolean }[],
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         cb?: () => void,
-    ): void | Promise<void> {
-        if (!tasks || !tasks.length) {
+    ): Promise<void> {
+        if (!tasks?.length) {
             return tools.maybeCallback(cb);
         }
-        const task = tasks.shift();
-        this.#objects!.delObject(task!.id, options, async err => {
-            if (err) {
-                return tools.maybeCallbackWithError(cb, err);
-            }
-            if (task!.state) {
+        try {
+            for (const task of tasks) {
+                await new Promise<void>((resolve, reject) =>
+                    this.#objects!.delObject(task.id, options, err => {
+                        err ? reject(err) : resolve();
+                    }),
+                );
+                if (task.state) {
+                    try {
+                        await this.delForeignStateAsync(task.id, options);
+                    } catch (e) {
+                        this._logger.warn(`${this.namespaceLog} Could not remove state of ${task.id}: ${e.message}`);
+                    }
+                }
                 try {
-                    await this.delForeignStateAsync(task!.id, options);
+                    await tools.removeIdFromAllEnums(this.#objects, task.id, this.enums);
                 } catch (e) {
-                    this._logger.warn(`${this.namespaceLog} Could not remove state of ${task!.id}: ${e.message}`);
+                    this._logger.warn(`${this.namespaceLog} Could not remove ${task.id} from enums: ${e.message}`);
                 }
             }
-            try {
-                await tools.removeIdFromAllEnums(this.#objects, task!.id, this.enums);
-            } catch (e) {
-                this._logger.warn(`${this.namespaceLog} Could not remove ${task!.id} from enums: ${e.message}`);
-            }
-            setImmediate(() => this._deleteObjects(tasks, options, cb));
-        });
+        } catch (err) {
+            return tools.maybeCallbackWithError(cb, err);
+        }
+        return tools.maybeCallback(cb);
     }
 
     /**
@@ -5451,21 +5581,21 @@ export class AdapterClass extends EventEmitter {
                 const selector = { startkey: `${id}.`, endkey: `${id}.\u9999` };
                 // read all underlying states
                 this.#objects!.getObjectList(selector, options, (err, res) => {
-                    res &&
-                        res.rows.forEach(
-                            (item: ioBroker.GetObjectListItem<ioBroker.Object>) =>
-                                !tasks.find(task => task.id === item.id) &&
-                                (!item.value || !item.value.common || !item.value.common.dontDelete) && // exclude objects with dontDelete flag
-                                tasks.push({ id: item.id, state: item.value && item.value.type === 'state' }),
-                        );
-                    void this._deleteObjects(tasks, options, callback);
+                    res?.rows.forEach(
+                        (item: ioBroker.GetObjectListItem<ioBroker.Object>) =>
+                            !tasks.find(task => task.id === item.id) &&
+                            !item.value?.common?.dontDelete && // exclude objects with dontDelete flag
+                            tasks.push({ id: item.id, state: item.value?.type === 'state' }),
+                    );
+                    this._deleteObjects(tasks, options, callback);
                 });
             });
         } else {
             this.#objects!.getObject(id, options, async (err, obj) => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
-                } else if (obj) {
+                }
+                if (obj) {
                     // do not allow deletion of objects with dontDelete flag
                     if (obj.common?.dontDelete) {
                         return tools.maybeCallbackWithError(callback, new Error('not deletable'));
@@ -5509,7 +5639,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback optional returns result
      */
-    subscribeObjects(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeObjects(
+        pattern: Pattern,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+        callback?: ioBroker.ErrorCallback,
+    ): void;
 
     /**
      * Subscribe for the changes of objects in this instance.
@@ -5564,7 +5698,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback optional returns result
      */
-    unsubscribeObjects(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeObjects(
+        pattern: Pattern,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+        callback?: ioBroker.ErrorCallback,
+    ): void;
 
     /**
      * Unsubscribe on the changes of objects in this instance.
@@ -5620,7 +5758,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback optional returns result
      */
-    subscribeForeignObjects(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignObjects(
+        pattern: string | string[],
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+        callback?: ioBroker.ErrorCallback,
+    ): void;
 
     /**
      * Subscribe for the changes of objects in any instance.
@@ -5671,7 +5813,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback optional returns result
      */
-    unsubscribeForeignObjects(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeForeignObjects(
+        pattern: string | string[],
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+        callback?: ioBroker.ErrorCallback,
+    ): void;
 
     /**
      * Unsubscribe for the patterns on all objects.
@@ -5807,7 +5953,7 @@ export class AdapterClass extends EventEmitter {
     setObjectNotExists(
         id: string,
         obj: ioBroker.SettableObject,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User; preserve?: { [key: string]: boolean } } | null,
         callback?: ioBroker.SetObjectCallback,
     ): Promise<void | ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>> | void;
     /**
@@ -5846,13 +5992,13 @@ export class AdapterClass extends EventEmitter {
         Validator.assertObject(obj, 'obj');
 
         try {
-            this._utils.validateId(id, false, null);
+            this._utils.validateId(id as string, false, null);
         } catch (e) {
             return tools.maybeCallbackWithError(callback, e);
         }
 
         return this._setObjectNotExists({
-            id: this.fixForbiddenCharsInId(this._utils.fixId(id)),
+            id: this.fixForbiddenCharsInId(this._utils.fixId(id as string)),
             obj: obj as any,
             options,
             callback,
@@ -5924,7 +6070,7 @@ export class AdapterClass extends EventEmitter {
     setForeignObjectNotExists<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User; preserve?: { [key: string]: boolean } } | null,
         callback?: ioBroker.SetObjectCallback,
     ): void;
 
@@ -5948,7 +6094,7 @@ export class AdapterClass extends EventEmitter {
     setForeignObjectNotExists(
         id: unknown,
         obj: unknown,
-        options: unknown,
+        options?: unknown,
         callback?: unknown,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> {
         if (typeof options === 'function') {
@@ -6049,7 +6195,7 @@ export class AdapterClass extends EventEmitter {
         deviceName: string,
         common: Partial<ioBroker.DeviceCommon>,
         native: Record<string, any>,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.SetObjectCallback,
     ): void;
 
@@ -6094,15 +6240,15 @@ export class AdapterClass extends EventEmitter {
             deviceName,
             _native,
             callback,
-            options,
+            options: options as { user?: ioBroker.ObjectIDs.User } | null | undefined,
         });
     }
 
     private _createDevice(_options: InternalCreateDeviceOptions): void {
         let { common, deviceName, _native } = _options;
         const { callback, options } = _options;
-        common = common || {};
-        common.name = common.name || deviceName;
+        common ||= {};
+        common.name ||= deviceName;
 
         deviceName = deviceName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
         _native = _native || {};
@@ -6142,7 +6288,7 @@ export class AdapterClass extends EventEmitter {
         channelName: string,
         roleOrCommon: string | Partial<ioBroker.ChannelCommon>,
         native: Record<string, any>,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.SetObjectCallback,
     ): void;
 
@@ -6187,14 +6333,14 @@ export class AdapterClass extends EventEmitter {
             roleOrCommon = undefined;
         }
 
-        let common = {};
+        let common: ioBroker.ChannelCommon = {} as ioBroker.ChannelCommon;
         if (typeof roleOrCommon === 'string') {
             common = {
                 name: '',
                 role: roleOrCommon,
             };
         } else if (tools.isObject(roleOrCommon)) {
-            common = roleOrCommon;
+            common = roleOrCommon as ioBroker.ChannelCommon;
         }
 
         Validator.assertObject(common, 'common');
@@ -6202,7 +6348,7 @@ export class AdapterClass extends EventEmitter {
         Validator.assertString(parentDevice, 'parentDevice');
         Validator.assertOptionalCallback(callback, 'callback');
 
-        common.name = common.name || channelName;
+        common.name ||= channelName;
 
         if (parentDevice) {
             parentDevice = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
@@ -6211,15 +6357,21 @@ export class AdapterClass extends EventEmitter {
         // @ts-expect-error ts somehow loses types here
         channelName = this._DCS2ID(parentDevice, channelName);
 
-        _native = _native || {};
+        _native ||= {};
 
-        const obj = {
+        const obj: ioBroker.ChannelObject = {
+            _id: channelName as string,
             type: 'channel',
-            common: common,
-            native: _native,
+            common,
+            native: _native as Record<string, any>,
         } as const;
 
-        void this.setObjectNotExists(channelName as string, obj as any, options, callback);
+        void this.setObjectNotExists(
+            channelName as string,
+            obj,
+            options as { user?: ioBroker.ObjectIDs.User } | null | undefined,
+            callback,
+        );
     }
 
     /** @deprecated use `this.extendObject` instead */
@@ -6253,7 +6405,7 @@ export class AdapterClass extends EventEmitter {
         stateName: string,
         roleOrCommon: string | Partial<ioBroker.StateCommon>,
         native: Record<string, any>,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.SetObjectCallback,
     ): void;
 
@@ -6298,19 +6450,20 @@ export class AdapterClass extends EventEmitter {
             roleOrCommon = undefined;
         }
 
-        let common: any = {};
+        let common: ioBroker.StateCommon = {} as ioBroker.StateCommon;
         if (typeof roleOrCommon === 'string') {
             common = {
                 read: true,
                 write: false,
                 name: '',
                 role: roleOrCommon,
+                type: 'mixed',
             };
         } else if (tools.isObject(roleOrCommon)) {
-            common = roleOrCommon;
+            common = roleOrCommon as ioBroker.StateCommon;
         }
 
-        _native = _native || {};
+        _native ||= {};
 
         Validator.assertObject(common, 'common');
         Validator.assertString(stateName, 'stateName');
@@ -6329,10 +6482,10 @@ export class AdapterClass extends EventEmitter {
         const { _native, common, callback, options } = _options;
         let { parentChannel, parentDevice, stateName } = _options;
 
-        common.name = common.name || stateName;
+        common.name ||= stateName;
 
-        common.read = common.read === undefined ? true : common.read;
-        common.write = common.write === undefined ? false : common.write;
+        common.read ??= true;
+        common.write ??= false;
 
         if (!common.role) {
             this._logger.error(
@@ -6414,20 +6567,27 @@ export class AdapterClass extends EventEmitter {
             id,
             {
                 type: 'state',
-                common: common as any,
-                native: _native as any,
+                common: common as ioBroker.StateCommon,
+                native: _native,
             },
             options,
             err => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
-                } else if (common.def !== undefined) {
+                }
+                if (common.def !== undefined) {
                     this.getState(id, null, (err, state) => {
                         if (!state) {
                             if (common.defAck !== undefined) {
-                                void this.setState(id, common.def, common.defAck, options, callback as any);
+                                void this.setState(
+                                    id,
+                                    common.def,
+                                    common.defAck,
+                                    options,
+                                    callback as ioBroker.SetStateCallback,
+                                );
                             } else {
-                                void this.setState(id, common.def, options, callback as any);
+                                void this.setState(id, common.def, options, callback as ioBroker.SetStateCallback);
                             }
                         } else {
                             return tools.maybeCallback(callback);
@@ -6436,7 +6596,7 @@ export class AdapterClass extends EventEmitter {
                 } else {
                     this.getState(id, null, (err, state) => {
                         if (!state) {
-                            void this.setState(id, null, true, options, callback as any);
+                            void this.setState(id, null, true, options, callback as ioBroker.SetStateCallback);
                         } else {
                             return tools.maybeCallback(callback);
                         }
@@ -6449,7 +6609,11 @@ export class AdapterClass extends EventEmitter {
     /** @deprecated use `this.delObject` instead */
     deleteDevice(deviceName: string, callback?: ioBroker.ErrorCallback): void;
     /** @deprecated use `this.delObject` instead */
-    deleteDevice(deviceName: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    deleteDevice(
+        deviceName: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+        callback?: ioBroker.ErrorCallback,
+    ): void;
 
     /**
      * Delete device with all its channels and states.
@@ -6550,7 +6714,7 @@ export class AdapterClass extends EventEmitter {
         addTo: string,
         parentDevice: string,
         channelName: string,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.ErrorCallback,
     ): void;
 
@@ -6708,7 +6872,7 @@ export class AdapterClass extends EventEmitter {
         enumName: string,
         parentDevice: string,
         channelName: string,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.ErrorCallback,
     ): void;
 
@@ -7071,7 +7235,10 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    getDevices(options: unknown, callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>): void;
+    getDevices(
+        options: { user?: ioBroker.ObjectIDs.User } | null,
+        callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>,
+    ): void;
 
     /**
      * Get all devices of this adapter.
@@ -7152,7 +7319,7 @@ export class AdapterClass extends EventEmitter {
      */
     getChannelsOf(
         parentDevice: string,
-        options: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null,
         callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>,
     ): void;
     /**
@@ -7262,7 +7429,7 @@ export class AdapterClass extends EventEmitter {
     getStatesOf(
         parentDevice: string | null | undefined,
         parentChannel: string | null | undefined,
-        options: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null,
         callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>,
     ): void;
     /**
@@ -7407,7 +7574,7 @@ export class AdapterClass extends EventEmitter {
         parentDevice: string,
         parentChannel: string,
         stateName: string,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.ErrorCallback,
     ): void;
     /**
@@ -7582,7 +7749,7 @@ export class AdapterClass extends EventEmitter {
         parentDevice: string,
         parentChannel: string,
         stateName: string,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.ErrorCallback,
     ): void;
     /**
@@ -7722,7 +7889,7 @@ export class AdapterClass extends EventEmitter {
     chmodFile(
         adapter: string | null,
         path: string,
-        options: { mode: number | string } | Record<string, any>,
+        options: { mode: number | string; user?: ioBroker.ObjectIDs.User },
         callback: ioBroker.ChownFileCallback,
     ): void;
 
@@ -7767,10 +7934,15 @@ export class AdapterClass extends EventEmitter {
         }
         if (!this.#objects) {
             this._logger.info(`${this.namespaceLog} chmodFile not processed because Objects database not connected`);
-            return tools.maybeCallbackWithError(callback as any, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback as ioBroker.ChownFileCallback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        this.#objects.chmodFile(_adapter as any, path as any, options as any, callback as any);
+        this.#objects.chmodFile(
+            _adapter as string,
+            path as string,
+            options as { mode: number; user?: ioBroker.ObjectIDs.User },
+            callback as ioBroker.ChownFileCallback,
+        );
     }
 
     /**
@@ -7784,8 +7956,15 @@ export class AdapterClass extends EventEmitter {
     chownFile(
         _adapter: string,
         path: string,
-        options: unknown,
-        callback: (err?: Error | null, processedFiles?: any) => void,
+        options: {
+            owner: ioBroker.ObjectIDs.User;
+            // fallback option for owner
+            user?: ioBroker.ObjectIDs.User;
+            ownerGroup?: ioBroker.ObjectIDs.Group;
+            // fallback option for ownerGroup
+            group?: ioBroker.ObjectIDs.Group;
+        },
+        callback: (err?: Error | null, processedFiles?: ioBroker.ChownFileResult[]) => void,
     ): void;
 
     /**
@@ -7795,7 +7974,11 @@ export class AdapterClass extends EventEmitter {
      * @param path path to file without adapter name
      * @param callback return result
      */
-    chownFile(_adapter: string, path: string, callback: (err?: Error | null, processedFiles?: any) => void): void;
+    chownFile(
+        _adapter: string,
+        path: string,
+        callback: (err?: Error | null, processedFiles?: ioBroker.ChownFileResult[]) => void,
+    ): void;
 
     /**
      * Change a file owner
@@ -7829,10 +8012,22 @@ export class AdapterClass extends EventEmitter {
         }
         if (!this.#objects) {
             this._logger.info(`${this.namespaceLog} chownFile not processed because Objects database not connected`);
-            return tools.maybeCallbackWithError(callback as any, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback as ioBroker.ChownFileCallback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        this.#objects.chownFile(_adapter as string, path as string, options as any, callback as any);
+        this.#objects.chownFile(
+            _adapter as string,
+            path as string,
+            options as {
+                owner: ioBroker.ObjectIDs.User;
+                // fallback option for owner
+                user?: ioBroker.ObjectIDs.User;
+                ownerGroup?: ioBroker.ObjectIDs.Group;
+                // fallback option for ownerGroup
+                group?: ioBroker.ObjectIDs.Group;
+            },
+            callback as ioBroker.ChownFileCallback,
+        );
     }
 
     // external signatures
@@ -7852,7 +8047,12 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    readDir(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ReadDirCallback): void;
+    readDir(
+        adapterName: string | null,
+        path: string,
+        options: { user?: ioBroker.ObjectIDs.User } | null,
+        callback: ioBroker.ReadDirCallback,
+    ): void;
 
     /**
      * Read directory from DB.
@@ -7931,7 +8131,12 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    unlink(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback): void;
+    unlink(
+        adapterName: string | null,
+        path: string,
+        options: { user?: ioBroker.ObjectIDs.User } | null,
+        callback: ioBroker.ErrnoCallback,
+    ): void;
     /**
      * Deletes a file in the DB.
      *
@@ -7988,7 +8193,7 @@ export class AdapterClass extends EventEmitter {
         adapterName: string | null,
         oldName: string,
         newName: string,
-        options: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null,
         callback: ioBroker.ErrnoCallback,
     ): void;
 
@@ -8042,7 +8247,16 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    mkdir(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback): void;
+    mkdir(
+        adapterName: string | null,
+        path: string,
+        options: {
+            user?: ioBroker.ObjectIDs.User;
+            owner?: ioBroker.ObjectIDs.User;
+            ownerGroup?: ioBroker.ObjectIDs.Group;
+        },
+        callback: ioBroker.ErrnoCallback,
+    ): void;
     /**
      * Creates a directory in the DB.
      *
@@ -8091,7 +8305,12 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    readFile(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ReadFileCallback): void;
+    readFile(
+        adapterName: string | null,
+        path: string,
+        options: { user?: ioBroker.ObjectIDs.User } | null,
+        callback: ioBroker.ReadFileCallback,
+    ): void;
 
     /**
      * Read file from DB.
@@ -8163,7 +8382,13 @@ export class AdapterClass extends EventEmitter {
         adapterName: string | null,
         path: string,
         data: Buffer | string,
-        options: unknown,
+        options: {
+            virtualFile?: boolean;
+            user?: ioBroker.ObjectIDs.User;
+            group?: ioBroker.ObjectIDs.Group;
+            mode?: number;
+            mimeType?: string;
+        } | null,
         callback: ioBroker.ErrnoCallback,
     ): void;
 
@@ -8242,7 +8467,7 @@ export class AdapterClass extends EventEmitter {
     fileExists(
         adapterName: string | null,
         path: string,
-        options: unknown,
+        options: { user?: ioBroker.ObjectIDs.User } | null,
         callback: ioBroker.GenericCallback<boolean>,
     ): void;
 
@@ -8586,7 +8811,7 @@ export class AdapterClass extends EventEmitter {
         return this._sendTo({
             instanceName,
             command,
-            message,
+            message: message as ioBroker.Message,
             options,
             callback: callback as ioBroker.MessageCallbackInfo | ioBroker.MessageCallback,
         });
@@ -8810,7 +9035,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         return this._sendToHost({
-            hostName,
+            hostName: hostName as string,
             command,
             message,
             callback: callback as ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
@@ -9040,7 +9265,7 @@ export class AdapterClass extends EventEmitter {
     setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options?: Partial<GetUserGroupsOptions> | null,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: T,
     ): T extends unknown ? ioBroker.SetStatePromise : void;
     /**
@@ -9056,7 +9281,7 @@ export class AdapterClass extends EventEmitter {
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
-        options?: Partial<GetUserGroupsOptions> | null,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: T,
     ): T extends unknown ? ioBroker.SetStatePromise : void;
 
@@ -9146,12 +9371,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._utils.validateId(id, false, null);
+            this._utils.validateId(id as string, false, null);
         } catch (e) {
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        const fixedId = this._utils.fixId(id, false);
+        const fixedId = this._utils.fixId(id as string, false);
         let stateObj: ioBroker.SettableState;
 
         if (tools.isObject(state)) {
@@ -9312,7 +9537,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (!userAcl) {
-            // User does not exists
+            // User does not exist
             this._logger.error(`${this.namespaceLog} unknown user "${options.user}"`);
             return options;
         }
@@ -9335,8 +9560,7 @@ export class AdapterClass extends EventEmitter {
         // read all groups for this user
         this.users[options.user] = {
             groups: options.groups,
-            // @ts-expect-error TODO: UserCommon has no acl
-            acl: userAcl.common?.acl || {},
+            acl: {},
         };
         await this._getGroups(options.groups);
         // combine all rights
@@ -9348,9 +9572,9 @@ export class AdapterClass extends EventEmitter {
             const group = this.groups[gName];
 
             if (group.common?.acl?.file) {
-                if (!user.acl || !user.acl.file) {
-                    user.acl = user.acl || {};
-                    user.acl.file = user.acl.file || {};
+                if (!user.acl?.file) {
+                    user.acl ||= {};
+                    user.acl.file ||= {};
 
                     user.acl.file.create = group.common.acl.file.create;
                     user.acl.file.read = group.common.acl.file.read;
@@ -9358,18 +9582,18 @@ export class AdapterClass extends EventEmitter {
                     user.acl.file.delete = group.common.acl.file.delete;
                     user.acl.file.list = group.common.acl.file.list;
                 } else {
-                    user.acl.file.create = user.acl.file.create || group.common.acl.file.create;
-                    user.acl.file.read = user.acl.file.read || group.common.acl.file.read;
-                    user.acl.file.write = user.acl.file.write || group.common.acl.file.write;
-                    user.acl.file.delete = user.acl.file.delete || group.common.acl.file.delete;
-                    user.acl.file.list = user.acl.file.list || group.common.acl.file.list;
+                    user.acl.file.create ||= group.common.acl.file.create;
+                    user.acl.file.read ||= group.common.acl.file.read;
+                    user.acl.file.write ||= group.common.acl.file.write;
+                    user.acl.file.delete ||= group.common.acl.file.delete;
+                    user.acl.file.list ||= group.common.acl.file.list;
                 }
             }
 
             if (group.common?.acl?.object) {
                 if (!user.acl || !user.acl.object) {
-                    user.acl = user.acl || {};
-                    user.acl.object = user.acl.object || {};
+                    user.acl ||= {};
+                    user.acl.object ||= {};
 
                     user.acl.object.create = group.common.acl.object.create;
                     user.acl.object.read = group.common.acl.object.read;
@@ -9377,18 +9601,18 @@ export class AdapterClass extends EventEmitter {
                     user.acl.object.delete = group.common.acl.object.delete;
                     user.acl.object.list = group.common.acl.object.list;
                 } else {
-                    user.acl.object.create = user.acl.object.create || group.common.acl.object.create;
-                    user.acl.object.read = user.acl.object.read || group.common.acl.object.read;
-                    user.acl.object.write = user.acl.object.write || group.common.acl.object.write;
-                    user.acl.object.delete = user.acl.object.delete || group.common.acl.object.delete;
-                    user.acl.object.list = user.acl.object.list || group.common.acl.object.list;
+                    user.acl.object.create ||= group.common.acl.object.create;
+                    user.acl.object.read ||= group.common.acl.object.read;
+                    user.acl.object.write ||= group.common.acl.object.write;
+                    user.acl.object.delete ||= group.common.acl.object.delete;
+                    user.acl.object.list ||= group.common.acl.object.list;
                 }
             }
 
             if (group.common?.acl?.users) {
                 if (!user.acl || !user.acl.users) {
-                    user.acl = user.acl || {};
-                    user.acl.users = user.acl.users || {};
+                    user.acl ||= {};
+                    user.acl.users ||= {};
 
                     user.acl.users.create = group.common.acl.users.create;
                     user.acl.users.read = group.common.acl.users.read;
@@ -9396,17 +9620,17 @@ export class AdapterClass extends EventEmitter {
                     user.acl.users.delete = group.common.acl.users.delete;
                     user.acl.users.list = group.common.acl.users.list;
                 } else {
-                    user.acl.users.create = user.acl.users.create || group.common.acl.users.create;
-                    user.acl.users.read = user.acl.users.read || group.common.acl.users.read;
-                    user.acl.users.write = user.acl.users.write || group.common.acl.users.write;
-                    user.acl.users.delete = user.acl.users.delete || group.common.acl.users.delete;
-                    user.acl.users.list = user.acl.users.list || group.common.acl.users.list;
+                    user.acl.users.create ||= group.common.acl.users.create;
+                    user.acl.users.read ||= group.common.acl.users.read;
+                    user.acl.users.write ||= group.common.acl.users.write;
+                    user.acl.users.delete ||= group.common.acl.users.delete;
+                    user.acl.users.list ||= group.common.acl.users.list;
                 }
             }
             if (group.common?.acl?.state) {
                 if (!user.acl || !user.acl.state) {
-                    user.acl = user.acl || {};
-                    user.acl.state = user.acl.state || {};
+                    user.acl ||= {};
+                    user.acl.state ||= {};
 
                     user.acl.state.create = group.common.acl.state.create;
                     user.acl.state.read = group.common.acl.state.read;
@@ -9414,11 +9638,11 @@ export class AdapterClass extends EventEmitter {
                     user.acl.state.delete = group.common.acl.state.delete;
                     user.acl.state.list = group.common.acl.state.list;
                 } else {
-                    user.acl.state.create = user.acl.state.create || group.common.acl.state.create;
-                    user.acl.state.read = user.acl.state.read || group.common.acl.state.read;
-                    user.acl.state.write = user.acl.state.write || group.common.acl.state.write;
-                    user.acl.state.delete = user.acl.state.delete || group.common.acl.state.delete;
-                    user.acl.state.list = user.acl.state.list || group.common.acl.state.list;
+                    user.acl.state.create ||= group.common.acl.state.create;
+                    user.acl.state.read ||= group.common.acl.state.read;
+                    user.acl.state.write ||= group.common.acl.state.write;
+                    user.acl.state.delete ||= group.common.acl.state.delete;
+                    user.acl.state.list ||= group.common.acl.state.list;
                 }
             }
         }
@@ -9426,21 +9650,31 @@ export class AdapterClass extends EventEmitter {
         return options;
     }
 
-    private _checkState(obj: ioBroker.StateObject, options: Record<string, any>, command: CheckStateCommand): boolean {
+    private _checkState(
+        obj: ioBroker.StateObject,
+        options: Partial<GetUserGroupsOptions>,
+        command: CheckStateCommand,
+    ): boolean {
         const limitToOwnerRights = options.limitToOwnerRights === true;
         if (obj?.acl) {
-            obj.acl.state = obj.acl.state || obj.acl.object;
+            obj.acl.state ||= obj.acl.object;
 
             if (obj.acl.state) {
+                if (!options.acl) {
+                    this._logger.warn(
+                        `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
+                    );
+                    return false;
+                }
                 // If user is owner
                 if (options.user === obj.acl.owner) {
                     if (command === 'setState' || command === 'delState') {
-                        if (command === 'delState' && !options.acl.state.delete) {
+                        if (command === 'delState' && !options.acl.state!.delete) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
                             return false;
-                        } else if (command === 'setState' && !options.acl.state.write) {
+                        } else if (command === 'setState' && !options.acl.state!.write) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
@@ -9452,7 +9686,7 @@ export class AdapterClass extends EventEmitter {
                             return false;
                         }
                     } else if (command === 'getState') {
-                        if (!(obj.acl.state & ACCESS_USER_READ) || !options.acl.state.read) {
+                        if (!(obj.acl.state & ACCESS_USER_READ) || !options.acl.state!.read) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
@@ -9463,14 +9697,14 @@ export class AdapterClass extends EventEmitter {
                             `${this.namespaceLog} Called unknown command on "${obj._id}": ${command as any}`,
                         );
                     }
-                } else if (options.groups.includes(obj.acl.ownerGroup) && !limitToOwnerRights) {
+                } else if (options.groups?.includes(obj.acl.ownerGroup) && !limitToOwnerRights) {
                     if (command === 'setState' || command === 'delState') {
-                        if (command === 'delState' && !options.acl.state.delete) {
+                        if (command === 'delState' && !options.acl.state!.delete) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
                             return false;
-                        } else if (command === 'setState' && !options.acl.state.write) {
+                        } else if (command === 'setState' && !options.acl.state!.write) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
@@ -9482,7 +9716,7 @@ export class AdapterClass extends EventEmitter {
                             return false;
                         }
                     } else if (command === 'getState') {
-                        if (!(obj.acl.state & ACCESS_GROUP_READ) || !options.acl.state.read) {
+                        if (!(obj.acl.state & ACCESS_GROUP_READ) || !options.acl.state!.read) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
@@ -9495,12 +9729,12 @@ export class AdapterClass extends EventEmitter {
                     }
                 } else if (!limitToOwnerRights) {
                     if (command === 'setState' || command === 'delState') {
-                        if (command === 'delState' && !options.acl.state.delete) {
+                        if (command === 'delState' && !options.acl.state!.delete) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
                             return false;
-                        } else if (command === 'setState' && !options.acl.state.write) {
+                        } else if (command === 'setState' && !options.acl.state!.write) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`,
                             );
@@ -9512,7 +9746,7 @@ export class AdapterClass extends EventEmitter {
                             return false;
                         }
                     } else if (command === 'getState') {
-                        if (!(obj.acl.state & ACCESS_EVERY_READ) || !options.acl.state.read) {
+                        if (!(obj.acl.state & ACCESS_EVERY_READ) || !options.acl.state!.read) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user}"on "${obj._id}" : ${command}`,
                             );
@@ -9718,7 +9952,7 @@ export class AdapterClass extends EventEmitter {
     setStateChanged(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.SetStateChangedCallback,
     ): void;
     /**
@@ -9734,7 +9968,7 @@ export class AdapterClass extends EventEmitter {
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.SetStateChangedCallback,
     ): void;
 
@@ -9802,12 +10036,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._utils.validateId(id, false, null);
+            this._utils.validateId(id as string, false, null);
         } catch (e) {
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        const fixedId = this._utils.fixId(id, false);
+        const fixedId = this._utils.fixId(id as string, false);
 
         let stateObj: ioBroker.SettableState;
 
@@ -9851,8 +10085,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         }
         const res = await this._setStateChangedHelper(fixedId, stateObj);
-        // @ts-expect-error todo fix it
-        return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
+        return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged) as void;
     }
 
     /**
@@ -9892,7 +10125,7 @@ export class AdapterClass extends EventEmitter {
     setForeignState(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.SetStateCallback,
     ): void;
     /**
@@ -9908,7 +10141,7 @@ export class AdapterClass extends EventEmitter {
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.SetStateCallback,
     ): void;
 
@@ -9942,7 +10175,13 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    async setForeignState(id: any, state: any, ack: any, options?: any, callback?: any): Promise<any> {
+    async setForeignState(
+        id: unknown,
+        state: unknown,
+        ack: unknown,
+        options?: unknown,
+        callback?: unknown,
+    ): Promise<any> {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
             options = ack;
@@ -9964,20 +10203,20 @@ export class AdapterClass extends EventEmitter {
             this._logger.info(
                 `${this.namespaceLog} setForeignState not processed because States database not connected`,
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback as ioBroker.SetStateCallback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         if (!this.#objects) {
             this._logger.info(
                 `${this.namespaceLog} setForeignState not processed because Objects database not connected`,
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback as ioBroker.SetStateCallback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         try {
-            this._utils.validateId(id, true, null);
+            this._utils.validateId(id as string, true, null);
         } catch (e) {
-            return tools.maybeCallbackWithError(callback, e);
+            return tools.maybeCallbackWithError(callback as ioBroker.SetStateCallback, e);
         }
 
         if (tools.isObject(state)) {
@@ -9985,58 +10224,67 @@ export class AdapterClass extends EventEmitter {
             try {
                 this._utils.validateSetStateObjectArgument(state);
             } catch (e) {
-                return tools.maybeCallbackWithError(callback, e);
+                return tools.maybeCallbackWithError(callback as ioBroker.SetStateCallback, e);
             }
         } else {
             // wrap non-object values in a state object
             state = state !== undefined ? { val: state } : {};
         }
 
-        if (state.val === undefined && !Object.keys(state).length) {
+        if ((state as ioBroker.State).val === undefined && !Object.keys(state as ioBroker.State).length) {
             // undefined is not allowed as state.val -> return
-            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${id}"`);
+            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${id as string}"`);
             // TODO: reactivate line below + test in in next controller version (02.05.2021)
             // return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
 
         if (ack !== undefined) {
-            state.ack = ack;
+            (state as ioBroker.State).ack = ack as boolean;
         }
 
         // if state.from provided, we use it else, we set default property
-        state.from =
-            typeof state.from === 'string' && state.from !== '' ? state.from : `system.adapter.${this.namespace}`;
-        state.user = options?.user || SYSTEM_ADMIN_USER;
+        (state as ioBroker.State).from =
+            typeof (state as ioBroker.State).from === 'string' && (state as ioBroker.State).from !== ''
+                ? (state as ioBroker.State).from
+                : `system.adapter.${this.namespace}`;
+        (state as ioBroker.State).user = (options as { user?: ioBroker.ObjectIDs.User })?.user || SYSTEM_ADMIN_USER;
 
         if (!id || typeof id !== 'string') {
             const warn = id ? `ID can be only string and not "${typeof id}"` : `Empty ID: ${JSON.stringify(state)}`;
             this._logger.warn(`${this.namespaceLog} ${warn}`);
-            return tools.maybeCallbackWithError(callback, warn);
+            return tools.maybeCallbackWithError(callback as ioBroker.SetStateCallback, warn);
         }
 
         id = this.fixForbiddenCharsInId(id);
 
-        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (
+            (options as { user?: ioBroker.ObjectIDs.User })?.user &&
+            (options as { user?: ioBroker.ObjectIDs.User }).user !== SYSTEM_ADMIN_USER
+        ) {
             let obj: ioBroker.StateObject;
             try {
-                obj = (await this._checkStates(id, options, 'setState')).objs[0];
+                obj = (await this._checkStates(id as string, options as { user?: ioBroker.ObjectIDs.User }, 'setState'))
+                    .objs[0];
             } catch (e) {
-                return tools.maybeCallbackWithError(callback, e);
+                return tools.maybeCallbackWithError(callback as ioBroker.SetStateCallback, e);
             }
             if (!this.#states) {
                 // if states is no longer existing, we do not need to unsubscribe
                 this._logger.info(
                     `${this.namespaceLog} setForeignState not processed because States database not connected`,
                 );
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                return tools.maybeCallbackWithError(
+                    callback as ioBroker.SetStateCallback,
+                    tools.ERRORS.ERROR_DB_CLOSED,
+                );
             }
 
             if (this.performStrictObjectChecks) {
                 // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                await this._utils.performStrictObjectCheck(id, state);
+                await this._utils.performStrictObjectCheck(id as string, state as ioBroker.State);
             }
 
-            if (id.startsWith(ALIAS_STARTS_WITH)) {
+            if ((id as string).startsWith(ALIAS_STARTS_WITH)) {
                 // write alias
                 if (obj?.common?.alias?.id) {
                     // id can be string or can have attribute write
@@ -10048,10 +10296,12 @@ export class AdapterClass extends EventEmitter {
                     try {
                         this._utils.validateId(aliasId, true, null);
                     } catch (e) {
-                        this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
+                        this._logger.warn(
+                            `${this.namespaceLog} Error validating alias id of ${id as string}: ${e.message}`,
+                        );
                         return tools.maybeCallbackWithError(
-                            callback,
-                            `Error validating alias id of ${id}: ${e.message}`,
+                            callback as ioBroker.SetStateCallback,
+                            `Error validating alias id of ${id as string}: ${e.message}`,
                         );
                     }
 
@@ -10059,18 +10309,21 @@ export class AdapterClass extends EventEmitter {
                     // we ignore permissions on the target object and thus get it as admin user
                     try {
                         targetObj = await this.#objects.getObject(aliasId, {
-                            ...options,
+                            ...(options as { user?: ioBroker.ObjectIDs.User }),
                             user: SYSTEM_ADMIN_USER,
                         });
                     } catch (e) {
-                        return tools.maybeCallbackWithError(callback, e);
+                        return tools.maybeCallbackWithError(callback as ioBroker.SetStateCallback, e);
                     }
                     if (!this.#states) {
                         // if states is no longer existing, we do not need to unsubscribe
                         this._logger.info(
                             `${this.namespaceLog} setForeignState not processed because States database not connected`,
                         );
-                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                        return tools.maybeCallbackWithError(
+                            callback as ioBroker.SetStateCallback,
+                            tools.ERRORS.ERROR_DB_CLOSED,
+                        );
                     }
 
                     this.outputCount++;
@@ -10078,18 +10331,21 @@ export class AdapterClass extends EventEmitter {
                         aliasId,
                         tools.formatAliasValue({
                             sourceCommon: obj?.common,
-                            targetCommon: targetObj && (targetObj.common as any),
-                            state,
+                            targetCommon: targetObj?.common as Partial<ioBroker.StateCommon>,
+                            state: state as ioBroker.State,
                             logger: this._logger,
                             logNamespace: this.namespaceLog,
                             sourceId: obj?._id,
                             targetId: targetObj?._id,
                         }),
-                        callback,
+                        callback as ioBroker.SetStateCallback,
                     );
                 } else {
-                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 3`);
-                    return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
+                    this._logger.warn(`${this.namespaceLog} Alias ${id as string} has no target 3`);
+                    return tools.maybeCallbackWithError(
+                        callback as ioBroker.SetStateCallback,
+                        `Alias ${id as string} has no target`,
+                    );
                 }
             } else {
                 if (!this.#states) {
@@ -10097,24 +10353,33 @@ export class AdapterClass extends EventEmitter {
                     this._logger.info(
                         `${this.namespaceLog} setForeignState not processed because States database not connected`,
                     );
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                    return tools.maybeCallbackWithError(
+                        callback as ioBroker.SetStateCallback,
+                        tools.ERRORS.ERROR_DB_CLOSED,
+                    );
                 }
 
                 this.outputCount++;
-                void this.#states.setState(id, state, callback);
+                void this.#states.setState(id as string, state as ioBroker.State, callback as ioBroker.SetStateCallback);
             }
         } else {
             // write alias
-            if (id.startsWith(ALIAS_STARTS_WITH)) {
+            if ((id as string).startsWith(ALIAS_STARTS_WITH)) {
                 if (!this.#objects) {
                     this._logger.info(
                         `${this.namespaceLog} setForeignState not processed because Objects database not connected`,
                     );
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                    return tools.maybeCallbackWithError(
+                        callback as ioBroker.SetStateCallback,
+                        tools.ERRORS.ERROR_DB_CLOSED,
+                    );
                 }
 
                 // read alias id
-                const obj = (await this.#objects.getObjectAsync(id, options)) as ioBroker.StateObject;
+                const obj = (await this.#objects.getObjectAsync(
+                    id as string,
+                    options as { user?: ioBroker.ObjectIDs.User },
+                )) as ioBroker.StateObject;
 
                 if (obj?.common?.alias?.id) {
                     // alias id can be a string or can have id.write
@@ -10126,10 +10391,12 @@ export class AdapterClass extends EventEmitter {
                     try {
                         this._utils.validateId(targetId, true, null);
                     } catch (e) {
-                        this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
+                        this._logger.warn(
+                            `${this.namespaceLog} Error validating alias id of ${id as string}: ${e.message}`,
+                        );
                         return tools.maybeCallbackWithError(
-                            callback,
-                            `Error validating alias id of ${id}: ${e.message}`,
+                            callback as ioBroker.SetStateCallback,
+                            `Error validating alias id of ${id as string}: ${e.message}`,
                         );
                     }
 
@@ -10138,12 +10405,15 @@ export class AdapterClass extends EventEmitter {
                         this._logger.info(
                             `${this.namespaceLog} setForeignState not processed because Objects database not connected`,
                         );
-                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                        return tools.maybeCallbackWithError(
+                            callback as ioBroker.SetStateCallback,
+                            tools.ERRORS.ERROR_DB_CLOSED,
+                        );
                     }
 
                     // read object for formatting - we ignore permissions on the target object and thus get it as admin user
                     const targetObj = await this.#objects.getObject(targetId, {
-                        ...options,
+                        ...(options as { user?: ioBroker.ObjectIDs.User }),
                         user: SYSTEM_ADMIN_USER,
                     });
 
@@ -10152,7 +10422,10 @@ export class AdapterClass extends EventEmitter {
                         this._logger.info(
                             `${this.namespaceLog} setForeignState not processed because States database not connected`,
                         );
-                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                        return tools.maybeCallbackWithError(
+                            callback as ioBroker.SetStateCallback,
+                            tools.ERRORS.ERROR_DB_CLOSED,
+                        );
                     }
 
                     this.outputCount++;
@@ -10161,17 +10434,20 @@ export class AdapterClass extends EventEmitter {
                         tools.formatAliasValue({
                             sourceCommon: obj.common,
                             targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
-                            state,
+                            state: state as ioBroker.State,
                             logger: this._logger,
                             logNamespace: this.namespaceLog,
                             sourceId: obj._id,
                             targetId: targetObj?._id,
                         }),
-                        callback,
+                        callback as ioBroker.SetStateCallback,
                     );
                 } else {
-                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 4`);
-                    return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
+                    this._logger.warn(`${this.namespaceLog} Alias ${id as string} has no target 4`);
+                    return tools.maybeCallbackWithError(
+                        callback as ioBroker.SetStateCallback,
+                        `Alias ${id as string} has no target`,
+                    );
                 }
             } else {
                 if (this.performStrictObjectChecks) {
@@ -10180,22 +10456,28 @@ export class AdapterClass extends EventEmitter {
                         this._logger.info(
                             `${this.namespaceLog} setForeignState not processed because Objects database not connected`,
                         );
-                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                        return tools.maybeCallbackWithError(
+                            callback as ioBroker.SetStateCallback,
+                            tools.ERRORS.ERROR_DB_CLOSED,
+                        );
                     }
 
                     // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                    await this._utils.performStrictObjectCheck(id, state);
+                    await this._utils.performStrictObjectCheck(id as string, state as ioBroker.State);
                 }
                 if (!this.#states) {
                     // if states is no longer existing, we do not need to unsubscribe
                     this._logger.info(
                         `${this.namespaceLog} setForeignState not processed because States database not connected`,
                     );
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                    return tools.maybeCallbackWithError(
+                        callback as ioBroker.SetStateCallback,
+                        tools.ERRORS.ERROR_DB_CLOSED,
+                    );
                 }
 
                 this.outputCount++;
-                void this.#states.setState(id, state, callback);
+                void this.#states.setState(id as string, state as ioBroker.State, callback as ioBroker.SetStateCallback);
             }
         }
     }
@@ -10237,7 +10519,7 @@ export class AdapterClass extends EventEmitter {
     setForeignStateChanged(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.SetStateChangedCallback,
     ): void;
     /**
@@ -10253,7 +10535,7 @@ export class AdapterClass extends EventEmitter {
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
-        options: unknown,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
         callback?: ioBroker.SetStateChangedCallback,
     ): void;
 
@@ -10288,11 +10570,11 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
     async setForeignStateChanged(
-        id: any,
-        state: any,
-        ack: any,
-        options?: any,
-        callback?: any,
+        id: unknown,
+        state: unknown,
+        ack: unknown,
+        options?: unknown,
+        callback?: unknown,
     ): Promise<void | [id: string, changed: boolean]> {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
@@ -10315,13 +10597,16 @@ export class AdapterClass extends EventEmitter {
             this._logger.info(
                 `${this.namespaceLog} setForeignStateChanged not processed because States database not connected`,
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(
+                callback as ioBroker.SetStateChangedCallback,
+                tools.ERRORS.ERROR_DB_CLOSED,
+            );
         }
 
         try {
-            this._utils.validateId(id, true, null);
+            this._utils.validateId(id as string, true, null);
         } catch (e) {
-            return tools.maybeCallbackWithError(callback, e);
+            return tools.maybeCallbackWithError(callback as ioBroker.SetStateChangedCallback, e);
         }
 
         if (tools.isObject(state)) {
@@ -10329,43 +10614,57 @@ export class AdapterClass extends EventEmitter {
             try {
                 this._utils.validateSetStateObjectArgument(state);
             } catch (e) {
-                return tools.maybeCallbackWithError(callback, e);
+                return tools.maybeCallbackWithError(callback as ioBroker.SetStateChangedCallback, e);
             }
         } else {
             // wrap non-object values in a state object
             state = state !== undefined ? { val: state } : {};
         }
 
-        if (state.val === undefined && !Object.keys(state).length) {
+        if (
+            (state as ioBroker.SettableState).val === undefined &&
+            !Object.keys(state as ioBroker.SettableState).length
+        ) {
             // undefined is not allowed as state.val -> return
-            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${id}"`);
+            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${id as string}"`);
             // TODO: reactivate line below + test in in next controller version (02.05.2021)
             // return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
 
         if (ack !== undefined) {
-            state.ack = ack;
+            (state as ioBroker.SettableState).ack = ack as boolean;
         }
 
         // if state.from provided, we use it else, we set default property
-        state.from =
-            typeof state.from === 'string' && state.from !== '' ? state.from : `system.adapter.${this.namespace}`;
-        state.user = options?.user || SYSTEM_ADMIN_USER;
+        (state as ioBroker.SettableState).from =
+            typeof (state as ioBroker.SettableState).from === 'string' && (state as ioBroker.SettableState).from !== ''
+                ? (state as ioBroker.SettableState).from
+                : `system.adapter.${this.namespace}`;
+        (state as ioBroker.SettableState).user =
+            (options as { user?: ioBroker.ObjectIDs.User })?.user || SYSTEM_ADMIN_USER;
 
-        id = this.fixForbiddenCharsInId(id);
+        id = this.fixForbiddenCharsInId(id as string);
 
-        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (
+            (options as { user?: ioBroker.ObjectIDs.User })?.user &&
+            (options as { user?: ioBroker.ObjectIDs.User }).user !== SYSTEM_ADMIN_USER
+        ) {
             try {
-                await this._checkStates(id, options, 'setState');
+                await this._checkStates(id as string, options as { user?: ioBroker.ObjectIDs.User }, 'setState');
             } catch (e) {
-                return tools.maybeCallbackWithError(callback, e);
+                return tools.maybeCallbackWithError(callback as ioBroker.SetStateChangedCallback, e);
             }
 
-            const res = await this._setStateChangedHelper(id, state);
-            return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
+            const res = await this._setStateChangedHelper(id as string, state as ioBroker.State);
+            return tools.maybeCallbackWithError(
+                callback as ioBroker.SetStateChangedCallback,
+                null,
+                res.id,
+                res.notChanged,
+            );
         }
-        const res = await this._setStateChangedHelper(id, state);
-        return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
+        const res = await this._setStateChangedHelper(id as string, state as ioBroker.State);
+        return tools.maybeCallbackWithError(callback as ioBroker.SetStateChangedCallback, null, res.id, res.notChanged);
     }
 
     /**
@@ -10382,7 +10681,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    getState(id: string, options: unknown, callback: ioBroker.GetStateCallback): void;
+    getState(
+        id: string,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        callback: ioBroker.GetStateCallback,
+    ): void;
 
     /**
      * Read value from states DB.
@@ -10401,7 +10704,7 @@ export class AdapterClass extends EventEmitter {
      *
      *        See possible attributes of the state in @setState explanation
      */
-    getState(id: unknown, options: any, callback?: any): ioBroker.GetStatePromise {
+    getState(id: unknown, options?: unknown, callback?: unknown): ioBroker.GetStatePromise {
         // we use any types here, because validation takes place in foreign method
         // get state does the same as getForeignState but fixes the id first
 
@@ -10409,7 +10712,11 @@ export class AdapterClass extends EventEmitter {
             Validator.assertString(id, 'id');
         }
         const fixedId = this._utils.fixId(id, false);
-        return this.getForeignState(fixedId, options, callback);
+        return this.getForeignState(
+            fixedId,
+            options as { user?: ioBroker.ObjectIDs.User } | null | undefined,
+            callback as ioBroker.GetStateCallback,
+        );
     }
 
     /**
@@ -10426,7 +10733,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    getForeignState(id: string, options: unknown, callback: ioBroker.GetStateCallback): ioBroker.GetStatePromise;
+    getForeignState(
+        id: string,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        callback: ioBroker.GetStateCallback,
+    ): ioBroker.GetStatePromise;
 
     /**
      * Read value from states DB for any instance and system state.
@@ -10782,7 +11093,7 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    delState(id: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    delState(id: string, options?: { user?: ioBroker.ObjectIDs.User } | null, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Deletes a state of this instance.
@@ -10847,7 +11158,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional argument to describe the user context
      * @param callback return result
      */
-    delForeignState(id: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    delForeignState(
+        id: string,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+        callback?: ioBroker.ErrorCallback,
+    ): void;
 
     /**
      * Deletes a state of any adapter.
@@ -10919,7 +11234,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional argument to describe the user context
      * @param callback return result
      */
-    getStates(pattern: Pattern, options: unknown, callback: ioBroker.GetStatesCallback): void;
+    getStates(
+        pattern: Pattern,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        callback: ioBroker.GetStatesCallback,
+    ): void;
 
     /**
      * Read all states of this adapter, that pass the pattern
@@ -10940,7 +11259,7 @@ export class AdapterClass extends EventEmitter {
      * function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
      * ```
      */
-    getStates(pattern: unknown, options: any, callback?: any): any {
+    getStates(pattern: unknown, options: unknown, callback?: unknown): any {
         // we use any types here, because validation takes place in foreign method
         if (typeof options === 'function') {
             callback = options;
@@ -10951,7 +11270,11 @@ export class AdapterClass extends EventEmitter {
 
         const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
 
-        this.getForeignStates(fixedPattern, options, callback);
+        this.getForeignStates(
+            fixedPattern,
+            options as { user?: ioBroker.ObjectIDs.User } | null | undefined,
+            callback as ioBroker.GetStatesCallback,
+        );
     }
 
     private async _processStatesSecondary(
@@ -10964,7 +11287,7 @@ export class AdapterClass extends EventEmitter {
         const result: Record<string, Partial<ioBroker.State> | null> = {};
 
         for (let i = 0; i < keys.length; i++) {
-            const obj = targetObjs && targetObjs[i];
+            const obj = targetObjs?.[i];
 
             if (obj?.common?.alias && srcObjs) {
                 const srcObj = srcObjs[i];
@@ -10999,7 +11322,10 @@ export class AdapterClass extends EventEmitter {
      * @param keys all ids of the getStates call
      * @param targetObjs the target objects (e.g. alias objects or the actual objects)
      */
-    private async _processStates(keys: string[], targetObjs: ioBroker.StateObject[]): ioBroker.GetStatesPromise {
+    private async _processStates(
+        keys: string[],
+        targetObjs: (ioBroker.StateObject | null)[] | undefined,
+    ): ioBroker.GetStatesPromise {
         const aliasIndexes: number[] = [];
         const aliasIds: string[] = [];
         /** Target objects with null placeholders for non-alias keys */
@@ -11062,7 +11388,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      * @param callback return result
      */
-    getForeignStates(pattern: Pattern, options: unknown, callback: ioBroker.GetStatesCallback): void;
+    getForeignStates(
+        pattern: Pattern,
+        options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        callback: ioBroker.GetStatesCallback,
+    ): void;
 
     /**
      * Read all states of all adapters (and system states), that pass the pattern
@@ -11134,7 +11464,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, e);
                 }
             } else {
-                const res = await this._processStates(pattern, options?._objects);
+                const res = await this._processStates(pattern, options._objects);
                 return tools.maybeCallbackWithError(callback, null, res);
             }
         } else {
@@ -11315,7 +11645,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional argument to describe the user context
      * @param callback optional callback
      */
-    subscribeForeignStates(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignStates(
+        pattern: Pattern,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+        callback?: ioBroker.ErrorCallback,
+    ): void;
 
     /**
      * Subscribe for changes on all states of all adapters (and system states), that pass the pattern
@@ -11549,7 +11883,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional argument to describe the user context
      * @param callback optional callback
      */
-    unsubscribeForeignStates(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeForeignStates(
+        pattern: string | string[],
+        options: { user?: ioBroker.ObjectIDs.User } | null,
+        callback?: ioBroker.ErrorCallback,
+    ): void;
 
     /**
      * Unsubscribe for changes for given pattern
@@ -11712,7 +12050,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional argument to describe the user context
      * @param callback optional callback
      */
-    subscribeStates(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeStates(
+        pattern: Pattern,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+        callback?: ioBroker.ErrorCallback,
+    ): void;
 
     /**
      * Subscribe for changes on all states of this instance, that pass the pattern
@@ -11759,7 +12101,11 @@ export class AdapterClass extends EventEmitter {
      * @param options optional argument to describe the user context
      * @param callback optional callback
      */
-    unsubscribeStates(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeStates(
+        pattern: Pattern,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
+        callback?: ioBroker.ErrorCallback,
+    ): void;
 
     /**
      * Unsubscribe for changes for given pattern for own states.
@@ -11875,15 +12221,6 @@ export class AdapterClass extends EventEmitter {
      * @param adapterName Return licenses for specific adapter
      * @returns list of suitable licenses
      */
-    getSuitableLicenses(all?: boolean, adapterName?: string): Promise<any[]>;
-
-    /**
-     * This method returns the list of license that can be used by this adapter
-     *
-     * @param all if return the licenses, that used by other instances (true) or only for this instance (false)
-     * @param adapterName Return licenses for specific adapter
-     * @returns list of suitable licenses
-     */
     async getSuitableLicenses(all?: boolean, adapterName?: string): Promise<SuitableLicense[]> {
         const licenses: SuitableLicense[] = [];
         try {
@@ -11912,7 +12249,10 @@ export class AdapterClass extends EventEmitter {
 
                 for (const license of obj.native.licenses as Omit<SuitableLicense, 'decoded'>[]) {
                     try {
-                        const decoded: any = jwt.verify(license.json, cert);
+                        const decoded: JwtPayload & SuitableLicense['decoded'] = jwt.verify(
+                            license.json,
+                            cert,
+                        ) as JwtPayload & SuitableLicense['decoded'];
                         if (
                             decoded.name &&
                             (!decoded.valid_till ||
@@ -11941,7 +12281,7 @@ export class AdapterClass extends EventEmitter {
                                             continue;
                                         }
                                     }
-                                } else if (decoded.version && decoded.version !== version) {
+                                } else if (decoded.version && (decoded.version as number) !== version) {
                                     // Licenses for adapter versions >=2 need to match to the adapter major version,
                                     // which means that a new major version requires new licenses if it would be "included"
                                     //  in the last purchase
@@ -12295,7 +12635,7 @@ export class AdapterClass extends EventEmitter {
         this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
 
         if (this._options.logTransporter) {
-            this.requireLog = async (isActive, options) => {
+            this.requireLog = async (isActive: boolean, options?: { user?: ioBroker.ObjectIDs.User } | null) => {
                 if (!this.#states) {
                     return;
                 }
@@ -12545,7 +12885,7 @@ export class AdapterClass extends EventEmitter {
 
                 // someone subscribes or unsubscribes from adapter
                 if (this._options.subscribable && id === `system.adapter.${this.namespace}.subscribes`) {
-                    let subs: Record<string, any>;
+                    let subs: Record<string, { regex: string }>;
                     try {
                         subs = JSON.parse((state && (state.val as string)) || '{}');
                         Object.keys(subs).forEach(p => (subs[p].regex = tools.pattern2RegEx(p)));
@@ -13026,7 +13366,7 @@ export class AdapterClass extends EventEmitter {
         const killRes = await this.#states.getState(`system.adapter.${this.namespace}.sigKill`);
 
         if (killRes?.val !== undefined) {
-            killRes.val = parseInt(killRes.val as any, 10);
+            killRes.val = parseInt(killRes.val as string, 10);
         }
         if (!this._config.isInstall && this.startedInCompactMode && killRes && !killRes.ack && killRes.val === -1) {
             this._logger.error(
@@ -13039,7 +13379,7 @@ export class AdapterClass extends EventEmitter {
             !this.startedInCompactMode &&
             killRes?.from?.startsWith('system.host.') &&
             killRes.ack &&
-            !isNaN(killRes.val as any) &&
+            !isNaN(killRes.val) &&
             killRes.val !== process.pid
         ) {
             this._logger.error(
@@ -13229,9 +13569,8 @@ export class AdapterClass extends EventEmitter {
 
         this._utils = new Validator(
             this.#objects,
-            this.#states,
             this.namespaceLog,
-            this._logger,
+            this._logger as ioBroker.Logger,
             this.namespace,
             this._namespaceRegExp,
         );
@@ -13493,7 +13832,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _createInstancesObjects(instanceObj: ioBroker.InstanceObject): Promise<void> {
-        let objs: (IoPackageInstanceObject & { state?: unknown })[];
+        let objs: (IoPackageInstanceObject & { state?: ioBroker.StateValue })[];
 
         if (instanceObj?.common && !('onlyWWW' in instanceObj.common) && instanceObj.common.mode !== 'once') {
             objs = tools.getInstanceIndicatorObjects(this.namespace, instanceObj.common);
@@ -13503,7 +13842,7 @@ export class AdapterClass extends EventEmitter {
 
         if (instanceObj && 'instanceObjects' in instanceObj) {
             for (const instObj of instanceObj.instanceObjects) {
-                const obj: IoPackageInstanceObject & { state?: unknown } = instObj;
+                const obj: IoPackageInstanceObject & { state?: ioBroker.StateValue } = instObj;
 
                 const allowedTopLevelTypes: ioBroker.ObjectType[] = ['meta', 'device'];
 
@@ -13657,20 +13996,23 @@ export class AdapterClass extends EventEmitter {
         return this.#states.setState(id, state);
     }
 
-    private async _extendObjects(tasks: Record<string, any>, callback: () => void): Promise<void> {
-        if (!tasks || !tasks.length) {
+    private async _extendObjects(
+        tasks: (IoPackageInstanceObject & { state?: ioBroker.StateValue })[],
+        callback: () => void,
+    ): Promise<void> {
+        if (!tasks?.length) {
             return tools.maybeCallback(callback);
         }
         const task = tasks.shift();
-        const state = task.state;
+        const state = task!.state;
         if (state !== undefined) {
-            delete task.state;
+            delete task!.state;
         }
 
         try {
             tools.validateGeneralObjectProperties(task, true);
         } catch (e) {
-            this._logger.error(`${this.namespaceLog} Object ${task._id} is invalid: ${e.message}`);
+            this._logger.error(`${this.namespaceLog} Object ${task!._id} is invalid: ${e.message}`);
             return tools.maybeCallbackWithError(callback, e);
         }
 
@@ -13685,7 +14027,7 @@ export class AdapterClass extends EventEmitter {
         const options = { preserve: { common: ['name'], native: true } };
 
         try {
-            await this.extendForeignObjectAsync(task._id, task, options);
+            await this.extendForeignObjectAsync(task!._id, task!, options);
         } catch {
             // ignore
         }
@@ -13699,7 +14041,7 @@ export class AdapterClass extends EventEmitter {
             }
             this.outputCount++;
             void this.#states.setState(
-                task._id,
+                task!._id,
                 {
                     val: state,
                     from: `system.adapter.${this.namespace}`,

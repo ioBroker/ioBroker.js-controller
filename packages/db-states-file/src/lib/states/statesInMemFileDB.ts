@@ -1,16 +1,14 @@
 /**
  *      States DB in memory - Server
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
+/// <reference types="@iobroker/types-dev" />
 
-import { InMemoryFileDB, tools } from '@iobroker/db-base';
-
-/** Constructor settings expected by the {@link InMemoryFileDB} base class */
-type InMemSettings = ConstructorParameters<typeof InMemoryFileDB>[0];
+import { InMemoryFileDB, tools, type FileDbSettings } from '@iobroker/db-base';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -37,40 +35,38 @@ type InMemSettings = ConstructorParameters<typeof InMemoryFileDB>[0];
  * This class inherits InMemoryFileDB class and adds all relevant logic for states
  * including the available methods for use by js-controller directly
  */
-export class StatesInMemoryFileDB extends InMemoryFileDB {
-    protected readonly META_ID: string;
-    protected logs: Record<string, any>;
-    protected session: Record<string, any>;
-    protected globalMessageId: number;
-    protected globalLogId: number;
-    protected stateExpires: Record<string, NodeJS.Timeout>;
-    protected sessionExpires: Record<string, { sessionEnd: number; timeout: NodeJS.Timeout | null }>;
-    protected readonly ONE_DAY_IN_SECS: number;
-    protected writeFileInterval: number;
+export class StatesInMemoryFileDB<
+    THandler extends {
+        _subscribe?: Record<
+            string,
+            {
+                pattern: string;
+                regex: RegExp;
+            }[]
+        >;
+    },
+> extends InMemoryFileDB<ioBroker.State | ioBroker.Session, THandler> {
+    private readonly META_ID: string = '**META**';
+    private session: Record<string, ioBroker.Session> = {};
+    protected stateExpires: Record<string, NodeJS.Timeout> = {};
+    protected sessionExpires: Record<string, { sessionEnd: number; timeout: NodeJS.Timeout | null }> = {};
+    private readonly ONE_DAY_IN_SECS: number = 24 * 60 * 60 * 1_000;
+    private readonly writeFileInterval: number;
 
     /**
      * @param settings Settings for the states database
      */
-    constructor(settings: Record<string, any>) {
-        settings = settings || {};
-        settings.fileDB = settings.fileDB || {
+    constructor(settings: FileDbSettings<ioBroker.State | ioBroker.Session>) {
+        settings ||= {};
+        settings.fileDB ??= {
             fileName: 'states.json',
             backupDirName: 'backup-objects',
         };
-        super(settings as InMemSettings);
+        super(settings);
 
-        this.META_ID = '**META**';
-        this.logs = {};
-        this.session = {};
-        this.globalMessageId = Math.round(Math.random() * 100_000_000);
-        this.globalLogId = Math.round(Math.random() * 100_000_000);
-
-        this.stateExpires = {};
-        this.sessionExpires = {};
-        this.ONE_DAY_IN_SECS = 24 * 60 * 60 * 1_000;
         this.writeFileInterval =
             this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
-                ? parseInt(String(this.settings.connection.writeFileInterval))
+                ? this.settings.connection.writeFileInterval
                 : 30_000;
         if (settings.jsonlDB) {
             this.log.silly(`${this.namespace} States DB uses file write interval of ${this.writeFileInterval} ms`);
@@ -90,14 +86,12 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
         });
         // Set as expire all states that could expire
         Object.entries(this.dataset).forEach(([id, obj]) => {
-            if (obj && obj.expire) {
+            if ((obj as ioBroker.State)?.expire) {
                 this._expireState(id, true);
             }
         });
 
-        if (!this.stateTimer) {
-            this.stateTimer = setTimeout(() => this.saveState(), this.writeFileInterval);
-        }
+        this.stateTimer ||= setTimeout(() => this.saveState(), this.writeFileInterval);
     }
 
     /**
@@ -127,7 +121,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param id The ID of the session to expire
      */
     _expireSession(id: string): void {
-        if (this.sessionExpires[id] && this.sessionExpires[id].timeout) {
+        if (this.sessionExpires[id]?.timeout) {
             clearTimeout(this.sessionExpires[id].timeout);
             delete this.sessionExpires[id];
         }
@@ -156,7 +150,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      *
      * @param keys The state IDs to read
      */
-    _getStates(keys: string[]): any[] {
+    _getStates(keys: string[]): (ioBroker.State | ioBroker.Session | null)[] {
         if (!keys || !Array.isArray(keys)) {
             throw new Error('no keys');
         }
@@ -171,15 +165,15 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      *
      * @param id The state ID to read
      */
-    _getState(id: string): any {
-        return this.dataset[id];
+    _getState(id: string): ioBroker.State {
+        return this.dataset[id] as ioBroker.State;
     }
 
     /**
      * Get the meta dictionary, creating it if it does not exist yet
      */
-    _ensureMetaDict(): Record<string, any> {
-        let meta = this.dataset[this.META_ID];
+    _ensureMetaDict(): Record<string, string> {
+        let meta: Record<string, string> = this.dataset[this.META_ID] as Record<string, string>;
         if (!meta) {
             meta = {};
             this.dataset[this.META_ID] = meta;
@@ -193,18 +187,18 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param id The meta ID to read
      * @returns the stored meta value
      */
-    getMeta(id: string): any {
+    getMeta(id: string): string {
         const meta = this._ensureMetaDict();
         return meta[id];
     }
 
     /**
-     * Sets given value to id in metaNamespace
+     * Sets given value to ID in metaNamespace
      *
      * @param id The meta ID to write
      * @param value The value to store
      */
-    setMeta(id: string, value: any): void {
+    setMeta(id: string, value: string): void {
         const meta = this._ensureMetaDict();
         meta[id] = value;
         // Make sure the object gets re-written, especially when using an external DB
@@ -216,9 +210,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
             this.publishAll('meta', id, value);
         });
 
-        if (!this.stateTimer) {
-            this.stateTimer = setTimeout(() => this.saveState(), this.writeFileInterval);
-        }
+        this.stateTimer ||= setTimeout(() => this.saveState(), this.writeFileInterval);
     }
 
     /**
@@ -228,19 +220,17 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param obj The state object to store
      * @param expire Optional expiration time in seconds
      */
-    _setStateDirect(id: string, obj: any, expire?: number): void {
+    _setStateDirect(id: string, obj: ioBroker.State, expire?: number): void {
         if (this.stateExpires[id]) {
             clearTimeout(this.stateExpires[id]);
             delete this.stateExpires[id];
         }
+        this.dataset[id] = obj;
 
         if (expire) {
             this.stateExpires[id] = setTimeout(() => this._expireState(id), expire * 1000);
-
-            obj.expire = true;
+            this.dataset[id].expire = 1;
         }
-        this.dataset[id] = obj;
-
         // If val === undefined, the state was just created and not filled with value
         if (obj.val !== undefined) {
             setImmediate(() => {
@@ -293,7 +283,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param client The client to subscribe
      * @param pattern The pattern of state IDs to subscribe to
      */
-    _subscribeForClient(client: any, pattern: string): void {
+    _subscribeForClient(client: THandler, pattern: string): void {
         this.handleSubscribe(client, 'state', pattern);
     }
 
@@ -303,7 +293,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param client The client to subscribe
      * @param pattern The pattern of meta IDs to subscribe to
      */
-    _subscribeMeta(client: any, pattern: string): void {
+    _subscribeMeta(client: THandler, pattern: string): void {
         this.handleSubscribe(client, 'meta', pattern);
     }
 
@@ -313,7 +303,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param client The client to unsubscribe
      * @param pattern The pattern of state IDs to unsubscribe from
      */
-    _unsubscribeForClient(client: any, pattern: string): void {
+    _unsubscribeForClient(client: THandler, pattern: string): void {
         (this.handleUnsubscribe(client, 'state', pattern) as Promise<void>).catch(e =>
             this.log.error(`${this.namespace} Cannot unsubscribe client from states: ${e.message}`),
         );
@@ -325,7 +315,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param client The client to subscribe
      * @param id The ID of the message box owner
      */
-    _subscribeMessageForClient(client: any, id: string): void {
+    _subscribeMessageForClient(client: THandler, id: string): void {
         this.handleSubscribe(client, 'messagebox', `messagebox.${id}`);
     }
 
@@ -335,7 +325,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param client The client to unsubscribe
      * @param id The ID of the message box owner
      */
-    _unsubscribeMessageForClient(client: any, id: string): void {
+    _unsubscribeMessageForClient(client: THandler, id: string): void {
         (this.handleUnsubscribe(client, 'messagebox', `messagebox.${id}`) as Promise<void>).catch(e =>
             this.log.error(`${this.namespace} Cannot unsubscribe client from messagebox: ${e.message}`),
         );
@@ -347,7 +337,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param client The client to subscribe
      * @param id The ID of the log owner
      */
-    _subscribeLogForClient(client: any, id: string): void {
+    _subscribeLogForClient(client: THandler, id: string): void {
         this.handleSubscribe(client, 'log', `log.${id}`);
     }
 
@@ -357,7 +347,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param client The client to unsubscribe
      * @param id The ID of the log owner
      */
-    _unsubscribeLogForClient(client: any, id: string): void {
+    _unsubscribeLogForClient(client: THandler, id: string): void {
         (this.handleUnsubscribe(client, 'log', `log.${id}`) as Promise<void>).catch(e =>
             this.log.error(`${this.namespace} Cannot unsubscribe client from log: ${e.message}`),
         );
@@ -368,7 +358,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      *
      * @param id The session ID to read
      */
-    _getSession(id: string): any {
+    _getSession(id: string): ioBroker.Session {
         return this.session[id];
     }
 
@@ -410,10 +400,10 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
      *
      * @param id The session ID
      * @param expire Expiration time in seconds from now
-     * @param obj The session data to store
+     * @param sessionData The session data to store
      */
-    _setSession(id: string, expire: number, obj: any): void {
-        this.session[id] = obj || {};
+    _setSession(id: string, expire: number, sessionData: ioBroker.Session): void {
+        this.session[id] = sessionData || {};
 
         if (this.sessionExpires[id] && this.sessionExpires[id].timeout) {
             clearTimeout(this.sessionExpires[id].timeout);

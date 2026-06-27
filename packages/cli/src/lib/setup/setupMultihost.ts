@@ -4,8 +4,7 @@ import readline from 'node:readline';
 import readlineSync from 'readline-sync';
 import prompt from 'prompt';
 
-import { tools } from '@iobroker/js-controller-common';
-import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common';
+import { isLocalObjectsDbServer, isLocalStatesDbServer, tools } from '@iobroker/js-controller-common';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { MHClient, type BrowseResultEntry } from './multihostClient.js';
 
