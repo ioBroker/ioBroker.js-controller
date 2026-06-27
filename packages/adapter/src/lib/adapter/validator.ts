@@ -1,5 +1,6 @@
 import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from '@/lib/adapter/constants.js';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
+import type { Client as ObjectsInRedisClient } from '../../../../db-objects-redis/src/index.js';
 
 type Callback = (...args: any[]) => void | Promise<void>;
 type OptionalCallback = undefined | Callback;
@@ -15,9 +16,11 @@ export interface ValidateIdOptions {
 
 /**
  * Validates arguments passed to the adapter's public methods
+ *
+ * @internal
  */
 export class Validator {
-    private readonly objects: any;
+    private readonly objects: ObjectsInRedisClient;
     private readonly namespaceLog: string;
     private readonly log: ioBroker.Logger;
     private readonly namespace: string;
@@ -33,7 +36,7 @@ export class Validator {
      * @param namespaceRegExp - the namespace RegExp of the adapter `adapter.0`
      */
     constructor(
-        objects: any,
+        objects: ObjectsInRedisClient,
         namespaceLog: string,
         logger: ioBroker.Logger,
         namespace: string,

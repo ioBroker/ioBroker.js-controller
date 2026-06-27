@@ -1,5 +1,5 @@
 import type { TestContext } from '../_Types.js';
-import { Validator } from '@iobroker/js-controller-adapter';
+import { Validator } from '@iobroker/js-controller-adapter/validator';
 import assert from 'node:assert/strict';
 
 import { spy } from 'sinon';
