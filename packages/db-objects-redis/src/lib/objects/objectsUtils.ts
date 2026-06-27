@@ -252,7 +252,7 @@ export async function checkFileRightsAsync(
             user: SYSTEM_ADMIN_USER,
             group: SYSTEM_ADMIN_GROUP,
             groups: [SYSTEM_ADMIN_GROUP],
-            acl: deepClone(defaultAcl.acl),
+            acl: getDefaultAdminRights(),
         };
     } else {
         const [, groups, acl] = await getUserGroupAsync(objects, options.user);
