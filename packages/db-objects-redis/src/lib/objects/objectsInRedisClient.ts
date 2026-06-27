@@ -5574,12 +5574,12 @@ export class ObjectsInRedisClient {
             );
         }
 
-        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
+        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, userContext) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             }
             // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
-            return this._extendObject(id, obj, options, callback);
+            return this._extendObject(id, obj, options || {}, userContext!, callback);
         });
     }
 
