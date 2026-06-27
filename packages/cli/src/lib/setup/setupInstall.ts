@@ -166,7 +166,7 @@ export class Install {
      * @param stoppedList list of stopped instances (as instance objects)
      */
     async downloadPacket(
-        repoUrlOrRepo: string | undefined | Record<string, ioBroker.RepositoryJsonAdapterContent>,
+        repoUrlOrRepo: string | undefined | ioBroker.RepositoryJson,
         packetName: string,
         options?: CLIDownloadPacketOptions,
         stoppedList?: ioBroker.InstanceObject[],
@@ -175,8 +175,8 @@ export class Install {
             options = {};
         }
 
-        stoppedList = stoppedList || [];
-        let sources: Record<string, ioBroker.RepositoryJsonAdapterContent>;
+        stoppedList ||= [];
+        let sources: ioBroker.RepositoryJson;
 
         if (!repoUrlOrRepo || !tools.isObject(repoUrlOrRepo)) {
             sources = await getRepository({ repoName: repoUrlOrRepo, objects: this.objects });
@@ -199,14 +199,14 @@ export class Install {
             version = parts[1];
         } else {
             // always take a version from repository
-            if (sources[packetName]?.version) {
-                version = sources[packetName].version;
+            if ((sources[packetName] as ioBroker.RepositoryJsonAdapterContent)?.version) {
+                version = (sources[packetName] as ioBroker.RepositoryJsonAdapterContent).version;
             } else {
                 version = '';
             }
         }
 
-        const source = sources[packetName];
+        const source = sources[packetName] as ioBroker.RepositoryJsonAdapterContent;
 
         if (!source) {
             const errMessage = `Unknown packet name ${packetName}. Please install packages from outside the repository using "${tools.appNameLowerCase} url <url-or-package>"!`;

@@ -1,15 +1,14 @@
 /**
  *      List different objects for CLI
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 
-import { EXIT_CODES } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
-import { tools } from '@iobroker/js-controller-common';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
@@ -154,12 +153,12 @@ export class List {
 
         if (file.acl) {
             text += (file.isDir ? 'd' : '-') + List._perm2str(file.acl.permissions || 0);
-            let owner = file.acl.owner;
+            let owner: string = file.acl.owner;
             // cut system.user.
             owner = owner.substring(12);
 
             text += ` ${owner.padStart(14)}`;
-            let group = file.acl.ownerGroup;
+            let group: string = file.acl.ownerGroup;
             // cut system.group.
             group = group.substring(13);
             text += ` ${group.padStart(14)}`;
@@ -197,12 +196,12 @@ export class List {
             text += `${List._perm2str(obj.acl.object || 0)} ${
                 obj.type === 'state' ? List._perm2str(obj.acl.state || 0) : '         '
             }`;
-            let owner = obj.acl.owner;
+            let owner: string = obj.acl.owner;
             // cut system.user.
             owner = owner.substring(12);
 
             text += ` ${owner.padStart(14)}`;
-            let group = obj.acl.ownerGroup;
+            let group: string = obj.acl.ownerGroup;
             // cut system.group.
             group = group.substring(13);
             text += ` ${group.padStart(14)}`;
@@ -347,17 +346,17 @@ export class List {
     private _readOnlineState(
         lines: IdValueObject[],
         flags: FlagObject,
-        cb: (res: any[]) => void,
-        _result?: any[],
+        cb: (res: string[]) => void,
+        _result?: string[],
     ): void {
         const result = _result || [];
-        if (!lines || !lines.length) {
+        if (!lines?.length) {
             cb(result);
         } else {
             const task = lines.shift() as IdValueObject;
             const id = `${task.id}.alive`;
-            this.states.getState(id, (err, state) => {
-                if (state && state.val) {
+            this.states.getState(id, (_err, state) => {
+                if (state?.val) {
                     result.push(`+ ${task.value}`);
                 } else if (!flags.alive) {
                     result.push(`  ${task.value}`);

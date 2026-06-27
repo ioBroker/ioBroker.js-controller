@@ -1,39 +1,21 @@
 /**
- *      States DB in memory - Server
+ *      Object DB in memory - Server
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
+/// <reference types="@iobroker/types-dev" />
 
-import { StatesInMemoryFileDB } from '@iobroker/db-states-file';
-import { JsonlDB } from '@alcalzone/jsonl-db';
 import path from 'node:path';
 import fs from 'node:fs';
 import os from 'node:os';
-import { tools } from '@iobroker/js-controller-common-db';
 
-// settings = {
-//    change:    function (id, state) {},
-//    connected: function (nameOfServer) {},
-//    logger: {
-//           silly: function (msg) {},
-//           debug: function (msg) {},
-//           info:  function (msg) {},
-//           warn:  function (msg) {},
-//           error: function (msg) {}
-//    },
-//    connection: {
-//           dataDir: 'relative path'
-//    },
-//    auth: null, //unused
-//    secure: true/false,
-//    certificates: as required by createServer
-//    port: 9000,
-//    host: localhost
-// };
-//
+import { ObjectsInMemoryFileDB } from '@iobroker/db-objects-file';
+import type { FileDbSettings } from '@iobroker/db-base';
+import { JsonlDB, type JsonlDBOptions } from '@alcalzone/jsonl-db';
+import { tools } from '@iobroker/js-controller-common-db';
 
 /**
  * Normalizes options for the JsonlDB
@@ -41,20 +23,22 @@ import { tools } from '@iobroker/js-controller-common-db';
  * @param conf The jsonlOptions options from iobroker.json
  * @returns the normalized and validated JsonlDB options
  */
-function normalizeJsonlOptions(conf = {}) {
-    const ret = {
+function normalizeJsonlOptions(
+    conf: Partial<JsonlDBOptions<ioBroker.AnyObject | ioBroker.DesignObject>> = {},
+): JsonlDBOptions<ioBroker.AnyObject | ioBroker.DesignObject> {
+    const ret: JsonlDBOptions<ioBroker.AnyObject | ioBroker.DesignObject> = {
         autoCompress: {
             // Compress when the number of uncompressed entries has grown a lot
-            sizeFactor: 10,
-            sizeFactorMinimumSize: 50000,
+            sizeFactor: 2,
+            sizeFactorMinimumSize: 25000,
             // Compress at least daily to avoid a huge file when DBs have few objects
-            // but big binary states are updated regularly
+            // but big objects are updated regularly (e.g. the repositories)
             intervalMs: 1000 * 60 * 60 * 23,
         },
         ignoreReadErrors: true,
         throttleFS: {
             intervalMs: 60000,
-            maxBufferedCommands: 2000,
+            maxBufferedCommands: 1000,
         },
         lockfile: {
             // 5 retries starting at 250ms add up to just above 2s,
@@ -67,23 +51,28 @@ function normalizeJsonlOptions(conf = {}) {
     };
 
     // Be really careful what we allow here. Incorrect settings may cause problems in production.
-    if (tools.isObject(conf.autoCompress)) {
+    if (conf.autoCompress && typeof conf.autoCompress === 'object') {
         const ac = conf.autoCompress;
-        // Letting the DB grow more than 100x is risky
+        if (!ret.autoCompress) {
+            throw new Error('Unexpected autoCompress');
+        } // Letting the DB grow more than 100x is risky
         if (typeof ac.sizeFactor === 'number' && ac.sizeFactor >= 2 && ac.sizeFactor <= 100) {
             ret.autoCompress.sizeFactor = ac.sizeFactor;
         }
-        // Also we should definitely compress once the DB has reached 200k lines or it might grow too big
+        // Also we should definitely compress once the DB has reached 100k lines, or it might grow too big
         if (
             typeof ac.sizeFactorMinimumSize === 'number' &&
             ac.sizeFactorMinimumSize >= 0 &&
-            ac.sizeFactorMinimumSize <= 200000
+            ac.sizeFactorMinimumSize <= 100000
         ) {
             ret.autoCompress.sizeFactorMinimumSize = ac.sizeFactorMinimumSize;
         }
     }
-    if (tools.isObject(conf.throttleFS)) {
+    if (conf.throttleFS && typeof conf.throttleFS === 'object') {
         const thr = conf.throttleFS;
+        if (!ret.throttleFS) {
+            throw new Error('Unexpected throttle fs');
+        }
         // Don't write more often than every second and write at least once every hour
         if (typeof thr.intervalMs === 'number' && thr.intervalMs >= 1000 && thr.intervalMs <= 3600000) {
             ret.throttleFS.intervalMs = thr.intervalMs;
@@ -102,34 +91,46 @@ function normalizeJsonlOptions(conf = {}) {
 }
 
 /**
- * This class inherits InMemoryFileDB class and adds all relevant logic for states
+ * This class inherits InMemoryFileDB class and adds all relevant logic for objects
  * including the available methods for use by js-controller directly
  */
-export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
+export class ObjectsInMemoryJsonlDB<
+    THandler extends {
+        _subscribe?: Record<
+            string,
+            {
+                pattern: string;
+                regex: RegExp;
+            }[]
+        >;
+    },
+> extends ObjectsInMemoryFileDB<THandler> {
+    private readonly _db: JsonlDB<ioBroker.AnyObject | ioBroker.DesignObject>;
+    private _backupInterval: NodeJS.Timeout | undefined;
+
     /**
-     * @param settings Settings for the states database
+     * @param settings Settings for the objects database
      */
-    constructor(settings) {
-        settings = settings || {};
-        // Not really used
+    constructor(settings: FileDbSettings<ioBroker.AnyObject | ioBroker.DesignObject>) {
         settings.fileDB = {
-            fileName: 'states.json',
+            fileName: 'objects.json',
             backupDirName: 'backup-objects',
         };
 
         const jsonlOptions = normalizeJsonlOptions(settings.connection.jsonlOptions);
+        const jsonlFileName = 'objects.jsonl';
         settings.jsonlDB = {
-            fileName: 'states.jsonl',
+            fileName: jsonlFileName,
         };
         super(settings);
 
-        this._db = new JsonlDB(path.join(this.dataDir, settings.jsonlDB.fileName), jsonlOptions);
+        this._db = new JsonlDB(path.join(this.dataDir, jsonlFileName), jsonlOptions);
     }
 
     /**
      * Open the JSONL database, migrating from the legacy file DB if necessary
      */
-    async open() {
+    async open(): Promise<void> {
         if (!(await this._maybeMigrateFileDB())) {
             await this._db.open();
         }
@@ -140,14 +141,14 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
              * @param target The proxied JsonlDB instance
              * @param prop The property key being read
              */
-            get(target, prop) {
+            get(target: JsonlDB<ioBroker.AnyObject | ioBroker.DesignObject>, prop: string) {
                 return target.get(prop);
             },
             /**
              * @param target The proxied JsonlDB instance
              * @param prop The property key being checked
              */
-            has(target, prop) {
+            has(target: JsonlDB<ioBroker.AnyObject | ioBroker.DesignObject>, prop: string) {
                 return target.has(prop);
             },
             /**
@@ -155,7 +156,11 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
              * @param prop The property key being written
              * @param value The value to store
              */
-            set(target, prop, value) {
+            set(
+                target: JsonlDB<ioBroker.AnyObject | ioBroker.DesignObject>,
+                prop: string,
+                value: ioBroker.AnyObject | ioBroker.DesignObject,
+            ) {
                 target.set(prop, value);
                 return true;
             },
@@ -163,17 +168,17 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
              * @param target The proxied JsonlDB instance
              * @param prop The property key being deleted
              */
-            deleteProperty(target, prop) {
+            deleteProperty(target: JsonlDB<ioBroker.AnyObject | ioBroker.DesignObject>, prop: string) {
                 return target.delete(prop);
             },
-            ownKeys(target) {
+            ownKeys(target: JsonlDB<ioBroker.AnyObject | ioBroker.DesignObject>) {
                 return [...target.keys()];
             },
             /**
              * @param target The proxied JsonlDB instance
              * @param prop The property key to describe
              */
-            getOwnPropertyDescriptor(target, prop) {
+            getOwnPropertyDescriptor(target: JsonlDB<ioBroker.AnyObject | ioBroker.DesignObject>, prop: string) {
                 if (!target.has(prop)) {
                     return undefined;
                 }
@@ -184,11 +189,11 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
                     value: target.get(prop),
                 };
             },
-        });
+        }) as unknown as Record<string, ioBroker.AnyObject | ioBroker.DesignObject>;
 
-        if (this.settings.backup && this.settings.backup.period && !this.settings.backup.disabled) {
+        if (this.settings.backup?.period && !this.settings.backup.disabled) {
             this._backupInterval = setInterval(() => {
-                this.saveBackup();
+                this.saveBackup().catch(e => this.log.error(`${this.namespace} Cannot save backup: ${e.message}`));
             }, this.settings.backup.period);
         }
     }
@@ -199,10 +204,15 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
      * @returns true if the file DB was migrated. false if not.
      * If this returns true, the jsonl DB was opened and doesn't need to be opened again.
      */
-    async _maybeMigrateFileDB() {
-        const jsonlFileName = path.join(this.dataDir, this.settings.jsonlDB.fileName);
-        const jsonFileName = path.join(this.dataDir, this.settings.fileDB.fileName);
-        const bakFileName = path.join(this.dataDir, `${this.settings.fileDB.fileName}.bak`);
+    async _maybeMigrateFileDB(): Promise<boolean> {
+        const jsonlName = this.settings.jsonlDB?.fileName;
+        const jsonName = this.settings.fileDB?.fileName;
+        if (!jsonlName || !jsonName) {
+            return false;
+        }
+        const jsonlFileName = path.join(this.dataDir, jsonlName);
+        const jsonFileName = path.join(this.dataDir, jsonName);
+        const bakFileName = path.join(this.dataDir, `${jsonName}.bak`);
 
         // Check the timestamps of each file, defaulting to 0 if they don't exist
         let jsonlTimeStamp = 0;
@@ -211,7 +221,7 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
         try {
             const stat = fs.statSync(jsonlFileName);
             if (stat.isFile()) {
-                jsonlTimeStamp = stat.mtime;
+                jsonlTimeStamp = stat.mtimeMs;
             }
         } catch {
             // ignore
@@ -219,7 +229,7 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
         try {
             const stat = fs.statSync(jsonFileName);
             if (stat.isFile()) {
-                jsonTimeStamp = stat.mtime;
+                jsonTimeStamp = stat.mtimeMs;
             }
         } catch {
             // ignore
@@ -227,14 +237,14 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
         try {
             const stat = fs.statSync(bakFileName);
             if (stat.isFile()) {
-                bakTimeStamp = stat.mtime;
+                bakTimeStamp = stat.mtimeMs;
             }
         } catch {
             // ignore
         }
 
         // Figure out which file needs to be imported
-        let importFilename;
+        let importFilename: string;
         if (jsonTimeStamp > 0 && jsonTimeStamp >= bakTimeStamp && jsonTimeStamp >= jsonlTimeStamp) {
             importFilename = jsonFileName;
         } else if (bakTimeStamp > 0 && bakTimeStamp >= jsonTimeStamp && bakTimeStamp >= jsonlTimeStamp) {
@@ -272,20 +282,21 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
     /**
      * Persist the state. Nothing to do here as the JSONL DB saves behind the scenes.
      */
-    async saveState() {
+    async saveState(): Promise<void> {
         // Nothing to do, the DB saves behind the scenes
     }
 
     /**
      * Regularly called to store a compressed backup of the DB
      */
-    async saveBackup() {
+    async saveBackup(): Promise<void> {
+        const jsonlFileName = this.settings.jsonlDB?.fileName;
+        if (!jsonlFileName) {
+            return;
+        }
         const now = Date.now();
-        const tmpBackupFileName = path.join(os.tmpdir(), `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}`);
-        const backupFileName = path.join(
-            this.backupDir,
-            `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}.gz`,
-        );
+        const tmpBackupFileName = path.join(os.tmpdir(), `${this.getTimeStr(now)}_${jsonlFileName}`);
+        const backupFileName = path.join(this.backupDir, `${this.getTimeStr(now)}_${jsonlFileName}.gz`);
 
         if (!this._db.isOpen) {
             this.log.warn(`${this.namespace} Cannot save backup ${backupFileName}: DB is closed`);
@@ -302,7 +313,7 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
             // and zip it
             await tools.compressFileGZip(tmpBackupFileName, backupFileName, { deleteInput: true });
             // figure out if older files need to be deleted
-            this.deleteOldBackupFiles(this.settings.jsonlDB.fileName);
+            this.deleteOldBackupFiles(jsonlFileName);
         } catch (e) {
             this.log.error(`${this.namespace} Cannot save backup ${backupFileName}: ${e.message}`);
         }
@@ -311,7 +322,7 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
     /**
      * Stop the backup interval, close the DB and clean up
      */
-    async destroy() {
+    async destroy(): Promise<void> {
         await super.destroy();
 
         if (this._backupInterval) {

@@ -6,47 +6,105 @@
  *      MIT License
  *
  */
+/// <reference types="@iobroker/types-dev" />
 
 import fs from 'fs-extra';
 import path from 'node:path';
-import { InMemoryFileDB } from '@iobroker/db-base';
+import { InMemoryFileDB, type FileDbSettings, type MetaObject } from '@iobroker/db-base';
 import { tools } from '@iobroker/db-base';
 import { objectsUtils as utils } from '@iobroker/db-objects-redis';
 import deepClone from 'deep-clone';
+
+/** Options accepted by the file access methods (or, for writes, a mime type string) */
+interface FileAccessOptions {
+    /** Access control list / permission context (cleared internally before use) */
+    acl?: {
+        owner: ioBroker.ObjectIDs.User;
+        ownerGroup: ioBroker.ObjectIDs.Group;
+        file: {
+            read?: boolean;
+            write?: boolean;
+            permissions?: number;
+        }; // 0x644
+    } | null;
+    /** User that owns a newly created file, or the user whose access is being checked */
+    user?: ioBroker.ObjectIDs.User;
+    /** Group that owns a newly created file */
+    group?: ioBroker.ObjectIDs.Group;
+    /** Groups the requesting user belongs to (used for permission checks) */
+    groups?: ioBroker.ObjectIDs.Group[];
+    /** File permission bitmask for a newly created file */
+    mode?: number;
+    /** Explicit mime type to store with the file */
+    mimeType?: string;
+    /** Bypass the in-memory file cache and read from disk */
+    noFileCache?: boolean;
+    /** Whether directory listings should be filtered by the user's permissions */
+    filter?: boolean;
+}
+
+interface Subscription {
+    pattern: string;
+    regex: RegExp;
+}
+
+interface SubscriptionClient {
+    _subscribe?: Record<string, Subscription[]>;
+}
+
+export interface FileOptions {
+    createdAt?: number;
+    acl: ioBroker.FileACL;
+    mimeType: string;
+    binary?: boolean;
+    modifiedAt?: number;
+    stats?: fs.Stats;
+}
 
 /**
  * This class inherits InMemoryFileDB class and adds all relevant logic for objects
  * including the available methods for use by js-controller directly
  */
-export class ObjectsInMemoryFileDB extends InMemoryFileDB {
+export class ObjectsInMemoryFileDB<THandler extends SubscriptionClient> extends InMemoryFileDB<
+    ioBroker.AnyObject | ioBroker.DesignObject,
+    THandler
+> {
+    private readonly META_ID = '**META**';
+    protected readonly fileOptions: { [id: string]: { [fileName: string]: FileOptions } } = {};
+    private readonly files: { [id: string]: { [fileName: string]: string | Buffer } } = {};
+    private writeTimer: NodeJS.Timeout | null = null;
+    private writeIds: string[] = [];
+    protected readonly defaultNewAcl: {
+        object: number;
+        state: number;
+        file: number;
+        owner: ioBroker.ObjectIDs.User;
+        ownerGroup: ioBroker.ObjectIDs.Group;
+    } | null;
+    private readonly writeFileInterval: number;
+    protected readonly objectsDir: string;
+    // cached meta information for file operations
+    private existingMetaObjects: Record<string, boolean> = {};
+
     /**
      * @param settings Settings for the objects database
      */
-    constructor(settings) {
-        settings ||= {};
-        settings.fileDB ||= {
+    constructor(settings: FileDbSettings<ioBroker.AnyObject | ioBroker.DesignObject>) {
+        settings.fileDB ??= {
             fileName: 'objects.json',
             backupDirName: 'backup-objects',
         };
         super(settings);
 
-        if (!this.change) {
-            this.change = id => {
-                this.log.silly(`${this.namespace} objects change: ${id} ${JSON.stringify(this.change)}`);
-            };
-        }
+        this.change ||= id => {
+            this.log.silly(`${this.namespace} objects change: ${id} ${JSON.stringify(this.change)}`);
+        };
 
-        this.META_ID = '**META**';
-        this.fileOptions = {};
-        this.files = {};
-        this.writeTimer = null;
-        this.writeIds = [];
-        this.preserveSettings = ['custom'];
         this.defaultNewAcl = this.settings.defaultNewAcl || null;
         this.namespace = this.settings.namespace || this.settings.hostname || '';
         this.writeFileInterval =
             this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
-                ? parseInt(this.settings.connection.writeFileInterval)
+                ? this.settings.connection.writeFileInterval
                 : 5_000;
         if (!settings.jsonlDB) {
             this.log.silly(`${this.namespace} Objects DB uses file write interval of ${this.writeFileInterval} ms`);
@@ -54,20 +112,9 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         this.objectsDir = path.join(this.dataDir, 'files');
 
-        // cached meta information for file operations
-        this.existingMetaObjects = {};
-
-        // Handle some < js-controller 2.0 broken objects and correct them
-        for (const obj of Object.values(this.dataset)) {
-            if (tools.isObject(obj) && obj.acl && obj.acl.permissions && !obj.acl.object) {
-                obj.acl.object = obj.acl.permissions;
-                delete obj.acl.permissions;
-            }
-        }
-
         // init default new acl
-        const configObj = this.dataset['system.config'];
-        if (configObj && configObj.common && configObj.common.defaultNewAcl) {
+        const configObj: ioBroker.SystemConfigObject = this.dataset['system.config'] as ioBroker.SystemConfigObject;
+        if (configObj?.common?.defaultNewAcl) {
             this.defaultNewAcl = deepClone(configObj.common.defaultNewAcl);
         }
     }
@@ -77,7 +124,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param name The file name to normalize
      */
-    _normalizeFilename(name) {
+    _normalizeFilename(name: string): string {
         return name ? name.replace(/[/\\]+/g, '/') : name;
     }
 
@@ -88,15 +135,19 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The object ID whose file settings should be saved, or a boolean used as the force flag
      * @param force If true, write the settings immediately instead of debounced
      */
-    _saveFileSettings(id, force) {
+    _saveFileSettings(id?: string | boolean, force?: boolean): void {
         if (typeof id === 'boolean') {
             force = id;
             id = undefined;
         }
 
-        id !== undefined && !this.writeIds.includes(id) && this.writeIds.push(id);
+        if (id !== undefined && !this.writeIds.includes(id)) {
+            this.writeIds.push(id);
+        }
 
-        this.writeTimer && clearTimeout(this.writeTimer);
+        if (this.writeTimer) {
+            clearTimeout(this.writeTimer);
+        }
 
         // if store immediately
         if (force) {
@@ -134,7 +185,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param id The object ID whose file settings should be loaded
      */
-    _loadFileSettings(id) {
+    _loadFileSettings(id: string): void {
         if (!this.fileOptions[id]) {
             const location = path.join(this.objectsDir, id, '_data.json');
             if (fs.existsSync(location)) {
@@ -172,17 +223,17 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param limitId Optional object ID to limit the synchronization to
      */
-    syncFileDirectory(limitId) {
-        const resNotifies = [];
+    syncFileDirectory(limitId?: string): { numberSuccess: number; notifications: string[] } {
+        const resNotifies: string[] = [];
         let resSynced = 0;
 
-        function getAllFiles(dir) {
-            let results = [];
+        function getAllFiles(dir: string): string[] {
+            let results: string[] = [];
             const list = fs.readdirSync(dir);
             list.forEach(file => {
                 file = `${dir}/${file}`;
                 const stat = fs.statSync(file);
-                if (stat && stat.isDirectory()) {
+                if (stat?.isDirectory()) {
                     /* Recurse into a subdirectory */
                     results = results.concat(getAllFiles(file));
                 } else {
@@ -195,7 +246,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         const res = this._getObjectView('system', 'meta', null);
 
-        // collect meta ids to generate warning if non existing
+        // collect meta ids to generate warning if non-existing
         const metaIds = res.rows.map(obj => obj.id).filter(id => !limitId || limitId === id);
 
         if (!fs.existsSync(this.objectsDir)) {
@@ -241,12 +292,10 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                     this.fileOptions[dir][localFile] = {
                         createdAt: fileStat.ctimeMs,
                         acl: {
-                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-                            ownerGroup:
-                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                            owner: this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+                            ownerGroup: this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
                             permissions:
-                                (this.defaultNewAcl && this.defaultNewAcl.file) ||
+                                this.defaultNewAcl?.file ||
                                 utils.CONSTS.ACCESS_USER_RW |
                                     utils.CONSTS.ACCESS_GROUP_READ |
                                     utils.CONSTS.ACCESS_EVERY_READ, // 0x644
@@ -260,7 +309,9 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             });
             this._saveFileSettings(dir);
             resSynced += dirSynced;
-            dirSynced && resNotifies.push(`Added ${dirSynced} Files in Directory "${dir}"`);
+            if (dirSynced) {
+                resNotifies.push(`Added ${dirSynced} Files in Directory "${dir}"`);
+            }
         });
         return {
             numberSuccess: resSynced,
@@ -276,11 +327,11 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param data The file content
      * @param options Optional write options, or the mime type as a string
      */
-    _writeFile(id, name, data, options) {
+    _writeFile(id: string, name: string, data: Buffer | string, options?: FileAccessOptions | string): void {
         if (typeof options === 'string') {
             options = { mimeType: options };
         }
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -288,11 +339,11 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         id = _path.id;
         name = _path.name;
 
-        options = options || {};
+        options ||= {};
 
         this._loadFileSettings(id);
 
-        this.files[id] = this.files[id] || {};
+        this.files[id] ||= {};
 
         try {
             if (!fs.existsSync(this.objectsDir)) {
@@ -316,25 +367,19 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         const _mimeType = mime.mimeType;
         const isBinary = mime.isBinary;
 
-        this.fileOptions[id][name] = this.fileOptions[id][name] || { createdAt: Date.now() };
-        this.fileOptions[id][name].acl = this.fileOptions[id][name].acl || {
-            owner: options.user || (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-            ownerGroup:
-                options.group ||
-                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                utils.CONSTS.SYSTEM_ADMIN_GROUP,
+        this.fileOptions[id][name] ||= { createdAt: Date.now() } as FileOptions;
+        this.fileOptions[id][name].acl ||= {
+            owner: options.user || this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+            ownerGroup: options.group || this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
             permissions:
                 options.mode ||
-                (this.defaultNewAcl && this.defaultNewAcl.file) ||
+                this.defaultNewAcl?.file ||
                 utils.CONSTS.ACCESS_USER_RW | utils.CONSTS.ACCESS_GROUP_READ | utils.CONSTS.ACCESS_EVERY_READ, // 0x644
         };
 
         this.fileOptions[id][name].mimeType = options.mimeType || _mimeType;
         this.fileOptions[id][name].binary = isBinary;
-        this.fileOptions[id][name].acl.ownerGroup =
-            this.fileOptions[id][name].acl.ownerGroup ||
-            (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-            utils.CONSTS.SYSTEM_ADMIN_GROUP;
+        this.fileOptions[id][name].acl.ownerGroup ||= this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP;
         this.fileOptions[id][name].modifiedAt = Date.now();
 
         try {
@@ -369,7 +414,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 this.publishAll('files', `${id}$%$${name}`, size);
             },
             name,
-            data.byteLength,
+            Buffer.byteLength(data),
         );
     }
 
@@ -380,8 +425,12 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param name The file name
      * @param options Optional read options
      */
-    _readFile(id, name, options) {
-        if (options && options.acl) {
+    _readFile(
+        id: string,
+        name: string,
+        options?: FileAccessOptions,
+    ): { fileContent: Buffer | string; fileMime: string } {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -389,40 +438,36 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         id = _path.id;
         name = _path.name;
 
-        options = options || {};
+        options ||= {};
         try {
             this._loadFileSettings(id);
 
-            this.files[id] = this.files[id] || {};
+            this.files[id] ||= {};
 
             if (!this.files[id][name] || this.settings.connection.noFileCache || options.noFileCache) {
                 const location = path.join(this.objectsDir, id, name);
                 if (fs.existsSync(location)) {
                     // Create description object if not exists
-                    this.fileOptions[id][name] = this.fileOptions[id][name] || {
+                    this.fileOptions[id][name] ||= {
                         acl: {
-                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-                            ownerGroup:
-                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                            owner: this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+                            ownerGroup: this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
                             permissions:
-                                (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                                this.defaultNewAcl?.file ||
                                 utils.CONSTS.ACCESS_USER_ALL |
                                     utils.CONSTS.ACCESS_GROUP_ALL |
                                     utils.CONSTS.ACCESS_EVERY_ALL, // 777
                         },
-                    };
+                    } as FileOptions;
+                    // convert from old format
                     if (typeof this.fileOptions[id][name] !== 'object') {
                         this.fileOptions[id][name] = {
-                            mimeType: this.fileOptions[id][name],
+                            mimeType: this.fileOptions[id][name] as unknown as string,
                             acl: {
-                                owner:
-                                    (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-                                ownerGroup:
-                                    (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                    utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                                owner: this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+                                ownerGroup: this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
                                 permissions:
-                                    (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                                    this.defaultNewAcl?.file ||
                                     utils.CONSTS.ACCESS_USER_ALL |
                                         utils.CONSTS.ACCESS_GROUP_ALL |
                                         utils.CONSTS.ACCESS_EVERY_ALL, // 777
@@ -438,10 +483,8 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                         this.fileOptions[id][name].mimeType = mimeType.mimeType;
                     }
 
-                    if (!this.fileOptions[id][name].binary) {
-                        if (this.files[id][name]) {
-                            this.files[id][name] = this.files[id][name].toString();
-                        }
+                    if (!this.fileOptions[id][name].binary && this.files[id][name]) {
+                        this.files[id][name] = this.files[id][name].toString();
                     }
                 } else {
                     if (this.fileOptions[id][name] !== undefined) {
@@ -456,11 +499,10 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             if (this.fileOptions[id][name] && !this.fileOptions[id][name].acl) {
                 // all files belong to admin by default, but everyone can edit it
                 this.fileOptions[id][name].acl = {
-                    owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-                    ownerGroup:
-                        (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                    owner: this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+                    ownerGroup: this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
                     permissions:
-                        (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                        this.defaultNewAcl?.file ||
                         utils.CONSTS.ACCESS_USER_ALL | utils.CONSTS.ACCESS_GROUP_ALL | utils.CONSTS.ACCESS_EVERY_RW, // 776
                 };
             }
@@ -490,7 +532,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @returns if the object exists
      */
     // needed by server
-    _objectExists(id) {
+    _objectExists(id: string): boolean {
         if (!id || typeof id !== 'string') {
             throw new Error(`invalid id ${JSON.stringify(id)}`);
         }
@@ -512,7 +554,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @returns true if the file exists
      */
     // needed by server
-    _fileExists(id, name) {
+    _fileExists(id: string, name?: string): boolean {
         if (typeof name !== 'string') {
             name = '';
         }
@@ -539,7 +581,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @returns true if the directory exists
      */
     // special functionality only for Server (used together with SyncFileDirectory)
-    dirExists(id, name) {
+    dirExists(id: string, name?: string): boolean {
         if (typeof name !== 'string') {
             name = '';
         }
@@ -564,7 +606,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The object ID owning the file
      * @param name The file or directory name to delete
      */
-    _unlink(id, name) {
+    _unlink(id: string, name: string): void {
         const _path = utils.sanitizePath(id, name);
         id = _path.id;
         name = _path.name;
@@ -590,7 +632,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 if (this.fileOptions[id]) {
                     delete this.fileOptions[id];
                 }
-                if (this.files[id] && this.files[id]) {
+                if (this.files[id]) {
                     delete this.files[id];
                 }
             } else {
@@ -602,10 +644,10 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                     throw e;
                 }
 
-                if (this.fileOptions[id][name]) {
+                if (this.fileOptions[id]?.[name]) {
                     delete this.fileOptions[id][name];
                 }
-                if (this.files[id] && this.files[id][name]) {
+                if (this.files[id]?.[name]) {
                     delete this.files[id][name];
                 }
 
@@ -634,8 +676,23 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param name The directory name to list
      * @param options Optional read options
      */
-    _readDir(id, name, options) {
-        if (options && options.acl) {
+    _readDir(
+        id: string,
+        name: string,
+        options?: FileAccessOptions,
+    ): {
+        file: string;
+        stats: {
+            size?: number;
+        };
+        isDir: boolean;
+        acl: ioBroker.EvaluatedFileACL;
+        notExists?: boolean;
+        virtualFile?: boolean;
+        modifiedAt: number | undefined;
+        createdAt: undefined | number;
+    }[] {
+        if (options?.acl) {
             options.acl = null;
         }
         if ((id === '' || id === '/' || id === '*') && (name === '' || name === '*')) {
@@ -646,9 +703,9 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             name = _path.name;
         }
 
-        options = options || {};
+        options ||= {};
         // Find all files and directories starts with name
-        const _files = [];
+        const _files: string[] = [];
 
         if (id && id === '*') {
             id = '';
@@ -662,9 +719,8 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         const len = name ? name.length : 0;
         for (const f of Object.keys(this.fileOptions[id])) {
             if (!name || f.substring(0, len) === name) {
-                let rest = f.substring(len);
-                rest = rest.split('/', 2);
-                if (rest[0] && _files.indexOf(rest[0]) === -1) {
+                const rest = f.substring(len).split('/', 2);
+                if (rest[0] && !_files.includes(rest[0])) {
                     _files.push(rest[0]);
                 }
             }
@@ -677,7 +733,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 if (dirFiles[i] === '..' || dirFiles[i] === '.') {
                     continue;
                 }
-                if (dirFiles[i] !== '_data.json' && _files.indexOf(dirFiles[i]) === -1) {
+                if (dirFiles[i] !== '_data.json' && !_files.includes(dirFiles[i])) {
                     _files.push(dirFiles[i]);
                 }
             }
@@ -686,7 +742,18 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         }
 
         _files.sort();
-        const res = [];
+        const res: {
+            file: string;
+            stats: {
+                size?: number;
+            };
+            isDir: boolean;
+            acl: ioBroker.EvaluatedFileACL;
+            modifiedAt: number | undefined;
+            createdAt: undefined | number;
+            notExists?: boolean;
+            virtualFile?: boolean;
+        }[] = [];
         for (const file of _files) {
             if (file === '..' || file === '.') {
                 continue;
@@ -694,29 +761,26 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             if (fs.existsSync(path.join(location, file))) {
                 try {
                     const stats = fs.statSync(path.join(location, file));
-                    const acl =
-                        this.fileOptions[id][name + file] && this.fileOptions[id][name + file].acl
-                            ? deepClone(this.fileOptions[id][name + file].acl) // copy settings
-                            : {
-                                  read: true,
-                                  write: true,
-                                  owner:
-                                      (this.defaultNewAcl && this.defaultNewAcl.owner) ||
-                                      utils.CONSTS.SYSTEM_ADMIN_USER,
-                                  ownerGroup:
-                                      (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                      utils.CONSTS.SYSTEM_ADMIN_GROUP,
-                                  permissions:
-                                      (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
-                                      utils.CONSTS.ACCESS_USER_RW |
-                                          utils.CONSTS.ACCESS_GROUP_READ |
-                                          utils.CONSTS.ACCESS_EVERY_READ,
-                              };
+                    const acl: ioBroker.EvaluatedFileACL = this.fileOptions[id][name + file]?.acl
+                        ? deepClone<ioBroker.EvaluatedFileACL>(
+                              this.fileOptions[id][name + file].acl as ioBroker.EvaluatedFileACL,
+                          ) // copy settings
+                        : {
+                              read: true,
+                              write: true,
+                              owner: this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+                              ownerGroup: this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                              permissions:
+                                  this.defaultNewAcl?.file ||
+                                  utils.CONSTS.ACCESS_USER_RW |
+                                      utils.CONSTS.ACCESS_GROUP_READ |
+                                      utils.CONSTS.ACCESS_EVERY_READ,
+                          };
 
                     // if filter for user
                     if (options.filter && acl) {
                         // If user may not write
-                        if (!options.acl.file.write) {
+                        if (!options.acl?.file.write) {
                             // write
                             acl.permissions &= ~(
                                 utils.CONSTS.ACCESS_USER_WRITE |
@@ -725,7 +789,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                             );
                         }
                         // If user may not read
-                        if (!options.acl.file.read) {
+                        if (!options.acl?.file.read) {
                             // read
                             acl.permissions &= ~(
                                 utils.CONSTS.ACCESS_USER_READ |
@@ -736,11 +800,11 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
                         if (
                             options.user !== utils.CONSTS.SYSTEM_ADMIN_USER &&
-                            options.groups.includes(utils.CONSTS.SYSTEM_ADMIN_GROUP)
+                            options.groups?.includes(utils.CONSTS.SYSTEM_ADMIN_GROUP)
                         ) {
                             if (acl.owner !== options.user) {
                                 // Check if the user is in the group
-                                if (options.groups.includes(acl.ownerGroup)) {
+                                if (options.groups?.includes(acl.ownerGroup)) {
                                     // Check group rights
                                     if (!(acl.permissions & utils.CONSTS.ACCESS_GROUP_RW)) {
                                         continue;
@@ -771,9 +835,9 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
                     res.push({
                         file,
-                        stats: stats,
+                        stats,
                         isDir: stats.isDirectory(),
-                        acl: acl,
+                        acl,
                         modifiedAt: this.fileOptions[id][name + file]
                             ? this.fileOptions[id][name + file].modifiedAt
                             : undefined,
@@ -801,7 +865,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param oldName The current file or directory name
      * @param newName The new file or directory name
      */
-    _rename(id, oldName, newName) {
+    _rename(id: string, oldName: string, newName: string): void {
         const _path = utils.sanitizePath(id, oldName);
         id = _path.id;
         oldName = _path.name;
@@ -839,7 +903,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param obj The object to clone
      */
-    _clone(obj) {
+    _clone<T>(obj: T): T {
         if (obj === null || obj === undefined || !tools.isObject(obj)) {
             return obj;
         }
@@ -847,7 +911,8 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         const temp = obj.constructor(); // changed
 
         for (const key of Object.keys(obj)) {
-            temp[key] = this._clone(obj[key]);
+            // @ts-expect-error known problem
+            temp[key] = this._clone<any>(obj[key]);
         }
         return temp;
     }
@@ -858,7 +923,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param client The client to subscribe
      * @param pattern The pattern of meta IDs to subscribe to
      */
-    _subscribeMeta(client, pattern) {
+    _subscribeMeta(client: THandler, pattern: string): void {
         this.handleSubscribe(client, 'meta', pattern);
     }
 
@@ -868,7 +933,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param client The client to subscribe
      * @param pattern The pattern of object IDs to subscribe to
      */
-    _subscribeConfigForClient(client, pattern) {
+    _subscribeConfigForClient(client: THandler, pattern: string): void {
         this.handleSubscribe(client, 'objects', pattern);
     }
 
@@ -878,8 +943,11 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param client The client to unsubscribe
      * @param pattern The pattern of object IDs to unsubscribe from
      */
-    _unsubscribeConfigForClient(client, pattern) {
-        this.handleUnsubscribe(client, 'objects', pattern); // ignore options => unsubscribe may everyone
+    _unsubscribeConfigForClient(client: THandler, pattern: string): void {
+        // ignore options => unsubscribe may everyone
+        (this.handleUnsubscribe(client, 'objects', pattern) as Promise<void>).catch(e =>
+            this.log.error(`${this.namespace} Cannot unsubscribe client from objects: ${e.message}`),
+        );
     }
 
     /**
@@ -889,7 +957,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The object ID owning the files
      * @param pattern One or more file name patterns to subscribe to
      */
-    _subscribeFileForClient(client, id, pattern) {
+    _subscribeFileForClient(client: THandler, id: string, pattern: string | string[]): void {
         if (Array.isArray(pattern)) {
             pattern.forEach(pattern => this.handleSubscribe(client, 'files', `${id}$%$${pattern}`));
         } else {
@@ -904,11 +972,13 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The object ID owning the files
      * @param pattern One or more file name patterns to unsubscribe from
      */
-    _unsubscribeFileForClient(client, id, pattern) {
+    _unsubscribeFileForClient(client: THandler, id: string, pattern: string | string[]): void {
         if (Array.isArray(pattern)) {
             pattern.forEach(pattern => this.handleUnsubscribe(client, 'files', `${id}$%$${pattern}`));
         } else {
-            this.handleUnsubscribe(client, 'files', `${id}$%$${pattern}`);
+            (this.handleUnsubscribe(client, 'files', `${id}$%$${pattern}`) as Promise<void>).catch(e =>
+                this.log.error(`${this.namespace} Cannot unsubscribe client from files: ${e.message}`),
+            );
         }
     }
 
@@ -917,7 +987,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param id The object ID to read
      */
-    _getObject(id) {
+    _getObject(id: string): ioBroker.AnyObject | ioBroker.DesignObject | MetaObject | undefined {
         return this.dataset[id];
     }
 
@@ -926,7 +996,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param pattern The pattern to match object IDs against
      */
-    _getKeys(pattern) {
+    _getKeys(pattern: string): string[] {
         const r = new RegExp(tools.pattern2RegEx(pattern));
         const result = Object.keys(this.dataset).filter(id => r.test(id) && id !== this.META_ID);
         result.sort();
@@ -938,19 +1008,19 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param keys The object IDs to read
      */
-    _getObjects(keys) {
+    _getObjects(keys: (string | null)[]): (ioBroker.AnyObject | ioBroker.DesignObject | MetaObject | undefined)[] {
         if (!keys) {
             throw new Error('no keys');
         }
 
-        return keys.map(id => this.dataset[id]);
+        return keys.map(id => (id ? this.dataset[id] : undefined));
     }
 
     /**
      * Get the meta dictionary, creating it if it does not exist yet
      */
-    _ensureMetaDict() {
-        let meta = this.dataset[this.META_ID];
+    _ensureMetaDict(): MetaObject {
+        let meta = this.dataset[this.META_ID] as MetaObject;
         if (!meta) {
             meta = {};
             this.dataset[this.META_ID] = meta;
@@ -964,7 +1034,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The meta ID to read
      * @returns the stored meta value
      */
-    getMeta(id) {
+    getMeta(id: string): string {
         const meta = this._ensureMetaDict();
         return meta[id];
     }
@@ -975,7 +1045,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The meta ID to write
      * @param value The value to store
      */
-    setMeta(id, value) {
+    setMeta(id: string, value: string): void {
         const meta = this._ensureMetaDict();
         meta[id] = value;
         // Make sure the object gets re-written, especially when using an external DB
@@ -987,9 +1057,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             this.publishAll('meta', id, value);
         });
 
-        if (!this.stateTimer) {
-            this.stateTimer = setTimeout(() => this.saveState(), this.writeFileInterval);
-        }
+        this.stateTimer ||= setTimeout(() => this.saveState(), this.writeFileInterval);
     }
 
     /**
@@ -998,7 +1066,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param id The object ID to set
      * @param obj The object to store
      */
-    _setObjectDirect(id, obj) {
+    _setObjectDirect(id: string, obj: ioBroker.AnyObject | ioBroker.DesignObject | MetaObject): void {
         this.dataset[id] = obj;
 
         // object updated -> if type changed to meta -> cache
@@ -1008,7 +1076,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         setImmediate(() => this.publishAll('objects', id, obj));
 
-        this.stateTimer = this.stateTimer || setTimeout(() => this.saveState(), this.writeFileInterval);
+        this.stateTimer ||= setTimeout(() => this.saveState(), this.writeFileInterval);
     }
 
     /**
@@ -1016,14 +1084,14 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      *
      * @param id unique id of the object
      */
-    _delObject(id) {
+    _delObject(id: string): void {
         const obj = this.dataset[id];
         if (!obj) {
             // Not existent, so goal reached :-)
             return;
         }
 
-        if (obj.common?.dontDelete) {
+        if ((obj.common as ioBroker.ObjectCommon)?.dontDelete) {
             throw new Error('Object is marked as non deletable');
         }
 
@@ -1047,14 +1115,42 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param func The view definition containing the map function
      * @param params Query parameters such as startkey and endkey
      */
-    _applyView(func, params) {
-        const result = {
+    _applyView(
+        func: {
+            map: string;
+            reduce?: '_stats';
+        },
+        params?: {
+            startkey?: string;
+            endkey?: string;
+            include_docs?: boolean;
+        } | null,
+    ): {
+        rows: {
+            id: string;
+            value:
+                | ioBroker.AnyObject
+                | ioBroker.DesignObject
+                | MetaObject
+                | { max: ioBroker.AnyObject | ioBroker.DesignObject | MetaObject | null };
+        }[];
+    } {
+        const result: {
+            rows: {
+                id: string;
+                value:
+                    | ioBroker.AnyObject
+                    | ioBroker.DesignObject
+                    | MetaObject
+                    | { max: ioBroker.AnyObject | ioBroker.DesignObject | MetaObject | null };
+            }[];
+        } = {
             rows: [],
         };
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        function _emit_(id, obj) {
-            result.rows.push({ id: id, value: obj });
+        function _emit_(id: string, value: ioBroker.AnyObject | ioBroker.DesignObject | MetaObject): void {
+            result.rows.push({ id, value });
         }
 
         const f = eval(`(${func.map.replace(/emit/g, '_emit_')})`);
@@ -1079,14 +1175,14 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         }
         // Calculate max
         if (func.reduce === '_stats') {
-            let max = null;
+            let max: ioBroker.AnyObject | ioBroker.DesignObject | MetaObject | null = null;
             for (const row of result.rows) {
                 if (max === null || row.value > max) {
-                    max = row.value;
+                    max = row.value as ioBroker.AnyObject | ioBroker.DesignObject | MetaObject;
                 }
             }
             if (max !== null) {
-                result.rows = [{ id: '_stats', value: { max: max } }];
+                result.rows = [{ id: '_stats', value: { max } }];
             } else {
                 result.rows = [];
             }
@@ -1102,13 +1198,30 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param search The view name within the design document
      * @param params Query parameters such as startkey and endkey
      */
-    _getObjectView(design, search, params) {
-        const designObj = this.dataset[`_design/${design}`];
+    _getObjectView(
+        design: string,
+        search: string,
+        params?: {
+            startkey?: string;
+            endkey?: string;
+            include_docs?: boolean;
+        } | null,
+    ): {
+        rows: {
+            id: string;
+            value:
+                | ioBroker.AnyObject
+                | ioBroker.DesignObject
+                | MetaObject
+                | { max: ioBroker.AnyObject | ioBroker.DesignObject | MetaObject | null };
+        }[];
+    } {
+        const designObj: ioBroker.DesignObject = this.dataset[`_design/${design}`] as ioBroker.DesignObject;
         if (!designObj) {
             this.log.error(`${this.namespace} Cannot find view "${design}"`);
             throw new Error(`Cannot find view "${design}"`);
         }
-        if (!(designObj.views && designObj.views[search])) {
+        if (!designObj.views?.[search]) {
             this.log.warn(`${this.namespace} Cannot find search "${search}" in "${design}"`);
             throw new Error(`Cannot find search "${search}" in "${design}"`);
         }
@@ -1118,7 +1231,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Destructor of the class. Called by shutting down.
      */
-    async destroy() {
+    async destroy(): Promise<void> {
         await super.destroy();
 
         this._saveFileSettings(true);

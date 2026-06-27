@@ -9,8 +9,9 @@ import {
     isLocalStatesDbServer,
     isLocalObjectsDbServer,
     getInstancesOrderedByStartPrio,
+    tools,
+    EXIT_CODES,
 } from '@iobroker/js-controller-common';
-import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import * as CLI from '@/lib/cli/messages.js';
 import { CLICommand } from '@/lib/cli/cliCommand.js';
 import { getObjectFrom, getInstanceName, normalizeAdapterName, enumInstances } from '@/lib/cli/cliTools.js';
@@ -42,7 +43,7 @@ export class CLIProcess extends CLICommand {
      *
      * @param args parsed cli arguments
      */
-    async start(args: any[]): Promise<void> {
+    async start(args: string[]): Promise<void> {
         const adapterName = normalizeAdapterName(args[0]);
         if (!adapterName) {
             await this.startJSController();
@@ -61,7 +62,7 @@ export class CLIProcess extends CLICommand {
      *
      * @param args parsed cli arguments
      */
-    async restart(args: any[]): Promise<void> {
+    async restart(args: string[]): Promise<void> {
         const adapterName = normalizeAdapterName(args[0]);
         if (!adapterName) {
             await this.restartJSController();
@@ -78,7 +79,7 @@ export class CLIProcess extends CLICommand {
      *
      * @param args parsed cli arguments
      */
-    async stop(args: any[]): Promise<void> {
+    async stop(args: string[]): Promise<void> {
         const adapterName = normalizeAdapterName(args[0]);
         if (adapterName === undefined) {
             await CLIProcess.stopJSController();
@@ -275,7 +276,7 @@ export class CLIProcess extends CLICommand {
      *
      * @param args parsed cli arguments
      */
-    status(args: any[]): void {
+    status(args: string[]): void {
         const { callback, dbConnect } = this.options;
         const adapterName = normalizeAdapterName(args[0]);
         const showEntireConfig = adapterName === 'all';
@@ -375,7 +376,7 @@ function showConfig(config: ioBroker.IoBrokerJson, root?: string[]): void {
     if (!tools.isObject(config)) {
         return;
     }
-    root = root || [];
+    root ||= [];
     const prefix = root.join('/').toUpperCase();
     for (const attr of Object.keys(config)) {
         if (attr.match(/comment$/i)) {

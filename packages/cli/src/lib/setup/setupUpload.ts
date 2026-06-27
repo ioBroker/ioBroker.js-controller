@@ -368,8 +368,8 @@ export class Upload {
      * @param files The files to delete
      * @param logger Logger used to report errors
      */
-    async eraseFiles(files: any[], logger: MinimalLogger | typeof console): Promise<void> {
-        if (files && files.length) {
+    async eraseFiles(files: File[], logger: MinimalLogger | typeof console): Promise<void> {
+        if (files?.length) {
             for (const file of files) {
                 try {
                     await this.objects.unlinkAsync(file.adapter, file.path);

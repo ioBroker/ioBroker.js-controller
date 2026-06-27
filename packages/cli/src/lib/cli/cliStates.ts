@@ -4,6 +4,7 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import * as CLI from '@/lib/cli/messages.js';
 import { formatValue } from '@/lib/cli/cliTools.js';
 import * as rl from 'readline-sync';
+import { getLogger } from '@iobroker/js-controller-common-db/tools';
 
 const ALIAS_STARTS_WITH = 'alias.';
 
@@ -29,7 +30,7 @@ export class CLIStates extends CLICommand<CLIStatesOptions> {
      *
      * @param args parsed cli args
      */
-    execute(args: any[]): void {
+    execute(args: string[]): void {
         const { callback, pretty, showHelp } = this.options;
         const command = args[0];
         let resultTransform: ResultTransform;
@@ -106,7 +107,7 @@ export class CLIStates extends CLICommand<CLIStatesOptions> {
             }
 
             try {
-                await states.setProtocolVersion(this.options.version);
+                await states.setProtocolVersion(this.options.version as number);
             } catch (e) {
                 console.error(`Cannot update protocol version: ${e.message}`);
                 return void callback(1);
@@ -135,7 +136,7 @@ export class CLIStates extends CLICommand<CLIStatesOptions> {
      * @param args parsed cli arguments
      * @param resultTransform transform function for result
      */
-    get_(args: any[], resultTransform: ResultTransform): void {
+    get_(args: string[], resultTransform: ResultTransform): void {
         const { callback, dbConnect } = this.options;
         const id = args[1];
 
@@ -171,7 +172,7 @@ export class CLIStates extends CLICommand<CLIStatesOptions> {
                                         sourceCommon: sourceObj?.common as ioBroker.StateCommon | undefined,
                                         targetCommon: targetObj.common as ioBroker.StateCommon,
                                         state,
-                                        logger: console,
+                                        logger: getLogger(),
                                         logNamespace: '',
                                         sourceId: sourceObj?._id,
                                         targetId: targetObj._id,
@@ -213,7 +214,7 @@ export class CLIStates extends CLICommand<CLIStatesOptions> {
      *
      * @param args parsed cli arguments
      */
-    set_(args: any[]): void {
+    set_(args: string[]): void {
         const { callback, dbConnect, showHelp, value, ack: ackArg, id } = this.options;
         const force = args.includes('--force') || args.includes('-f');
 
@@ -284,7 +285,7 @@ export class CLIStates extends CLICommand<CLIStatesOptions> {
                                     sourceCommon: obj.common as ioBroker.StateCommon,
                                     targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
                                     state: newVal as ioBroker.State,
-                                    logger: console,
+                                    logger: getLogger(),
                                     logNamespace: '',
                                     sourceId: obj._id,
                                     targetId: targetObj?._id,
@@ -354,7 +355,7 @@ export class CLIStates extends CLICommand<CLIStatesOptions> {
      *
      * @param args parsed cli arguments
      */
-    delete(args: any[]): void {
+    delete(args: string[]): void {
         const { callback, dbConnect } = this.options;
         const id: string = args[1];
         if (!id) {

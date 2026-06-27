@@ -50,6 +50,11 @@
             "require": "./build/cjs/index.js",
             "types": "./build/esm/index.d.ts"
         },
+        "./validator": {
+            "import": "./build/esm/lib/adapter/validator.js",
+            "require": "./build/cjs/lib/adapter/validator.js",
+            "types": "./build/esm/lib/adapter/validator.d.ts"
+        },
         "./package.json": "./package.json"
     },
     "main": "build/cjs/index.js",
