@@ -1,23 +1,24 @@
 /**
  *      Objects DB in memory - Server with Redis protocol
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
+/// <reference types="@iobroker/types-dev" />
 
 import net from 'node:net';
 import fs from 'fs-extra';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { objectsUtils as utils } from '@iobroker/db-objects-redis';
-import { tools } from '@iobroker/db-base';
-import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
 
-import { RedisHandler, type ConnectionOptions } from '@iobroker/db-base';
-import { ObjectsInMemoryJsonlDB } from './objectsInMemJsonlDB.js';
+import { objectsUtils as utils } from '@iobroker/db-objects-redis';
+import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
+import { RedisHandler, type ConnectionOptions, type FileDbSettings, type MetaObject, tools } from '@iobroker/db-base';
 import { EXIT_CODES } from '@iobroker/js-controller-common-db';
+
+import { ObjectsInMemoryJsonlDB } from './objectsInMemJsonlDB.js';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -39,13 +40,21 @@ import { EXIT_CODES } from '@iobroker/js-controller-common-db';
 //    host: localhost
 // };
 //
-
+type RedisHandlerInternal = RedisHandler & {
+    _subscribe?: Record<
+        string,
+        {
+            pattern: string;
+            regex: RegExp;
+        }[]
+    >;
+};
 /**
  * This class inherits statesInMemoryJsonlDB class and adds redis communication layer
  * to access the methods via redis protocol
  */
-export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
-    private readonly serverConnections: Record<string, RedisHandler> = {};
+export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB<RedisHandlerInternal> {
+    private readonly serverConnections: Record<string, RedisHandlerInternal> = {};
     private readonly namespaceObjects: string;
     private readonly namespaceFile: string;
     private readonly namespaceObj: string;
@@ -55,7 +64,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
     private readonly namespaceObjLen: number;
     private readonly namespaceMeta: string;
     private readonly namespaceMetaLen: number;
-    private readonly knownScripts: Record<string, any> = {};
+    private readonly knownScripts: Record<
+        string,
+        { design?: string; search?: string; redlock?: boolean; func?: string }
+    > = {};
     private readonly normalizeFileRegex1: RegExp;
     private readonly normalizeFileRegex2: RegExp;
     private server: net.Server | undefined;
@@ -65,8 +77,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      *
      * @param settings State and InMem-DB settings
      */
-    constructor(settings: Record<string, any>) {
+    constructor(settings: FileDbSettings<ioBroker.AnyObject | ioBroker.DesignObject>) {
         super(settings);
+
         this.namespaceObjects = `${
             this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg'
         }.`;
@@ -80,8 +93,6 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         this.namespaceObjLen = this.namespaceObj.length;
         this.namespaceMeta = `${this.settings.namespaceMeta || 'meta'}.`;
         this.namespaceMetaLen = this.namespaceMeta.length;
-
-        this.knownScripts = {};
 
         this.normalizeFileRegex1 = new RegExp('^(.*)\\$%\\$(.*)\\$%\\$(meta|data)$');
         this.normalizeFileRegex2 = new RegExp('^(.*)\\$%\\$(.*)\\/?\\*$');
@@ -116,25 +127,17 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      * @returns Object with namespace and the
      *                                                      ID/Array of IDs without the namespace
      */
-    _normalizeId(idWithNamespace: string | string[]): {
-        id: any;
+    _normalizeId(idWithNamespace: string): {
+        id: string | null;
         namespace: string;
         name: string;
         isMeta: boolean | undefined;
     } {
         let ns = this.namespaceObjects;
-        let id = null;
+        let id: string | null = null;
         let name = '';
         let isMeta;
-        if (Array.isArray(idWithNamespace)) {
-            const ids: string[] = [];
-            idWithNamespace.forEach(el => {
-                const { id, namespace } = this._normalizeId(el);
-                ids.push(id);
-                ns = namespace; // we ignore the pot. case from arrays with different namespaces
-            });
-            id = ids;
-        } else if (typeof idWithNamespace === 'string') {
+        if (typeof idWithNamespace === 'string') {
             id = idWithNamespace;
             if (idWithNamespace.startsWith(this.namespaceObjects)) {
                 let idx = -1;
@@ -188,17 +191,22 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      * @param obj Object to publish
      * @returns Publish counter 0 or 1 depending on if send out or not
      */
-    publishToClients(client: any, type: string, id: string, obj: any): number {
-        if (!client._subscribe || !client._subscribe[type]) {
+    publishToClients(
+        client: RedisHandlerInternal,
+        type: string,
+        id: string,
+        obj: ioBroker.AnyObject | ioBroker.DesignObject,
+    ): number {
+        if (!client._subscribe?.[type]) {
             return 0;
         }
         const s = client._subscribe[type];
 
-        const found = s.find((sub: any) => sub.regex.test(id));
+        const found = s.find(sub => sub.regex.test(id));
 
         if (found) {
             if (type === 'meta') {
-                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
+                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${JSON.stringify(obj)}`);
                 const sendPattern = this.namespaceMeta + found.pattern;
                 const sendId = this.namespaceMeta + id;
                 client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
@@ -280,7 +288,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             if (data[0] === 'exists') {
                 data.shift();
                 const scripts: number[] = [];
-                data.forEach((checksum: any) => scripts.push(this.knownScripts[checksum] ? 1 : 0));
+                data.forEach((checksum: string) => scripts.push(this.knownScripts[checksum] ? 1 : 0));
                 handler.sendArray(responseId, scripts);
             } else if (data[0] === 'load') {
                 const shasum = crypto.createHash('sha1');
@@ -290,15 +298,15 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
 
                 const scriptDesign = data[1].match(/^-- design: ([a-z0-9A-Z-.]+)\s/m);
                 const scriptFunc = data[1].match(/^-- func: (.+)$/m);
-                if (scriptDesign && scriptDesign[1]) {
+                if (scriptDesign?.[1]) {
                     const design = scriptDesign[1];
                     let search = null;
                     const scriptSearch = data[1].match(/^-- search: ([a-z0-9A-Z-.]*)\s/m);
-                    if (scriptSearch && scriptSearch[1]) {
+                    if (scriptSearch?.[1]) {
                         search = scriptSearch[1];
                     }
 
-                    this.knownScripts[scriptChecksum] = { design: design, search: search };
+                    this.knownScripts[scriptChecksum] = { design, search };
                     if (this.settings.connection.enhancedLogging) {
                         this.log.silly(
                             `${namespaceLog} Register View LUA Script: ${scriptChecksum} = ${JSON.stringify(
@@ -307,7 +315,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                         );
                     }
                     handler.sendBulk(responseId, scriptChecksum);
-                } else if (scriptFunc && scriptFunc[1]) {
+                } else if (scriptFunc?.[1]) {
                     this.knownScripts[scriptChecksum] = { func: scriptFunc[1] };
                     if (this.settings.connection.enhancedLogging) {
                         this.log.silly(
@@ -358,7 +366,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     }
                     let objs;
                     try {
-                        objs = this._getObjectView(scriptDesign, scriptSearch, {
+                        objs = this._getObjectView(scriptDesign!, scriptSearch, {
                             startkey: data[3],
                             endkey: data[4],
                             include_docs: true,
@@ -370,11 +378,13 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                         );
                     }
 
-                    const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
+                    const res = objs.rows.map(obj =>
+                        JSON.stringify(this.dataset[(obj.value as ioBroker.AnyObject)._id || obj.id]),
+                    );
                     handler.sendArray(responseId, res);
                 }
             } else if (this.knownScripts[data[0]].func && data.length > 4) {
-                const scriptFunc = { map: this.knownScripts[data[0]].func.replace('%1', data[5]) };
+                const scriptFunc = { map: this.knownScripts[data[0]].func!.replace('%1', data[5]) };
                 if (this.settings.connection.enhancedLogging) {
                     this.log.silly(`${namespaceLog} Script transformed into _applyView: func=${scriptFunc.map}`);
                 }
@@ -383,7 +393,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     endkey: data[4],
                     include_docs: true,
                 });
-                const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
+                const res = objs.rows.map(obj =>
+                    JSON.stringify(this.dataset[(obj.value as ioBroker.AnyObject)._id || obj.id]),
+                );
 
                 return void handler.sendArray(responseId, res);
             } else if (this.knownScripts[data[0]].redlock) {
@@ -401,7 +413,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             if (
                 namespace === this.namespaceObj ||
                 namespace === this.namespaceMeta ||
-                namespace === this.namespaceFile
+                namespace === this.namespaceFile ||
+                !id
             ) {
                 // a "set" always comes afterwards, so do not publish
                 return void handler.sendInteger(responseId, 0); // do not publish for now
@@ -411,15 +424,15 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         });
 
         // Handle Redis "MGET" requests
-        handler.on('mget', (data, responseId) => {
-            if (!data || !data.length) {
+        handler.on('mget', (data, responseId: number) => {
+            if (!data?.length) {
                 return void handler.sendArray(responseId, []);
             }
             const { namespace, isMeta } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
-                const keys: any[] = [];
-                data.forEach((dataId: any) => {
+                const keys: (string | null)[] = [];
+                data.forEach((dataId: string) => {
                     const { id, namespace } = this._normalizeId(dataId);
                     if (namespace !== this.namespaceObj) {
                         keys.push(null);
@@ -430,21 +443,21 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     }
                     keys.push(id);
                 });
-                let result;
+                let result: (ioBroker.AnyObject | ioBroker.DesignObject | MetaObject | undefined)[];
                 try {
                     result = this._getObjects(keys);
                 } catch (err) {
                     return void handler.sendError(responseId, new Error(`ERROR _getObjects: ${err.message}`));
                 }
-                result = result.map(el => (el ? JSON.stringify(el) : null));
-                handler.sendArray(responseId, result);
+                const resultStr: (string | null)[] = result.map(el => (el ? JSON.stringify(el) : null));
+                handler.sendArray(responseId, resultStr);
             } else if (namespace === this.namespaceFile) {
-                // Handle request for Meta data for files
+                // Handle request for Metadata for files
                 if (isMeta) {
-                    const response: any[] = [];
-                    data.forEach((dataId: any) => {
+                    const response: (string | null)[] = [];
+                    data.forEach((dataId: string) => {
                         const { id, namespace, name } = this._normalizeId(dataId);
-                        if (namespace !== this.namespaceFile) {
+                        if (namespace !== this.namespaceFile || !id) {
                             response.push(null);
                             this.log.warn(
                                 `${namespaceLog} Got MGET request for non File ID in File-ID chunk for ${dataId}`,
@@ -452,7 +465,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                             return;
                         }
                         this._loadFileSettings(id);
-                        if (!this.fileOptions[id] || !this.fileOptions[id][name]) {
+                        if (!this.fileOptions[id]?.[name]) {
                             response.push(null);
                             return;
                         }
@@ -486,6 +499,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         // Handle Redis "GET" requests
         handler.on('get', (data, responseId) => {
             const { id, namespace, name, isMeta } = this._normalizeId(data[0]);
+            if (!id) {
+                handler.sendNull(responseId);
+                return;
+            }
 
             if (namespace === this.namespaceObj) {
                 const result = this._getObject(id);
@@ -495,7 +512,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     handler.sendBulk(responseId, JSON.stringify(result));
                 }
             } else if (namespace === this.namespaceFile) {
-                // Handle request for Meta data for files
+                // Handle request for Metadata for files
                 if (isMeta) {
                     let stats;
                     try {
@@ -514,7 +531,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                         );
                     }
                     this._loadFileSettings(id);
-                    if (!this.fileOptions[id] || !this.fileOptions[id][name]) {
+                    if (!this.fileOptions[id]?.[name]) {
                         return void handler.sendNull(responseId);
                     }
 
@@ -523,13 +540,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                         obj = {
                             mimeType: obj,
                             acl: {
-                                owner:
-                                    (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-                                ownerGroup:
-                                    (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                    utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                                owner: this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+                                ownerGroup: this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
                                 permissions:
-                                    (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                                    this.defaultNewAcl?.file ||
                                     utils.CONSTS.ACCESS_USER_ALL |
                                         utils.CONSTS.ACCESS_GROUP_ALL |
                                         utils.CONSTS.ACCESS_EVERY_ALL, // 777
@@ -540,7 +554,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     handler.sendBulk(responseId, JSON.stringify(obj));
                 } else {
                     // Handle request for File data
-                    let data;
+                    let data: { fileContent: Buffer | string; fileMime: string };
                     try {
                         data = this._readFile(id, name);
                     } catch {
@@ -551,7 +565,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     }
                     let fileData = data.fileContent;
                     if (!Buffer.isBuffer(fileData) && tools.isObject(fileData)) {
-                        // if its an invalid object, stringify it and log warning
+                        // if it's an invalid object, stringify it and log warning
                         fileData = JSON.stringify(fileData);
                         this.log.warn(
                             `${namespaceLog} Data of "${id}/${name}" has invalid structure at file data request: ${fileData}`,
@@ -583,10 +597,16 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         // Handle Redis "SET" requests
         handler.on('set', (data, responseId) => {
             const { id, namespace, name, isMeta } = this._normalizeId(data[0]);
+            if (!id) {
+                handler.sendNull(responseId);
+                return;
+            }
 
             if (namespace === this.namespaceObj) {
                 try {
-                    const obj = JSON.parse(data[1].toString('utf-8'));
+                    const obj: ioBroker.AnyObject | ioBroker.DesignObject | MetaObject = JSON.parse(
+                        data[1].toString('utf-8'),
+                    );
                     this._setObjectDirect(id, obj);
                 } catch (err) {
                     return void handler.sendError(responseId, new Error(`ERROR setObject id=${id}: ${err.message}`));
@@ -651,8 +671,11 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                         new Error('ERROR renameObject: id needs to stay the same'),
                     );
                 }
+                if (oldDetails.id === null) {
+                    return void handler.sendError(responseId, new Error(`ERROR renameObject: invalid ID ${data[0]}`));
+                }
 
-                // Handle request for Meta data for files
+                // Handle request for Metadata for files
                 if (oldDetails.isMeta) {
                     handler.sendString(responseId, 'OK');
                 } else {
@@ -676,6 +699,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         handler.on('del', (data, responseId) => {
             const { id, namespace, name, isMeta } = this._normalizeId(data[0]);
 
+            if (!id) {
+                return void handler.sendError(responseId, new Error(`ID is null: ${data[0]}`));
+            }
             if (namespace === this.namespaceObj) {
                 try {
                     this._delObject(id);
@@ -712,7 +738,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
 
             // Note: we only simulate single key existence check
             const { id, namespace, name } = this._normalizeId(data[0]);
-
+            if (!id) {
+                return void handler.sendError(responseId, new Error(`ID is null: ${data[0]}`));
+            }
             if (namespace === this.namespaceObj) {
                 let exists;
                 try {
@@ -780,7 +808,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         // Handle Redis "PSUBSCRIBE" request for state, log and session namespace
         handler.on('psubscribe', (data, responseId) => {
             const { id, namespace, name } = this._normalizeId(data[0]);
-
+            if (!id) {
+                return void handler.sendError(responseId, new Error(`ID is null: ${data[0]}`));
+            }
             if (namespace === this.namespaceObj) {
                 this._subscribeConfigForClient(handler, id);
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
@@ -801,7 +831,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         // Handle Redis "UNSUBSCRIBE" request for state, log and session namespace
         handler.on('punsubscribe', (data, responseId) => {
             const { id, namespace, name } = this._normalizeId(data[0]);
-
+            if (!id) {
+                return void handler.sendError(responseId, new Error(`ID is null: ${data[0]}`));
+            }
             if (namespace === this.namespaceObj) {
                 this._unsubscribeConfigForClient(handler, id);
                 handler.sendArray(responseId, ['punsubscribe', data[0], 1]);
@@ -906,12 +938,16 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      *
      * @param handler RedisHandler instance
      * @param pattern - pattern without namespace prefix
-     * @param responseId - Id where response will be sent to
+     * @param responseId - ID where response will be sent to
      * @param isScan - if used by "SCAN" this flag should be true
      */
-    _handleScanOrKeys(handler: RedisHandler, pattern: string, responseId: any, isScan = false): void {
+    _handleScanOrKeys(handler: RedisHandler, pattern: string, responseId: number, isScan = false): void {
         const { id, namespace, name, isMeta } = this._normalizeId(pattern);
 
+        // `_normalizeId` returns id === '' for a full-DB enumeration; only `null` means "no id".
+        if (id === null) {
+            return void handler.sendError(responseId, new Error(`ID is null in ${pattern}`));
+        }
         let response: string[] = [];
         if (namespace === this.namespaceObj || namespace === this.namespaceObjects) {
             try {
@@ -920,7 +956,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                 return void handler.sendError(responseId, e);
             }
 
-            // if scan, we send the cursor as first argument
+            // if "scan", we send the cursor as first argument
             if (namespace !== this.namespaceObjects) {
                 // When it was not the full DB namespace send out response
                 return void handler.sendArray(responseId, isScan ? ['0', response] : response);
@@ -933,15 +969,26 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                 return handler.sendArray(responseId, isScan ? ['0', []] : []); // send out file or full db response
             }
 
-            // Handle request to get meta data keys
-            let res;
+            // Handle request to get metadata keys
+            let res: {
+                file: string;
+                stats: {
+                    size?: number;
+                };
+                isDir: boolean;
+                acl?: ioBroker.EvaluatedFileACL;
+                notExists?: boolean;
+                virtualFile?: boolean;
+                modifiedAt?: number | undefined;
+                createdAt?: undefined | number;
+            }[];
             try {
                 res = this._readDir(id, name);
                 if (!res || !res.length) {
                     res = [
                         {
                             file: '_data.json',
-                            stats: {},
+                            stats: {} as fs.Stats,
                             isDir: false,
                             virtualFile: true,
                             notExists: true,
@@ -968,7 +1015,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                         arr.file += '/_data.json'; // We return a "virtual file" to mark the directory as existing
                     }
                 }
-                // We need to simulate the Meta data here, so return both
+                // We need to simulate the Metadata here, so return both
                 response.push(this.getFileId(entryId, baseName + arr.file, true));
                 response.push(this.getFileId(entryId, baseName + arr.file, false));
             });

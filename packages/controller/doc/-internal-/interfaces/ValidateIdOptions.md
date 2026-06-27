@@ -6,7 +6,9 @@
 
 # Interface: ValidateIdOptions
 
-Defined in: [adapter/src/lib/adapter/validator.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/adapter/validator.ts#L8)
+Defined in: [adapter/src/lib/adapter/validator.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/adapter/validator.ts#L9)
+
+Options for validating an object/state id
 
 ## Properties
 
@@ -14,7 +16,7 @@ Defined in: [adapter/src/lib/adapter/validator.ts:8](https://github.com/ioBroker
 
 > `optional` **maintenance?**: `boolean`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/adapter/validator.ts#L10)
+Defined in: [adapter/src/lib/adapter/validator.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/adapter/validator.ts#L11)
 
 in maintenance mode, we can access invalid ids to delete them, only works with the admin user
 
@@ -24,6 +26,6 @@ in maintenance mode, we can access invalid ids to delete them, only works with t
 
 > `optional` **user?**: `string`
 
-Defined in: [adapter/src/lib/adapter/validator.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/adapter/validator.ts#L12)
+Defined in: [adapter/src/lib/adapter/validator.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/adapter/validator.ts#L13)
 
 User used to check for access rights

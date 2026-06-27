@@ -16,8 +16,8 @@ import { tools } from '@iobroker/db-base';
 import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
 import { EXIT_CODES } from '@iobroker/js-controller-common-db';
 
-import { RedisHandler, type ConnectionOptions } from '@iobroker/db-base';
-import { ObjectsInMemoryFileDB } from './objectsInMemFileDB.js';
+import { RedisHandler, type ConnectionOptions, type FileDbSettings } from '@iobroker/db-base';
+import { type FileOptions, ObjectsInMemoryFileDB } from './objectsInMemFileDB.js';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -39,12 +39,21 @@ import { ObjectsInMemoryFileDB } from './objectsInMemFileDB.js';
 //    host: localhost
 // };
 //
+type RedisHandlerInternal = RedisHandler & {
+    _subscribe?: Record<
+        string,
+        {
+            pattern: string;
+            regex: RegExp;
+        }[]
+    >;
+};
 
 /**
  * This class inherits statesInMemoryFileDB class and adds redis communication layer
  * to access the methods via redis protocol
  */
-export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
+export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInternal> {
     private readonly serverConnections: Record<string, RedisHandler> = {};
     private readonly namespaceObjects: string;
     private readonly namespaceFile: string;
@@ -55,7 +64,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
     private readonly namespaceObjLen: number;
     private readonly namespaceMeta: string;
     private readonly namespaceMetaLen: number;
-    private readonly knownScripts: Record<string, any> = {};
+    private readonly knownScripts: Record<
+        string,
+        { design?: string; search?: string; redlock?: boolean; func?: string }
+    > = {};
     private readonly normalizeFileRegex1: RegExp;
     private readonly normalizeFileRegex2: RegExp;
     private server: net.Server | undefined;
@@ -65,12 +77,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
      *
      * @param settings State and InMem-DB settings
      */
-    constructor(settings: Record<string, any>) {
+    constructor(settings: FileDbSettings<ioBroker.AnyObject>) {
         super(settings);
 
-        this.namespaceObjects = `${
-            this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg'
-        }.`;
+        this.namespaceObjects = `${this.settings.redisNamespace || settings.connection?.redisNamespace || 'cfg'}.`;
         this.namespaceFile = `${this.namespaceObjects}f.`;
         this.namespaceObj = `${this.namespaceObjects}o.`;
         this.namespaceSet = `${this.namespaceObjects}s.`;
@@ -82,15 +92,11 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         this.namespaceMeta = `${this.settings.namespaceMeta || 'meta'}.`;
         this.namespaceMetaLen = this.namespaceMeta.length;
 
-        this.knownScripts = {};
-
         this.normalizeFileRegex1 = new RegExp('^(.*)\\$%\\$(.*)\\$%\\$(meta|data)$');
         this.normalizeFileRegex2 = new RegExp('^(.*)\\$%\\$(.*)\\/?\\*$');
 
         this.open()
-            .then(() => {
-                return this._initRedisServer(this.settings.connection);
-            })
+            .then(() => this._initRedisServer(this.settings.connection))
             .then(() => {
                 this.log.debug(
                     `${this.namespace} ${settings.secure ? 'Secure ' : ''} Redis inMem-objects listening on port ${
@@ -117,25 +123,17 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
      * @returns Object with namespace and the
      *                                                      ID/Array of IDs without the namespace
      */
-    _normalizeId(idWithNamespace: string | string[]): {
-        id: any;
+    _normalizeId(idWithNamespace: string): {
+        id: string | null;
         namespace: string;
         name: string;
         isMeta: boolean | undefined;
     } {
         let ns = this.namespaceObjects;
-        let id = null;
+        let id: string | null = null;
         let name = '';
         let isMeta;
-        if (Array.isArray(idWithNamespace)) {
-            const ids: string[] = [];
-            idWithNamespace.forEach(el => {
-                const { id, namespace } = this._normalizeId(el);
-                ids.push(id);
-                ns = namespace; // we ignore the pot. case from arrays with different namespaces
-            });
-            id = ids;
-        } else if (typeof idWithNamespace === 'string') {
+        if (typeof idWithNamespace === 'string') {
             id = idWithNamespace;
             if (idWithNamespace.startsWith(this.namespaceObjects)) {
                 let idx = -1;
@@ -189,17 +187,22 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
      * @param obj Object to publish
      * @returns Publish counter 0 or 1 depending on if send out or not
      */
-    publishToClients(client: any, type: string, id: string, obj: any): number {
-        if (!client._subscribe || !client._subscribe[type]) {
+    publishToClients(
+        client: RedisHandlerInternal,
+        type: string,
+        id: string,
+        obj: ioBroker.AnyObject | ioBroker.DesignObject,
+    ): number {
+        if (!client._subscribe?.[type]) {
             return 0;
         }
         const s = client._subscribe[type];
 
-        const found = s.find((sub: any) => sub.regex.test(id));
+        const found = s.find(sub => sub.regex.test(id));
 
         if (found) {
             if (type === 'meta') {
-                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
+                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${JSON.stringify(obj)}`);
                 const sendPattern = this.namespaceMeta + found.pattern;
                 const sendId = this.namespaceMeta + id;
                 client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
@@ -276,12 +279,12 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         });
 
         // Handle Redis "SCRIPT" request
-        handler.on('script', (data, responseId) => {
-            data[0] = data[0].toLowerCase();
+        handler.on('script', (data: [command: 'exists' | 'load', buffer: string], responseId) => {
+            data[0] = data[0].toLowerCase() as 'exists' | 'load';
             if (data[0] === 'exists') {
                 data.shift();
                 const scripts: number[] = [];
-                data.forEach((checksum: any) => scripts.push(this.knownScripts[checksum] ? 1 : 0));
+                data.forEach((checksum: string) => scripts.push(this.knownScripts[checksum] ? 1 : 0));
                 handler.sendArray(responseId, scripts);
             } else if (data[0] === 'load') {
                 const shasum = crypto.createHash('sha1');
@@ -291,15 +294,15 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
                 const scriptDesign = data[1].match(/^-- design: ([a-z0-9A-Z-.]+)\s/m);
                 const scriptFunc = data[1].match(/^-- func: (.+)$/m);
-                if (scriptDesign && scriptDesign[1]) {
+                if (scriptDesign?.[1]) {
                     const design = scriptDesign[1];
-                    let search = null;
+                    let search: string | undefined;
                     const scriptSearch = data[1].match(/^-- search: ([a-z0-9A-Z-.]*)\s/m);
-                    if (scriptSearch && scriptSearch[1]) {
+                    if (scriptSearch?.[1]) {
                         search = scriptSearch[1];
                     }
 
-                    this.knownScripts[scriptChecksum] = { design: design, search: search };
+                    this.knownScripts[scriptChecksum] = { design, search };
                     if (this.settings.connection.enhancedLogging) {
                         this.log.silly(
                             `${namespaceLog} Register View LUA Script: ${scriptChecksum} = ${JSON.stringify(
@@ -308,7 +311,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         );
                     }
                     handler.sendBulk(responseId, scriptChecksum);
-                } else if (scriptFunc && scriptFunc[1]) {
+                } else if (scriptFunc?.[1]) {
                     this.knownScripts[scriptChecksum] = { func: scriptFunc[1] };
                     if (this.settings.connection.enhancedLogging) {
                         this.log.silly(
@@ -333,76 +336,94 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     handler.sendError(responseId, new Error(`Unknown LUA script ${data[1]}`));
                 }
             } else {
-                handler.sendError(responseId, new Error(`Unsupported Script command ${data[0]}`));
+                handler.sendError(responseId, new Error(`Unsupported Script command ${data[0] as string}`));
             }
         });
 
         // Handle Redis "EVALSHA" request
-        handler.on('evalsha', (data, responseId) => {
-            if (!this.knownScripts[data[0]]) {
-                return void handler.sendError(responseId, new Error(`Unknown Script ${data[0]}`));
-            }
-            if (this.knownScripts[data[0]].design) {
-                const scriptDesign = this.knownScripts[data[0]].design;
-                if (typeof data[2] === 'string' && data[2].startsWith(this.namespaceObj) && data.length > 4) {
-                    let scriptSearch = this.knownScripts[data[0]].search;
-                    if (scriptDesign === 'system' && !scriptSearch && data[5]) {
-                        scriptSearch = data[5];
+        handler.on(
+            'evalsha',
+            (
+                data: [
+                    scriptId: string,
+                    ignore: string,
+                    name: string,
+                    startkey: string,
+                    endkey: string,
+                    search: string,
+                ],
+                responseId,
+            ) => {
+                if (!this.knownScripts[data[0]]) {
+                    return void handler.sendError(responseId, new Error(`Unknown Script ${data[0]}`));
+                }
+                if (this.knownScripts[data[0]].design) {
+                    const scriptDesign: string = this.knownScripts[data[0]].design!;
+                    if (typeof data[2] === 'string' && data[2].startsWith(this.namespaceObj) && data.length > 4) {
+                        let scriptSearch = this.knownScripts[data[0]].search;
+                        if (scriptDesign === 'system' && !scriptSearch && data[5]) {
+                            scriptSearch = data[5];
+                        }
+                        if (!scriptSearch) {
+                            scriptSearch = 'state';
+                        }
+                        if (this.settings.connection.enhancedLogging) {
+                            this.log.silly(
+                                `${namespaceLog} Script transformed into getObjectView: design=${scriptDesign}, search=${scriptSearch}`,
+                            );
+                        }
+                        let objs;
+                        try {
+                            objs = this._getObjectView(scriptDesign, scriptSearch, {
+                                startkey: data[3],
+                                endkey: data[4],
+                                include_docs: true,
+                            });
+                        } catch (err) {
+                            return void handler.sendError(
+                                responseId,
+                                new Error(`_getObjectView Error for ${scriptDesign}/${scriptSearch}: ${err.message}`),
+                            );
+                        }
+
+                        const res = objs.rows.map(obj =>
+                            JSON.stringify(this.dataset[(obj.value as ioBroker.AnyObject)._id || obj.id]),
+                        );
+                        handler.sendArray(responseId, res);
                     }
-                    if (!scriptSearch) {
-                        scriptSearch = 'state';
-                    }
+                } else if (this.knownScripts[data[0]].func && data.length > 4) {
+                    const scriptFunc = { map: this.knownScripts[data[0]].func!.replace('%1', data[5]) };
                     if (this.settings.connection.enhancedLogging) {
-                        this.log.silly(
-                            `${namespaceLog} Script transformed into getObjectView: design=${scriptDesign}, search=${scriptSearch}`,
-                        );
+                        this.log.silly(`${namespaceLog} Script transformed into _applyView: func=${scriptFunc.map}`);
                     }
-                    let objs;
-                    try {
-                        objs = this._getObjectView(scriptDesign, scriptSearch, {
-                            startkey: data[3],
-                            endkey: data[4],
-                            include_docs: true,
-                        });
-                    } catch (err) {
-                        return void handler.sendError(
-                            responseId,
-                            new Error(`_getObjectView Error for ${scriptDesign}/${scriptSearch}: ${err.message}`),
-                        );
-                    }
+                    const objs = this._applyView(scriptFunc, {
+                        startkey: data[3],
+                        endkey: data[4],
+                        include_docs: true,
+                    });
+                    const res = objs.rows.map(obj =>
+                        JSON.stringify(this.dataset[(obj.value as ioBroker.AnyObject)._id || obj.id]),
+                    );
 
-                    const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
-                    handler.sendArray(responseId, res);
+                    return void handler.sendArray(responseId, res);
+                } else if (this.knownScripts[data[0]].redlock) {
+                    // just return a dummy
+                    return void handler.sendArray(responseId, [0]);
+                } else {
+                    handler.sendError(responseId, new Error(`Unknown LUA script eval call ${JSON.stringify(data)}`));
                 }
-            } else if (this.knownScripts[data[0]].func && data.length > 4) {
-                const scriptFunc = { map: this.knownScripts[data[0]].func.replace('%1', data[5]) };
-                if (this.settings.connection.enhancedLogging) {
-                    this.log.silly(`${namespaceLog} Script transformed into _applyView: func=${scriptFunc.map}`);
-                }
-                const objs = this._applyView(scriptFunc, {
-                    startkey: data[3],
-                    endkey: data[4],
-                    include_docs: true,
-                });
-                const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
-
-                return void handler.sendArray(responseId, res);
-            } else if (this.knownScripts[data[0]].redlock) {
-                // just return a dummy
-                return void handler.sendArray(responseId, [0]);
-            } else {
-                handler.sendError(responseId, new Error(`Unknown LUA script eval call ${JSON.stringify(data)}`));
-            }
-        });
+            },
+        );
 
         // Handle Redis "PUBLISH" request
-        handler.on('publish', (data, responseId) => {
+        handler.on('publish', (data: [addr: string, obj: string], responseId) => {
             const { id, namespace } = this._normalizeId(data[0]);
 
             if (
                 namespace === this.namespaceObj ||
                 namespace === this.namespaceMeta ||
-                namespace === this.namespaceFile
+                namespace === this.namespaceFile ||
+                !id
             ) {
                 // a "set" always comes afterwards, so do not publish
                 return void handler.sendInteger(responseId, 0); // do not publish for now
@@ -412,15 +433,15 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         });
 
         // Handle Redis "MGET" requests
-        handler.on('mget', (data, responseId) => {
-            if (!data || !data.length) {
+        handler.on('mget', (data: string[], responseId) => {
+            if (!data?.length) {
                 return void handler.sendArray(responseId, []);
             }
             const { namespace, isMeta } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
-                const keys: any[] = [];
-                data.forEach((dataId: any) => {
+                const keys: (string | null)[] = [];
+                data.forEach((dataId: string) => {
                     const { id, namespace } = this._normalizeId(dataId);
                     if (namespace !== this.namespaceObj) {
                         keys.push(null);
@@ -431,21 +452,21 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     }
                     keys.push(id);
                 });
-                let result;
+                let result: (ioBroker.AnyObject | ioBroker.DesignObject | Record<string, string> | undefined)[];
                 try {
                     result = this._getObjects(keys);
                 } catch (err) {
                     return void handler.sendError(responseId, new Error(`ERROR _getObjects: ${err.message}`));
                 }
-                result = result.map(el => (el ? JSON.stringify(el) : null));
-                handler.sendArray(responseId, result);
+                const resultObjs = result.map(el => (el ? JSON.stringify(el) : null));
+                handler.sendArray(responseId, resultObjs);
             } else if (namespace === this.namespaceFile) {
-                // Handle request for Meta data for files
+                // Handle request for Metadata for files
                 if (isMeta) {
-                    const response: any[] = [];
-                    data.forEach((dataId: any) => {
+                    const response: (string | null)[] = [];
+                    data.forEach((dataId: string) => {
                         const { id, namespace, name } = this._normalizeId(dataId);
-                        if (namespace !== this.namespaceFile) {
+                        if (!id || namespace !== this.namespaceFile) {
                             response.push(null);
                             this.log.warn(
                                 `${namespaceLog} Got MGET request for non File ID in File-ID chunk for ${dataId}`,
@@ -457,7 +478,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                             response.push(null);
                             return;
                         }
-                        const obj = this._clone(this.fileOptions[id][name]);
+                        const obj: FileOptions = this._clone(this.fileOptions[id][name]);
                         try {
                             obj.stats = fs.statSync(path.join(this.objectsDir, id, name));
                         } catch (err) {
@@ -488,6 +509,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         handler.on('get', (data, responseId) => {
             const { id, namespace, name, isMeta } = this._normalizeId(data[0]);
 
+            if (!id) {
+                handler.sendNull(responseId);
+                return;
+            }
             if (namespace === this.namespaceObj) {
                 const result = this._getObject(id);
                 if (!result) {
@@ -496,9 +521,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     handler.sendBulk(responseId, JSON.stringify(result));
                 }
             } else if (namespace === this.namespaceFile) {
-                // Handle request for Meta data for files
+                // Handle request for Metadata for files
                 if (isMeta) {
-                    let stats;
+                    let stats: fs.Stats;
                     try {
                         stats = fs.statSync(path.join(this.objectsDir, id, name));
                     } catch {
@@ -519,25 +544,24 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         return void handler.sendNull(responseId);
                     }
 
-                    let obj = this._clone(this.fileOptions[id][name]);
+                    let obj: FileOptions = this._clone(this.fileOptions[id][name]);
                     if (typeof obj !== 'object') {
                         obj = {
                             mimeType: obj,
                             acl: {
-                                owner:
-                                    (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-                                ownerGroup:
-                                    (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                    utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                                owner: this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+                                ownerGroup: this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
                                 permissions:
-                                    (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                                    this.defaultNewAcl?.file ||
                                     utils.CONSTS.ACCESS_USER_ALL |
                                         utils.CONSTS.ACCESS_GROUP_ALL |
                                         utils.CONSTS.ACCESS_EVERY_ALL, // 777
                             },
+                            stats,
                         };
+                    } else {
+                        obj.stats = stats;
                     }
-                    obj.stats = stats;
                     handler.sendBulk(responseId, JSON.stringify(obj));
                 } else {
                     // Handle request for File data
@@ -552,7 +576,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     }
                     let fileData = data.fileContent;
                     if (!Buffer.isBuffer(fileData) && tools.isObject(fileData)) {
-                        // if its an invalid object, stringify it and log warning
+                        // if it's an invalid object, stringify it and log warning
                         fileData = JSON.stringify(fileData);
                         this.log.warn(
                             `${namespaceLog} Data of "${id}/${name}" has invalid structure at file data request: ${fileData}`,
@@ -584,6 +608,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         // Handle Redis "SET" requests
         handler.on('set', (data, responseId) => {
             const { id, namespace, name, isMeta } = this._normalizeId(data[0]);
+
+            if (!id) {
+                return void handler.sendError(responseId, new Error(`ERROR setObject id=${id}: id is null`));
+            }
 
             if (namespace === this.namespaceObj) {
                 try {
@@ -645,7 +673,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             const oldDetails = this._normalizeId(data[0]);
             const newDetails = this._normalizeId(data[1]);
 
-            if (oldDetails.namespace === this.namespaceFile) {
+            if (!oldDetails.id || !newDetails.id || oldDetails.namespace === this.namespaceFile) {
+                if (!oldDetails.id || !newDetails.id) {
+                    return void handler.sendError(responseId, new Error('ERROR renameObject: id needs to be not null'));
+                }
                 if (oldDetails.id !== newDetails.id) {
                     return void handler.sendError(
                         responseId,
@@ -653,7 +684,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     );
                 }
 
-                // Handle request for Meta data for files
+                // Handle request for Metadata for files
                 if (oldDetails.isMeta) {
                     handler.sendString(responseId, 'OK');
                 } else {
@@ -677,6 +708,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         handler.on('del', (data, responseId) => {
             const { id, namespace, name, isMeta } = this._normalizeId(data[0]);
 
+            if (!id) {
+                return void handler.sendError(responseId, new Error('id is null'));
+            }
             if (namespace === this.namespaceObj) {
                 try {
                     this._delObject(id);
@@ -713,7 +747,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
             // Note: we only simulate single key existence check
             const { id, namespace, name } = this._normalizeId(data[0]);
-
+            if (!id) {
+                return void handler.sendError(responseId, new Error('id is null'));
+            }
             if (namespace === this.namespaceObj) {
                 let exists;
                 try {
@@ -781,7 +817,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         // Handle Redis "PSUBSCRIBE" request for state, log and session namespace
         handler.on('psubscribe', (data, responseId) => {
             const { id, namespace, name } = this._normalizeId(data[0]);
-
+            if (!id) {
+                return void handler.sendError(responseId, new Error('id is null'));
+            }
             if (namespace === this.namespaceObj) {
                 this._subscribeConfigForClient(handler, id);
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
@@ -802,7 +840,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         // Handle Redis "UNSUBSCRIBE" request for state, log and session namespace
         handler.on('punsubscribe', (data, responseId) => {
             const { id, namespace, name } = this._normalizeId(data[0]);
-
+            if (!id) {
+                return void handler.sendError(responseId, new Error('id is null'));
+            }
             if (namespace === this.namespaceObj) {
                 this._unsubscribeConfigForClient(handler, id);
                 handler.sendArray(responseId, ['punsubscribe', data[0], 1]);
@@ -907,12 +947,15 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
      *
      * @param handler RedisHandler instance
      * @param pattern - pattern without namespace prefix
-     * @param responseId - Id where response will be sent to
+     * @param responseId - ID where response will be sent to
      * @param isScan - if used by "SCAN" this flag should be true
      */
-    _handleScanOrKeys(handler: RedisHandler, pattern: string, responseId: any, isScan = false): void {
+    _handleScanOrKeys(handler: RedisHandler, pattern: string, responseId: number, isScan = false): void {
         const { id, namespace, name, isMeta } = this._normalizeId(pattern);
-
+        // `_normalizeId` returns id === '' for a full-DB enumeration; only `null` means "no id".
+        if (id === null) {
+            return void handler.sendError(responseId, new Error('id is null'));
+        }
         let response: string[] = [];
         if (namespace === this.namespaceObj || namespace === this.namespaceObjects) {
             try {
@@ -921,19 +964,34 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 return void handler.sendError(responseId, e);
             }
 
-            // if scan, we send the cursor as first argument
+            // if "scan", we send the cursor as first argument
             if (namespace !== this.namespaceObjects) {
                 // When it was not the full DB namespace send out response
                 return void handler.sendArray(responseId, isScan ? ['0', response] : response);
             }
         }
         if (namespace === this.namespaceFile || namespace === this.namespaceObjects) {
-            // Handle request to get meta data keys
+            // Handle request to get metadata keys
             if (isMeta === undefined) {
-                let res;
+                let res: {
+                    file: string;
+                    stats: { size?: number };
+                    isDir: boolean;
+                    virtualFile?: boolean;
+                    notExists?: boolean;
+                    acl?: {
+                        read?: boolean;
+                        write?: boolean;
+                        owner: ioBroker.ObjectIDs.User;
+                        ownerGroup: ioBroker.ObjectIDs.Group;
+                        permissions: number;
+                    };
+                    modifiedAt?: number | undefined;
+                    createdAt?: undefined | number;
+                }[];
                 try {
                     res = this._readDir(id, name);
-                    if (!res || !res.length) {
+                    if (!res?.length) {
                         res = [
                             {
                                 file: '_data.json',
@@ -964,7 +1022,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                             arr.file += '/_data.json'; // We return a "virtual file" to mark the directory as existing
                         }
                     }
-                    // We need to simulate the Meta data here, so return both
+                    // We need to simulate the Metadata here, so return both
                     response.push(this.getFileId(entryId, baseName + arr.file, true));
                     response.push(this.getFileId(entryId, baseName + arr.file, false));
                 });

@@ -8,7 +8,7 @@
 
 > **CheckFileRightsCallback** = (`err`, `options`, `opt?`) => `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:33
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:46
 
 ## Parameters
 

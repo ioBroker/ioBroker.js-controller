@@ -6,7 +6,9 @@
 
 # Interface: InternalGetUserIDOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L283)
+Defined in: [adapter/src/lib/\_Types.ts:363](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L363)
+
+Options for resolving a user id
 
 ## Properties
 
@@ -14,4 +16,6 @@ Defined in: [adapter/src/lib/\_Types.ts:283](https://github.com/ioBroker/ioBroke
 
 > **username**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:284](https://github.com/ioBroker/ioBroker.js-controller/blob/ea8c7aa0a350c7db84ff9e202c3596e307c71f0e/packages/adapter/src/lib/_Types.ts#L284)
+Defined in: [adapter/src/lib/\_Types.ts:365](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L365)
+
+The user name to resolve

@@ -35,7 +35,7 @@ export class CLILogs extends CLICommand {
      * @param args The command arguments (the first is the sub-command)
      * @param params additional parsed CLI parameters
      */
-    execute(args: any[], params: Record<string, any>): void {
+    execute(args: string[], params: Record<string, any>): void {
         const adapterName = args[0];
         const watch = params.watch || params.w;
         const count = params.lines || 1_000;
@@ -91,8 +91,16 @@ export class CLILogs extends CLICommand {
      * @param event The type of change
      * @param path Which path has changed
      * @param stats Information about the file
+     * @param stats.size Size of the file in bytes
      */
-    watchHandler(options: CLILogsOptions, event: string, path: string, stats?: any): void {
+    watchHandler(
+        options: CLILogsOptions,
+        event: string,
+        path: string,
+        stats: {
+            size: number;
+        },
+    ): void {
         if (event === 'add' || !this.fileSizes.has(path)) {
             this.fileSizes.set(path, stats.size);
             if (stats.size > 0 && (this.isReady || (options.complete && this.isTodaysLogfile(path)))) {

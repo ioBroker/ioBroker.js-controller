@@ -64,7 +64,7 @@
         "typescript": "~6.0.3"
     },
     "scripts": {
-        "clean": "rimraf packages/*/build packages/*/*.tsbuildinfo",
+        "clean": "npx --yes rimraf@5 --glob packages/**/build packages/*/*.tsbuildinfo",
         "build:doc": "lerna run build:doc",
         "build:ts": "lerna run build --ignore \"@iobroker/types\"",
         "build:types": "npm run build --workspace=@iobroker/types",

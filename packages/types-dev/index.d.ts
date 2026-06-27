@@ -120,7 +120,13 @@ declare global {
             state?: string;
         }
 
-        type Session = any; // TODO: implement
+        type Session = {
+            cookie?: {
+                originalMaxAge?: number;
+                maxAge?: number;
+            };
+            [key: string]: any;
+        };
 
         /** Defines access rights for a single object type */
         interface ObjectOperationPermissions {
@@ -150,9 +156,9 @@ declare global {
         /** Defined the complete set of access rights a user has */
         interface PermissionSet extends ObjectPermissions {
             /** The name of the user this ACL is for */
-            user: string;
+            user: ioBroker.ObjectIDs.User;
             /** The name of the groups this ACL was merged from */
-            groups: string[];
+            groups: ioBroker.ObjectIDs.Group[];
             /** The access rights for certain commands */
             other: {
                 execute: boolean;
@@ -230,7 +236,7 @@ declare global {
         }
 
         /** Parameters for adapter.getObjectList */
-        type GetObjectListParams = GetObjectViewParams;
+        type GetObjectListParams = GetObjectViewParams | undefined;
 
         type LogLevel = 'silly' | 'debug' | 'info' | 'warn' | 'error';
         interface Logger {
@@ -371,14 +377,13 @@ declare global {
             /** when using aggregate method `integral` defines the interpolation method (defaults to `none`). */
             integralInterpolation?: 'none' | 'linear';
             /** If user is set, it will be checked if this user may read the variable */
-            user?: `system.user.${string}`;
+            user?: ioBroker.ObjectIDs.User;
         }
 
         interface DelObjectOptions {
             /** Whether all child objects should be deleted as well */
             recursive?: boolean;
-            // Allow non-documented properties
-            [other: string]: unknown;
+            user?: ioBroker.ObjectIDs.User;
         }
 
         interface ExtendObjectOptionsPreserve {
@@ -388,8 +393,9 @@ declare global {
         interface ExtendObjectOptions {
             /** Which properties of the original object should be preserved */
             preserve?: ExtendObjectOptionsPreserve;
-            // Allow non-documented properties
-            [other: string]: unknown;
+            user?: ioBroker.ObjectIDs.User;
+            owner?: ioBroker.ObjectIDs.User;
+            ownerGroup?: ioBroker.ObjectIDs.Group;
         }
 
         /** Predefined notification scopes and their categories */
@@ -462,7 +468,7 @@ declare global {
         ) => void;
         type GetEnumsPromise = Promise<NonNullCallbackReturnTypeOf<GetEnumsCallback>>;
 
-        type GetObjectsCallback = (err?: Error | null, objects?: Record<string, ioBroker.Object>) => void;
+        type GetObjectsCallback = (err?: Error | null, objects?: Record<string, ioBroker.AnyObject | null>) => void;
         type GetObjectsPromise = Promise<NonNullCallbackReturnTypeOf<GetObjectsCallback>>;
 
         type GetObjectsCallbackTyped<T extends ObjectType> = (
@@ -527,7 +533,9 @@ declare global {
             /** Name of the file or directory */
             file: string;
             /** File system stats */
-            stats: Partial<fs.Stats>;
+            stats?: {
+                size?: number;
+            };
             /** Whether this is a directory or a file */
             isDir: boolean;
             /** Access rights */
@@ -554,15 +562,17 @@ declare global {
             /** Name of the file or directory */
             file: string;
             /** File system stats */
-            stats: fs.Stats;
+            stats?: {
+                size?: number;
+            };
             /** Whether this is a directory or a file */
             isDir: boolean;
             /** Access rights */
-            acl: FileACL;
+            acl: EvaluatedFileACL;
             /** Date of last modification */
-            modifiedAt: number;
+            modifiedAt?: number;
             /** Date of creation */
-            createdAt: number;
+            createdAt?: number;
         }
         type ChownFileCallback = (err?: NodeJS.ErrnoException | null, processed?: ChownFileResult[]) => void;
 
@@ -609,7 +619,7 @@ declare global {
             id?: string,
         ) => void;
 
-        type GetSessionCallback = (session: Session) => void;
+        type GetSessionCallback = (session: Session | null) => void;
 
         type Timeout = Branded<number, 'Timeout'> | null; // or null to not allow native clearTimeout
         type Interval = Branded<number, 'Interval'> | null; // or null to not allow native clearInterval

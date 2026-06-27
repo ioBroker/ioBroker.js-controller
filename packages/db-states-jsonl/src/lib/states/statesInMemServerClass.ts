@@ -1,19 +1,15 @@
 /**
  *      States DB in memory - Server with Redis protocol
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 
-import { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
+import { Client as StatesInRedisClient, type StatesSettings } from '@iobroker/db-states-redis';
 import { StatesInMemoryServer } from './statesInMemServerRedis.js';
-
-/** Settings accepted by the states client constructor */
-type StatesSettings = ConstructorParameters<typeof StatesInRedisClient>[0];
-/** Status object returned by the states client */
-type DbStatus = ReturnType<StatesInRedisClient['getStatus']>;
+import { type DbStatus } from '@iobroker/db-base';
 
 /**
  * States database client that also starts an in-memory server speaking the Redis protocol

@@ -5,8 +5,8 @@ export interface AdapterOptions {
         subs: Record<
             string,
             {
-                /** Compiled regular expression of the subscription pattern */
-                regex: RegExp;
+                /** String with regular expression of the subscription pattern */
+                regex: string;
             }
         >,
     ) => void;
@@ -101,7 +101,7 @@ export interface SuitableLicense {
         email: string;
         /** Free text comment */
         comment: string;
-        /** License type, eg private */
+        /** License type, e.g. private */
         type: string;
         /** Adapter name */
         name: string;
@@ -141,7 +141,7 @@ export interface SuitableLicense {
         /** Issued-at timestamp of the JWT */
         iat: number;
         /** Version for which this license is valid */
-        version: string;
+        version: string | number;
         /** License is only valid for given UUID */
         uuid?: string;
         /** If it is a free license or not */
@@ -200,7 +200,7 @@ export type UserInterfaceClientRemoveMessage =
     | (Omit<ioBroker.Message, 'message' | 'command'> & {
           /** Command identifying this as a client unsubscribe message */
           command: 'clientUnsubscribe';
-          /** Details of the unsubscribe */
+          /** Details of the "unsubscribe" */
           message: {
               /** Reason for unsubscribing */
               reason: MessageUnsubscribeReason;
@@ -298,9 +298,17 @@ export interface SetStateChangedResult {
 /** Options for resolving the groups of a user */
 export interface GetUserGroupsOptions {
     /** The user whose groups should be resolved */
-    user: `system.user.${string}`;
-    /** Additional request options */
-    [other: string]: any;
+    user: ioBroker.ObjectIDs.User;
+    /** Groups the user belongs to (resolved automatically if not provided) */
+    groups?: ioBroker.ObjectIDs.Group[];
+    /** Pre-loaded user and group objects used to resolve the groups */
+    _objects?: (ioBroker.StateObject | null)[];
+    /** Whether the groups have already been resolved */
+    checked?: boolean;
+    /** Access rights of the user, without the user and groups themselves */
+    acl: Omit<ioBroker.PermissionSet, 'user' | 'groups'>;
+    /** If set, the resolved rights are limited to those of the object owner */
+    limitToOwnerRights?: boolean;
 }
 
 export type CheckStateCommand = 'getState' | 'setState' | 'delState';
@@ -314,7 +322,7 @@ export interface InternalSetSessionOptions {
     /** Time to live in seconds */
     ttl: number;
     /** The session data to store */
-    data: Record<string, any>;
+    data: ioBroker.Session;
     /** Called once the session has been stored */
     callback?: ioBroker.ErrorCallback;
 }
@@ -354,7 +362,7 @@ export interface InternalCheckPasswordOptions {
     /** The password to verify */
     pw: string;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called with the result of the check */
     callback: CheckPasswordCallback;
 }
@@ -372,7 +380,7 @@ export interface InternalSetPasswordOptions {
     /** The new password */
     pw: string;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called once the password has been set */
     callback?: ioBroker.ErrorCallback;
 }
@@ -386,7 +394,7 @@ export interface InternalCheckGroupOptions {
     /** The group to check membership of */
     group: string;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called with the result of the check */
     callback?: CheckGroupCallback;
 }
@@ -419,11 +427,11 @@ export type AllPropsUnknown<T> = { [K in keyof T]: unknown };
 /** Options for calculating the permissions of a user */
 export interface InternalCalculatePermissionsOptions {
     /** The user to calculate the permissions for */
-    user: string;
+    user: ioBroker.ObjectIDs.User;
     /** The permission requirements of the commands */
     commandsPermissions: CommandsPermissions;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called with the calculated permission set */
     callback?: CalculatePermissionsCallback;
 }
@@ -471,7 +479,7 @@ export interface InternalSetObjectOptions {
     /** The id of the object */
     id: string;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User; preserve?: { [key: string]: boolean } } | null;
     /** The object to set */
     obj: ioBroker.SettableObject;
     /** Called once the object has been set */
@@ -483,19 +491,19 @@ export interface InternalDelStateOptions {
     /** The id of the state */
     id: string;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called once the state has been deleted */
     callback?: ioBroker.ErrorCallback;
 }
 
 /** Options for reading an object */
-export interface InternalGetObjectOptions {
+export interface InternalGetObjectOptions<T extends string = string> {
     /** The id of the object */
     id: string;
     /** Optional settings including the user context */
-    options: unknown;
+    options: { user?: ioBroker.ObjectIDs.User } | null | undefined;
     /** Called with the object */
-    callback?: ioBroker.GetObjectCallback<any>;
+    callback?: ioBroker.GetObjectCallback<T>;
 }
 
 /** Options for reading the history of a state */
@@ -517,7 +525,7 @@ export interface InternalGetObjectsOptions {
     /** Restrict the result to objects within these enums */
     enums?: ioBroker.EnumList;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called with the matching objects */
     callback?: ioBroker.GetObjectsCallbackTyped<any>;
 }
@@ -529,7 +537,7 @@ export interface InternalGetChannelsOfOptions {
     /** Called with the channels */
     callback?: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
 }
 
 /** Options for reading all objects of the adapter */
@@ -547,7 +555,7 @@ export interface InternalGetObjectViewOptions {
     /** Query parameters such as startkey and endkey */
     params: ioBroker.GetObjectViewParams;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called with the matching rows */
     callback?: ioBroker.GetObjectViewCallback<ioBroker.AnyObject>;
 }
@@ -557,7 +565,7 @@ export interface InternalGetEnumOptions {
     /** The name of the enum to read */
     _enum: string;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called with the enum */
     callback?: ioBroker.GetEnumCallback;
 }
@@ -567,7 +575,7 @@ export interface InternalGetEnumsOptions {
     /** The list of enums to read */
     _enumList?: ioBroker.EnumList;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called with the enums */
     callback?: ioBroker.GetEnumsCallback;
 }
@@ -591,7 +599,7 @@ export interface InternalCreateDeviceOptions {
     /** The native section of the device object */
     _native?: Record<string, any> | null;
     /** Optional settings including the user context */
-    options: unknown;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called once the device has been created */
     callback?: ioBroker.SetObjectCallback;
 }
@@ -605,7 +613,7 @@ export interface InternalSetStateOptions {
     /** Whether the state should be acknowledged */
     ack?: boolean;
     /** Optional settings including the user context */
-    options?: Partial<GetUserGroupsOptions> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called once the state has been set */
     callback?: ioBroker.SetStateCallback;
 }
@@ -629,7 +637,7 @@ export interface InternalCreateStateOptions {
     /** The native section of the state object */
     _native: Record<string, any>;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called once the state has been created */
     callback?: ioBroker.SetObjectCallback;
 }
@@ -639,7 +647,7 @@ export interface InternalSubscribeOptions {
     /** The pattern to subscribe to */
     pattern: Pattern;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called once the subscription is registered */
     callback?: ioBroker.ErrorCallback;
 }
@@ -655,7 +663,7 @@ export interface InternalAddChannelToEnumOptions {
     /** The name of the channel */
     channelName: string;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called once the channel has been added */
     callback?: ioBroker.ErrorCallback;
 }
@@ -664,6 +672,8 @@ export interface InternalAddChannelToEnumOptions {
 export interface SendToOptions {
     /** Method throws or calls error cb, if callback not called in time, works for single targets only */
     timeout?: number;
+    /** The user on whose behalf the message is sent */
+    user?: ioBroker.ObjectIDs.User;
 }
 
 /** Options for sending a message to another instance */
@@ -707,7 +717,7 @@ export interface InternalGetStateOptions {
     /** The id of the state */
     id: string;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called with the state */
     callback?: ioBroker.GetStateCallback;
 }
@@ -717,7 +727,12 @@ export interface InternalGetStatesOptions {
     /** The pattern to match state ids against */
     pattern: Pattern;
     /** Optional settings including the user context */
-    options: Record<string, any>;
+    options: {
+        user?: ioBroker.ObjectIDs.User;
+        _objects?: (ioBroker.StateObject | null)[];
+        checked?: boolean;
+        maintenance?: boolean;
+    };
     /** Called with the matching states */
     callback: ioBroker.GetStatesCallback;
 }
@@ -739,7 +754,7 @@ export interface InternalDeleteChannelFromEnumOptions {
     /** The name of the channel */
     channelName: string;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called once the channel has been removed */
     callback?: ioBroker.ErrorCallback;
 }
@@ -763,7 +778,7 @@ export interface InternalDeleteStateOptions {
     /** The name of the state */
     stateName: string;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called once the state has been deleted */
     callback?: ioBroker.ErrorCallback;
 }
@@ -771,7 +786,7 @@ export interface InternalDeleteStateOptions {
 /** Options for reading all devices */
 export interface InternalGetDevicesOptions {
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called with the devices */
     callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>;
 }
@@ -783,7 +798,7 @@ export interface InternalGetStatesOfOptions {
     /** The parent channel name */
     parentChannel: string | null | undefined;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called with the states */
     callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>;
 }
@@ -801,7 +816,7 @@ export interface InternalAddStateToEnumOptions {
     /** The name of the state */
     stateName: string;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called once the state has been added */
     callback?: ioBroker.ErrorCallback;
 }
@@ -817,7 +832,7 @@ export interface InternalDeleteStateFromEnumOptions {
     /** The name of the state */
     stateName: string;
     /** Optional settings including the user context */
-    options?: Record<string, any> | null;
+    options?: { user?: ioBroker.ObjectIDs.User } | null;
     /** Called once the state has been removed */
     callback?: ioBroker.ErrorCallback;
 }
