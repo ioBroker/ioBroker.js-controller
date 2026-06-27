@@ -1701,7 +1701,7 @@ export class ObjectsInRedisClient {
         const result: ioBroker.ReadDirResult[] = [];
         const dontCheck =
             userContext.user === CONSTS.SYSTEM_ADMIN_USER ||
-            userContext.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
+            userContext.group === CONSTS.SYSTEM_ADMIN_GROUP ||
             userContext.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP);
 
         for (let i = 0; i < keys.length; i++) {
@@ -1913,7 +1913,7 @@ export class ObjectsInRedisClient {
             let result;
             const dontCheck =
                 userContext.user === CONSTS.SYSTEM_ADMIN_USER ||
-                userContext.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
+                userContext.group === CONSTS.SYSTEM_ADMIN_GROUP ||
                 userContext.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP);
 
             if (!dontCheck) {
@@ -2408,7 +2408,7 @@ export class ObjectsInRedisClient {
         }
         const dontCheck =
             userContext.user === CONSTS.SYSTEM_ADMIN_USER ||
-            userContext.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
+            userContext.group === CONSTS.SYSTEM_ADMIN_GROUP ||
             userContext.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP);
         const keysFiltered = [];
         const objsFiltered = [];
@@ -2658,7 +2658,7 @@ export class ObjectsInRedisClient {
 
         const dontCheck =
             userContext.user === CONSTS.SYSTEM_ADMIN_USER ||
-            userContext.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
+            userContext.group === CONSTS.SYSTEM_ADMIN_GROUP ||
             userContext.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP);
 
         const keysFiltered = [];
@@ -3520,7 +3520,7 @@ export class ObjectsInRedisClient {
         options: { mode?: number; user?: ioBroker.ObjectIDs.User; object?: number; state?: number },
         callback?: ioBroker.ChownObjectCallback,
     ): void | Promise<void> {
-        if (!options || options.mode === undefined) {
+        if (!options) {
             this.log.error(`${this.namespace} mode is not defined`);
             return tools.maybeCallbackWithError(callback, 'invalid parameter');
         }
@@ -3714,7 +3714,7 @@ export class ObjectsInRedisClient {
             const result = [];
             const dontCheck =
                 userContext.user === CONSTS.SYSTEM_ADMIN_USER ||
-                userContext.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
+                userContext.group === CONSTS.SYSTEM_ADMIN_GROUP ||
                 userContext.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP);
 
             if (dontCheck) {
@@ -3887,7 +3887,7 @@ export class ObjectsInRedisClient {
             const dontCheck =
                 userContext &&
                 (userContext.user === CONSTS.SYSTEM_ADMIN_USER ||
-                    userContext.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
+                    userContext.group === CONSTS.SYSTEM_ADMIN_GROUP ||
                     userContext.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP));
 
             if (!dontCheck) {
@@ -5033,8 +5033,7 @@ export class ObjectsInRedisClient {
                 }
             }
             if (max !== null) {
-                // @ts-expect-error missing types
-                result.rows = [{ id: '_stats', value: { max } }];
+                rows = [{ id: '_stats', value: { max } }];
             } else {
                 rows = [];
             }
@@ -6001,6 +6000,8 @@ export class ObjectsInRedisClient {
                 // return without duplicates
                 resolve(Array.from(new Set(uniqueKeys)));
             });
+
+            stream.on('error', reject);
         });
     }
 

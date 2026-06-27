@@ -740,7 +740,7 @@ export async function createUuid(objects: ObjectsRedisClient): Promise<void | st
     }
 
     // Read vis license
-    const licObj: ioBroker.Object = objects.getObject('system.adapter.vis.0');
+    const licObj = await objects.getObject('system.adapter.vis.0');
     if (!licObj || !licObj.native || !licObj.native.license) {
         return updateUuid('', objects);
     }
@@ -2053,7 +2053,7 @@ export async function getHostInfo(objects: ObjectsRedisClient): Promise<HostInfo
         time: dateObj.getTime(),
         timeOffset: dateObj.getTimezoneOffset(),
         NPM: npmVersion,
-        'adapters count': Object.keys(allRepos).length - 1, // do not count _repoInfo
+        'adapters count': Object.keys(allRepos).filter(id => id !== '_repoInfo').length,
     };
 
     if (data.Platform === 'win32') {

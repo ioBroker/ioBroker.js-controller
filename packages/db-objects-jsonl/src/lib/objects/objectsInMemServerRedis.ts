@@ -944,7 +944,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB<RedisHandlerIn
     _handleScanOrKeys(handler: RedisHandler, pattern: string, responseId: number, isScan = false): void {
         const { id, namespace, name, isMeta } = this._normalizeId(pattern);
 
-        if (!id) {
+        // `_normalizeId` returns id === '' for a full-DB enumeration; only `null` means "no id".
+        if (id === null) {
             return void handler.sendError(responseId, new Error(`ID is null in ${pattern}`));
         }
         let response: string[] = [];

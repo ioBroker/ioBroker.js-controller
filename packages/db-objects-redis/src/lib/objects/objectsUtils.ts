@@ -264,9 +264,6 @@ export async function checkFileRightsAsync(
         };
     }
 
-    if (!name) {
-        throw new Error(ERRORS.ERROR_NOT_FOUND);
-    }
     if (flag === CONSTS.ACCESS_WRITE && !userContext.acl.file.write) {
         // If user may write
         throw new Error(ERRORS.ERROR_PERMISSION);

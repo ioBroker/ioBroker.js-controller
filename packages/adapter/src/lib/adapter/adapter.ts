@@ -3864,7 +3864,7 @@ export class AdapterClass extends EventEmitter {
                 oldObj.native &&
                 oldObj.native.repositories
             ) {
-                oldObj.native.repositories = [];
+                oldObj.native.repositories = {};
             }
             if (options.obj.common && 'members' in options.obj.common && oldObj.common?.members) {
                 oldObj.common.members = [];
@@ -4262,12 +4262,12 @@ export class AdapterClass extends EventEmitter {
             if (
                 obj.native &&
                 'certificates' in obj.native &&
-                (oldObj.native as Record<string, any>).native?.certificates
+                (oldObj.native as Record<string, any>)?.certificates
             ) {
-                (oldObj.native as Record<string, any>).native.certificates = [];
+                (oldObj.native as Record<string, any>).certificates = [];
             }
             if (obj.native && 'devices' in obj.native && (oldObj.native as Record<string, any>)?.devices) {
-                (oldObj.native as Record<string, any>).native.devices = [];
+                (oldObj.native as Record<string, any>).devices = [];
             }
 
             obj.from ||= `system.adapter.${this.namespace}`;
