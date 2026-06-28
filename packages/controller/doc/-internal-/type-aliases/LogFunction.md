@@ -8,7 +8,7 @@
 
 > **LogFunction** = (`msg`) => `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:1](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/adapter/log.ts#L1)
+Defined in: [adapter/src/lib/adapter/log.ts:1](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/adapter/log.ts#L1)
 
 ## Parameters
 

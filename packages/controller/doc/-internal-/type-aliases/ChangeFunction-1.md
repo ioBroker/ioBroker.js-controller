@@ -8,7 +8,7 @@
 
 > **ChangeFunction** = (`id`, `object`) => `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:4
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:5
 
 ## Parameters
 
