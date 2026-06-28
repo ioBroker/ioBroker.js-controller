@@ -472,7 +472,9 @@ function handleDisconnect(): void {
     } else {
         stop(true, () => {
             restartTimeout = setTimeout(() => {
-                processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix });
+                processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix }).catch(e =>
+                    logger.error(`${hostLogPrefix} Cannot process restart message: ${e.message}`),
+                );
                 setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1_000);
             }, 10_000);
         });
@@ -521,7 +523,9 @@ function createStates(onConnect: () => void): void {
                             }
                         }
                     } else {
-                        processMessage(obj);
+                        processMessage(obj).catch(e =>
+                            logger.error(`${hostLogPrefix} Cannot process message: ${e.message}`),
+                        );
                     }
                 }
             } else if (!compactGroupController && id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
@@ -563,7 +567,9 @@ function createStates(onConnect: () => void): void {
                     // wake up adapter
                     if (procs[sub]) {
                         console.log(`Wake up ${id} ${JSON.stringify(state)}`);
-                        startInstance(sub, true);
+                        startInstance(sub, true).catch(e =>
+                            logger.error(`${hostLogPrefix} Cannot start instance ${sub}: ${e.message}`),
+                        );
                     } else {
                         logger.warn(`${hostLogPrefix} controller Adapter subscribed on ${id} does not exist!`);
                     }
@@ -651,7 +657,9 @@ function createStates(onConnect: () => void): void {
             initMessageQueue();
             startAliveInterval();
 
-            initializeController();
+            initializeController().catch(e =>
+                logger.error(`${hostLogPrefix} Cannot initialize controller: ${e.message}`),
+            );
             onConnect && onConnect();
         },
         disconnected: () => {
@@ -704,7 +712,7 @@ async function initializeController(): Promise<void> {
     autoUpgradeManager = new AdapterAutoUpgradeManager({ objects, states, logger, logPrefix: hostLogPrefix });
     blocklistManager = new BlocklistManager({ objects });
 
-    checkSystemLocaleSupported();
+    checkSystemLocaleSupported().catch(e => logger.error(`${hostLogPrefix} Cannot check system locale: ${e.message}`));
 
     if (connected === null) {
         connected = true;
@@ -718,10 +726,10 @@ async function initializeController(): Promise<void> {
 
             // Do not start if we're still stopping the instances
             await checkHost();
-            startMultihost(config);
-            setMeta();
+            startMultihost(config).catch(e => logger.error(`${hostLogPrefix} Cannot start multihost: ${e.message}`));
+            setMeta().catch(e => logger.error(`${hostLogPrefix} Cannot set meta information: ${e.message}`));
             started = true;
-            getInstances();
+            getInstances().catch(e => logger.error(`${hostLogPrefix} Cannot get instances: ${e.message}`));
         }
     } else {
         connected = true;
@@ -729,7 +737,7 @@ async function initializeController(): Promise<void> {
 
         // Do not start if we're still stopping the instances
         if (!isStopping) {
-            getInstances();
+            getInstances().catch(e => logger.error(`${hostLogPrefix} Cannot get instances: ${e.message}`));
         }
     }
 }
@@ -766,9 +774,11 @@ function createObjects(onConnect: () => void): void {
             }
 
             // first execution now
-            checkPrimaryHost();
+            checkPrimaryHost().catch(e => logger.error(`${hostLogPrefix} Cannot check primary host: ${e.message}`));
 
-            initializeController();
+            initializeController().catch(e =>
+                logger.error(`${hostLogPrefix} Cannot initialize controller: ${e.message}`),
+            );
             onConnect && onConnect();
         },
         disconnected: (/*error*/) => {
@@ -900,7 +910,9 @@ function createObjects(onConnect: () => void): void {
                                 proc.config.common.enabled &&
                                 (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
                             ) {
-                                startInstance(id);
+                                startInstance(id).catch(e =>
+                                    logger.error(`${hostLogPrefix} Cannot start instance ${id}: ${e.message}`),
+                                );
                             }
                         } else {
                             // moved: also remove from an instance list of compactGroup
@@ -952,7 +964,7 @@ function createObjects(onConnect: () => void): void {
             if (!isStopping) {
                 isPrimary = false;
                 logger.info('The primary host is no longer active. Checking responsibilities.');
-                checkPrimaryHost();
+                checkPrimaryHost().catch(e => logger.error(`${hostLogPrefix} Cannot check primary host: ${e.message}`));
             }
         },
     });
@@ -975,7 +987,7 @@ function startAliveInterval(): void {
     }
     reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
 
-    reportStatus();
+    reportStatus().catch(e => logger.error(`${hostLogPrefix} Cannot report status: ${e.message}`));
     tools.measureEventLoopLag(1_000, lag => eventLoopLags.push(lag!));
 }
 
@@ -1886,7 +1898,9 @@ async function setMeta(): Promise<void> {
                         // terminate ioBroker to restart the controller as UUID probably changed
                         logger.info(`${hostLogPrefix} Restart js-controller because vendor information updated`);
                         await wait(200);
-                        restart(() => !isStopping && stop(false));
+                        restart(() => !isStopping && stop(false)).catch(e =>
+                            logger.error(`${hostLogPrefix} Cannot restart: ${e.message}`),
+                        );
                     }
                 }
             }
@@ -2273,7 +2287,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         // if the user selected 'none', we will have null here and do not want to send it
                         if (obj) {
                             // Ignore the response here and do not wait for a result to decrease the repo fetching as it used in admin GUI
-                            tools.sendDiagInfo(obj);
+                            tools
+                                .sendDiagInfo(obj)
+                                .catch(e => logger.error(`${hostLogPrefix} Cannot send diag info: ${e.message}`));
                         }
                     } catch (e) {
                         logger.error(`${hostLogPrefix} cannot collect diagnostics: ${e.message}`);
@@ -2779,19 +2795,15 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'readDirAsZip':
             if (msg.callback && msg.from) {
-                zipFiles.readDirAsZip(
-                    objects!,
-                    msg.message.id,
-                    msg.message.name,
-                    msg.message.options,
-                    (err, base64) => {
+                zipFiles
+                    .readDirAsZip(objects!, msg.message.id, msg.message.name, msg.message.options, (err, base64) => {
                         if (base64) {
                             msg.callback && sendTo(msg.from, msg.command, { error: err, data: base64 }, msg.callback);
                         } else {
                             msg.callback && sendTo(msg.from, msg.command, { error: err }, msg.callback);
                         }
-                    },
-                );
+                    })
+                    .catch(e => logger.error(`${hostLogPrefix} Cannot read dir as zip: ${e.message}`));
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -2869,14 +2881,19 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'writeObjectsAsZip':
-            zipFiles.writeObjectsAsZip(
-                objects!,
-                msg.message.id,
-                msg.message.adapter,
-                Buffer.from(msg.message.data || '', 'base64'),
-                msg.message.options,
-                err => msg.callback && msg.from && sendTo(msg.from, msg.command, { error: err?.message }, msg.callback),
-            );
+            zipFiles
+                .writeObjectsAsZip(
+                    objects!,
+                    msg.message.id,
+                    msg.message.adapter,
+                    Buffer.from(msg.message.data || '', 'base64'),
+                    msg.message.options,
+                    err =>
+                        msg.callback &&
+                        msg.from &&
+                        sendTo(msg.from, msg.command, { error: err?.message }, msg.callback),
+                )
+                .catch(e => logger.error(`${hostLogPrefix} Cannot write objects as zip: ${e.message}`));
             break;
 
         case 'checkLogging':
@@ -2999,7 +3016,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'upload': {
             if (msg.message) {
-                uploadAdapter({ adapter: msg.message, msg });
+                uploadAdapter({ adapter: msg.message, msg }).catch(e =>
+                    logger.error(`${hostLogPrefix} Cannot upload adapter: ${e.message}`),
+                );
             } else {
                 logger.error(`${hostLogPrefix} No adapter name is specified for upload command from  ${msg.from}`);
             }
@@ -3197,7 +3216,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             if (restartRequired) {
                 logger.info(`${hostLogPrefix} Restart js-controller because desired after package upgrade`);
                 await wait(200);
-                restart(() => !isStopping && stop(false));
+                restart(() => !isStopping && stop(false)).catch(e =>
+                    logger.error(`${hostLogPrefix} Cannot restart: ${e.message}`),
+                );
             }
             break;
         }
@@ -3208,7 +3229,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             }
             // let the answer be sent
             await wait(200);
-            restart(() => !isStopping && stop(false));
+            restart(() => !isStopping && stop(false)).catch(e =>
+                logger.error(`${hostLogPrefix} Cannot restart: ${e.message}`),
+            );
             break;
         }
 
@@ -3446,7 +3469,9 @@ function initInstances(): void {
             }
         } else if (procs[id].process) {
             // stop instance if disabled
-            stopInstance(id, false);
+            stopInstance(id, false).catch(e =>
+                logger.error(`${hostLogPrefix} Cannot stop instance ${id}: ${e.message}`),
+            );
         }
     }
 
@@ -3760,7 +3785,9 @@ function installAdapters(): void {
                                             logger.error(`${hostLogPrefix} Cannot rebuild ${task.id}: ${e.message}`),
                                         );
                                 } else {
-                                    startInstance(task.id, task.wakeUp);
+                                    startInstance(task.id, task.wakeUp).catch(e =>
+                                        logger.error(`${hostLogPrefix} Cannot start instance ${task.id}: ${e.message}`),
+                                    );
                                 }
                             } else {
                                 logger.debug(
@@ -3888,7 +3915,9 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
         delay = skipped ? 0 : delay + 2_000;
         setTimeout(() => {
             delete scheduledInstances[id];
-            startScheduledInstance(callback);
+            startScheduledInstance(callback).catch(e =>
+                logger.error(`${hostLogPrefix} Cannot start scheduled instance: ${e.message}`),
+            );
         }, delay); // 4 seconds pause
     };
 
@@ -4252,7 +4281,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 );
                 // Exit Handler for normal Adapters started as own processes
                 const exitHandler = (code: number, signal: string): void => {
-                    setInstanceOfflineStates(id);
+                    setInstanceOfflineStates(id).catch(e =>
+                        logger.error(`${hostLogPrefix} Cannot set instance ${id} offline: ${e.message}`),
+                    );
 
                     // if we have waiting kill timeouts from stopInstance clear them
                     // and call callback because process ended now
@@ -4391,7 +4422,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                                 if (!compactGroupController) {
                                     // execute directly
-                                    processMessage(msg as any);
+                                    processMessage(msg as any).catch(e =>
+                                        logger.error(`${hostLogPrefix} Cannot process message: ${e.message}`),
+                                    );
                                 } else {
                                     // send to the main controller to make sure only one npm process runs at a time
                                     sendTo(`system.host.${hostname}`, 'rebuildAdapter', msg).catch(e =>
@@ -4983,7 +5016,10 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         adapterDir,
                         wakeUp,
                     };
-                    Object.keys(scheduledInstances).length === 1 && startScheduledInstance();
+                    Object.keys(scheduledInstances).length === 1 &&
+                        startScheduledInstance().catch(e =>
+                            logger.error(`${hostLogPrefix} Cannot start scheduled instance: ${e.message}`),
+                        );
                 },
             );
             logger.info(`${hostLogPrefix} instance scheduled ${instance._id} ${instance.common.schedule}`);
@@ -5324,7 +5360,9 @@ function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => 
         }
 
         for (const id of Object.keys(procs)) {
-            stopInstance(id, forceStop);
+            stopInstance(id, forceStop).catch(e =>
+                logger.error(`${hostLogPrefix} Cannot stop instance ${id}: ${e.message}`),
+            );
         }
         if (forceStop || isDaemon) {
             // send instances SIGTERM, only needed if running in a background (isDaemon)
@@ -5852,7 +5890,9 @@ export async function init(compactGroupId?: number): Promise<void> {
         connectTimeout = null;
         logger.error(`${hostLogPrefix} No connection to databases possible, restart`);
         !compactGroupController &&
-            processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix });
+            processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix }).catch(e =>
+                logger.error(`${hostLogPrefix} Cannot process restart message: ${e.message}`),
+            );
         setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), compactGroupController ? 0 : 1_000);
     }, 30_000);
 
@@ -5897,7 +5937,9 @@ export async function init(compactGroupId?: number): Promise<void> {
         }
         stop(false);
         // Restart itself
-        processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix });
+        processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix }).catch(e =>
+            logger.error(`${hostLogPrefix} Cannot process restart message: ${e.message}`),
+        );
     };
 
     process.on('SIGINT', () => {
@@ -6247,5 +6289,5 @@ async function disableBlocklistedInstances(): Promise<void> {
 // eslint-disable-next-line unicorn/prefer-module
 const modulePath = url.fileURLToPath(import.meta.url || `file://${__filename}`);
 if (process.argv[1] === modulePath) {
-    init();
+    init().catch(e => console.error(`Cannot start js-controller: ${e.message}`));
 }

@@ -93,7 +93,8 @@ checkNpmVersion()
     })
     .then(() => {
         process.exit(0);
-    });
+    })
+    .catch(() => process.exit(0));
 
 // ======================================
 // all the functions to replace `semver`:
