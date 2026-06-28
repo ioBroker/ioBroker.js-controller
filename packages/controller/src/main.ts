@@ -1848,6 +1848,29 @@ function initMessageQueue(): void {
  * @param objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
  * @param command The command to send
  * @param message The message payload to send
+ */
+function sendTo(objName: string, command: string, message: ioBroker.MessagePayload): Promise<void>;
+/**
+ * Send a message to another adapter instance
+ *
+ * @param objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
+ * @param command The command to send
+ * @param message The message payload to send
+ * @param callback Called with the response from the target instance
+ */
+function sendTo(
+    objName: string,
+    command: string,
+    message: ioBroker.MessagePayload,
+    callback: ioBroker.ErrorCallback | ioBroker.MessageCallbackInfo,
+): void;
+
+/**
+ * Send a message to another adapter instance
+ *
+ * @param objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
+ * @param command The command to send
+ * @param message The message payload to send
  * @param callback Called with the response from the target instance
  */
 async function sendTo(
@@ -2440,7 +2463,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                             }
                         }
 
-                        sendTo(msg.from, msg.command, resList, msg.callback);
+                        msg.callback && sendTo(msg.from, msg.command, resList, msg.callback);
                     });
                     break;
                 } else {
@@ -2478,11 +2501,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                 lines.shift(); // remove first line of the file as it could be not full if starts not from 0
                             }
                             lines.push(stats.size.toString()); // place as last line the current size of log
-                            sendTo(msg.from, msg.command, lines, msg.callback);
+                            msg.callback && sendTo(msg.from, msg.command, lines, msg.callback);
                         })
                         .on('error', () =>
                             // done
-                            sendTo(msg.from, msg.command, [stats.size], msg.callback),
+                            msg.callback ? sendTo(msg.from, msg.command, [stats.size], msg.callback) : undefined,
                         );
                 } else {
                     sendTo(msg.from, msg.command, [0], msg.callback);
@@ -2704,9 +2727,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     msg.message.options,
                     (err, base64) => {
                         if (base64) {
-                            sendTo(msg.from, msg.command, { error: err, data: base64 }, msg.callback);
+                            msg.callback && sendTo(msg.from, msg.command, { error: err, data: base64 }, msg.callback);
                         } else {
-                            sendTo(msg.from, msg.command, { error: err }, msg.callback);
+                            msg.callback && sendTo(msg.from, msg.command, { error: err }, msg.callback);
                         }
                     },
                 );
@@ -3098,9 +3121,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
             try {
                 await upgradeOsPackages(packages);
-                sendTo(msg.from, msg.command, { success: true }, msg.callback);
+                msg.callback && sendTo(msg.from, msg.command, { success: true }, msg.callback);
             } catch (e) {
-                sendTo(msg.from, msg.command, { error: e.message, success: false }, msg.callback);
+                msg.callback && sendTo(msg.from, msg.command, { error: e.message, success: false }, msg.callback);
                 return;
             }
 
@@ -3173,11 +3196,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
  *
  * @param options The received message and response payload
  */
-async function sendResponseTo(options: SendResponseToOptions): Promise<void> {
+function sendResponseTo(options: SendResponseToOptions): void {
     const { receivedMsg, payload } = options;
 
     if (receivedMsg.callback && receivedMsg.from) {
-        await sendTo(receivedMsg.from, receivedMsg.command, payload, receivedMsg.callback);
+        sendTo(receivedMsg.from, receivedMsg.command, payload, receivedMsg.callback);
     }
 }
 
