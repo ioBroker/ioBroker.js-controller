@@ -583,13 +583,13 @@ function createStates(onConnect: () => void): void {
                 let currentLevel = config.log.level;
                 if (typeof state.val === 'string' && state.val !== currentLevel && isLogLevel(state.val)) {
                     config.log.level = state.val;
-                    for (const transport in logger.transports) {
+                    for (const transport of logger.transports) {
                         if (
-                            logger.transports[transport].level === currentLevel &&
+                            transport.level === currentLevel &&
                             // @ts-expect-error it's our custom property
-                            !logger.transports[transport]._defaultConfigLoglevel
+                            !transport._defaultConfigLoglevel
                         ) {
-                            logger.transports[transport].level = state.val;
+                            transport.level = state.val;
                         }
                     }
                     logger.info(`${hostLogPrefix} Loglevel changed from "${currentLevel}" to "${state.val}"`);
@@ -726,10 +726,10 @@ async function initializeController(): Promise<void> {
 
             // Do not start if we're still stopping the instances
             await checkHost();
-            startMultihost(config).catch(e => logger.error(`${hostLogPrefix} Cannot start multihost: ${e.message}`));
-            setMeta().catch(e => logger.error(`${hostLogPrefix} Cannot set meta information: ${e.message}`));
+            await startMultihost(config);
+            await setMeta();
             started = true;
-            getInstances().catch(e => logger.error(`${hostLogPrefix} Cannot get instances: ${e.message}`));
+            await getInstances();
         }
     } else {
         connected = true;
@@ -737,7 +737,7 @@ async function initializeController(): Promise<void> {
 
         // Do not start if we're still stopping the instances
         if (!isStopping) {
-            getInstances().catch(e => logger.error(`${hostLogPrefix} Cannot get instances: ${e.message}`));
+            await getInstances();
         }
     }
 }
