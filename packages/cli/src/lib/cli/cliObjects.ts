@@ -340,7 +340,7 @@ export class CLIObjects extends CLICommand {
             const { objects } = params;
 
             const doSetObject = (obj: any): void => {
-                objects.setObject(id, obj, err => {
+                objects.setObject(id, obj, (err: Error | null | undefined) => {
                     if (err) {
                         CLI.error.cannotUpdateObject(id, err.message);
                         return void callback(1);

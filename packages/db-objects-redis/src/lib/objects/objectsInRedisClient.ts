@@ -4308,32 +4308,21 @@ export class ObjectsInRedisClient {
         return { id };
     }
 
+    // Promise version (with or without options)
     /**
      * Set anew or update an object
      *
      * @param id ID of the object
      * @param obj The object to write
+     * @param options options for access control are optional
      */
     setObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>,
+        options?: { user?: ioBroker.ObjectIDs.User } | null,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
 
-    // method called without options
-    /**
-     * Set anew or update an object
-     *
-     * @param id ID of the object
-     * @param obj The object to write
-     * @param callback return function
-     */
-    setObject<T extends string>(
-        id: T,
-        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>,
-        callback?: ioBroker.SetObjectCallback,
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
-
-    // method called with options
+    // method called with options and callback
     /**
      * Set anew or update an object
      *
@@ -4345,9 +4334,23 @@ export class ObjectsInRedisClient {
     setObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>,
-        options?: { user?: ioBroker.ObjectIDs.User } | null,
-        callback?: ioBroker.SetObjectCallback,
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+        options: { user?: ioBroker.ObjectIDs.User } | undefined | null,
+        callback: ioBroker.SetObjectCallback,
+    ): void;
+
+    // method called without options but with callback
+    /**
+     * Set anew or update an object
+     *
+     * @param id ID of the object
+     * @param obj The object to write
+     * @param callback return function
+     */
+    setObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>,
+        callback: ioBroker.SetObjectCallback,
+    ): void;
 
     /**
      * set anew or update object
@@ -5524,6 +5527,7 @@ export class ObjectsInRedisClient {
         }
     }
 
+    // Promise version (with or without options)
     /**
      * Extend an existing object with the given partial object, creating it if it does not exist
      *
@@ -5536,6 +5540,7 @@ export class ObjectsInRedisClient {
         obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options?: ioBroker.ExtendObjectOptions | null,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>>;
+    // method called with options and callback
     /**
      * Extend an existing object with the given partial object, creating it if it does not exist
      *
@@ -5547,9 +5552,22 @@ export class ObjectsInRedisClient {
     extendObject<T extends string>(
         id: T,
         obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options?: ioBroker.ExtendObjectOptions | null,
-        callback?: ioBroker.ExtendObjectCallback,
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>>;
+        options: ioBroker.ExtendObjectOptions | undefined | null,
+        callback: ioBroker.ExtendObjectCallback,
+    ): void;
+    // method called without options but with callback
+    /**
+     * Extend an existing object with the given partial object, creating it if it does not exist
+     *
+     * @param id The id of the object to extend
+     * @param obj The partial object to merge into the existing object
+     * @param callback Called with the resulting object and its id
+     */
+    extendObject<T extends string>(
+        id: T,
+        obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        callback: ioBroker.ExtendObjectCallback,
+    ): void;
     /**
      * Extend an existing object with the given partial object, creating it if it does not exist
      *
@@ -5561,7 +5579,7 @@ export class ObjectsInRedisClient {
     extendObject<T extends string>(
         id: T,
         obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options?: ioBroker.ExtendObjectOptions | null,
+        options?: ioBroker.ExtendObjectOptions | null | ioBroker.ExtendObjectCallback,
         callback?: ioBroker.ExtendObjectCallback,
     ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>> {
         if (typeof options === 'function') {

@@ -4266,7 +4266,9 @@ export class AdapterClass extends EventEmitter {
 
             obj = extend(true, oldObj, obj);
 
-            return this.#objects.setObject(id, obj as any, options, callback);
+            return callback
+                ? this.#objects.setObject(id, obj as any, options, callback)
+                : this.#objects.setObject(id, obj as any, options);
         }
         obj.from ||= `system.adapter.${this.namespace}`;
         obj.user ||= options?.user || SYSTEM_ADMIN_USER;
@@ -6796,10 +6798,11 @@ export class AdapterClass extends EventEmitter {
                         obj.user = options?.user || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
 
-                        this.#objects!.setObject(obj._id, obj, options, callback);
-                    } else {
-                        return tools.maybeCallback(callback);
+                        return callback
+                            ? this.#objects!.setObject(obj._id, obj, options, callback)
+                            : this.#objects!.setObject(obj._id, obj, options);
                     }
+                    return tools.maybeCallback(callback);
                 }
             });
         } else {
@@ -6822,28 +6825,37 @@ export class AdapterClass extends EventEmitter {
                         obj.user = options?.user || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
 
-                        this.#objects!.setObject(obj._id, obj, options, callback);
-                    } else {
-                        return tools.maybeCallback(callback);
+                        return callback
+                            ? this.#objects!.setObject(obj._id, obj, options, callback)
+                            : this.#objects!.setObject(obj._id, obj, options);
                     }
-                } else {
-                    // Create enum
-                    this.#objects!.setObject(
-                        `enum.${enumName}.${addTo}`,
-                        {
-                            common: {
-                                name: addTo,
-                                members: [objId],
-                            },
-                            from: `system.adapter.${this.namespace}`,
-                            ts: Date.now(),
-                            type: 'enum',
-                            native: {},
-                        },
-                        options,
-                        callback,
-                    );
+                    return tools.maybeCallback(callback);
                 }
+                // Create enum
+                return callback
+                    ? this.#objects!.setObject(
+                          `enum.${enumName}.${addTo}`,
+                          {
+                              common: { name: addTo, members: [objId] },
+                              from: `system.adapter.${this.namespace}`,
+                              ts: Date.now(),
+                              type: 'enum',
+                              native: {},
+                          },
+                          options,
+                          callback,
+                      )
+                    : this.#objects!.setObject(
+                          `enum.${enumName}.${addTo}`,
+                          {
+                              common: { name: addTo, members: [objId] },
+                              from: `system.adapter.${this.namespace}`,
+                              ts: Date.now(),
+                              type: 'enum',
+                              native: {},
+                          },
+                          options,
+                      );
             });
         }
     }
@@ -7673,10 +7685,11 @@ export class AdapterClass extends EventEmitter {
                     obj.from = `system.adapter.${this.namespace}`;
                     obj.user = options?.user || SYSTEM_ADMIN_USER;
                     obj.ts = Date.now();
-                    this.#objects!.setObject(obj._id, obj, options, callback);
-                } else {
-                    return tools.maybeCallback(callback);
+                    return callback
+                        ? this.#objects!.setObject(obj._id, obj, options, callback)
+                        : this.#objects!.setObject(obj._id, obj, options);
                 }
+                return tools.maybeCallback(callback);
             });
         } else {
             if (enumName.startsWith('enum.')) {
@@ -7691,32 +7704,41 @@ export class AdapterClass extends EventEmitter {
                         obj.from = `system.adapter.${this.namespace}`;
                         obj.user = options?.user || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
-                        this.#objects!.setObject(obj._id, obj, callback);
-                    } else {
-                        return tools.maybeCallback(callback);
+                        return callback
+                            ? this.#objects!.setObject(obj._id, obj, callback)
+                            : this.#objects!.setObject(obj._id, obj);
                     }
-                } else {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    }
-
-                    // Create enum
-                    this.#objects!.setObject(
-                        `enum.${enumName}.${addTo}`,
-                        {
-                            common: {
-                                name: addTo,
-                                members: [objId],
-                            },
-                            from: `system.adapter.${this.namespace}`,
-                            ts: Date.now(),
-                            type: 'enum',
-                            native: {},
-                        },
-                        options,
-                        callback,
-                    );
+                    return tools.maybeCallback(callback);
                 }
+                if (err) {
+                    return tools.maybeCallbackWithError(callback, err);
+                }
+
+                // Create enum
+                return callback
+                    ? this.#objects!.setObject(
+                          `enum.${enumName}.${addTo}`,
+                          {
+                              common: { name: addTo, members: [objId] },
+                              from: `system.adapter.${this.namespace}`,
+                              ts: Date.now(),
+                              type: 'enum',
+                              native: {},
+                          },
+                          options,
+                          callback,
+                      )
+                    : this.#objects!.setObject(
+                          `enum.${enumName}.${addTo}`,
+                          {
+                              common: { name: addTo, members: [objId] },
+                              from: `system.adapter.${this.namespace}`,
+                              ts: Date.now(),
+                              type: 'enum',
+                              native: {},
+                          },
+                          options,
+                      );
             });
         }
     }
