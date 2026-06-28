@@ -1759,7 +1759,9 @@ export class AdapterClass extends EventEmitter {
             this._logger.info(`${this.namespaceLog} setSession not processed because States database not connected`);
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
-        this.#states.setSession(options.id, options.ttl, options.data, options.callback);
+        return options.callback
+            ? this.#states.setSession(options.id, options.ttl, options.data, options.callback)
+            : this.#states.setSession(options.id, options.ttl, options.data);
     }
 
     // real types overload
@@ -1792,7 +1794,9 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        this.#states.destroySession(options.id, options.callback);
+        return options.callback
+            ? this.#states.destroySession(options.id, options.callback)
+            : this.#states.destroySession(options.id);
     }
 
     private async _getObjectsByArray(
@@ -10867,7 +10871,7 @@ export class AdapterClass extends EventEmitter {
             if (this.oStates && this.oStates[id]) {
                 return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
             }
-            return this.#states.getState(id, callback);
+            return callback ? this.#states.getState(id, callback) : this.#states.getState(id);
         }
     }
 
@@ -11208,7 +11212,11 @@ export class AdapterClass extends EventEmitter {
                 return tools.maybeCallbackWithError(callback, e);
             }
         }
-        await this.#states.delState(id, callback);
+        if (callback) {
+            this.#states.delState(id, callback);
+        } else {
+            await this.#states.delState(id);
+        }
     }
 
     // external signature
@@ -11831,13 +11839,15 @@ export class AdapterClass extends EventEmitter {
                         return tools.maybeCallback(callback);
                     }
                     // no alias objects found or pattern *
-                    this.#states.subscribeUser(pattern, callback);
+                    return callback
+                        ? this.#states.subscribeUser(pattern, callback)
+                        : this.#states.subscribeUser(pattern);
                 } catch (e) {
                     this._logger.warn(`${this.namespaceLog} Cannot subscribe to ${pattern}: ${e.message}`);
                     return tools.maybeCallbackWithError(callback, e);
                 }
             } else {
-                this.#states.subscribeUser(pattern, callback);
+                return callback ? this.#states.subscribeUser(pattern, callback) : this.#states.subscribeUser(pattern);
             }
         } else if (pattern.startsWith(ALIAS_STARTS_WITH)) {
             if (!this._aliasObjectsSubscribed) {
@@ -11857,7 +11867,7 @@ export class AdapterClass extends EventEmitter {
                 this._logger.warn(`${this.namespaceLog} cannot subscribe on alias "${pattern}": ${e.message}`);
             }
         } else {
-            this.#states.subscribeUser(pattern, callback);
+            return callback ? this.#states.subscribeUser(pattern, callback) : this.#states.subscribeUser(pattern);
         }
     }
 
