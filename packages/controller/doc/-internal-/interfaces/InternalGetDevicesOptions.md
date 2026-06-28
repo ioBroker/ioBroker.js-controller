@@ -6,7 +6,7 @@
 
 # Interface: InternalGetDevicesOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:772](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L772)
+Defined in: [adapter/src/lib/\_Types.ts:781](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L781)
 
 Options for reading all devices
 
@@ -16,7 +16,7 @@ Options for reading all devices
 
 > **callback**: [`GetObjectsCallback3`](../type-aliases/GetObjectsCallback3.md)\<[`DeviceObject`](DeviceObject.md)\>
 
-Defined in: [adapter/src/lib/\_Types.ts:776](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L776)
+Defined in: [adapter/src/lib/\_Types.ts:785](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L785)
 
 Called with the devices
 
@@ -24,8 +24,8 @@ Called with the devices
 
 ### options?
 
-> `optional` **options?**: `Record`\<`string`, `any`\> \| `null`
+> `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:774](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L774)
+Defined in: [adapter/src/lib/\_Types.ts:783](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L783)
 
 Optional settings including the user context

@@ -6,7 +6,7 @@
 
 # Interface: AliasTargetEntry
 
-Defined in: [adapter/src/lib/\_Types.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L265)
+Defined in: [adapter/src/lib/\_Types.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L265)
 
 A single target of an alias
 
@@ -16,7 +16,7 @@ A single target of an alias
 
 > **alias**: \{ `id`: `string` \| \{ `read`: `string`; `write`: `string`; \}; `read?`: `string`; `write?`: `string`; \} \| `undefined`
 
-Defined in: [adapter/src/lib/\_Types.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L267)
+Defined in: [adapter/src/lib/\_Types.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L267)
 
 Alias definition of the target's common section
 
@@ -54,7 +54,7 @@ An optional conversion function when reading, e.g. `"(val * 9/5) + 32"`
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L269)
+Defined in: [adapter/src/lib/\_Types.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L269)
 
 The id of the target state
 
@@ -64,7 +64,7 @@ The id of the target state
 
 > `optional` **max?**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:275](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L275)
+Defined in: [adapter/src/lib/\_Types.ts:275](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L275)
 
 Maximum value of the target
 
@@ -74,7 +74,7 @@ Maximum value of the target
 
 > `optional` **min?**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L277)
+Defined in: [adapter/src/lib/\_Types.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L277)
 
 Minimum value of the target
 
@@ -84,7 +84,7 @@ Minimum value of the target
 
 > **pattern**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L271)
+Defined in: [adapter/src/lib/\_Types.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L271)
 
 The subscription pattern of the target
 
@@ -94,7 +94,7 @@ The subscription pattern of the target
 
 > `optional` **type?**: [`CommonType`](../type-aliases/CommonType.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L273)
+Defined in: [adapter/src/lib/\_Types.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L273)
 
 Common type of the target
 
@@ -104,6 +104,6 @@ Common type of the target
 
 > `optional` **unit?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L279)
+Defined in: [adapter/src/lib/\_Types.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L279)
 
 Unit of the target value

@@ -6,7 +6,7 @@
 
 # Interface: InternalCreateStateOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:620](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L620)
+Defined in: [adapter/src/lib/\_Types.ts:623](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L623)
 
 Options for creating a state
 
@@ -16,7 +16,7 @@ Options for creating a state
 
 > **\_native**: `Record`\<`string`, `any`\>
 
-Defined in: [adapter/src/lib/\_Types.ts:630](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L630)
+Defined in: [adapter/src/lib/\_Types.ts:633](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L633)
 
 The native section of the state object
 
@@ -26,7 +26,7 @@ The native section of the state object
 
 > `optional` **callback?**: [`SetObjectCallback`](../type-aliases/SetObjectCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:634](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L634)
+Defined in: [adapter/src/lib/\_Types.ts:637](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L637)
 
 Called once the state has been created
 
@@ -36,7 +36,7 @@ Called once the state has been created
 
 > **common**: `Partial`\<[`StateCommon`](StateCommon.md)\>
 
-Defined in: [adapter/src/lib/\_Types.ts:628](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L628)
+Defined in: [adapter/src/lib/\_Types.ts:631](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L631)
 
 The common section of the state object
 
@@ -44,9 +44,9 @@ The common section of the state object
 
 ### options?
 
-> `optional` **options?**: `Record`\<`string`, `any`\> \| `null`
+> `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:632](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L632)
+Defined in: [adapter/src/lib/\_Types.ts:635](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L635)
 
 Optional settings including the user context
 
@@ -56,7 +56,7 @@ Optional settings including the user context
 
 > **parentChannel**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:624](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L624)
+Defined in: [adapter/src/lib/\_Types.ts:627](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L627)
 
 The parent channel name
 
@@ -66,7 +66,7 @@ The parent channel name
 
 > **parentDevice**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:622](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L622)
+Defined in: [adapter/src/lib/\_Types.ts:625](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L625)
 
 The parent device name
 
@@ -76,6 +76,6 @@ The parent device name
 
 > **stateName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:626](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L626)
+Defined in: [adapter/src/lib/\_Types.ts:629](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L629)
 
 The name of the state

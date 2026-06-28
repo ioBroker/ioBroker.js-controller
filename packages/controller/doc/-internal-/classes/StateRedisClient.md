@@ -30,14 +30,6 @@ Settings for the states client including connection and namespaces
 
 `StateRedisClient`
 
-## Properties
-
-### namespaceMsg
-
-> **namespaceMsg**: `string`
-
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:54
-
 ## Methods
 
 ### \_destroyDBHelper()
@@ -268,7 +260,7 @@ Returns the protocol version from DB
 
 ### getSession()
 
-> **getSession**(`id`, `callback`): `Promise`\<`void` \| `Record`\<`string`, `any`\> \| `null`\>
+> **getSession**(`id`, `callback`): `Promise`\<`void` \| [`Session`](../type-aliases/Session.md) \| `null`\>
 
 Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:286
 
@@ -290,7 +282,7 @@ Called with the session object, or null if not found
 
 #### Returns
 
-`Promise`\<`void` \| `Record`\<`string`, `any`\> \| `null`\>
+`Promise`\<`void` \| [`Session`](../type-aliases/Session.md) \| `null`\>
 
 ***
 
@@ -616,7 +608,7 @@ Expiration time in seconds from now
 
 ##### obj
 
-`Record`\<`string`, `any`\>
+[`Session`](../type-aliases/Session.md)
 
 The session data to store
 

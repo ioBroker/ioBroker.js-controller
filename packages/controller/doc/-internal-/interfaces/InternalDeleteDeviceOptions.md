@@ -6,7 +6,7 @@
 
 # Interface: InternalDeleteDeviceOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:726](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L726)
+Defined in: [adapter/src/lib/\_Types.ts:735](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L735)
 
 Options for deleting a device
 
@@ -16,7 +16,7 @@ Options for deleting a device
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:730](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L730)
+Defined in: [adapter/src/lib/\_Types.ts:739](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L739)
 
 Called once the device has been deleted
 
@@ -26,6 +26,6 @@ Called once the device has been deleted
 
 > **deviceName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:728](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L728)
+Defined in: [adapter/src/lib/\_Types.ts:737](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L737)
 
 The name of the device

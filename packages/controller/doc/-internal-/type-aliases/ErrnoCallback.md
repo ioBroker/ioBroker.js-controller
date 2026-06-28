@@ -8,7 +8,7 @@
 
 > **ErrnoCallback** = (`err?`) => `void`
 
-Defined in: [types-dev/index.d.ts:440](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/types-dev/index.d.ts#L440)
+Defined in: [types-dev/index.d.ts:446](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/types-dev/index.d.ts#L446)
 
 Special variant of ErrorCallback for methods where Node.js returns an ErrnoException
 

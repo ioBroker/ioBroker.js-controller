@@ -4,19 +4,25 @@
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / InternalGetObjectOptions
 
-# Interface: InternalGetObjectOptions
+# Interface: InternalGetObjectOptions\<T\>
 
-Defined in: [adapter/src/lib/\_Types.ts:492](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L492)
+Defined in: [adapter/src/lib/\_Types.ts:495](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L495)
 
 Options for reading an object
+
+## Type Parameters
+
+### T
+
+`T` *extends* `string` = `string`
 
 ## Properties
 
 ### callback?
 
-> `optional` **callback?**: [`GetObjectCallback`](../type-aliases/GetObjectCallback.md)\<`any`\>
+> `optional` **callback?**: [`GetObjectCallback`](../type-aliases/GetObjectCallback.md)\<`T`\>
 
-Defined in: [adapter/src/lib/\_Types.ts:498](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L498)
+Defined in: [adapter/src/lib/\_Types.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L501)
 
 Called with the object
 
@@ -26,7 +32,7 @@ Called with the object
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:494](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L494)
+Defined in: [adapter/src/lib/\_Types.ts:497](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L497)
 
 The id of the object
 
@@ -34,8 +40,8 @@ The id of the object
 
 ### options
 
-> **options**: `unknown`
+> **options**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null` \| `undefined`
 
-Defined in: [adapter/src/lib/\_Types.ts:496](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L496)
+Defined in: [adapter/src/lib/\_Types.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L499)
 
 Optional settings including the user context
