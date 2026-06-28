@@ -712,7 +712,9 @@ async function initializeController(): Promise<void> {
             // @ts-expect-error objects and state object version conflicts that are none
             pluginHandler.setDatabaseForPlugins(objects, states);
             await pluginHandler.initPlugins(ioPackage);
-            states.subscribe(`${hostObjectPrefix}.plugins.*`);
+            states
+                .subscribe(`${hostObjectPrefix}.plugins.*`)
+                .catch(e => logger.error(`${hostLogPrefix} Cannot subscribe to plugin states: ${e.message}`));
 
             // Do not start if we're still stopping the instances
             await checkHost();
@@ -963,11 +965,13 @@ function startAliveInterval(): void {
         config.system.checkDiskInterval !== 0 ? Math.round(config.system.checkDiskInterval) || 300_000 : 0;
     if (!compactGroupController) {
         // Provide info to see for each host if compact is enabled or not and be able to use in Admin or such
-        states!.setState(`${hostObjectPrefix}.compactModeEnabled`, {
-            ack: true,
-            from: hostObjectPrefix,
-            val: config.system.compact || false,
-        });
+        states!
+            .setState(`${hostObjectPrefix}.compactModeEnabled`, {
+                ack: true,
+                from: hostObjectPrefix,
+                val: config.system.compact || false,
+            })
+            .catch(e => logger.error(`${hostLogPrefix} Cannot set compactModeEnabled state: ${e.message}`));
     }
     reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
 
@@ -1022,18 +1026,38 @@ async function checkPrimaryHost(): Promise<void> {
     }
 }
 
+/**
+ * Run fire-and-forget database writes in parallel and log any that reject.
+ *
+ * @param writes The pending write operations, kept running concurrently
+ * @param errorText Context prepended to the error log if a write rejects
+ */
+function logWriteErrors(writes: Promise<unknown>[], errorText: string): void {
+    Promise.allSettled(writes)
+        .then(results => {
+            for (const result of results) {
+                if (result.status === 'rejected') {
+                    logger.error(`${hostLogPrefix} ${errorText}: ${result.reason}`);
+                }
+            }
+        })
+        .catch(e => logger.error(`${hostLogPrefix} ${errorText}: ${e.message}`));
+}
+
 async function reportStatus(): Promise<void> {
     if (!states) {
         return;
     }
     const id = hostObjectPrefix;
     outputCount += 10;
-    states.setState(`${id}.alive`, {
-        val: true,
-        ack: true,
-        expire: Math.floor(config.system.statisticsInterval / 1_000) + 10,
-        from: id,
-    });
+    states
+        .setState(`${id}.alive`, {
+            val: true,
+            ack: true,
+            expire: Math.floor(config.system.statisticsInterval / 1_000) + 10,
+            from: id,
+        })
+        .catch(e => logger.error(`${hostLogPrefix} Cannot update host alive state: ${e.message}`));
 
     // provide infos about current process
 
@@ -1051,12 +1075,13 @@ async function reportStatus(): Promise<void> {
         pidUsage(process.pid, (err, stats) => {
             // controller.s might be stopped, but this is still running
             if (!err && states && states.setState && stats) {
-                states.setState(`${id}.cpu`, {
-                    ack: true,
-                    from: id,
-                    val: Math.round(100 * stats.cpu) / 100,
-                });
-                states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1_000 });
+                logWriteErrors(
+                    [
+                        states.setState(`${id}.cpu`, { ack: true, from: id, val: Math.round(100 * stats.cpu) / 100 }),
+                        states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1_000 }),
+                    ],
+                    'Cannot update process status states',
+                );
                 outputCount += 2;
             }
         });
@@ -1066,41 +1091,61 @@ async function reportStatus(): Promise<void> {
 
     try {
         const mem = process.memoryUsage();
-        states.setState(`${id}.memRss`, {
-            val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100,
-            ack: true,
-            from: id,
-        });
-        states.setState(`${id}.memHeapTotal`, {
-            val: Math.round(mem.heapTotal / 10485.76 /* 1MB / 100 */) / 100,
-            ack: true,
-            from: id,
-        });
-        states.setState(`${id}.memHeapUsed`, {
-            val: Math.round(mem.heapUsed / 10485.76 /* 1MB / 100 */) / 100,
-            ack: true,
-            from: id,
-        });
+        logWriteErrors(
+            [
+                states.setState(`${id}.memRss`, {
+                    val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100,
+                    ack: true,
+                    from: id,
+                }),
+                states.setState(`${id}.memHeapTotal`, {
+                    val: Math.round(mem.heapTotal / 10485.76 /* 1MB / 100 */) / 100,
+                    ack: true,
+                    from: id,
+                }),
+                states.setState(`${id}.memHeapUsed`, {
+                    val: Math.round(mem.heapUsed / 10485.76 /* 1MB / 100 */) / 100,
+                    ack: true,
+                    from: id,
+                }),
+            ],
+            'Cannot update memory status states',
+        );
     } catch (e) {
         logger.error(`${hostLogPrefix} Cannot read memoryUsage data: ${e.message}`);
     }
 
     // provide machine infos
-    states.setState(`${id}.load`, { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id });
-    states.setState(`${id}.uptime`, { val: Math.round(process.uptime()), ack: true, from: id });
-    states.setState(`${id}.mem`, { val: Math.round(100 - (os.freemem() / os.totalmem()) * 100), ack: true, from: id });
-    states.setState(`${id}.freemem`, { val: Math.round(os.freemem() / 1_048_576 /* 1MB */), ack: true, from: id });
+    logWriteErrors(
+        [
+            states.setState(`${id}.load`, { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id }),
+            states.setState(`${id}.uptime`, { val: Math.round(process.uptime()), ack: true, from: id }),
+            states.setState(`${id}.mem`, {
+                val: Math.round(100 - (os.freemem() / os.totalmem()) * 100),
+                ack: true,
+                from: id,
+            }),
+            states.setState(`${id}.freemem`, {
+                val: Math.round(os.freemem() / 1_048_576 /* 1MB */),
+                ack: true,
+                from: id,
+            }),
+        ],
+        'Cannot update machine status states',
+    );
 
     if (fs.existsSync('/proc/meminfo')) {
         try {
             const text = fs.readFileSync('/proc/meminfo', 'utf8');
             const m = text && text.match(/MemAvailable:\s*(\d+)/);
             if (m && m[1]) {
-                states.setState(`${id}.memAvailable`, {
-                    val: Math.round(parseInt(m[1], 10) * 0.001024),
-                    ack: true,
-                    from: id,
-                });
+                states
+                    .setState(`${id}.memAvailable`, {
+                        val: Math.round(parseInt(m[1], 10) * 0.001024),
+                        ack: true,
+                        from: id,
+                    })
+                    .catch(e => logger.error(`${hostLogPrefix} Cannot update memAvailable state: ${e.message}`));
                 outputCount++;
             }
         } catch (e) {
@@ -1134,16 +1179,13 @@ async function reportStatus(): Promise<void> {
                     });
                 }
 
-                states.setState(`${id}.diskSize`, {
-                    val: diskSize,
-                    ack: true,
-                    from: id,
-                });
-                states.setState(`${id}.diskFree`, {
-                    val: diskFree,
-                    ack: true,
-                    from: id,
-                });
+                logWriteErrors(
+                    [
+                        states.setState(`${id}.diskSize`, { val: diskSize, ack: true, from: id }),
+                        states.setState(`${id}.diskFree`, { val: diskFree, ack: true, from: id }),
+                    ],
+                    'Cannot update disk status states',
+                );
 
                 outputCount += 2;
             }
@@ -1153,16 +1195,26 @@ async function reportStatus(): Promise<void> {
     }
 
     // some statistics
-    states.setState(`${id}.inputCount`, { val: inputCount, ack: true, from: id });
-    states.setState(`${id}.outputCount`, { val: outputCount, ack: true, from: id });
+    logWriteErrors(
+        [
+            states.setState(`${id}.inputCount`, { val: inputCount, ack: true, from: id }),
+            states.setState(`${id}.outputCount`, { val: outputCount, ack: true, from: id }),
+        ],
+        'Cannot update statistics states',
+    );
 
     if (eventLoopLags.length) {
         const eventLoopLag = Math.ceil(eventLoopLags.reduce((a, b) => a + b) / eventLoopLags.length);
-        states.setState(`${id}.eventLoopLag`, { val: eventLoopLag, ack: true, from: id }); // average of measured values
+        // average of measured values
+        states
+            .setState(`${id}.eventLoopLag`, { val: eventLoopLag, ack: true, from: id })
+            .catch(e => logger.error(`${hostLogPrefix} Cannot update eventLoopLag state: ${e.message}`));
         eventLoopLags = [];
     }
 
-    states.setState(`${id}.compactgroupProcesses`, { val: Object.keys(compactProcs).length, ack: true, from: id });
+    states
+        .setState(`${id}.compactgroupProcesses`, { val: Object.keys(compactProcs).length, ack: true, from: id })
+        .catch(e => logger.error(`${hostLogPrefix} Cannot update compactgroupProcesses state: ${e.message}`));
     let realProcesses = 0;
     let compactProcesses = 0;
     Object.values(procs).forEach(proc => {
@@ -1174,8 +1226,13 @@ async function reportStatus(): Promise<void> {
             }
         }
     });
-    states.setState(`${id}.instancesAsProcess`, { val: realProcesses, ack: true, from: id });
-    states.setState(`${id}.instancesAsCompact`, { val: compactProcesses, ack: true, from: id });
+    logWriteErrors(
+        [
+            states.setState(`${id}.instancesAsProcess`, { val: realProcesses, ack: true, from: id }),
+            states.setState(`${id}.instancesAsCompact`, { val: compactProcesses, ack: true, from: id }),
+        ],
+        'Cannot update instance count states',
+    );
 
     inputCount = 0;
     outputCount = 0;
@@ -1839,7 +1896,9 @@ async function setMeta(): Promise<void> {
 
 // Subscribe on message queue
 function initMessageQueue(): void {
-    states!.subscribeMessage(hostObjectPrefix);
+    states!
+        .subscribeMessage(hostObjectPrefix)
+        .catch(e => logger.error(`${hostLogPrefix} Cannot subscribe to host messages: ${e.message}`));
 }
 
 /**
@@ -2864,7 +2923,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 for (const _id of Object.keys(procs)) {
                     if (procs[_id].process) {
                         outputCount++;
-                        states!.setState(`${_id}.checkLogging`, { val: true, ack: false, from: hostObjectPrefix });
+                        states!
+                            .setState(`${_id}.checkLogging`, { val: true, ack: false, from: hostObjectPrefix })
+                            .catch(e => logger.error(`${hostLogPrefix} Cannot set checkLogging state: ${e.message}`));
                     }
                 }
             })();
@@ -3682,14 +3743,22 @@ function installAdapters(): void {
                                     logger.info(
                                         `${hostLogPrefix} startInstance ${task.id}: instance is disabled but should be started, re-enabling it`,
                                     );
-                                    states!.setState(`${task.id}.alive`, {
-                                        val: true,
-                                        ack: false,
-                                        from: hostObjectPrefix,
-                                    });
+                                    states!
+                                        .setState(`${task.id}.alive`, {
+                                            val: true,
+                                            ack: false,
+                                            from: hostObjectPrefix,
+                                        })
+                                        .catch(e =>
+                                            logger.error(`${hostLogPrefix} Cannot set ${task.id}.alive: ${e.message}`),
+                                        );
                                 } else if (task.rebuild) {
                                     // on rebuild, we send a restart signal via object change to also reach compact group processes
-                                    objects!.extendObject(task.id, {});
+                                    objects!
+                                        .extendObject(task.id, {})
+                                        .catch(e =>
+                                            logger.error(`${hostLogPrefix} Cannot rebuild ${task.id}: ${e.message}`),
+                                        );
                                 } else {
                                     startInstance(task.id, task.wakeUp);
                                 }
@@ -3874,7 +3943,9 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
 
                 proc.process.on('exit', (code, signal) => {
                     outputCount++;
-                    states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+                    states!
+                        .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
+                        .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));
                     if (signal) {
                         logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                     } else if (code === null) {
@@ -4202,7 +4273,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             console.log(
                                 `================================== > LOG REDIRECT ${id} => false [Process stopped]`,
                             );
-                            states!.setState(`${id}.logging`, { val: false, ack: true, from: hostObjectPrefix });
+                            states!
+                                .setState(`${id}.logging`, { val: false, ack: true, from: hostObjectPrefix })
+                                .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.logging: ${e.message}`));
                         }
 
                         // show stored errors
@@ -4321,7 +4394,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     processMessage(msg as any);
                                 } else {
                                     // send to the main controller to make sure only one npm process runs at a time
-                                    sendTo(`system.host.${hostname}`, 'rebuildAdapter', msg);
+                                    sendTo(`system.host.${hostname}`, 'rebuildAdapter', msg).catch(e =>
+                                        logger.error(`${hostLogPrefix} Cannot send rebuildAdapter: ${e.message}`),
+                                    );
                                 }
                             } else {
                                 logger.info(
@@ -4463,11 +4538,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     }
 
                     if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
-                        states!.setState(`${id}.sigKill`, {
-                            val: proc.process.pid,
-                            ack: true,
-                            from: hostObjectPrefix,
-                        });
+                        states!
+                            .setState(`${id}.sigKill`, {
+                                val: proc.process.pid,
+                                ack: true,
+                                from: hostObjectPrefix,
+                            })
+                            .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.sigKill: ${e.message}`));
                     }
 
                     // catch error output
@@ -4608,11 +4685,15 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                         if (proc.process && !proc.process.kill) {
                             proc.process.kill = () => {
-                                states!.setState(`${id}.sigKill`, {
-                                    val: -1,
-                                    ack: false,
-                                    from: hostObjectPrefix,
-                                });
+                                states!
+                                    .setState(`${id}.sigKill`, {
+                                        val: -1,
+                                        ack: false,
+                                        from: hostObjectPrefix,
+                                    })
+                                    .catch(e =>
+                                        logger.error(`${hostLogPrefix} Cannot set ${id}.sigKill: ${e.message}`),
+                                    );
 
                                 return true;
                             };
@@ -4724,16 +4805,21 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                                         const id = instances.shift()!;
                                         outputCount += 2;
-                                        states!.setState(`${id}.alive`, {
-                                            val: false,
-                                            ack: true,
-                                            from: hostObjectPrefix,
-                                        });
-                                        states!.setState(`${id}.connected`, {
-                                            val: false,
-                                            ack: true,
-                                            from: hostObjectPrefix,
-                                        });
+                                        logWriteErrors(
+                                            [
+                                                states!.setState(`${id}.alive`, {
+                                                    val: false,
+                                                    ack: true,
+                                                    from: hostObjectPrefix,
+                                                }),
+                                                states!.setState(`${id}.connected`, {
+                                                    val: false,
+                                                    ack: true,
+                                                    from: hostObjectPrefix,
+                                                }),
+                                            ],
+                                            `Cannot reset ${id} alive/connected states`,
+                                        );
 
                                         cleanAutoSubscribes(id, () => {
                                             const proc = procs[id];
@@ -4931,7 +5017,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             const proc = procs[id];
 
                             outputCount++;
-                            states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+                            states!
+                                .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
+                                .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));
                             if (signal) {
                                 logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                             } else if (code === null) {
@@ -5019,9 +5107,13 @@ async function stopInstance(id: string, force: boolean): Promise<void> {
 
                     // Unsubscribe
                     if (proc.subscribe.startsWith('messagebox.')) {
-                        states!.unsubscribeMessage(proc.subscribe.substring('messagebox.'.length));
+                        states!
+                            .unsubscribeMessage(proc.subscribe.substring('messagebox.'.length))
+                            .catch(e => logger.error(`${hostLogPrefix} Cannot unsubscribe message: ${e.message}`));
                     } else {
-                        states!.unsubscribe(proc.subscribe);
+                        states!
+                            .unsubscribe(proc.subscribe)
+                            .catch(e => logger.error(`${hostLogPrefix} Cannot unsubscribe: ${e.message}`));
                     }
                 }
             }
@@ -5497,7 +5589,7 @@ export async function init(compactGroupId?: number): Promise<void> {
     ts!.on('logged', info => {
         info.from = hostLogPrefix;
         for (const log of logList) {
-            states!.pushLog(log, info);
+            states!.pushLog(log, info).catch(e => logger.error(`${hostLogPrefix} Cannot push log: ${e.message}`));
         }
     });
 
@@ -5637,24 +5729,32 @@ export async function init(compactGroupId?: number): Promise<void> {
                 clearTimeout(connectTimeout);
                 connectTimeout = null;
             }
-            // Subscribe for all logging objects
-            states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
-
-            // Subscribe for all alive states
-            states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.alive`);
-            states.subscribe(`${hostObjectPrefix}.diskWarning`);
+            // Subscribe for all logging objects, all alive states and disk warnings
+            logWriteErrors(
+                [
+                    states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`),
+                    states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.alive`),
+                    states.subscribe(`${hostObjectPrefix}.diskWarning`),
+                ],
+                'Cannot subscribe to system states',
+            );
             const diskWarningState = await states.getState(`${hostObjectPrefix}.diskWarning`);
             if (diskWarningState) {
                 diskWarningLevel = getDiskWarningLevel(diskWarningState);
             }
 
             // set current Loglevel and subscribe for changes
-            states.setState(`${hostObjectPrefix}.logLevel`, {
-                val: config.log.level,
-                ack: true,
-                from: hostObjectPrefix,
-            });
-            states.subscribe(`${hostObjectPrefix}.logLevel`);
+            logWriteErrors(
+                [
+                    states.setState(`${hostObjectPrefix}.logLevel`, {
+                        val: config.log.level,
+                        ack: true,
+                        from: hostObjectPrefix,
+                    }),
+                    states.subscribe(`${hostObjectPrefix}.logLevel`),
+                ],
+                'Cannot set/subscribe logLevel',
+            );
 
             if (!compactGroupController) {
                 try {
@@ -5739,7 +5839,9 @@ export async function init(compactGroupId?: number): Promise<void> {
                 if (toDelete.length) {
                     toDelete.forEach(id => {
                         logger.warn(`${hostLogPrefix} logger ${id} was deleted`);
-                        states!.delState(id);
+                        states!
+                            .delState(id)
+                            .catch(e => logger.error(`${hostLogPrefix} Cannot delete ${id}: ${e.message}`));
                     });
                 }
             }
