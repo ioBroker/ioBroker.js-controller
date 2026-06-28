@@ -712,7 +712,7 @@ async function initializeController(): Promise<void> {
     autoUpgradeManager = new AdapterAutoUpgradeManager({ objects, states, logger, logPrefix: hostLogPrefix });
     blocklistManager = new BlocklistManager({ objects });
 
-    checkSystemLocaleSupported().catch(e => logger.error(`${hostLogPrefix} Cannot check system locale: ${e.message}`));
+    await checkSystemLocaleSupported();
 
     if (connected === null) {
         connected = true;
@@ -1898,9 +1898,7 @@ async function setMeta(): Promise<void> {
                         // terminate ioBroker to restart the controller as UUID probably changed
                         logger.info(`${hostLogPrefix} Restart js-controller because vendor information updated`);
                         await wait(200);
-                        restart(() => !isStopping && stop(false)).catch(e =>
-                            logger.error(`${hostLogPrefix} Cannot restart: ${e.message}`),
-                        );
+                        await restart(() => !isStopping && stop(false));
                     }
                 }
             }
@@ -3016,9 +3014,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'upload': {
             if (msg.message) {
-                uploadAdapter({ adapter: msg.message, msg }).catch(e =>
-                    logger.error(`${hostLogPrefix} Cannot upload adapter: ${e.message}`),
-                );
+                await uploadAdapter({ adapter: msg.message, msg });
             } else {
                 logger.error(`${hostLogPrefix} No adapter name is specified for upload command from  ${msg.from}`);
             }
@@ -3216,9 +3212,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             if (restartRequired) {
                 logger.info(`${hostLogPrefix} Restart js-controller because desired after package upgrade`);
                 await wait(200);
-                restart(() => !isStopping && stop(false)).catch(e =>
-                    logger.error(`${hostLogPrefix} Cannot restart: ${e.message}`),
-                );
+                await restart(() => !isStopping && stop(false));
             }
             break;
         }
@@ -3229,9 +3223,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             }
             // let the answer be sent
             await wait(200);
-            restart(() => !isStopping && stop(false)).catch(e =>
-                logger.error(`${hostLogPrefix} Cannot restart: ${e.message}`),
-            );
+            await restart(() => !isStopping && stop(false));
             break;
         }
 
@@ -5143,13 +5135,9 @@ async function stopInstance(id: string, force: boolean): Promise<void> {
 
                     // Unsubscribe
                     if (proc.subscribe.startsWith('messagebox.')) {
-                        states!
-                            .unsubscribeMessage(proc.subscribe.substring('messagebox.'.length))
-                            .catch(e => logger.error(`${hostLogPrefix} Cannot unsubscribe message: ${e.message}`));
+                        await states!.unsubscribeMessage(proc.subscribe.substring('messagebox.'.length));
                     } else {
-                        states!
-                            .unsubscribe(proc.subscribe)
-                            .catch(e => logger.error(`${hostLogPrefix} Cannot unsubscribe: ${e.message}`));
+                        await states!.unsubscribe(proc.subscribe);
                     }
                 }
             }
