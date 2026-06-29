@@ -91,6 +91,7 @@ export class CLILogs extends CLICommand {
      * @param event The type of change
      * @param path Which path has changed
      * @param stats Information about the file
+     * @param stats.size The current size of the file in bytes
      */
     watchHandler(
         options: CLILogsOptions,
