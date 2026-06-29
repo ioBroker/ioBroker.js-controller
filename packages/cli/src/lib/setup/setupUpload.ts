@@ -240,7 +240,7 @@ export class Upload {
             this.callbacks[`_${obj.callback.id}`] = { cb: callback };
 
             // we cannot receive answers from hosts in CLI, so this command is "fire and forget"
-            return this.states.pushMessage(host, obj);
+            this.states.pushMessage(host, obj).catch(e => console.error(`Cannot push message: ${e.message}`));
         });
     }
 

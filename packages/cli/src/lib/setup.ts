@@ -1148,7 +1148,8 @@ async function processCommand(
                     rl.close();
                     answer = answer.toLowerCase();
                     if (answer === 'y' || answer === 'yes' || answer === 'ja' || answer === 'j') {
-                        return unsetup(params, callback);
+                        unsetup(params, callback).catch(e => console.error(`Cannot unsetup: ${e.message}`));
+                        return;
                     }
                     console.log('Nothing deleted');
                     return void callback();
