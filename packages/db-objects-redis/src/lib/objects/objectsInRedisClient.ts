@@ -17,7 +17,7 @@ import deepClone from 'deep-clone';
 import semver from 'semver';
 
 import { tools } from '@iobroker/db-base';
-import type { ACLObject, FileObject, GetUserGroupPromiseReturn, UserContext } from '@/lib/objects/objectsUtils.js';
+import type { ACLObject, FileObject, UserContext } from '@/lib/objects/objectsUtils.js';
 import * as utils from '@/lib/objects/objectsUtils.js';
 import * as CONSTS from '@/lib/objects/constants.js';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
@@ -491,7 +491,11 @@ export class ObjectsInRedisClient {
                                         ) {
                                             this.defaultNewAcl = deepClone(obj.common.defaultNewAcl);
                                             if (this.settings.controller) {
-                                                this.setDefaultAcl(this.defaultNewAcl);
+                                                this.setDefaultAcl(this.defaultNewAcl).catch(e =>
+                                                    this.log.error(
+                                                        `${this.namespace} Cannot set default acl: ${e.message}`,
+                                                    ),
+                                                );
                                             }
                                         }
 
@@ -1115,10 +1119,7 @@ export class ObjectsInRedisClient {
      * @param user The id of the user to look up
      * @param callback Called with the user, its groups and the effective ACL
      */
-    getUserGroup(
-        user: ioBroker.ObjectIDs.User,
-        callback: GetUserGroupCallbackNoError,
-    ): Promise<GetUserGroupPromiseReturn> | void {
+    getUserGroup(user: ioBroker.ObjectIDs.User, callback: GetUserGroupCallbackNoError): void {
         return utils.getUserGroup(this, user, (error, user, userGroups, userAcl) => {
             if (error) {
                 this.log.error(`${this.namespace} ${error.stack}`);
@@ -1796,7 +1797,7 @@ export class ObjectsInRedisClient {
             if (!userContext!.acl.file.list) {
                 return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
             }
-            this._readDir(id, name, userContext!, callback);
+            return this._readDir(id, name, userContext!, callback);
         });
     }
 
@@ -1997,7 +1998,7 @@ export class ObjectsInRedisClient {
             if (!userContext!.acl.file.write) {
                 return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
             }
-            this._rename(id, oldName, newName, userContext!, callback, meta);
+            return this._rename(id, oldName, newName, userContext!, callback, meta);
         });
     }
 
@@ -2280,7 +2281,7 @@ export class ObjectsInRedisClient {
             // we create a dummy file (for file this file exists to store metadata) - do not override passed options
             meta = { ...options, virtualFile: true };
             const realName = dirName + (dirName.endsWith('/') ? '' : '/');
-            this.writeFile(id, `${realName}_data.json`, '', meta, callback);
+            return this.writeFile(id, `${realName}_data.json`, '', meta, callback);
         });
     }
 
@@ -2446,7 +2447,7 @@ export class ObjectsInRedisClient {
                 });
             }
         }
-        this._chownFileHelper(keysFiltered, objsFiltered, options, err => {
+        return this._chownFileHelper(keysFiltered, objsFiltered, options, err => {
             return tools.maybeCallbackWithError(callback, err, processed);
         });
     }
@@ -2697,7 +2698,7 @@ export class ObjectsInRedisClient {
                 });
             }
         }
-        this._chmodFileHelper(keysFiltered, objsFiltered, options, err =>
+        return this._chmodFileHelper(keysFiltered, objsFiltered, options, err =>
             tools.maybeCallbackWithError(callback, err, processed),
         );
     }
@@ -3382,7 +3383,7 @@ export class ObjectsInRedisClient {
                 }
                 options.ownerGroup = groups[0];
 
-                this.chownObject(pattern, options, callback);
+                return this.chownObject(pattern, options, callback);
             });
             return;
         }
@@ -4032,7 +4033,9 @@ export class ObjectsInRedisClient {
         if (this.settings.connection.enhancedLogging) {
             this.log.silly(`${this.namespace} redis keys ${keys.length} ${pattern}`);
         }
-        this._getObjects(keys, userContext, callback, true);
+        this._getObjects(keys, userContext, callback, true).catch(e =>
+            this.log.error(`${this.namespace} Cannot get objects: ${e.message}`),
+        );
     }
 
     /**
@@ -5445,7 +5448,7 @@ export class ObjectsInRedisClient {
                         } else {
                             options.ownerGroup = groups[0];
                         }
-                        this._extendObject(id, obj, options, userContext, callback);
+                        return this._extendObject(id, obj, options, userContext, callback);
                     });
                 }
             }
@@ -5648,7 +5651,7 @@ export class ObjectsInRedisClient {
             }
 
             // Get all objects that this user may read
-            this._getKeys('*', userContext, true, async (err, keys) => {
+            return this._getKeys('*', userContext, true, async (err, keys) => {
                 if (!this.client) {
                     return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
                 }
@@ -5687,7 +5690,7 @@ export class ObjectsInRedisClient {
                 }
                 return tools.maybeCallbackWithError(callback, null, undefined, idOrName);
             });
-        });
+        }).catch(e => this.log.error(`${this.namespace} Cannot find object: ${e.message}`));
     }
 
     // The user has provided a callback, thus we call it
