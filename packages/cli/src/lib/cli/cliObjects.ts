@@ -411,7 +411,7 @@ export class CLIObjects extends CLICommand {
         } else if (propPath === 'native' && tools.isObject(value)) {
             // whole native attribute
             let config;
-            for (const prop in value) {
+            for (const prop of Object.keys(value)) {
                 if (
                     typeof (res.native as Record<string, any>)[prop] === 'string' &&
                     'encryptedNative' in res &&

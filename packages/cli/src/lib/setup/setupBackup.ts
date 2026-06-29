@@ -1100,8 +1100,8 @@ export class BackupRestore {
                 // List all available backups
                 console.log('Please specify one of the backup names:');
 
-                for (const t in backups) {
-                    console.log(`${backups[t]} or ${backups[t].replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`);
+                for (const [t, backup] of backups.entries()) {
+                    console.log(`${backup} or ${backup.replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`);
                 }
             } else {
                 console.warn(`No backups found. Create a backup, using "${tools.appName} backup" first`);
@@ -1117,10 +1117,8 @@ export class BackupRestore {
                 console.log('No matching backup found');
                 if (backups.length) {
                     console.log('Please specify one of the backup names:');
-                    for (const t in backups) {
-                        console.log(
-                            `${backups[t]} or ${backups[t].replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`,
-                        );
+                    for (const [t, backup] of backups.entries()) {
+                        console.log(`${backup} or ${backup.replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`);
                     }
                 } else {
                     console.log(`No existing backups. Create a backup, using "${tools.appName} backup" first`);

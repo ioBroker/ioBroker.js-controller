@@ -12895,14 +12895,11 @@ export class AdapterClass extends EventEmitter {
                         if (state.val && state.val !== currentLevel && isLogLevel(newLogLevel)) {
                             this.overwriteLogLevel = true;
                             this._config.log.level = newLogLevel;
-                            for (const transport in this._logger.transports) {
-                                if (!Object.prototype.hasOwnProperty.call(this._logger.transports, transport)) {
-                                    continue;
-                                }
+                            for (const transport of this._logger.transports) {
                                 // set the loglevel on transport only if no loglevel was pinned in log config
                                 // @ts-expect-error it is our own modification
-                                if (!this._logger.transports[transport]._defaultConfigLoglevel) {
-                                    this._logger.transports[transport].level = newLogLevel;
+                                if (!transport._defaultConfigLoglevel) {
+                                    transport.level = newLogLevel;
                                 }
                             }
                             this._logger.info(
