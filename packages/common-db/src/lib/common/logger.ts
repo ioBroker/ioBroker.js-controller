@@ -11,9 +11,9 @@ import type { SeqTransport } from '@datalust/winston-seq';
 import type { Syslog, SyslogTransportOptions } from 'winston-syslog';
 import { LEVEL } from 'triple-beam';
 import deepClone from 'deep-clone';
+import type { TransformableInfo } from 'logform';
 
 import * as tools from '@/lib/common/tools.js';
-import type { TransformableInfo } from 'logform';
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
@@ -106,7 +106,7 @@ const IoSeq =
 
             // we add own properties
             ioInfo.props.Hostname = tools.getHostName();
-            if (ioInfo.message) {
+            if (typeof ioInfo.message === 'string') {
                 // handle as single line with s flag, to if message ends with CR, etc
                 const msgParts = ioInfo.message.match(/^([^.]+\.[0-9]+) \(([^)]+)\) (.*)$/s);
                 if (msgParts) {
@@ -186,7 +186,8 @@ export function logger(
         files = [files];
     }
 
-    const formatter = (info: LogInfo): string => `${timestamp(info.timestamp)} - ${info.level}: ${info.message}`;
+    const formatter = (info: LogInfo): string =>
+        `${timestamp(info.timestamp)} - ${info.level}: ${info.message as string}`;
 
     files ||= [];
 

@@ -865,7 +865,7 @@ export async function getJson<T>(
     let result: T = {} as T;
     // If object was read
     if (urlOrPath && typeof urlOrPath === 'object') {
-        callback?.(urlOrPath as unknown as T);
+        callback?.(urlOrPath);
     } else if (!urlOrPath) {
         console.log('Empty url!');
         callback?.(null);
@@ -1266,7 +1266,7 @@ function _getRepositoryFile(
             }
             count++;
         }
-        helper = { failCounter: [], timeout: null } as RepositoryHelper;
+        helper = { failCounter: [], timeout: null };
 
         helper.timeout = setTimeout(() => {
             if (helper) {
@@ -2890,16 +2890,14 @@ export function validateGeneralObjectProperties(
             // ensure, that default value has correct type
             if (obj.common.def !== undefined && obj.common.def !== null) {
                 // else do what strictObjectChecks does for val
-                if (
-                    !(
-                        (obj.common.type === 'mixed' && typeof obj.common.def !== 'object') ||
-                        (obj.common.type !== 'object' && obj.common.type === typeof obj.common.def) ||
-                        (obj.common.type === 'array' && typeof obj.common.def === 'string') ||
-                        // @ts-expect-error deprecated
-                        (obj.common.type === 'json' && typeof obj.common.def === 'string') ||
-                        (obj.common.type === 'object' && typeof obj.common.def === 'string')
-                    )
-                ) {
+                if (!(
+                    (obj.common.type === 'mixed' && typeof obj.common.def !== 'object') ||
+                    (obj.common.type !== 'object' && obj.common.type === typeof obj.common.def) ||
+                    (obj.common.type === 'array' && typeof obj.common.def === 'string') ||
+                    // @ts-expect-error deprecated
+                    (obj.common.type === 'json' && typeof obj.common.def === 'string') ||
+                    (obj.common.type === 'object' && typeof obj.common.def === 'string')
+                )) {
                     // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json';
                     // 'array', 'object', 'json' need to be string
                     if (['object', 'json', 'array'].includes(obj.common.type)) {

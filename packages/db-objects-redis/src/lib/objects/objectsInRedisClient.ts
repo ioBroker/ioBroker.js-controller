@@ -5,16 +5,18 @@
  * Written by bluefox <dogafox@gmail.com>, 2014-2026
  *
  */
-// @ts-expect-error no ts module
-import extend from 'node.extend';
-import type IORedis from 'ioredis';
-import { Redis } from 'ioredis';
+
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { isDeepStrictEqual } from 'node:util';
+import * as url from 'node:url';
+import Redis from 'ioredis';
 import deepClone from 'deep-clone';
 import semver from 'semver';
+// @ts-expect-error no ts module
+import extend from 'node.extend';
+import type IORedis from 'ioredis';
 
 import { tools } from '@iobroker/db-base';
 import type { ACLObject, FileObject, GetUserGroupPromiseReturn, UserContext } from '@/lib/objects/objectsUtils.js';
@@ -23,7 +25,6 @@ import * as CONSTS from '@/lib/objects/constants.js';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB';
 
-import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 
@@ -251,7 +252,7 @@ export class ObjectsInRedisClient {
             if (ready && reconnectCount >= retry_max_count) {
                 return new Error('Stop trying to reconnect');
             }
-            // A function that receives an options object as parameter including the retry attempt,
+            // A function that receives an options object as a parameter including the retry attempt,
             // the total_retry_time indicating how much time passed since the last time connected,
             // the error why the connection was lost and the number of times_connected in total.
             // If you return a number from this function, the retry will happen exactly after that
@@ -282,7 +283,7 @@ export class ObjectsInRedisClient {
 
             this.settings.connection.options.sentinels = this.settings.connection.host.map((redisNode, idx) => ({
                 host: redisNode,
-                // @ts-expect-error ts does not get that if defPort is null we have an array
+                // @ts-expect-error ts does not get that if defPort is null, we have an array
                 port: defaultPort === null ? configuredPort[idx] : defaultPort,
             }));
 
@@ -306,11 +307,11 @@ export class ObjectsInRedisClient {
         this.settings.connection.options.password =
             this.settings.connection.options.auth_pass || this.settings.connection.pass || undefined;
 
-        this.settings.connection.options.autoResubscribe = false; // We do our own resubscribe because other sometimes not work
+        this.settings.connection.options.autoResubscribe = false; // We do our own re-subscribing because other sometimes not work
         // REDIS does not allow whitespaces, we have some because of pid
         this.settings.connection.options.connectionName = this.namespace.replace(/\s/g, '');
 
-        this.client = new Redis(this.settings.connection.options as Redis.RedisOptions);
+        this.client = new Redis.Redis(this.settings.connection.options as Redis.RedisOptions);
 
         this.client.on('error', error => {
             if (this.settings.connection.enhancedLogging) {
@@ -378,7 +379,7 @@ export class ObjectsInRedisClient {
             }
 
             if (reconnectCounter > 2) {
-                // fallback logic for nodejs <10
+                // fallback logic for Node.js <10
                 this.log.error(
                     `${this.namespace} The DB port  ${this.settings.connection.options.port as number} is occupied by something that is not a Redis protocol server. Please check other software running on this port or, if you use iobroker, make sure to update to js-controller 2.0 or higher!`,
                 );
@@ -412,7 +413,7 @@ export class ObjectsInRedisClient {
             if (!this.subSystem && typeof onChange === 'function') {
                 initCounter++;
                 this.log.debug(`${this.namespace} Objects create System PubSub Client`);
-                this.subSystem = new Redis(this.settings.connection.options as Redis.RedisOptions);
+                this.subSystem = new Redis.Redis(this.settings.connection.options as Redis.RedisOptions);
 
                 if (typeof this.settings.primaryHostLost === 'function') {
                     try {
@@ -469,7 +470,7 @@ export class ObjectsInRedisClient {
                                             }: restarting ...`,
                                         );
                                         this.useSets = newUseSets;
-                                        // luas are no longer up to date, lets restart
+                                        // luas are no longer up to date, let's restart
                                         if (typeof this.settings.disconnected === 'function') {
                                             this.settings.disconnected();
                                         }
@@ -587,7 +588,7 @@ export class ObjectsInRedisClient {
                         }
                         ready = true;
                     }
-                    // subscribe on system.config anytime because also adapters need stuff like defaultNewAcl (especially admin)
+                    // subscribe to system.config anytime because also adapters need stuff like defaultNewAcl (especially admin)
                     try {
                         if (this.subSystem) {
                             await this.subSystem.psubscribe(`${this.objNamespace}system.config`);
@@ -622,7 +623,7 @@ export class ObjectsInRedisClient {
             if (!this.sub && (typeof onChangeUser === 'function' || typeof onChangeFileUser === 'function')) {
                 initCounter++;
                 this.log.debug(`${this.namespace} Objects create User PubSub Client`);
-                this.sub = new Redis(this.settings.connection.options as Redis.RedisOptions);
+                this.sub = new Redis.Redis(this.settings.connection.options as Redis.RedisOptions);
 
                 this.sub.on('pmessage', (pattern, channel, message) => {
                     setImmediate(() => {
@@ -717,7 +718,7 @@ export class ObjectsInRedisClient {
 
                 this.sub.on('ready', async () => {
                     if (!this.sub) {
-                        // client gone while ready emitted, can maybe not happen but ts is happy
+                        // client gone while ready emitted, can maybe not happen, but ts is happy
                         return;
                     }
 
@@ -764,7 +765,7 @@ export class ObjectsInRedisClient {
                     (await this.client.get(`${this.metaNamespace}objects.features.useSets`)) || '0',
                 );
             } catch (e) {
-                // if unsupported we have a legacy host
+                // if unsupported, we have a legacy host
                 if (!e.message.includes('UNSUPPORTED')) {
                     this.log.error(`${this.namespace} Cannot determine Set feature status: ${e.message}`);
                     return;
@@ -779,14 +780,14 @@ export class ObjectsInRedisClient {
                 throw new Error('Objects DB is not allowed to start in the current Multihost environment');
             }
 
-            // for controller v4 we have to check if we can use the new lua scripts and set logic
+            // for controller v4 we have to check if we can use the new Lua scripts and set logic
             // TODO: remove this backward shim if controller v4.0 is old enough
             let keys = await this._getKeysViaScan(`${this.objNamespace}system.host.*`);
 
             // filter out obvious non-host objects
             const hostRegex = new RegExp(`^${this.objNamespace.replace(/\./g, '\\.')}system\\.host\\.[^.]+$`);
             keys = keys.filter(id => hostRegex.test(id));
-            /** if false we have a host smaller 4 (no proto version for this existing) */
+            /** if false, we have a host smaller 4 (no proto version for this existing) */
             this.noLegacyMultihost = true;
 
             try {
@@ -1307,18 +1308,7 @@ export class ObjectsInRedisClient {
         }
 
         if (!callback) {
-            return this.writeFileAsync(
-                id,
-                name,
-                data,
-                options as {
-                    virtualFile?: boolean;
-                    user?: ioBroker.ObjectIDs.User;
-                    group?: ioBroker.ObjectIDs.Group;
-                    mode?: number;
-                    mimeType?: string;
-                },
-            );
+            return this.writeFileAsync(id, name, data, options);
         }
 
         try {
@@ -1382,7 +1372,7 @@ export class ObjectsInRedisClient {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
-        let file: Buffer<ArrayBufferLike> | string = await this._getBinaryState(this.getFileId(id, name, false));
+        let file: Buffer<ArrayBufferLike> | string | null = await this._getBinaryState(this.getFileId(id, name, false));
 
         const mimeType = meta?.mimeType;
         if (meta && !meta.binary && file) {
@@ -1601,7 +1591,7 @@ export class ObjectsInRedisClient {
     }
 
     /**
-     * Delete a file of an object (alias for unlink)
+     * Delete a file of an object (alias for {@link unlink})
      *
      * @param id The id of the object owning the file
      * @param name The file name to delete
@@ -2854,20 +2844,13 @@ export class ObjectsInRedisClient {
             options = null;
         }
 
-        void utils.checkObjectRights(
-            this,
-            null,
-            null,
-            options as { user?: ioBroker.ObjectIDs.User } | null,
-            CONSTS.ACCESS_WRITE,
-            err => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                }
-                // cache cannot be enabled
-                return tools.maybeCallbackWithError(callback, null, false);
-            },
-        );
+        void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, err => {
+            if (err) {
+                return tools.maybeCallbackWithError(callback, err);
+            }
+            // cache cannot be enabled
+            return tools.maybeCallbackWithError(callback, null, false);
+        });
     }
 
     /**
@@ -2998,7 +2981,7 @@ export class ObjectsInRedisClient {
             let count = pattern.length;
             pattern.forEach(pattern => {
                 this.log.silly(`${this.namespace} redis psubscribe ${this.objNamespace}${pattern}`);
-                subClient.psubscribe(this.objNamespace + pattern, err => {
+                void subClient.psubscribe(this.objNamespace + pattern, err => {
                     if (!err) {
                         const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
                         subscriptions[this.objNamespace + pattern] = true;
@@ -3010,7 +2993,7 @@ export class ObjectsInRedisClient {
             });
         } else {
             this.log.silly(`${this.namespace} redis psubscribe ${this.objNamespace}${pattern}`);
-            subClient.psubscribe(this.objNamespace + pattern, err => {
+            void subClient.psubscribe(this.objNamespace + pattern, err => {
                 if (!err) {
                     const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
                     subscriptions[this.objNamespace + pattern] = true;
@@ -4043,7 +4026,7 @@ export class ObjectsInRedisClient {
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
-                // @ts-expect-error need to clarify, that objs is not undefined if no error is provided
+                // @ts-expect-error need to clarify that objs is not undefined if no error is provided
                 this.getObjects(keys, options, (err, objs) => (err ? reject(err) : resolve(objs)), dontModify),
             );
         }
@@ -4416,7 +4399,7 @@ export class ObjectsInRedisClient {
     ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
 
     /**
-     * set anew or update object
+     * set anew or update an object
      *
      * This function writes the object into DB
      *
@@ -4549,7 +4532,7 @@ export class ObjectsInRedisClient {
      * @param callback Called once the object has been deleted
      */
     delObject(id: string, callback: ioBroker.ErrorCallback): void;
-    // User has  passed options parameter
+    // User has passed options parameter
     /**
      * Delete an object
      *
@@ -4620,7 +4603,7 @@ export class ObjectsInRedisClient {
     }
 
     /**
-     * Function to checks if comparisons will work according to the configured Locale
+     * Function to check if comparisons will work according to the configured Locale
      */
     async isSystemLocaleSupported(): Promise<boolean> {
         if (!this.client) {
@@ -4648,7 +4631,7 @@ export class ObjectsInRedisClient {
         let rows: { id: string; value: ioBroker.AnyObject | null }[] = [];
 
         /**
-         * filters objs which are already present (and parse Errors) in array by property 'id'
+         * filters objs which are already present (and parse Errors) in an array by property 'id'
          *
          * @param arr - Array of objects which should be filtered
          * @param duplicateFiltering - if duplicates need to be filtered
@@ -5430,7 +5413,7 @@ export class ObjectsInRedisClient {
         return this.getObjectList(params, options);
     }
 
-    // could be optimized, to read object only once. Now it will read 3 times
+    // could be optimized, to read an object only once. Now it will read 3 times
     private async _extendObject<T extends string>(
         id: T,
         obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
@@ -5476,8 +5459,7 @@ export class ObjectsInRedisClient {
         oldObj = oldObj || {};
         obj = deepClone(obj); // copy here to prevent "sandboxed" objects from JavaScript adapter
         if (
-            oldObj.common &&
-            oldObj.common.custom !== undefined &&
+            oldObj.common?.custom !== undefined &&
             oldObj.common.custom !== null &&
             !tools.isObject(oldObj.common.custom)
         ) {
@@ -5504,7 +5486,7 @@ export class ObjectsInRedisClient {
 
                 if (!options.ownerGroup) {
                     oldObj.acl.ownerGroup = null;
-                    return void this.getUserGroup(options.owner, (user, groups /*, permissions */) => {
+                    return void this.getUserGroup(options.owner, (_user, groups /*, permissions */) => {
                         if (!groups?.[0]) {
                             options.ownerGroup = this.defaultNewAcl?.ownerGroup || CONSTS.SYSTEM_ADMIN_GROUP;
                         } else {
@@ -5548,7 +5530,7 @@ export class ObjectsInRedisClient {
         try {
             const commands = [];
             if (this.useSets) {
-                // what is called oldObj is acutally the obj we set, because it has been extended
+                // what is called oldObj is actually the obj we set, because it has been extended
                 if (oldObj.type && !oldType) {
                     // new object or oldObj had no type -> add to set + set object
                     commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
@@ -5580,7 +5562,7 @@ export class ObjectsInRedisClient {
                 await this.client.multi(commands).exec();
             }
 
-            // extended -> if its now type meta and currently marked as not -> cache
+            // extended -> if it's now type meta and currently marked as not -> cache
             if (this.existingMetaObjects[id] === false && oldObj && oldObj.type === 'meta') {
                 this.existingMetaObjects[id] = true;
             }
@@ -5690,7 +5672,7 @@ export class ObjectsInRedisClient {
         callback?: ioBroker.FindObjectCallback,
     ): void {
         // Try to read by ID
-        void this._getObject(idOrName, userContext, (err, obj) => {
+        void this._getObject(idOrName, userContext, (_err, obj) => {
             // Assume it is ID
             if (
                 obj &&
@@ -5833,31 +5815,21 @@ export class ObjectsInRedisClient {
         }
 
         if (typeof callback === 'function') {
-            void utils.checkObjectRights(
-                this,
-                null,
-                null,
-                options as {
-                    language?: ioBroker.Languages;
-                    user?: ioBroker.ObjectIDs.User;
-                },
-                CONSTS.ACCESS_LIST,
-                (err, userContext) => {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    }
-                    return this._findObject(
-                        idOrName,
-                        type,
-                        options as {
-                            language?: ioBroker.Languages;
-                            user?: ioBroker.ObjectIDs.User;
-                        },
-                        userContext!,
-                        callback,
-                    );
-                },
-            );
+            void utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_LIST, (err, userContext) => {
+                if (err) {
+                    return tools.maybeCallbackWithError(callback, err);
+                }
+                return this._findObject(
+                    idOrName,
+                    type,
+                    options as {
+                        language?: ioBroker.Languages;
+                        user?: ioBroker.ObjectIDs.User;
+                    },
+                    userContext!,
+                    callback,
+                );
+            });
         }
     }
 
@@ -6011,9 +5983,9 @@ export class ObjectsInRedisClient {
         }
 
         try {
-            const arr: string[] = await this.client.script(hashes);
+            const arr: string[] = await this._script(hashes);
             if (arr) {
-                scripts.forEach((e, i) => (scripts[i].loaded = !!arr[i]));
+                scripts.forEach((_e, i) => (scripts[i].loaded = !!arr[i]));
             }
         } catch {
             // ignore
@@ -6046,9 +6018,9 @@ export class ObjectsInRedisClient {
     }
 
     /**
-     * Get all keys matching a pattern using redis SCAN command, duplicates are filtered out
+     * Get all keys matching a pattern using redis SCAN command; duplicates are filtered out
      *
-     * @param pattern - pattern to match, e. g. io.hm-rpc.0*
+     * @param pattern - pattern to match, e.g. io.hm-rpc.0*
      * @param count - count argument used by redis SCAN, default is 250
      */
     private _getKeysViaScan(pattern: string, count = 250): Promise<string[]> {
@@ -6106,7 +6078,7 @@ export class ObjectsInRedisClient {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
-        // to be safe we remove all sets before migration
+        // to be safe, we remove all sets before migration
         const keys = await this._getKeysViaScan(`${this.setNamespace}object.type.*`);
         for (const key of keys) {
             await this.client.del(key);
@@ -6182,8 +6154,8 @@ export class ObjectsInRedisClient {
     }
 
     /**
-     * Sets current host as primary if no primary host active
-     * Value will expire after ms milliseconds
+     * Sets the current host as primary if no primary host active
+     * Value expires after ms milliseconds
      *
      * @param ms - ms until value expires
      * @returns 1 if lock acquired else 0
@@ -6209,7 +6181,7 @@ export class ObjectsInRedisClient {
     }
 
     /**
-     * Get name of the primary host
+     * Get the name of the primary host
      */
     getPrimaryHost(): Promise<string | null> {
         if (!this.client) {
@@ -6242,7 +6214,7 @@ export class ObjectsInRedisClient {
             4,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,
-            this.settings.connection.options.db as number,
+            this.settings.connection.options.db,
             `${this.metaNamespace}objects.primaryHost`,
         ]);
     }
@@ -6268,7 +6240,7 @@ export class ObjectsInRedisClient {
     }
 
     /**
-     * Subscribe to expired events to get expiration of primary host
+     * Subscribe to expired events to get expiration of the primary host
      */
     async subscribePrimaryHost(): Promise<void> {
         if (this.subSystem) {

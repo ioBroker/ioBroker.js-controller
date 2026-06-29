@@ -988,7 +988,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB<RedisHandlerIn
                     res = [
                         {
                             file: '_data.json',
-                            stats: {} as fs.Stats,
+                            stats: {},
                             isDir: false,
                             virtualFile: true,
                             notExists: true,

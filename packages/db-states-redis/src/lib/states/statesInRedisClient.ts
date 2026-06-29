@@ -8,7 +8,7 @@
  *
  */
 
-import { Redis } from 'ioredis';
+import Redis from 'ioredis';
 import { tools } from '@iobroker/db-base';
 import { isDeepStrictEqual } from 'node:util';
 import type IORedis from 'ioredis';
@@ -245,19 +245,15 @@ export class StateRedisClient {
                 `${this.namespace} Redis States: Use Redis connection: ${this.settings.connection.options.host}:${this.settings.connection.options.port as number}`,
             );
         }
-        if (this.settings.connection.options.db === undefined) {
-            this.settings.connection.options.db = 0;
-        }
-        if (this.settings.connection.options.family === undefined) {
-            this.settings.connection.options.family = 0;
-        }
+        this.settings.connection.options.db ??= 0;
+        this.settings.connection.options.family ??= 0;
         this.settings.connection.options.password =
             this.settings.connection.options.auth_pass || this.settings.connection.pass || undefined;
         this.settings.connection.options.autoResubscribe = false; // We do our own resubscribe because other sometimes not work
         // REDIS does not allow whitespaces, we have some because of pid
         this.settings.connection.options.connectionName = this.namespace.replace(/\s/g, '');
 
-        this.client = new Redis(this.settings.connection.options as Redis.RedisOptions);
+        this.client = new Redis.Redis(this.settings.connection.options as Redis.RedisOptions);
 
         this.client.on('error', error => {
             this.settings.connection.enhancedLogging &&
@@ -318,7 +314,7 @@ export class StateRedisClient {
                     `${this.namespace} States-Redis Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`,
                 );
             if (reconnectCounter > 2) {
-                // fallback logic for nodejs <10
+                // fallback logic for Node.js <10
                 this.log.error(
                     `${this.namespace} The DB port  ${this.settings.connection.options.port as number} is occupied by something that is not a Redis protocol server. Please check other software running on this port or, if you use iobroker, make sure to update to js-controller 2.0 or higher!`,
                 );
@@ -355,7 +351,7 @@ export class StateRedisClient {
                 }
 
                 this.log.debug(`${this.namespace} States create System PubSub Client`);
-                this.subSystem = new Redis(this.settings.connection.options as Redis.RedisOptions);
+                this.subSystem = new Redis.Redis(this.settings.connection.options as Redis.RedisOptions);
 
                 if (typeof onChange === 'function') {
                     this.subSystem.on('pmessage', (pattern, channel, message) => {
@@ -554,7 +550,7 @@ export class StateRedisClient {
                 initCounter++;
 
                 this.log.debug(`${this.namespace} States create User PubSub Client`);
-                this.sub = new Redis(this.settings.connection.options as Redis.RedisOptions);
+                this.sub = new Redis.Redis(this.settings.connection.options as Redis.RedisOptions);
 
                 this.sub.on('pmessage', (pattern, channel, message) => {
                     setImmediate(() => {

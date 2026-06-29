@@ -145,7 +145,7 @@ export class BackupRestore {
     private async _copyFile(id: string, srcPath: string, destPath: string): Promise<void> {
         try {
             const data = await this.objects.readFile(id, srcPath);
-            if (data) {
+            if (data?.file != null) {
                 fs.writeFileSync(destPath, data.file);
             }
         } catch (err) {

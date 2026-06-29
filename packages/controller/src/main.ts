@@ -1,15 +1,20 @@
 /// <reference types="@iobroker/types-dev" />
-import schedule from 'node-schedule';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
 import os from 'node:os';
-import fs from 'fs-extra';
 import path from 'node:path';
 import cp, { spawn, exec } from 'node:child_process';
+import { isDeepStrictEqual, inspect } from 'node:util';
+import { setTimeout as wait } from 'node:timers/promises';
+
+import fs from 'fs-extra';
+import schedule from 'node-schedule';
 import semver from 'semver';
-import restart from '@/lib/restart.js';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
-import { isDeepStrictEqual, inspect } from 'node:util';
-import { MHServer } from '@/lib/multihostServer.js';
+import decache from 'decache';
+import { CronExpressionParser } from 'cron-parser';
+
 import {
     tools,
     EXIT_CODES,
@@ -33,14 +38,14 @@ import {
 } from '@iobroker/js-controller-common-db/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
 import type SentryPlugin from '@iobroker/plugin-sentry';
-import { BlocklistManager } from '@/lib/blocklistManager.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
-import decache from 'decache';
-import { CronExpressionParser } from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base';
-import type { GetDiskInfoResponse } from '@iobroker/js-controller-common-db/tools';
+
+import restart from '@/lib/restart.js';
+import { MHServer } from '@/lib/multihostServer.js';
+import { BlocklistManager } from '@/lib/blocklistManager.js';
 import { DEFAULT_DISK_WARNING_LEVEL, getCronExpression, getDiskWarningLevel } from '@/lib/utils.js';
 import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
 import {
@@ -49,13 +54,12 @@ import {
     type HostInfo,
     isAdapterEsmModule,
     isLogLevel,
+    type GetDiskInfoResponse,
 } from '@iobroker/js-controller-common-db/tools';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
-import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
-import * as url from 'node:url';
-import { createRequire } from 'node:module';
+
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 // eslint-disable-next-line unicorn/prefer-module
@@ -817,18 +821,18 @@ function createObjects(onConnect: () => void): void {
                         if (
                             !compactGroupController &&
                             proc.config.common.compactGroup &&
-                            compactProcs[proc.config.common.compactGroup]?.instances?.includes(id as any)
+                            compactProcs[proc.config.common.compactGroup]?.instances?.includes(id)
                         ) {
                             compactProcs[proc.config.common.compactGroup].instances.splice(
-                                compactProcs[proc.config.common.compactGroup].instances.indexOf(id as any),
+                                compactProcs[proc.config.common.compactGroup].instances.indexOf(id),
                                 1,
                             );
                         }
 
                         // instance removed -> remove all notifications
-                        await notificationHandler.clearNotifications(null, null, id as any);
+                        await notificationHandler.clearNotifications(null, null, id);
                         proc.config.common.enabled = false;
-                        // @ts-expect-error check if we can handle it different
+                        // @ts-expect-error check if we can handle it differently
                         proc.config.common.host = null;
                         // @ts-expect-error it is only used in checkAndAddInstance, find a way without modifying the InstanceObject
                         proc.config.deleted = true;
@@ -848,10 +852,10 @@ function createObjects(onConnect: () => void): void {
                             proc.config.common.compactGroup &&
                             (proc.config.common.compactGroup !== obj.common.compactGroup ||
                                 proc.config.common.runAsCompactMode !== obj.common.runAsCompactMode) &&
-                            compactProcs[proc.config.common.compactGroup]?.instances?.includes(id as any)
+                            compactProcs[proc.config.common.compactGroup]?.instances?.includes(id)
                         ) {
                             compactProcs[proc.config.common.compactGroup].instances.splice(
-                                compactProcs[proc.config.common.compactGroup].instances.indexOf(id as any),
+                                compactProcs[proc.config.common.compactGroup].instances.indexOf(id),
                                 1,
                             );
                         }
@@ -865,7 +869,7 @@ function createObjects(onConnect: () => void): void {
                         }
                         const _ipArr = tools.findIPs();
 
-                        if (checkAndAddInstance(proc.config as any, _ipArr)) {
+                        if (checkAndAddInstance(proc.config, _ipArr)) {
                             if (
                                 proc.config.common.enabled &&
                                 (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
@@ -881,10 +885,10 @@ function createObjects(onConnect: () => void): void {
                             if (
                                 !compactGroupController &&
                                 proc.config.common.compactGroup &&
-                                compactProcs[proc.config.common.compactGroup]?.instances?.includes(id as any)
+                                compactProcs[proc.config.common.compactGroup]?.instances?.includes(id)
                             ) {
                                 compactProcs[proc.config.common.compactGroup].instances.splice(
-                                    compactProcs[proc.config.common.compactGroup].instances.indexOf(id as any),
+                                    compactProcs[proc.config.common.compactGroup].instances.indexOf(id),
                                     1,
                                 );
                             }
@@ -905,7 +909,7 @@ function createObjects(onConnect: () => void): void {
                         );
                     } else {
                         const _ipArr = tools.findIPs();
-                        if (proc.config && checkAndAddInstance(proc.config as any, _ipArr)) {
+                        if (proc.config && checkAndAddInstance(proc.config, _ipArr)) {
                             if (
                                 proc.config.common.enabled &&
                                 (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
@@ -919,10 +923,10 @@ function createObjects(onConnect: () => void): void {
                             if (
                                 !compactGroupController &&
                                 proc.config.common.compactGroup &&
-                                compactProcs[proc.config.common.compactGroup]?.instances?.includes(id as any)
+                                compactProcs[proc.config.common.compactGroup]?.instances?.includes(id)
                             ) {
                                 compactProcs[proc.config.common.compactGroup].instances.splice(
-                                    compactProcs[proc.config.common.compactGroup].instances.indexOf(id as any),
+                                    compactProcs[proc.config.common.compactGroup].instances.indexOf(id),
                                     1,
                                 );
                             }

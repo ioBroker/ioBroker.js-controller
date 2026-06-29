@@ -86,15 +86,13 @@ export class Validator {
 
                 if (state.val !== null) {
                     // now check if a type is correct, null is always allowed
-                    if (
-                        !(
-                            (obj.common.type === 'mixed' && typeof state.val !== 'object') ||
-                            (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
-                            (obj.common.type === 'array' && typeof state.val === 'string') ||
-                            (obj.common.type === 'json' && typeof state.val === 'string') ||
-                            (obj.common.type === 'object' && typeof state.val === 'string')
-                        )
-                    ) {
+                    if (!(
+                        (obj.common.type === 'mixed' && typeof state.val !== 'object') ||
+                        (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
+                        (obj.common.type === 'array' && typeof state.val === 'string') ||
+                        (obj.common.type === 'json' && typeof state.val === 'string') ||
+                        (obj.common.type === 'object' && typeof state.val === 'string')
+                    )) {
                         // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json';
                         // 'array', 'object', 'json' need to be string
                         if (['object', 'json', 'array'].includes(obj.common.type)) {

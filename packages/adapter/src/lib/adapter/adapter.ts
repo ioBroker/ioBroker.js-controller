@@ -15,7 +15,6 @@ import fs from 'fs-extra';
 import type { CommandResult } from '@alcalzone/pak';
 import * as url from 'node:url';
 
-import { PluginHandler, type IoPackageFile } from '@iobroker/plugin-base';
 import {
     EXIT_CODES,
     getObjectsConstructor,
@@ -60,7 +59,8 @@ import {
     SYSTEM_ADMIN_GROUP,
     SYSTEM_ADMIN_USER,
 } from '@/lib/adapter/constants.js';
-import type { PluginHandlerSettings } from '@iobroker/plugin-base';
+import { PluginHandler } from '@iobroker/plugin-base';
+import type { PluginHandlerSettings, IoPackageFile } from '@iobroker/plugin-base';
 import type {
     AdapterOptions,
     AliasDetails,
@@ -789,7 +789,7 @@ export interface AdapterClass {
 
     /**
      * Returns a list of all channels in this adapter instance @param parentDevice (optional) Name
-     * of the parent device to filter the channels by @param options (optional) Some internal options.
+     * of the parent device to filter the channels by {@param options} (optional) Some internal options.
      */
     getChannelsOfAsync(): Promise<ioBroker.ChannelObject[]>;
     /**
@@ -828,7 +828,7 @@ export interface AdapterClass {
     ): void;
 
     /**
-     * Returns a list of all channels in this adapter instance @param parentDevice (optional)
+     * Returns a list of all channels in this adapter instance {@param parentDevice} (optional)
      * Name of the parent device to filter the channels by @param options (optional) Some internal options.
      */
     getChannelsAsync(): Promise<ioBroker.ChannelObject[]>;
@@ -844,9 +844,9 @@ export interface AdapterClass {
     ): Promise<ioBroker.ChannelObject[]>;
 
     /**
-     * Returns a list of all states in this adapter instance @param parentDevice (optional)
-     * Name of the parent device to filter the channels by @param parentChannel (optional)
-     * Name of the parent channel to filter the channels by @param options (optional) Some internal options.
+     * Returns a list of all states in this adapter instance {@param parentDevice} (optional)
+     * Name of the parent device to filter the channels by {@param parentChannel} (optional)
+     * Name of the parent channel to filter the channels by {@param options} (optional) Some internal options.
      */
     getStatesOfAsync(): Promise<ioBroker.StateObject[]>;
     /**
@@ -3552,7 +3552,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            tools.validateGeneralObjectProperties(obj as ioBroker.AnyObject, false);
+            tools.validateGeneralObjectProperties(obj, false);
         } catch (e) {
             await this.reportDeprecation({
                 deprecationMessage: `Object ${id} is invalid: ${e.message}`,
@@ -3809,7 +3809,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            tools.validateGeneralObjectProperties(options.obj as ioBroker.AnyObject, true);
+            tools.validateGeneralObjectProperties(options.obj, true);
         } catch (e) {
             await this.reportDeprecation({
                 deprecationMessage: `Object ${options.id} is invalid: ${e.message}`,
@@ -6962,9 +6962,7 @@ export class AdapterClass extends EventEmitter {
                     for (const row of res.rows) {
                         try {
                             const obj = (await this.#objects!.getObject(row.id, options)) as
-                                | ioBroker.EnumObject
-                                | null
-                                | undefined;
+                                ioBroker.EnumObject | null | undefined;
 
                             if (obj?.common?.members) {
                                 const pos = obj.common.members.indexOf(objId);
@@ -9037,7 +9035,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         return this._sendToHost({
-            hostName: hostName as string,
+            hostName,
             command,
             message,
             callback: callback as ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
@@ -9226,7 +9224,7 @@ export class AdapterClass extends EventEmitter {
             from: `system.adapter.${this.namespace}`,
         };
 
-        await this.#states.pushMessage(`system.host.${this.host}`, obj as any);
+        await this.#states.pushMessage(`system.host.${this.host}`, obj);
     }
 
     // external signatures
@@ -9378,7 +9376,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        const fixedId = this._utils.fixId(id as string, false);
+        const fixedId = this._utils.fixId(id, false);
         let stateObj: ioBroker.SettableState;
 
         if (tools.isObject(state)) {
@@ -9464,9 +9462,7 @@ export class AdapterClass extends EventEmitter {
                         targetObj = (await this._checkStates(aliasId, options || {}, 'setState')).objs[0];
                     } else {
                         targetObj = (await this.#objects.getObject(aliasId, options)) as
-                            | ioBroker.StateObject
-                            | null
-                            | undefined;
+                            ioBroker.StateObject | null | undefined;
                     }
                 } catch (e) {
                     return tools.maybeCallbackWithError(callback, e);
@@ -10043,7 +10039,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        const fixedId = this._utils.fixId(id as string, false);
+        const fixedId = this._utils.fixId(id, false);
 
         let stateObj: ioBroker.SettableState;
 
@@ -10712,7 +10708,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      *
-     *        See possible attributes of the state in @setState explanation
+     *        See possible attributes of the state in {@link setState} explanation
      */
     getState(id: unknown, options?: unknown, callback?: unknown): ioBroker.GetStatePromise {
         // we use any types here, because validation takes place in foreign method
@@ -10763,7 +10759,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      *
-     *        See possible attributes of the state in @setState explanation
+     *        See possible attributes of the state in {@link setState} explanation
      */
     getForeignState(
         id: unknown,
@@ -10989,7 +10985,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      *
-     *        See possible attributes of the state in @setState explanation
+     *        See possible attributes of the state in {@link setState} explanation
      */
     getHistory(id: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
@@ -11107,9 +11103,9 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Deletes a state of this instance.
-     * The object will NOT be deleted. If you want to delete it too, use @delObject instead.
+     * The object will NOT be deleted. If you want to delete it too, use {@link delObject} instead.
      *
-     * It is not required to provice the adapter namespace, because it will automatically be added.
+     * It is not required to provide the adapter namespace, because it will automatically be added.
      * E.g. to delete "adapterName.X.myObject", only "myObject" is required as ID.
      *
      * No error is returned if state does not exist.
@@ -11176,7 +11172,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Deletes a state of any adapter.
-     * The object is NOT deleted. If you want to delete it too, use @delForeignObject instead.
+     * The object is NOT deleted. If you want to delete it too, use {@link delForeignObject} instead.
      *
      * No error is returned if state does not exist.
      *
@@ -14117,7 +14113,7 @@ export class AdapterClass extends EventEmitter {
             from: `system.adapter.${this.namespace}`,
         };
 
-        await this.#states.pushMessage(`system.host.${this.host}`, obj as any);
+        await this.#states.pushMessage(`system.host.${this.host}`, obj);
     }
 
     /**

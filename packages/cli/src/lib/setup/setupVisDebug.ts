@@ -177,6 +177,9 @@ FALLBACK:
 
         if (widgetset) {
             const { file } = await this.objects.readFile('vis', 'js/config.js', null);
+            if (file == null) {
+                throw new Error('Cannot read vis/js/config.js');
+            }
             let content = typeof file === 'string' ? file : file.toString();
 
             content = content.replace(/[\r\n]/g, '');

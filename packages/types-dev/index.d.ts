@@ -604,7 +604,7 @@ declare global {
         interface GetObjectListItem<T extends ioBroker.Object> extends GetObjectViewItem<T> {
             /** A copy of the object */
             value: T;
-            /** The same as @link{value} */
+            /** The same as {@link value} */
             doc: T;
         }
         type GetObjectListCallback<T extends ioBroker.Object> = (
