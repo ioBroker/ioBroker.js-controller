@@ -15,7 +15,7 @@ export class CLIMessage extends CLICommand {
      *
      * @param args parsed arguments
      */
-    execute(args: any[]): void {
+    execute(args: string[]): void {
         const { callback, dbConnect, showHelp } = this.options;
         let [adapter, command, message] = args;
         if (adapter === null || adapter === undefined) {

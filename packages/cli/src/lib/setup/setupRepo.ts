@@ -1,11 +1,12 @@
-import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import axios from 'axios';
 import fs from 'fs-extra';
+import path from 'node:path';
+
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
-import { BETA_REPO_URL, isIntegerLikeInput, isVersionIgnored, STABLE_REPO_URL } from '@/lib/setup/utils.js';
-import path from 'node:path';
 import { SYSTEM_CONFIG_ID, SYSTEM_REPOSITORIES_ID } from '@iobroker/js-controller-common-db/constants';
+import { BETA_REPO_URL, isIntegerLikeInput, isVersionIgnored, STABLE_REPO_URL } from '@/lib/setup/utils.js';
 
 /** The options passed to the Repo constructor */
 export interface CLIRepoOptions {
@@ -249,7 +250,7 @@ export class Repo {
 
             console.log(`Used ${repoUrl.length > 1 ? 'repositories' : 'repository'}: ${repoUrl.join(', ')}`);
 
-            const allSources = {};
+            const allSources: ioBroker.RepositoryJson = {} as ioBroker.RepositoryJson;
 
             for (const url of repoUrl) {
                 const repo = systemRepos.native.repositories[url];
@@ -264,7 +265,9 @@ export class Repo {
                     }
 
                     const sources = await this.updateRepo(url, flags.force || flags.f, systemConfig, systemRepos);
-                    sources && Object.assign(allSources, sources);
+                    if (sources) {
+                        Object.assign(allSources, sources);
+                    }
                 } else {
                     console.error(
                         `Error: unknown repository is active - "${url}". Known: ${Object.keys(
@@ -291,18 +294,22 @@ export class Repo {
      * @param sources Repo JSON sources
      * @param flags CLI flags
      */
-    private async showRepoResult(sources: Record<string, any>, flags: RepoFlags): Promise<void> {
+    private async showRepoResult(sources: ioBroker.RepositoryJson, flags: RepoFlags): Promise<void> {
         const installed = tools.getInstalledInfo();
         const adapters = Object.keys(sources).sort();
 
         for (const name of adapters) {
             let updatable = false;
-            let text = sources[name].controller ? 'Controller ' : 'Adapter    ';
+            if (name === 'repoInfo') {
+                continue;
+            }
+            const adapter = sources[name] as ioBroker.RepositoryJsonAdapterContent;
+            let text = adapter.controller ? 'Controller ' : 'Adapter    ';
             text += `"${name}"`;
             text = text.padEnd(11 + 15);
 
-            if (sources[name].version) {
-                text += `: ${sources[name].version}`;
+            if (adapter.version) {
+                text += `: ${adapter.version}`;
             }
             text = text.padEnd(11 + 15 + 11);
 
@@ -315,16 +322,16 @@ export class Repo {
                 try {
                     // tools.upToDate can throw if a version is invalid
                     if (
-                        sources[name].version !== installed[name].version &&
-                        sources[name].version &&
-                        !tools.upToDate(sources[name].version, installed[name].version)
+                        adapter.version !== installed[name].version &&
+                        adapter.version &&
+                        !tools.upToDate(adapter.version, installed[name].version)
                     ) {
                         updatable = true;
                         text = text.padEnd(11 + 15 + 11 + 18);
                         const isIgnored = await isVersionIgnored({
                             adapterName: name,
                             objects: this.objects,
-                            version: sources[name].version,
+                            version: adapter.version,
                         });
 
                         text += isIgnored ? ' [Ignored]' : ' [Updatable]';
@@ -345,17 +352,21 @@ export class Repo {
      *
      * @param sources the repository object
      */
-    private async updateInfo(sources: Record<string, any>): Promise<void> {
+    private async updateInfo(sources: ioBroker.RepositoryJson): Promise<void> {
         const installed = tools.getInstalledInfo();
         const list: string[] = [];
 
-        for (const name of Object.keys(sources)) {
-            if (installed[name] && installed[name].version && sources[name].version) {
+        for (const name in sources) {
+            if (name === 'repoInfo') {
+                continue;
+            }
+            const adapter = sources[name] as ioBroker.RepositoryJsonAdapterContent;
+            if (installed[name]?.version && adapter.version) {
                 try {
                     // tools.upToDate can throw if a version is invalid
                     if (
-                        sources[name].version !== installed[name].version &&
-                        !tools.upToDate(sources[name].version, installed[name].version)
+                        adapter.version !== installed[name].version &&
+                        !tools.upToDate(adapter.version, installed[name].version)
                     ) {
                         // remove the first part of the name
                         const n = name.indexOf('.');

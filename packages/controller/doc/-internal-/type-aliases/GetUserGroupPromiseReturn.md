@@ -6,6 +6,6 @@
 
 # Type Alias: GetUserGroupPromiseReturn
 
-> **GetUserGroupPromiseReturn** = \[`string`, `string`[], [`ObjectPermissions`](../interfaces/ObjectPermissions.md)\]
+> **GetUserGroupPromiseReturn** = \[[`User`](User.md), [`Group`](Group.md)[], [`ObjectPermissions`](../interfaces/ObjectPermissions.md)\]
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:74
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:95

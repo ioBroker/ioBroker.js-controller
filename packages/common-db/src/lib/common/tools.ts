@@ -1,38 +1,42 @@
-import fs from 'fs-extra';
 import path from 'node:path';
 import semver from 'semver';
 import os from 'node:os';
-import forge from 'node-forge';
-import deepClone from 'deep-clone';
-import { type ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
+import crypto from 'node:crypto';
 import { createInterface } from 'node:readline';
 import { PassThrough } from 'node:stream';
-import type { CommandResult, InstallOptions, PackageManager } from '@alcalzone/pak';
-import { detectPackageManager, packageManagers } from '@alcalzone/pak';
-import { EXIT_CODES } from '@/lib/common/exitCodes.js';
 import zlib from 'node:zlib';
-import { password } from '@/lib/common/password.js';
-import jwt from 'jsonwebtoken';
-import axios from 'axios';
-import crypto from 'node:crypto';
-import type { ExecOptions } from 'node:child_process';
-import { exec } from 'node:child_process';
+import { exec, type ExecOptions } from 'node:child_process';
 import { URLSearchParams } from 'node:url';
 import events from 'node:events';
-import { maybeCallbackWithError } from '@/lib/common/maybeCallback.js';
+import { setDefaultResultOrder } from 'node:dns';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
+
+import forge from 'node-forge';
+import fs from 'fs-extra';
+import deepClone from 'deep-clone';
+import { type ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
+import type { CommandResult, InstallOptions, PackageManager } from '@alcalzone/pak';
+import { detectPackageManager, packageManagers } from '@alcalzone/pak';
+import jwt from 'jsonwebtoken';
+import axios from 'axios';
 // @ts-expect-error has no types
 import extend from 'node.extend';
-import { setDefaultResultOrder } from 'node:dns';
+import type * as DiskUsage from 'diskusage';
+
+import { EXIT_CODES } from '@/lib/common/exitCodes.js';
+import { password } from '@/lib/common/password.js';
 import {
     applyAliasAutoScaling,
     applyAliasConvenienceConversion,
     applyAliasTransformer,
 } from '@/lib/common/aliasProcessing.js';
-import type * as DiskUsage from 'diskusage';
-import * as url from 'node:url';
-import { createRequire } from 'node:module';
 import type { WithRequired } from '@iobroker/types-dev';
 import { DEFAULT_OBJECTS_WARN_LIMIT } from '@/lib/common/constants.js';
+// Cannot use import here because of cyclical dependency
+// import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
+type ObjectsRedisClient = any;
+type StatesRedisClient = any;
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
@@ -95,12 +99,12 @@ interface FormatAliasValueOptions {
     /** State to format */
     state: ioBroker.State | null | undefined;
     /** Logger used for logging */
-    logger: any;
+    logger: InternalLogger;
     /** Prefix for log messages */
     logNamespace: string;
-    /** Id of the source object, used for logging */
+    /** ID of the source object, used for logging */
     sourceId?: string;
-    /** Id of the target object, used for logging */
+    /** ID of the target object, used for logging */
     targetId?: string;
 }
 
@@ -302,7 +306,11 @@ export function upToDate(repoVersion: string, installedVersion: string): boolean
  * @param data The encrypted data to decrypt
  * @param callback Called with the decrypted string, or null on error
  */
-export function decryptPhrase(password: string, data: any, callback: (decrypted?: null | string) => void): void {
+export function decryptPhrase(
+    password: string,
+    data: string | Buffer,
+    callback: (decrypted?: null | string) => void,
+): void {
     const decipher = crypto.createDecipher('aes192', password);
 
     try {
@@ -334,11 +342,11 @@ export function decryptPhrase(password: string, data: any, callback: (decrypted?
  * @param objects the objects db
  * @returns true if only one host object exists
  */
-export async function isSingleHost(objects: any): Promise<boolean> {
-    const res: { rows: ioBroker.GetObjectListItem<ioBroker.HostObject>[] } = await objects.getObjectList({
+export async function isSingleHost(objects: ObjectsRedisClient): Promise<boolean> {
+    const res: { rows: ioBroker.GetObjectListItem<ioBroker.HostObject>[] } = (await objects.getObjectList({
         startkey: 'system.host.',
         endkey: 'system.host.\u9999',
-    });
+    })) as { rows: ioBroker.GetObjectListItem<ioBroker.HostObject>[] };
     const hostObjs = res.rows.filter(obj => obj.value && obj.value.type === 'host');
     return hostObjs.length <= 1; // on setup no host object is there yet
 }
@@ -350,7 +358,7 @@ export async function isSingleHost(objects: any): Promise<boolean> {
  * @param states the states db
  * @returns true if one or more hosts running else false
  */
-export async function isHostRunning(objects: any, states: any): Promise<boolean> {
+export async function isHostRunning(objects: ObjectsRedisClient, states: StatesRedisClient): Promise<boolean> {
     // do it without an object view for now, TODO: can be reverted if no one downgrades to < 4 (redis-sets)
     // const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
     const res: GetObjectViewResult = await objects.getObjectList({
@@ -362,8 +370,8 @@ export async function isHostRunning(objects: any, states: any): Promise<boolean>
     res.rows = res.rows.filter(obj => obj.value?.type === 'host');
 
     for (const hostObj of res.rows) {
-        const state: ioBroker.State = await states.getState(`${hostObj.id}.alive`);
-        if (state && state.val) {
+        const state: ioBroker.State | null | undefined = await states.getState(`${hostObj.id}.alive`);
+        if (state?.val) {
             return true;
         }
     }
@@ -634,7 +642,7 @@ async function uuid(givenMac?: string): Promise<string> {
  * @param newUuid the new UUID to set
  * @param _objects the objects DB instance
  */
-async function updateUuid(newUuid: string, _objects: any): Promise<string> {
+async function updateUuid(newUuid: string, _objects: ObjectsRedisClient): Promise<string> {
     let _uuid = await uuid('');
     _uuid = newUuid || _uuid;
     // Add vendor prefix to UUID
@@ -683,7 +691,7 @@ async function updateUuid(newUuid: string, _objects: any): Promise<string> {
  * @param objects - objects DB
  * @returns uuid if successfully created/updated
  */
-export async function createUuid(objects: any): Promise<void | string> {
+export async function createUuid(objects: ObjectsRedisClient): Promise<void | string> {
     const userObj: ioBroker.UserObject = await objects.getObject('system.user.admin');
     if (!userObj) {
         await new Promise<void>(resolve => {
@@ -732,7 +740,7 @@ export async function createUuid(objects: any): Promise<void | string> {
     }
 
     // Read vis license
-    const licObj: ioBroker.Object = objects.getObject('system.adapter.vis.0');
+    const licObj = await objects.getObject('system.adapter.vis.0');
     if (!licObj || !licObj.native || !licObj.native.license) {
         return updateUuid('', objects);
     }
@@ -815,28 +823,24 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
  * @param agent User agent string used for the download request
  * @param callback Called with the parsed sources and the resolved url/path
  */
-export async function getJson(
+export async function getJson<T>(
     urlOrPath: string,
     agent: string,
-    callback: (sources?: Record<string, any> | null, urlOrPath?: string | null) => void,
+    callback: (result?: T | null, urlOrPath?: string | null) => void,
 ): Promise<void> {
     if (typeof agent === 'function') {
         callback = agent;
         agent = '';
     }
-    agent = agent || '';
+    agent ||= '';
 
-    let sources = {};
+    let result: T = {} as T;
     // If object was read
     if (urlOrPath && typeof urlOrPath === 'object') {
-        if (callback) {
-            callback(urlOrPath);
-        }
+        callback?.(urlOrPath as unknown as T);
     } else if (!urlOrPath) {
         console.log('Empty url!');
-        if (callback) {
-            callback(null);
-        }
+        callback?.(null);
     } else {
         if (
             urlOrPath.substring(0, 'http://'.length) === 'http://' ||
@@ -851,62 +855,44 @@ export async function getJson(
                     throw new Error(`Invalid response, body: ${res.data}, status code: ${res.status}`);
                 }
 
-                sources = res.data;
+                result = res.data;
 
-                if (callback) {
-                    callback(sources, urlOrPath);
-                }
+                callback?.(result, urlOrPath);
             } catch (e) {
                 console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
-                if (callback) {
-                    callback(null, urlOrPath);
-                }
+                callback?.(null, urlOrPath);
                 return;
             }
         } else {
             if (fs.existsSync(urlOrPath)) {
                 try {
-                    sources = fs.readJSONSync(urlOrPath);
+                    result = fs.readJSONSync(urlOrPath);
                 } catch (e) {
                     console.log(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
-                    if (callback) {
-                        callback(null, urlOrPath);
-                    }
+                    callback?.(null, urlOrPath);
                     return;
                 }
-                if (callback) {
-                    callback(sources, urlOrPath);
-                }
+                callback?.(result, urlOrPath);
             } else if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
                 try {
-                    sources = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
+                    result = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
                 } catch (e) {
                     console.log(`Cannot parse json file from ${thisDir}/../${urlOrPath}. Error: ${e.message}`);
-                    if (callback) {
-                        callback(null, urlOrPath);
-                    }
+                    callback?.(null, urlOrPath);
                     return;
                 }
-                if (callback) {
-                    callback(sources, urlOrPath);
-                }
+                callback?.(result, urlOrPath);
             } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
                 try {
-                    sources = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
+                    result = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
                 } catch (e) {
                     console.log(`Cannot parse json file from ${thisDir}/../tmp/${urlOrPath}. Error: ${e.message}`);
-                    if (callback) {
-                        callback(null, urlOrPath);
-                    }
+                    callback?.(null, urlOrPath);
                     return;
                 }
-                if (callback) {
-                    callback(sources, urlOrPath);
-                }
+                callback?.(result, urlOrPath);
             } else {
-                if (callback) {
-                    callback(null, urlOrPath);
-                }
+                callback?.(null, urlOrPath);
             }
         }
     }
@@ -920,13 +906,14 @@ export async function getJson(
  * @returns json object
  */
 export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<Record<string, any> | null> {
-    agent = agent || '';
+    agent ||= '';
 
     let sources = {};
     // If object was read
     if (urlOrPath && typeof urlOrPath === 'object') {
         return urlOrPath;
-    } else if (!urlOrPath) {
+    }
+    if (!urlOrPath) {
         console.log('Empty url!');
         return null;
     }
@@ -1159,106 +1146,91 @@ function getNpmVersion(adapter: string, callback?: (err: Error | null, version?:
     });
 }
 
-function getIoPack(
-    sources: Record<string, any>,
-    name: string,
-    callback: (sources: Record<string, any>, name: string) => void,
-): void {
-    getJson(sources[name].meta, '', ioPack => {
-        const packUrl = sources[name].meta.replace('io-package.json', 'package.json');
+interface RepositoryHelper {
+    failCounter: string[];
+    timeout: NodeJS.Timeout | null;
+}
+
+function getIoPack(sources: ioBroker.RepositoryJson, name: string, callback: () => void): void {
+    let packSource = sources[name] as ioBroker.RepositoryJsonAdapterContent;
+    getJson<ioBroker.AdapterObject>(packSource.meta, '', ioPack => {
+        const packUrl = packSource.meta.replace('io-package.json', 'package.json');
         if (!ioPack) {
-            if (sources._helper) {
-                sources._helper.failCounter.push(name);
-            }
-            if (callback) {
-                callback(sources, name);
-            }
+            (sources._helper as unknown as RepositoryHelper)?.failCounter.push(name);
+            callback?.();
         } else {
             setImmediate(() => {
-                getJson(packUrl, '', pack => {
-                    const version = sources[name].version;
-                    const type = sources[name].type;
+                return getJson<ioBroker.RepositoryJsonAdapterContent>(packUrl, '', pack => {
+                    const version = packSource.version;
+                    const type = packSource.type;
                     // If installed from git or something else,
                     // js-controller is exception, because can be installed from npm and from git
-                    if (sources[name].url && name !== 'js-controller') {
-                        if (ioPack && ioPack.common) {
-                            sources[name] = extend(true, sources[name], ioPack.common);
+                    if (packSource.url && name !== 'js-controller') {
+                        if (ioPack?.common) {
+                            sources[name] = extend(true, packSource, ioPack.common);
+                            packSource = sources[name] as ioBroker.RepositoryJsonAdapterContent;
 
                             // overwrite type of adapter from repository
                             if (type) {
-                                sources[name].type = type;
+                                packSource.type = type;
                             }
-                            if (pack && pack.licenses && pack.licenses.length) {
-                                if (!sources[name].license) {
-                                    sources[name].license = pack.licenses[0].type;
-                                }
-                                if (!sources[name].licenseUrl) {
-                                    sources[name].licenseUrl = pack.licenses[0].url;
-                                }
+                            if (pack?.licenses?.length) {
+                                packSource.license ||= pack.licenses[0].type;
+                                packSource.licenseUrl ||= pack.licenses[0].url;
                             }
                         }
 
-                        if (callback) {
-                            callback(sources, name);
-                        }
+                        callback?.();
                     } else {
-                        if (ioPack && ioPack.common) {
-                            sources[name] = extend(true, sources[name], ioPack.common);
-                            if (pack && pack.licenses && pack.licenses.length) {
-                                if (!sources[name].license) {
-                                    sources[name].license = pack.licenses[0].type;
-                                }
-                                if (!sources[name].licenseUrl) {
-                                    sources[name].licenseUrl = pack.licenses[0].url;
-                                }
+                        if (ioPack?.common) {
+                            sources[name] = extend(true, packSource, ioPack.common);
+                            packSource = sources[name] as ioBroker.RepositoryJsonAdapterContent;
+                            if (pack?.licenses?.length) {
+                                packSource.license ||= pack.licenses[0].type;
+                                packSource.licenseUrl ||= pack.licenses[0].url;
                             }
                         }
 
                         // overwrite type of adapter from repository
                         if (type) {
-                            sources[name].type = type;
+                            packSource.type = type;
                         }
 
                         if (version) {
-                            sources[name].version = version;
-                            if (callback) {
-                                callback(sources, name);
-                            }
+                            packSource.version = version;
+                            callback?.();
                         } else {
                             if (
-                                sources[name].meta.substring(0, 'http://'.length) === 'http://' ||
-                                sources[name].meta.substring(0, 'https://'.length) === 'https://'
+                                packSource.meta.substring(0, 'http://'.length) === 'http://' ||
+                                packSource.meta.substring(0, 'https://'.length) === 'https://'
                             ) {
                                 //installed from npm
                                 getNpmVersion(name, (_err, version) => {
                                     if (version) {
-                                        sources[name].version = version;
+                                        packSource.version = version;
                                     } else {
-                                        sources[name].version = 'npm error';
+                                        packSource.version = 'npm error';
                                     }
-                                    if (callback) {
-                                        callback(sources, name);
-                                    }
+                                    callback?.();
                                 });
                             } else {
-                                if (callback) {
-                                    callback(sources, name);
-                                }
+                                callback?.();
                             }
                         }
                     }
                 });
             });
         }
-    });
+    }).catch(e => console.error(`Cannot prepare repository entry for ${name}: ${e.message}`));
 }
 
 function _getRepositoryFile(
-    sources: Record<string, any>,
+    sources: ioBroker.RepositoryJson,
     path: string,
-    callback?: (err?: Error, sources?: Record<string, any>) => void,
+    helper?: RepositoryHelper,
+    callback?: (err?: Error, sources?: ioBroker.RepositoryJson) => void,
 ): void {
-    if (!sources._helper) {
+    if (!helper) {
         let count = 0;
         for (const _name in sources) {
             if (!Object.prototype.hasOwnProperty.call(sources, _name)) {
@@ -1266,59 +1238,60 @@ function _getRepositoryFile(
             }
             count++;
         }
-        sources._helper = { failCounter: [] };
+        helper = { failCounter: [], timeout: null } as RepositoryHelper;
 
-        sources._helper.timeout = setTimeout(() => {
-            if (sources._helper) {
-                delete sources._helper;
+        helper.timeout = setTimeout(() => {
+            if (helper) {
                 for (const __name of Object.keys(sources)) {
-                    if (sources[__name].processed !== undefined) {
-                        delete sources[__name].processed;
+                    if ((sources[__name] as ioBroker.RepositoryJsonAdapterContent).processed !== undefined) {
+                        delete (sources[__name] as ioBroker.RepositoryJsonAdapterContent).processed;
                     }
                 }
                 if (callback) {
                     callback(new Error(`Timeout by read all package.json (${count}) seconds`), sources);
+                    callback = undefined;
                 }
-                callback = undefined;
             }
         }, count * 1000);
     }
 
     for (const name of Object.keys(sources)) {
-        if (sources[name].processed || name === '_helper') {
+        const typedSource = sources[name] as ioBroker.RepositoryJsonAdapterContent;
+        if (typedSource.processed || name === '_helper') {
             continue;
         }
 
-        sources[name].processed = true;
-        if (sources[name].url) {
-            sources[name].url = findPath(path, sources[name].url);
+        typedSource.processed = true;
+        if (typedSource.url) {
+            typedSource.url = findPath(path, typedSource.url);
         }
-        if (sources[name].meta) {
-            sources[name].meta = findPath(path, sources[name].meta);
+        if (typedSource.meta) {
+            typedSource.meta = findPath(path, typedSource.meta);
         }
-        if (sources[name].icon) {
-            sources[name].icon = findPath(path, sources[name].icon);
+        if (typedSource.icon) {
+            typedSource.icon = findPath(path, typedSource.icon);
         }
 
-        if (!sources[name].name && sources[name].meta) {
-            getIoPack(sources, name, _ignore => {
-                if (sources._helper) {
-                    if (sources._helper.failCounter.length > 10) {
-                        clearTimeout(sources._helper.timeout);
-                        delete sources._helper;
-                        for (const _name of Object.keys(sources)) {
-                            if (sources[_name].processed !== undefined) {
-                                delete sources[_name].processed;
-                            }
-                        }
-                        if (callback) {
-                            callback(new Error('Looks like there is no internet.'), sources);
-                        }
-                        callback = undefined;
-                    } else {
-                        // process next
-                        setImmediate(() => _getRepositoryFile(sources, path, callback));
+        if (!typedSource.name && typedSource.meta) {
+            getIoPack(sources, name, () => {
+                if (helper && helper.failCounter.length > 10) {
+                    if (helper.timeout) {
+                        clearTimeout(helper.timeout);
+                        helper.timeout = null;
                     }
+                    for (const _name of Object.keys(sources)) {
+                        const _typedSource = sources[_name] as ioBroker.RepositoryJsonAdapterContent;
+                        if (_typedSource.processed !== undefined) {
+                            delete _typedSource.processed;
+                        }
+                    }
+                    if (callback) {
+                        callback(new Error('Looks like there is no internet.'), sources);
+                        callback = undefined;
+                    }
+                } else {
+                    // process next
+                    setImmediate(() => _getRepositoryFile(sources, path, helper, callback));
                 }
             });
             return;
@@ -1326,180 +1299,62 @@ function _getRepositoryFile(
     }
 
     // all packages are processed
-    if (sources._helper) {
+    if (helper) {
         let err;
-        if (sources._helper.failCounter.length) {
-            err = new Error(`Following packages cannot be read: ${sources._helper.failCounter.join(', ')}`);
+        if (helper.failCounter.length) {
+            err = new Error(`Following packages cannot be read: ${helper.failCounter.join(', ')}`);
         }
-        clearTimeout(sources._helper.timeout);
-        delete sources._helper;
+        if (helper.timeout) {
+            clearTimeout(helper.timeout);
+            helper.timeout = null;
+        }
         for (const __name of Object.keys(sources)) {
-            if (sources[__name].processed !== undefined) {
-                delete sources[__name].processed;
+            if ((sources[__name] as ioBroker.RepositoryJsonAdapterContent).processed !== undefined) {
+                delete (sources[__name] as ioBroker.RepositoryJsonAdapterContent).processed;
             }
         }
         if (callback) {
             callback(err, sources);
+            callback = undefined;
         }
-        callback = undefined;
-    }
-}
-
-async function _checkRepositoryFileHash(
-    urlOrPath: string,
-    additionalInfo: Record<string, any>,
-    callback: (err?: null | Error, sources?: Record<string, any> | null, hash?: string | number) => void,
-): Promise<void> {
-    // read hash of file
-    if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
-        urlOrPath = urlOrPath.replace(/\.json$/, '-hash.json');
-        let json: null | Record<string, any> = null;
-        try {
-            const res = await axios.get(urlOrPath, { headers: { 'Accept-Encoding': 'gzip', timeout: 10000 } });
-            if (!res.data || res.status !== 200) {
-                throw new Error(`Invalid response, body: ${res.data}, status code: ${res.status}`);
-            }
-
-            json = res.data;
-        } catch (e) {
-            console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
-        }
-
-        if (json && json.hash) {
-            // The hash download was successful
-            if (additionalInfo && additionalInfo.sources && json.hash === additionalInfo.hash) {
-                // The hash is the same as for the cached sources
-                console.log('hash unchanged, use cached sources');
-                callback(null, additionalInfo.sources, json.hash);
-            } else {
-                // Either we have no sources cached or the hash changed
-                // => force download of new sources
-                console.log('hash changed or no sources cached => force download of new sources');
-                callback(null, null, json.hash);
-            }
-        } else {
-            // Could not download new sources, use the old ones
-            console.log('failed to download new sources, use cached sources');
-            callback(null, additionalInfo.sources, '');
-        }
-    } else {
-        // it is a file and file has not hash
-        callback(null, null, 0);
     }
 }
 
 /**
  * Get a list of all adapters and controller in some repository file or in /conf/source-dist.json
  *
- * @param urlOrPath URL starting with http:// or https:// or local file link
- * @param additionalInfo destination object
  * @param callback function (err, sources, actualHash) { }
  */
 export function getRepositoryFile(
-    urlOrPath: string,
-    additionalInfo: Record<string, any>,
-    callback: (err?: Error | null, sources?: Record<string, any>, actualHash?: string | number) => void,
+    callback: (err?: Error | null, sources?: ioBroker.RepositoryJson, actualHash?: string | number) => void,
 ): void {
-    let sources: Record<string, any> = {};
-    let _path = '';
-
-    if (typeof additionalInfo === 'function') {
-        // @ts-expect-error: fix all fun calls then remove
-        callback = additionalInfo;
-        additionalInfo = {};
+    let sources: ioBroker.RepositoryJson = {} as ioBroker.RepositoryJson;
+    let controllerDir: string | undefined;
+    try {
+        controllerDir = getControllerDir();
+        if (controllerDir) {
+            sources = fs.readJSONSync(path.join(controllerDir, getDefaultDataDir(), 'sources.json'));
+        }
+    } catch {
+        sources = {} as ioBroker.RepositoryJson;
+    }
+    try {
+        if (controllerDir) {
+            const sourcesDist = fs.readJSONSync(path.join(controllerDir, 'conf', 'sources-dist.json'));
+            sources = extend(true, sourcesDist, sources);
+        }
+    } catch {
+        // continue regardless of error
     }
 
-    additionalInfo = additionalInfo || {};
-
-    if (urlOrPath) {
-        const parts = urlOrPath.split('/');
-        _path = `${parts.splice(0, parts.length - 1).join('/')}/`;
-    }
-
-    // If an object was read
-    if (urlOrPath && typeof urlOrPath === 'object') {
+    _getRepositoryFile(sources, '', undefined, err => {
+        if (err) {
+            console.error(`[${new Date().toString()}] ${err.message}`);
+        }
         if (typeof callback === 'function') {
-            callback(null, urlOrPath);
+            callback(err, sources);
         }
-    } else if (!urlOrPath) {
-        try {
-            const controllerDir = getControllerDir();
-            if (controllerDir) {
-                sources = fs.readJSONSync(path.join(controllerDir, getDefaultDataDir(), 'sources.json'));
-            }
-        } catch {
-            sources = {};
-        }
-        try {
-            const controllerDir = getControllerDir();
-            if (controllerDir) {
-                const sourcesDist = fs.readJSONSync(path.join(controllerDir, 'conf', 'sources-dist.json'));
-                sources = extend(true, sourcesDist, sources);
-            }
-        } catch {
-            // continue regardless of error
-        }
-
-        for (const s of Object.keys(sources)) {
-            if (additionalInfo[s] && additionalInfo[s].published) {
-                sources[s].published = additionalInfo[s].published;
-            }
-        }
-
-        _getRepositoryFile(sources, _path, err => {
-            if (err) {
-                console.error(`[${new Date().toString()}] ${err.message}`);
-            }
-            if (typeof callback === 'function') {
-                callback(err, sources);
-            }
-        });
-    } else {
-        let agent = '';
-        if (additionalInfo) {
-            // Add some information to user-agent, like chrome, IE and Firefox do
-            agent = `${additionalInfo.name}, RND: ${additionalInfo.randomID || randomID}, Node:${
-                additionalInfo.node
-            }, V:${additionalInfo.controller}`;
-        }
-
-        // load hash of file first to not load the whole 1MB of sources
-        _checkRepositoryFileHash(urlOrPath, additionalInfo, (err, sources, actualSourcesHash) => {
-            if (!err && sources) {
-                // Source file was not changed
-                typeof callback === 'function' && callback(err, sources, actualSourcesHash);
-            } else {
-                getJson(urlOrPath, agent, sources => {
-                    if (sources) {
-                        for (const s of Object.keys(sources)) {
-                            if (additionalInfo[s] && additionalInfo[s].published) {
-                                sources[s].published = additionalInfo[s].published;
-                            }
-                        }
-                        setImmediate(() =>
-                            _getRepositoryFile(sources, _path, err => {
-                                err && console.error(`[${new Date().toString()}] ${err.message}`);
-                                typeof callback === 'function' && callback(err, sources, actualSourcesHash);
-                            }),
-                        );
-                    } else {
-                        // return cached sources, because no sources found
-                        console.log(
-                            `failed to download new sources, ${
-                                additionalInfo.sources ? 'use cached sources' : 'no cached sources available'
-                            }`,
-                        );
-                        return maybeCallbackWithError(
-                            callback,
-                            `Cannot read "${urlOrPath}"`,
-                            additionalInfo.sources,
-                            '',
-                        );
-                    }
-                });
-            }
-        });
-    }
+    });
 }
 
 /** Result of getRepositoryFileAsync */
@@ -1667,9 +1522,7 @@ export function getHostName(): string {
  *            }
  *        </code></pre>
  */
-function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) => void): void {
-    const { exec } = require('node:child_process');
-
+function getSystemNpmVersion(callback?: (err?: Error | null, version?: string | null) => void): void {
     // remove local node_modules\.bin dir from a path
     // or we potentially get a wrong npm version
     const newEnv = Object.assign({}, process.env);
@@ -1693,7 +1546,7 @@ function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) =
         exec(
             'npm -v',
             { encoding: 'utf8', env: newEnv, windowsHide: true },
-            (error: any, stdout: string | undefined | null) => {
+            (error: Error | null, stdout: string | undefined | null) => {
                 //, stderr) {
                 if (timeout) {
                     clearTimeout(timeout);
@@ -2153,7 +2006,7 @@ function makeid(length: number): string {
  *
  * @param objects db
  */
-export async function getHostInfo(objects: any): Promise<HostInfo> {
+export async function getHostInfo(objects: ObjectsRedisClient): Promise<HostInfo> {
     if (!diskusage) {
         try {
             diskusage = require('diskusage');
@@ -2162,17 +2015,17 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
         }
     }
 
-    const systemConfig: ioBroker.OtherObject = await objects.getObjectAsync('system.config');
-    const systemRepos: ioBroker.OtherObject = await objects.getObjectAsync('system.repositories');
+    const systemConfig: ioBroker.SystemConfigObject = await objects.getObjectAsync('system.config');
+    const systemRepos: ioBroker.RepositoryObject = await objects.getObjectAsync('system.repositories');
 
     // Check if repositories exist
-    const allRepos: Record<string, any> = {};
+    const allRepos: ioBroker.RepositoryJson = {} as ioBroker.RepositoryJson;
     if (systemRepos?.native?.repositories && systemConfig) {
         const repos: string[] = Array.isArray(systemConfig.common.activeRepo)
             ? systemConfig.common.activeRepo
             : [systemConfig.common.activeRepo];
         repos
-            .filter(repo => systemRepos.native.repositories[repo] && systemRepos.native.repositories[repo].json)
+            .filter(repo => systemRepos.native.repositories[repo]?.json)
             .forEach(repo => Object.assign(allRepos, systemRepos.native.repositories[repo].json));
     }
 
@@ -2200,7 +2053,7 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
         time: dateObj.getTime(),
         timeOffset: dateObj.getTimezoneOffset(),
         NPM: npmVersion,
-        'adapters count': Object.keys(allRepos).length,
+        'adapters count': Object.keys(allRepos).filter(id => id !== '_repoInfo').length,
     };
 
     if (data.Platform === 'win32') {
@@ -2483,7 +2336,7 @@ export function promisifyNoError(
     };
 }
 
-async function _setQualityForStates(states: any, keys: string[], quality: number): Promise<void> {
+async function _setQualityForStates(states: StatesRedisClient, keys: string[], quality: number): Promise<void> {
     for (const key of keys) {
         try {
             await states.setState(key, { ack: null, q: quality });
@@ -2501,7 +2354,12 @@ async function _setQualityForStates(states: any, keys: string[], quality: number
  * @param namespace The instance namespace whose states should be updated (e.g. "admin.0")
  * @param q The quality code to assign to each state
  */
-export function setQualityForInstance(objects: any, states: any, namespace: string, q: number): Promise<void> {
+export function setQualityForInstance(
+    objects: ObjectsRedisClient,
+    states: StatesRedisClient,
+    namespace: string,
+    q: number,
+): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         objects.getObjectView(
             'system',
@@ -2825,25 +2683,25 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
  * @param allEnums objects with all enums to use - if not provided all enums will be queried
  * @returns Promise All objects are tried to be updated - reject will happen as soon as one fails with the error of the first fail
  */
-export async function removeIdFromAllEnums(objects: any, id: string, allEnums?: Record<string, any>): Promise<void> {
-    if (!allEnums) {
-        allEnums = await getAllEnums(objects);
-    }
+export async function removeIdFromAllEnums(
+    objects: ObjectsRedisClient,
+    id: string,
+    allEnums?: Record<string, ioBroker.EnumObject>,
+): Promise<void> {
+    allEnums ||= await getAllEnums(objects);
 
     let error = null;
     for (const [enumId, enumObj] of Object.entries(allEnums)) {
         const idx = enumObj.common.members ? enumObj.common.members.indexOf(id) : -1;
         if (idx !== -1) {
             // the id is in the enum now we have to remove it
-            enumObj.common.members.splice(idx, 1);
+            enumObj.common.members!.splice(idx, 1);
             try {
                 await objects.setObjectAsync(enumId, enumObj);
                 // update cache directly to prevent race conditions when sending many delete in a short time
                 allEnums[enumId] = enumObj;
             } catch (err) {
-                if (!error) {
-                    error = err;
-                }
+                error ||= err;
             }
         }
     }
@@ -2892,13 +2750,16 @@ export function parseDependencies(
  * @param extend (optional) if true checks allow more optional cases for extendObject calls
  * @throws Error if a property has the wrong type or `obj.type` is non-existing
  */
-export function validateGeneralObjectProperties(obj: any, extend?: boolean): void {
+export function validateGeneralObjectProperties(
+    obj: ioBroker.SettableObject | null | undefined,
+    extend?: boolean,
+): void {
     if (!obj || (obj.type === undefined && !extend)) {
         throw new Error(`obj.type has to exist`);
     }
 
     if (obj.type !== undefined && typeof obj.type !== 'string') {
-        throw new Error(`obj.type has an invalid type! Expected "string", received "${typeof obj.type}"`);
+        throw new Error(`obj.type has an invalid type! Expected "string", received "${typeof (obj as any).type}"`);
     }
 
     if (obj.native !== undefined && !isObject(obj.native)) {
@@ -2945,10 +2806,10 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         throw new Error(`obj.common.name has an invalid type! Expected "string", received "${typeof obj.common.name}"`);
     }
 
-    if (obj.common.type !== undefined) {
-        if (typeof obj.common.type !== 'string') {
+    if ((obj.common as ioBroker.StateCommon).type !== undefined) {
+        if (typeof (obj.common as ioBroker.StateCommon).type !== 'string') {
             throw new Error(
-                `obj.common.type has an invalid type! Expected "string", received "${typeof obj.common.type}"`,
+                `obj.common.type has an invalid type! Expected "string", received "${typeof (obj.common as ioBroker.StateCommon).type}"`,
             );
         }
 
@@ -3006,6 +2867,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
                         (obj.common.type === 'mixed' && typeof obj.common.def !== 'object') ||
                         (obj.common.type !== 'object' && obj.common.type === typeof obj.common.def) ||
                         (obj.common.type === 'array' && typeof obj.common.def === 'string') ||
+                        // @ts-expect-error deprecated
                         (obj.common.type === 'json' && typeof obj.common.def === 'string') ||
                         (obj.common.type === 'object' && typeof obj.common.def === 'string')
                     )
@@ -3030,15 +2892,21 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         }
     }
 
-    if (obj.common.read !== undefined && typeof obj.common.read !== 'boolean') {
+    if (
+        (obj.common as ioBroker.StateCommon).read !== undefined &&
+        typeof (obj.common as ioBroker.StateCommon).read !== 'boolean'
+    ) {
         throw new Error(
-            `obj.common.read has an invalid type! Expected "boolean", received "${typeof obj.common.read}"`,
+            `obj.common.read has an invalid type! Expected "boolean", received "${typeof (obj.common as ioBroker.StateCommon).read}"`,
         );
     }
 
-    if (obj.common.write !== undefined && typeof obj.common.write !== 'boolean') {
+    if (
+        (obj.common as ioBroker.StateCommon).write !== undefined &&
+        typeof (obj.common as ioBroker.StateCommon).write !== 'boolean'
+    ) {
         throw new Error(
-            `obj.common.write has an invalid type! Expected "boolean", received "${typeof obj.common.write}"`,
+            `obj.common.write has an invalid type! Expected "boolean", received "${typeof (obj.common as ioBroker.StateCommon).write}"`,
         );
     }
 
@@ -3065,13 +2933,13 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
     // common.states needs to be a real object or an array
     if (
-        obj.common.states !== null && // we allow null for deletion TODO: implement https://github.com/ioBroker/ioBroker.js-controller/issues/1735
-        obj.common.states !== undefined &&
-        !isObject(obj.common.states) &&
-        !Array.isArray(obj.common.states)
+        (obj.common as ioBroker.StateCommon).states !== null && // we allow null for deletion TODO: implement https://github.com/ioBroker/ioBroker.js-controller/issues/1735
+        (obj.common as ioBroker.StateCommon).states !== undefined &&
+        !isObject((obj.common as ioBroker.StateCommon).states) &&
+        !Array.isArray((obj.common as ioBroker.StateCommon).states)
     ) {
         throw new Error(
-            `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`,
+            `obj.common.states has an invalid type! Expected "object", received "${typeof (obj.common as ioBroker.StateCommon).states}"`,
         );
     }
 }
@@ -3083,7 +2951,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
  * @param objects class redis objects
  * @returns array of IDs
  */
-export async function getAllInstances(adapters: string[], objects: any): Promise<string[]> {
+export async function getAllInstances(adapters: string[], objects: ObjectsRedisClient): Promise<string[]> {
     const instances: string[] = [];
 
     for (let i = 0; i < adapters.length; i++) {
@@ -3097,10 +2965,8 @@ export async function getAllInstances(adapters: string[], objects: any): Promise
                     instances.push(inst[j]);
                 }
             }
-        } else {
-            if (!instances.includes(adapters[i])) {
-                instances.push(adapters[i]);
-            }
+        } else if (!instances.includes(adapters[i])) {
+            instances.push(adapters[i]);
         }
     }
 
@@ -3118,8 +2984,8 @@ type GetObjectViewResult<TObject extends ioBroker.AnyObject = ioBroker.Object> =
  * @param objects - objects db
  * @returns Promise
  */
-export async function getAllEnums(objects: any): Promise<Record<string, ioBroker.EnumObject>> {
-    const allEnums: Record<string, any> = {};
+export async function getAllEnums(objects: ObjectsRedisClient): Promise<Record<string, ioBroker.EnumObject>> {
+    const allEnums: Record<string, ioBroker.EnumObject> = {};
     const res: GetObjectViewResult<ioBroker.EnumObject> = await objects.getObjectViewAsync('system', 'enum', {
         startkey: 'enum.',
         endkey: 'enum.\u9999',
@@ -3142,7 +3008,7 @@ export async function getAllEnums(objects: any): Promise<Record<string, ioBroker
  */
 export async function getInstances<TWithObjects extends boolean>(
     adapter: string,
-    objects: any,
+    objects: ObjectsRedisClient,
     withObjects: TWithObjects,
 ): Promise<TWithObjects extends true ? ioBroker.InstanceObject[] : ioBroker.ObjectIDs.Instance[]> {
     const arr = await objects.getObjectListAsync({
@@ -3629,7 +3495,7 @@ export type InternalLogger = Omit<ioBroker.Logger, 'level'>;
  *
  * @param log A logger or partial logger object; if falsy, a no-op logger is created
  */
-export function getLogger(log: any): InternalLogger {
+export function getLogger(log?: InternalLogger): InternalLogger {
     if (!log) {
         log = {
             silly: function (_msg: string) {
@@ -3730,7 +3596,23 @@ export async function setExecutableCapabilities(
  * @param password Decoded password for ioBroker.net
  * @returns array of all licenses stored on iobroker.net
  */
-async function _readLicenses(login: string, password: string): Promise<any[]> {
+async function _readLicenses(
+    login: string,
+    password: string,
+): Promise<
+    {
+        json: string;
+        id: string;
+        email: string;
+        product: string;
+        version: string;
+        invoice: string;
+        uuid: string;
+        time: string;
+        validTill: string;
+        usedBy?: string;
+    }[]
+> {
     const config = {
         headers: { Authorization: `Basic ${Buffer.from(`${login}:${password}`).toString('base64')}` },
         timeout: 4_000,
@@ -3769,15 +3651,32 @@ async function _readLicenses(login: string, password: string): Promise<any[]> {
  * @param password Decoded password for ioBroker.net
  * @returns array of all licenses stored on iobroker.net
  */
-export async function updateLicenses(objects: any, login: string, password: string): Promise<any[]> {
+export async function updateLicenses(
+    objects: ObjectsRedisClient,
+    login: string,
+    password: string,
+): Promise<
+    {
+        json: string;
+        id: string;
+        email: string;
+        product: string;
+        version: string;
+        invoice: string;
+        uuid: string;
+        time: string;
+        validTill: string;
+        usedBy?: string;
+    }[]
+> {
     // if login and password provided in the message, just try to read without saving it in system.licenses
     if (login && password) {
-        return _readLicenses(login, password);
+        return await _readLicenses(login, password);
     }
     // get actual object
     const systemLicenses: ioBroker.Object = await objects.getObjectAsync('system.licenses');
     // If password and login exist
-    if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
+    if (systemLicenses?.native?.password && systemLicenses.native.login) {
         try {
             // get the secret to decode the password
             const systemConfig: ioBroker.Object = await objects.getObjectAsync('system.config');
@@ -3794,7 +3693,18 @@ export async function updateLicenses(objects: any, login: string, password: stri
             const licenses = await _readLicenses(systemLicenses.native.login, password);
             // save licenses to system.licenses and remember the time.
             // merge the information together
-            const oldLicenses: any[] = systemLicenses.native.licenses || [];
+            const oldLicenses: {
+                json: string;
+                id: string;
+                email: string;
+                product: string;
+                version: string;
+                invoice: string;
+                uuid: string;
+                time: string;
+                validTill: string;
+                usedBy?: string;
+            }[] = systemLicenses.native.licenses || [];
             systemLicenses.native.licenses = licenses;
             oldLicenses.forEach(oldLicense => {
                 if (oldLicense.usedBy) {
@@ -3814,12 +3724,7 @@ export async function updateLicenses(objects: any, login: string, password: stri
             // if password is invalid
             if (err.message.includes('Authentication required') || err.message.includes('Cannot decode password:')) {
                 // clear existing licenses if exist
-                if (
-                    systemLicenses &&
-                    systemLicenses.native &&
-                    systemLicenses.native.licenses &&
-                    systemLicenses.native.licenses.length
-                ) {
+                if (systemLicenses?.native?.licenses?.length) {
                     systemLicenses.native.licenses = [];
                     systemLicenses.native.readTime = new Date().toISOString();
                     await objects.setObjectAsync('system.licenses', systemLicenses);
@@ -3830,12 +3735,7 @@ export async function updateLicenses(objects: any, login: string, password: stri
         }
     } else {
         // if password or login are empty => clear existing licenses if exist
-        if (
-            systemLicenses &&
-            systemLicenses.native &&
-            systemLicenses.native.licenses &&
-            systemLicenses.native.licenses.length
-        ) {
+        if (systemLicenses?.native?.licenses?.length) {
             systemLicenses.native.licenses = [];
             systemLicenses.native.readTime = new Date().toISOString();
             await objects.setObjectAsync('system.licenses', systemLicenses);
@@ -4095,9 +3995,9 @@ export function getPidsFileName(): string {
 }
 
 /**
- * Get all ioBroker process ids
+ * Get all ioBroker process IDs
  *
- * @returns process ids or empty array if no process running
+ * @returns process IDs or empty array if no process running
  */
 export async function getPids(): Promise<number[]> {
     let pids: number[] = [];

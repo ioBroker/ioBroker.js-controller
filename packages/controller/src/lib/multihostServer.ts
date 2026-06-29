@@ -326,7 +326,9 @@ export class MHServer {
                         const data = JSON.parse(this.buffer[id]);
                         this.buffer[id] = '';
                         if (data) {
-                            this.process(data, rinfo);
+                            this.process(data, rinfo).catch(e =>
+                                this.logger.error(`Cannot process multihost message: ${e.message}`),
+                            );
                         }
                     } catch {
                         // may be not yet complete.

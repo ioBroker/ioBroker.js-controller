@@ -6,7 +6,7 @@
 
 # Interface: InternalGetStateOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:706](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L706)
+Defined in: [adapter/src/lib/\_Types.ts:710](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L710)
 
 Options for reading a state
 
@@ -16,7 +16,7 @@ Options for reading a state
 
 > `optional` **callback?**: [`GetStateCallback`](../type-aliases/GetStateCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:712](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L712)
+Defined in: [adapter/src/lib/\_Types.ts:716](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L716)
 
 Called with the state
 
@@ -26,7 +26,7 @@ Called with the state
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:708](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L708)
+Defined in: [adapter/src/lib/\_Types.ts:712](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L712)
 
 The id of the state
 
@@ -34,8 +34,8 @@ The id of the state
 
 ### options?
 
-> `optional` **options?**: `Record`\<`string`, `any`\> \| `null`
+> `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:710](https://github.com/ioBroker/ioBroker.js-controller/blob/61726ea22de3a4f2b7365192167e82e58a398676/packages/adapter/src/lib/_Types.ts#L710)
+Defined in: [adapter/src/lib/\_Types.ts:714](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L714)
 
 Optional settings including the user context

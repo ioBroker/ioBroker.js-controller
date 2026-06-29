@@ -1,19 +1,24 @@
 /**
  *      Setup
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 import fs from 'fs-extra';
 import path from 'node:path';
+import os from 'node:os';
+import crypto from 'node:crypto';
+import deepClone from 'deep-clone';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
+import rl from 'readline-sync';
 
 import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '@/lib/_Types.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
-import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import {
     statesDbHasServer,
     isLocalStatesDbServer,
@@ -21,19 +26,16 @@ import {
     objectsDbHasServer,
     performObjectsInterview,
     performStatesInterview,
+    EXIT_CODES,
+    tools,
 } from '@iobroker/js-controller-common';
+import { FORBIDDEN_CHARS, getHostObject } from '@iobroker/js-controller-common-db/tools';
+import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
+
 import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
 import { BackupRestore } from '@/lib/setup/setupBackup.js';
-import crypto from 'node:crypto';
-import deepClone from 'deep-clone';
 import * as pluginInfos from '@/lib/setup/pluginInfos.js';
-import rl from 'readline-sync';
-import { FORBIDDEN_CHARS, getHostObject } from '@iobroker/js-controller-common-db/tools';
-import os from 'node:os';
-import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import { Upload } from '@/lib/setup/setupUpload.js';
-import { createRequire } from 'node:module';
-import * as url from 'node:url';
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
@@ -438,17 +440,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
                         } catch {
                             //ignore
                         }
-                        this.dbSetup(iopkg, true, callback);
-                        return;
+                        return this.dbSetup(iopkg, true, callback);
                     }
                 }
-                this.dbSetup(iopkg, true, callback);
-            } else {
-                this.dbSetup(iopkg, true, callback);
+                return this.dbSetup(iopkg, true, callback);
             }
-        } else {
-            this.dbSetup(iopkg, false, callback);
+            return this.dbSetup(iopkg, true, callback);
         }
+        return this.dbSetup(iopkg, false, callback);
     }
 
     /**
@@ -1630,10 +1629,10 @@ require('${path.normalize(`${thisDir}/..`)}/setup').execute();`;
             }
         } else if (ignoreIfExist) {
             // it is a setup first run and config exists yet
-            this.setupObjects(() => callback?.(), true);
+            this.setupObjects(() => callback?.(), true).catch(e => console.error(`Cannot setup objects: ${e.message}`));
             return;
         }
 
-        this.setupObjects(() => callback?.(isCreated));
+        this.setupObjects(() => callback?.(isCreated)).catch(e => console.error(`Cannot setup objects: ${e.message}`));
     }
 }

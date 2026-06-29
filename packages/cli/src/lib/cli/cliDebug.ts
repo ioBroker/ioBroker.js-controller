@@ -42,7 +42,7 @@ export class CLIDebug extends CLICommand {
      *
      * @param args The command arguments (the first is the adapter name)
      */
-    async execute(args: any[]): Promise<void> {
+    async execute(args: string[]): Promise<void> {
         const { callback, ...params } = this.options;
         const adapter = args[0];
         if (!adapter) {

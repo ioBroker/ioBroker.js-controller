@@ -51,7 +51,10 @@ describe('MessagingManager.sendTo', () => {
         const clock = sinon.useFakeTimers();
         try {
             // a specific instanceName triggers a single pushMessage to that instance
-            const fakeStates = { pushMessage: sinon.stub().resolves(), subscribeMessage: sinon.stub() } as any;
+            const fakeStates = {
+                pushMessage: sinon.stub().resolves(),
+                subscribeMessage: sinon.stub().resolves(),
+            } as any;
             const fakeCommon = {
                 supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
             } as any;
@@ -87,7 +90,7 @@ describe('MessagingManager.assertSendToHost', () => {
 describe('MessagingManager.sendToHost', () => {
     it('calls pushMessage with the host name and correct obj shape when a callback is provided', async () => {
         const pushMessage = sinon.stub().resolves();
-        const subscribeMessage = sinon.stub();
+        const subscribeMessage = sinon.stub().resolves();
         const fakeStates = { pushMessage, subscribeMessage } as any;
         const fakeCommon = {
             supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
@@ -173,7 +176,7 @@ describe('MessagingManager callback registry', () => {
     it('resolveCallback invokes and removes a stored callback on ack', async () => {
         const fakeStates = {
             pushMessage: sinon.stub().resolves(),
-            subscribeMessage: sinon.stub(),
+            subscribeMessage: sinon.stub().resolves(),
         } as any;
         const fakeCommon = {
             supportedMessages: { custom: false, object: false, state: false, deviceManager: false },

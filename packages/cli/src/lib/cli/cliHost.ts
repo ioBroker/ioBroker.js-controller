@@ -20,7 +20,7 @@ export class CLIHost extends CLICommand {
      *
      * @param args The command arguments (the first is the sub-command)
      */
-    execute(args: any[]): void {
+    execute(args: string[]): void {
         const command = args[0];
 
         switch (command) {
@@ -41,7 +41,7 @@ export class CLIHost extends CLICommand {
      *
      * @param _args The command arguments (unused)
      */
-    self(_args: any[]): void {
+    self(_args: string[]): void {
         this.renameHost(undefined, os.hostname());
     }
 
@@ -50,7 +50,7 @@ export class CLIHost extends CLICommand {
      *
      * @param args The command arguments (the second is the new hostname)
      */
-    set(args: any[]): void {
+    set(args: string[]): void {
         const { callback } = this.options;
 
         const newHostname: string = args[1];
@@ -67,7 +67,7 @@ export class CLIHost extends CLICommand {
      *
      * @param args The command arguments (the second is the hostname to remove)
      */
-    remove(args: any[]): void {
+    remove(args: string[]): void {
         const { callback, dbConnect } = this.options;
 
         const hostname: string = args[1];
@@ -143,7 +143,7 @@ export class CLIHost extends CLICommand {
      *
      * @param args The command arguments (the second is the old hostname)
      */
-    rename(args: any[]): void {
+    rename(args: string[]): void {
         const { callback } = this.options;
 
         const oldHostname: string = args[0];

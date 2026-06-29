@@ -186,7 +186,13 @@ export class MessagingManager {
                     // force subscribe even no messagebox enabled
                     if (!isMessageboxSupported(this.deps.getCommon()!) && !this.#mboxSubscribed) {
                         this.#mboxSubscribed = true;
-                        states.subscribeMessage(`system.adapter.${this.deps.getNamespace()}`);
+                        states
+                            .subscribeMessage(`system.adapter.${this.deps.getNamespace()}`)
+                            .catch(e =>
+                                this.deps.logger.error(
+                                    `${this.deps.getNamespaceLog()} Cannot subscribe to messages: ${e.message}`,
+                                ),
+                            );
                     }
 
                     obj.callback = {
@@ -478,7 +484,13 @@ export class MessagingManager {
                     // force subscribe even no messagebox enabled
                     if (!isMessageboxSupported(this.deps.getCommon()!) && !this.#mboxSubscribed) {
                         this.#mboxSubscribed = true;
-                        states.subscribeMessage(`system.adapter.${this.deps.getNamespace()}`);
+                        states
+                            .subscribeMessage(`system.adapter.${this.deps.getNamespace()}`)
+                            .catch(e =>
+                                this.deps.logger.error(
+                                    `${this.deps.getNamespaceLog()} Cannot subscribe to messages: ${e.message}`,
+                                ),
+                            );
                     }
 
                     obj.callback = {

@@ -8,17 +8,17 @@
 
 > **GetUserGroupCallbackNoError** = (`user`, `groups`, `acl`) => `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:5
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:6
 
 ## Parameters
 
 ### user
 
-`string`
+[`User`](User.md)
 
 ### groups
 
-`string`[]
+[`Group`](Group.md)[]
 
 ### acl
 

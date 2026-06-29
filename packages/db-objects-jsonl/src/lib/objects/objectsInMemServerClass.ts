@@ -1,23 +1,26 @@
 /**
  *      States DB in memory - Server with Redis protocol
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 
-import { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import { Client as ObjectsInRedisClient, type ObjectsSettings } from '@iobroker/db-objects-redis';
 import { ObjectsInMemoryServer } from './objectsInMemServerRedis.js';
+import { type DbStatus } from '@iobroker/db-base';
 
 /**
  * Objects database client that also starts an in-memory server speaking the Redis protocol
  */
 export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
+    private readonly objectsServer: ObjectsInMemoryServer;
+
     /**
      * @param settings Settings for the objects client and the in-memory server
      */
-    constructor(settings) {
+    constructor(settings: ObjectsSettings) {
         settings.autoConnect = false; // delay Client connection to when we need it
         super(settings);
 
@@ -36,7 +39,7 @@ export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
     /**
      * Destroy the client first and the in-memory server afterwards
      */
-    async destroy() {
+    async destroy(): Promise<void> {
         await super.destroy(); // destroy client first
         await this.objectsServer.destroy(); // server afterwards too
     }
@@ -44,7 +47,7 @@ export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
     /**
      * Get the status as reported by the in-memory server
      */
-    getStatus() {
+    getStatus(): DbStatus {
         return this.objectsServer.getStatus(); // return Status as Server
     }
 
@@ -53,7 +56,7 @@ export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
      *
      * @param limitId Optional object ID to limit the synchronization to
      */
-    syncFileDirectory(limitId) {
+    syncFileDirectory(limitId?: string): { numberSuccess: number; notifications: string[] } {
         return this.objectsServer.syncFileDirectory(limitId);
     }
 
@@ -63,7 +66,7 @@ export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
      * @param id The object ID owning the files
      * @param name The directory path to check
      */
-    dirExists(id, name) {
+    dirExists(id: string, name: string): boolean {
         return this.objectsServer.dirExists(id, name);
     }
 }

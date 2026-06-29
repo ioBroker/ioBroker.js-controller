@@ -1,7 +1,6 @@
 import fs from 'fs-extra';
-import { tools } from '@iobroker/js-controller-common';
 import path from 'node:path';
-import { EXIT_CODES } from '@iobroker/js-controller-common';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '../_Types.js';
@@ -181,10 +180,15 @@ FALLBACK:
             let content = typeof file === 'string' ? file : file.toString();
 
             content = content.replace(/[\r\n]/g, '');
-            const json: Record<string, any> = JSON.parse(content.match(/"widgetSets":\s(.*)};/)![1]);
+            const json: ({ name: string; depends?: string | string[]; always?: boolean; v2?: boolean } | string)[] =
+                JSON.parse(content.match(/"widgetSets":\s(.*)};/)![1]);
             let found = false;
             for (const widget of Object.values(json)) {
-                if (widget === widgetset || widget.name === widgetset) {
+                if (
+                    widget === widgetset ||
+                    (widget as { name: string; depends?: string | string[]; always?: boolean; v2?: boolean }).name ===
+                        widgetset
+                ) {
                     found = true;
                     break;
                 }
@@ -193,7 +197,7 @@ FALLBACK:
             if (!found) {
                 console.log('Modify config.js');
                 const pckg = fs.readJSONSync(`${adapterDir}/io-package.json`);
-                if (pckg.native && pckg.native.dependencies && pckg.native.dependencies.length) {
+                if (pckg.native?.dependencies?.length) {
                     json.push({
                         name: widgetset,
                         depends: pckg.native.dependencies,

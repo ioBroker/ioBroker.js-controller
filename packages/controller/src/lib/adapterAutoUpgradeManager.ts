@@ -191,9 +191,9 @@ export class AdapterAutoUpgradeManager {
         const obj = await this.objects.getObjectAsync('system.repositories');
 
         const jsonContent:
-            | (ioBroker.RepositoryJson & {
+            | (Omit<ioBroker.RepositoryJson, '_repoInfo'> & {
                   /** Additional internal repository metadata */
-                  _repoInfo?: any;
+                  _repoInfo?: ioBroker.RepoInfo;
               })
             | null
             | undefined = obj?.native?.repositories?.[name]?.json;

@@ -25,7 +25,7 @@ export class CLIObjects extends CLICommand {
      *
      * @param args The command arguments (the first is the sub-command)
      */
-    execute(args: any[]): void {
+    execute(args: string[]): void {
         const { callback, showHelp } = this.options;
         const command = args[0];
 
@@ -149,7 +149,7 @@ export class CLIObjects extends CLICommand {
             }
 
             try {
-                await objects.setProtocolVersion(this.options.version);
+                await objects.setProtocolVersion(this.options.version!);
             } catch (e) {
                 console.error(`Cannot update protocol version: ${e.message}`);
                 return void callback(1);
@@ -164,7 +164,7 @@ export class CLIObjects extends CLICommand {
      *
      * @param args The command arguments (object mode, state mode and pattern)
      */
-    chmod(args: any[]): void {
+    chmod(args: (string | number | undefined)[]): void {
         const { callback, dbConnect } = this.options;
         let [modeObject, modeState, pattern] = args.slice(1);
 
@@ -192,12 +192,12 @@ export class CLIObjects extends CLICommand {
         dbConnect(params => {
             const { objects, states } = params;
 
-            objects.chmodObject(
-                pattern,
+            return objects.chmodObject(
+                pattern as string,
                 { user: 'system.user.admin', object: modeObject, state: modeState },
                 (err, processed) => {
                     // Print the new object rights
-                    this.printObjectList(objects, states, err?.message, processed);
+                    return this.printObjectList(objects, states, err?.message, processed);
                 },
             );
         });
@@ -208,7 +208,7 @@ export class CLIObjects extends CLICommand {
      *
      * @param args The command arguments (user, group and pattern)
      */
-    chown(args: any[]): void {
+    chown(args: (string | undefined)[]): void {
         const { callback, dbConnect } = this.options;
         let [user, group, pattern] = args.slice(1);
 
@@ -234,12 +234,16 @@ export class CLIObjects extends CLICommand {
         dbConnect(params => {
             const { objects, states } = params;
 
-            objects.chownObject(
+            return objects.chownObject(
                 pattern,
-                { user: 'system.user.admin', owner: user, ownerGroup: group },
+                {
+                    user: 'system.user.admin',
+                    owner: user as ioBroker.ObjectIDs.User,
+                    ownerGroup: group as ioBroker.ObjectIDs.Group,
+                },
                 (err, processed) => {
                     // Print the new object rights
-                    this.printObjectList(objects, states, err?.message, processed);
+                    return this.printObjectList(objects, states, err?.message, processed);
                 },
             );
         });
@@ -250,11 +254,11 @@ export class CLIObjects extends CLICommand {
      *
      * @param args The command arguments (the pattern to match)
      */
-    list(args: any[]): void {
+    list(args: string[]): void {
         const { callback, dbConnect } = this.options;
-        let pattern = args[1];
-        if (typeof pattern === 'string') {
-            pattern = { startkey: pattern.replace('*', ''), endkey: pattern.replace('*', '\u9999') };
+        let pattern: { startkey: string; endkey: string } | undefined;
+        if (typeof args[1] === 'string') {
+            pattern = { startkey: args[1].replace('*', ''), endkey: args[1].replace('*', '\u9999') };
         }
 
         dbConnect(params => {
@@ -266,7 +270,7 @@ export class CLIObjects extends CLICommand {
                     states,
                     err?.message,
                     processed && processed.rows && processed.rows.map(r => r.value),
-                );
+                ).catch(e => console.error(`Cannot print object list: ${e.message}`));
                 return void callback(EXIT_CODES.NO_ERROR);
             });
         });
@@ -277,7 +281,7 @@ export class CLIObjects extends CLICommand {
      *
      * @param args The command arguments (the object id and optional property path)
      */
-    get(args: any[]): void {
+    get(args: string[]): void {
         const { callback, pretty, dbConnect } = this.options;
         const [id, propPath] = args.slice(1);
         if (!id) {
@@ -316,7 +320,7 @@ export class CLIObjects extends CLICommand {
      *
      * @param args The command arguments (the object id and the value to set)
      */
-    set(args: any[]): void {
+    set(args: string[]): void {
         const { callback, dbConnect } = this.options;
         const id: string = args[1];
         if (!id) {
@@ -336,7 +340,7 @@ export class CLIObjects extends CLICommand {
             const { objects } = params;
 
             const doSetObject = (obj: any): void => {
-                objects.setObject(id, obj, err => {
+                objects.setObject(id, obj, (err: Error | null | undefined) => {
                     if (err) {
                         CLI.error.cannotUpdateObject(id, err.message);
                         return void callback(1);
@@ -347,7 +351,7 @@ export class CLIObjects extends CLICommand {
             };
             if (!propPath) {
                 // We set the entire object, no need to retrieve it first
-                doSetObject(value as any);
+                doSetObject(value);
             } else {
                 // We want to update a part of the object
                 // Retrieve the object first
@@ -369,7 +373,7 @@ export class CLIObjects extends CLICommand {
                         /^system\.adapter\.(?<adapterName>.+)\.(?<instanceNr>\d+)$/g.test(id) &&
                         'encryptedNative' in res
                     ) {
-                        await this._autoEncrypt(objects, res, propPath, value);
+                        await this._autoEncrypt(objects, res, propPath, value as string);
                     }
 
                     doSetObject(res);
@@ -390,7 +394,7 @@ export class CLIObjects extends CLICommand {
         objects: ObjectsClient,
         res: ioBroker.AnyObject,
         propPath: string,
-        value: any,
+        value: string,
     ): Promise<void> {
         // input: it's an instance object and has encrypted native, was a native value set?
         if (/^native\..+[^.]$/g.test(propPath) && typeof value === 'string') {
@@ -407,7 +411,7 @@ export class CLIObjects extends CLICommand {
         } else if (propPath === 'native' && tools.isObject(value)) {
             // whole native attribute
             let config;
-            for (const prop in value) {
+            for (const prop of Object.keys(value)) {
                 if (
                     typeof (res.native as Record<string, any>)[prop] === 'string' &&
                     'encryptedNative' in res &&
@@ -429,7 +433,7 @@ export class CLIObjects extends CLICommand {
      *
      * @param args The command arguments (the object id and the value to extend with)
      */
-    extend(args: any[]): void {
+    extend(args: string[]): void {
         const { callback, dbConnect } = this.options;
         const id: string = args[1];
         if (!id) {
@@ -534,7 +538,7 @@ export class CLIObjects extends CLICommand {
      *
      * @param args The command arguments (the object id to delete)
      */
-    delete(args: any[]): void {
+    delete(args: string[]): void {
         const { callback, dbConnect } = this.options;
         const id: string = args[1];
         if (!id) {
@@ -574,14 +578,13 @@ export class CLIObjects extends CLICommand {
                             answer === 'да' ||
                             answer === 'д'
                         ) {
-                            this._deleteObjects(objects, ids, callback);
-                        } else {
-                            console.log('Aborted.');
-                            return void callback(3);
+                            return this._deleteObjects(objects, ids, callback);
                         }
+                        console.log('Aborted.');
+                        return void callback(3);
                     });
                 } else {
-                    this._deleteObjects(objects, ids, callback);
+                    return this._deleteObjects(objects, ids, callback);
                 }
             } else {
                 // only one object

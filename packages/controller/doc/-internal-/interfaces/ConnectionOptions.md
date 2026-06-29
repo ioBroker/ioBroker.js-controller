@@ -6,7 +6,7 @@
 
 # Interface: ConnectionOptions
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:11
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:23
 
 Options describing how to connect to the database server
 
@@ -20,7 +20,7 @@ Options describing how to connect to the database server
 
 > `optional` **backup?**: [`BackupOptions`](BackupOptions.md)
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:25
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:45
 
 Backup configuration
 
@@ -30,7 +30,7 @@ Backup configuration
 
 > `optional` **dataDir?**: `string`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:27
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:47
 
 relative path to the data dir
 
@@ -40,7 +40,7 @@ relative path to the data dir
 
 > `optional` **enhancedLogging?**: `boolean`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:23
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:39
 
 Enable more verbose connection logging
 
@@ -50,17 +50,37 @@ Enable more verbose connection logging
 
 > **host**: `string` \| `string`[]
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:17
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:29
 
 array on sentinel
 
 ***
 
+### jsonlOptions?
+
+> `optional` **jsonlOptions?**: [`JsonlOptions`](JsonlOptions.md)
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:35
+
+Options forwarded to the JSONL database backend
+
+***
+
+### noFileCache?
+
+> `optional` **noFileCache?**: `boolean`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:41
+
+Disable the in-memory file cache and always read files from disk
+
+***
+
 ### options
 
-> **options**: `Record`\<`string`, `any`\>
+> **options**: [`DatabaseConnectionOptions`](DatabaseConnectionOptions.md)
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:21
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:33
 
 Additional connection options passed to the database driver
 
@@ -70,7 +90,7 @@ Additional connection options passed to the database driver
 
 > `optional` **pass?**: `string`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:13
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:25
 
 Password for authentication, if required
 
@@ -80,9 +100,29 @@ Password for authentication, if required
 
 > **port**: `number` \| `number`[]
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:19
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:31
 
 array on sentinel
+
+***
+
+### redisNamespace?
+
+> `optional` **redisNamespace?**: `string`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:37
+
+Redis key prefix used by the in-memory server
+
+***
+
+### secure?
+
+> `optional` **secure?**: `boolean`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:43
+
+Whether the connection should be secured via TLS
 
 ***
 
@@ -90,6 +130,16 @@ array on sentinel
 
 > `optional` **sentinelName?**: `string`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:15
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:27
 
 Name of the sentinel master to connect to
+
+***
+
+### writeFileInterval?
+
+> `optional` **writeFileInterval?**: `number`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:49
+
+Interval in milliseconds in which the in-memory states are persisted to disk

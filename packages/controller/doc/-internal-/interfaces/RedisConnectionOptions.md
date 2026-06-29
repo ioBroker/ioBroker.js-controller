@@ -6,7 +6,7 @@
 
 # Interface: RedisConnectionOptions
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:6
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:7
 
 Options describing how to connect to the database server
 
@@ -20,7 +20,7 @@ Options describing how to connect to the database server
 
 > `optional` **backup?**: [`BackupOptions`](BackupOptions.md)
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:25
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:45
 
 Backup configuration
 
@@ -34,7 +34,7 @@ Backup configuration
 
 > `optional` **dataDir?**: `string`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:27
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:47
 
 relative path to the data dir
 
@@ -48,7 +48,7 @@ relative path to the data dir
 
 > `optional` **enhancedLogging?**: `boolean`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:23
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:39
 
 Enable more verbose connection logging
 
@@ -62,7 +62,7 @@ Enable more verbose connection logging
 
 > **host**: `string` \| `string`[]
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:17
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:29
 
 array on sentinel
 
@@ -72,11 +72,39 @@ array on sentinel
 
 ***
 
+### jsonlOptions?
+
+> `optional` **jsonlOptions?**: [`JsonlOptions`](JsonlOptions.md)
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:35
+
+Options forwarded to the JSONL database backend
+
+#### Inherited from
+
+[`ConnectionOptions`](ConnectionOptions.md).[`jsonlOptions`](ConnectionOptions.md#jsonloptions)
+
+***
+
+### noFileCache?
+
+> `optional` **noFileCache?**: `boolean`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:41
+
+Disable the in-memory file cache and always read files from disk
+
+#### Inherited from
+
+[`ConnectionOptions`](ConnectionOptions.md).[`noFileCache`](ConnectionOptions.md#nofilecache)
+
+***
+
 ### options
 
-> **options**: `Record`\<`string`, `any`\>
+> **options**: [`DatabaseConnectionOptions`](DatabaseConnectionOptions.md)
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:21
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:33
 
 Additional connection options passed to the database driver
 
@@ -90,7 +118,7 @@ Additional connection options passed to the database driver
 
 > `optional` **pass?**: `string`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:13
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:25
 
 Password for authentication, if required
 
@@ -104,7 +132,7 @@ Password for authentication, if required
 
 > **port**: `number` \| `number`[]
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:19
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:31
 
 array on sentinel
 
@@ -118,7 +146,27 @@ array on sentinel
 
 > `optional` **redisNamespace?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:7
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:8
+
+Redis key prefix used by the in-memory server
+
+#### Overrides
+
+[`ConnectionOptions`](ConnectionOptions.md).[`redisNamespace`](ConnectionOptions.md#redisnamespace)
+
+***
+
+### secure?
+
+> `optional` **secure?**: `boolean`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:43
+
+Whether the connection should be secured via TLS
+
+#### Inherited from
+
+[`ConnectionOptions`](ConnectionOptions.md).[`secure`](ConnectionOptions.md#secure)
 
 ***
 
@@ -126,10 +174,24 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:7
 
 > `optional` **sentinelName?**: `string`
 
-Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:15
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:27
 
 Name of the sentinel master to connect to
 
 #### Inherited from
 
 [`ConnectionOptions`](ConnectionOptions.md).[`sentinelName`](ConnectionOptions.md#sentinelname)
+
+***
+
+### writeFileInterval?
+
+> `optional` **writeFileInterval?**: `number`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:49
+
+Interval in milliseconds in which the in-memory states are persisted to disk
+
+#### Inherited from
+
+[`ConnectionOptions`](ConnectionOptions.md).[`writeFileInterval`](ConnectionOptions.md#writefileinterval)
