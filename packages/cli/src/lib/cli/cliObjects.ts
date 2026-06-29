@@ -192,12 +192,12 @@ export class CLIObjects extends CLICommand {
         dbConnect(params => {
             const { objects, states } = params;
 
-            objects.chmodObject(
+            return objects.chmodObject(
                 pattern as string,
                 { user: 'system.user.admin', object: modeObject, state: modeState },
                 (err, processed) => {
                     // Print the new object rights
-                    this.printObjectList(objects, states, err?.message, processed);
+                    return this.printObjectList(objects, states, err?.message, processed);
                 },
             );
         });
@@ -234,7 +234,7 @@ export class CLIObjects extends CLICommand {
         dbConnect(params => {
             const { objects, states } = params;
 
-            objects.chownObject(
+            return objects.chownObject(
                 pattern,
                 {
                     user: 'system.user.admin',
@@ -243,7 +243,7 @@ export class CLIObjects extends CLICommand {
                 },
                 (err, processed) => {
                     // Print the new object rights
-                    this.printObjectList(objects, states, err?.message, processed);
+                    return this.printObjectList(objects, states, err?.message, processed);
                 },
             );
         });
@@ -270,7 +270,7 @@ export class CLIObjects extends CLICommand {
                     states,
                     err?.message,
                     processed && processed.rows && processed.rows.map(r => r.value),
-                );
+                ).catch(e => console.error(`Cannot print object list: ${e.message}`));
                 return void callback(EXIT_CODES.NO_ERROR);
             });
         });
@@ -578,14 +578,13 @@ export class CLIObjects extends CLICommand {
                             answer === 'да' ||
                             answer === 'д'
                         ) {
-                            this._deleteObjects(objects, ids, callback);
-                        } else {
-                            console.log('Aborted.');
-                            return void callback(3);
+                            return this._deleteObjects(objects, ids, callback);
                         }
+                        console.log('Aborted.');
+                        return void callback(3);
                     });
                 } else {
-                    this._deleteObjects(objects, ids, callback);
+                    return this._deleteObjects(objects, ids, callback);
                 }
             } else {
                 // only one object

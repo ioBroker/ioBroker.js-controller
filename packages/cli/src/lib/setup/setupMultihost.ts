@@ -244,7 +244,9 @@ export class Multihost {
                                     obj!.native.secret,
                                     password.password as string,
                                 );
-                                this.showMHState(config, changed);
+                                this.showMHState(config, changed).catch(e =>
+                                    console.error(`Cannot show multihost state: ${e.message}`),
+                                );
                                 callback();
                             });
                         }
@@ -253,11 +255,13 @@ export class Multihost {
                     }
                 });
             } else {
-                this.showMHState(config, changed);
+                this.showMHState(config, changed).catch(e =>
+                    console.error(`Cannot show multihost state: ${e.message}`),
+                );
                 callback();
             }
         } else {
-            this.showMHState(config, changed);
+            this.showMHState(config, changed).catch(e => console.error(`Cannot show multihost state: ${e.message}`));
             callback();
         }
     }
@@ -268,7 +272,7 @@ export class Multihost {
     status(): void {
         const config = this.getConfig();
         config.multihostService = config.multihostService || { enabled: false, secure: true };
-        this.showMHState(config, false);
+        this.showMHState(config, false).catch(e => console.error(`Cannot show multihost state: ${e.message}`));
     }
 
     /**

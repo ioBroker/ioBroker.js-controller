@@ -198,7 +198,7 @@ export class Upload {
                 callback();
             }
             callback = null;
-            this.states.unsubscribeMessage(from);
+            this.states.unsubscribeMessage(from).catch(e => console.error(`Cannot unsubscribe: ${e.message}`));
             // @ts-expect-error todo: I don't think this works
             this.states.onChange = null;
         }, 60_000);
@@ -213,7 +213,7 @@ export class Upload {
                     callback(msg && msg.message);
                     callback = null;
                     clearTimeout(timeout);
-                    this.states.unsubscribeMessage(from);
+                    this.states.unsubscribeMessage(from).catch(e => console.error(`Cannot unsubscribe: ${e.message}`));
                     // @ts-expect-error
                     this.states.onChange = null;
                 }
@@ -240,7 +240,7 @@ export class Upload {
             this.callbacks[`_${obj.callback.id}`] = { cb: callback };
 
             // we cannot receive answers from hosts in CLI, so this command is "fire and forget"
-            this.states.pushMessage(host, obj);
+            return this.states.pushMessage(host, obj);
         });
     }
 
