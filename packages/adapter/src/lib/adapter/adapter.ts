@@ -2115,16 +2115,14 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        Promise.resolve(
-            this.getForeignObject(user, options.options, (err, obj) => {
-                if (err || !obj?.common || (!obj.common.enabled && user !== SYSTEM_ADMIN_USER)) {
-                    return tools.maybeCallback(callback, false, user);
-                }
-                password(pw).check(obj.common.password, (err, res) => {
-                    return tools.maybeCallback(callback, !!res, user);
-                });
-            }),
-        ).catch(e => this._logger.error(`${this.namespaceLog} Error checking password: ${e.message}`));
+        this.getForeignObject(user, options.options, (err, obj) => {
+            if (err || !obj?.common || (!obj.common.enabled && user !== SYSTEM_ADMIN_USER)) {
+                return tools.maybeCallback(callback, false, user);
+            }
+            password(pw).check(obj.common.password, (err, res) => {
+                return tools.maybeCallback(callback, !!res, user);
+            });
+        });
     }
 
     /**
@@ -2278,47 +2276,45 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        Promise.resolve(
-            this.getForeignObject(options.user, options.options, (err, obj) => {
-                if (err || !obj) {
-                    return tools.maybeCallbackWithError(options.callback, 'User does not exist');
-                }
+        this.getForeignObject(options.user, options.options, (err, obj) => {
+            if (err || !obj) {
+                return tools.maybeCallbackWithError(options.callback, 'User does not exist');
+            }
 
-                // BF: (2020.05.22) are the empty passwords allowed??
-                if (!options.pw) {
+            // BF: (2020.05.22) are the empty passwords allowed??
+            if (!options.pw) {
+                this.extendForeignObject(
+                    options.user,
+                    {
+                        common: {
+                            password: '',
+                        },
+                    },
+                    options.options || {},
+                    () => {
+                        return tools.maybeCallback(options.callback);
+                    },
+                );
+            } else {
+                password(options.pw).hash(null, null, (err, res) => {
+                    if (err) {
+                        return tools.maybeCallbackWithError(options.callback, err);
+                    }
                     this.extendForeignObject(
                         options.user,
                         {
                             common: {
-                                password: '',
+                                password: res,
                             },
                         },
                         options.options || {},
                         () => {
-                            return tools.maybeCallback(options.callback);
+                            return tools.maybeCallbackWithError(options.callback, null);
                         },
                     );
-                } else {
-                    password(options.pw).hash(null, null, (err, res) => {
-                        if (err) {
-                            return tools.maybeCallbackWithError(options.callback, err);
-                        }
-                        this.extendForeignObject(
-                            options.user,
-                            {
-                                common: {
-                                    password: res,
-                                },
-                            },
-                            options.options || {},
-                            () => {
-                                return tools.maybeCallbackWithError(options.callback, null);
-                            },
-                        );
-                    });
-                }
-            }),
-        ).catch(e => this._logger.error(`${this.namespaceLog} Error setting password: ${e.message}`));
+                });
+            }
+        });
     }
 
     // external signature
@@ -2408,22 +2404,20 @@ export class AdapterClass extends EventEmitter {
         if (options.group && !options.group.startsWith('system.group.')) {
             options.group = `system.group.${options.group}`;
         }
-        Promise.resolve(
-            this.getForeignObject(options.user, options.options, (err, obj) => {
+        this.getForeignObject(options.user, options.options, (err, obj) => {
+            if (err || !obj) {
+                return tools.maybeCallback(options.callback, false);
+            }
+            return this.getForeignObject(options.group, options.options, (err, obj) => {
                 if (err || !obj) {
                     return tools.maybeCallback(options.callback, false);
                 }
-                return this.getForeignObject(options.group, options.options, (err, obj) => {
-                    if (err || !obj) {
-                        return tools.maybeCallback(options.callback, false);
-                    }
-                    if (obj.common.members.includes(options.user)) {
-                        return tools.maybeCallback(options.callback, true);
-                    }
-                    return tools.maybeCallback(options.callback, false);
-                });
-            }),
-        ).catch(e => this._logger.error(`${this.namespaceLog} Error checking group membership: ${e.message}`));
+                if (obj.common.members.includes(options.user)) {
+                    return tools.maybeCallback(options.callback, true);
+                }
+                return tools.maybeCallback(options.callback, false);
+            });
+        });
     }
 
     // external signature
@@ -2771,9 +2765,12 @@ export class AdapterClass extends EventEmitter {
                     if (this._options.unload.length >= 1) {
                         // The method takes (at least) a callback
                         try {
-                            Promise.resolve(this._options.unload(finishUnload)).catch(e =>
-                                this._logger.error(`${this.namespaceLog} Error in unload: ${e.message}`),
-                            );
+                            const unloadResult = this._options.unload(finishUnload);
+                            if (unloadResult instanceof Promise) {
+                                unloadResult.catch(e =>
+                                    this._logger.error(`${this.namespaceLog} Error in unload: ${e.message}`),
+                                );
+                            }
                         } catch {
                             // Can only throw in unload logic, in this case the finishUnload() was not called
                             finishUnload().catch(e =>
@@ -5360,10 +5357,7 @@ export class AdapterClass extends EventEmitter {
      * @param id exactly object ID (with namespace)
      * @param callback return result
      */
-    getForeignObject<T extends string>(
-        id: T,
-        callback: ioBroker.GetObjectCallback<T>,
-    ): void | Promise<void | ioBroker.ObjectIdToObjectType<T> | null>;
+    getForeignObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): void;
     /**
      * Get any object.
      *
@@ -5375,7 +5369,7 @@ export class AdapterClass extends EventEmitter {
         id: T,
         options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
         callback: ioBroker.GetObjectCallback<T>,
-    ): void | Promise<void | ioBroker.ObjectIdToObjectType<T> | null>;
+    ): void;
 
     /**
      * Get any object.
@@ -6271,18 +6265,19 @@ export class AdapterClass extends EventEmitter {
         deviceName = deviceName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
         _native = _native || {};
 
-        Promise.resolve(
-            this.setObjectNotExists(
-                deviceName,
-                {
-                    type: 'device',
-                    common: common,
-                    native: _native,
-                } as ioBroker.SettableDeviceObject,
-                options,
-                callback,
-            ),
-        ).catch(e => this._logger.error(`${this.namespaceLog} Cannot create device: ${e.message}`));
+        const createResult = this.setObjectNotExists(
+            deviceName,
+            {
+                type: 'device',
+                common: common,
+                native: _native,
+            } as ioBroker.SettableDeviceObject,
+            options,
+            callback,
+        );
+        if (createResult instanceof Promise) {
+            createResult.catch(e => this._logger.error(`${this.namespaceLog} Cannot create device: ${e.message}`));
+        }
     }
 
     /** @deprecated use `this.extendObject` instead */
@@ -6583,46 +6578,47 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        Promise.resolve(
-            this.setObjectNotExists(
-                id,
-                {
-                    type: 'state',
-                    common: common as ioBroker.StateCommon,
-                    native: _native,
-                },
-                options,
-                err => {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    }
-                    if (common.def !== undefined) {
-                        this.getState(id, null, (err, state) => {
-                            if (!state) {
-                                if (common.defAck !== undefined) {
-                                    return this.setState(
-                                        id,
-                                        common.def,
-                                        common.defAck,
-                                        options,
-                                        callback as ioBroker.SetStateCallback,
-                                    );
-                                }
-                                return this.setState(id, common.def, options, callback as ioBroker.SetStateCallback);
+        const stateResult = this.setObjectNotExists(
+            id,
+            {
+                type: 'state',
+                common: common as ioBroker.StateCommon,
+                native: _native,
+            },
+            options,
+            err => {
+                if (err) {
+                    return tools.maybeCallbackWithError(callback, err);
+                }
+                if (common.def !== undefined) {
+                    this.getState(id, null, (err, state) => {
+                        if (!state) {
+                            if (common.defAck !== undefined) {
+                                return this.setState(
+                                    id,
+                                    common.def,
+                                    common.defAck,
+                                    options,
+                                    callback as ioBroker.SetStateCallback,
+                                );
                             }
-                            return tools.maybeCallback(callback);
-                        });
-                    } else {
-                        this.getState(id, null, (err, state) => {
-                            if (!state) {
-                                return this.setState(id, null, true, options, callback as ioBroker.SetStateCallback);
-                            }
-                            return tools.maybeCallback(callback);
-                        });
-                    }
-                },
-            ),
-        ).catch(e => this._logger.error(`${this.namespaceLog} Cannot create state object: ${e.message}`));
+                            return this.setState(id, common.def, options, callback as ioBroker.SetStateCallback);
+                        }
+                        return tools.maybeCallback(callback);
+                    });
+                } else {
+                    this.getState(id, null, (err, state) => {
+                        if (!state) {
+                            return this.setState(id, null, true, options, callback as ioBroker.SetStateCallback);
+                        }
+                        return tools.maybeCallback(callback);
+                    });
+                }
+            },
+        );
+        if (stateResult instanceof Promise) {
+            stateResult.catch(e => this._logger.error(`${this.namespaceLog} Cannot create state object: ${e.message}`));
+        }
     }
 
     /** @deprecated use `this.delObject` instead */
