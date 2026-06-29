@@ -301,7 +301,7 @@ export interface GetUserGroupsOptions {
     user: ioBroker.ObjectIDs.User;
     /** The groups already resolved for the user */
     groups?: ioBroker.ObjectIDs.Group[];
-    /** Cache of group objects used while resolving */
+    /** Cache of state objects used while resolving */
     _objects?: (ioBroker.StateObject | null)[];
     /** Whether the groups have already been resolved */
     checked?: boolean;
