@@ -549,13 +549,13 @@ async function processCommand(
         case 'start':
         case 'stop': {
             const procCommand = new CLIProcess(commandOptions);
-            procCommand[command](args);
+            procCommand[command](args).catch(e => console.error(`Cannot ${command}: ${e.message}`));
             break;
         }
 
         case 'debug': {
             const debugCommand = new CLIDebug(commandOptions);
-            debugCommand.execute(args);
+            debugCommand.execute(args).catch(e => console.error(`Cannot debug: ${e.message}`));
             break;
         }
 
@@ -569,12 +569,12 @@ async function processCommand(
         case 'r':
         case 'restart': {
             const procCommand = new CLIProcess(commandOptions);
-            procCommand.restart(args);
+            procCommand.restart(args).catch(e => console.error(`Cannot restart: ${e.message}`));
             break;
         }
 
         case '_restart':
-            restartController();
+            restartController().catch(e => console.error(`Cannot restart controller: ${e.message}`));
             callback();
             break;
 
@@ -675,7 +675,7 @@ async function processCommand(
                             // Create a new instance of the cert command,
                             // but use the resolve method as a callback
                             const cert = new CLICert({ ...commandOptions, callback: resolve });
-                            cert.create();
+                            cert.create().catch(e => console.error(`Cannot create certificate: ${e.message}`));
                         });
                     }
 
@@ -1142,17 +1142,17 @@ async function processCommand(
             });
 
             if (params.yes || params.y || params.Y) {
-                unsetup(params, callback);
+                unsetup(params, callback).catch(e => console.error(`Cannot unsetup: ${e.message}`));
             } else {
                 rl.question('UUID will be deleted. Are you sure? [y/N]: ', answer => {
                     rl.close();
                     answer = answer.toLowerCase();
                     if (answer === 'y' || answer === 'yes' || answer === 'ja' || answer === 'j') {
-                        unsetup(params, callback);
-                    } else {
-                        console.log('Nothing deleted');
-                        return void callback();
+                        unsetup(params, callback).catch(e => console.error(`Cannot unsetup: ${e.message}`));
+                        return;
                     }
+                    console.log('Nothing deleted');
+                    return void callback();
                 });
             }
             break;
@@ -1268,7 +1268,7 @@ async function processCommand(
                     } catch {
                         // ignore
                     }
-                    restartController();
+                    restartController().catch(e => console.error(`Cannot restart controller: ${e.message}`));
                     console.log(`Restarting ${tools.appName}...`);
                     callback();
                 });
@@ -1778,14 +1778,16 @@ async function processCommand(
                         return void callback();
                     });
                 } else if (command === 'set' || command === 'passwd') {
-                    users.setUserPassword(user, password, err => {
-                        if (err) {
-                            console.error(err.message);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`Password for "${user}" was successfully set.`);
-                        return void callback();
-                    });
+                    users
+                        .setUserPassword(user, password, err => {
+                            if (err) {
+                                console.error(err.message);
+                                return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                            }
+                            console.log(`Password for "${user}" was successfully set.`);
+                            return void callback();
+                        })
+                        .catch(e => console.error(`Cannot set password: ${e.message}`));
                 } else if (command === 'enable' || command === 'e') {
                     users.enableUser(user, true, err => {
                         if (err) {
@@ -1981,14 +1983,16 @@ async function processCommand(
                     objects,
                     processExit: callback,
                 });
-                users.setUserPassword(user, password, (err: Error | null | undefined) => {
-                    if (err) {
-                        console.error(err);
-                        return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                    }
-                    console.log(`Password for "${user}" was successfully set.`);
-                    return void callback();
-                });
+                users
+                    .setUserPassword(user, password, (err: Error | null | undefined) => {
+                        if (err) {
+                            console.error(err);
+                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                        }
+                        console.log(`Password for "${user}" was successfully set.`);
+                        return void callback();
+                    })
+                    .catch(e => console.error(`Cannot set password: ${e.message}`));
             });
             break;
         }
@@ -2154,7 +2158,7 @@ async function processCommand(
                     processExit: callback,
                 });
 
-                visDebug.enableDebug(widgetset);
+                visDebug.enableDebug(widgetset).catch(e => console.error(`Cannot enable debug: ${e.message}`));
             });
             break;
         }
@@ -2285,10 +2289,12 @@ async function processCommand(
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
 
-                    objects.writeFile(adapt, destFilename, data, _err => {
-                        console.log(`File "${toRead}" stored as "${destFilename}"`);
-                        return void callback(EXIT_CODES.NO_ERROR);
-                    });
+                    objects
+                        .writeFile(adapt, destFilename, data, _err => {
+                            console.log(`File "${toRead}" stored as "${destFilename}"`);
+                            return void callback(EXIT_CODES.NO_ERROR);
+                        })
+                        .catch(e => console.error(`Cannot write file: ${e.message}`));
                 } else if (cmd === 'del' || cmd === 'rm' || cmd === 'unlink') {
                     const toDelete = args[1];
                     const parts = toDelete.replace(/\\/g, '/').split('/');
@@ -2462,11 +2468,13 @@ async function processCommand(
                                 const parts = row.id.split('.');
                                 // ignore system.host.name.alive and so on
                                 if (parts.length === 3) {
-                                    states.pushMessage(row.id, {
-                                        command: 'checkLogging',
-                                        message: null,
-                                        from: 'console',
-                                    });
+                                    states
+                                        .pushMessage(row.id, {
+                                            command: 'checkLogging',
+                                            message: null,
+                                            from: 'console',
+                                        })
+                                        .catch(e => console.error(`Cannot push checkLogging message: ${e.message}`));
                                 }
                             }
                         }
@@ -2663,7 +2671,7 @@ async function processCommand(
                             console.error(err);
                         }
                         return void callback(err ? 1 : 0);
-                    });
+                    }).catch(e => console.error(`Cannot connect multihost: ${e.message}`));
                 }
             });
 
@@ -2697,7 +2705,9 @@ async function processCommand(
 
         case 'cert': {
             const certCommand = new CLICert(commandOptions);
-            certCommand.execute(args);
+            Promise.resolve(certCommand.execute(args)).catch(e =>
+                console.error(`Cannot execute cert command: ${e.message}`),
+            );
             break;
         }
 
@@ -2925,10 +2935,12 @@ export function execute(): void {
         args.push(process.argv[i]);
     }
 
-    processCommand(command, args, _yargs.argv as Record<string, string | boolean | number>, exitApplicationSave);
+    processCommand(command, args, _yargs.argv as Record<string, string | boolean | number>, exitApplicationSave).catch(
+        e => console.error(`Cannot process command: ${e.message}`),
+    );
 }
 
 process.on('unhandledRejection', (e: any) => {
     console.error(`Uncaught Rejection: ${e.stack || e}`);
-    exitApplicationSave(EXIT_CODES.UNCAUGHT_EXCEPTION);
+    return exitApplicationSave(EXIT_CODES.UNCAUGHT_EXCEPTION);
 });

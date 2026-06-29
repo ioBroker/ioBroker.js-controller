@@ -1528,7 +1528,7 @@ export class AdapterClass extends EventEmitter {
         this.unsubscribeStatesAsync = tools.promisify(this.unsubscribeStates, this);
 
         this.setExecutableCapabilities = tools.setExecutableCapabilities;
-        this._init();
+        this._init().catch(e => this._logger.error(`${this.namespaceLog} Cannot initialize adapter: ${e.message}`));
     }
 
     /**
@@ -1759,7 +1759,9 @@ export class AdapterClass extends EventEmitter {
             this._logger.info(`${this.namespaceLog} setSession not processed because States database not connected`);
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
-        this.#states.setSession(options.id, options.ttl, options.data, options.callback);
+        return options.callback
+            ? this.#states.setSession(options.id, options.ttl, options.data, options.callback)
+            : this.#states.setSession(options.id, options.ttl, options.data);
     }
 
     // real types overload
@@ -1792,7 +1794,9 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        this.#states.destroySession(options.id, options.callback);
+        return options.callback
+            ? this.#states.destroySession(options.id, options.callback)
+            : this.#states.destroySession(options.id);
     }
 
     private async _getObjectsByArray(
@@ -2404,7 +2408,7 @@ export class AdapterClass extends EventEmitter {
             if (err || !obj) {
                 return tools.maybeCallback(options.callback, false);
             }
-            this.getForeignObject(options.group, options.options, (err, obj) => {
+            return this.getForeignObject(options.group, options.options, (err, obj) => {
                 if (err || !obj) {
                     return tools.maybeCallback(options.callback, false);
                 }
@@ -2761,10 +2765,17 @@ export class AdapterClass extends EventEmitter {
                     if (this._options.unload.length >= 1) {
                         // The method takes (at least) a callback
                         try {
-                            this._options.unload(finishUnload);
+                            const unloadResult = this._options.unload(finishUnload);
+                            if (unloadResult instanceof Promise) {
+                                unloadResult.catch(e =>
+                                    this._logger.error(`${this.namespaceLog} Error in unload: ${e.message}`),
+                                );
+                            }
                         } catch {
                             // Can only throw in unload logic, in this case the finishUnload() was not called
-                            finishUnload();
+                            finishUnload().catch(e =>
+                                this._logger.error(`${this.namespaceLog} Error in finishUnload: ${e.message}`),
+                            );
                         }
                     } else {
                         // The method takes no arguments, so it must return a Promise
@@ -2775,7 +2786,9 @@ export class AdapterClass extends EventEmitter {
                             try {
                                 await unloadPromise;
                             } finally {
-                                finishUnload();
+                                finishUnload().catch(e =>
+                                    this._logger.error(`${this.namespaceLog} Error in finishUnload: ${e.message}`),
+                                );
                             }
                         } else {
                             // No callback accepted and no Promise returned - force unload
@@ -2989,7 +3002,7 @@ export class AdapterClass extends EventEmitter {
     restart(): void {
         if (this.stop) {
             this._logger.warn(`${this.namespaceLog} Restart initiated`);
-            this.stop();
+            this.stop().catch(e => this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`));
         } else {
             this._logger.warn(`${this.namespaceLog} Cannot initiate restart, because this.stop is not defined`);
         }
@@ -4262,7 +4275,9 @@ export class AdapterClass extends EventEmitter {
 
             obj = extend(true, oldObj, obj);
 
-            return this.#objects.setObject(id, obj as any, options, callback);
+            return callback
+                ? this.#objects.setObject(id, obj as any, options, callback)
+                : this.#objects.setObject(id, obj as any, options);
         }
         obj.from ||= `system.adapter.${this.namespace}`;
         obj.user ||= options?.user || SYSTEM_ADMIN_USER;
@@ -5342,10 +5357,7 @@ export class AdapterClass extends EventEmitter {
      * @param id exactly object ID (with namespace)
      * @param callback return result
      */
-    getForeignObject<T extends string>(
-        id: T,
-        callback: ioBroker.GetObjectCallback<T>,
-    ): void | Promise<void | ioBroker.ObjectIdToObjectType<T> | null>;
+    getForeignObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): void;
     /**
      * Get any object.
      *
@@ -5357,7 +5369,7 @@ export class AdapterClass extends EventEmitter {
         id: T,
         options: { user?: ioBroker.ObjectIDs.User } | null | undefined,
         callback: ioBroker.GetObjectCallback<T>,
-    ): void | Promise<void | ioBroker.ObjectIdToObjectType<T> | null>;
+    ): void;
 
     /**
      * Get any object.
@@ -5587,7 +5599,7 @@ export class AdapterClass extends EventEmitter {
                             !item.value?.common?.dontDelete && // exclude objects with dontDelete flag
                             tasks.push({ id: item.id, state: item.value?.type === 'state' }),
                     );
-                    this._deleteObjects(tasks, options, callback);
+                    return this._deleteObjects(tasks, options, callback);
                 });
             });
         } else {
@@ -6253,7 +6265,7 @@ export class AdapterClass extends EventEmitter {
         deviceName = deviceName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
         _native = _native || {};
 
-        this.setObjectNotExists(
+        const createResult = this.setObjectNotExists(
             deviceName,
             {
                 type: 'device',
@@ -6263,6 +6275,9 @@ export class AdapterClass extends EventEmitter {
             options,
             callback,
         );
+        if (createResult instanceof Promise) {
+            createResult.catch(e => this._logger.error(`${this.namespaceLog} Cannot create device: ${e.message}`));
+        }
     }
 
     /** @deprecated use `this.extendObject` instead */
@@ -6366,7 +6381,7 @@ export class AdapterClass extends EventEmitter {
             native: _native as Record<string, any>,
         } as const;
 
-        this.setObjectNotExists(
+        return this.setObjectNotExists(
             channelName as string,
             obj,
             options as { user?: ioBroker.ObjectIDs.User } | null | undefined,
@@ -6563,7 +6578,7 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        this.setObjectNotExists(
+        const stateResult = this.setObjectNotExists(
             id,
             {
                 type: 'state',
@@ -6579,31 +6594,31 @@ export class AdapterClass extends EventEmitter {
                     this.getState(id, null, (err, state) => {
                         if (!state) {
                             if (common.defAck !== undefined) {
-                                this.setState(
+                                return this.setState(
                                     id,
                                     common.def,
                                     common.defAck,
                                     options,
                                     callback as ioBroker.SetStateCallback,
                                 );
-                            } else {
-                                this.setState(id, common.def, options, callback as ioBroker.SetStateCallback);
                             }
-                        } else {
-                            return tools.maybeCallback(callback);
+                            return this.setState(id, common.def, options, callback as ioBroker.SetStateCallback);
                         }
+                        return tools.maybeCallback(callback);
                     });
                 } else {
                     this.getState(id, null, (err, state) => {
                         if (!state) {
-                            this.setState(id, null, true, options, callback as ioBroker.SetStateCallback);
-                        } else {
-                            return tools.maybeCallback(callback);
+                            return this.setState(id, null, true, options, callback as ioBroker.SetStateCallback);
                         }
+                        return tools.maybeCallback(callback);
                     });
                 }
             },
         );
+        if (stateResult instanceof Promise) {
+            stateResult.catch(e => this._logger.error(`${this.namespaceLog} Cannot create state object: ${e.message}`));
+        }
     }
 
     /** @deprecated use `this.delObject` instead */
@@ -6792,10 +6807,11 @@ export class AdapterClass extends EventEmitter {
                         obj.user = options?.user || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
 
-                        this.#objects!.setObject(obj._id, obj, options, callback);
-                    } else {
-                        return tools.maybeCallback(callback);
+                        return callback
+                            ? this.#objects!.setObject(obj._id, obj, options, callback)
+                            : this.#objects!.setObject(obj._id, obj, options);
                     }
+                    return tools.maybeCallback(callback);
                 }
             });
         } else {
@@ -6818,28 +6834,37 @@ export class AdapterClass extends EventEmitter {
                         obj.user = options?.user || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
 
-                        this.#objects!.setObject(obj._id, obj, options, callback);
-                    } else {
-                        return tools.maybeCallback(callback);
+                        return callback
+                            ? this.#objects!.setObject(obj._id, obj, options, callback)
+                            : this.#objects!.setObject(obj._id, obj, options);
                     }
-                } else {
-                    // Create enum
-                    this.#objects!.setObject(
-                        `enum.${enumName}.${addTo}`,
-                        {
-                            common: {
-                                name: addTo,
-                                members: [objId],
-                            },
-                            from: `system.adapter.${this.namespace}`,
-                            ts: Date.now(),
-                            type: 'enum',
-                            native: {},
-                        },
-                        options,
-                        callback,
-                    );
+                    return tools.maybeCallback(callback);
                 }
+                // Create enum
+                return callback
+                    ? this.#objects!.setObject(
+                          `enum.${enumName}.${addTo}`,
+                          {
+                              common: { name: addTo, members: [objId] },
+                              from: `system.adapter.${this.namespace}`,
+                              ts: Date.now(),
+                              type: 'enum',
+                              native: {},
+                          },
+                          options,
+                          callback,
+                      )
+                    : this.#objects!.setObject(
+                          `enum.${enumName}.${addTo}`,
+                          {
+                              common: { name: addTo, members: [objId] },
+                              from: `system.adapter.${this.namespace}`,
+                              ts: Date.now(),
+                              type: 'enum',
+                              native: {},
+                          },
+                          options,
+                      );
             });
         }
     }
@@ -7669,10 +7694,11 @@ export class AdapterClass extends EventEmitter {
                     obj.from = `system.adapter.${this.namespace}`;
                     obj.user = options?.user || SYSTEM_ADMIN_USER;
                     obj.ts = Date.now();
-                    this.#objects!.setObject(obj._id, obj, options, callback);
-                } else {
-                    return tools.maybeCallback(callback);
+                    return callback
+                        ? this.#objects!.setObject(obj._id, obj, options, callback)
+                        : this.#objects!.setObject(obj._id, obj, options);
                 }
+                return tools.maybeCallback(callback);
             });
         } else {
             if (enumName.startsWith('enum.')) {
@@ -7687,32 +7713,41 @@ export class AdapterClass extends EventEmitter {
                         obj.from = `system.adapter.${this.namespace}`;
                         obj.user = options?.user || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
-                        this.#objects!.setObject(obj._id, obj, callback);
-                    } else {
-                        return tools.maybeCallback(callback);
+                        return callback
+                            ? this.#objects!.setObject(obj._id, obj, callback)
+                            : this.#objects!.setObject(obj._id, obj);
                     }
-                } else {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    }
-
-                    // Create enum
-                    this.#objects!.setObject(
-                        `enum.${enumName}.${addTo}`,
-                        {
-                            common: {
-                                name: addTo,
-                                members: [objId],
-                            },
-                            from: `system.adapter.${this.namespace}`,
-                            ts: Date.now(),
-                            type: 'enum',
-                            native: {},
-                        },
-                        options,
-                        callback,
-                    );
+                    return tools.maybeCallback(callback);
                 }
+                if (err) {
+                    return tools.maybeCallbackWithError(callback, err);
+                }
+
+                // Create enum
+                return callback
+                    ? this.#objects!.setObject(
+                          `enum.${enumName}.${addTo}`,
+                          {
+                              common: { name: addTo, members: [objId] },
+                              from: `system.adapter.${this.namespace}`,
+                              ts: Date.now(),
+                              type: 'enum',
+                              native: {},
+                          },
+                          options,
+                          callback,
+                      )
+                    : this.#objects!.setObject(
+                          `enum.${enumName}.${addTo}`,
+                          {
+                              common: { name: addTo, members: [objId] },
+                              from: `system.adapter.${this.namespace}`,
+                              ts: Date.now(),
+                              type: 'enum',
+                              native: {},
+                          },
+                          options,
+                      );
             });
         }
     }
@@ -8228,7 +8263,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        this.#objects.rename(_adapter, oldName, newName, options, callback);
+        return this.#objects.rename(_adapter, oldName, newName, options, callback);
     }
 
     /**
@@ -8917,7 +8952,11 @@ export class AdapterClass extends EventEmitter {
                     // force subscribe even no messagebox enabled
                     if (!isMessageboxSupported(this.common!) && !this.mboxSubscribed) {
                         this.mboxSubscribed = true;
-                        this.#states.subscribeMessage(`system.adapter.${this.namespace}`);
+                        this.#states
+                            .subscribeMessage(`system.adapter.${this.namespace}`)
+                            .catch(e =>
+                                this._logger.error(`${this.namespaceLog} Cannot subscribe to messages: ${e.message}`),
+                            );
                     }
 
                     obj.callback = {
@@ -9097,7 +9136,11 @@ export class AdapterClass extends EventEmitter {
                     // force subscribe even no messagebox enabled
                     if (!isMessageboxSupported(this.common!) && !this.mboxSubscribed) {
                         this.mboxSubscribed = true;
-                        this.#states.subscribeMessage(`system.adapter.${this.namespace}`);
+                        this.#states
+                            .subscribeMessage(`system.adapter.${this.namespace}`)
+                            .catch(e =>
+                                this._logger.error(`${this.namespaceLog} Cannot subscribe to messages: ${e.message}`),
+                            );
                     }
 
                     obj.callback = {
@@ -10867,7 +10910,7 @@ export class AdapterClass extends EventEmitter {
             if (this.oStates && this.oStates[id]) {
                 return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
             }
-            return this.#states.getState(id, callback);
+            return callback ? this.#states.getState(id, callback) : this.#states.getState(id);
         }
     }
 
@@ -11208,7 +11251,11 @@ export class AdapterClass extends EventEmitter {
                 return tools.maybeCallbackWithError(callback, e);
             }
         }
-        await this.#states.delState(id, callback);
+        if (callback) {
+            this.#states.delState(id, callback);
+        } else {
+            await this.#states.delState(id);
+        }
     }
 
     // external signature
@@ -11831,13 +11878,15 @@ export class AdapterClass extends EventEmitter {
                         return tools.maybeCallback(callback);
                     }
                     // no alias objects found or pattern *
-                    this.#states.subscribeUser(pattern, callback);
+                    return callback
+                        ? this.#states.subscribeUser(pattern, callback)
+                        : this.#states.subscribeUser(pattern);
                 } catch (e) {
                     this._logger.warn(`${this.namespaceLog} Cannot subscribe to ${pattern}: ${e.message}`);
                     return tools.maybeCallbackWithError(callback, e);
                 }
             } else {
-                this.#states.subscribeUser(pattern, callback);
+                return callback ? this.#states.subscribeUser(pattern, callback) : this.#states.subscribeUser(pattern);
             }
         } else if (pattern.startsWith(ALIAS_STARTS_WITH)) {
             if (!this._aliasObjectsSubscribed) {
@@ -11857,7 +11906,7 @@ export class AdapterClass extends EventEmitter {
                 this._logger.warn(`${this.namespaceLog} cannot subscribe on alias "${pattern}": ${e.message}`);
             }
         } else {
-            this.#states.subscribeUser(pattern, callback);
+            return callback ? this.#states.subscribeUser(pattern, callback) : this.#states.subscribeUser(pattern);
         }
     }
 
@@ -12355,20 +12404,24 @@ export class AdapterClass extends EventEmitter {
         const reportStatusExpirySec = Math.floor(this._config.system.statisticsInterval / 1_000) + 10;
 
         const id = `system.adapter.${this.namespace}`;
-        this.#states.setState(`${id}.alive`, {
-            val: true,
-            ack: true,
-            expire: reportStatusExpirySec,
-            from: id,
-        });
-        this.outputCount++;
-        if (this.connected) {
-            this.#states.setState(`${id}.connected`, {
+        this.#states
+            .setState(`${id}.alive`, {
                 val: true,
                 ack: true,
                 expire: reportStatusExpirySec,
                 from: id,
-            });
+            })
+            .catch(e => this._logger.error(`${this.namespaceLog} Cannot set alive state: ${e.message}`));
+        this.outputCount++;
+        if (this.connected) {
+            this.#states
+                .setState(`${id}.connected`, {
+                    val: true,
+                    ack: true,
+                    expire: reportStatusExpirySec,
+                    from: id,
+                })
+                .catch(e => this._logger.error(`${this.namespaceLog} Cannot set connected state: ${e.message}`));
             this.outputCount++;
         }
         if (!this.startedInCompactMode) {
@@ -12385,86 +12438,104 @@ export class AdapterClass extends EventEmitter {
             pidUsage(process.pid, (err, stats) => {
                 // sometimes adapter is stopped, but this is still running
                 if (!err && this && this.#states && this.#states.setState && stats) {
-                    this.#states.setState(`${id}.cpu`, {
-                        ack: true,
-                        from: id,
-                        val: Math.round(100 * stats.cpu) / 100,
-                        expire: reportStatusExpirySec,
-                    });
-                    this.#states.setState(`${id}.cputime`, {
-                        ack: true,
-                        from: id,
-                        val: stats.ctime / 1_000,
-                        expire: reportStatusExpirySec,
-                    });
+                    this.#states
+                        .setState(`${id}.cpu`, {
+                            ack: true,
+                            from: id,
+                            val: Math.round(100 * stats.cpu) / 100,
+                            expire: reportStatusExpirySec,
+                        })
+                        .catch(e => this._logger.error(`${this.namespaceLog} Cannot set cpu state: ${e.message}`));
+                    this.#states
+                        .setState(`${id}.cputime`, {
+                            ack: true,
+                            from: id,
+                            val: stats.ctime / 1_000,
+                            expire: reportStatusExpirySec,
+                        })
+                        .catch(e => this._logger.error(`${this.namespaceLog} Cannot set cputime state: ${e.message}`));
                     this.outputCount += 2;
                 }
             });
             try {
                 //RSS is the resident set size, the portion of the process's memory held in RAM (as opposed to the swap space or the part held in the filesystem).
                 const mem = process.memoryUsage();
-                this.#states.setState(`${id}.memRss`, {
-                    val: parseFloat(
-                        (mem.rss / 1048576) /* 1MB */
-                            .toFixed(2),
-                    ),
-                    ack: true,
-                    from: id,
-                    expire: reportStatusExpirySec,
-                });
-                this.#states.setState(`${id}.memHeapTotal`, {
-                    val: parseFloat(
-                        (mem.heapTotal / 1048576) /* 1MB */
-                            .toFixed(2),
-                    ),
-                    ack: true,
-                    from: id,
-                    expire: reportStatusExpirySec,
-                });
-                this.#states.setState(`${id}.memHeapUsed`, {
-                    val: parseFloat(
-                        (mem.heapUsed / 1048576) /* 1MB */
-                            .toFixed(2),
-                    ),
-                    ack: true,
-                    from: id,
-                    expire: reportStatusExpirySec,
-                });
+                this.#states
+                    .setState(`${id}.memRss`, {
+                        val: parseFloat(
+                            (mem.rss / 1048576) /* 1MB */
+                                .toFixed(2),
+                        ),
+                        ack: true,
+                        from: id,
+                        expire: reportStatusExpirySec,
+                    })
+                    .catch(e => this._logger.error(`${this.namespaceLog} Cannot set memRss state: ${e.message}`));
+                this.#states
+                    .setState(`${id}.memHeapTotal`, {
+                        val: parseFloat(
+                            (mem.heapTotal / 1048576) /* 1MB */
+                                .toFixed(2),
+                        ),
+                        ack: true,
+                        from: id,
+                        expire: reportStatusExpirySec,
+                    })
+                    .catch(e => this._logger.error(`${this.namespaceLog} Cannot set memHeapTotal state: ${e.message}`));
+                this.#states
+                    .setState(`${id}.memHeapUsed`, {
+                        val: parseFloat(
+                            (mem.heapUsed / 1048576) /* 1MB */
+                                .toFixed(2),
+                        ),
+                        ack: true,
+                        from: id,
+                        expire: reportStatusExpirySec,
+                    })
+                    .catch(e => this._logger.error(`${this.namespaceLog} Cannot set memHeapUsed state: ${e.message}`));
             } catch (e) {
                 this._logger.warn(`${this.namespaceLog} Could not query used process memory: ${e.message}`);
             }
             this.outputCount += 3;
             if (this.eventLoopLags.length) {
                 const eventLoopLag = Math.ceil(this.eventLoopLags.reduce((a, b) => a + b) / this.eventLoopLags.length);
-                this.#states.setState(`${id}.eventLoopLag`, {
-                    val: eventLoopLag,
-                    ack: true,
-                    from: id,
-                    expire: reportStatusExpirySec,
-                }); // average of measured values
+                this.#states
+                    .setState(`${id}.eventLoopLag`, {
+                        val: eventLoopLag,
+                        ack: true,
+                        from: id,
+                        expire: reportStatusExpirySec,
+                    }) // average of measured values
+                    .catch(e => this._logger.error(`${this.namespaceLog} Cannot set eventLoopLag state: ${e.message}`));
                 this.eventLoopLags = [];
                 this.outputCount++;
             }
         }
         this.outputCount += 3;
-        this.#states.setState(`${id}.uptime`, {
-            val: parseInt(process.uptime().toFixed(), 10),
-            ack: true,
-            from: id,
-            expire: reportStatusExpirySec,
-        });
-        this.#states.setState(`${id}.inputCount`, {
-            val: this.inputCount,
-            ack: true,
-            from: id,
-            expire: reportStatusExpirySec,
-        });
-        this.#states.setState(`${id}.outputCount`, {
-            val: this.outputCount,
-            ack: true,
-            from: id,
-            expire: reportStatusExpirySec,
-        });
+        this.#states
+            .setState(`${id}.uptime`, {
+                val: parseInt(process.uptime().toFixed(), 10),
+                ack: true,
+                from: id,
+                expire: reportStatusExpirySec,
+            })
+            .catch(e => this._logger.error(`${this.namespaceLog} Cannot set uptime state: ${e.message}`));
+        this.#states
+            .setState(`${id}.inputCount`, {
+                val: this.inputCount,
+                ack: true,
+                from: id,
+                expire: reportStatusExpirySec,
+            })
+            .catch(e => this._logger.error(`${this.namespaceLog} Cannot set inputCount state: ${e.message}`));
+        this.#states
+            .setState(`${id}.outputCount`, {
+                val: this.outputCount,
+                ack: true,
+                from: id,
+                expire: reportStatusExpirySec,
+            })
+            .catch(e => this._logger.error(`${this.namespaceLog} Cannot set outputCount state: ${e.message}`));
         this.inputCount = 0;
         this.outputCount = 0;
     }
@@ -12561,7 +12632,9 @@ export class AdapterClass extends EventEmitter {
             } else if (this.#states?.pushLog) {
                 // Send it to all adapters, that required logs
                 for (const instanceId of this.logList) {
-                    this.#states.pushLog(instanceId, info);
+                    this.#states
+                        .pushLog(instanceId, info)
+                        .catch(e => this._logger.error(`${this.namespaceLog} Cannot push log: ${e.message}`));
                 }
             }
         });
@@ -12590,7 +12663,9 @@ export class AdapterClass extends EventEmitter {
                 if (this.logList.size && messages?.length && this.#states) {
                     for (const message of messages) {
                         for (const instanceId of this.logList) {
-                            this.#states.pushLog(instanceId, message);
+                            this.#states
+                                .pushLog(instanceId, message)
+                                .catch(e => this._logger.error(`${this.namespaceLog} Cannot push log: ${e.message}`));
                         }
                     }
                 }
@@ -12672,7 +12747,9 @@ export class AdapterClass extends EventEmitter {
                 }
             };
 
-            this.#states.subscribeLog(`system.adapter.${this.namespace}`);
+            this.#states
+                .subscribeLog(`system.adapter.${this.namespace}`)
+                .catch(e => this._logger.error(`${this.namespaceLog} Cannot subscribe to log: ${e.message}`));
         } else {
             this.requireLog = isActive => {
                 if (isActive) {
@@ -12724,14 +12801,26 @@ export class AdapterClass extends EventEmitter {
 
                 if (!this._config.isInstall) {
                     // Subscribe for process exit signal
-                    this.#states.subscribe(`system.adapter.${this.namespace}.sigKill`);
+                    this.#states
+                        .subscribe(`system.adapter.${this.namespace}.sigKill`)
+                        .catch(e =>
+                            this._logger.error(`${this.namespaceLog} Cannot subscribe to sigKill: ${e.message}`),
+                        );
 
                     // Subscribe for loglevel
-                    this.#states.subscribe(`system.adapter.${this.namespace}.logLevel`);
+                    this.#states
+                        .subscribe(`system.adapter.${this.namespace}.logLevel`)
+                        .catch(e =>
+                            this._logger.error(`${this.namespaceLog} Cannot subscribe to logLevel: ${e.message}`),
+                        );
                 }
                 if (this._options.subscribable) {
                     // subscribe on if other instance wants to have states of this adapter
-                    this.#states.subscribe(`system.adapter.${this.namespace}.subscribes`);
+                    this.#states
+                        .subscribe(`system.adapter.${this.namespace}.subscribes`)
+                        .catch(e =>
+                            this._logger.error(`${this.namespaceLog} Cannot subscribe to subscribes: ${e.message}`),
+                        );
 
                     // read actual autosubscribe requests
                     let state;
@@ -12794,7 +12883,7 @@ export class AdapterClass extends EventEmitter {
                                 isScheduled: false,
                                 exitCode: EXIT_CODES.ADAPTER_REQUESTED_TERMINATION,
                                 updateAliveState: false,
-                            });
+                            }).catch(e => this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`));
                         }
                     }
                 }
@@ -12806,14 +12895,11 @@ export class AdapterClass extends EventEmitter {
                         if (state.val && state.val !== currentLevel && isLogLevel(newLogLevel)) {
                             this.overwriteLogLevel = true;
                             this._config.log.level = newLogLevel;
-                            for (const transport in this._logger.transports) {
-                                if (!Object.prototype.hasOwnProperty.call(this._logger.transports, transport)) {
-                                    continue;
-                                }
+                            for (const transport of this._logger.transports) {
                                 // set the loglevel on transport only if no loglevel was pinned in log config
                                 // @ts-expect-error it is our own modification
-                                if (!this._logger.transports[transport]._defaultConfigLoglevel) {
-                                    this._logger.transports[transport].level = newLogLevel;
+                                if (!transport._defaultConfigLoglevel) {
+                                    transport.level = newLogLevel;
                                 }
                             }
                             this._logger.info(
@@ -12825,11 +12911,15 @@ export class AdapterClass extends EventEmitter {
                         }
                         this.outputCount++;
                         this.#states &&
-                            this.#states.setState(`system.adapter.${this.namespace}.logLevel`, {
-                                val: currentLevel,
-                                ack: true,
-                                from: `system.adapter.${this.namespace}`,
-                            });
+                            this.#states
+                                .setState(`system.adapter.${this.namespace}.logLevel`, {
+                                    val: currentLevel,
+                                    ack: true,
+                                    from: `system.adapter.${this.namespace}`,
+                                })
+                                .catch(e =>
+                                    this._logger.error(`${this.namespaceLog} Cannot set logLevel state: ${e.message}`),
+                                );
                     }
                 }
 
@@ -12914,7 +13004,9 @@ export class AdapterClass extends EventEmitter {
 
                             if (this._options.message) {
                                 // Else inform about a new message the adapter
-                                this._options.message(obj);
+                                Promise.resolve(this._options.message(obj)).catch(e =>
+                                    this._logger.error(`${this.namespaceLog} Error in message handler: ${e.message}`),
+                                );
                             }
                             this.emit('message', obj);
                         }
@@ -12988,7 +13080,11 @@ export class AdapterClass extends EventEmitter {
 
                         if (aState || !state) {
                             if (typeof this._options.stateChange === 'function') {
-                                this._options.stateChange(targetId, aState);
+                                Promise.resolve(this._options.stateChange(targetId, aState)).catch(e =>
+                                    this._logger.error(
+                                        `${this.namespaceLog} Error in stateChange handler: ${e.message}`,
+                                    ),
+                                );
                             } else {
                                 // emit 'stateChange' event instantly
                                 setImmediate(() => this.emit('stateChange', targetId, aState));
@@ -13034,7 +13130,9 @@ export class AdapterClass extends EventEmitter {
                         this._logger.warn(
                             `${this.namespaceLog} Cannot connect/reconnect to states DB. Stopping adapter.`,
                         );
-                        this._stop({ exitCode: EXIT_CODES.NO_ERROR, updateAliveState: false });
+                        this._stop({ exitCode: EXIT_CODES.NO_ERROR, updateAliveState: false }).catch(e =>
+                            this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`),
+                        );
                     }, 5000);
             },
         });
@@ -13109,7 +13207,9 @@ export class AdapterClass extends EventEmitter {
                         this._logger.warn(
                             `${this.namespaceLog} Cannot connect/reconnect to objects DB. Stopping adapter.`,
                         );
-                        this._stop({ exitCode: EXIT_CODES.NO_ERROR, updateAliveState: false });
+                        this._stop({ exitCode: EXIT_CODES.NO_ERROR, updateAliveState: false }).catch(e =>
+                            this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`),
+                        );
                     }, 4000);
             },
             change: async (id, obj) => {
@@ -13122,7 +13222,9 @@ export class AdapterClass extends EventEmitter {
                 // If desired, that adapter must be terminated
                 if (id === `system.adapter.${this.namespace}` && obj?.common?.enabled === false) {
                     this._logger.info(`${this.namespaceLog} Adapter is disabled => stop`);
-                    this._stop();
+                    this._stop().catch(e =>
+                        this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`),
+                    );
                     return;
                 }
 
@@ -13376,7 +13478,9 @@ export class AdapterClass extends EventEmitter {
             return;
         }
 
-        this.#states.subscribe(`system.adapter.${this.namespace}.plugins.*`);
+        this.#states
+            .subscribe(`system.adapter.${this.namespace}.plugins.*`)
+            .catch(e => this._logger.error(`${this.namespaceLog} Cannot subscribe to plugins: ${e.message}`));
         if (this._options.instance === undefined) {
             if (!adapterConfig || !('common' in adapterConfig) || !adapterConfig.common.enabled) {
                 if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.enabled !== undefined) {
@@ -13475,7 +13579,9 @@ export class AdapterClass extends EventEmitter {
             }
 
             // Monitor logging state
-            this.#states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
+            this.#states
+                .subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`)
+                .catch(e => this._logger.error(`${this.namespaceLog} Cannot subscribe to logging: ${e.message}`));
 
             if (
                 typeof this._options.message === 'function' &&
@@ -13488,7 +13594,9 @@ export class AdapterClass extends EventEmitter {
                 // @ts-expect-error we should infer adapterConfig correctly
             } else if (isMessageboxSupported(adapterConfig.common)) {
                 this.mboxSubscribed = true;
-                this.#states.subscribeMessage(`system.adapter.${this.namespace}`);
+                this.#states
+                    .subscribeMessage(`system.adapter.${this.namespace}`)
+                    .catch(e => this._logger.error(`${this.namespaceLog} Cannot subscribe to messages: ${e.message}`));
             }
         } else {
             // @ts-expect-error
@@ -13565,11 +13673,13 @@ export class AdapterClass extends EventEmitter {
 
         this.outputCount++;
         // set current loglevel
-        this.#states.setState(`system.adapter.${this.namespace}.logLevel`, {
-            val: this._config.log.level,
-            ack: true,
-            from: `system.adapter.${this.namespace}`,
-        });
+        this.#states
+            .setState(`system.adapter.${this.namespace}.logLevel`, {
+                val: this._config.log.level,
+                ack: true,
+                from: `system.adapter.${this.namespace}`,
+            })
+            .catch(e => this._logger.error(`${this.namespaceLog} Cannot set logLevel state: ${e.message}`));
 
         try {
             await this.#checkObjectsWarnLimit();
@@ -13601,21 +13711,26 @@ export class AdapterClass extends EventEmitter {
                 this._reportInterval = setInterval(() => this._reportStatus(), this._config.system.statisticsInterval);
                 this._reportStatus();
                 const id = `system.adapter.${this.namespace}`;
-                this.#states.setState(`${id}.compactMode`, {
-                    ack: true,
-                    from: id,
-                    val: !!this.startedInCompactMode,
-                });
+                this.#states
+                    .setState(`${id}.compactMode`, {
+                        ack: true,
+                        from: id,
+                        val: !!this.startedInCompactMode,
+                    })
+                    .catch(e => this._logger.error(`${this.namespaceLog} Cannot set compactMode state: ${e.message}`));
 
                 this.outputCount++;
 
                 if (this.startedInCompactMode) {
-                    this.#states.setState(`${id}.cpu`, { ack: true, from: id, val: 0 });
-                    this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: 0 });
-                    this.#states.setState(`${id}.memRss`, { val: 0, ack: true, from: id });
-                    this.#states.setState(`${id}.memHeapTotal`, { val: 0, ack: true, from: id });
-                    this.#states.setState(`${id}.memHeapUsed`, { val: 0, ack: true, from: id });
-                    this.#states.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id });
+                    const onErr = (e: Error): void => {
+                        this._logger.error(`${this.namespaceLog} Cannot reset compact metric: ${e.message}`);
+                    };
+                    this.#states.setState(`${id}.cpu`, { ack: true, from: id, val: 0 }).catch(onErr);
+                    this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: 0 }).catch(onErr);
+                    this.#states.setState(`${id}.memRss`, { val: 0, ack: true, from: id }).catch(onErr);
+                    this.#states.setState(`${id}.memHeapTotal`, { val: 0, ack: true, from: id }).catch(onErr);
+                    this.#states.setState(`${id}.memHeapUsed`, { val: 0, ack: true, from: id }).catch(onErr);
+                    this.#states.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id }).catch(onErr);
                     this.outputCount += 6;
                 } else {
                     tools.measureEventLoopLag(1_000, lag => {
@@ -13637,7 +13752,9 @@ export class AdapterClass extends EventEmitter {
                 this._logger.debug(`${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`);
                 this._restartScheduleJob = this._schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
                     this._logger.info(`${this.namespaceLog} Scheduled restart.`);
-                    this._stop({ isPause: false, isScheduled: true });
+                    this._stop({ isPause: false, isScheduled: true }).catch(e =>
+                        this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`),
+                    );
                 });
             }
         }
@@ -13674,12 +13791,16 @@ export class AdapterClass extends EventEmitter {
             (typeof this._options.install === 'function' || this.listeners('install').length)
         ) {
             if (typeof this._options.install === 'function') {
-                this._options.install();
+                Promise.resolve(this._options.install()).catch(e =>
+                    this._logger.error(`${this.namespaceLog} Error in install handler: ${e.message}`),
+                );
             }
             this.emit('install');
         } else {
             if (typeof this._options.ready === 'function') {
-                this._options.ready();
+                Promise.resolve(this._options.ready()).catch(e =>
+                    this._logger.error(`${this.namespaceLog} Error in ready handler: ${e.message}`),
+                );
             }
             this.emit('ready');
         }
@@ -13745,7 +13866,7 @@ export class AdapterClass extends EventEmitter {
                     isScheduled: false,
                     exitCode: EXIT_CODES.UNCAUGHT_EXCEPTION,
                     updateAliveState: false,
-                });
+                }).catch(err => this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${err.message}`));
             } catch (e) {
                 this._logger.error(`${this.namespaceLog} exception by stop: ${e ? e.message : e}`);
             }
@@ -13852,7 +13973,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         return new Promise(resolve => {
-            this._extendObjects(objs, resolve);
+            return this._extendObjects(objs, resolve);
         });
     }
 

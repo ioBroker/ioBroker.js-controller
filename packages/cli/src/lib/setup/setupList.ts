@@ -336,7 +336,7 @@ export class List {
                     .filter(f => !filter || `${f.path}/${f.file.file}`.startsWith(filter))
                     .forEach(f => this.showFile(f.adapter, f.path, f.file));
 
-                this.listAdaptersFiles(adapters, filter, callback);
+                return this.listAdaptersFiles(adapters, filter, callback);
             });
         } else {
             return tools.maybeCallback(callback);
@@ -942,7 +942,9 @@ export class List {
                             names.shift();
                         }
 
-                        this.listAdaptersFiles(adapters, names ? names.join('/') : null, () => this.processExit());
+                        return this.listAdaptersFiles(adapters, names ? names.join('/') : null, () =>
+                            this.processExit(),
+                        );
                     });
                     break;
             }

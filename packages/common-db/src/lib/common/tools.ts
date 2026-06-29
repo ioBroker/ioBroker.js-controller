@@ -1160,7 +1160,7 @@ function getIoPack(sources: ioBroker.RepositoryJson, name: string, callback: () 
             callback?.();
         } else {
             setImmediate(() => {
-                getJson<ioBroker.RepositoryJsonAdapterContent>(packUrl, '', pack => {
+                return getJson<ioBroker.RepositoryJsonAdapterContent>(packUrl, '', pack => {
                     const version = packSource.version;
                     const type = packSource.type;
                     // If installed from git or something else,
@@ -1221,7 +1221,7 @@ function getIoPack(sources: ioBroker.RepositoryJson, name: string, callback: () 
                 });
             });
         }
-    });
+    }).catch(e => console.error(`Cannot prepare repository entry for ${name}: ${e.message}`));
 }
 
 function _getRepositoryFile(

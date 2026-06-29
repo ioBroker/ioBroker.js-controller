@@ -60,4 +60,4 @@ async function getSpdxLicenseIds(): Promise<string[]> {
 }
 
 updateIobJSON();
-updateLicenseArray();
+updateLicenseArray().catch(e => console.error(`Cannot update license array: ${e.message}`));

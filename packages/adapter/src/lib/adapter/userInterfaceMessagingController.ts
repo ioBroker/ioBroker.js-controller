@@ -188,7 +188,9 @@ export class UserInterfaceMessagingController {
 
             this.handlers.delete(clientId);
             if (this.unsubscribeCallback) {
-                this.unsubscribeCallback({ clientId, message: msg, reason });
+                Promise.resolve(this.unsubscribeCallback({ clientId, message: msg, reason })).catch(e =>
+                    this.adapter.log.error(`Error in unsubscribe callback: ${e.message}`),
+                );
             }
         }
     }
@@ -223,7 +225,9 @@ export class UserInterfaceMessagingController {
         this.heartbeatTimers.delete(clientId);
 
         if (this.unsubscribeCallback) {
-            this.unsubscribeCallback({ clientId, reason: 'timeout' });
+            Promise.resolve(this.unsubscribeCallback({ clientId, reason: 'timeout' })).catch(e =>
+                this.adapter.log.error(`Error in unsubscribe callback: ${e.message}`),
+            );
         }
     }
 }

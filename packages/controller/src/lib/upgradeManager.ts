@@ -484,5 +484,5 @@ function registerErrorHandlers(upgradeManager: UpgradeManager): void {
 // eslint-disable-next-line unicorn/prefer-module
 const modulePath = url.fileURLToPath(import.meta.url || `file://${__filename}`);
 if (process.argv[1] === modulePath) {
-    main();
+    main().catch(e => console.error(`Upgrade failed: ${e.message}`));
 }

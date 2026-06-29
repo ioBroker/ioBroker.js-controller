@@ -440,17 +440,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
                         } catch {
                             //ignore
                         }
-                        this.dbSetup(iopkg, true, callback);
-                        return;
+                        return this.dbSetup(iopkg, true, callback);
                     }
                 }
-                this.dbSetup(iopkg, true, callback);
-            } else {
-                this.dbSetup(iopkg, true, callback);
+                return this.dbSetup(iopkg, true, callback);
             }
-        } else {
-            this.dbSetup(iopkg, false, callback);
+            return this.dbSetup(iopkg, true, callback);
         }
+        return this.dbSetup(iopkg, false, callback);
     }
 
     /**
@@ -1632,10 +1629,10 @@ require('${path.normalize(`${thisDir}/..`)}/setup').execute();`;
             }
         } else if (ignoreIfExist) {
             // it is a setup first run and config exists yet
-            this.setupObjects(() => callback?.(), true);
+            this.setupObjects(() => callback?.(), true).catch(e => console.error(`Cannot setup objects: ${e.message}`));
             return;
         }
 
-        this.setupObjects(() => callback?.(isCreated));
+        this.setupObjects(() => callback?.(isCreated)).catch(e => console.error(`Cannot setup objects: ${e.message}`));
     }
 }

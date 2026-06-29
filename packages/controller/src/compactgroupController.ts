@@ -13,4 +13,4 @@ if (isNaN(compactGroup) || compactGroup < 1) {
     process.exit();
 }
 
-init(compactGroup);
+init(compactGroup).catch(e => console.error(`Cannot start compact group controller: ${e.message}`));
