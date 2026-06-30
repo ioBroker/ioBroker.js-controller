@@ -54,7 +54,7 @@
         "fs-extra": "^11.3.2",
         "lerna": "^9.0.6",
         "mocha": "^10.4.0",
-        "prettier": "^3.0.1",
+        "prettier": "^3.9.4",
         "semver": "^7.5.2",
         "sinon": "^15.0.0",
         "ts-json-schema-generator": "~1.2.0",
