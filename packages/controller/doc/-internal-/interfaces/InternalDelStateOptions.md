@@ -6,7 +6,7 @@
 
 # Interface: InternalDelStateOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:485](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L485)
+Defined in: [adapter/src/lib/\_Types.ts:485](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L485)
 
 Options for deleting a state
 
@@ -16,7 +16,7 @@ Options for deleting a state
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:491](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L491)
+Defined in: [adapter/src/lib/\_Types.ts:491](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L491)
 
 Called once the state has been deleted
 
@@ -26,7 +26,7 @@ Called once the state has been deleted
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:487](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L487)
+Defined in: [adapter/src/lib/\_Types.ts:487](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L487)
 
 The id of the state
 
@@ -36,6 +36,6 @@ The id of the state
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L489)
+Defined in: [adapter/src/lib/\_Types.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L489)
 
 Optional settings including the user context

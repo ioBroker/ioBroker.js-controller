@@ -6,7 +6,7 @@
 
 # Interface: InternalDestroySessionOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:334](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L334)
+Defined in: [adapter/src/lib/\_Types.ts:334](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L334)
 
 Options for destroying a session
 
@@ -16,7 +16,7 @@ Options for destroying a session
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:338](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L338)
+Defined in: [adapter/src/lib/\_Types.ts:338](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L338)
 
 Called once the session has been destroyed
 
@@ -26,6 +26,6 @@ Called once the session has been destroyed
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L336)
+Defined in: [adapter/src/lib/\_Types.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L336)
 
 The session id
