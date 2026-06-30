@@ -6,7 +6,7 @@
 
 # Interface: SuitableLicense
 
-Defined in: [adapter/src/lib/\_Types.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L77)
+Defined in: [adapter/src/lib/\_Types.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L77)
 
 A license that may be suitable for use by an adapter
 
@@ -16,7 +16,7 @@ A license that may be suitable for use by an adapter
 
 > `optional` **datapoints?**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:97](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L97)
+Defined in: [adapter/src/lib/\_Types.ts:97](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L97)
 
 License is only valid for X number of datapoints
 
@@ -26,7 +26,7 @@ License is only valid for X number of datapoints
 
 > **decoded**: `object`
 
-Defined in: [adapter/src/lib/\_Types.ts:99](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L99)
+Defined in: [adapter/src/lib/\_Types.ts:99](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L99)
 
 Decoded property from jwt verify on json content with cloud cert
 
@@ -180,7 +180,7 @@ Version for which this license is valid
 
 > **email**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L81)
+Defined in: [adapter/src/lib/\_Types.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L81)
 
 E-Mail of a license owner
 
@@ -190,7 +190,7 @@ E-Mail of a license owner
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L83)
+Defined in: [adapter/src/lib/\_Types.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L83)
 
 Unique id of this license
 
@@ -200,7 +200,7 @@ Unique id of this license
 
 > **invoice**: [`Invoice`](../type-aliases/Invoice.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L87)
+Defined in: [adapter/src/lib/\_Types.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L87)
 
 If it is a free license or not
 
@@ -210,7 +210,7 @@ If it is a free license or not
 
 > **json**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:85](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L85)
+Defined in: [adapter/src/lib/\_Types.ts:85](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L85)
 
 The actual license
 
@@ -220,7 +220,7 @@ The actual license
 
 > **product**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L79)
+Defined in: [adapter/src/lib/\_Types.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L79)
 
 Name of the license type, not necessarily matching adapter
 
@@ -230,7 +230,7 @@ Name of the license type, not necessarily matching adapter
 
 > `optional` **usedBy?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L89)
+Defined in: [adapter/src/lib/\_Types.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L89)
 
 The adapter instance which uses this license
 
@@ -240,7 +240,7 @@ The adapter instance which uses this license
 
 > `optional` **uuid?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:93](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L93)
+Defined in: [adapter/src/lib/\_Types.ts:93](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L93)
 
 License is only valid for given UUID
 
@@ -250,7 +250,7 @@ License is only valid for given UUID
 
 > **validTill**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:95](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L95)
+Defined in: [adapter/src/lib/\_Types.ts:95](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L95)
 
 License if valid until this date 0000-00-00 00:00:00 if unlimited
 
@@ -260,6 +260,6 @@ License if valid until this date 0000-00-00 00:00:00 if unlimited
 
 > **version**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:91](https://github.com/ioBroker/ioBroker.js-controller/blob/287090c3a05820509691e1c5c69f840e68111d1c/packages/adapter/src/lib/_Types.ts#L91)
+Defined in: [adapter/src/lib/\_Types.ts:91](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L91)
 
 Version for which this license is valid
