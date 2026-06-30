@@ -269,7 +269,6 @@
 - [GetStatesCallback](type-aliases/GetStatesCallback.md)
 - [GetStatesPromise](type-aliases/GetStatesPromise.md)
 - [GetUserGroupCallbackNoError](type-aliases/GetUserGroupCallbackNoError.md)
-- [GetUserGroupPromiseReturn](type-aliases/GetUserGroupPromiseReturn.md)
 - [Group](type-aliases/Group.md)
 - [InferGetObjectViewItemType](type-aliases/InferGetObjectViewItemType.md)
 - [InstalledFrom](type-aliases/InstalledFrom.md)
