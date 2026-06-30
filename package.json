@@ -56,7 +56,7 @@
         "mocha": "^10.4.0",
         "prettier": "^3.0.1",
         "semver": "^7.5.2",
-        "sinon": "^15.0.0",
+        "sinon": "^22.0.0",
         "ts-json-schema-generator": "~1.2.0",
         "ts-node": "^10.9.2",
         "tsc-alias": "^1.8.16",
