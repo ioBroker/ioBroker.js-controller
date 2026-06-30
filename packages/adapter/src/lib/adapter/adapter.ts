@@ -11475,7 +11475,7 @@ export class AdapterClass extends EventEmitter {
         const { options, pattern, callback } = _options;
 
         if (!this.#states) {
-            // if states is no longer existing, we do not need to unsubscribe
+            // if states are no longer existing, we do not need to unsubscribe
             this._logger.info(
                 `${this.namespaceLog} getForeignStates not processed because States database not connected`,
             );
@@ -11484,7 +11484,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (!this.#objects) {
-            // if states is no longer existing, we do not need to unsubscribe
+            // if states are no longer existing, we do not need to unsubscribe
             this._logger.info(
                 `${this.namespaceLog} getForeignStates not processed because Objects database not connected`,
             );
@@ -11508,7 +11508,7 @@ export class AdapterClass extends EventEmitter {
             }
         } else {
             // read first the keys for pattern
-            let params = {};
+            let params: ioBroker.GetObjectViewParams = {};
             if (pattern && pattern !== '*') {
                 params = {
                     startkey: pattern.replace(/\*/g, ''),
@@ -11544,8 +11544,8 @@ export class AdapterClass extends EventEmitter {
                 if (!res) {
                     return tools.maybeCallbackWithError(callback, null, {});
                 }
-                const keys = [];
-                const objs = [];
+                const keys: string[] = [];
+                const objs: ioBroker.StateObject[] = [];
 
                 // filter out
                 let regEx;
@@ -11574,7 +11574,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Add subscription for given alias, if it is not a state it will be ignored
+     * Add a subscription for a given alias, if it is not a state, it will be ignored
      *
      * @param aliasObj the alias object
      * @param pattern pattern to subscribe for
