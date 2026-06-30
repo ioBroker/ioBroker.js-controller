@@ -684,20 +684,15 @@ export interface InternalSendToOptions {
     command: string;
     /** The message payload */
     message: any;
-    /** Called with the response */
-    callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo;
+    /**
+     * Legacy callback-info object to pass through as the message's callback header.
+     * Function callbacks are not accepted here — use `expectReply` for the reply-wait path.
+     */
+    callback?: ioBroker.MessageCallbackInfo;
+    /** When true, the manager registers a promise resolver and resolves with the reply */
+    expectReply?: boolean;
     /** Additional send options */
     options?: SendToOptions;
-}
-
-/** Message Callback used internally */
-export interface MessageCallbackObject {
-    /** the callback itself */
-    cb: ioBroker.MessageCallback;
-    /** The timestamp of the initial message */
-    time: number;
-    /** An optional timer, if a timeout has been specified */
-    timer?: NodeJS.Timeout;
 }
 
 /** Options for sending a message to a host */
@@ -708,8 +703,10 @@ export interface InternalSendToHostOptions {
     command: string;
     /** The message payload */
     message: any;
-    /** Called with the response */
-    callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo;
+    /** When true and a specific host is targeted, the manager registers a reply resolver and resolves with the reply */
+    expectReply?: boolean;
+    /** Additional send options */
+    options?: SendToOptions;
 }
 
 /** Options for reading a state */

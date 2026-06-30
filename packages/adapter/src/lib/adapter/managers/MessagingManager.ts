@@ -6,7 +6,6 @@ import type {
     AllPropsUnknown,
     InternalSendToHostOptions,
     InternalSendToOptions,
-    MessageCallbackObject,
     NotificationOptions,
     SendToOptions,
     SendToUserInterfaceClientOptions,
@@ -15,19 +14,13 @@ import { Validator } from '../validator.js';
 import { tools } from '@iobroker/js-controller-common';
 import { isMessageboxSupported } from '@/lib/adapter/utils.js';
 
-export type Validated<T> =
-    | {
-          /** Discriminant: validation succeeded */
-          ok: true;
-          /** Validated and normalized value */
-          value: T;
-      }
-    | {
-          /** Discriminant: validation failed */
-          ok: false;
-          /** Validation error */
-          error: Error;
-      };
+/** Entry in the pending-reply registry for sendTo calls with expectReply=true */
+interface PendingReply {
+    resolve: (msg: any) => void;
+    reject: (e: Error) => void;
+    timer?: NodeJS.Timeout;
+    time: number;
+}
 
 /** Dependencies injected into MessagingManager at construction time. */
 export interface MessagingManagerDeps {
@@ -49,9 +42,9 @@ export interface MessagingManagerDeps {
     getCommon: () => ioBroker.InstanceCommon | undefined;
 }
 
-/** Owns the adapter's outbound messaging and the pending message-callback registry. */
+/** Owns the adapter's outbound messaging and the pending-reply registry. */
 export class MessagingManager {
-    readonly #callbacks = new Map<number, MessageCallbackObject>();
+    readonly #pending = new Map<number, PendingReply>();
     #callbackId = 1;
     #mboxSubscribed = false;
 
@@ -61,61 +54,25 @@ export class MessagingManager {
     constructor(private readonly deps: MessagingManagerDeps) {}
 
     /**
-     * Validates and normalizes sendTo arguments, returning a typed result.
+     * Sends a message to another adapter instance. Validates args and throws on error.
      *
-     * @param instanceName target adapter instance, e.g. `"pushover.0"`
-     * @param command command name
-     * @param message message payload
-     * @param callback optional response callback or callback-info object
-     * @param options optional send options (e.g. timeout)
-     */
-    assertSendTo(
-        instanceName: unknown,
-        command: unknown,
-        message: unknown,
-        callback?: unknown,
-        options?: unknown,
-    ): Validated<InternalSendToOptions> {
-        try {
-            if (typeof message === 'function' && typeof callback === 'undefined') {
-                callback = message;
-                message = undefined;
-            }
-            if (typeof message === 'undefined') {
-                message = command;
-                command = 'send';
-            }
-            Validator.assertString(instanceName, 'instanceName');
-            Validator.assertString(command, 'command');
-            if (!tools.isObject(callback)) {
-                Validator.assertOptionalCallback(callback, 'callback');
-            }
-            if (options !== undefined) {
-                Validator.assertObject<SendToOptions>(options, 'options');
-            }
-            return {
-                ok: true,
-                value: {
-                    instanceName,
-                    command,
-                    message,
-                    options,
-                    callback: callback as ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
-                },
-            };
-        } catch (e) {
-            return { ok: false, error: e instanceof Error ? e : new Error(String(e)) };
-        }
-    }
-
-    /**
-     * Sends a message to another adapter instance.
+     * When `opts.expectReply` is true and the target is a specific instance (not broadcast),
+     * the returned promise resolves with the reply message when it arrives, or rejects with
+     * `Error('Timeout exceeded')` if `opts.options.timeout` elapses.
      *
-     * @param opts validated send options produced by {@link assertSendTo}
+     * @param opts Normalized send options
      */
-    async sendTo(opts: InternalSendToOptions): Promise<void> {
-        const { command, message, callback, options } = opts;
+    async sendTo(opts: InternalSendToOptions): Promise<any> {
+        const { command, message, callback, options, expectReply } = opts;
         let { instanceName } = opts;
+
+        if (!instanceName) {
+            throw new Error('No instanceName provided or not a string');
+        }
+
+        if (!instanceName.startsWith('system.adapter.')) {
+            instanceName = `system.adapter.${instanceName}`;
+        }
 
         const obj: ioBroker.SendableMessage = {
             command,
@@ -123,22 +80,12 @@ export class MessagingManager {
             from: `system.adapter.${this.deps.getNamespace()}`,
         };
 
-        if (!instanceName) {
-            // @ts-expect-error TODO it could also be the cb object
-            return tools.maybeCallbackWithError(callback, 'No instanceName provided or not a string');
-        }
-
-        if (!instanceName.startsWith('system.adapter.')) {
-            instanceName = `system.adapter.${instanceName}`;
-        }
-
         const states = this.deps.getStates();
         if (!states) {
             this.deps.logger.info(
                 `${this.deps.getNamespaceLog()} sendTo not processed because States database not connected`,
             );
-            // @ts-expect-error TODO it could also be the cb object
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         if (typeof message !== 'object') {
@@ -151,14 +98,14 @@ export class MessagingManager {
             );
         }
 
+        // Broadcast path: instanceName has no trailing .<number>
         if (!instanceName.match(/\.[0-9]+$/)) {
             const objects = this.deps.getObjects();
             if (!objects) {
                 this.deps.logger.info(
                     `${this.deps.getNamespaceLog()} sendTo not processed because Objects database not connected`,
                 );
-                // @ts-expect-error TODO it could also be the cb object
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
             }
 
             try {
@@ -169,161 +116,227 @@ export class MessagingManager {
 
                 if (res) {
                     for (const row of res.rows) {
-                        try {
-                            await states.pushMessage(row.id, obj);
-                        } catch (e) {
-                            // @ts-expect-error TODO it could also be the cb object
-                            return tools.maybeCallbackWithError(callback, e);
-                        }
+                        await states.pushMessage(row.id, obj);
                     }
                 }
             } catch {
-                //ignore
+                // broadcast errors are ignored (mirrors original behavior)
             }
-        } else {
-            if (callback) {
-                if (typeof callback === 'function') {
-                    // force subscribe even no messagebox enabled
-                    if (!isMessageboxSupported(this.deps.getCommon()!) && !this.#mboxSubscribed) {
-                        this.#mboxSubscribed = true;
-                        states
-                            .subscribeMessage(`system.adapter.${this.deps.getNamespace()}`)
-                            .catch(e =>
-                                this.deps.logger.error(
-                                    `${this.deps.getNamespaceLog()} Cannot subscribe to messages: ${e.message}`,
-                                ),
-                            );
+            return;
+        }
+
+        // Specific instance, reply-wait path
+        if (expectReply) {
+            return this.#registerReply(states, instanceName, obj, options);
+        }
+
+        // Specific instance, legacy callback-info object path
+        if (callback) {
+            obj.callback = { ...callback, ack: true };
+        }
+
+        await states.pushMessage(instanceName, obj);
+    }
+
+    /**
+     * Subscribes to this instance's messagebox on demand when the adapter does not advertise
+     * messagebox support, so replies to outbound messages are received. Idempotent.
+     *
+     * @param states the connected states DB client
+     */
+    #maybeSubscribe(states: StatesInRedisClient): void {
+        const common = this.deps.getCommon();
+        if (common && !isMessageboxSupported(common) && !this.#mboxSubscribed) {
+            this.#mboxSubscribed = true;
+            states
+                .subscribeMessage(`system.adapter.${this.deps.getNamespace()}`)
+                .catch(e =>
+                    this.deps.logger.error(`${this.deps.getNamespaceLog()} Cannot subscribe to messages: ${e.message}`),
+                );
+        }
+    }
+
+    /**
+     * Sets a reply callback header on `obj`, registers a pending-reply resolver keyed by its id,
+     * subscribes the messagebox on demand, pushes the message and returns a promise that resolves
+     * with the reply once `resolveCallback` is invoked for the matching id, or rejects with
+     * `Error('Timeout exceeded')` when `options.timeout` elapses.
+     *
+     * @param states the connected states DB client
+     * @param target the recipient id (instance or host) for `pushMessage`
+     * @param obj the message to send; its `callback` header is set here
+     * @param options additional send options (e.g. timeout)
+     */
+    async #registerReply(
+        states: StatesInRedisClient,
+        target: string,
+        obj: ioBroker.SendableMessage,
+        options?: SendToOptions,
+    ): Promise<any> {
+        this.#maybeSubscribe(states);
+
+        const id = this.#callbackId++;
+        if (this.#callbackId >= 0xffffffff) {
+            this.#callbackId = 1;
+        }
+
+        obj.callback = {
+            message: obj.message,
+            id,
+            ack: false,
+            time: Date.now(),
+        };
+
+        let pendingEntry!: PendingReply;
+        const replyPromise = new Promise<any>((resolve, reject) => {
+            let timer: NodeJS.Timeout | undefined;
+            if (options?.timeout) {
+                timer = setTimeout(() => {
+                    if (this.#pending.has(id)) {
+                        this.#pending.delete(id);
+                        reject(new Error('Timeout exceeded'));
                     }
+                }, options.timeout);
+            }
 
-                    obj.callback = {
-                        message,
-                        id: this.#callbackId++,
-                        ack: false,
-                        time: Date.now(),
-                    };
-                    if (this.#callbackId >= 0xffffffff) {
-                        this.#callbackId = 1;
+            pendingEntry = { resolve, reject, timer, time: Date.now() };
+            this.#pending.set(id, pendingEntry);
+        });
+
+        const now = Date.now();
+        for (const [_id, entry] of this.#pending) {
+            if (now - entry.time > 3_600_000) {
+                this.#pending.delete(_id);
+            }
+        }
+
+        try {
+            await states.pushMessage(target, obj);
+        } catch (e) {
+            if (pendingEntry.timer) {
+                clearTimeout(pendingEntry.timer);
+            }
+            this.#pending.delete(id);
+            throw e;
+        }
+        return replyPromise;
+    }
+
+    /**
+     * Sends a message to a host, or broadcasts to all hosts when `hostName` is `null`.
+     * Validates args and throws on error.
+     *
+     * When `opts.expectReply` is true and a specific host is targeted, the returned promise
+     * resolves with the reply message when it arrives, or rejects with `Error('Timeout exceeded')`
+     * if `opts.options.timeout` elapses. Broadcasts (hostName === null) resolve void.
+     *
+     * @param opts Normalized send options
+     */
+    async sendToHost(opts: InternalSendToHostOptions): Promise<any> {
+        const { command, message, expectReply, options } = opts;
+        let { hostName } = opts;
+        const obj: ioBroker.SendableMessage = {
+            command,
+            message,
+            from: `system.adapter.${this.deps.getNamespace()}`,
+        };
+
+        const states = this.deps.getStates();
+        if (!states) {
+            this.deps.logger.info(
+                `${this.deps.getNamespaceLog()} sendToHost not processed because States database not connected`,
+            );
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        if (hostName && !hostName.startsWith('system.host.')) {
+            hostName = `system.host.${hostName}`;
+        }
+
+        if (!hostName) {
+            const objects = this.deps.getObjects();
+            if (!objects) {
+                this.deps.logger.info(
+                    `${this.deps.getNamespaceLog()} sendToHost not processed because Objects database not connected`,
+                );
+                throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+            }
+
+            const res = await new Promise<{ rows: { id: string }[] } | undefined>((resolve, reject) =>
+                objects.getObjectList({ startkey: 'system.host.', endkey: 'system.host.香' }, null, (err, result) =>
+                    err ? reject(err) : resolve(result as { rows: { id: string }[] } | undefined),
+                ),
+            );
+
+            const broadcastStates = this.deps.getStates();
+            if (!broadcastStates) {
+                return;
+            }
+
+            if (res?.rows.length) {
+                for (const row of res.rows) {
+                    const parts: string[] = row.id.split('.');
+                    // ignore system.host.name.alive and so on
+                    if (parts.length === 3) {
+                        await broadcastStates.pushMessage(row.id, obj);
                     }
-
-                    const callbackId = obj.callback.id;
-
-                    let timer: undefined | NodeJS.Timeout;
-
-                    if (options?.timeout) {
-                        timer = setTimeout(() => {
-                            const callbackObj = this.#callbacks.get(callbackId);
-
-                            if (callbackObj) {
-                                callbackObj.cb(new Error('Timeout exceeded'));
-                                this.#callbacks.delete(callbackId);
-                            }
-                        }, options.timeout);
-                    }
-
-                    this.#callbacks.set(callbackId, { cb: callback, time: Date.now(), timer });
-
-                    const now = Date.now();
-                    for (const [_id, cb] of this.#callbacks) {
-                        if (now - cb.time > 3_600_000) {
-                            this.#callbacks.delete(_id);
-                        }
-                    }
-                } else {
-                    obj.callback = callback;
-                    obj.callback.ack = true;
                 }
             }
-
-            try {
-                await states.pushMessage(instanceName, obj);
-            } catch (e) {
-                // @ts-expect-error TODO it could also be the cb object
-                return tools.maybeCallbackWithError(callback, e);
-            }
+            return;
         }
+
+        if (expectReply) {
+            return this.#registerReply(states, hostName, obj, options);
+        }
+
+        await states.pushMessage(hostName, obj);
     }
 
     /**
-     * Validates and normalizes sendToHost arguments, returning a typed result.
-     * A `null` hostName means broadcast to all hosts.
-     *
-     * @param hostName target host name or `null` to broadcast to all hosts
-     * @param command command name
-     * @param message message payload
-     * @param callback optional response callback or callback-info object
-     */
-    assertSendToHost(
-        hostName: unknown,
-        command: unknown,
-        message: unknown,
-        callback?: unknown,
-    ): Validated<InternalSendToHostOptions> {
-        try {
-            if (typeof message === 'undefined') {
-                message = command;
-                command = 'send';
-            }
-
-            if (hostName !== null) {
-                Validator.assertString(hostName, 'hostName');
-            }
-
-            Validator.assertString(command, 'command');
-
-            if (!tools.isObject(callback)) {
-                Validator.assertOptionalCallback(callback, 'callback');
-            }
-
-            return {
-                ok: true,
-                value: {
-                    hostName,
-                    command,
-                    message,
-                    callback: callback as ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
-                },
-            };
-        } catch (e) {
-            return { ok: false, error: e instanceof Error ? e : new Error(String(e)) };
-        }
-    }
-
-    /**
-     * Resolves a stored callback for an acked messagebox reply. Returns true if a stored callback was consumed.
+     * Resolves a pending reply promise for an acked messagebox message.
+     * Returns true if a pending entry was found and consumed.
      *
      * @param obj incoming message object from the messagebox
      */
     resolveCallback(obj: ioBroker.Message): boolean {
-        let callbackObj: MessageCallbackObject | undefined;
-        if (obj.callback?.id) {
-            callbackObj = this.#callbacks.get(obj.callback.id);
+        if (!obj.callback?.ack || !obj.callback.id) {
+            return false;
         }
-        if (obj.callback?.ack && obj.callback.id && callbackObj) {
-            if (typeof callbackObj.cb === 'function') {
-                callbackObj.cb(obj.message);
-                if (callbackObj.timer) {
-                    clearTimeout(callbackObj.timer);
-                }
-                this.#callbacks.delete(obj.callback.id);
-            }
-            const now = Date.now();
-            for (const [id, callback] of this.#callbacks) {
-                if (now - callback.time > 3_600_000) {
-                    this.#callbacks.delete(id);
-                }
-            }
-            return true;
+
+        const entry = this.#pending.get(obj.callback.id);
+        if (!entry) {
+            return false;
         }
-        return false;
+
+        if (entry.timer) {
+            clearTimeout(entry.timer);
+        }
+        this.#pending.delete(obj.callback.id);
+        entry.resolve(obj.message);
+
+        const now = Date.now();
+        for (const [id, pending] of this.#pending) {
+            if (now - pending.time > 3_600_000) {
+                this.#pending.delete(id);
+            }
+        }
+
+        return true;
     }
 
     /**
-     * Clears all pending callbacks and their timers (used on stop).
+     * Rejects all pending reply promises and clears their timers (used on stop).
      */
     clearPendingCallbacks(): void {
-        if (this.#callbacks.size) {
-            this.#callbacks.forEach(callbackObj => clearTimeout(callbackObj.timer));
-            this.#callbacks.clear();
+        if (this.#pending.size) {
+            const err = new Error('Adapter stopped');
+            for (const entry of this.#pending.values()) {
+                if (entry.timer) {
+                    clearTimeout(entry.timer);
+                }
+                entry.reject(err);
+            }
+            this.#pending.clear();
         }
     }
 
@@ -416,106 +429,5 @@ export class MessagingManager {
         };
 
         await states.pushMessage(`system.host.${this.deps.getHost()}`, obj as any);
-    }
-
-    /**
-     * Sends a message to a host, or broadcasts to all hosts when `hostName` is `null`.
-     *
-     * @param opts validated send options produced by {@link assertSendToHost}
-     */
-    async sendToHost(opts: InternalSendToHostOptions): Promise<void> {
-        const { command, message, callback } = opts;
-        let { hostName } = opts;
-        const obj: Partial<ioBroker.Message> = { command, message, from: `system.adapter.${this.deps.getNamespace()}` };
-
-        const states = this.deps.getStates();
-        if (!states) {
-            this.deps.logger.info(
-                `${this.deps.getNamespaceLog()} sendToHost not processed because States database not connected`,
-            );
-            // @ts-expect-error TODO it could also be the cb object
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        if (hostName && !hostName.startsWith('system.host.')) {
-            hostName = `system.host.${hostName}`;
-        }
-
-        if (!hostName) {
-            const objects = this.deps.getObjects();
-            if (!objects) {
-                this.deps.logger.info(
-                    `${this.deps.getNamespaceLog()} sendToHost not processed because Objects database not connected`,
-                );
-                // @ts-expect-error TODO it could also be the cb object
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            objects.getObjectList(
-                {
-                    startkey: 'system.host.',
-                    endkey: `system.host.香`,
-                },
-                null,
-                async (err, res) => {
-                    const broadcastStates = this.deps.getStates();
-                    if (!broadcastStates) {
-                        return;
-                    }
-                    if (!err && res?.rows.length) {
-                        for (const row of res.rows) {
-                            const parts: string[] = row.id.split('.');
-                            // ignore system.host.name.alive and so on
-                            if (parts.length === 3) {
-                                try {
-                                    await broadcastStates.pushMessage(row.id, obj as any);
-                                } catch (e) {
-                                    // @ts-expect-error TODO it could also be the cb object
-                                    return tools.maybeCallbackWithError(callback, e);
-                                }
-                            }
-                        }
-                    }
-                },
-            );
-        } else {
-            if (callback) {
-                if (typeof callback === 'function') {
-                    // force subscribe even no messagebox enabled
-                    if (!isMessageboxSupported(this.deps.getCommon()!) && !this.#mboxSubscribed) {
-                        this.#mboxSubscribed = true;
-                        states
-                            .subscribeMessage(`system.adapter.${this.deps.getNamespace()}`)
-                            .catch(e =>
-                                this.deps.logger.error(
-                                    `${this.deps.getNamespaceLog()} Cannot subscribe to messages: ${e.message}`,
-                                ),
-                            );
-                    }
-
-                    obj.callback = {
-                        message,
-                        id: this.#callbackId++,
-                        ack: false,
-                        time: Date.now(),
-                    };
-                    if (this.#callbackId >= 0xffffffff) {
-                        this.#callbackId = 1;
-                    }
-
-                    this.#callbacks.set(obj.callback.id, { cb: callback, time: Date.now() });
-                } else {
-                    obj.callback = callback;
-                    obj.callback.ack = true;
-                }
-            }
-
-            try {
-                await states.pushMessage(hostName, obj as any);
-            } catch (e) {
-                // @ts-expect-error TODO it could also be the cb object
-                return tools.maybeCallbackWithError(callback, e);
-            }
-        }
     }
 }
