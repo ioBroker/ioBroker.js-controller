@@ -6,7 +6,7 @@
 
 # Interface: IoBJson
 
-Defined in: [types-dev/config.d.ts:92](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/config.d.ts#L92)
+Defined in: [types-dev/config.d.ts:151](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/config.d.ts#L151)
 
 The ioBroker global config
 
@@ -16,7 +16,9 @@ The ioBroker global config
 
 > **// dataDir**: `string`
 
-Defined in: [types-dev/config.d.ts:135](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/config.d.ts#L135)
+Defined in: [types-dev/config.d.ts:200](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/config.d.ts#L200)
+
+Comment/hint shown next to the dataDir setting in the JSON config
 
 ***
 
@@ -24,7 +26,9 @@ Defined in: [types-dev/config.d.ts:135](https://github.com/ioBroker/ioBroker.js-
 
 > **// dnsResolution**: `string`
 
-Defined in: [types-dev/config.d.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/config.d.ts#L142)
+Defined in: [types-dev/config.d.ts:209](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/config.d.ts#L209)
+
+Comment/hint shown next to the dnsResolution setting in the JSON config
 
 ***
 
@@ -32,7 +36,7 @@ Defined in: [types-dev/config.d.ts:142](https://github.com/ioBroker/ioBroker.js-
 
 > **dataDir**: `string`
 
-Defined in: [types-dev/config.d.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/config.d.ts#L134)
+Defined in: [types-dev/config.d.ts:198](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/config.d.ts#L198)
 
 Always relative to iobroker.js-controller/
 
@@ -42,7 +46,7 @@ Always relative to iobroker.js-controller/
 
 > **dnsResolution**: `"verbatim"` \| `"ipv4first"`
 
-Defined in: [types-dev/config.d.ts:144](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/config.d.ts#L144)
+Defined in: [types-dev/config.d.ts:211](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/config.d.ts#L211)
 
 Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
@@ -52,7 +56,9 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 > **log**: `object`
 
-Defined in: [types-dev/config.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/config.d.ts#L127)
+Defined in: [types-dev/config.d.ts:191](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/config.d.ts#L191)
+
+Logging configuration
 
 #### level
 
@@ -76,7 +82,9 @@ Defined in: [types-dev/config.d.ts:127](https://github.com/ioBroker/ioBroker.js-
 
 > **multihostService**: `object`
 
-Defined in: [types-dev/config.d.ts:119](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/config.d.ts#L119)
+Defined in: [types-dev/config.d.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/config.d.ts#L180)
+
+Configuration of the multihost service used to connect several ioBroker hosts
 
 #### enabled
 
@@ -100,7 +108,9 @@ Defined in: [types-dev/config.d.ts:119](https://github.com/ioBroker/ioBroker.js-
 
 > **objects**: [`ObjectsDatabaseOptions`](ObjectsDatabaseOptions.md)
 
-Defined in: [types-dev/config.d.ts:125](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/config.d.ts#L125)
+Defined in: [types-dev/config.d.ts:187](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/config.d.ts#L187)
+
+Configuration of the objects database
 
 ***
 
@@ -108,7 +118,9 @@ Defined in: [types-dev/config.d.ts:125](https://github.com/ioBroker/ioBroker.js-
 
 > **plugins**: `object`
 
-Defined in: [types-dev/config.d.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/config.d.ts#L136)
+Defined in: [types-dev/config.d.ts:202](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/config.d.ts#L202)
+
+Controller plugins configuration keyed by plugin name
 
 #### Index Signature
 
@@ -120,7 +132,9 @@ Defined in: [types-dev/config.d.ts:136](https://github.com/ioBroker/ioBroker.js-
 
 > **states**: [`StatesDatabaseOptions`](StatesDatabaseOptions.md)
 
-Defined in: [types-dev/config.d.ts:126](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/config.d.ts#L126)
+Defined in: [types-dev/config.d.ts:189](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/config.d.ts#L189)
+
+Configuration of the states database
 
 ***
 
@@ -128,7 +142,9 @@ Defined in: [types-dev/config.d.ts:126](https://github.com/ioBroker/ioBroker.js-
 
 > **system**: `object`
 
-Defined in: [types-dev/config.d.ts:93](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/config.d.ts#L93)
+Defined in: [types-dev/config.d.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/config.d.ts#L153)
+
+System-wide controller settings
 
 #### // allowShellCommands
 

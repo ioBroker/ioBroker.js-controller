@@ -6,7 +6,9 @@
 
 # Interface: ACLObject
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:19
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:29
+
+Access control list of an object, state or file
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:19
 
 > **file**: `number`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:24
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:39
+
+Permission bitmask for file access
 
 ***
 
@@ -22,23 +26,29 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:24
 
 > **object**: `number`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:22
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:35
+
+Permission bitmask for object access
 
 ***
 
 ### owner
 
-> **owner**: `string`
+> **owner**: `` `system.user.${string}` ``
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:20
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:31
+
+The user that owns the object
 
 ***
 
 ### ownerGroup
 
-> **ownerGroup**: `string`
+> **ownerGroup**: `` `system.group.${string}` ``
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:21
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:33
+
+The group that owns the object
 
 ***
 
@@ -46,4 +56,6 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:21
 
 > **state**: `number`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:23
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:37
+
+Permission bitmask for state access

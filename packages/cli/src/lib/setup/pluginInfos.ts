@@ -1,4 +1,9 @@
 // Special Handling to inform users about reporting plugins correctly
+/**
+ * Check whether the given plugin reports data to an external service (e.g. Sentry)
+ *
+ * @param name The plugin name to check
+ */
 export function isReportingPlugin(name: string): boolean {
     return name === 'sentry';
 }

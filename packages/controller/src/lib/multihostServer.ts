@@ -75,6 +75,13 @@ export class MHServer {
     private initTimer: NodeJS.Timeout | null = null;
     private stopped = false;
 
+    /**
+     * @param hostname The name of this host
+     * @param logger The logger instance
+     * @param config The ioBroker configuration
+     * @param info Multihost information such as the number of hosts
+     * @param secret Shared secret used for authentication, or false if authentication is disabled
+     */
     constructor(
         hostname: string,
         logger: InternalLogger,
@@ -244,6 +251,9 @@ export class MHServer {
         }
     }
 
+    /**
+     * Start the multihost discovery server and (re)initialize it
+     */
     init(): void {
         this.stopped = false;
         if (this.initTimer) {
@@ -316,7 +326,9 @@ export class MHServer {
                         const data = JSON.parse(this.buffer[id]);
                         this.buffer[id] = '';
                         if (data) {
-                            this.process(data, rinfo);
+                            this.process(data, rinfo).catch(e =>
+                                this.logger.error(`Cannot process multihost message: ${e.message}`),
+                            );
                         }
                     } catch {
                         // may be not yet complete.
@@ -342,6 +354,11 @@ export class MHServer {
         this.server.bind(PORT);
     }
 
+    /**
+     * Stop the multihost server and release the socket
+     *
+     * @param callback Called once the server has been closed
+     */
     close(callback?: () => void): void {
         this.stopped = true;
         if (this.initTimer) {

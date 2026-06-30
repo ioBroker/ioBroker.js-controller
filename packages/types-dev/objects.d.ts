@@ -6,9 +6,9 @@ declare global {
         /** Defines access rights for a single file */
         interface FileACL {
             /** Full name of the user who owns this file, e.g. "system.user.admin" */
-            owner: string;
+            owner: ioBroker.ObjectIDs.User;
             /** Full name of the group who owns this file, e.g. "system.group.administrator" */
-            ownerGroup: string;
+            ownerGroup: ioBroker.ObjectIDs.Group;
             /** Linux-type permissions defining access to this file */
             permissions: number;
         }
@@ -24,9 +24,9 @@ declare global {
         /** Defines access rights for a single object */
         interface ObjectACL {
             /** Full name of the user who owns this object, e.g. "system.user.admin" */
-            owner: string;
+            owner: ioBroker.ObjectIDs.User;
             /** Full name of the group who owns this object, e.g. "system.group.administrator" */
-            ownerGroup: string;
+            ownerGroup: ioBroker.ObjectIDs.Group;
             /** Linux-type permissions defining access to this object */
             object: number;
         }
@@ -735,7 +735,7 @@ declare global {
             /** Whether the admin tab is written in a materialized style. Required for Admin 3+ */
             materializeTab?: boolean;
             /** Whether the admin configuration dialog is written in a materialized style. Required for Admin 3+ */
-            /** @deprectaed Use adminUI with config = "materialize". But better use jsonConfig.json */
+            /** @deprecated Use adminUI with config = "materialize". But better use jsonConfig.json */
             materialize: boolean;
             /** @deprecated Use @see supportedMessages up from controller v5 */
             messagebox?: true;
@@ -994,7 +994,7 @@ declare global {
             acl?: ObjectACL;
             from?: string;
             /** The user who created or updated this object */
-            user?: string;
+            user?: ioBroker.ObjectIDs.User;
             ts?: number;
             /** These properties can only be edited if the correct password is provided */
             nonEdit?: NonEditable;
@@ -1088,7 +1088,25 @@ declare global {
             unsafePerm?: boolean;
             /** If given, the packet name differs from the adapter name, e.g. because it is a scoped package */
             packetName?: string;
+            /** Link to package */
+            meta: string;
+            /** List of licenses */
+            licenses?: { type: string; url: string }[];
+            /** Normally by admin is a ISO string with published date */
+            published?: string;
 
+            /** Link to adapter repo */
+            url?: string;
+            /** Adapter icon */
+            icon?: string;
+            /** Internally used flag */
+            processed?: boolean;
+            /** History */
+            news: { [version: string]: ioBroker.Translated };
+            /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter on the same host. */
+            dependencies: Dependencies;
+            /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter in the whole system. */
+            globalDependencies: Dependencies;
             /** Other Adapter related properties, not important for this implementation */
             [other: string]: unknown;
         }

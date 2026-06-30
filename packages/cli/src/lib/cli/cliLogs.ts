@@ -22,6 +22,9 @@ export class CLILogs extends CLICommand {
     private readonly fileSizes = new Map<string, number>();
     private isReady = false;
 
+    /**
+     * @param options The command options including context and parameters
+     */
     constructor(options: CLICommandOptions) {
         super(options);
     }
@@ -29,10 +32,10 @@ export class CLILogs extends CLICommand {
     /**
      * Executes a command
      *
-     * @param args
+     * @param args The command arguments (the first is the sub-command)
      * @param params additional parsed CLI parameters
      */
-    execute(args: any[], params: Record<string, any>): void {
+    execute(args: string[], params: Record<string, any>): void {
         const adapterName = args[0];
         const watch = params.watch || params.w;
         const count = params.lines || 1_000;
@@ -88,8 +91,16 @@ export class CLILogs extends CLICommand {
      * @param event The type of change
      * @param path Which path has changed
      * @param stats Information about the file
+     * @param stats.size The current size of the file in bytes
      */
-    watchHandler(options: CLILogsOptions, event: string, path: string, stats: Record<string, any>): void {
+    watchHandler(
+        options: CLILogsOptions,
+        event: string,
+        path: string,
+        stats: {
+            size: number;
+        },
+    ): void {
         if (event === 'add' || !this.fileSizes.has(path)) {
             this.fileSizes.set(path, stats.size);
             if (stats.size > 0 && (this.isReady || (options.complete && this.isTodaysLogfile(path)))) {

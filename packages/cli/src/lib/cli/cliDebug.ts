@@ -6,6 +6,9 @@ import { fork } from 'node:child_process';
 
 /** Command ioBroker debug ... */
 export class CLIDebug extends CLICommand {
+    /**
+     * @param options The command options including context and parameters
+     */
     constructor(options: CLICommandOptions) {
         super(options);
     }
@@ -37,9 +40,9 @@ export class CLIDebug extends CLICommand {
     /**
      * Executes a command
      *
-     * @param args
+     * @param args The command arguments (the first is the adapter name)
      */
-    async execute(args: any[]): Promise<void> {
+    async execute(args: string[]): Promise<void> {
         const { callback, ...params } = this.options;
         const adapter = args[0];
         if (!adapter) {

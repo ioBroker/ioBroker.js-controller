@@ -6,7 +6,9 @@
 
 # Interface: InternalFormatDateOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:204](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L204)
+Defined in: [adapter/src/lib/\_Types.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L235)
+
+Internal options for formatting a date
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: [adapter/src/lib/\_Types.ts:204](https://github.com/ioBroker/ioBroke
 
 > `optional` **\_format?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:207](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L207)
+Defined in: [adapter/src/lib/\_Types.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L241)
+
+Optional explicit format string
 
 ***
 
@@ -22,7 +26,9 @@ Defined in: [adapter/src/lib/\_Types.ts:207](https://github.com/ioBroker/ioBroke
 
 > **dateObj**: `string` \| `number` \| `Date`
 
-Defined in: [adapter/src/lib/\_Types.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L205)
+Defined in: [adapter/src/lib/\_Types.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L237)
+
+The date to format, as Date, timestamp or string
 
 ***
 
@@ -30,4 +36,6 @@ Defined in: [adapter/src/lib/\_Types.ts:205](https://github.com/ioBroker/ioBroke
 
 > **isDuration**: `boolean`
 
-Defined in: [adapter/src/lib/\_Types.ts:206](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L206)
+Defined in: [adapter/src/lib/\_Types.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L239)
+
+Whether the value represents a duration instead of a point in time

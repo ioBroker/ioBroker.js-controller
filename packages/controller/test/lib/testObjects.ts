@@ -2,9 +2,11 @@ import type { TestContext } from '../_Types.js';
 import assert from 'node:assert/strict';
 
 /**
- * Contains tests directly interacting with DB
+ * Register the object tests (directly interacting with the DB) on the given mocha test function
+ *
+ * @param it The mocha test function to register the tests on
+ * @param context The shared test context (adapter, states and objects clients)
  */
-
 export function register(it: Mocha.TestFunction, context: TestContext): void {
     const testName = `${context.name} objects: `;
 
@@ -149,7 +151,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
                 assert.ok(!err);
                 assert.strictEqual(objs?.length, 1);
                 assert.strictEqual(typeof objs[0], 'object');
-                assert.strictEqual(objs[0]._id, testId);
+                assert.strictEqual((objs[0] as ioBroker.AnyObject)._id, testId);
 
                 objects.getObjectsByPattern(`${testId}non`, null, (err, objs) => {
                     assert.ok(!err);
@@ -240,8 +242,8 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             objects.getObjects(keys!, (err, objs) => {
                 assert.ok(!err);
                 assert.strictEqual(objs?.length, 2);
-                assert.strictEqual(objs[0]._id, keys![0]);
-                assert.strictEqual(objs[1]._id, keys![1]);
+                assert.strictEqual((objs[0] as ioBroker.AnyObject)._id, keys![0]);
+                assert.strictEqual((objs[1] as ioBroker.AnyObject)._id, keys![1]);
                 done();
             });
         });

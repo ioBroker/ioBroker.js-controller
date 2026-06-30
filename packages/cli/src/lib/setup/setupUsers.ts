@@ -3,18 +3,27 @@ import type { ProcessExitCallback } from '../_Types.js';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import prompt from 'prompt';
 
+/** Options for the users command */
 export interface CLIUsersOptions {
+    /** Callback to exit the process with an exit code */
     processExit: ProcessExitCallback;
+    /** The objects database client */
     objects: ObjectsRedisClient;
 }
 
 /** Map a prompt.Schema to properties of type string */
 type SchemaPropsToString<TSchema extends prompt.Schema> = { [Property in keyof TSchema['properties']]: string };
 
+/**
+ * CLI command to manage ioBroker users and groups
+ */
 export class Users {
     private readonly objects: ObjectsRedisClient;
     private readonly processExit: ProcessExitCallback;
 
+    /**
+     * @param options The objects database client and the process-exit callback
+     */
     constructor(options: CLIUsersOptions) {
         if (!options.objects) {
             throw new Error('Invalid arguments: objects is missing');
@@ -32,7 +41,7 @@ export class Users {
      *
      * @param username name of the user which will be added
      * @param pw password
-     * @param callback
+     * @param callback Called once the user has been added
      */
     addUser(username: string, pw: string, callback: ioBroker.ErrorCallback): void {
         // user id's should be case insensitive
@@ -87,7 +96,7 @@ export class Users {
      *
      * @param username name of the user to set password for
      * @param pw password
-     * @param callback
+     * @param callback Called once the password has been set
      */
     setPassword(username: string, pw: string, callback: ioBroker.ErrorCallback): void {
         const _user = username.replace(/\s/g, '_').toLowerCase();
@@ -116,7 +125,7 @@ export class Users {
      *
      * @param username name of the user to check password
      * @param pw password
-     * @param callback
+     * @param callback Called with whether the password is correct
      */
     checkPassword(username: string, pw: string, callback: (err?: Error | null, isOk?: boolean) => void): void {
         const _user = username.replace(/\s/g, '_').toLowerCase();
@@ -136,7 +145,7 @@ export class Users {
      * Deletes user from system
      *
      * @param username name of the user to delete
-     * @param callback
+     * @param callback Called once the user has been deleted
      */
     delUser(username: string, callback: ioBroker.ErrorCallback): void {
         if (!username) {
@@ -201,7 +210,7 @@ export class Users {
      *
      * @param username user which will be added to the group
      * @param groupName name of the group where the user will be added to
-     * @param callback
+     * @param callback Called once the user has been added to the group
      */
     addUserToGroup(username: string, groupName: string, callback: ioBroker.ErrorCallback): void {
         let _user = username.replace(/\s/g, '_').toLowerCase();
@@ -243,7 +252,7 @@ export class Users {
      * @param username user which sohuld be created
      * @param groupName default group for the new user
      * @param password user password
-     * @param callback
+     * @param callback Called once the user has been created
      */
     addUserPrompt(username: string, groupName: string, password: string, callback: ioBroker.ErrorCallback): void {
         if (!username) {
@@ -323,7 +332,7 @@ export class Users {
      *
      * @param username name of the user to set password for
      * @param password password of user
-     * @param callback
+     * @param callback Called once the password has been set
      */
     async setUserPassword(username: string, password: string, callback: ioBroker.ErrorCallback): Promise<void> {
         if (!username) {
@@ -387,7 +396,7 @@ export class Users {
      *
      * @param username name of the user which will be activated
      * @param enable true if it should be enabled else false
-     * @param callback
+     * @param callback Called once the user has been enabled or disabled
      */
     enableUser(username: string, enable: boolean, callback: ioBroker.ErrorCallback): void {
         if (!username) {
@@ -422,7 +431,7 @@ export class Users {
      *
      * @param username name of the user to check password for
      * @param password password to check
-     * @param callback
+     * @param callback Called with whether the password is valid
      */
     checkUserPassword(username: string, password: string, callback: ioBroker.ErrorCallback): void {
         if (!username && !password) {
@@ -500,7 +509,7 @@ export class Users {
      * Get user object
      *
      * @param username name of the user to get object of
-     * @param callback
+     * @param callback Called with the user object
      */
     getUser(username: string, callback: (err?: Error | null, enabled?: boolean) => void): void {
         this.objects.getObject(`system.user.${username}`, (err, obj) => {
@@ -518,7 +527,7 @@ export class Users {
      * Get group object
      *
      * @param group groupname
-     * @param callback
+     * @param callback Called with the group object
      */
     getGroup(group: string, callback: (err?: Error | null, enabled?: boolean, members?: string[]) => void): void {
         this.objects.getObject(`system.group.${group}`, (err, obj) => {
@@ -537,7 +546,7 @@ export class Users {
      *
      * @param group groupname
      * @param enable if enable or disable
-     * @param callback
+     * @param callback Called once the group has been enabled or disabled
      */
     enableGroup(group: string, enable: boolean, callback: ioBroker.ErrorCallback): void {
         if (!group) {
@@ -580,16 +589,52 @@ export class Users {
         } else {
             // TODO: shoudln't it have some default acl? TS is worrying
             await this.objects.setObject(`system.group.${_group}`, {
+                _id: `system.group.${_group}`,
                 type: 'group',
                 common: {
                     name: group,
                     enabled: true,
                     members: [],
+                    acl: {
+                        file: {
+                            read: false,
+                            list: false,
+                            write: false,
+                            create: false,
+                            delete: false,
+                        },
+                        object: {
+                            read: false,
+                            list: false,
+                            write: false,
+                            create: false,
+                            delete: false,
+                        },
+                        users: {
+                            read: false,
+                            list: false,
+                            write: false,
+                            create: false,
+                            delete: false,
+                        },
+                        state: {
+                            read: false,
+                            list: false,
+                            write: false,
+                            create: false,
+                            delete: false,
+                        },
+                        other: {
+                            execute: false,
+                            sendto: false,
+                            http: false,
+                        },
+                    },
                 },
                 from: `system.host.${tools.getHostName()}.cli`,
                 ts: Date.now(),
                 native: {},
-            } as any);
+            } as ioBroker.GroupObject);
         }
     }
 
@@ -597,7 +642,7 @@ export class Users {
      * Remove group
      *
      * @param group groupname
-     * @param callback
+     * @param callback Called once the group has been removed
      */
     delGroup(group: string, callback: ioBroker.ErrorCallback): void {
         const _group = group.replace(/\s/g, '_');
@@ -620,7 +665,7 @@ export class Users {
      *
      * @param username name of the user which will be removed from group
      * @param groupName name of the group user will be removed from
-     * @param callback
+     * @param callback Called once the user has been removed from the group
      */
     removeUserFromGroup(username: string, groupName: string, callback: ioBroker.ErrorCallback): void {
         const _group = groupName.replace(/\s/g, '_');

@@ -4,8 +4,7 @@ import readline from 'node:readline';
 import readlineSync from 'readline-sync';
 import prompt from 'prompt';
 
-import { tools } from '@iobroker/js-controller-common';
-import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common';
+import { isLocalObjectsDbServer, isLocalStatesDbServer, tools } from '@iobroker/js-controller-common';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { MHClient, type BrowseResultEntry } from './multihostClient.js';
 
@@ -245,7 +244,9 @@ export class Multihost {
                                     obj!.native.secret,
                                     password.password as string,
                                 );
-                                this.showMHState(config, changed);
+                                this.showMHState(config, changed).catch(e =>
+                                    console.error(`Cannot show multihost state: ${e.message}`),
+                                );
                                 callback();
                             });
                         }
@@ -254,11 +255,13 @@ export class Multihost {
                     }
                 });
             } else {
-                this.showMHState(config, changed);
+                this.showMHState(config, changed).catch(e =>
+                    console.error(`Cannot show multihost state: ${e.message}`),
+                );
                 callback();
             }
         } else {
-            this.showMHState(config, changed);
+            this.showMHState(config, changed).catch(e => console.error(`Cannot show multihost state: ${e.message}`));
             callback();
         }
     }
@@ -269,7 +272,7 @@ export class Multihost {
     status(): void {
         const config = this.getConfig();
         config.multihostService = config.multihostService || { enabled: false, secure: true };
-        this.showMHState(config, false);
+        this.showMHState(config, false).catch(e => console.error(`Cannot show multihost state: ${e.message}`));
     }
 
     /**

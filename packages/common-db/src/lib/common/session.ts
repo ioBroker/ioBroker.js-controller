@@ -1,5 +1,3 @@
-type SessionData = Record<string, any>;
-
 type Session = {
     Store: any;
 };
@@ -7,7 +5,11 @@ type Session = {
 // TODO: in the long term move this file somewhere where we have types access it is nowhere used in controller itself and just exported for adapters so it should go to js-controller-adapter package
 interface AdapterStoreOptions {
     /** The ioBroker adapter */
-    adapter: any;
+    adapter: {
+        getSession: (sid: string, callback: (obj: ioBroker.Session) => void) => void;
+        setSession: (sid: string, ttl: number, sess: ioBroker.Session, callback: (err?: Error | null) => void) => void;
+        destroySession: (sid: string, callback: () => void) => void;
+    };
     /** The cookie */
     cookie?: {
         maxAge?: number;
@@ -26,17 +28,26 @@ export function createAdapterStore(session: Session, defaultTtl = 3600): any {
     const Store = session.Store;
 
     class AdapterStore extends Store {
-        private readonly adapter: any;
+        private readonly adapter: {
+            getSession: (sid: string, callback: (obj: ioBroker.Session) => void) => void;
+            setSession: (
+                sid: string,
+                ttl: number,
+                sess: ioBroker.Session,
+                callback: (err?: Error | null) => void,
+            ) => void;
+            destroySession: (sid: string, callback: () => void) => void;
+        };
 
+        /**
+         * @param options Store options including the adapter instance used to read and write sessions
+         */
         constructor(options: AdapterStoreOptions) {
             super(options);
 
             this.adapter = options.adapter;
 
-            options = options || {};
-            if (!options.cookie) {
-                options.cookie = { maxAge: defaultTtl };
-            }
+            options.cookie ||= { maxAge: defaultTtl };
             Store.call(this, options);
         }
 
@@ -46,8 +57,8 @@ export function createAdapterStore(session: Session, defaultTtl = 3600): any {
          * @param sid Session ID
          * @param fn callback
          */
-        get(sid: string, fn: (err?: Error | string | null, obj?: SessionData) => void): void {
-            this.adapter.getSession(sid, (obj: SessionData): void => {
+        get(sid: string, fn: (err?: Error | string | null, obj?: ioBroker.Session) => void): void {
+            this.adapter.getSession(sid, (obj: ioBroker.Session): void => {
                 if (obj) {
                     if (fn) {
                         return fn(null, obj);
@@ -65,7 +76,7 @@ export function createAdapterStore(session: Session, defaultTtl = 3600): any {
          * @param sess the session
          * @param fn callback
          */
-        set(sid: string, sess: SessionData, fn: (err?: Error | null) => void): void;
+        set(sid: string, sess: ioBroker.Session, fn: (err?: Error | null) => void): void;
         /**
          * Commit the given `sess` object associated with the given `sid`.
          *
@@ -74,7 +85,7 @@ export function createAdapterStore(session: Session, defaultTtl = 3600): any {
          * @param sess the session
          * @param fn callback
          */
-        set(sid: string, ttl: number, sess: SessionData, fn: (err?: Error | null) => void): void;
+        set(sid: string, ttl: number, sess: ioBroker.Session, fn: (err?: Error | null) => void): void;
 
         /**
          * Commit the given `sess` object associated with the given `sid`.
@@ -89,18 +100,18 @@ export function createAdapterStore(session: Session, defaultTtl = 3600): any {
                 fn = sess as (err?: Error | null) => void;
                 sess = ttl;
                 // analyse if the session is stored directly from express session
-                ttl = (sess as SessionData)?.cookie?.originalMaxAge
-                    ? Math.round((sess as SessionData).cookie.originalMaxAge / 1000)
+                ttl = (sess as ioBroker.Session)?.cookie?.originalMaxAge
+                    ? Math.round((sess as ioBroker.Session).cookie!.originalMaxAge! / 1000)
                     : defaultTtl;
             }
-            ttl = ttl || defaultTtl;
+            ttl ||= defaultTtl;
             this.adapter.setSession(
                 sid as string,
                 ttl as number,
-                sess as SessionData,
+                sess as ioBroker.Session,
                 function (err?: Error | null): void {
-                    // @ts-expect-error fix later
-                    fn?.call(this, err);
+                    // @ts-expect-error "this" is OK
+                    (fn as (err?: Error | null) => void)?.call(this, err);
                 },
             ); // do not use here => !!!
         }

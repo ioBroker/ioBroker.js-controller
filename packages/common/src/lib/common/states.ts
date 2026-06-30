@@ -2,6 +2,9 @@ import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
 import type { Client as StatesClient, interview } from '@iobroker/db-states-redis';
 
+/**
+ * Get the states database client constructor matching the configured states DB type
+ */
 export async function getStatesConstructor(): Promise<typeof StatesClient> {
     const config = fs.readJSONSync(tools.getConfigFileName());
     if (!config.states) {

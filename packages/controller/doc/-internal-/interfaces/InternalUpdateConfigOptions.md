@@ -6,7 +6,9 @@
 
 # Interface: InternalUpdateConfigOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:346](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L346)
+Defined in: [adapter/src/lib/\_Types.ts:455](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L455)
+
+Options for updating the adapter config
 
 ## Properties
 
@@ -14,4 +16,6 @@ Defined in: [adapter/src/lib/\_Types.ts:346](https://github.com/ioBroker/ioBroke
 
 > **newConfig**: `Record`\<`string`, `any`\>
 
-Defined in: [adapter/src/lib/\_Types.ts:347](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L347)
+Defined in: [adapter/src/lib/\_Types.ts:457](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L457)
+
+The new configuration values

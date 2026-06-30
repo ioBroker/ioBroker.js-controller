@@ -9,8 +9,9 @@ import {
     isLocalStatesDbServer,
     isLocalObjectsDbServer,
     getInstancesOrderedByStartPrio,
+    tools,
+    EXIT_CODES,
 } from '@iobroker/js-controller-common';
-import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import * as CLI from '@/lib/cli/messages.js';
 import { CLICommand } from '@/lib/cli/cliCommand.js';
 import { getObjectFrom, getInstanceName, normalizeAdapterName, enumInstances } from '@/lib/cli/cliTools.js';
@@ -25,7 +26,11 @@ const TRY_KILL_WAIT_MS = 5_000;
 const rootDir = tools.getControllerDir();
 const killAllScriptPath = path.join(rootDir, 'killall.sh');
 
+/** Command ioBroker process control (start/stop/restart/status) ... */
 export class CLIProcess extends CLICommand {
+    /**
+     * @param options The command options including context and parameters
+     */
     constructor(options: CLICommandOptions) {
         super(options);
     }
@@ -38,7 +43,7 @@ export class CLIProcess extends CLICommand {
      *
      * @param args parsed cli arguments
      */
-    async start(args: any[]): Promise<void> {
+    async start(args: string[]): Promise<void> {
         const adapterName = normalizeAdapterName(args[0]);
         if (!adapterName) {
             await this.startJSController();
@@ -57,7 +62,7 @@ export class CLIProcess extends CLICommand {
      *
      * @param args parsed cli arguments
      */
-    async restart(args: any[]): Promise<void> {
+    async restart(args: string[]): Promise<void> {
         const adapterName = normalizeAdapterName(args[0]);
         if (!adapterName) {
             await this.restartJSController();
@@ -74,7 +79,7 @@ export class CLIProcess extends CLICommand {
      *
      * @param args parsed cli arguments
      */
-    async stop(args: any[]): Promise<void> {
+    async stop(args: string[]): Promise<void> {
         const adapterName = normalizeAdapterName(args[0]);
         if (adapterName === undefined) {
             await CLIProcess.stopJSController();
@@ -271,7 +276,7 @@ export class CLIProcess extends CLICommand {
      *
      * @param args parsed cli arguments
      */
-    status(args: any[]): void {
+    status(args: string[]): void {
         const { callback, dbConnect } = this.options;
         const adapterName = normalizeAdapterName(args[0]);
         const showEntireConfig = adapterName === 'all';
@@ -365,13 +370,13 @@ async function showInstanceStatus(states: StatesClient, adapterInstance: string)
  * Prints the config file to the console
  *
  * @param config the ioBroker json file content
- * @param root
+ * @param root The path of the current config section being printed
  */
 function showConfig(config: ioBroker.IoBrokerJson, root?: string[]): void {
     if (!tools.isObject(config)) {
         return;
     }
-    root = root || [];
+    root ||= [];
     const prefix = root.join('/').toUpperCase();
     for (const attr of Object.keys(config)) {
         if (attr.match(/comment$/i)) {

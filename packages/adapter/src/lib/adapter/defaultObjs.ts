@@ -1,3 +1,8 @@
+/**
+ * Create the default `common` definitions for the well-known state roles (e.g. level.dimmer, indicator.working)
+ *
+ * @returns a map of state role to its default common properties
+ */
 export function createDefaults(): Record<string, Partial<ioBroker.StateCommon>> {
     return {
         'level.dimmer': {

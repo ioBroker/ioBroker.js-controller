@@ -6,7 +6,7 @@
 
 # Interface: StateACL
 
-Defined in: [types-dev/objects.d.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L35)
+Defined in: [types-dev/objects.d.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/objects.d.ts#L35)
 
 Defines access rights for a single state object
 
@@ -20,7 +20,7 @@ Defines access rights for a single state object
 
 > **object**: `number`
 
-Defined in: [types-dev/objects.d.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L31)
+Defined in: [types-dev/objects.d.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/objects.d.ts#L31)
 
 Linux-type permissions defining access to this object
 
@@ -32,9 +32,9 @@ Linux-type permissions defining access to this object
 
 ### owner
 
-> **owner**: `string`
+> **owner**: `` `system.user.${string}` ``
 
-Defined in: [types-dev/objects.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L27)
+Defined in: [types-dev/objects.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/objects.d.ts#L27)
 
 Full name of the user who owns this object, e.g. "system.user.admin"
 
@@ -46,9 +46,9 @@ Full name of the user who owns this object, e.g. "system.user.admin"
 
 ### ownerGroup
 
-> **ownerGroup**: `string`
+> **ownerGroup**: `` `system.group.${string}` ``
 
-Defined in: [types-dev/objects.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L29)
+Defined in: [types-dev/objects.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/objects.d.ts#L29)
 
 Full name of the group who owns this object, e.g. "system.group.administrator"
 
@@ -62,6 +62,6 @@ Full name of the group who owns this object, e.g. "system.group.administrator"
 
 > **state**: `number`
 
-Defined in: [types-dev/objects.d.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/objects.d.ts#L37)
+Defined in: [types-dev/objects.d.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/objects.d.ts#L37)
 
 Linux-type permissions defining access to this state

@@ -6,18 +6,38 @@
 
 # Interface: ExtendObjectOptions
 
-Defined in: [types-dev/index.d.ts:362](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/index.d.ts#L362)
-
-## Indexable
-
-> \[`other`: `string`\]: `unknown`
+Defined in: [types-dev/index.d.ts:393](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/index.d.ts#L393)
 
 ## Properties
+
+### owner?
+
+> `optional` **owner?**: `` `system.user.${string}` ``
+
+Defined in: [types-dev/index.d.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/index.d.ts#L397)
+
+***
+
+### ownerGroup?
+
+> `optional` **ownerGroup?**: `` `system.group.${string}` ``
+
+Defined in: [types-dev/index.d.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/index.d.ts#L398)
+
+***
 
 ### preserve?
 
 > `optional` **preserve?**: [`ExtendObjectOptionsPreserve`](ExtendObjectOptionsPreserve.md)
 
-Defined in: [types-dev/index.d.ts:364](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/index.d.ts#L364)
+Defined in: [types-dev/index.d.ts:395](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/index.d.ts#L395)
 
 Which properties of the original object should be preserved
+
+***
+
+### user?
+
+> `optional` **user?**: `` `system.user.${string}` ``
+
+Defined in: [types-dev/index.d.ts:396](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/index.d.ts#L396)

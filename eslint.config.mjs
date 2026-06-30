@@ -11,6 +11,15 @@ export default [
         rules: {
             '@typescript-eslint/no-unused-vars': 'off',
             '@typescript-eslint/no-base-to-string': 'off',
+            // type-only assertion files are never executed
+            '@typescript-eslint/no-floating-promises': 'off',
+        },
+    },
+    {
+        // test code uses the callback-style APIs and intentional fire-and-forget setup
+        files: ['**/test/**/*.ts'],
+        rules: {
+            '@typescript-eslint/no-floating-promises': 'off',
         },
     },
 ];

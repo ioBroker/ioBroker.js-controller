@@ -1,7 +1,7 @@
 /**
  * Format number in seconds to time text
  *
- * @param seconds
+ * @param seconds The number of seconds to format
  */
 export function formatSeconds(seconds: number): string {
     let _seconds: number | string = seconds;
@@ -34,7 +34,7 @@ export function formatSeconds(seconds: number): string {
 /**
  * Format bytes to MB or GB
  *
- * @param bytes
+ * @param bytes The number of bytes to format
  */
 export function formatRam(bytes: number): string {
     const GB = Math.floor((bytes / (1024 * 1024 * 1024)) * 10) / 10;
@@ -53,7 +53,7 @@ export function formatRam(bytes: number): string {
 /**
  * Format speed
  *
- * @param mhz
+ * @param mhz The speed in MHz
  */
 export function formatSpeed(mhz: number): string {
     return `${mhz} MHz`;
@@ -62,7 +62,7 @@ export function formatSpeed(mhz: number): string {
 /**
  * Format bytes to human readable form
  *
- * @param bytes
+ * @param bytes The number of bytes to format
  */
 export function formatBytes(bytes: number): string {
     if (Math.abs(bytes) < 1024) {

@@ -80,7 +80,8 @@
             "memLimitError",
             "// memLimitError"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "description": "System-wide controller settings"
         },
         "multihostService": {
           "type": "object",
@@ -104,13 +105,16 @@
             "password",
             "persist"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "description": "Configuration of the multihost service used to connect several ioBroker hosts"
         },
         "objects": {
-          "$ref": "#/definitions/ObjectsDatabaseOptions"
+          "$ref": "#/definitions/ObjectsDatabaseOptions",
+          "description": "Configuration of the objects database"
         },
         "states": {
-          "$ref": "#/definitions/StatesDatabaseOptions"
+          "$ref": "#/definitions/StatesDatabaseOptions",
+          "description": "Configuration of the states database"
         },
         "log": {
           "type": "object",
@@ -134,14 +138,16 @@
             "noStdout",
             "transport"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "description": "Logging configuration"
         },
         "dataDir": {
           "type": "string",
           "description": "Always relative to iobroker.js-controller/"
         },
         "// dataDir": {
-          "type": "string"
+          "type": "string",
+          "description": "Comment/hint shown next to the dataDir setting in the JSON config"
         },
         "plugins": {
           "type": "object",
@@ -156,10 +162,12 @@
               "enabled"
             ],
             "additionalProperties": {}
-          }
+          },
+          "description": "Controller plugins configuration keyed by plugin name"
         },
         "// dnsResolution": {
-          "type": "string"
+          "type": "string",
+          "description": "Comment/hint shown next to the dnsResolution setting in the JSON config"
         },
         "dnsResolution": {
           "type": "string",
@@ -198,7 +206,8 @@
           "description": "Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel]."
         },
         "sentinelName": {
-          "type": "string"
+          "type": "string",
+          "description": "Name of the sentinel master to connect to"
         },
         "host": {
           "anyOf": [
@@ -211,7 +220,103 @@
                 "type": "string"
               }
             }
-          ]
+          ],
+          "description": "Host name(s) or IP address(es) of the database server"
+        },
+        "port": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          ],
+          "description": "Port(s) of the database server"
+        },
+        "connectTimeout": {
+          "type": "number",
+          "description": "Maximum time in milliseconds to wait for a connection to be established"
+        },
+        "writeFileInterval": {
+          "type": "number",
+          "description": "Interval in milliseconds between flushing the in-memory database to file"
+        },
+        "dataDir": {
+          "type": "string",
+          "description": "Directory where the database files are stored, relative to the controller dir"
+        },
+        "options": {
+          "$ref": "#/definitions/DatabaseConnectionOptions",
+          "description": "Low-level connection options passed to the database driver"
+        },
+        "backup": {
+          "$ref": "#/definitions/DatabaseBackupOptions",
+          "description": "Backup configuration for the database"
+        },
+        "jsonlOptions": {
+          "$ref": "#/definitions/JsonlOptions",
+          "description": "Options specific to the JSONL database backend"
+        },
+        "noFileCache": {
+          "type": "boolean",
+          "description": "Disable the in-memory file cache for objects"
+        }
+      },
+      "required": [
+        "backup",
+        "connectTimeout",
+        "host",
+        "jsonlOptions",
+        "noFileCache",
+        "options",
+        "port",
+        "type",
+        "writeFileInterval"
+      ],
+      "additionalProperties": false,
+      "description": "Configuration of the objects database connection"
+    },
+    "DatabaseConnectionOptions": {
+      "type": "object",
+      "properties": {
+        "auth_pass": {
+          "type": "string",
+          "description": "Password used to authenticate against the database"
+        },
+        "retry_max_delay": {
+          "type": "number",
+          "description": "Maximum delay in milliseconds between reconnection attempts"
+        },
+        "retry_max_count": {
+          "type": "number",
+          "description": "Maximum number of reconnection attempts"
+        },
+        "tls": {
+          "type": "object",
+          "properties": {
+            "rejectUnauthorized": {
+              "type": "boolean",
+              "description": "Needs to be false with self-signed certs"
+            },
+            "ca": {
+              "type": "string",
+              "description": "The certificate content"
+            },
+            "key": {
+              "type": "string",
+              "description": "The key file content"
+            },
+            "cert": {
+              "type": "string",
+              "description": "The cert file content"
+            }
+          },
+          "additionalProperties": false,
+          "description": "As soon as the tls property is defined, redis will try to connect via tls (currently only for redis)"
         },
         "port": {
           "anyOf": [
@@ -226,86 +331,73 @@
             }
           ]
         },
-        "connectTimeout": {
-          "type": "number"
-        },
-        "writeFileInterval": {
-          "type": "number"
-        },
-        "dataDir": {
-          "type": "string"
-        },
-        "options": {
-          "type": "object",
-          "properties": {
-            "auth_pass": {
+        "host": {
+          "anyOf": [
+            {
               "type": "string"
             },
-            "retry_max_delay": {
-              "type": "number"
-            },
-            "retry_max_count": {
-              "type": "number"
-            },
-            "db": {
-              "type": "number"
-            },
-            "family": {
-              "type": "number"
-            },
-            "tls": {
-              "type": "object",
-              "properties": {
-                "rejectUnauthorized": {
-                  "type": "boolean",
-                  "description": "Needs to be false with self-signed certs"
-                },
-                "ca": {
-                  "type": "string",
-                  "description": "The certificate content"
-                },
-                "key": {
-                  "type": "string",
-                  "description": "The key file content"
-                },
-                "cert": {
-                  "type": "string",
-                  "description": "The cert file content"
-                }
-              },
-              "additionalProperties": false,
-              "description": "As soon as the tls property is defined, redis will try to connect via tls (currently only for redis)"
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
-          },
-          "required": [
-            "auth_pass",
-            "retry_max_delay",
-            "retry_max_count",
-            "db",
-            "family"
-          ],
-          "additionalProperties": false
+          ]
         },
-        "backup": {
-          "$ref": "#/definitions/DatabaseBackupOptions"
+        "family": {
+          "type": "number",
+          "description": "4 (IPv4) or 6 (IPv6), Defaults to 4."
         },
-        "jsonlOptions": {
-          "$ref": "#/definitions/JsonlOptions"
+        "path": {
+          "type": "string",
+          "description": "Local domain socket path. If set the port, host and family will be ignored."
         },
-        "noFileCache": {
-          "type": "boolean"
+        "connectionName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string",
+          "description": "If set, client will send AUTH command with the value of this option when connected."
+        },
+        "db": {
+          "type": "number",
+          "description": "Database index to use."
+        },
+        "enableReadyCheck": {
+          "type": "boolean",
+          "description": "When a connection is established to the Redis server, the server might still be loading the database from disk. While loading, the server not respond to any commands. To work around this, when this option is true, ioredis will check the status of the Redis server, and when the Redis server is able to process commands, a ready event will be emitted."
+        },
+        "autoResubscribe": {
+          "type": "boolean",
+          "description": "After reconnected, if the previous connection was in the subscriber mode, client will auto re-subscribe these channels. default: true."
+        },
+        "name": {
+          "type": "string",
+          "description": "default: null."
+        },
+        "sentinels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string"
+              },
+              "port": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "host",
+              "port"
+            ],
+            "additionalProperties": false
+          }
         }
       },
       "required": [
-        "backup",
-        "connectTimeout",
-        "host",
-        "jsonlOptions",
-        "noFileCache",
-        "options",
-        "port",
-        "type",
-        "writeFileInterval"
+        "auth_pass",
+        "retry_max_count"
       ],
       "additionalProperties": false
     },
@@ -331,7 +423,7 @@
         },
         "period": {
           "type": "number",
-          "description": "By default backup every 2 hours. Time is in minutes. To disable backup set the value to 0"
+          "description": "By default, backup every 2 hours. Time is in minutes. To disable backup set the value to 0"
         },
         "// period": {
           "type": "string"
@@ -454,7 +546,8 @@
           "description": "Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel]."
         },
         "sentinelName": {
-          "type": "string"
+          "type": "string",
+          "description": "Name of the sentinel master to connect to"
         },
         "host": {
           "anyOf": [
@@ -467,7 +560,8 @@
                 "type": "string"
               }
             }
-          ]
+          ],
+          "description": "Host name(s) or IP address(es) of the database server"
         },
         "port": {
           "anyOf": [
@@ -480,73 +574,32 @@
                 "type": "number"
               }
             }
-          ]
+          ],
+          "description": "Port(s) of the database server"
         },
         "connectTimeout": {
-          "type": "number"
+          "type": "number",
+          "description": "Maximum time in milliseconds to wait for a connection to be established"
         },
         "writeFileInterval": {
-          "type": "number"
+          "type": "number",
+          "description": "Interval in milliseconds between flushing the in-memory database to file"
         },
         "dataDir": {
-          "type": "string"
+          "type": "string",
+          "description": "Directory where the database files are stored, relative to the controller dir"
         },
         "options": {
-          "type": "object",
-          "properties": {
-            "auth_pass": {
-              "type": "string"
-            },
-            "retry_max_delay": {
-              "type": "number"
-            },
-            "retry_max_count": {
-              "type": "number"
-            },
-            "db": {
-              "type": "number"
-            },
-            "family": {
-              "type": "number"
-            },
-            "tls": {
-              "type": "object",
-              "properties": {
-                "rejectUnauthorized": {
-                  "type": "boolean",
-                  "description": "Needs to be false with self-signed certs"
-                },
-                "ca": {
-                  "type": "string",
-                  "description": "The certificate content"
-                },
-                "key": {
-                  "type": "string",
-                  "description": "The key file content"
-                },
-                "cert": {
-                  "type": "string",
-                  "description": "The cert file content"
-                }
-              },
-              "additionalProperties": false,
-              "description": "As soon as the tls property is defined, redis will try to connect via tls (currently only for redis)"
-            }
-          },
-          "required": [
-            "auth_pass",
-            "retry_max_delay",
-            "retry_max_count",
-            "db",
-            "family"
-          ],
-          "additionalProperties": false
+          "$ref": "#/definitions/DatabaseConnectionOptions",
+          "description": "Low-level connection options passed to the database driver"
         },
         "backup": {
-          "$ref": "#/definitions/DatabaseBackupOptions"
+          "$ref": "#/definitions/DatabaseBackupOptions",
+          "description": "Backup configuration for the database"
         },
         "jsonlOptions": {
-          "$ref": "#/definitions/JsonlOptions"
+          "$ref": "#/definitions/JsonlOptions",
+          "description": "Options specific to the JSONL database backend"
         },
         "maxQueue": {
           "type": "number",
@@ -564,7 +617,8 @@
         "type",
         "writeFileInterval"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "description": "Configuration of the states database connection"
     },
     "global.ioBroker.LogLevel": {
       "type": "string",

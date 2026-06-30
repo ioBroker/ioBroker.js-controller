@@ -1,19 +1,24 @@
 /**
  *      Setup
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 import fs from 'fs-extra';
 import path from 'node:path';
+import os from 'node:os';
+import crypto from 'node:crypto';
+import deepClone from 'deep-clone';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
+import rl from 'readline-sync';
 
 import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '@/lib/_Types.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
-import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import {
     statesDbHasServer,
     isLocalStatesDbServer,
@@ -21,19 +26,16 @@ import {
     objectsDbHasServer,
     performObjectsInterview,
     performStatesInterview,
+    EXIT_CODES,
+    tools,
 } from '@iobroker/js-controller-common';
+import { FORBIDDEN_CHARS, getHostObject } from '@iobroker/js-controller-common-db/tools';
+import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
+
 import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
 import { BackupRestore } from '@/lib/setup/setupBackup.js';
-import crypto from 'node:crypto';
-import deepClone from 'deep-clone';
 import * as pluginInfos from '@/lib/setup/pluginInfos.js';
-import rl from 'readline-sync';
-import { FORBIDDEN_CHARS, getHostObject } from '@iobroker/js-controller-common-db/tools';
-import os from 'node:os';
-import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import { Upload } from '@/lib/setup/setupUpload.js';
-import { createRequire } from 'node:module';
-import * as url from 'node:url';
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
@@ -46,13 +48,19 @@ const COLOR_RESET = '\x1b[0m';
 const COLOR_GREEN = '\x1b[32m';
 const CONTROLLER_DIR = tools.getControllerDir();
 
+/** Options for the setup command */
 export interface CLISetupOptions {
+    /** Handler to clean the database */
     cleanDatabase: CleanDatabaseHandler;
+    /** Callback to exit the process with an exit code */
     processExit: ProcessExitCallback;
+    /** Parsed CLI parameters */
     params: Record<string, any>;
+    /** Handler to restart the controller */
     restartController: RestartController;
 }
 
+/** Options for running the setup command */
 export interface SetupCommandOptions {
     /** Callback called afterward */
     callback: (isCreated?: boolean) => void;
@@ -62,6 +70,9 @@ export interface SetupCommandOptions {
     useRedis: boolean;
 }
 
+/**
+ * CLI command that performs the initial ioBroker setup (databases, config and objects)
+ */
 export class Setup {
     /** Object IDs which are not allowed to exist but could be generated due to errors in the past */
     private readonly KNOWN_GARBAGE_OBJECT_IDS = ['null', 'undefined'];
@@ -74,6 +85,9 @@ export class Setup {
     private readonly cleanDatabase: CleanDatabaseHandler;
     private readonly restartController: RestartController;
 
+    /**
+     * @param options Handlers for cleaning the DB, exiting and restarting, plus the CLI parameters
+     */
     constructor(options: CLISetupOptions) {
         this.processExit = options.processExit;
         this.params = options.params;
@@ -83,6 +97,11 @@ export class Setup {
         this.dbSetup = this.dbSetup.bind(this);
     }
 
+    /**
+     * Print information about the plugins configured for the controller
+     *
+     * @param systemConfig The system.config object, used to read the active repository
+     */
     async informAboutPlugins(systemConfig?: ioBroker.SystemConfigObject | null): Promise<void> {
         if (!this.states) {
             throw new Error('States not set up, call setupObjects first');
@@ -255,6 +274,13 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         }
     }
 
+    /**
+     * Create the initial set of objects and design documents in the database
+     *
+     * @param iopkg The io-package.json of the controller
+     * @param ignoreExisting Whether to proceed even if the config already exists
+     * @param callback Called once the database has been set up
+     */
     async dbSetup(iopkg: IoPackage, ignoreExisting: boolean, callback: () => void): Promise<void> {
         if (!this.objects) {
             throw new Error('Objects not set up, call setupObjects first');
@@ -414,17 +440,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
                         } catch {
                             //ignore
                         }
-                        this.dbSetup(iopkg, true, callback);
-                        return;
+                        return this.dbSetup(iopkg, true, callback);
                     }
                 }
-                this.dbSetup(iopkg, true, callback);
-            } else {
-                this.dbSetup(iopkg, true, callback);
+                return this.dbSetup(iopkg, true, callback);
             }
-        } else {
-            this.dbSetup(iopkg, false, callback);
+            return this.dbSetup(iopkg, true, callback);
         }
+        return this.dbSetup(iopkg, false, callback);
     }
 
     /**
@@ -682,6 +705,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         return EXIT_CODES.NO_ERROR;
     }
 
+    /**
+     * Interactively configure the databases and write the configuration file
+     */
     async setupCustom(): Promise<EXIT_CODES> {
         let config: ioBroker.IoBrokerJson;
         // read actual configuration
@@ -1603,10 +1629,10 @@ require('${path.normalize(`${thisDir}/..`)}/setup').execute();`;
             }
         } else if (ignoreIfExist) {
             // it is a setup first run and config exists yet
-            this.setupObjects(() => callback?.(), true);
+            this.setupObjects(() => callback?.(), true).catch(e => console.error(`Cannot setup objects: ${e.message}`));
             return;
         }
 
-        this.setupObjects(() => callback?.(isCreated));
+        this.setupObjects(() => callback?.(isCreated)).catch(e => console.error(`Cannot setup objects: ${e.message}`));
     }
 }

@@ -35,6 +35,9 @@ interface UpgradeControllerOptions {
     version?: string;
 }
 
+/**
+ * CLI command to upgrade the js-controller
+ */
 export class Upgrade {
     private readonly hostname = tools.getHostName();
     private readonly upload: Upload;
@@ -42,8 +45,11 @@ export class Upgrade {
     private readonly objects: ObjectsInRedisClient;
     private readonly processExit: ProcessExitCallback;
 
+    /**
+     * @param options The objects client, the upload/install helpers and the process-exit callback
+     */
     constructor(options: CLIUpgradeOptions) {
-        options = options || {};
+        options ||= {} as CLIUpgradeOptions;
 
         if (!options.processExit) {
             throw new Error('Invalid arguments: processExit is missing');
@@ -65,7 +71,7 @@ export class Upgrade {
      * @param autoConfirm automatically confirm the tty questions (bypass)
      */
     async upgradeAdapterHelper(
-        repo: Record<string, any>,
+        repo: ioBroker.RepositoryJson,
         list: string[],
         forceDowngrade: boolean,
         autoConfirm: boolean,
@@ -73,14 +79,15 @@ export class Upgrade {
         const relevantAdapters = [];
         // check which adapters are upgradeable and sort them according to their dependencies
         for (const adapter of list) {
-            if (repo[adapter].controller) {
+            const repoAdapter = repo[adapter] as ioBroker.RepositoryJsonAdapterContent;
+            if (repoAdapter.controller) {
                 // skip controller
                 continue;
             }
             const adapterDir = tools.getAdapterDir(adapter);
             if (adapterDir && fs.existsSync(path.join(adapterDir, 'io-package.json'))) {
                 const ioInstalled = fs.readJsonSync(path.join(adapterDir, 'io-package.json'));
-                if (!tools.upToDate(repo[adapter].version, ioInstalled.common.version)) {
+                if (!tools.upToDate(repoAdapter.version, ioInstalled.common.version)) {
                     // not up to date, we need to put it into account for our dependency check
                     relevantAdapters.push(adapter);
                 }
@@ -95,16 +102,17 @@ export class Upgrade {
                 // create an ordered list for upgrades
                 for (let i = relevantAdapters.length - 1; i >= 0; i--) {
                     const relAdapter = relevantAdapters[i];
+                    const relevantAdapter = repo[relAdapter] as ioBroker.RepositoryJsonAdapterContent;
                     // if a new version has no dependencies, we can upgrade
-                    if (!repo[relAdapter].dependencies && !repo[relAdapter].globalDependencies) {
+                    if (!relevantAdapter.dependencies && !relevantAdapter.globalDependencies) {
                         // no deps, simply add it
                         sortedAdapters.push(relAdapter);
                         relevantAdapters.splice(relevantAdapters.indexOf(relAdapter), 1);
                         oneAdapterAdded = true;
                     } else {
                         const allDeps: Record<string, string> = {
-                            ...tools.parseDependencies(repo[relAdapter].dependencies),
-                            ...tools.parseDependencies(repo[relAdapter].globalDependencies),
+                            ...tools.parseDependencies(relevantAdapter.dependencies),
+                            ...tools.parseDependencies(relevantAdapter.globalDependencies),
                         };
 
                         // we have to check if the deps are there
@@ -141,7 +149,7 @@ export class Upgrade {
             debug(`upgrade order is "${sortedAdapters.join(', ')}"`);
 
             for (const sortedAdapter of sortedAdapters) {
-                if (repo[sortedAdapter]?.controller) {
+                if ((repo[sortedAdapter] as ioBroker.RepositoryJsonAdapterContent)?.controller) {
                     continue;
                 }
                 await this.upgradeAdapter(repo, sortedAdapter, forceDowngrade, autoConfirm, true);
@@ -292,13 +300,13 @@ export class Upgrade {
      * @param upgradeAll if true, this is an upgrade all call, we don't do major upgrades if no tty
      */
     async upgradeAdapter(
-        repoUrlOrObject: string | Record<string, any> | undefined,
+        repoUrlOrObject: string | ioBroker.RepositoryJson | undefined,
         adapter: string,
         forceDowngrade: boolean,
         autoConfirm: boolean,
         upgradeAll: boolean,
     ): Promise<void> {
-        let sources: Record<string, any>;
+        let sources: ioBroker.RepositoryJson;
         if (!repoUrlOrObject || !tools.isObject(repoUrlOrObject)) {
             try {
                 sources = await getRepository({ repoName: repoUrlOrObject, objects: this.objects });
@@ -323,7 +331,7 @@ export class Upgrade {
         }
 
         /** Repository entry of this adapter */
-        const repoAdapter: Record<string, any> = sources[adapter];
+        const repoAdapter = sources[adapter] as ioBroker.RepositoryJsonAdapterContent;
 
         // TODO: not really adapter object but close enough
         const finishUpgrade = async (name: string, ioPack?: ioBroker.AdapterObject): Promise<void> => {
@@ -679,7 +687,7 @@ export class Upgrade {
         }
 
         const controllerName = installed.common.name;
-        let sources: Record<string, ioBroker.RepositoryJsonAdapterContent> | undefined;
+        let sources: ioBroker.RepositoryJson | undefined;
 
         if (targetVersion === undefined) {
             try {
@@ -694,7 +702,7 @@ export class Upgrade {
             }
 
             /** Repository entry of the controller */
-            const repoController = sources[controllerName];
+            const repoController = sources[controllerName] as ioBroker.RepositoryJsonAdapterContent;
             targetVersion = version ?? repoController.version;
         }
 

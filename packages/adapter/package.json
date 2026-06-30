@@ -1,7 +1,7 @@
 {
     "name": "@iobroker/js-controller-adapter",
     "type": "module",
-    "version": "7.1.3-alpha.0-20260607-0a6edee6f",
+    "version": "7.2.3-alpha.3-20260630-0b31cfcb0",
     "engines": {
         "node": ">=18.0.0"
     },
@@ -49,6 +49,11 @@
             "import": "./build/esm/index.js",
             "require": "./build/cjs/index.js",
             "types": "./build/esm/index.d.ts"
+        },
+        "./validator": {
+            "import": "./build/esm/lib/adapter/validator.js",
+            "require": "./build/cjs/lib/adapter/validator.js",
+            "types": "./build/esm/lib/adapter/validator.d.ts"
         },
         "./package.json": "./package.json"
     },

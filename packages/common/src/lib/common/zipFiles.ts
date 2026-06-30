@@ -80,7 +80,15 @@ function _addFile(
     });
 }
 
-// pack all files as zip and send it back
+/**
+ * Pack all files of a directory into a zip archive
+ *
+ * @param objects The objects database client
+ * @param id The object ID owning the files
+ * @param name Path of the directory to read inside the object's file storage
+ * @param options Optional settings passed to the objects client, or the callback
+ * @param callback Called with the base64 encoded zip archive
+ */
 export async function readDirAsZip(
     objects: ObjectsClient,
     id: string,
@@ -194,6 +202,15 @@ async function _writeOneFile(
     return objects.writeFileAsync(id, name + filename, data, options);
 }
 
+/**
+ * Unpack a zip archive and write all contained files into the object's file storage
+ *
+ * @param objects The objects database client
+ * @param id The object ID that should own the files
+ * @param name Target directory path inside the object's file storage
+ * @param data The zip archive as a buffer
+ * @param options Optional settings passed to the objects client
+ */
 export async function writeDirAsZip(
     objects: ObjectsClient,
     id: string,
@@ -237,7 +254,14 @@ export async function writeDirAsZip(
     }
 }
 
-// pack all files as zip and send it back
+/**
+ * Read all objects below the given root ID and pack them into a zip archive
+ *
+ * @param objects The objects database client
+ * @param rootId The root object ID whose child objects should be exported
+ * @param adapter The adapter the objects belong to
+ * @param options Optional settings passed to the objects client
+ */
 export async function readObjectsAsZip(
     objects: ObjectsClient,
     rootId: string,
@@ -329,6 +353,16 @@ async function _writeOneObject(
     }
 }
 
+/**
+ * Unpack a zip archive of objects and store them below the given root ID
+ *
+ * @param objects The objects database client
+ * @param rootId The root object ID the imported objects should be stored under
+ * @param adapter The adapter the objects belong to
+ * @param data The zip archive as a buffer
+ * @param options Optional settings passed to the objects client
+ * @param callback Called when the import has finished or failed
+ */
 export async function writeObjectsAsZip(
     objects: ObjectsClient,
     rootId: string,

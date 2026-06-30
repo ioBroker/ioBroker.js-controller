@@ -1,5 +1,6 @@
 import type { EXIT_CODES } from '@iobroker/js-controller-common';
 
+/** Options for creating an {@link IoBrokerError} */
 export interface IoBrokerErrorOptions {
     /** The error message */
     message: string;
@@ -12,6 +13,9 @@ export interface IoBrokerErrorOptions {
  */
 export class IoBrokerError extends Error {
     readonly code: EXIT_CODES;
+    /**
+     * @param options The error message and ioBroker exit code
+     */
     constructor(options: IoBrokerErrorOptions) {
         super(options.message);
 

@@ -22,6 +22,11 @@ let states: StateRedisClient | null;
 // ensure the temp dir is empty, because content of data/files etc is created and checked for existence in some tests
 fs.emptyDirSync(`${rootDir}tmp`);
 
+/**
+ * Start a controller instance for the integration tests
+ *
+ * @param options Options controlling how the controller and its databases are started
+ */
 export async function startController(options: Record<string, any>): Promise<StartControllerReturnObject> {
     if (!options) {
         options = {};
@@ -167,6 +172,9 @@ export async function startController(options: Record<string, any>): Promise<Sta
     });
 }
 
+/**
+ * Stop the controller instance started for the integration tests and clean up
+ */
 export async function stopController(): Promise<void> {
     if (objects) {
         await objects.destroy();

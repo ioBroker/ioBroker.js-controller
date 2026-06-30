@@ -6,7 +6,9 @@
 
 # Interface: InternalSetStateChangedOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:444](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L444)
+Defined in: [adapter/src/lib/\_Types.ts:617](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L617)
+
+Options for setting a state only if it changed
 
 ## Extends
 
@@ -18,7 +20,9 @@ Defined in: [adapter/src/lib/\_Types.ts:444](https://github.com/ioBroker/ioBroke
 
 > `optional` **ack?**: `boolean`
 
-Defined in: [adapter/src/lib/\_Types.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L439)
+Defined in: [adapter/src/lib/\_Types.ts:609](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L609)
+
+Whether the state should be acknowledged
 
 #### Inherited from
 
@@ -30,7 +34,9 @@ Defined in: [adapter/src/lib/\_Types.ts:439](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: [`SetStateChangedCallback`](../type-aliases/SetStateChangedCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:445](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L445)
+Defined in: [adapter/src/lib/\_Types.ts:619](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L619)
+
+Called with whether the state was changed
 
 #### Overrides
 
@@ -42,7 +48,9 @@ Defined in: [adapter/src/lib/\_Types.ts:445](https://github.com/ioBroker/ioBroke
 
 > **id**: `string` \| [`IdObject`](IdObject.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L437)
+Defined in: [adapter/src/lib/\_Types.ts:605](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L605)
+
+The id of the state, or an id object
 
 #### Inherited from
 
@@ -52,9 +60,11 @@ Defined in: [adapter/src/lib/\_Types.ts:437](https://github.com/ioBroker/ioBroke
 
 ### options?
 
-> `optional` **options?**: `Partial`\<[`GetUserGroupsOptions`](GetUserGroupsOptions.md)\> \| `null`
+> `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:440](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L440)
+Defined in: [adapter/src/lib/\_Types.ts:611](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L611)
+
+Optional settings including the user context
 
 #### Inherited from
 
@@ -66,7 +76,9 @@ Defined in: [adapter/src/lib/\_Types.ts:440](https://github.com/ioBroker/ioBroke
 
 > **state**: [`SettableState`](../type-aliases/SettableState.md) \| [`StateValue`](../type-aliases/StateValue.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:438](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/adapter/src/lib/_Types.ts#L438)
+Defined in: [adapter/src/lib/\_Types.ts:607](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L607)
+
+The value (or full state object) to set
 
 #### Inherited from
 

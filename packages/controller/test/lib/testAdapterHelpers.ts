@@ -1,9 +1,15 @@
 import type { TestContext } from '../_Types.js';
-import { Validator } from '@iobroker/js-controller-adapter';
+import { Validator } from '@iobroker/js-controller-adapter/validator';
 import assert from 'node:assert/strict';
 
 import { spy } from 'sinon';
 
+/**
+ * Register the adapter helper tests on the given mocha test function
+ *
+ * @param it The mocha test function to register the tests on
+ * @param context The shared test context (adapter, states and objects clients)
+ */
 export function register(it: Mocha.TestFunction, context: TestContext): void {
     //adapterGetPort
     it(`${context.name} ${context.adapterShortName} adapter: find next free port`, function (done) {
@@ -212,10 +218,9 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     it(`${context.name} ${context.adapterShortName} adapter utils: check fixId`, () => {
         const utils = new Validator(
             context.objects,
-            context.states,
             // @ts-expect-error internal access
             context.adapter.namespaceLog,
-            console,
+            console as unknown as ioBroker.Logger,
             context.adapter.namespace,
             // @ts-expect-error internal access
             context.adapter._namespaceRegExp,

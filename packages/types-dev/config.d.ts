@@ -6,7 +6,7 @@ interface DatabaseBackupOptions {
     /** All backups older than configured hours will be deleted. But only if the number of files is greater than of backupNumber */
     hours: number;
     '// hours': string;
-    /** By default backup every 2 hours. Time is in minutes. To disable backup set the value to 0 */
+    /** By default, backup every 2 hours. Time is in minutes. To disable backup set the value to 0 */
     period: number;
     '// period': string;
     /** Absolute path to back-up directory or empty to back-up in data directory */
@@ -46,41 +46,100 @@ interface JsonlOptions {
     };
 }
 
+interface DatabaseConnectionOptions {
+    /** Password used to authenticate against the database */
+    auth_pass: string;
+    /** Maximum delay in milliseconds between reconnection attempts */
+    retry_max_delay?: number;
+    /** Maximum number of reconnection attempts */
+    retry_max_count: number;
+    /** As soon as the tls property is defined, redis will try to connect via tls (currently only for redis) */
+    tls?: {
+        /** Needs to be false with self-signed certs */
+        rejectUnauthorized?: boolean;
+        /** The certificate content */
+        ca?: string;
+        /** The key file content */
+        key?: string;
+        /** The cert file content */
+        cert?: string;
+    };
+
+    // Redis options
+    port?: number | number[];
+    host?: string | string[];
+    /**
+     * 4 (IPv4) or 6 (IPv6), Defaults to 4.
+     */
+    family?: number;
+    /**
+     * Local domain socket path. If set the port, host and family will be ignored.
+     */
+    path?: string;
+    connectionName?: string;
+    /**
+     * If set, client will send AUTH command with the value of this option when connected.
+     */
+    password?: string;
+    /**
+     * Database index to use.
+     */
+    db?: number;
+    /**
+     * When a connection is established to the Redis server, the server might still be loading
+     * the database from disk. While loading, the server not respond to any commands.
+     * To work around this, when this option is true, ioredis will check the status of the Redis server,
+     * and when the Redis server is able to process commands, a ready event will be emitted.
+     */
+    enableReadyCheck?: boolean;
+    /**
+     * When the return value isn't a number, ioredis will stop trying to reconnect.
+     * Fixed in: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/15858
+     */
+    retryStrategy?(times: number): number | Error;
+    /**
+     * After reconnected, if the previous connection was in the subscriber mode, client will auto re-subscribe these channels.
+     * default: true.
+     */
+    autoResubscribe?: boolean;
+    /**
+     * default: null.
+     */
+    name?: string;
+    sentinels?: Array<{ host: string; port: number }>;
+}
+
+/** Configuration of a database connection (objects or states) */
 export interface DatabaseOptions {
     /** Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel]. */
     type: 'jsonl' | 'file' | 'redis';
+    /** Name of the sentinel master to connect to */
     sentinelName?: string;
+    /** Host name(s) or IP address(es) of the database server */
     host: string | string[];
+    /** Port(s) of the database server */
     port: number | number[];
+    /** Maximum time in milliseconds to wait for a connection to be established */
     connectTimeout: number;
+    /** Interval in milliseconds between flushing the in-memory database to file */
     writeFileInterval: number;
+    /** Directory where the database files are stored, relative to the controller dir */
     dataDir?: string;
-    options: {
-        auth_pass: string;
-        retry_max_delay: number;
-        retry_max_count: number;
-        db: number;
-        family: number;
-        /** As soon as the tls property is defined, redis will try to connect via tls (currently only for redis) */
-        tls?: {
-            /** Needs to be false with self-signed certs */
-            rejectUnauthorized?: boolean;
-            /** The certificate content */
-            ca?: string;
-            /** The key file content */
-            key?: string;
-            /** The cert file content */
-            cert?: string;
-        };
-    };
+    /** Low-level connection options passed to the database driver */
+    options: DatabaseConnectionOptions;
+    /** Backup configuration for the database */
     backup: DatabaseBackupOptions;
+    /** Options specific to the JSONL database backend */
     jsonlOptions: JsonlOptions;
 }
 
+/** Configuration of the objects database connection */
 export interface ObjectsDatabaseOptions extends DatabaseOptions {
+    /** Disable the in-memory file cache for objects */
     noFileCache: boolean;
 }
 
+/** Configuration of the states database connection */
 export interface StatesDatabaseOptions extends DatabaseOptions {
     /** Limit maximum number of log entries in the list (only read by adapter.ts from the config file) */
     maxQueue: number;
@@ -90,6 +149,7 @@ export interface StatesDatabaseOptions extends DatabaseOptions {
  * The ioBroker global config
  */
 export interface IoBJson {
+    /** System-wide controller settings */
     system: {
         /** Do not use more than memory limit mb by ioB process (0 to deactivate) */
         memoryLimitMB: number;
@@ -116,14 +176,18 @@ export interface IoBJson {
         memLimitError: number;
         '// memLimitError': string;
     };
+    /** Configuration of the multihost service used to connect several ioBroker hosts */
     multihostService: {
         enabled: boolean;
         secure: boolean;
         password: string;
         persist: boolean;
     };
+    /** Configuration of the objects database */
     objects: ObjectsDatabaseOptions;
+    /** Configuration of the states database */
     states: StatesDatabaseOptions;
+    /** Logging configuration */
     log: {
         level: ioBroker.LogLevel;
         maxDays: number;
@@ -132,13 +196,16 @@ export interface IoBJson {
     };
     /** Always relative to iobroker.js-controller/ */
     dataDir: string;
+    /** Comment/hint shown next to the dataDir setting in the JSON config */
     '// dataDir': string;
+    /** Controller plugins configuration keyed by plugin name */
     plugins: {
         [pluginName: string]: {
             enabled: boolean;
             [other: string]: unknown;
         };
     };
+    /** Comment/hint shown next to the dnsResolution setting in the JSON config */
     '// dnsResolution': string;
     /** Use 'verbatim' for ipv6 first, else use 'ipv4first' */
     dnsResolution: 'verbatim' | 'ipv4first';

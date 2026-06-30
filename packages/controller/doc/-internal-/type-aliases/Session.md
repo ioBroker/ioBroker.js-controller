@@ -6,6 +6,26 @@
 
 # Type Alias: Session
 
-> **Session** = `any`
+> **Session** = `object`
 
-Defined in: [types-dev/index.d.ts:97](https://github.com/ioBroker/ioBroker.js-controller/blob/0a6edee6fb903bd31f152637b37035ff05ce3fc6/packages/types-dev/index.d.ts#L97)
+Defined in: [types-dev/index.d.ts:123](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/index.d.ts#L123)
+
+## Indexable
+
+> \[`key`: `string`\]: `any`
+
+## Properties
+
+### cookie?
+
+> `optional` **cookie?**: `object`
+
+Defined in: [types-dev/index.d.ts:124](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/types-dev/index.d.ts#L124)
+
+#### maxAge?
+
+> `optional` **maxAge?**: `number`
+
+#### originalMaxAge?
+
+> `optional` **originalMaxAge?**: `number`

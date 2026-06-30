@@ -35,6 +35,11 @@ declare global {
     }
 }
 
+/**
+ * Register the full adapter integration test suite
+ *
+ * @param options Test options such as the adapter name and the states/objects DB configuration
+ */
 export default function testAdapter(options: Record<string, any>): void {
     const statesConfig = options.statesConfig;
     const objectsConfig = options.objectsConfig;

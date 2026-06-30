@@ -3,10 +3,15 @@ import { appName, isControllerUiUpgradeSupported } from '@iobroker/js-controller
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import { SUPPORTED_FEATURES, type SupportedFeature } from './constants.js';
 
+/** Instances grouped by their startup priority tier */
 export interface OrderedInstancesObject {
+    /** Instances in tier 1, started first */
     1: ioBroker.InstanceObject[];
+    /** Instances in tier 2, started after tier 1 */
     2: ioBroker.InstanceObject[];
+    /** Instances in tier 3, started last */
     3: ioBroker.InstanceObject[];
+    /** Admin instances, handled separately from the regular tiers */
     admin: ioBroker.InstanceObject[];
 }
 

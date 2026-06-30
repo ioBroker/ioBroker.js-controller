@@ -3,13 +3,21 @@ import { tools } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
 import jwt from 'jsonwebtoken';
 
+/** Options for the license command */
 export interface CLILicenseOptions {
+    /** The objects database client */
     objects: ObjectsRedisClient;
 }
 
+/**
+ * CLI command to read and apply ioBroker licenses
+ */
 export class License {
     private readonly objects: ObjectsRedisClient;
 
+    /**
+     * @param options The objects database client
+     */
     constructor(options: CLILicenseOptions) {
         this.objects = options.objects;
     }

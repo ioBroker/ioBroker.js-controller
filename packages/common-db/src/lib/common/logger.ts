@@ -1,16 +1,19 @@
-import winston from 'winston';
-import DailyRotateFile from 'winston-daily-rotate-file';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import * as tools from '@/lib/common/tools.js';
-import Transport from 'winston-transport';
-import { LEVEL } from 'triple-beam';
-import deepClone from 'deep-clone';
-import type { Syslog } from 'winston-syslog';
-import type { SeqTransport } from '@datalust/winston-seq';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
+
+import winston from 'winston';
+import DailyRotateFile from 'winston-daily-rotate-file';
+import Transport, { type TransportStreamOptions } from 'winston-transport';
+import type { SeqTransport } from '@datalust/winston-seq';
+import type { Syslog, SyslogTransportOptions } from 'winston-syslog';
+import { LEVEL } from 'triple-beam';
+import deepClone from 'deep-clone';
+
+import * as tools from '@/lib/common/tools.js';
+import type { TransformableInfo } from 'logform';
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
@@ -34,13 +37,26 @@ try {
     //console.log('No seq support');
 }
 
-export type LogInfo = Record<string | symbol, any>;
+/** Log entry enriched with ioBroker specific properties */
+export interface LogInfo extends TransformableInfo {
+    /** Additional properties attached to the log entry */
+    props?: {
+        /** The host the log entry originates from */
+        Hostname?: string;
+        /** The source (adapter/instance) of the log entry */
+        Source?: string;
+        /** The process id that produced the log entry */
+        Pid?: string;
+    };
+    /** ISO timestamp of the log entry */
+    timestamp: string;
+}
 
 // We must check if SysLog is defined before extending it
 const IoSysLog =
     SysLog &&
     class extends SysLog {
-        constructor(options: any) {
+        constructor(options?: SyslogTransportOptions) {
             super(options);
         }
         log(info: LogInfo, callback: () => void): void {
@@ -70,7 +86,7 @@ const IoSeq =
     class extends Seq {
         log(info: LogInfo, callback: () => void): void {
             const ioInfo = deepClone(info);
-            ioInfo.props = ioInfo.props || {};
+            ioInfo.props ||= {};
 
             // map our log levels to Seq levels
             const level = (ioInfo.level || '').toLowerCase();
@@ -90,7 +106,7 @@ const IoSeq =
 
             // we add own properties
             ioInfo.props.Hostname = tools.getHostName();
-            if (ioInfo.message) {
+            if (typeof ioInfo.message === 'string') {
                 // handle as single line with s flag, to if message ends with CR, etc
                 const msgParts = ioInfo.message.match(/^([^.]+\.[0-9]+) \(([^)]+)\) (.*)$/s);
                 if (msgParts) {
@@ -106,10 +122,8 @@ const IoSeq =
 
 // Class used to inform adapter about new log entry
 class NotifierTransport extends Transport {
-    private name: string;
-    constructor(opts: any) {
+    constructor(opts?: TransportStreamOptions) {
         super(opts);
-        this.name = 'NT'; // NotifierTransport
     }
 
     log(info: LogInfo, callback: () => void): void {
@@ -123,14 +137,23 @@ class NotifierTransport extends Transport {
     }
 }
 
+/** Logger configuration options provided by the user */
 export interface UserOptions {
+    /** Minimum log level to output (e.g. silly, debug, info, warn, error) */
     level: string;
+    /** Maximum number of days rotated log files are kept before deletion */
     maxDays: number;
+    /** If true, do not output log messages to stdout */
     noStdout: boolean;
+    /** Use local time instead of UTC for the log timestamps */
     localTime?: string;
+    /** Colorize the console output */
     colorize?: boolean;
+    /** Output log entries in JSON format */
     json?: boolean;
+    /** Label prepended to every log message */
     prefix?: string;
+    /** Winston transport configurations keyed by transport name */
     transport: Record<string, any>;
 }
 
@@ -139,6 +162,14 @@ interface Options {
     transports: Transport[];
 }
 
+/**
+ * Create and configure a winston logger instance for the controller and adapters
+ *
+ * @param level Log level as a string, or a full UserOptions object with the detailed configuration
+ * @param files One or more log file paths the logger should write to
+ * @param noStdout If true, do not output log messages to stdout
+ * @param prefix Label prepended to every log message
+ */
 export function logger(
     level: string | UserOptions,
     files?: string[] | string,
@@ -157,7 +188,7 @@ export function logger(
 
     const formatter = (info: LogInfo): string => `${timestamp(info.timestamp)} - ${info.level}: ${info.message}`;
 
-    files = files || [];
+    files ||= [];
 
     // indicator which is used to determine the log dir for developing, where it should be inside the repository
     const isNpm = !thisDir
@@ -194,12 +225,12 @@ export function logger(
             const isWindows = os.platform().startsWith('win');
             for (const transport of Object.values(userOptions.transport)) {
                 transport._defaultConfigLoglevel = transport.level; // remember Loglevel if set
-                transport.level = transport.level || level;
+                transport.level ||= level;
 
                 if (transport.type === 'file' && transport.enabled !== false) {
-                    transport.filename = transport.filename || `log/${tools.appName}`;
+                    transport.filename ||= `log/${tools.appName}`;
 
-                    if (!transport.fileext && transport.filename.indexOf('.log') === -1) {
+                    if (!transport.fileext && !transport.filename.endsWith('.log')) {
                         transport.fileext = '.log';
                     }
 
@@ -220,25 +251,17 @@ export function logger(
                     }
                     transport.auditFile = `${transport.filename}-audit.json`;
 
-                    transport.createSymlink =
-                        transport.createSymlink !== undefined ? transport.createSymlink : !isWindows;
-                    transport.symlinkName =
-                        transport.symlinkName !== undefined
-                            ? transport.symlinkName
-                            : path.basename(`${transport.filename}.current.log`);
+                    transport.createSymlink ??= !isWindows;
+                    transport.symlinkName ??= path.basename(`${transport.filename}.current.log`);
 
                     transport.filename += `.%DATE%${transport.fileext || ''}`;
                     //transport.label       = prefix || ''; //TODO format.label()
                     //                    transport.json        = (transport.json      !== undefined) ? transport.json      : false; // TODO format.json(), new Default!!
                     transport.silent = transport.silent !== undefined ? transport.silent : false;
                     //                    transport.colorize    = (transport.colorize  !== undefined) ? transport.colorize  : ((userOptions.colorize  === undefined) ? true : userOptions.colorize); //TODO format.colorize()
-                    transport.localTime =
-                        transport.localTime !== undefined
-                            ? transport.localTime
-                            : userOptions.localTime === undefined
-                              ? true
-                              : userOptions.localTime;
+                    transport.localTime ??= userOptions.localTime ?? true;
                     transport.datePattern = 'YYYY-MM-DD';
+                    // @ts-expect-error fix later
                     transport.format = winston.format.combine(winston.format.printf(formatter));
                     /*transport.logException = function (message, info, next, err) {
                         console.error(message);
@@ -256,9 +279,7 @@ export function logger(
                     try {
                         const _log = new DailyRotateFile(transport);
 
-                        _log.on('error', err => {
-                            console.error(`Error on log file rotation: ${err.message}`);
-                        });
+                        _log.on('error', err => console.error(`Error on log file rotation: ${err.message}`));
 
                         options.transports.push(_log);
                     } catch (e) {
@@ -286,7 +307,8 @@ export function logger(
                     // replace the used by syslog attribute "type" with own "sysLogType"
 
                     // If no name defined, use hostname as name
-                    transport.localhost = transport.localhost || hostname;
+                    transport.localhost ||= hostname;
+                    // @ts-expect-error fix later
                     transport.format = winston.format.combine(winston.format.printf(formatter));
                     if (transport.sysLogType) {
                         transport.type = transport.sysLogType;
@@ -307,7 +329,7 @@ export function logger(
                     // ssl: (Default: false) Value indicating if we should use HTTPS
 
                     // If no name defined, use hostname as name
-                    transport.host = transport.host || 'localhost';
+                    transport.host ||= 'localhost';
 
                     try {
                         options.transports.push(new winston.transports.Http(transport));
@@ -315,13 +337,13 @@ export function logger(
                         console.error(`Cannot activate HTTP: ${e.message}`);
                     }
                 } else if (transport.type === 'stream' && transport.enabled !== false) {
-                    // stream: any Node.js stream. If an objectMode stream is provided then the entire info object will be written. Otherwise info[MESSAGE] will be written.
+                    // stream: any Node.js stream. If an objectMode stream is provided then the entire info object will be written. Otherwise, info[MESSAGE] will be written.
                     // level: Level of messages that this transport should log (default: level set on parent logger).
                     // silent: Boolean flag indicating whether to suppress output (default false).
                     // eol: Line-ending character to use. (default: os.EOL).
 
                     // If no name defined, use hostname as name
-                    transport.host = transport.host || 'localhost';
+                    transport.host ||= 'localhost';
 
                     try {
                         if (typeof transport.stream === 'string') {
@@ -349,9 +371,7 @@ export function logger(
                     // Add only if serverUrl is configured at least
                     if (transport.serverUrl) {
                         try {
-                            transport.onError = (e: Error) => {
-                                console.log(`SEQ error: ${e.message}`);
-                            };
+                            transport.onError = (e: Error) => console.log(`SEQ error: ${e.message}`);
                             const seqLogger = new IoSeq(transport);
                             options.transports.push(seqLogger);
                         } catch (e) {
@@ -392,10 +412,8 @@ export function logger(
             new winston.transports.Console({
                 level,
                 silent: false,
+                // @ts-expect-error fix later
                 format: winston.format.combine(winston.format.printf(formatter)),
-                //colorize:  (userOptions.colorize === undefined) ? true : userOptions.colorize, // TODO format.colorize()
-                //timestamp: timestamp, // TODO: format.timestamp()
-                //label:     prefix || '' // TODO format.label()
             }),
         );
     }
@@ -413,25 +431,25 @@ export function logger(
     // @ts-expect-error why do we override/add method to foreign instance? TODO
     log.getFileName = function () {
         // @ts-expect-error we use undocumented stuff here TODO
-        let transport = this.transports.find(t => (t.transport && t.transport.dirname) || t.dirname);
+        let transport = this.transports.find(t => t.transport?.dirname || t.dirname);
         if (transport) {
             // @ts-expect-error we use undocumented stuff here TODO
-            transport = transport.transport ? transport.transport : transport;
+            transport = transport.transport || transport;
             // @ts-expect-error we use undocumented stuff here TODO
             return `${transport.dirname}/${transport.filename.replace('%DATE%', getDate())}`;
         }
         return '';
     };
 
-    log.on('error', error => {
-        console.log(`Logger error: ${error.message}`);
-    });
+    log.on('error', error => console.log(`Logger error: ${error.message}`));
 
     // This cannot be deleted, because file rotate works with the size of files and not with the time
     // TODO research and open new issue in winston-daily-rotate-file repo
     /**
-     * @param isEnabled
-     * @param daysCount
+     * Enable or disable the periodic checker that deletes outdated log files
+     *
+     * @param isEnabled Whether the periodic file checker should run
+     * @param daysCount Number of days after which old log files are deleted (defaults to 3)
      */
     // @ts-expect-error why do we override/add method to foreign instance? TODO
     log.activateDateChecker = function (isEnabled, daysCount) {
@@ -441,9 +459,7 @@ export function logger(
             clearInterval(this._fileChecker);
             // @ts-expect-error we use undocumented stuff here TODO
         } else if (isEnabled && !this._fileChecker) {
-            if (!daysCount) {
-                daysCount = 3;
-            }
+            daysCount ||= 3;
 
             // Check every hour
             // @ts-expect-error we use undocumented stuff here TODO

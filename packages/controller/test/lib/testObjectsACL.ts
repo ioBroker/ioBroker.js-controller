@@ -1,6 +1,12 @@
 import type { TestContext } from '../_Types.js';
 import assert from 'node:assert/strict';
 
+/**
+ * Register the object ACL (access control) tests on the given mocha test function
+ *
+ * @param it The mocha test function to register the tests on
+ * @param context The shared test context (adapter, states and objects clients)
+ */
 export function register(it: Mocha.TestFunction, context: TestContext): void {
     const textName = `${context.name} objects: `;
 
@@ -107,11 +113,12 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     it(`${textName}invalid user name must be checked #1`, async () => {
         const objects = context.objects;
         try {
-            await objects.getObject(secretId, { user: 'admin' });
+            // @ts-expect-error test
+            await objects.getObjectsAsync(secretId, { user: 'admin' });
             assert.fail('Never happens');
         } catch (e) {
             console.error(e.message);
-            assert.strictEqual(e.message, 'permissionError');
+            assert.strictEqual(e.message, 'invalid user name: admin');
         }
     }).timeout(2_000);
 

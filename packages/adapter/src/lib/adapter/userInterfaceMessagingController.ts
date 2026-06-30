@@ -7,6 +7,7 @@ import type {
     UserInterfaceClientUnsubscribeHandler,
 } from '@/lib/_Types.js';
 
+/** A heartbeat timer for a subscribed UI client */
 export interface HeartbeatTimer {
     /** The actual timer */
     timer: NodeJS.Timeout;
@@ -14,6 +15,7 @@ export interface HeartbeatTimer {
     heartbeat: number;
 }
 
+/** Options for the UI messaging controller */
 export interface MessagingControllerOptions {
     /** The adapter using this messaging controller */
     adapter: AdapterClass;
@@ -23,6 +25,7 @@ export interface MessagingControllerOptions {
     unsubscribeCallback?: UserInterfaceClientUnsubscribeHandler;
 }
 
+/** Options for sending a message to a single UI client */
 export interface SendToClientOptions {
     /** ID of the client to send the message to, will send to all if omitted */
     clientId: string;
@@ -34,6 +37,7 @@ export interface SendToClientOptions {
 
 export type SendToAllClientOptions = Omit<SendToClientOptions, 'clientId'>;
 
+/** Handler describing a subscribed UI client */
 export interface ClientHandler {
     /** The session id of the client connection */
     sid: string;
@@ -55,6 +59,9 @@ interface UserInterfaceMessage {
     d: unknown;
 }
 
+/**
+ * Controller for messaging with UI clients (subscribe, heartbeat and sending data)
+ */
 export class UserInterfaceMessagingController {
     /** The adapter using this messaging controller */
     private readonly adapter: AdapterClass;
@@ -66,6 +73,9 @@ export class UserInterfaceMessagingController {
     private readonly handlers = new Map<string, ClientHandler>();
     /** Collection of current heartbeat timers */
     private heartbeatTimers = new Map<string, HeartbeatTimer>();
+    /**
+     * @param options The adapter and the subscribe/unsubscribe callbacks
+     */
     constructor(options: MessagingControllerOptions) {
         const { adapter, unsubscribeCallback, subscribeCallback } = options;
 
@@ -178,7 +188,9 @@ export class UserInterfaceMessagingController {
 
             this.handlers.delete(clientId);
             if (this.unsubscribeCallback) {
-                this.unsubscribeCallback({ clientId, message: msg, reason });
+                Promise.resolve(this.unsubscribeCallback({ clientId, message: msg, reason })).catch(e =>
+                    this.adapter.log.error(`Error in unsubscribe callback: ${e.message}`),
+                );
             }
         }
     }
@@ -213,7 +225,9 @@ export class UserInterfaceMessagingController {
         this.heartbeatTimers.delete(clientId);
 
         if (this.unsubscribeCallback) {
-            this.unsubscribeCallback({ clientId, reason: 'timeout' });
+            Promise.resolve(this.unsubscribeCallback({ clientId, reason: 'timeout' })).catch(e =>
+                this.adapter.log.error(`Error in unsubscribe callback: ${e.message}`),
+            );
         }
     }
 }
