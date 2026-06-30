@@ -37,12 +37,18 @@ try {
     //console.log('No seq support');
 }
 
+/** Log entry enriched with ioBroker specific properties */
 export interface LogInfo extends TransformableInfo {
+    /** Additional properties attached to the log entry */
     props?: {
+        /** The host the log entry originates from */
         Hostname?: string;
+        /** The source (adapter/instance) of the log entry */
         Source?: string;
+        /** The process id that produced the log entry */
         Pid?: string;
     };
+    /** ISO timestamp of the log entry */
     timestamp: string;
 }
 

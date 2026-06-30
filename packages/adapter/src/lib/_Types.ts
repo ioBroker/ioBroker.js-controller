@@ -18,7 +18,7 @@ export interface AdapterOptions {
     subscribable?: boolean;
     /** compact group instance if running in compact mode */
     compactInstance?: number;
-    /** if desired to have oStates. This is a list with all states values, and it will be updated automatically. */
+    /** if desired to have oStates. This is a list with all state values, and it will be updated automatically. */
     states?: boolean;
     /** if desired to have oObjects. This is a list with all states, channels and devices of this adapter, and it will be updated automatically.*/
     objects?: boolean;
@@ -28,19 +28,19 @@ export interface AdapterOptions {
     dirname?: string;
     /** flag which defaults to true - if true, adapter warns if states are set without a corresponding existing object */
     strictObjectChecks?: boolean;
-    /** If true runs in compact mode */
+    /** If true, runs in compact mode */
     compact?: boolean;
     /** configuration of the connection to controller */
     config?: AdapterOptionsConfig;
-    /** name of the adapter. Must be exactly the same as directory name. */
+    /** name of the adapter. Must be exactly the same as the directory name. */
     name: string;
     /** If true, the systemConfig (iobroker.json) will be available in this.systemConfig */
     systemConfig?: boolean;
     /** callback function (id, obj) that will be called if an object changed */
     objectChange?: ioBroker.ObjectChangeHandler;
-    /** callback function (id, obj) that will be called if state changed */
+    /** callback function (id, obj) that will be called if the state changed */
     stateChange?: ioBroker.StateChangeHandler;
-    /** callback function (id, file) that will be called if file changed */
+    /** callback function (id, file) that will be called if the file changed */
     fileChange?: ioBroker.FileChangeHandler;
     /** callback function that will be called when a new UI client subscribes */
     uiClientSubscribe?: UserInterfaceClientSubscribeHandler;
@@ -85,19 +85,19 @@ export interface SuitableLicense {
     json: string;
     /** If it is a free license or not */
     invoice: Invoice;
-    /** The adapter instance which uses this license */
+    /** The adapter instance that uses this license */
     usedBy?: string;
     /** Version for which this license is valid */
     version: string;
-    /** License is only valid for given UUID */
+    /** License is only valid for a given UUID */
     uuid?: string;
     /** License if valid until this date 0000-00-00 00:00:00 if unlimited */
     validTill: string;
     /** License is only valid for X number of datapoints */
     datapoints?: number;
-    /** Decoded property from jwt verify on json content with cloud cert */
+    /** Decoded property from JWT verifies on JSON content with cloud cert */
     decoded: {
-        /** E-Mail of license owner */
+        /** E-Mail of a license owner */
         email: string;
         /** Free text comment */
         comment: string;
@@ -105,7 +105,7 @@ export interface SuitableLicense {
         type: string;
         /** Adapter name */
         name: string;
-        /** Address of license owner */
+        /** Address of a license owner */
         address: {
             /** Country of the license owner */
             Country: string;
@@ -134,7 +134,7 @@ export interface SuitableLicense {
         vat: number;
         /** Date when license expires */
         expires: number;
-        /** How long license is valid, always in future if valid */
+        /** How long a license is valid, always in the future if valid */
         valid_till: string;
         /** Unique id of the license */
         id: string;
@@ -142,7 +142,7 @@ export interface SuitableLicense {
         iat: number;
         /** Version for which this license is valid */
         version: string | number;
-        /** License is only valid for given UUID */
+        /** License is only valid for a given UUID */
         uuid?: string;
         /** If it is a free license or not */
         invoice: Invoice;
@@ -299,10 +299,15 @@ export interface SetStateChangedResult {
 export interface GetUserGroupsOptions {
     /** The user whose groups should be resolved */
     user: ioBroker.ObjectIDs.User;
+    /** The groups already resolved for the user */
     groups?: ioBroker.ObjectIDs.Group[];
+    /** Cache of state objects used while resolving */
     _objects?: (ioBroker.StateObject | null)[];
+    /** Whether the groups have already been resolved */
     checked?: boolean;
+    /** The permissions resolved for the user */
     acl: Omit<ioBroker.PermissionSet, 'user' | 'groups'>;
+    /** Whether to limit the result to the rights of the owner */
     limitToOwnerRights?: boolean;
 }
 
@@ -411,7 +416,7 @@ export type CalculatePermissionsCallback = (result: ioBroker.PermissionSet) => v
 
 /** Options for sending data to a UI client */
 export interface SendToUserInterfaceClientOptions {
-    /** id of the UI client, if not given send to all active clients */
+    /** id of the UI client, if not given, send it to all active clients */
     clientId?: string;
     /** data to send to the client */
     data: unknown;
@@ -665,8 +670,9 @@ export interface InternalAddChannelToEnumOptions {
 
 /** Options controlling how a message is sent */
 export interface SendToOptions {
-    /** Method throws or calls error cb, if callback not called in time, works for single targets only */
+    /** Method throws or calls error cb if callback not called in time, works for single targets only */
     timeout?: number;
+    /** The user on whose behalf the message is sent */
     user?: ioBroker.ObjectIDs.User;
 }
 
@@ -696,7 +702,7 @@ export interface MessageCallbackObject {
 
 /** Options for sending a message to a host */
 export interface InternalSendToHostOptions {
-    /** if null, send to all hosts */
+    /** if null, send it to all hosts */
     hostName: string | null;
     /** The command to send */
     command: string;
@@ -865,7 +871,7 @@ export type InternalAdapterConfig = Record<string, unknown>;
 
 /** Options for installing a node module */
 export interface InstallNodeModuleOptions {
-    /** Version of node module */
+    /** Version of the node module */
     version: string;
 }
 
@@ -880,7 +886,7 @@ export interface InternalInstallNodeModuleOptions extends InstallNodeModuleOptio
  */
 export interface NotificationOptions {
     /**
-     * Additional context for the notification which can be used by notification processing adapters
+     * Additional context for the notification that can be used by notification-processing adapters
      */
     contextData: ioBroker.NotificationContextData;
 }
