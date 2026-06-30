@@ -72,7 +72,7 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
           choco install redis-64 --version 3.1.0
-          powershell "Start-Process redis-server.exe -PassThru"
+          powershell "Start-Service Memurai -ErrorAction SilentlyContinue; Get-Service Memurai"
 
       - name: NPM version
         run: npm -v
