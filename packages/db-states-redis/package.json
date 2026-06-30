@@ -3,11 +3,11 @@
     "type": "module",
     "version": "7.2.3-alpha.3-20260630-0b31cfcb0",
     "engines": {
-        "node": ">=12.0.0"
+        "node": ">=22.0.0"
     },
     "dependencies": {
         "@iobroker/db-base": "file:../db-base",
-        "ioredis": "^4.28.2"
+        "ioredis": "^5.11.1"
     },
     "keywords": [
         "ioBroker",

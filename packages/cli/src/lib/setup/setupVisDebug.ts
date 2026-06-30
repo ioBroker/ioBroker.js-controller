@@ -56,14 +56,14 @@ export class VisDebug {
     /**
      * Activates vis debug for given widget
      *
-     * @param widgetset widget to activate vis debug for
+     * @param widgetSet widget to activate vis debug for
      */
-    async enableDebug(widgetset: string): Promise<void> {
+    async enableDebug(widgetSet: string): Promise<void> {
         let adapterDir: string | undefined;
 
-        if (widgetset) {
+        if (widgetSet) {
             // Try to find out the adapter directory out of a list of options
-            const adapterNames2Try = [`vis-${widgetset}`, widgetset];
+            const adapterNames2Try = [`vis-${widgetSet}`, widgetSet];
             if (adapterNames2Try[0] === adapterNames2Try[1]) {
                 adapterNames2Try.splice(1, 1);
             }
@@ -133,7 +133,7 @@ export class VisDebug {
         if (fs.existsSync(`${visDir}/www/cache.manifest`)) {
             console.log(`Modify "${path.normalize(`${visDir}/www/cache.manifest`)}"`);
             let file = fs.readFileSync(`${visDir}/www/cache.manifest`, 'utf-8');
-            // if file does not exists
+            // if file does not exist
             if (!file.toString().trim()) {
                 const version = fs.readJSONSync(`${visDir}/package.json`).version;
                 file = `CACHE MANIFEST
@@ -175,9 +175,9 @@ FALLBACK:
             console.log('Disable cache. ioBroker restart required! Execute "iobroker restart"');
         }
 
-        if (widgetset) {
+        if (widgetSet) {
             const { file } = await this.objects.readFile('vis', 'js/config.js', null);
-            let content = typeof file === 'string' ? file : file.toString();
+            let content = typeof file === 'string' ? file : file?.toString() || '';
 
             content = content.replace(/[\r\n]/g, '');
             const json: ({ name: string; depends?: string | string[]; always?: boolean; v2?: boolean } | string)[] =
@@ -185,25 +185,25 @@ FALLBACK:
             let found = false;
             for (const widget of Object.values(json)) {
                 if (
-                    widget === widgetset ||
+                    widget === widgetSet ||
                     (widget as { name: string; depends?: string | string[]; always?: boolean; v2?: boolean }).name ===
-                        widgetset
+                        widgetSet
                 ) {
                     found = true;
                     break;
                 }
             }
-            // if widget-set not found in config.js
+            // if the idget set isn't found in config.js
             if (!found) {
                 console.log('Modify config.js');
                 const pckg = fs.readJSONSync(`${adapterDir}/io-package.json`);
                 if (pckg.native?.dependencies?.length) {
                     json.push({
-                        name: widgetset,
+                        name: widgetSet,
                         depends: pckg.native.dependencies,
                     });
                 } else {
-                    json.push(widgetset);
+                    json.push(widgetSet);
                 }
 
                 content = content.replace(/"widgetSets":\s+.*};/, `"widgetSets": ${JSON.stringify(json, null, 2)}};`);

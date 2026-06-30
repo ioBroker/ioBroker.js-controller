@@ -2036,28 +2036,31 @@ async function processCommand(
                 author: 'bluefox <dogafox@gmail.com>',
             };
 
-            tools.getRepositoryFile((_err, sources, _sourcesHash) => {
-                if (sources) {
-                    for (const s in sources) {
-                        if (Object.prototype.hasOwnProperty.call(sources, s)) {
-                            if ((sources[s] as ioBroker.RepositoryJsonAdapterContent).url) {
-                                if (!json.dependencies[`${tools.appName}.${s}`]) {
-                                    json.optionalDependencies[`${tools.appName}.${s}`] = (
-                                        sources[s] as ioBroker.RepositoryJsonAdapterContent
-                                    ).url!;
-                                }
-                            } else {
-                                if (!json.dependencies[`${tools.appName}.${s}`]) {
-                                    json.optionalDependencies[`${tools.appName}.${s}`] = '*';
+            tools
+                .getRepositoryFile()
+                .then(sources => {
+                    if (sources) {
+                        for (const s in sources) {
+                            if (Object.prototype.hasOwnProperty.call(sources, s)) {
+                                if ((sources[s] as ioBroker.RepositoryJsonAdapterContent).url) {
+                                    if (!json.dependencies[`${tools.appName}.${s}`]) {
+                                        json.optionalDependencies[`${tools.appName}.${s}`] = (
+                                            sources[s] as ioBroker.RepositoryJsonAdapterContent
+                                        ).url!;
+                                    }
+                                } else {
+                                    if (!json.dependencies[`${tools.appName}.${s}`]) {
+                                        json.optionalDependencies[`${tools.appName}.${s}`] = '*';
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                fs.writeFileSync(path.join(tools.getRootDir(), 'package.json'), JSON.stringify(json, null, 2));
-                return void callback();
-            });
+                    fs.writeFileSync(path.join(tools.getRootDir(), 'package.json'), JSON.stringify(json, null, 2));
+                    return void callback();
+                })
+                .catch(e => console.error(`Cannot read repository file: ${e as Error}`));
             break;
         }
 
@@ -2849,9 +2852,8 @@ async function cleanDatabase(isDeleteDb: boolean): Promise<number> {
     }
 
     await delObjects(ids);
-    // Clean up states
-    const keysCount = await delStates();
-    return keysCount;
+    // Clean up states and return the key count
+    return await delStates();
 }
 
 async function unsetup(params: Record<string, string | number | boolean>, callback: ExitCodeCb): Promise<void> {

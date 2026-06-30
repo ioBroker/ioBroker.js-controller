@@ -3,12 +3,12 @@
     "type": "module",
     "version": "7.2.3-alpha.3-20260630-0b31cfcb0",
     "engines": {
-        "node": ">=18.0.0"
+        "node": ">=22.0.0"
     },
     "dependencies": {
         "@iobroker/js-controller-common-db": "file:../common-db",
         "deep-clone": "^3.0.3",
-        "fs-extra": "^11.3.2",
+        "fs-extra": "^11.3.5",
         "respjs": "^4.2.0"
     },
     "keywords": [

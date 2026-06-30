@@ -3,11 +3,11 @@
     "type": "module",
     "version": "7.2.3-alpha.3-20260630-0b31cfcb0",
     "engines": {
-        "node": ">=12.0.0"
+        "node": ">=22.0.0"
     },
     "optionalDependencies": {
         "winston-seq-updated": "^1.0.4",
-        "winston-syslog": "^2.6.0"
+        "winston-syslog": "^2.7.1"
     },
     "dependencies": {
         "@iobroker/db-objects-file": "file:../db-objects-file",
@@ -17,7 +17,7 @@
         "@iobroker/db-states-jsonl": "file:../db-states-jsonl",
         "@iobroker/db-states-redis": "file:../db-states-redis",
         "@iobroker/js-controller-common-db": "file:../common-db",
-        "fs-extra": "^11.3.2",
+        "fs-extra": "^11.3.5",
         "jszip": "^3.10.1"
     },
     "keywords": [

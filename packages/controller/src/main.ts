@@ -38,9 +38,8 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
 import decache from 'decache';
-import cronParser from 'cron-parser';
+import { CronExpressionParser } from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base';
-import type { GetDiskInfoResponse } from '@iobroker/js-controller-common-db/tools';
 import { DEFAULT_DISK_WARNING_LEVEL, getCronExpression, getDiskWarningLevel } from '@/lib/utils.js';
 import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
 import {
@@ -49,6 +48,7 @@ import {
     type HostInfo,
     isAdapterEsmModule,
     isLogLevel,
+    type GetDiskInfoResponse,
 } from '@iobroker/js-controller-common-db/tools';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
@@ -271,7 +271,7 @@ function getConfig(): ioBroker.IoBrokerJson | never {
 /**
  * Starts the multihost discovery server
  *
- * @param _config Configuration fron iobroker.json
+ * @param _config Configuration from iobroker.json
  * @param secret MultiHost communication password
  */
 function _startMultihost(_config: ioBroker.IoBrokerJson, secret: string | false): void {
@@ -350,9 +350,8 @@ async function startMultihost(__config?: ioBroker.IoBrokerJson): Promise<boolean
                 if (obj?.native?.secret) {
                     if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
                         // if old encryption was used, we need to decrypt in old fashion
-                        tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
-                            _startMultihost(_config, secret!),
-                        );
+                        const secret = await tools.decryptPhrase(obj.native.secret, _config.multihostService.password);
+                        _startMultihost(_config, secret || false);
                     } else {
                         try {
                             // it can throw in edge cases #1474, we need further investigation
@@ -817,18 +816,18 @@ function createObjects(onConnect: () => void): void {
                         if (
                             !compactGroupController &&
                             proc.config.common.compactGroup &&
-                            compactProcs[proc.config.common.compactGroup]?.instances?.includes(id as any)
+                            compactProcs[proc.config.common.compactGroup]?.instances?.includes(id)
                         ) {
                             compactProcs[proc.config.common.compactGroup].instances.splice(
-                                compactProcs[proc.config.common.compactGroup].instances.indexOf(id as any),
+                                compactProcs[proc.config.common.compactGroup].instances.indexOf(id),
                                 1,
                             );
                         }
 
                         // instance removed -> remove all notifications
-                        await notificationHandler.clearNotifications(null, null, id as any);
+                        await notificationHandler.clearNotifications(null, null, id);
                         proc.config.common.enabled = false;
-                        // @ts-expect-error check if we can handle it different
+                        // @ts-expect-error check if we can handle it differently
                         proc.config.common.host = null;
                         // @ts-expect-error it is only used in checkAndAddInstance, find a way without modifying the InstanceObject
                         proc.config.deleted = true;
@@ -848,10 +847,10 @@ function createObjects(onConnect: () => void): void {
                             proc.config.common.compactGroup &&
                             (proc.config.common.compactGroup !== obj.common.compactGroup ||
                                 proc.config.common.runAsCompactMode !== obj.common.runAsCompactMode) &&
-                            compactProcs[proc.config.common.compactGroup]?.instances?.includes(id as any)
+                            compactProcs[proc.config.common.compactGroup]?.instances?.includes(id)
                         ) {
                             compactProcs[proc.config.common.compactGroup].instances.splice(
-                                compactProcs[proc.config.common.compactGroup].instances.indexOf(id as any),
+                                compactProcs[proc.config.common.compactGroup].instances.indexOf(id),
                                 1,
                             );
                         }
@@ -865,7 +864,7 @@ function createObjects(onConnect: () => void): void {
                         }
                         const _ipArr = tools.findIPs();
 
-                        if (checkAndAddInstance(proc.config as any, _ipArr)) {
+                        if (checkAndAddInstance(proc.config, _ipArr)) {
                             if (
                                 proc.config.common.enabled &&
                                 (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
@@ -881,10 +880,10 @@ function createObjects(onConnect: () => void): void {
                             if (
                                 !compactGroupController &&
                                 proc.config.common.compactGroup &&
-                                compactProcs[proc.config.common.compactGroup]?.instances?.includes(id as any)
+                                compactProcs[proc.config.common.compactGroup]?.instances?.includes(id)
                             ) {
                                 compactProcs[proc.config.common.compactGroup].instances.splice(
-                                    compactProcs[proc.config.common.compactGroup].instances.indexOf(id as any),
+                                    compactProcs[proc.config.common.compactGroup].instances.indexOf(id),
                                     1,
                                 );
                             }
@@ -905,7 +904,7 @@ function createObjects(onConnect: () => void): void {
                         );
                     } else {
                         const _ipArr = tools.findIPs();
-                        if (proc.config && checkAndAddInstance(proc.config as any, _ipArr)) {
+                        if (proc.config && checkAndAddInstance(proc.config, _ipArr)) {
                             if (
                                 proc.config.common.enabled &&
                                 (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
@@ -919,10 +918,10 @@ function createObjects(onConnect: () => void): void {
                             if (
                                 !compactGroupController &&
                                 proc.config.common.compactGroup &&
-                                compactProcs[proc.config.common.compactGroup]?.instances?.includes(id as any)
+                                compactProcs[proc.config.common.compactGroup]?.instances?.includes(id)
                             ) {
                                 compactProcs[proc.config.common.compactGroup].instances.splice(
-                                    compactProcs[proc.config.common.compactGroup].instances.indexOf(id as any),
+                                    compactProcs[proc.config.common.compactGroup].instances.indexOf(id),
                                     1,
                                 );
                             }
@@ -4990,7 +4989,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             }
 
             try {
-                cronParser.parseExpression(instance.common.schedule);
+                CronExpressionParser.parse(instance.common.schedule);
             } catch (e) {
                 logger.error(`${hostLogPrefix} Cannot schedule start of instance ${instance._id}: ${e.message}`);
                 break;
