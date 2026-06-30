@@ -134,7 +134,8 @@ import type {
     UserInterfaceClientRemoveMessage,
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
-import { MessagingManager } from '@/lib/adapter/managers/MessagingManager.js';
+import { AsyncAdapter } from '@/lib/adapter/asyncAdapter.js';
+import type { AdapterContext } from '@/lib/adapter/context.js';
 import { SYSTEM_ADAPTER_PREFIX, DEFAULT_OBJECTS_WARN_LIMIT } from '@iobroker/js-controller-common-db/constants';
 import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
 
@@ -1014,7 +1015,9 @@ export class AdapterClass extends EventEmitter {
     private readonly SUPPORTED_FEATURES = getSupportedFeatures();
     /** Controller for messaging related functionality */
     private readonly uiMessagingController: UserInterfaceMessagingController;
-    #messaging!: MessagingManager;
+    /** Shared runtime context handed to managers */
+    #context!: AdapterContext;
+    #async!: AsyncAdapter;
 
     /**
      * @param options Adapter options, or the adapter name as a string
@@ -1183,16 +1186,31 @@ export class AdapterClass extends EventEmitter {
             unsubscribeCallback: this._options.uiClientUnsubscribe,
         });
 
-        this.#messaging = new MessagingManager({
-            getNamespace: () => this.namespace,
-            getNamespaceLog: () => this.namespaceLog,
+        const self = this;
+        this.#context = {
             logger: this._logger,
             uiMessagingController: this.uiMessagingController,
-            getHost: () => this.host,
-            getStates: () => this.#states,
-            getObjects: () => this.#objects,
-            getCommon: () => this.common,
-        });
+            get namespace() {
+                return self.namespace;
+            },
+            get namespaceLog() {
+                return self.namespaceLog;
+            },
+            get host() {
+                return self.host;
+            },
+            get states() {
+                return self.#states;
+            },
+            get objects() {
+                return self.#objects;
+            },
+            get common() {
+                return self.common;
+            },
+        };
+
+        this.#async = new AsyncAdapter(this.#context);
 
         // Create dynamic methods
         /**
@@ -2741,7 +2759,7 @@ export class AdapterClass extends EventEmitter {
                     this._delays.clear();
                 }
 
-                this.#messaging.clearPendingCallbacks();
+                this.#async.clearPending();
 
                 if (this.#states && updateAliveState) {
                     this.outputCount++;
@@ -8821,7 +8839,6 @@ export class AdapterClass extends EventEmitter {
      * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
      */
     sendTo(instanceName: unknown, command: unknown, message: unknown, callback?: unknown, options?: unknown): any {
-        // arg-shuffle: if message is a function it is the callback
         if (typeof message === 'function' && typeof callback === 'undefined') {
             callback = message;
             message = undefined;
@@ -8831,20 +8848,16 @@ export class AdapterClass extends EventEmitter {
             command = 'send';
         }
 
-        // Legacy callback-info object: pass through as ack header, no reply wait
         if (tools.isObject(callback)) {
             Validator.assertString(instanceName, 'instanceName');
             Validator.assertString(command, 'command');
             if (options !== undefined) {
                 Validator.assertObject<SendToOptions>(options, 'options');
             }
-            this.#messaging
-                .sendTo({
-                    instanceName: instanceName,
-                    command: command,
-                    message,
+            this.#async
+                .sendTo(instanceName, command, message, {
+                    ...options,
                     callback: callback as ioBroker.MessageCallbackInfo,
-                    options: options,
                 })
                 .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendTo: ${err.message}`));
             return;
@@ -8853,26 +8866,21 @@ export class AdapterClass extends EventEmitter {
         const cb = callback as ioBroker.MessageCallback | undefined;
 
         if (typeof cb === 'function') {
-            // reply expected: deliver the reply (or error) to the callback
             this.sendToAsync(instanceName, command, message, options)
                 .then((reply: any) => cb(reply))
                 .catch((err: Error) => cb(err));
             return;
         }
 
-        // fire-and-forget: no reply expected, no registry entry, no forced subscribe
         try {
             Validator.assertString(instanceName, 'instanceName');
             Validator.assertString(command, 'command');
             if (options !== undefined) {
                 Validator.assertObject<SendToOptions>(options, 'options');
             }
-            this.#messaging
-                .sendTo({
-                    instanceName: instanceName,
-                    command: command,
-                    message,
-                    options: options,
+            this.#async
+                .sendTo(instanceName, command, message, {
+                    ...options,
                     expectReply: false,
                 })
                 .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendTo: ${err.message}`));
@@ -8894,7 +8902,6 @@ export class AdapterClass extends EventEmitter {
      */
     sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
         try {
-            // arg-shuffle: mirrors the sendTo overload (message, cb) → shift
             if (typeof message === 'function') {
                 options = undefined;
                 message = command;
@@ -8908,11 +8915,8 @@ export class AdapterClass extends EventEmitter {
             if (options !== undefined) {
                 Validator.assertObject<SendToOptions>(options, 'options');
             }
-            return this.#messaging.sendTo({
-                instanceName: instanceName,
-                command: command,
-                message,
-                options: options,
+            return this.#async.sendTo(instanceName, command, message, {
+                ...options,
                 expectReply: true,
             });
         } catch (err) {
@@ -8975,7 +8979,6 @@ export class AdapterClass extends EventEmitter {
             return;
         }
 
-        // fire-and-forget: no reply expected, no registry entry, no forced subscribe
         try {
             if (typeof message === 'undefined') {
                 message = command;
@@ -8985,13 +8988,8 @@ export class AdapterClass extends EventEmitter {
                 Validator.assertString(hostName, 'hostName');
             }
             Validator.assertString(command, 'command');
-            this.#messaging
-                .sendToHost({
-                    hostName: hostName,
-                    command: command,
-                    message,
-                    expectReply: false,
-                })
+            this.#async
+                .sendToHost(hostName, command, message, { expectReply: false })
                 .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendToHost: ${err.message}`));
         } catch (err) {
             this._logger.error(
@@ -9017,13 +9015,8 @@ export class AdapterClass extends EventEmitter {
                 Validator.assertString(hostName, 'hostName');
             }
             Validator.assertString(command, 'command');
-            return this.#messaging.sendToHost({
-                hostName: hostName,
-                command: command,
-                message,
-                // broadcast (null host) yields many responses → never wait for a reply
-                expectReply: hostName !== null,
-            });
+            // broadcast (null host) yields many responses → never wait for a reply
+            return this.#async.sendToHost(hostName, command, message, { expectReply: hostName !== null });
         } catch (err) {
             return Promise.reject(err instanceof Error ? err : new Error(String(err)));
         }
@@ -9042,7 +9035,7 @@ export class AdapterClass extends EventEmitter {
      * @param options clientId and data options
      */
     sendToUI(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void> {
-        return this.#messaging.sendToUI(options);
+        return this.#async.sendToUI(options);
     }
 
     /**
@@ -9069,7 +9062,7 @@ export class AdapterClass extends EventEmitter {
      * @param options - Additional options for the notification, currently `contextData` is supported
      */
     async registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void> {
-        return this.#messaging.registerNotification(scope, category, message, options);
+        return this.#async.registerNotification(scope, category, message, options);
     }
 
     // external signatures
@@ -12774,7 +12767,7 @@ export class AdapterClass extends EventEmitter {
                     const obj = state as unknown as ioBroker.Message;
 
                     if (obj) {
-                        if (!this.#messaging.resolveCallback(obj) && !this._stopInProgress) {
+                        if (!this.#async.resolveReply(obj) && !this._stopInProgress) {
                             if (obj.command === 'clientSubscribe') {
                                 const res = await this.uiMessagingController.registerClientSubscribeByMessage(obj);
                                 this.sendTo(obj.from, obj.command, res, obj.callback);

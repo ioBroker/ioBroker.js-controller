@@ -1,7 +1,4 @@
-import type Winston from 'winston';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
-import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
-import type { UserInterfaceMessagingController } from '../userInterfaceMessagingController.js';
 import type {
     AllPropsUnknown,
     InternalSendToHostOptions,
@@ -10,6 +7,7 @@ import type {
     SendToOptions,
     SendToUserInterfaceClientOptions,
 } from '../../_Types.js';
+import type { AdapterContext } from '@/lib/adapter/context.js';
 import { Validator } from '../validator.js';
 import { tools } from '@iobroker/js-controller-common';
 import { isMessageboxSupported } from '@/lib/adapter/utils.js';
@@ -22,26 +20,6 @@ interface PendingReply {
     time: number;
 }
 
-/** Dependencies injected into MessagingManager at construction time. */
-export interface MessagingManagerDeps {
-    /** Returns the current adapter namespace (re-derived during init), e.g. `"adapter.0"` */
-    getNamespace: () => `${string}.${number}`;
-    /** Returns the current namespace string used in log messages (re-derived during init) */
-    getNamespaceLog: () => string;
-    /** Logger instance */
-    readonly logger: Winston.Logger;
-    /** Controller for UI messaging */
-    readonly uiMessagingController: UserInterfaceMessagingController;
-    /** Returns the current host name (late-bound; may be undefined before init) */
-    getHost: () => string | undefined;
-    /** Returns the current states DB client */
-    getStates: () => StatesInRedisClient | null | undefined;
-    /** Returns the current objects DB client */
-    getObjects: () => ObjectsInRedisClient | null | undefined;
-    /** Returns the current adapter common config */
-    getCommon: () => ioBroker.InstanceCommon | undefined;
-}
-
 /** Owns the adapter's outbound messaging and the pending-reply registry. */
 export class MessagingManager {
     readonly #pending = new Map<number, PendingReply>();
@@ -49,9 +27,9 @@ export class MessagingManager {
     #mboxSubscribed = false;
 
     /**
-     * @param deps Dependencies injected at construction time
+     * @param ctx Shared adapter context providing live runtime state
      */
-    constructor(private readonly deps: MessagingManagerDeps) {}
+    constructor(private readonly ctx: AdapterContext) {}
 
     /**
      * Sends a message to another adapter instance. Validates args and throws on error.
@@ -77,33 +55,30 @@ export class MessagingManager {
         const obj: ioBroker.SendableMessage = {
             command,
             message,
-            from: `system.adapter.${this.deps.getNamespace()}`,
+            from: `system.adapter.${this.ctx.namespace}`,
         };
 
-        const states = this.deps.getStates();
+        const states = this.ctx.states;
         if (!states) {
-            this.deps.logger.info(
-                `${this.deps.getNamespaceLog()} sendTo not processed because States database not connected`,
-            );
+            this.ctx.logger.info(`${this.ctx.namespaceLog} sendTo not processed because States database not connected`);
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         if (typeof message !== 'object') {
-            this.deps.logger.silly(
-                `${this.deps.getNamespaceLog()} sendTo "${command}" to ${instanceName} from system.adapter.${this.deps.getNamespace()}: ${message}`,
+            this.ctx.logger.silly(
+                `${this.ctx.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.ctx.namespace}: ${message}`,
             );
         } else {
-            this.deps.logger.silly(
-                `${this.deps.getNamespaceLog()} sendTo "${command}" to ${instanceName} from system.adapter.${this.deps.getNamespace()}`,
+            this.ctx.logger.silly(
+                `${this.ctx.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.ctx.namespace}`,
             );
         }
 
-        // Broadcast path: instanceName has no trailing .<number>
         if (!instanceName.match(/\.[0-9]+$/)) {
-            const objects = this.deps.getObjects();
+            const objects = this.ctx.objects;
             if (!objects) {
-                this.deps.logger.info(
-                    `${this.deps.getNamespaceLog()} sendTo not processed because Objects database not connected`,
+                this.ctx.logger.info(
+                    `${this.ctx.namespaceLog} sendTo not processed because Objects database not connected`,
                 );
                 throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
             }
@@ -125,12 +100,10 @@ export class MessagingManager {
             return;
         }
 
-        // Specific instance, reply-wait path
         if (expectReply) {
             return this.#registerReply(states, instanceName, obj, options);
         }
 
-        // Specific instance, legacy callback-info object path
         if (callback) {
             obj.callback = { ...callback, ack: true };
         }
@@ -145,13 +118,13 @@ export class MessagingManager {
      * @param states the connected states DB client
      */
     #maybeSubscribe(states: StatesInRedisClient): void {
-        const common = this.deps.getCommon();
+        const common = this.ctx.common;
         if (common && !isMessageboxSupported(common) && !this.#mboxSubscribed) {
             this.#mboxSubscribed = true;
             states
-                .subscribeMessage(`system.adapter.${this.deps.getNamespace()}`)
+                .subscribeMessage(`system.adapter.${this.ctx.namespace}`)
                 .catch(e =>
-                    this.deps.logger.error(`${this.deps.getNamespaceLog()} Cannot subscribe to messages: ${e.message}`),
+                    this.ctx.logger.error(`${this.ctx.namespaceLog} Cannot subscribe to messages: ${e.message}`),
                 );
         }
     }
@@ -238,13 +211,13 @@ export class MessagingManager {
         const obj: ioBroker.SendableMessage = {
             command,
             message,
-            from: `system.adapter.${this.deps.getNamespace()}`,
+            from: `system.adapter.${this.ctx.namespace}`,
         };
 
-        const states = this.deps.getStates();
+        const states = this.ctx.states;
         if (!states) {
-            this.deps.logger.info(
-                `${this.deps.getNamespaceLog()} sendToHost not processed because States database not connected`,
+            this.ctx.logger.info(
+                `${this.ctx.namespaceLog} sendToHost not processed because States database not connected`,
             );
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -254,10 +227,10 @@ export class MessagingManager {
         }
 
         if (!hostName) {
-            const objects = this.deps.getObjects();
+            const objects = this.ctx.objects;
             if (!objects) {
-                this.deps.logger.info(
-                    `${this.deps.getNamespaceLog()} sendToHost not processed because Objects database not connected`,
+                this.ctx.logger.info(
+                    `${this.ctx.namespaceLog} sendToHost not processed because Objects database not connected`,
                 );
                 throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
             }
@@ -268,7 +241,7 @@ export class MessagingManager {
                 ),
             );
 
-            const broadcastStates = this.deps.getStates();
+            const broadcastStates = this.ctx.states;
             if (!broadcastStates) {
                 return;
             }
@@ -351,8 +324,11 @@ export class MessagingManager {
      * @param options clientId and data options
      */
     sendToUI(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void>;
+    /**
+     * @param options clientId and data options
+     */
     sendToUI(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void> {
-        const states = this.deps.getStates();
+        const states = this.ctx.states;
         if (!states) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -360,7 +336,7 @@ export class MessagingManager {
         const { clientId, data } = options;
 
         if (clientId === undefined) {
-            return this.deps.uiMessagingController.sendToAllClients({
+            return this.ctx.uiMessagingController.sendToAllClients({
                 data,
                 states,
             });
@@ -368,7 +344,7 @@ export class MessagingManager {
 
         Validator.assertString(clientId, 'clientId');
 
-        return this.deps.uiMessagingController.sendToClient({
+        return this.ctx.uiMessagingController.sendToClient({
             clientId,
             data,
             states,
@@ -397,11 +373,17 @@ export class MessagingManager {
      * @param options additional notification options
      */
     registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void>;
+    /**
+     * @param scope notification scope
+     * @param category notification category
+     * @param message notification message
+     * @param options additional notification options
+     */
     async registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void> {
-        const states = this.deps.getStates();
+        const states = this.ctx.states;
         if (!states) {
-            this.deps.logger.info(
-                `${this.deps.getNamespaceLog()} registerNotification not processed because States database not connected`,
+            this.ctx.logger.info(
+                `${this.ctx.namespaceLog} registerNotification not processed because States database not connected`,
             );
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -422,12 +404,12 @@ export class MessagingManager {
                 scope,
                 category,
                 message,
-                instance: this.deps.getNamespace(),
+                instance: this.ctx.namespace,
                 contextData: options?.contextData,
             },
-            from: `system.adapter.${this.deps.getNamespace()}`,
+            from: `system.adapter.${this.ctx.namespace}`,
         };
 
-        await states.pushMessage(`system.host.${this.deps.getHost()}`, obj as any);
+        await states.pushMessage(`system.host.${this.ctx.host}`, obj as any);
     }
 }

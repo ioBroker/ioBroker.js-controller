@@ -1,37 +1,38 @@
 import assert from 'node:assert/strict';
 import sinon from 'sinon';
 import { tools } from '@iobroker/js-controller-common';
-import { MessagingManager, type MessagingManagerDeps } from './MessagingManager.js';
+import { MessagingManager } from './MessagingManager.js';
+import type { AdapterContext } from '../context.js';
 
-function makeDeps(over: Partial<MessagingManagerDeps> = {}): MessagingManagerDeps {
+function makeContext(over: Partial<AdapterContext> = {}): AdapterContext {
     return {
-        getNamespace: () => 'test.0',
-        getNamespaceLog: () => 'test.0',
+        namespace: 'test.0',
+        namespaceLog: 'test.0',
         logger: { silly() {}, debug() {}, info() {}, warn() {}, error() {} } as any,
         uiMessagingController: {} as any,
-        getStates: () => null,
-        getObjects: () => null,
-        getCommon: () => undefined,
-        getHost: () => 'localhost',
+        states: null,
+        objects: null,
+        common: undefined,
+        host: 'localhost',
         ...over,
     };
 }
 
 describe('MessagingManager', () => {
     it('constructs with injected deps', () => {
-        const mgr = new MessagingManager(makeDeps());
+        const mgr = new MessagingManager(makeContext());
         assert.ok(mgr instanceof MessagingManager);
     });
 });
 
 describe('MessagingManager.sendTo', () => {
     it('rejects when instanceName is empty', async () => {
-        const mgr = new MessagingManager(makeDeps());
+        const mgr = new MessagingManager(makeContext());
         await assert.rejects(() => mgr.sendTo({ instanceName: '', command: 'cmd', message: {} }), /No instanceName/);
     });
 
     it('rejects with ERROR_DB_CLOSED when states is not connected', async () => {
-        const mgr = new MessagingManager(makeDeps({ getStates: () => null }));
+        const mgr = new MessagingManager(makeContext({ states: null }));
         await assert.rejects(
             () => mgr.sendTo({ instanceName: 'inst.0', command: 'cmd', message: {} }),
             new RegExp(tools.ERRORS.ERROR_DB_CLOSED),
@@ -45,7 +46,7 @@ describe('MessagingManager.sendTo', () => {
         });
         const fakeStates = { pushMessage } as any;
         const fakeObjects = { getObjectView } as any;
-        const deps = makeDeps({ getStates: () => fakeStates, getObjects: () => fakeObjects });
+        const deps = makeContext({ states: fakeStates, objects: fakeObjects });
         const mgr = new MessagingManager(deps);
 
         const result = await mgr.sendTo({ instanceName: 'inst', command: 'cmd', message: {} });
@@ -56,7 +57,7 @@ describe('MessagingManager.sendTo', () => {
 
     it('rejects with ERROR_DB_CLOSED on broadcast when objects is not connected', async () => {
         const fakeStates = { pushMessage: sinon.stub().resolves() } as any;
-        const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates, getObjects: () => null }));
+        const mgr = new MessagingManager(makeContext({ states: fakeStates, objects: null }));
         await assert.rejects(
             () => mgr.sendTo({ instanceName: 'inst', command: 'cmd', message: {} }),
             new RegExp(tools.ERRORS.ERROR_DB_CLOSED),
@@ -66,7 +67,7 @@ describe('MessagingManager.sendTo', () => {
     it('resolves void without registering a reply when expectReply is not set', async () => {
         const pushMessage = sinon.stub().resolves();
         const fakeStates = { pushMessage } as any;
-        const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates }));
+        const mgr = new MessagingManager(makeContext({ states: fakeStates }));
 
         const result = await mgr.sendTo({ instanceName: 'inst.0', command: 'cmd', message: {} });
 
@@ -83,7 +84,7 @@ describe('MessagingManager.sendTo', () => {
         const fakeCommon = {
             supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
         } as any;
-        const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates, getCommon: () => fakeCommon }));
+        const mgr = new MessagingManager(makeContext({ states: fakeStates, common: fakeCommon }));
 
         const replyPromise = mgr.sendTo({
             instanceName: 'inst.0',
@@ -117,7 +118,7 @@ describe('MessagingManager.sendTo', () => {
             const fakeCommon = {
                 supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
             } as any;
-            const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates, getCommon: () => fakeCommon }));
+            const mgr = new MessagingManager(makeContext({ states: fakeStates, common: fakeCommon }));
 
             const replyPromise = mgr.sendTo({
                 instanceName: 'inst.0',
@@ -140,7 +141,7 @@ describe('MessagingManager.sendTo', () => {
     it('passes legacy MessageCallbackInfo through as ack=true callback header', async () => {
         const pushMessage = sinon.stub().resolves();
         const fakeStates = { pushMessage } as any;
-        const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates }));
+        const mgr = new MessagingManager(makeContext({ states: fakeStates }));
         const callbackInfo: ioBroker.MessageCallbackInfo = { message: {}, id: 99, ack: false, time: Date.now() };
 
         await mgr.sendTo({
@@ -166,7 +167,7 @@ describe('MessagingManager.sendTo', () => {
         const fakeCommon = {
             supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
         } as any;
-        const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates, getCommon: () => fakeCommon }));
+        const mgr = new MessagingManager(makeContext({ states: fakeStates, common: fakeCommon }));
 
         await assert.rejects(
             () => mgr.sendTo({ instanceName: 'inst.0', command: 'cmd', message: {}, expectReply: true }),
@@ -182,7 +183,7 @@ describe('MessagingManager.sendToHost', () => {
     it('calls pushMessage with the host name and correct obj shape', async () => {
         const pushMessage = sinon.stub().resolves();
         const fakeStates = { pushMessage } as any;
-        const deps = makeDeps({ getStates: () => fakeStates });
+        const deps = makeContext({ states: fakeStates });
         const mgr = new MessagingManager(deps);
 
         await mgr.sendToHost({ hostName: 'myhost', command: 'myCommand', message: { data: 42 } });
@@ -195,7 +196,7 @@ describe('MessagingManager.sendToHost', () => {
     });
 
     it('rejects with ERROR_DB_CLOSED when states is not connected', async () => {
-        const mgr = new MessagingManager(makeDeps({ getStates: () => null }));
+        const mgr = new MessagingManager(makeContext({ states: null }));
         await assert.rejects(
             () => mgr.sendToHost({ hostName: 'myhost', command: 'cmd', message: {} }),
             new RegExp(tools.ERRORS.ERROR_DB_CLOSED),
@@ -205,7 +206,7 @@ describe('MessagingManager.sendToHost', () => {
     it('pushes a message without a callback header when no reply is expected', async () => {
         const pushMessage = sinon.stub().resolves();
         const fakeStates = { pushMessage } as any;
-        const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates }));
+        const mgr = new MessagingManager(makeContext({ states: fakeStates }));
 
         const result = await mgr.sendToHost({ hostName: 'myhost', command: 'cmd', message: {} });
 
@@ -222,7 +223,7 @@ describe('MessagingManager.sendToHost', () => {
         const fakeCommon = {
             supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
         } as any;
-        const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates, getCommon: () => fakeCommon }));
+        const mgr = new MessagingManager(makeContext({ states: fakeStates, common: fakeCommon }));
 
         const replyPromise = mgr.sendToHost({
             hostName: 'myhost',
@@ -263,7 +264,7 @@ describe('MessagingManager.sendToHost', () => {
                 });
             });
         const fakeObjects = { getObjectList } as any;
-        const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates, getObjects: () => fakeObjects }));
+        const mgr = new MessagingManager(makeContext({ states: fakeStates, objects: fakeObjects }));
 
         await mgr.sendToHost({ hostName: null, command: 'cmd', message: {} });
 
@@ -281,8 +282,8 @@ describe('MessagingManager.sendToUI', () => {
         const sendToAllClients = sinon.stub().resolves();
         const fakeStates = {} as any;
         const mgr = new MessagingManager(
-            makeDeps({
-                getStates: () => fakeStates,
+            makeContext({
+                states: fakeStates,
                 uiMessagingController: { sendToClient, sendToAllClients } as any,
             }),
         );
@@ -298,8 +299,8 @@ describe('MessagingManager.sendToUI', () => {
         const sendToAllClients = sinon.stub().resolves();
         const fakeStates = {} as any;
         const mgr = new MessagingManager(
-            makeDeps({
-                getStates: () => fakeStates,
+            makeContext({
+                states: fakeStates,
                 uiMessagingController: { sendToClient, sendToAllClients } as any,
             }),
         );
@@ -311,7 +312,7 @@ describe('MessagingManager.sendToUI', () => {
     });
 
     it('throws when states database is not connected', () => {
-        const mgr = new MessagingManager(makeDeps({ getStates: () => null }));
+        const mgr = new MessagingManager(makeContext({ states: null }));
         assert.throws(() => mgr.sendToUI({ data: 'test' }));
     });
 });
@@ -320,7 +321,7 @@ describe('MessagingManager.registerNotification', () => {
     it('pushes an addNotification message to the host', async () => {
         const pushMessage = sinon.stub().resolves();
         const fakeStates = { pushMessage } as any;
-        const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates, getHost: () => 'myhost' }));
+        const mgr = new MessagingManager(makeContext({ states: fakeStates, host: 'myhost' }));
         await mgr.registerNotification('iobroker', 'memUsage', 'test message');
         assert.equal(pushMessage.calledOnce, true);
         const [target, obj] = pushMessage.firstCall.args as [string, { command: string; message: unknown }];
@@ -329,7 +330,7 @@ describe('MessagingManager.registerNotification', () => {
     });
 
     it('throws when states database is not connected', async () => {
-        const mgr = new MessagingManager(makeDeps({ getStates: () => null }));
+        const mgr = new MessagingManager(makeContext({ states: null }));
         await assert.rejects(() => mgr.registerNotification('iobroker', 'memUsage', 'msg'));
     });
 });
@@ -342,7 +343,7 @@ describe('MessagingManager callback registry', () => {
         const fakeCommon = {
             supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
         } as any;
-        const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates, getCommon: () => fakeCommon }));
+        const mgr = new MessagingManager(makeContext({ states: fakeStates, common: fakeCommon }));
 
         const replyPromise = mgr.sendTo({
             instanceName: 'inst.0',
@@ -375,7 +376,7 @@ describe('MessagingManager callback registry', () => {
         const fakeCommon = {
             supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
         } as any;
-        const mgr = new MessagingManager(makeDeps({ getStates: () => fakeStates, getCommon: () => fakeCommon }));
+        const mgr = new MessagingManager(makeContext({ states: fakeStates, common: fakeCommon }));
 
         const replyPromise = mgr.sendTo({
             instanceName: 'inst.0',
