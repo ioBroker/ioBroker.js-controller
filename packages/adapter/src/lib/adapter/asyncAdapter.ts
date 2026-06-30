@@ -6,6 +6,7 @@ import type {
 } from '@/lib/_Types.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
 import { MessagingManager } from '@/lib/adapter/managers/MessagingManager.js';
+import { Validator } from '@/lib/adapter/validator.js';
 
 /**
  * Clean async-only facade for the adapter's outbound messaging. Owns the {@link MessagingManager}
@@ -38,7 +39,31 @@ export class AsyncAdapter {
         command: string,
         message: any,
         options?: SendToOptions & { expectReply?: boolean; callback?: ioBroker.MessageCallbackInfo },
-    ): Promise<any> {
+    ): Promise<any>;
+    /**
+     * @internal
+     * @param instanceName name of the instance to send the message to
+     * @param command command name
+     * @param message message payload
+     * @param options send options
+     */
+    sendTo(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): Promise<any>;
+    /**
+     * @param instanceName name of the instance to send the message to
+     * @param command command name
+     * @param message message payload
+     * @param options send options
+     */
+    async sendTo(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): Promise<any> {
+        Validator.assertString(instanceName, 'instanceName');
+        Validator.assertString(command, 'command');
+        if (options !== undefined) {
+            Validator.assertObject<SendToOptions & { expectReply?: boolean; callback?: ioBroker.MessageCallbackInfo }>(
+                options,
+                'options',
+            );
+        }
+
         const { expectReply, callback, ...sendOptions } = options ?? {};
         return this.#messaging.sendTo({
             instanceName,
@@ -65,7 +90,30 @@ export class AsyncAdapter {
         command: string,
         message: any,
         options?: SendToOptions & { expectReply?: boolean },
-    ): Promise<any> {
+    ): Promise<any>;
+    /**
+     * @internal
+     * @param hostName name of the host, or `null` to broadcast to all hosts
+     * @param command command name
+     * @param message message payload
+     * @param options send options
+     */
+    sendToHost(hostName: unknown, command: unknown, message?: unknown, options?: unknown): Promise<any>;
+    /**
+     * @param hostName name of the host, or `null` to broadcast to all hosts
+     * @param command command name
+     * @param message message payload
+     * @param options send options
+     */
+    async sendToHost(hostName: unknown, command: unknown, message?: unknown, options?: unknown): Promise<any> {
+        if (hostName !== null) {
+            Validator.assertString(hostName, 'hostName');
+        }
+        Validator.assertString(command, 'command');
+        if (options !== undefined) {
+            Validator.assertObject<SendToOptions & { expectReply?: boolean }>(options, 'options');
+        }
+
         const { expectReply, ...sendOptions } = options ?? {};
         return this.#messaging.sendToHost({
             hostName,
@@ -83,7 +131,11 @@ export class AsyncAdapter {
      * @param options clientId and data options
      */
     sendToUI(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void> {
-        return this.#messaging.sendToUI(options);
+        const { clientId, data } = options;
+        if (clientId !== undefined) {
+            Validator.assertString(clientId, 'clientId');
+        }
+        return this.#messaging.sendToUI({ clientId, data });
     }
 
     /**
@@ -114,7 +166,15 @@ export class AsyncAdapter {
      * @param message notification message
      * @param options additional notification options
      */
-    registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void> {
+    async registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void> {
+        Validator.assertString(scope, 'scope');
+        if (category !== null) {
+            Validator.assertString(category, 'category');
+        }
+        Validator.assertString(message, 'message');
+        if (options !== undefined) {
+            Validator.assertObject<NotificationOptions>(options, 'options');
+        }
         return this.#messaging.registerNotification(scope, category, message, options);
     }
 

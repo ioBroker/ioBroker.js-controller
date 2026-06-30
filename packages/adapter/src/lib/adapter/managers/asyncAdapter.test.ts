@@ -99,6 +99,50 @@ describe('AsyncAdapter.sendToHost', () => {
     });
 });
 
+describe('AsyncAdapter validation', () => {
+    it('sendTo rejects when instanceName is not a string', async () => {
+        const adapter = new AsyncAdapter(makeContext({ states: { pushMessage: sinon.stub().resolves() } as any }));
+        await assert.rejects(() => adapter.sendTo(42 as any, 'cmd', {}), /instanceName/);
+    });
+
+    it('sendTo rejects when command is not a string', async () => {
+        const adapter = new AsyncAdapter(makeContext({ states: { pushMessage: sinon.stub().resolves() } as any }));
+        await assert.rejects(() => adapter.sendTo('inst.0', 42 as any, {}), /command/);
+    });
+
+    it('sendTo rejects when options is not an object', async () => {
+        const adapter = new AsyncAdapter(makeContext({ states: { pushMessage: sinon.stub().resolves() } as any }));
+        await assert.rejects(() => adapter.sendTo('inst.0', 'cmd', {}, 'bad' as any), /options/);
+    });
+
+    it('sendToHost rejects when hostName is a non-null non-string', async () => {
+        const adapter = new AsyncAdapter(makeContext({ states: { pushMessage: sinon.stub().resolves() } as any }));
+        await assert.rejects(() => adapter.sendToHost(42 as any, 'cmd', {}), /hostName/);
+    });
+
+    it('sendToHost rejects when command is not a string', async () => {
+        const adapter = new AsyncAdapter(makeContext({ states: { pushMessage: sinon.stub().resolves() } as any }));
+        await assert.rejects(() => adapter.sendToHost('host', 42 as any, {}), /command/);
+    });
+
+    it('sendToUI throws when clientId is not a string', () => {
+        const adapter = new AsyncAdapter(
+            makeContext({ states: {} as any, uiMessagingController: { sendToClient: sinon.stub() } as any }),
+        );
+        assert.throws(() => adapter.sendToUI({ clientId: 42, data: {} }), /clientId/);
+    });
+
+    it('registerNotification rejects when scope is not a string', async () => {
+        const adapter = new AsyncAdapter(makeContext({ states: { pushMessage: sinon.stub().resolves() } as any }));
+        await assert.rejects(() => adapter.registerNotification(42, null, 'msg'), /scope/);
+    });
+
+    it('registerNotification rejects when message is not a string', async () => {
+        const adapter = new AsyncAdapter(makeContext({ states: { pushMessage: sinon.stub().resolves() } as any }));
+        await assert.rejects(() => adapter.registerNotification('system', null, 42), /message/);
+    });
+});
+
 describe('AsyncAdapter.clearPending', () => {
     it('rejects pending replies with "Adapter stopped"', async () => {
         const pushMessage = sinon.stub().resolves();

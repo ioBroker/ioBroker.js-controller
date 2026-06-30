@@ -8849,16 +8849,13 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (tools.isObject(callback)) {
-            Validator.assertString(instanceName, 'instanceName');
-            Validator.assertString(command, 'command');
-            if (options !== undefined) {
-                Validator.assertObject<SendToOptions>(options, 'options');
-            }
             this.#async
-                .sendTo(instanceName, command, message, {
-                    ...options,
-                    callback: callback as ioBroker.MessageCallbackInfo,
-                })
+                .sendTo(
+                    instanceName,
+                    command,
+                    message,
+                    this.#withSendFlags(options, { callback: callback as ioBroker.MessageCallbackInfo }),
+                )
                 .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendTo: ${err.message}`));
             return;
         }
@@ -8872,23 +8869,25 @@ export class AdapterClass extends EventEmitter {
             return;
         }
 
-        try {
-            Validator.assertString(instanceName, 'instanceName');
-            Validator.assertString(command, 'command');
-            if (options !== undefined) {
-                Validator.assertObject<SendToOptions>(options, 'options');
-            }
-            this.#async
-                .sendTo(instanceName, command, message, {
-                    ...options,
-                    expectReply: false,
-                })
-                .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendTo: ${err.message}`));
-        } catch (err) {
-            this._logger.error(
-                `${this.namespaceLog} Error in sendTo: ${err instanceof Error ? err.message : String(err)}`,
-            );
+        this.#async
+            .sendTo(instanceName, command, message, this.#withSendFlags(options, { expectReply: false }))
+            .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendTo: ${err.message}`));
+    }
+
+    /**
+     * Merges send-control flags into the caller-supplied options for delegation to the async facade.
+     * A non-object `options` is forwarded unchanged so the facade's validation surfaces it.
+     *
+     * @param options caller-supplied send options (unvalidated)
+     * @param flags control flags to apply
+     * @param flags.expectReply when false, the facade sends fire-and-forget
+     * @param flags.callback legacy callback-info header to attach to the message
+     */
+    #withSendFlags(options: unknown, flags: { expectReply?: boolean; callback?: ioBroker.MessageCallbackInfo }): any {
+        if (options !== undefined && !tools.isObject(options)) {
+            return options;
         }
+        return { ...options, ...flags };
     }
 
     /**
@@ -8901,27 +8900,15 @@ export class AdapterClass extends EventEmitter {
      * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
      */
     sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
-        try {
-            if (typeof message === 'function') {
-                options = undefined;
-                message = command;
-                command = 'send';
-            } else if (typeof message === 'undefined') {
-                message = command;
-                command = 'send';
-            }
-            Validator.assertString(instanceName, 'instanceName');
-            Validator.assertString(command, 'command');
-            if (options !== undefined) {
-                Validator.assertObject<SendToOptions>(options, 'options');
-            }
-            return this.#async.sendTo(instanceName, command, message, {
-                ...options,
-                expectReply: true,
-            });
-        } catch (err) {
-            return Promise.reject(err instanceof Error ? err : new Error(String(err)));
+        if (typeof message === 'function') {
+            options = undefined;
+            message = command;
+            command = 'send';
+        } else if (typeof message === 'undefined') {
+            message = command;
+            command = 'send';
         }
+        return this.#async.sendTo(instanceName, command, message, this.#withSendFlags(options, { expectReply: true }));
     }
 
     /**
@@ -8979,23 +8966,13 @@ export class AdapterClass extends EventEmitter {
             return;
         }
 
-        try {
-            if (typeof message === 'undefined') {
-                message = command;
-                command = 'send';
-            }
-            if (hostName !== null) {
-                Validator.assertString(hostName, 'hostName');
-            }
-            Validator.assertString(command, 'command');
-            this.#async
-                .sendToHost(hostName, command, message, { expectReply: false })
-                .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendToHost: ${err.message}`));
-        } catch (err) {
-            this._logger.error(
-                `${this.namespaceLog} Error in sendToHost: ${err instanceof Error ? err.message : String(err)}`,
-            );
+        if (typeof message === 'undefined') {
+            message = command;
+            command = 'send';
         }
+        this.#async
+            .sendToHost(hostName, command, message, { expectReply: false })
+            .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendToHost: ${err.message}`));
     }
 
     /**
@@ -9006,20 +8983,12 @@ export class AdapterClass extends EventEmitter {
      * @param message object that will be given as argument for request
      */
     sendToHostAsync(hostName: unknown, command: unknown, message?: unknown): any {
-        try {
-            if (typeof message === 'undefined') {
-                message = command;
-                command = 'send';
-            }
-            if (hostName !== null) {
-                Validator.assertString(hostName, 'hostName');
-            }
-            Validator.assertString(command, 'command');
-            // broadcast (null host) yields many responses → never wait for a reply
-            return this.#async.sendToHost(hostName, command, message, { expectReply: hostName !== null });
-        } catch (err) {
-            return Promise.reject(err instanceof Error ? err : new Error(String(err)));
+        if (typeof message === 'undefined') {
+            message = command;
+            command = 'send';
         }
+        // broadcast (null host) yields many responses → never wait for a reply
+        return this.#async.sendToHost(hostName, command, message, { expectReply: hostName !== null });
     }
 
     /**

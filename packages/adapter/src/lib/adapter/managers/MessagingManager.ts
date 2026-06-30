@@ -1,6 +1,5 @@
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type {
-    AllPropsUnknown,
     InternalSendToHostOptions,
     InternalSendToOptions,
     NotificationOptions,
@@ -8,7 +7,6 @@ import type {
     SendToUserInterfaceClientOptions,
 } from '../../_Types.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
-import { Validator } from '../validator.js';
 import { tools } from '@iobroker/js-controller-common';
 import { isMessageboxSupported } from '@/lib/adapter/utils.js';
 
@@ -32,7 +30,7 @@ export class MessagingManager {
     constructor(private readonly ctx: AdapterContext) {}
 
     /**
-     * Sends a message to another adapter instance. Validates args and throws on error.
+     * Sends a message to another adapter instance.
      *
      * When `opts.expectReply` is true and the target is a specific instance (not broadcast),
      * the returned promise resolves with the reply message when it arrives, or rejects with
@@ -197,7 +195,6 @@ export class MessagingManager {
 
     /**
      * Sends a message to a host, or broadcasts to all hosts when `hostName` is `null`.
-     * Validates args and throws on error.
      *
      * When `opts.expectReply` is true and a specific host is targeted, the returned promise
      * resolves with the reply message when it arrives, or rejects with `Error('Timeout exceeded')`
@@ -318,16 +315,7 @@ export class MessagingManager {
      *
      * @param options clientId and data options
      */
-    sendToUI(options: SendToUserInterfaceClientOptions): Promise<void>;
-    /**
-     * @internal
-     * @param options clientId and data options
-     */
-    sendToUI(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void>;
-    /**
-     * @param options clientId and data options
-     */
-    sendToUI(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void> {
+    sendToUI(options: SendToUserInterfaceClientOptions): Promise<void> {
         const states = this.ctx.states;
         if (!states) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
@@ -341,8 +329,6 @@ export class MessagingManager {
                 states,
             });
         }
-
-        Validator.assertString(clientId, 'clientId');
 
         return this.ctx.uiMessagingController.sendToClient({
             clientId,
@@ -359,43 +345,18 @@ export class MessagingManager {
      * @param message notification message
      * @param options additional notification options
      */
-    registerNotification<Scope extends keyof ioBroker.NotificationScopes>(
-        scope: Scope,
-        category: ioBroker.NotificationScopes[Scope] | null,
+    async registerNotification(
+        scope: string,
+        category: string | null,
         message: string,
         options?: NotificationOptions,
-    ): Promise<void>;
-    /**
-     * @internal
-     * @param scope notification scope
-     * @param category notification category
-     * @param message notification message
-     * @param options additional notification options
-     */
-    registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void>;
-    /**
-     * @param scope notification scope
-     * @param category notification category
-     * @param message notification message
-     * @param options additional notification options
-     */
-    async registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void> {
+    ): Promise<void> {
         const states = this.ctx.states;
         if (!states) {
             this.ctx.logger.info(
                 `${this.ctx.namespaceLog} registerNotification not processed because States database not connected`,
             );
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        Validator.assertString(scope, 'scope');
-        if (category !== null) {
-            Validator.assertString(category, 'category');
-        }
-        Validator.assertString(message, 'message');
-
-        if (options !== undefined) {
-            Validator.assertObject<NotificationOptions>(options, 'options');
         }
 
         const obj = {
