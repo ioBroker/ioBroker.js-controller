@@ -30,7 +30,9 @@ async function updateLicenseArray(): Promise<void> {
     // get all allowed licenses as array
     const licenses = await getSpdxLicenseIds();
     if (licenses) {
-        const ioPackSchema = fs.readJSONSync(path.join(thisDir, 'io-package.json'));
+        const ioPackSchema = fs.readJSONSync(path.join(thisDir, 'io-package.json')) as {
+            definitions: { license: { enum: string[] } };
+        };
         ioPackSchema.definitions.license.enum = licenses;
         fs.writeJSONSync(path.join(thisDir, 'io-package.json'), ioPackSchema, { spaces: 2 });
     }
@@ -47,6 +49,7 @@ interface LicenseEntry {
 
 /**
  * Get all valid and non-deprecated spdx licenses
+ * @returns Array of valid license IDs, or null if the list could not be fetched
  */
 async function getSpdxLicenseIds(): Promise<string[] | null> {
     const url = 'https://spdx.org/licenses/licenses.json';

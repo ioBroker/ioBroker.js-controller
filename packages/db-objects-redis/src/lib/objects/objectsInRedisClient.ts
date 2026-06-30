@@ -880,7 +880,7 @@ export class ObjectsInRedisClient {
      * Checks if given ID is a meta-object, else throws error
      *
      * @param id to check
-     * @throws Error if id is invalid
+     * @throws {Error} if id is invalid
      */
     async validateMetaObject(id: string): Promise<void> {
         if (this.existingMetaObjects[id] === undefined) {
@@ -2523,7 +2523,7 @@ export class ObjectsInRedisClient {
 
         if (!options.ownerGroup) {
             // get user group
-            this.getUserGroup(options.owner, (user, groups) => {
+            void this.getUserGroup(options.owner, (user, groups) => {
                 if (!groups?.[0]) {
                     return tools.maybeCallbackWithError(callback, `user "${options.owner}" belongs to no group`);
                 }
@@ -2981,7 +2981,7 @@ export class ObjectsInRedisClient {
             let count = pattern.length;
             pattern.forEach(pattern => {
                 this.log.silly(`${this.namespace} redis psubscribe ${this.objNamespace}${pattern}`);
-                subClient.psubscribe(this.objNamespace + pattern, err => {
+                void subClient.psubscribe(this.objNamespace + pattern, err => {
                     if (!err) {
                         const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
                         subscriptions[this.objNamespace + pattern] = true;
@@ -2993,7 +2993,7 @@ export class ObjectsInRedisClient {
             });
         } else {
             this.log.silly(`${this.namespace} redis psubscribe ${this.objNamespace}${pattern}`);
-            subClient.psubscribe(this.objNamespace + pattern, err => {
+            void subClient.psubscribe(this.objNamespace + pattern, err => {
                 if (!err) {
                     const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
                     subscriptions[this.objNamespace + pattern] = true;
@@ -3411,7 +3411,7 @@ export class ObjectsInRedisClient {
 
         if (!options.ownerGroup) {
             // get user group
-            this.getUserGroup(options.owner, (user, groups /* , permissions*/) => {
+            void this.getUserGroup(options.owner, (user, groups /* , permissions*/) => {
                 if (!groups || !groups[0]) {
                     return tools.maybeCallbackWithError(callback, `user "${options.owner}" belongs to no group`);
                 }

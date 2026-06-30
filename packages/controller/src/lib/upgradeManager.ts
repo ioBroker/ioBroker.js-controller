@@ -14,7 +14,6 @@ import fs from 'fs-extra';
 import { tools, logger } from '@iobroker/js-controller-common';
 import { dbConnectAsync } from '@iobroker/js-controller-cli';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
-import path from 'node:path';
 
 /** The upgrade arguments provided to the constructor of the UpgradeManager */
 export interface UpgradeArguments {

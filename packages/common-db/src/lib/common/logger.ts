@@ -39,6 +39,8 @@ try {
 
 /** Log entry enriched with ioBroker specific properties */
 export interface LogInfo extends TransformableInfo {
+    /** The log message text */
+    message: string;
     /** Additional properties attached to the log entry */
     props?: {
         /** The host the log entry originates from */
@@ -190,7 +192,7 @@ export function logger(
 
     files ||= [];
 
-    // indicator which is used to determine the log dir for developing, where it should be inside the repository
+    // indicator that is used to determine the log dir for developing, where it should be inside the repository
     const isNpm = !thisDir
         .replace(/\\/g, '/')
         .toLowerCase()

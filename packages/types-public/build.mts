@@ -2,7 +2,6 @@ import { join } from 'node:path';
 import fs from 'node:fs';
 import { generateDtsBundle } from 'dts-bundle-generator';
 
-// eslint-disable-next-line unicorn/prefer-module
 const thisDir = import.meta.dirname;
 const outputPath = join(thisDir, 'build/types.d.ts');
 

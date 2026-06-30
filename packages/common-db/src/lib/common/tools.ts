@@ -1475,7 +1475,7 @@ export function getHostName(): string {
 /**
  * Read version of system NPM
  *
- * @return NPM version
+ * @returns NPM version
  */
 async function getSystemNpmVersion(): Promise<string | null> {
     // remove local node_modules\.bin dir from a path,
@@ -2701,7 +2701,7 @@ export function parseDependencies(
  *
  * @param obj an object which will be validated
  * @param extend (optional) if true checks allow more optional cases for extendObject calls
- * @throws Error if a property has the wrong type or `obj.type` is non-existing
+ * @throws {Error} if a property has the wrong type or `obj.type` is non-existing
  */
 export function validateGeneralObjectProperties(
     obj: ioBroker.SettableObject | null | undefined,

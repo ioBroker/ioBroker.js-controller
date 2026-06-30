@@ -3515,7 +3515,7 @@ function initInstances(): void {
  * @param name - name of the dependency
  * @param version - version requirement, e.g. ">=3.3.0"
  * @param instances - object of instances and their corresponding instance objects
- * @throws
+ * @throws {Error} if the required adapter version is not satisfied or the adapter is not found
  */
 function checkVersion(name: string, version: string, instances: Record<string, ioBroker.InstanceObject>): void {
     let isFound = false;
