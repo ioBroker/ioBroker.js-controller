@@ -6,7 +6,7 @@
 
 # Interface: InternalSetSessionOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:314](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L314)
+Defined in: [adapter/src/lib/\_Types.ts:319](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L319)
 
 Options for storing a session
 
@@ -16,7 +16,7 @@ Options for storing a session
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:322](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L322)
+Defined in: [adapter/src/lib/\_Types.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L327)
 
 Called once the session has been stored
 
@@ -26,7 +26,7 @@ Called once the session has been stored
 
 > **data**: [`Session`](../type-aliases/Session.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:320](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L320)
+Defined in: [adapter/src/lib/\_Types.ts:325](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L325)
 
 The session data to store
 
@@ -36,7 +36,7 @@ The session data to store
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L316)
+Defined in: [adapter/src/lib/\_Types.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L321)
 
 The session id
 
@@ -46,6 +46,6 @@ The session id
 
 > **ttl**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:318](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L318)
+Defined in: [adapter/src/lib/\_Types.ts:323](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L323)
 
 Time to live in seconds

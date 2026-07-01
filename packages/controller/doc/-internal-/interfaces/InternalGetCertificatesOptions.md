@@ -6,7 +6,7 @@
 
 # Interface: InternalGetCertificatesOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:443](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L443)
+Defined in: [adapter/src/lib/\_Types.ts:448](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L448)
 
 Options for reading the SSL certificates
 
@@ -16,7 +16,7 @@ Options for reading the SSL certificates
 
 > `optional` **callback?**: [`GetCertificatesCallback`](../type-aliases/GetCertificatesCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:451](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L451)
+Defined in: [adapter/src/lib/\_Types.ts:456](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L456)
 
 Called with the certificates
 
@@ -26,7 +26,7 @@ Called with the certificates
 
 > `optional` **chainedName?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L449)
+Defined in: [adapter/src/lib/\_Types.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L454)
 
 Name of the chained certificate
 
@@ -36,7 +36,7 @@ Name of the chained certificate
 
 > `optional` **privateName?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:447](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L447)
+Defined in: [adapter/src/lib/\_Types.ts:452](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L452)
 
 Name of the private key
 
@@ -46,6 +46,6 @@ Name of the private key
 
 > `optional` **publicName?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:445](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L445)
+Defined in: [adapter/src/lib/\_Types.ts:450](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L450)
 
 Name of the public certificate
