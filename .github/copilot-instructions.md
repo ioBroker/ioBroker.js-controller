@@ -28,7 +28,7 @@ This is a Lerna-managed monorepo with packages in `/packages/`:
 
 ### Language & Tools
 - **Primary Language**: TypeScript (ES modules)
-- **Node.js**: Minimum version 18.x (check package.json engines field)
+- **Node.js**: Minimum version 22.x (check package.json engines field)
 - **Linting**: ESLint with `@iobroker/eslint-config`
 - **Formatting**: Prettier (integrated into ESLint config)
 - **Testing**: Mocha with TypeScript support via ts-node
@@ -61,7 +61,7 @@ npm run test             # Run tests
 - Tests are in TypeScript and run with ts-node
 - Integration tests start a controller instance
 - Ensure Redis is installed for database tests
-- All tests must pass on Node.js 18.x, 20.x, and 22.x on Windows/Linux/macOS
+- All tests must pass on Node.js 22.x and 24.x on Windows/Linux/macOS
 
 ### Building
 - Use `lerna` to manage package dependencies and build order
