@@ -300,13 +300,13 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         objects
             .extendObject(testId, { common: { def: 'default' } })
             .then(res => {
-                assert.strictEqual(res!.id, testId);
-                assert.strictEqual(res!.value.common.def, 'default');
+                assert.strictEqual(res.id, testId);
+                assert.strictEqual((res.value.common as ioBroker.StateCommon).def, 'default');
                 return objects.extendObject(`${namespace}.otherAsync`, { common: { def: 'default' } });
             })
             .then(res => {
-                assert.strictEqual(res!.id, `${namespace}.otherAsync`);
-                assert.strictEqual(res!.value.common.def, 'default');
+                assert.strictEqual(res.id, `${namespace}.otherAsync`);
+                assert.strictEqual((res.value.common as ioBroker.StateCommon).def, 'default');
                 done();
             })
             .catch(_err => {

@@ -7,13 +7,16 @@
  *
  */
 
-import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
-import fs from 'fs-extra';
 import path from 'node:path';
-import semver from 'semver';
 import child_process from 'node:child_process';
-import axios from 'axios';
 import { URL } from 'node:url';
+import { createRequire } from 'node:module';
+import axios from 'axios';
+import type { CommandResult } from '@alcalzone/pak';
+import fs from 'fs-extra';
+import semver from 'semver';
+
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import { Upload } from '@/lib/setup/setupUpload.js';
 import { PacketManager } from '@/lib/setup/setupPacketManager.js';
 import { getRepository } from '@/lib/setup/utils.js';
@@ -21,9 +24,7 @@ import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '@/lib/_Types.js';
 import { IoBrokerError } from '@/lib/setup/customError.js';
-import type { CommandResult } from '@alcalzone/pak';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
-import { createRequire } from 'node:module';
 
 // eslint-disable-next-line unicorn/prefer-module
 const require = createRequire(import.meta.url || `file://${__filename}`);
@@ -624,7 +625,7 @@ export class Install {
                 obj.ts = Date.now();
 
                 try {
-                    await this.objects.extendObjectAsync(obj._id, obj);
+                    await this.objects.extendObject(obj._id, obj);
                 } catch (err) {
                     console.error(`host.${hostname} error setObject ${obj._id} ${err.message}`);
                     return;

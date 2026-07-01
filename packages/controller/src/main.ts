@@ -106,7 +106,7 @@ interface Process {
     engine?: string;
     lastCleanErrors?: number;
     lastStart?: number;
-    /** Name of variable, that is subscribed automatically */
+    /** Name of the variable that is subscribed automatically */
     subscribe?: string;
     stopping?: boolean;
     crashCount?: number;
@@ -1721,8 +1721,8 @@ async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
         }
 
         try {
-            await objects!.extendObjectAsync(task._id, task);
-            // if extend throws we don't want to set corresponding state
+            await objects!.extendObject(task._id, task);
+            // if extend throws, we don't want to set corresponding state
             if (state) {
                 await states!.setState(task._id, state);
             }

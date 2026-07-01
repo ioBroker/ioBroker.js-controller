@@ -450,22 +450,22 @@ export class CLIObjects extends CLICommand {
         }
         const { value } = parsedArg;
 
-        dbConnect(params => {
+        dbConnect(async params => {
             const { objects } = params;
 
-            objects.extendObject(id, value as any, null, err => {
-                if (err) {
-                    CLI.error.cannotUpdateObject(id, err.message);
-                    return void callback(1);
-                }
+            try {
+                await objects.extendObject(id, value as any);
                 CLI.success.objectUpdated(id);
                 return void callback(EXIT_CODES.NO_ERROR);
-            });
+            } catch (err) {
+                CLI.error.cannotUpdateObject(id, err.message);
+                return void callback(1);
+            }
         });
     }
 
     /**
-     * Collects all object for specific path
+     * Collects all objects for specific path
      *
      * @param objects class
      * @param params parameters for getObjectView

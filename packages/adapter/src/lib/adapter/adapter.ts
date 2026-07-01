@@ -3739,7 +3739,7 @@ export class AdapterClass extends EventEmitter {
      * }
      * ```
      *
-     * If following object will be passed as argument
+     * If the following object will be passed as an argument
      *
      * ```js
      * {
@@ -3917,12 +3917,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (!oldObj) {
-            // if old object is not existing we behave like setObject
+            // if old object is not existing, we behave like setObject
             return this.setForeignObject(options.id, options.obj, options.options, options.callback);
         }
 
         try {
-            const cbObj = await this.#objects.extendObjectAsync(options.id, options.obj, options.options || {});
+            const cbObj = await this.#objects.extendObject(options.id, options.obj, options.options);
             let defState;
             if (options.obj.type === 'state' || oldObj.type === 'state') {
                 if (options.obj.common && 'def' in options.obj.common && options.obj.common.def !== undefined) {
@@ -4308,7 +4308,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            const cbObj = await this.#objects.extendObjectAsync(id, obj, options || {});
+            const cbObj = await this.#objects.extendObject(id, obj, options);
             if (cbObj?.value.type === 'state') {
                 let defState;
                 if (obj.common && 'def' in obj.common && (obj.common as ioBroker.StateCommon)?.def !== undefined) {
