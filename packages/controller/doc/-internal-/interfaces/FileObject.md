@@ -6,7 +6,7 @@
 
 # Interface: FileObject
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:42
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:48
 
 Metadata of a stored file
 
@@ -16,7 +16,7 @@ Metadata of a stored file
 
 > `optional` **acl?**: [`EvaluatedFileACL`](EvaluatedFileACL.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:54
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:60
 
 Evaluated access control list of the file
 
@@ -26,7 +26,9 @@ Evaluated access control list of the file
 
 > `optional` **binary?**: `boolean`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:58
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:68
+
+Whether the file content is binary
 
 ***
 
@@ -34,7 +36,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:58
 
 > `optional` **createdAt?**: `number`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:52
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:58
 
 Timestamp (ms) when the file was created
 
@@ -44,7 +46,9 @@ Timestamp (ms) when the file was created
 
 > `optional` **isDir?**: `boolean`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:55
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:62
+
+Whether the entry is a directory
 
 ***
 
@@ -52,7 +56,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:55
 
 > `optional` **mimeType?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:57
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:66
+
+The mime type of the file
 
 ***
 
@@ -60,7 +66,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:57
 
 > `optional` **modifiedAt?**: `number`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:50
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:56
 
 Timestamp (ms) when the file was last modified
 
@@ -70,7 +76,9 @@ Timestamp (ms) when the file was last modified
 
 > `optional` **notExists?**: `boolean`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:56
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:64
+
+Whether the file does not exist (yet)
 
 ***
 
@@ -78,7 +86,7 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:56
 
 > `optional` **stats?**: `object`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:46
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:52
 
 File system stats of the file
 
@@ -92,6 +100,6 @@ File system stats of the file
 
 > `optional` **virtualFile?**: `boolean`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:44
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:50
 
 Whether this is a virtual file (a directory placeholder)
