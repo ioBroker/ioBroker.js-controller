@@ -6,7 +6,7 @@
 
 # Interface: InternalCreateDeviceOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:589](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L589)
+Defined in: [adapter/src/lib/\_Types.ts:594](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L594)
 
 Options for creating a device
 
@@ -16,7 +16,7 @@ Options for creating a device
 
 > `optional` **\_native?**: `Record`\<`string`, `any`\> \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:595](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L595)
+Defined in: [adapter/src/lib/\_Types.ts:600](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L600)
 
 The native section of the device object
 
@@ -26,7 +26,7 @@ The native section of the device object
 
 > `optional` **callback?**: [`SetObjectCallback`](../type-aliases/SetObjectCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:599](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L599)
+Defined in: [adapter/src/lib/\_Types.ts:604](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L604)
 
 Called once the device has been created
 
@@ -36,7 +36,7 @@ Called once the device has been created
 
 > `optional` **common?**: `Partial`\<[`DeviceCommon`](DeviceCommon.md)\>
 
-Defined in: [adapter/src/lib/\_Types.ts:593](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L593)
+Defined in: [adapter/src/lib/\_Types.ts:598](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L598)
 
 The common section of the device object
 
@@ -46,7 +46,7 @@ The common section of the device object
 
 > **deviceName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:591](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L591)
+Defined in: [adapter/src/lib/\_Types.ts:596](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L596)
 
 The name of the device
 
@@ -56,6 +56,6 @@ The name of the device
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:597](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L597)
+Defined in: [adapter/src/lib/\_Types.ts:602](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L602)
 
 Optional settings including the user context

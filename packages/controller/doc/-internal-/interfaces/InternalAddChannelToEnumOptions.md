@@ -6,7 +6,7 @@
 
 # Interface: InternalAddChannelToEnumOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:651](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L651)
+Defined in: [adapter/src/lib/\_Types.ts:656](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L656)
 
 Options for adding a channel to an enum
 
@@ -16,7 +16,7 @@ Options for adding a channel to an enum
 
 > **addTo**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:655](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L655)
+Defined in: [adapter/src/lib/\_Types.ts:660](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L660)
 
 The enum id to add the channel to
 
@@ -26,7 +26,7 @@ The enum id to add the channel to
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:663](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L663)
+Defined in: [adapter/src/lib/\_Types.ts:668](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L668)
 
 Called once the channel has been added
 
@@ -36,7 +36,7 @@ Called once the channel has been added
 
 > **channelName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:659](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L659)
+Defined in: [adapter/src/lib/\_Types.ts:664](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L664)
 
 The name of the channel
 
@@ -46,7 +46,7 @@ The name of the channel
 
 > **enumName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:653](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L653)
+Defined in: [adapter/src/lib/\_Types.ts:658](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L658)
 
 The category of the enum (e.g. rooms, functions)
 
@@ -56,7 +56,7 @@ The category of the enum (e.g. rooms, functions)
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:661](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L661)
+Defined in: [adapter/src/lib/\_Types.ts:666](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L666)
 
 Optional settings including the user context
 
@@ -66,6 +66,6 @@ Optional settings including the user context
 
 > **parentDevice**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:657](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L657)
+Defined in: [adapter/src/lib/\_Types.ts:662](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L662)
 
 The parent device name

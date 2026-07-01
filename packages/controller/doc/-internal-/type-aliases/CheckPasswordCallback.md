@@ -8,7 +8,7 @@
 
 > **CheckPasswordCallback** = (`success`, `user`) => `void`
 
-Defined in: [adapter/src/lib/\_Types.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L351)
+Defined in: [adapter/src/lib/\_Types.ts:356](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L356)
 
 ## Parameters
 
