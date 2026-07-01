@@ -19,7 +19,12 @@ import type IORedis from 'ioredis';
 import Redis from 'ioredis';
 
 import { tools } from '@iobroker/db-base';
-import type { ACLObject, FileObject, GetUserGroupPromiseReturn, UserContext } from '@/lib/objects/objectsUtils.js';
+import {
+    type ACLObject,
+    checkObjectRightsAsync,
+    type FileObject,
+    type UserContext,
+} from '@/lib/objects/objectsUtils.js';
 import * as utils from '@/lib/objects/objectsUtils.js';
 import * as CONSTS from '@/lib/objects/constants.js';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
@@ -72,7 +77,7 @@ export interface ObjectsSettings {
     namespace?: string;
     /** Default ACL applied to newly created objects */
     defaultNewAcl?: ACLObject;
-    /** Namespace used for meta information */
+    /** Namespace used for meta-information */
     metaNamespace?: string;
     /** Redis key prefix (defaults to "cfg") */
     redisNamespace?: string;
@@ -167,6 +172,7 @@ export class ObjectsInRedisClient {
         this.subSystem = null;
         this.preserveSettings = ['custom', 'smartName', 'material', 'habpanel', 'mobile'];
         this.defaultNewAcl = this.settings.defaultNewAcl || null;
+
         this.namespace = this.settings.namespace || this.settings.hostname || '';
         this.hostname = this.settings.hostname || tools.getHostName();
         this.scripts = {};
@@ -1146,17 +1152,16 @@ export class ObjectsInRedisClient {
      * Determine the groups and effective ACL of the given user
      *
      * @param user The id of the user to look up
-     * @param callback Called with the user, its groups and the effective ACL
+     * @param callback Called with the user, its groups, and the effective ACL
      */
-    getUserGroup(
-        user: ioBroker.ObjectIDs.User,
-        callback: GetUserGroupCallbackNoError,
-    ): Promise<GetUserGroupPromiseReturn> | void {
+    getUserGroup(user: ioBroker.ObjectIDs.User, callback: GetUserGroupCallbackNoError): void {
         return utils.getUserGroup(this, user, (error, user, userGroups, userAcl) => {
             if (error) {
                 this.log.error(`${this.namespace} ${error.stack}`);
             }
-            return tools.maybeCallback(callback, user, userGroups, userAcl);
+            if (typeof callback === 'function') {
+                callback(user, userGroups, userAcl);
+            }
         });
     }
 
@@ -2523,7 +2528,7 @@ export class ObjectsInRedisClient {
 
         if (!options.ownerGroup) {
             // get user group
-            void this.getUserGroup(options.owner, (user, groups) => {
+            this.getUserGroup(options.owner, (user, groups) => {
                 if (!groups?.[0]) {
                     return tools.maybeCallbackWithError(callback, `user "${options.owner}" belongs to no group`);
                 }
@@ -2981,7 +2986,7 @@ export class ObjectsInRedisClient {
             let count = pattern.length;
             pattern.forEach(pattern => {
                 this.log.silly(`${this.namespace} redis psubscribe ${this.objNamespace}${pattern}`);
-                void subClient.psubscribe(this.objNamespace + pattern, err => {
+                subClient.psubscribe(this.objNamespace + pattern, err => {
                     if (!err) {
                         const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
                         subscriptions[this.objNamespace + pattern] = true;
@@ -2993,7 +2998,7 @@ export class ObjectsInRedisClient {
             });
         } else {
             this.log.silly(`${this.namespace} redis psubscribe ${this.objNamespace}${pattern}`);
-            void subClient.psubscribe(this.objNamespace + pattern, err => {
+            subClient.psubscribe(this.objNamespace + pattern, err => {
                 if (!err) {
                     const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
                     subscriptions[this.objNamespace + pattern] = true;
@@ -3411,8 +3416,8 @@ export class ObjectsInRedisClient {
 
         if (!options.ownerGroup) {
             // get user group
-            void this.getUserGroup(options.owner, (user, groups /* , permissions*/) => {
-                if (!groups || !groups[0]) {
+            this.getUserGroup(options.owner, (user, groups /* , permissions*/) => {
+                if (!groups?.[0]) {
                     return tools.maybeCallbackWithError(callback, `user "${options.owner}" belongs to no group`);
                 }
                 options.ownerGroup = groups[0];
@@ -5423,35 +5428,28 @@ export class ObjectsInRedisClient {
         obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options: ioBroker.ExtendObjectOptions,
         userContext: UserContext,
-        callback?: (err?: Error | null, obj?: ObjectIdValue, id?: string) => void,
-    ): Promise<[ObjectIdValue, string] | void> {
+    ): Promise<ObjectIdValue> {
         if (!id || typeof id !== 'string' || utils.REG_CHECK_ID.test(id)) {
-            // @ts-expect-error we fix when removing cb
-            return tools.maybeCallbackWithError(callback, `Invalid ID: ${id}`);
+            throw new Error(`Invalid ID: ${id}`);
         }
         if (!this.client) {
-            return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
-        let oldObj;
-        try {
-            oldObj = await this.client.get(this.objNamespace + id);
-        } catch (e) {
-            return tools.maybeCallbackWithRedisError(callback, e);
-        }
+        const oldObjStr: string | null = await this.client.get(this.objNamespace + id);
 
+        let oldObj: ioBroker.Object | null;
         try {
-            oldObj = oldObj ? JSON.parse(oldObj) : null;
+            oldObj = oldObjStr ? JSON.parse(oldObjStr) : null;
         } catch {
-            this.log.error(`${this.namespace} Cannot parse JSON ${id}: ${oldObj}`);
-            // @ts-expect-error we fix when removing cb
-            return tools.maybeCallbackWithError(callback, `Cannot parse JSON ${id}: ${oldObj}`);
+            this.log.error(`${this.namespace} Cannot parse JSON ${id}: ${oldObjStr}`);
+            throw new Error(`Cannot parse JSON ${id}: ${oldObjStr}`);
         }
         if (!utils.checkObject(oldObj, userContext, CONSTS.ACCESS_WRITE)) {
-            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
+            throw new Error(ERRORS.ERROR_PERMISSION);
         }
 
-        let _oldObj;
+        let _oldObj: ioBroker.Object | undefined;
         if (oldObj?.nonEdit) {
             // copy object
             _oldObj = deepClone(oldObj);
@@ -5460,213 +5458,135 @@ export class ObjectsInRedisClient {
         // we need to know if custom has been added/deleted
         const oldObjHasCustom = !!oldObj?.common?.custom;
 
-        oldObj = oldObj || {};
-        obj = deepClone(obj); // copy here to prevent "sandboxed" objects from JavaScript adapter
+        // copy here to prevent "sandboxed" objects from JavaScript adapter
+        let oldObjNotNull: ioBroker.Object = deepClone<ioBroker.Object>(
+            (obj as ioBroker.Object) || ({} as ioBroker.Object),
+        );
         if (
-            oldObj.common?.custom !== undefined &&
-            oldObj.common.custom !== null &&
-            !tools.isObject(oldObj.common.custom)
+            oldObjNotNull.common?.custom !== undefined &&
+            oldObjNotNull.common.custom !== null &&
+            !tools.isObject(oldObjNotNull.common.custom)
         ) {
             // custom has to be an object, else clean up
-            delete oldObj.common.custom;
+            delete oldObjNotNull.common.custom;
         }
 
         // we need to check if type has changed
-        const oldType = oldObj.type;
-
-        oldObj = extend(true, oldObj, obj);
-        oldObj._id = id;
+        const oldType = oldObjNotNull.type;
+        oldObjNotNull = extend(true, oldObjNotNull, obj);
+        oldObjNotNull._id = id;
 
         // add user default rights
-        if (this.defaultNewAcl && !oldObj.acl) {
-            oldObj.acl = deepClone(this.defaultNewAcl);
-            delete oldObj.acl.file;
-            if (oldObj.type !== 'state') {
-                delete oldObj.acl.state;
+        if (this.defaultNewAcl && !oldObjNotNull.acl) {
+            oldObjNotNull.acl = {
+                owner: this.defaultNewAcl.owner,
+                ownerGroup: this.defaultNewAcl.ownerGroup,
+                object: this.defaultNewAcl.object,
+            };
+            if (oldObjNotNull.type === 'state') {
+                oldObjNotNull.acl!.state = this.defaultNewAcl.state;
             }
 
             if (options.owner) {
-                oldObj.acl.owner = options.owner;
+                oldObjNotNull.acl.owner = options.owner;
 
                 if (!options.ownerGroup) {
-                    oldObj.acl.ownerGroup = null;
-                    return void this.getUserGroup(options.owner, (_user, groups /*, permissions */) => {
-                        if (!groups?.[0]) {
-                            options.ownerGroup = this.defaultNewAcl?.ownerGroup || CONSTS.SYSTEM_ADMIN_GROUP;
-                        } else {
-                            options.ownerGroup = groups[0];
-                        }
-                        return this._extendObject(id, obj, options, userContext, callback);
-                    });
+                    const [, groups] = await utils.getUserGroupAsync(this, options.owner);
+                    if (!groups?.[0]) {
+                        options.ownerGroup = this.defaultNewAcl.ownerGroup || CONSTS.SYSTEM_ADMIN_GROUP;
+                    } else {
+                        options.ownerGroup = groups[0];
+                    }
                 }
             }
         }
 
-        if (this.defaultNewAcl && options.ownerGroup && oldObj.acl && !oldObj.acl.ownerGroup) {
-            oldObj.acl.ownerGroup = options.ownerGroup;
+        if (this.defaultNewAcl && options.ownerGroup && oldObjNotNull.acl && !oldObjNotNull.acl.ownerGroup) {
+            oldObjNotNull.acl.ownerGroup = options.ownerGroup;
         }
 
         if (obj.common && 'alias' in obj.common && obj.common.alias.id) {
             if (typeof obj.common.alias.id === 'object') {
                 if (typeof obj.common.alias.id.write !== 'string' || typeof obj.common.alias.id.read !== 'string') {
-                    return tools.maybeCallbackWithError(callback, 'Invalid alias ID');
+                    throw new Error('Invalid alias ID');
                 }
 
                 if (obj.common.alias.id.write.startsWith('alias.') || obj.common.alias.id.read.startsWith('alias.')) {
-                    return tools.maybeCallbackWithError(callback, 'Cannot make alias on alias');
+                    throw new Error('Cannot make alias on alias');
                 }
             } else {
                 if (typeof obj.common.alias.id !== 'string') {
-                    return tools.maybeCallbackWithError(callback, 'Invalid alias ID');
+                    throw new Error('Invalid alias ID');
                 }
 
                 if (obj.common.alias.id.startsWith('alias.')) {
-                    return tools.maybeCallbackWithError(callback, 'Cannot make alias on alias');
+                    throw new Error('Cannot make alias on alias');
                 }
             }
         }
 
-        if (_oldObj && !tools.checkNonEditable(_oldObj, oldObj)) {
-            return tools.maybeCallbackWithError(callback, 'Invalid password for update of vendor information');
+        if (_oldObj && !tools.checkNonEditable(_oldObj, oldObjNotNull)) {
+            throw new Error('Invalid password for update of vendor information');
         }
-        const message = JSON.stringify(oldObj);
+        const message = JSON.stringify(oldObjNotNull);
 
-        try {
-            const commands = [];
-            if (this.useSets) {
-                // what is called oldObj is actually the obj we set, because it has been extended
-                if (oldObj.type && !oldType) {
-                    // new object or oldObj had no type -> add to set + set object
-                    commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
-                } else if (oldObj.type && oldType && oldObj.type !== oldType) {
-                    // the old obj had a type which differs from the new type -> rem old, add new
-                    commands.push(
-                        ['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id],
-                        ['srem', `${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id],
-                    );
-                } else if (oldType && !oldObj.type) {
-                    // the oldObj had a type, the new one has no -> rem
-                    commands.push(['srem', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
-                }
+        const commands = [];
+        if (this.useSets) {
+            // what is called oldObjNotNull is actually the obj we set, because it has been extended
+            if (oldObjNotNull.type && !oldType) {
+                // new object or oldObjNotNull had no type -> add to set + set object
+                commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
+            } else if (oldObjNotNull.type && oldType && oldObjNotNull.type !== oldType) {
+                // the old obj had a type which differs from the new type -> rem old, add new
+                commands.push(
+                    ['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id],
+                    ['srem', `${this.setNamespace}object.type.${oldObjNotNull.type}`, this.objNamespace + id],
+                );
+            } else if (oldType && !oldObjNotNull.type) {
+                // the oldObjNotNull had a type, the new one has no -> rem
+                commands.push(['srem', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
             }
-
-            if (oldObj.common?.custom && !oldObjHasCustom) {
-                // we now have custom, old object had no custom
-                commands.push(['sadd', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
-            } else if (oldObjHasCustom && (!oldObj.common || !oldObj.common.custom)) {
-                // we no longer have custom
-                commands.push(['srem', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
-            }
-
-            if (!commands.length) {
-                await this.client.set(this.objNamespace + id, message);
-            } else {
-                // set all commands atomic
-                commands.push(['set', this.objNamespace + id, message]);
-                await this.client.multi(commands).exec();
-            }
-
-            // extended -> if it's now type meta and currently marked as not -> cache
-            if (this.existingMetaObjects[id] === false && oldObj && oldObj.type === 'meta') {
-                this.existingMetaObjects[id] = true;
-            }
-
-            await this.client.publish(this.objNamespace + id, message);
-            return tools.maybeCallbackWithError(callback, null, { id: id, value: oldObj }, id);
-        } catch (e) {
-            return tools.maybeCallbackWithRedisError(callback, e);
         }
+
+        if (oldObjNotNull.common?.custom && !oldObjHasCustom) {
+            // we now have custom, old object had no custom
+            commands.push(['sadd', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
+        } else if (oldObjHasCustom && (!oldObjNotNull.common || !oldObjNotNull.common.custom)) {
+            // we no longer have custom
+            commands.push(['srem', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
+        }
+
+        if (!commands.length) {
+            await this.client.set(this.objNamespace + id, message);
+        } else {
+            // set all commands atomic
+            commands.push(['set', this.objNamespace + id, message]);
+            await this.client.multi(commands).exec();
+        }
+
+        // extended -> if it's now type meta and currently marked as not -> cache
+        if (this.existingMetaObjects[id] === false && oldObjNotNull?.type === 'meta') {
+            this.existingMetaObjects[id] = true;
+        }
+
+        await this.client.publish(this.objNamespace + id, message);
+        return { id, value: oldObjNotNull };
     }
 
-    // Promise version (with or without options)
-    /**
-     * Extend an existing object with the given partial object, creating it if it does not exist
-     *
-     * @param id The id of the object to extend
-     * @param obj The partial object to merge into the existing object
-     * @param options The current request options including the user
-     */
-    extendObject<T extends string>(
-        id: T,
-        obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options?: ioBroker.ExtendObjectOptions | null,
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>>;
-    // method called with options and callback
-    /**
-     * Extend an existing object with the given partial object, creating it if it does not exist
-     *
-     * @param id The id of the object to extend
-     * @param obj The partial object to merge into the existing object
-     * @param options The current request options including the user
-     * @param callback Called with the resulting object and its id
-     */
-    extendObject<T extends string>(
-        id: T,
-        obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options: ioBroker.ExtendObjectOptions | undefined | null,
-        callback: ioBroker.ExtendObjectCallback,
-    ): void;
-    // method called without options but with callback
-    /**
-     * Extend an existing object with the given partial object, creating it if it does not exist
-     *
-     * @param id The id of the object to extend
-     * @param obj The partial object to merge into the existing object
-     * @param callback Called with the resulting object and its id
-     */
-    extendObject<T extends string>(
-        id: T,
-        obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        callback: ioBroker.ExtendObjectCallback,
-    ): void;
     /**
      * Extend an existing object with the given partial object, creating it if it does not exist
      *
      * @param id The id of the object to extend
      * @param obj The partial object to merge into the existing object
      * @param options The current request options including the user, or the callback
-     * @param callback Called with the resulting object and its id
      */
-    extendObject<T extends string>(
+    async extendObject<T extends string>(
         id: T,
         obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options?: ioBroker.ExtendObjectOptions | null | ioBroker.ExtendObjectCallback,
-        callback?: ioBroker.ExtendObjectCallback,
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>> {
-        if (typeof options === 'function') {
-            callback = options;
-            options = null;
-        }
-        if (!callback) {
-            return new Promise((resolve, reject) =>
-                this.extendObject(id, obj, options, (err, res) => (err ? reject(err) : resolve(res))),
-            );
-        }
-
-        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, userContext) => {
-            if (err) {
-                return tools.maybeCallbackWithRedisError(callback, err);
-            }
-            // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
-            return this._extendObject(id, obj, options || {}, userContext!, callback);
-        });
-    }
-
-    /**
-     * Promise-version of extendObject
-     *
-     * @param id The id of the object to extend
-     * @param obj The partial object to merge into the existing object
-     * @param options The current request options including the user
-     */
-    extendObjectAsync(
-        id: string,
-        obj: Partial<ioBroker.AnyObject>,
-        options?: ioBroker.ExtendObjectOptions,
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>> {
-        return new Promise((resolve, reject) =>
-            this.extendObject(id, obj, options || null, (err, res) => (err ? reject(err) : resolve(res))),
-        );
+        options?: ioBroker.ExtendObjectOptions | null,
+    ): Promise<{ id: string; value: ioBroker.AnyObject }> {
+        const userContext = await checkObjectRightsAsync(this, null, null, options, CONSTS.ACCESS_WRITE);
+        return this._extendObject(id, obj, options || {}, userContext);
     }
 
     /**

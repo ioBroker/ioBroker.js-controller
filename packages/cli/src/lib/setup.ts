@@ -2026,7 +2026,7 @@ async function processCommand(
             const json = {
                 name: tools.appName,
                 engines: {
-                    node: '>=12',
+                    node: '>=22',
                 },
                 optionalDependencies: {} as Record<string, string>,
                 dependencies: {
@@ -2036,31 +2036,31 @@ async function processCommand(
                 author: 'bluefox <dogafox@gmail.com>',
             };
 
-            tools
-                .getRepositoryFile()
-                .then(sources => {
-                    if (sources) {
-                        for (const s in sources) {
-                            if (Object.prototype.hasOwnProperty.call(sources, s)) {
-                                if ((sources[s] as ioBroker.RepositoryJsonAdapterContent).url) {
-                                    if (!json.dependencies[`${tools.appName}.${s}`]) {
-                                        json.optionalDependencies[`${tools.appName}.${s}`] = (
-                                            sources[s] as ioBroker.RepositoryJsonAdapterContent
-                                        ).url!;
-                                    }
-                                } else {
-                                    if (!json.dependencies[`${tools.appName}.${s}`]) {
-                                        json.optionalDependencies[`${tools.appName}.${s}`] = '*';
-                                    }
+            try {
+                const sources = await tools.getRepositoryFile();
+                if (sources) {
+                    for (const s in sources) {
+                        if (Object.prototype.hasOwnProperty.call(sources, s)) {
+                            if ((sources[s] as ioBroker.RepositoryJsonAdapterContent).url) {
+                                if (!json.dependencies[`${tools.appName}.${s}`]) {
+                                    json.optionalDependencies[`${tools.appName}.${s}`] = (
+                                        sources[s] as ioBroker.RepositoryJsonAdapterContent
+                                    ).url!;
+                                }
+                            } else {
+                                if (!json.dependencies[`${tools.appName}.${s}`]) {
+                                    json.optionalDependencies[`${tools.appName}.${s}`] = '*';
                                 }
                             }
                         }
                     }
+                }
 
-                    fs.writeFileSync(path.join(tools.getRootDir(), 'package.json'), JSON.stringify(json, null, 2));
-                    return void callback();
-                })
-                .catch(e => console.error(`Cannot read repository file: ${e as Error}`));
+                fs.writeFileSync(path.join(tools.getRootDir(), 'package.json'), JSON.stringify(json, null, 2));
+                return void callback();
+            } catch (e) {
+                console.error(`Cannot read repository file: ${e as Error}`);
+            }
             break;
         }
 
@@ -2070,7 +2070,7 @@ async function processCommand(
                 console.warn('please specify instance.');
                 return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
             }
-            if (instance.indexOf('.') === -1) {
+            if (!instance.includes('.')) {
                 console.warn(`please specify instance, like "${instance}.0"`);
                 return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
             }

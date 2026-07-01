@@ -619,10 +619,9 @@ async function uuid(givenMac?: string): Promise<string> {
         return '55travis-pipe-line-cior-githubaction';
     }
 
-    let mac = givenMac || '';
-    let u;
+    let u: string;
 
-    if (!_isDocker && !mac) {
+    if (!_isDocker && !givenMac) {
         const ifaces = os.networkInterfaces();
 
         // Find first not empty MAC
@@ -630,28 +629,28 @@ async function uuid(givenMac?: string): Promise<string> {
             if (iface) {
                 for (const entry of iface) {
                     if (entry.mac !== '00:00:00:00:00:00') {
-                        mac = entry.mac;
+                        givenMac = entry.mac;
                         break;
                     }
                 }
             }
 
-            if (mac) {
+            if (givenMac) {
                 break;
             }
         }
     }
 
-    if (!_isDocker && !mac) {
+    if (!_isDocker && !givenMac) {
         const mac = await getMac();
         return uuid(mac);
     }
 
-    if (!_isDocker && mac) {
+    if (!_isDocker && givenMac) {
         const md5sum = crypto.createHash('md5');
-        md5sum.update(mac);
-        mac = md5sum.digest('hex');
-        u = `${mac.substring(0, 8)}-${mac.substring(8, 12)}-${mac.substring(12, 16)}-${mac.substring(16, 20)}-${mac.substring(20)}`;
+        md5sum.update(givenMac);
+        givenMac = md5sum.digest('hex');
+        u = `${givenMac.substring(0, 8)}-${givenMac.substring(8, 12)}-${givenMac.substring(12, 16)}-${givenMac.substring(16, 20)}-${givenMac.substring(20)}`;
     } else {
         // Returns a RFC4122 compliant v4 UUID https://gist.github.com/LeverOne/1308368 (DO WTF YOU WANT TO PUBLIC LICENSE)
         let a: any;
@@ -1144,18 +1143,12 @@ async function getNpmVersion(adapter: string): Promise<string> {
 
     const cliCommand = `npm view ${adapter}@latest version`;
 
-    return new Promise<string>((resolve, reject) => {
-        exec(cliCommand, { timeout: 2000, windowsHide: true }, (error, stdout, _stderr) => {
-            let version;
-            if (error) {
-                // command failed
-                reject(new Error(error.message));
-            } else if (stdout) {
-                version = semver.valid(stdout.trim());
-            }
-            resolve(version || '');
-        });
-    });
+    const result = await execAsync(cliCommand, { timeout: 2000, windowsHide: true });
+    let version;
+    if (result?.stdout) {
+        version = semver.valid(result.stdout.trim());
+    }
+    return version || '';
 }
 
 async function getIoPack(sources: ioBroker.RepositoryJson, name: string, failCounter: string[]): Promise<void> {
@@ -1242,7 +1235,7 @@ async function _getRepositoryFile(sources: ioBroker.RepositoryJson, path = ''): 
         timeout = setTimeout(() => {
             aborted = true;
             resolve(new Error(`Timeout by read all package.json (${names.length}) seconds`));
-        }, names.length * 1000);
+        }, names.length * 10_000);
     });
 
     const processPromise = (async (): Promise<Error | null> => {
@@ -1489,37 +1482,12 @@ async function getSystemNpmVersion(): Promise<string | null> {
             return !dir.includes('iobroker') || !dir.includes(path.join('node_modules', '.bin'));
         })
         .join(path.delimiter);
-
-    return new Promise((resolve, reject) => {
-        try {
-            let timeout: NodeJS.Timeout | null = setTimeout(() => {
-                timeout = null;
-                reject(new Error('timeout'));
-            }, 10_000);
-
-            exec(
-                'npm -v',
-                { encoding: 'utf8', env: newEnv, windowsHide: true },
-                (error: Error | null, stdout: string | undefined | null) => {
-                    //, stderr) {
-                    if (timeout) {
-                        clearTimeout(timeout);
-                        timeout = null;
-                    }
-                    if (stdout) {
-                        stdout = semver.valid(stdout.trim());
-                    }
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(stdout || null);
-                    }
-                },
-            );
-        } catch (error) {
-            reject(error as Error);
-        }
-    });
+    const result = await execAsync('npm -v', { env: newEnv, timeout: 10_000 });
+    let version;
+    if (result.stdout) {
+        version = semver.valid(result.stdout.trim());
+    }
+    return version || null;
 }
 
 const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
@@ -3000,6 +2968,7 @@ export function execAsync(
         // And we want to capture stdout/stderr
         encoding: 'utf8',
     };
+
     return new Promise<{
         stdout: string;
         stderr: string;

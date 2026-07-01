@@ -5,7 +5,6 @@ import type { Socket } from 'node:net';
 import type { Duplex } from 'node:stream';
 import url from 'node:url';
 import process from 'node:process';
-import { exec } from 'node:child_process';
 
 import { valid } from 'semver';
 import type { Logger } from 'winston';
@@ -14,6 +13,7 @@ import fs from 'fs-extra';
 import { tools, logger } from '@iobroker/js-controller-common';
 import { dbConnectAsync } from '@iobroker/js-controller-cli';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import { execAsync } from '@iobroker/js-controller-common-db/tools';
 
 /** The upgrade arguments provided to the constructor of the UpgradeManager */
 export interface UpgradeArguments {
@@ -192,15 +192,7 @@ class UpgradeManager {
         } else {
             command = `${tools.appNameLowerCase} stop`;
         }
-        await new Promise<void>((resolve, reject) => {
-            exec(command, (error, stdout, stderr) => {
-                if (error) {
-                    reject(stderr ? new Error(stderr) : error);
-                } else {
-                    resolve();
-                }
-            });
-        });
+        await execAsync(command);
 
         await wait(this.STOP_TIMEOUT_MS);
     }
@@ -218,22 +210,7 @@ class UpgradeManager {
         } else {
             command = `${tools.appNameLowerCase} start`;
         }
-
-        return new Promise<{
-            stderr?: string;
-            stdout?: string;
-        }>((resolve, reject) => {
-            exec(command, (error, stdout, stderr) => {
-                if (error) {
-                    reject(stderr ? new Error(stderr) : error);
-                } else {
-                    resolve({
-                        stderr: stderr?.toString(),
-                        stdout: stdout?.toString(),
-                    });
-                }
-            });
-        });
+        return execAsync(command);
     }
 
     /**
