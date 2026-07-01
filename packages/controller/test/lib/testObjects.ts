@@ -269,30 +269,20 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             });
     });
 
-    it(`${testName}should extend object`, done => {
+    it(`${testName}should extend object`, async () => {
         const objects = context.objects;
-        objects.extendObject(testId, { common: { def: 'default' } }, null, (err, res, id) => {
-            assert.ok(!err);
-            assert.strictEqual(id, testId);
-            assert.strictEqual(res?.id, testId);
-            assert.strictEqual(res?.value.common.def, 'default');
+        let res = await objects.extendObject(testId, { common: { def: 'default' } }, null);
+        assert.strictEqual(res?.id, testId);
+        assert.strictEqual((res?.value.common as ioBroker.StateCommon).def, 'default');
 
-            objects.getObject(testId, (err, obj) => {
-                assert.ok(!err);
-                assert.strictEqual(obj!._id, testId);
-                assert.strictEqual((obj!.common as ioBroker.StateCommon).def, 'default');
-                assert.strictEqual(obj!.common.name, 'test2');
+        const obj = await objects.getObject(testId);
+        assert.strictEqual(obj!._id, testId);
+        assert.strictEqual((obj!.common as ioBroker.StateCommon).def, 'default');
+        assert.strictEqual(obj!.common.name, 'test2');
 
-                objects.extendObject(`${namespace}.other`, { common: { def: 'default' } }, null, (err, res, id) => {
-                    assert.ok(!err);
-                    assert.strictEqual(id, `${namespace}.other`);
-                    assert.strictEqual(res!.id, `${namespace}.other`);
-                    assert.strictEqual(res!.value.common.def, 'default');
-
-                    done();
-                });
-            });
-        });
+        res = await objects.extendObject(`${namespace}.other`, { common: { def: 'default' } }, null);
+        assert.strictEqual(res.id, `${namespace}.other`);
+        assert.strictEqual((res?.value.common as ioBroker.StateCommon).def, 'default');
     });
 
     it(`${testName}should extend object async`, done => {
