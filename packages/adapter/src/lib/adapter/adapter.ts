@@ -113,8 +113,6 @@ import type {
     InternalGetUserIDOptions,
     InternalInstallNodeModuleOptions,
     InternalReportDeprecationOption,
-    InternalSendToHostOptions,
-    InternalSendToOptions,
     InternalSetObjectOptions,
     InternalSetPasswordOptions,
     InternalSetSessionOptions,
@@ -125,7 +123,6 @@ import type {
     InternalUpdateConfigOptions,
     IoPackageInstanceObject,
     MaybePromise,
-    MessageCallbackObject,
     NotificationOptions,
     Pattern,
     SendToOptions,
@@ -137,6 +134,8 @@ import type {
     UserInterfaceClientRemoveMessage,
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
+import { AsyncAdapter } from '@/lib/adapter/asyncAdapter.js';
+import type { AdapterContext } from '@/lib/adapter/context.js';
 import { SYSTEM_ADAPTER_PREFIX, DEFAULT_OBJECTS_WARN_LIMIT } from '@iobroker/js-controller-common-db/constants';
 import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
 
@@ -914,8 +913,6 @@ export class AdapterClass extends EventEmitter {
     private eventLoopLags: number[] = [];
     private overwriteLogLevel: boolean = false;
     adapterReady: boolean = false;
-    /** Callbacks from sendTo */
-    private readonly messageCallbacks = new Map<number, MessageCallbackObject>();
     /**
      * Contains a live cache of the adapter's states.
      * NOTE: This is only defined if the adapter was initialized with the option states: true.
@@ -927,7 +924,6 @@ export class AdapterClass extends EventEmitter {
      */
     oObjects?: Record<string, ioBroker.Object | undefined>;
     private _stopInProgress: boolean = false;
-    private _callbackId: number = 1;
     private _firstConnection: boolean = true;
     private readonly _timers = new Set<NodeJS.Timeout>();
     private readonly _intervals = new Set<NodeJS.Timeout>();
@@ -991,7 +987,6 @@ export class AdapterClass extends EventEmitter {
     config: ioBroker.AdapterConfig = {};
     host?: string;
     common?: ioBroker.InstanceCommon;
-    private mboxSubscribed?: boolean;
     /** Stop the adapter */
     stop?: (params?: StopParameters) => Promise<void>;
     version?: string;
@@ -1020,6 +1015,9 @@ export class AdapterClass extends EventEmitter {
     private readonly SUPPORTED_FEATURES = getSupportedFeatures();
     /** Controller for messaging related functionality */
     private readonly uiMessagingController: UserInterfaceMessagingController;
+    /** Shared runtime context handed to managers */
+    #context!: AdapterContext;
+    #async!: AsyncAdapter;
 
     /**
      * @param options Adapter options, or the adapter name as a string
@@ -1187,6 +1185,32 @@ export class AdapterClass extends EventEmitter {
             subscribeCallback: this._options.uiClientSubscribe,
             unsubscribeCallback: this._options.uiClientUnsubscribe,
         });
+
+        const self = this;
+        this.#context = {
+            logger: this._logger,
+            uiMessagingController: this.uiMessagingController,
+            get namespace() {
+                return self.namespace;
+            },
+            get namespaceLog() {
+                return self.namespaceLog;
+            },
+            get host() {
+                return self.host;
+            },
+            get states() {
+                return self.#states;
+            },
+            get objects() {
+                return self.#objects;
+            },
+            get common() {
+                return self.common;
+            },
+        };
+
+        this.#async = new AsyncAdapter(this.#context);
 
         // Create dynamic methods
         /**
@@ -1446,11 +1470,6 @@ export class AdapterClass extends EventEmitter {
          * Promise-version of `Adapter.fileExists`
          */
         this.fileExistsAsync = tools.promisify(this.fileExists, this);
-
-        /**
-         * Promise-version of `Adapter.sendToHost`
-         */
-        this.sendToHostAsync = tools.promisifyNoError(this.sendToHost, this);
 
         /**
          * Promise-version of `Adapter.setState`
@@ -2740,10 +2759,7 @@ export class AdapterClass extends EventEmitter {
                     this._delays.clear();
                 }
 
-                if (this.messageCallbacks.size) {
-                    this.messageCallbacks.forEach(callbackObj => clearTimeout(callbackObj.timer));
-                    this.messageCallbacks.clear();
-                }
+                this.#async.clearPending();
 
                 if (this.#states && updateAliveState) {
                     this.outputCount++;
@@ -8832,24 +8848,46 @@ export class AdapterClass extends EventEmitter {
             command = 'send';
         }
 
-        Validator.assertString(instanceName, 'instanceName');
-        Validator.assertString(command, 'command');
-
-        if (!tools.isObject(callback)) {
-            Validator.assertOptionalCallback(callback, 'callback');
+        if (tools.isObject(callback)) {
+            this.#async
+                .sendTo(
+                    instanceName,
+                    command,
+                    message,
+                    this.#withSendFlags(options, { callback: callback as ioBroker.MessageCallbackInfo }),
+                )
+                .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendTo: ${err.message}`));
+            return;
         }
 
-        if (options !== undefined) {
-            Validator.assertObject(options, 'options');
+        const cb = callback as ioBroker.MessageCallback | undefined;
+
+        if (typeof cb === 'function') {
+            this.sendToAsync(instanceName, command, message, options)
+                .then((reply: any) => cb(reply))
+                .catch((err: Error) => cb(err));
+            return;
         }
 
-        return this._sendTo({
-            instanceName,
-            command,
-            message: message as ioBroker.Message,
-            options,
-            callback: callback as ioBroker.MessageCallbackInfo | ioBroker.MessageCallback,
-        });
+        this.#async
+            .sendTo(instanceName, command, message, this.#withSendFlags(options, { expectReply: false }))
+            .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendTo: ${err.message}`));
+    }
+
+    /**
+     * Merges send-control flags into the caller-supplied options for delegation to the async facade.
+     * A non-object `options` is forwarded unchanged so the facade's validation surfaces it.
+     *
+     * @param options caller-supplied send options (unvalidated)
+     * @param flags control flags to apply
+     * @param flags.expectReply when false, the facade sends fire-and-forget
+     * @param flags.callback legacy callback-info header to attach to the message
+     */
+    #withSendFlags(options: unknown, flags: { expectReply?: boolean; callback?: ioBroker.MessageCallbackInfo }): any {
+        if (options !== undefined && !tools.isObject(options)) {
+            return options;
+        }
+        return { ...options, ...flags };
     }
 
     /**
@@ -8862,151 +8900,15 @@ export class AdapterClass extends EventEmitter {
      * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
      */
     sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
-        return new Promise((resolve, reject) => {
-            const callback: ioBroker.MessageCallback = resOrError => {
-                if (resOrError instanceof Error) {
-                    reject(resOrError);
-                }
-
-                resolve(resOrError);
-            };
-
-            // validation takes place inside sendTo so skip here
-            this.sendTo(
-                instanceName as string,
-                command as string,
-                message as string,
-                callback,
-                options as SendToOptions,
-            );
-        });
-    }
-
-    private async _sendTo(_options: InternalSendToOptions): Promise<void> {
-        const { command, message, callback, options } = _options;
-        let { instanceName } = _options;
-
-        const obj: ioBroker.SendableMessage = {
-            command,
-            message,
-            from: `system.adapter.${this.namespace}`,
-        };
-
-        if (!instanceName) {
-            // @ts-expect-error TODO it could also be the cb object
-            return tools.maybeCallbackWithError(callback, 'No instanceName provided or not a string');
+        if (typeof message === 'function') {
+            options = undefined;
+            message = command;
+            command = 'send';
+        } else if (typeof message === 'undefined') {
+            message = command;
+            command = 'send';
         }
-
-        if (!instanceName.startsWith('system.adapter.')) {
-            instanceName = `system.adapter.${instanceName}`;
-        }
-
-        if (!this.#states) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(`${this.namespaceLog} sendTo not processed because States database not connected`);
-            // @ts-expect-error TODO it could also be the cb object
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        if (typeof message !== 'object') {
-            this._logger.silly(
-                `${this.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.namespace}: ${message}`,
-            );
-        } else {
-            this._logger.silly(
-                `${this.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.namespace}`,
-            );
-        }
-
-        // If not specific instance
-        if (!instanceName.match(/\.[0-9]+$/)) {
-            if (!this.#objects) {
-                this._logger.info(`${this.namespaceLog} sendTo not processed because Objects database not connected`);
-                // @ts-expect-error TODO it could also be the cb object
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            try {
-                // Send it to all instances of adapter
-                const res = await this.#objects.getObjectView('system', 'instance', {
-                    startkey: `${instanceName}.`,
-                    endkey: `${instanceName}.\u9999`,
-                });
-
-                if (res) {
-                    for (const row of res.rows) {
-                        try {
-                            await this.#states.pushMessage(row.id, obj);
-                        } catch (e) {
-                            // @ts-expect-error TODO it could also be the cb object
-                            return tools.maybeCallbackWithError(callback, e);
-                        }
-                    }
-                }
-            } catch {
-                //ignore
-            }
-        } else {
-            if (callback) {
-                if (typeof callback === 'function') {
-                    // force subscribe even no messagebox enabled
-                    if (!isMessageboxSupported(this.common!) && !this.mboxSubscribed) {
-                        this.mboxSubscribed = true;
-                        this.#states
-                            .subscribeMessage(`system.adapter.${this.namespace}`)
-                            .catch(e =>
-                                this._logger.error(`${this.namespaceLog} Cannot subscribe to messages: ${e.message}`),
-                            );
-                    }
-
-                    obj.callback = {
-                        message,
-                        id: this._callbackId++,
-                        ack: false,
-                        time: Date.now(),
-                    };
-                    if (this._callbackId >= 0xffffffff) {
-                        this._callbackId = 1;
-                    }
-
-                    const callbackId = obj.callback.id;
-
-                    let timer: undefined | NodeJS.Timeout;
-
-                    if (options?.timeout) {
-                        timer = setTimeout(() => {
-                            const callbackObj = this.messageCallbacks.get(callbackId);
-
-                            if (callbackObj) {
-                                callbackObj.cb(new Error('Timeout exceeded'));
-                                this.messageCallbacks.delete(callbackId);
-                            }
-                        }, options.timeout);
-                    }
-
-                    this.messageCallbacks.set(callbackId, { cb: callback, time: Date.now(), timer });
-
-                    // delete too old callbacks IDs
-                    const now = Date.now();
-                    for (const [_id, cb] of this.messageCallbacks) {
-                        if (now - cb.time > 3_600_000) {
-                            this.messageCallbacks.delete(_id);
-                        }
-                    }
-                } else {
-                    // callback is an object
-                    obj.callback = callback;
-                    obj.callback.ack = true;
-                }
-            }
-
-            try {
-                await this.#states.pushMessage(instanceName, obj);
-            } catch (e) {
-                // @ts-expect-error TODO it could also be the cb object
-                return tools.maybeCallbackWithError(callback, e);
-            }
-        }
+        return this.#async.sendTo(instanceName, command, message, this.#withSendFlags(options, { expectReply: true }));
     }
 
     /**
@@ -9054,120 +8956,39 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
     sendToHost(hostName: unknown, command: unknown, message: unknown, callback?: unknown): any {
+        const cb = typeof callback === 'function' ? (callback as ioBroker.MessageCallback) : undefined;
+
+        // A broadcast (hostName === null) yields many replies, so the callback is ignored — matching legacy behavior.
+        if (cb && hostName !== null) {
+            this.sendToHostAsync(hostName, command, message)
+                .then((reply: any) => cb(reply))
+                .catch((err: Error) => cb(err));
+            return;
+        }
+
         if (typeof message === 'undefined') {
             message = command;
             command = 'send';
         }
-
-        if (hostName !== null) {
-            Validator.assertString(hostName, 'hostName');
-        }
-
-        Validator.assertString(command, 'command');
-
-        if (!tools.isObject(callback)) {
-            Validator.assertOptionalCallback(callback, 'callback');
-        }
-
-        return this._sendToHost({
-            hostName: hostName as string,
-            command,
-            message,
-            callback: callback as ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
-        });
+        this.#async
+            .sendToHost(hostName, command, message, { expectReply: false })
+            .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendToHost: ${err.message}`));
     }
 
-    private async _sendToHost(_options: InternalSendToHostOptions): Promise<void> {
-        const { command, message, callback } = _options;
-        let { hostName } = _options;
-        const obj: Partial<ioBroker.Message> = { command, message, from: `system.adapter.${this.namespace}` };
-
-        if (!this.#states) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(`${this.namespaceLog} sendToHost not processed because States database not connected`);
-            // @ts-expect-error TODO it could also be the cb object
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+    /**
+     * Async version of sendToHost
+     *
+     * @param hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is null, the message will be sent to all hosts.
+     * @param command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
+     * @param message object that will be given as argument for request
+     */
+    sendToHostAsync(hostName: unknown, command: unknown, message?: unknown): any {
+        if (typeof message === 'undefined') {
+            message = command;
+            command = 'send';
         }
-
-        if (hostName && !hostName.startsWith('system.host.')) {
-            hostName = `system.host.${hostName}`;
-        }
-
-        if (!hostName) {
-            if (!this.#objects) {
-                this._logger.info(
-                    `${this.namespaceLog} sendToHost not processed because Objects database not connected`,
-                );
-                // @ts-expect-error TODO it could also be the cb object
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            // Send to all hosts
-            this.#objects.getObjectList(
-                {
-                    startkey: 'system.host.',
-                    endkey: `system.host.\u9999`,
-                },
-                null,
-                async (err, res) => {
-                    if (!this.#states) {
-                        // if states is no longer existing, we do not need to unsubscribe
-                        return;
-                    }
-                    if (!err && res?.rows.length) {
-                        for (const row of res.rows) {
-                            const parts: string[] = row.id.split('.');
-                            // ignore system.host.name.alive and so on
-                            if (parts.length === 3) {
-                                try {
-                                    await this.#states.pushMessage(row.id, obj as any);
-                                } catch (e) {
-                                    // @ts-expect-error TODO it could also be the cb object
-                                    return tools.maybeCallbackWithError(callback, e);
-                                }
-                            }
-                        }
-                    }
-                },
-            );
-        } else {
-            if (callback) {
-                if (typeof callback === 'function') {
-                    // force subscribe even no messagebox enabled
-                    if (!isMessageboxSupported(this.common!) && !this.mboxSubscribed) {
-                        this.mboxSubscribed = true;
-                        this.#states
-                            .subscribeMessage(`system.adapter.${this.namespace}`)
-                            .catch(e =>
-                                this._logger.error(`${this.namespaceLog} Cannot subscribe to messages: ${e.message}`),
-                            );
-                    }
-
-                    obj.callback = {
-                        message,
-                        id: this._callbackId++,
-                        ack: false,
-                        time: Date.now(),
-                    };
-                    if (this._callbackId >= 0xffffffff) {
-                        this._callbackId = 1;
-                    }
-
-                    this.messageCallbacks.set(obj.callback.id, { cb: callback, time: Date.now() });
-                } else {
-                    // callback is an object
-                    obj.callback = callback;
-                    obj.callback.ack = true;
-                }
-            }
-
-            try {
-                await this.#states.pushMessage(hostName, obj as any);
-            } catch (e) {
-                // @ts-expect-error TODO it could also be the cb object
-                return tools.maybeCallbackWithError(callback, e);
-            }
-        }
+        // broadcast (null host) yields many responses → never wait for a reply
+        return this.#async.sendToHost(hostName, command, message, { expectReply: hostName !== null });
     }
 
     /**
@@ -9183,26 +9004,7 @@ export class AdapterClass extends EventEmitter {
      * @param options clientId and data options
      */
     sendToUI(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void> {
-        if (!this.#states) {
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        const { clientId, data } = options;
-
-        if (clientId === undefined) {
-            return this.uiMessagingController.sendToAllClients({
-                data,
-                states: this.#states,
-            });
-        }
-
-        Validator.assertString(clientId, 'clientId');
-
-        return this.uiMessagingController.sendToClient({
-            clientId,
-            data,
-            states: this.#states,
-        });
+        return this.#async.sendToUI(options);
     }
 
     /**
@@ -9229,37 +9031,7 @@ export class AdapterClass extends EventEmitter {
      * @param options - Additional options for the notification, currently `contextData` is supported
      */
     async registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void> {
-        if (!this.#states) {
-            // if states is no longer existing, we do not need to set
-            this._logger.info(
-                `${this.namespaceLog} registerNotification not processed because States database not connected`,
-            );
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        Validator.assertString(scope, 'scope');
-        if (category !== null) {
-            Validator.assertString(category, 'category');
-        }
-        Validator.assertString(message, 'message');
-
-        if (options !== undefined) {
-            Validator.assertObject<NotificationOptions>(options, 'options');
-        }
-
-        const obj = {
-            command: 'addNotification',
-            message: {
-                scope,
-                category,
-                message,
-                instance: this.namespace,
-                contextData: options?.contextData,
-            },
-            from: `system.adapter.${this.namespace}`,
-        };
-
-        await this.#states.pushMessage(`system.host.${this.host}`, obj as any);
+        return this.#async.registerNotification(scope, category, message, options);
     }
 
     // external signatures
@@ -12964,32 +12736,7 @@ export class AdapterClass extends EventEmitter {
                     const obj = state as unknown as ioBroker.Message;
 
                     if (obj) {
-                        let callbackObj: MessageCallbackObject | undefined;
-
-                        if (obj.callback?.id) {
-                            callbackObj = this.messageCallbacks.get(obj.callback.id);
-                        }
-
-                        // If callback stored for this request
-                        if (obj.callback?.ack && obj.callback.id && callbackObj) {
-                            // Call callback function
-                            if (typeof callbackObj.cb === 'function') {
-                                callbackObj.cb(obj.message);
-
-                                if (callbackObj.timer) {
-                                    clearTimeout(callbackObj.timer);
-                                }
-
-                                this.messageCallbacks.delete(obj.callback.id);
-                            }
-                            // delete too old callbacks IDs, like garbage collector
-                            const now = Date.now();
-                            for (const [_id, callback] of this.messageCallbacks) {
-                                if (now - callback.time > 3_600_000) {
-                                    this.messageCallbacks.delete(_id);
-                                }
-                            }
-                        } else if (!this._stopInProgress) {
+                        if (!this.#async.resolveReply(obj) && !this._stopInProgress) {
                             if (obj.command === 'clientSubscribe') {
                                 const res = await this.uiMessagingController.registerClientSubscribeByMessage(obj);
                                 this.sendTo(obj.from, obj.command, res, obj.callback);
@@ -13593,7 +13340,6 @@ export class AdapterClass extends EventEmitter {
                 );
                 // @ts-expect-error we should infer adapterConfig correctly
             } else if (isMessageboxSupported(adapterConfig.common)) {
-                this.mboxSubscribed = true;
                 this.#states
                     .subscribeMessage(`system.adapter.${this.namespace}`)
                     .catch(e => this._logger.error(`${this.namespaceLog} Cannot subscribe to messages: ${e.message}`));
