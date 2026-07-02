@@ -1492,8 +1492,6 @@ async function getSystemNpmVersion(): Promise<string | null> {
     return version || null;
 }
 
-const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
-
 /** Options for installing a node module */
 export interface InstallNodeModuleOptions {
     /** Whether the `--unsafe-perm` flag should be used */
@@ -1954,7 +1952,7 @@ export async function getHostInfo(objects: ObjectsRedisClient): Promise<HostInfo
 
     if (!npmVersion) {
         try {
-            npmVersion = await getSystemNpmVersionAsync();
+            npmVersion = (await getSystemNpmVersion()) || '';
         } catch (e) {
             console.error(`Cannot get NPM version: ${e.message}`);
         }
