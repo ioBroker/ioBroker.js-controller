@@ -5458,10 +5458,10 @@ export class ObjectsInRedisClient {
         // we need to know if custom has been added/deleted
         const oldObjHasCustom = !!oldObj?.common?.custom;
 
-        // copy here to prevent "sandboxed" objects from JavaScript adapter
-        let oldObjNotNull: ioBroker.Object = deepClone<ioBroker.Object>(
-            (obj as ioBroker.Object) || ({} as ioBroker.Object),
-        );
+        // Clone the update here to prevent "sandboxed" objects from the JavaScript adapter
+        const objClone = deepClone(obj);
+        // Start from the existing object so the update is merged into it instead of replacing it
+        let oldObjNotNull: ioBroker.Object = oldObj || ({} as ioBroker.Object);
         if (
             oldObjNotNull.common?.custom !== undefined &&
             oldObjNotNull.common.custom !== null &&
@@ -5473,7 +5473,7 @@ export class ObjectsInRedisClient {
 
         // we need to check if type has changed
         const oldType = oldObjNotNull.type;
-        oldObjNotNull = extend(true, oldObjNotNull, obj);
+        oldObjNotNull = extend(true, oldObjNotNull, objClone);
         oldObjNotNull._id = id;
 
         // add user default rights

@@ -43,6 +43,8 @@ import { DEFAULT_OBJECTS_WARN_LIMIT } from '@/lib/common/constants.js';
 type ObjectsRedisClient = any;
 type StatesRedisClient = any;
 
+const HASH_TEXT = 'hash';
+
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 // eslint-disable-next-line unicorn/prefer-module
@@ -1337,7 +1339,7 @@ export async function getRepositoryFileAsync(
     if (url.startsWith('http://') || url.startsWith('https://')) {
         try {
             hashResponse = await axios<{ hash: string }>({
-                url: url.replace(/\.json$/, '-hash.json'),
+                url: url.replace(/\.json$/, `-${HASH_TEXT}.json`),
                 timeout: 10_000,
             });
         } catch {
