@@ -86,15 +86,13 @@ export class Validator {
 
                 if (state.val !== null) {
                     // now check if a type is correct, null is always allowed
-                    if (
-                        !(
-                            (obj.common.type === 'mixed' && typeof state.val !== 'object') ||
-                            (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
-                            (obj.common.type === 'array' && typeof state.val === 'string') ||
-                            (obj.common.type === 'json' && typeof state.val === 'string') ||
-                            (obj.common.type === 'object' && typeof state.val === 'string')
-                        )
-                    ) {
+                    if (!(
+                        (obj.common.type === 'mixed' && typeof state.val !== 'object') ||
+                        (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
+                        (obj.common.type === 'array' && typeof state.val === 'string') ||
+                        (obj.common.type === 'json' && typeof state.val === 'string') ||
+                        (obj.common.type === 'object' && typeof state.val === 'string')
+                    )) {
                         // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json';
                         // 'array', 'object', 'json' need to be string
                         if (['object', 'json', 'array'].includes(obj.common.type)) {
@@ -151,7 +149,7 @@ export class Validator {
      * @param id id to check or object with properties device, channel and state
      * @param isForeignId true&false if the ID is a foreign/full ID or only an "adapter local" id
      * @param options optional
-     * @throws Error when id is invalid
+     * @throws {Error} when id is invalid
      */
     validateId(id: string, isForeignId: boolean, options?: ValidateIdOptions | null): asserts id is string {
         // there is a special maintenance mode to clear the DB from invalid IDs

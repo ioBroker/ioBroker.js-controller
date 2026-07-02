@@ -31,7 +31,7 @@ function normalizeJsonlOptions(
             // Compress when the number of uncompressed entries has grown a lot
             sizeFactor: 10,
             sizeFactorMinimumSize: 50000,
-            // Compress at least daily to avoid a huge file when DBs have few objects
+            // Compress at least daily to avoid a huge file when DBs have few objects,
             // but big binary states are updated regularly
             intervalMs: 1000 * 60 * 60 * 23,
         },
@@ -60,7 +60,7 @@ function normalizeJsonlOptions(
         if (typeof ac.sizeFactor === 'number' && ac.sizeFactor >= 2 && ac.sizeFactor <= 100) {
             ret.autoCompress.sizeFactor = ac.sizeFactor;
         }
-        // Also we should definitely compress once the DB has reached 200k lines, or it might grow too big
+        // Also, we should definitely compress once the DB has reached 200k lines, or it might grow too big
         if (
             typeof ac.sizeFactorMinimumSize === 'number' &&
             ac.sizeFactorMinimumSize >= 0 &&
@@ -92,7 +92,7 @@ function normalizeJsonlOptions(
 }
 
 /**
- * This class inherits InMemoryFileDB class and adds all relevant logic for states
+ * This class inherits the InMemoryFileDB class and adds all relevant logic for states
  * including the available methods for use by js-controller directly
  */
 export class StatesInMemoryJsonlDB<
@@ -259,7 +259,7 @@ export class StatesInMemoryJsonlDB<
 
         await this._db.open();
         this._db.clear();
-        await this._db.importJson(importFilename);
+        this._db.importJSON(JSON.parse(fs.readFileSync(importFilename, 'utf8')));
 
         // And rename the existing files to avoid redoing the work next time
         if (fs.existsSync(jsonFileName)) {

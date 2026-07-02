@@ -1,8 +1,10 @@
-import fs from 'fs-extra';
 import path from 'node:path';
-import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
-import { exec as execAsync } from 'promisify-child-process';
+import { open, writeFile } from 'node:fs/promises';
+import fs from 'fs-extra';
+import { exec } from 'node:child_process';
 import * as tar from 'tar';
+
+import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { Upload } from './setupUpload.js';
@@ -10,7 +12,6 @@ import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } fro
 import { dbConnectAsync, resetDbConnect } from './dbConnection.js';
 import { IoBrokerError } from './customError.js';
 import { CLIProcess } from '@/lib/cli/cliProcess.js';
-import { open, writeFile } from 'node:fs/promises';
 
 /** Options for the backup/restore command */
 export interface CLIBackupRestoreOptions {
@@ -145,7 +146,7 @@ export class BackupRestore {
     private async _copyFile(id: string, srcPath: string, destPath: string): Promise<void> {
         try {
             const data = await this.objects.readFile(id, srcPath);
-            if (data) {
+            if (data?.file) {
                 fs.writeFileSync(destPath, data.file);
             }
         } catch (err) {
@@ -602,7 +603,7 @@ export class BackupRestore {
         }
 
         if (!isCustomHostname) {
-            if (object._id.match(/^system\.adapter\.([\w\d_-]+).(\d+)$/) && object.common.host === hostname) {
+            if (object._id.match(/^system\.adapter\.([\w_-]+).(\d+)$/) && object.common.host === hostname) {
                 object.common.host = this.HOSTNAME_PLACEHOLDER;
                 object.common.host = this.HOSTNAME_PLACEHOLDER;
             } else if (object._id.startsWith(thisHostNameStartsWith)) {
@@ -611,7 +612,7 @@ export class BackupRestore {
                 object._id = `system.host.${this.HOSTNAME_PLACEHOLDER}`;
                 object.common.name = object._id;
                 object.common.hostname = this.HOSTNAME_PLACEHOLDER;
-                if (object.native && object.native.os) {
+                if (object.native?.os) {
                     object.native.os.hostname = this.HOSTNAME_PLACEHOLDER;
                 }
 
@@ -888,9 +889,18 @@ export class BackupRestore {
             // js-controller version has changed (setup never called for this version)
             console.log('Forced restore - executing setup ...');
             try {
-                await execAsync(
-                    `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`,
-                );
+                await new Promise<void>((resolve, reject) => {
+                    exec(
+                        `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`,
+                        (error, stdout, stderr) => {
+                            if (error) {
+                                reject(stderr ? new Error(stderr) : error);
+                            } else {
+                                resolve();
+                            }
+                        },
+                    );
+                });
             } catch (e) {
                 console.error(
                     `Could not execute "setup" command, please ensure "setup" is called before starting ioBroker: ${e.message}`,

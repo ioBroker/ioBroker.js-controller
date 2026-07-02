@@ -61,11 +61,7 @@ export interface AdapterOptions {
 }
 
 export type IoPackageInstanceObject =
-    | ioBroker.StateObject
-    | ioBroker.DeviceObject
-    | ioBroker.ChannelObject
-    | ioBroker.FolderObject
-    | ioBroker.MetaObject;
+    ioBroker.StateObject | ioBroker.DeviceObject | ioBroker.ChannelObject | ioBroker.FolderObject | ioBroker.MetaObject;
 
 type MessageUnsubscribeReason = 'client' | 'disconnect';
 export type ClientUnsubscribeReason = MessageUnsubscribeReason | 'clientSubscribeError';
