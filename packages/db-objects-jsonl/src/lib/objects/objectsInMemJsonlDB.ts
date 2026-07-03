@@ -91,7 +91,7 @@ function normalizeJsonlOptions(
 }
 
 /**
- * This class inherits InMemoryFileDB class and adds all relevant logic for objects
+ * This class inherits InMemoryFileDB class and adds all relevant logic for objects,
  * including the available methods for use by js-controller directly
  */
 export class ObjectsInMemoryJsonlDB<
@@ -257,7 +257,7 @@ export class ObjectsInMemoryJsonlDB<
 
         await this._db.open();
         this._db.clear();
-        await this._db.importJson(importFilename);
+        this._db.importJSON(JSON.parse(fs.readFileSync(importFilename, 'utf8')));
 
         // And rename the existing files to avoid redoing the work next time
         if (fs.existsSync(jsonFileName)) {

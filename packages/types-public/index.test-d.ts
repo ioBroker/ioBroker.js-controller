@@ -986,7 +986,7 @@ async () => {
         native: {},
     });
 
-    adapter.setForeignObject(null! as string, null! as ioBroker.Object);
+    adapter.setForeignObject(null!, null!);
 };
 
 // Test convenience types for subsets of SettableObject
