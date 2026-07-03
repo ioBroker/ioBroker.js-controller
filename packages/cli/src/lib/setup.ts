@@ -922,9 +922,10 @@ async function processCommandUnsetup(options: ProcessCommandOptions): Promise<vo
 function processCommandClean(options: ProcessCommandOptions): void {
     const { args, params, callback } = options;
     const yes = args[0];
-    if (yes !== 'yes') {
-        console.log(`Command "clean" clears all Objects and States. To execute it write "${tools.appName} clean yes"`);
-    } else {
+if (yes !== 'yes') {
+    console.log(`Command "clean" clears all Objects and States. To execute it write "${tools.appName} clean yes"`);
+    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+} else {
         dbConnect(params, async ({ isOffline }) => {
             if (!isOffline) {
                 console.error(`Stop ${tools.appName} first!`);
