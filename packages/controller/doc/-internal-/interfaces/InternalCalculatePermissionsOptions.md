@@ -6,7 +6,7 @@
 
 # Interface: InternalCalculatePermissionsOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L423)
+Defined in: [adapter/src/lib/\_Types.ts:428](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L428)
 
 Options for calculating the permissions of a user
 
@@ -16,7 +16,7 @@ Options for calculating the permissions of a user
 
 > `optional` **callback?**: [`CalculatePermissionsCallback`](../type-aliases/CalculatePermissionsCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:431](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L431)
+Defined in: [adapter/src/lib/\_Types.ts:436](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L436)
 
 Called with the calculated permission set
 
@@ -26,7 +26,7 @@ Called with the calculated permission set
 
 > **commandsPermissions**: [`CommandsPermissions`](../type-aliases/CommandsPermissions.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:427](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L427)
+Defined in: [adapter/src/lib/\_Types.ts:432](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L432)
 
 The permission requirements of the commands
 
@@ -36,7 +36,7 @@ The permission requirements of the commands
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:429](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L429)
+Defined in: [adapter/src/lib/\_Types.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L434)
 
 Optional settings including the user context
 
@@ -46,6 +46,6 @@ Optional settings including the user context
 
 > **user**: `` `system.user.${string}` ``
 
-Defined in: [adapter/src/lib/\_Types.ts:425](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L425)
+Defined in: [adapter/src/lib/\_Types.ts:430](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L430)
 
 The user to calculate the permissions for

@@ -6,7 +6,7 @@
 
 # Interface: InternalGetObjectOptions\<T\>
 
-Defined in: [adapter/src/lib/\_Types.ts:495](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L495)
+Defined in: [adapter/src/lib/\_Types.ts:500](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L500)
 
 Options for reading an object
 
@@ -22,7 +22,7 @@ Options for reading an object
 
 > `optional` **callback?**: [`GetObjectCallback`](../type-aliases/GetObjectCallback.md)\<`T`\>
 
-Defined in: [adapter/src/lib/\_Types.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L501)
+Defined in: [adapter/src/lib/\_Types.ts:506](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L506)
 
 Called with the object
 
@@ -32,7 +32,7 @@ Called with the object
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:497](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L497)
+Defined in: [adapter/src/lib/\_Types.ts:502](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L502)
 
 The id of the object
 
@@ -42,6 +42,6 @@ The id of the object
 
 > **options**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null` \| `undefined`
 
-Defined in: [adapter/src/lib/\_Types.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/0b31cfcb0a3320f2dd617abef69dfbed9328e49b/packages/adapter/src/lib/_Types.ts#L499)
+Defined in: [adapter/src/lib/\_Types.ts:504](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L504)
 
 Optional settings including the user context
