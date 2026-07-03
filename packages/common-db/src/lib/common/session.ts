@@ -97,7 +97,7 @@ export function createAdapterStore(session: Session, defaultTtl = 3600): any {
          */
         set(sid: unknown, ttl: unknown, sess: unknown, fn?: unknown): void {
             if (typeof sess === 'function') {
-                fn = sess as (err?: Error | null) => void;
+                fn = sess;
                 sess = ttl;
                 // analyse if the session is stored directly from express session
                 ttl = (sess as ioBroker.Session)?.cookie?.originalMaxAge

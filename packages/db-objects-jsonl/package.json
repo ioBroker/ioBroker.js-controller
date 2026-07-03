@@ -1,17 +1,17 @@
 {
     "name": "@iobroker/db-objects-jsonl",
     "type": "module",
-    "version": "7.2.3-alpha.3-20260630-0b31cfcb0",
+    "version": "7.2.3-alpha.4-20260701-7709d5328",
     "engines": {
-        "node": ">=12.0.0"
+        "node": ">=22.0.0"
     },
     "dependencies": {
-        "@alcalzone/jsonl-db": "~3.1.1",
+        "@alcalzone/jsonl-db": "~4.0.2",
         "@iobroker/db-base": "file:../db-base",
         "@iobroker/db-objects-file": "file:../db-objects-file",
         "@iobroker/db-objects-redis": "file:../db-objects-redis",
         "deep-clone": "^3.0.3",
-        "fs-extra": "^11.3.2"
+        "fs-extra": "^11.3.5"
     },
     "keywords": [
         "ioBroker",
@@ -30,7 +30,7 @@
     },
     "scripts": {
         "build": "tsc -b tsconfig.build.json",
-        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
+        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ../cjs/ --cwd=build/esm/"
     },
     "main": "build/cjs/index.js",
     "module": "build/esm/index.js",

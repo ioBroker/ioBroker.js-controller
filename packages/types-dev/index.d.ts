@@ -548,8 +548,12 @@ declare global {
         type ReadDirCallback = (err?: NodeJS.ErrnoException | null, entries?: ReadDirResult[]) => void;
         type ReadDirPromise = Promise<ReadDirResult[]>;
 
-        type ReadFileCallback = (err?: NodeJS.ErrnoException | null, data?: Buffer | string, mimeType?: string) => void;
-        type ReadFilePromise = Promise<{ file: string | Buffer; mimeType?: string }>;
+        type ReadFileCallback = (
+            err?: NodeJS.ErrnoException | null,
+            data?: Buffer | string | null,
+            mimeType?: string,
+        ) => void;
+        type ReadFilePromise = Promise<{ file: string | Buffer | null; mimeType?: string }>;
 
         /** Contains the return values of chownFile */
         interface ChownFileResult {
@@ -600,7 +604,7 @@ declare global {
         interface GetObjectListItem<T extends ioBroker.Object> extends GetObjectViewItem<T> {
             /** A copy of the object */
             value: T;
-            /** The same as @link{value} */
+            /** The same as {@link value} */
             doc: T;
         }
         type GetObjectListCallback<T extends ioBroker.Object> = (

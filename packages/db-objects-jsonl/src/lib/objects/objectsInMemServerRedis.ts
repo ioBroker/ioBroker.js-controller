@@ -890,6 +890,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB<RedisHandlerIn
                     // redis sends null if no name defined
                     handler.sendNull(responseId);
                 }
+            } else if (typeof data[0] === 'string' && data[0].toLowerCase() === 'setinfo') {
+                // ioredis >= 5.8 announces its lib-name/lib-ver via CLIENT SETINFO on connect.
+                // Real Redis (>= 7.2) replies OK, so acknowledge it to stay compatible.
+                handler.sendString(responseId, 'OK');
             } else {
                 handler.sendError(responseId, new Error(`CLIENT-UNSUPPORTED for ${JSON.stringify(data)}`));
             }
@@ -988,7 +992,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB<RedisHandlerIn
                     res = [
                         {
                             file: '_data.json',
-                            stats: {} as fs.Stats,
+                            stats: {},
                             isDir: false,
                             virtualFile: true,
                             notExists: true,

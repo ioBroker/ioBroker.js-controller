@@ -15,7 +15,6 @@ import fs from 'fs-extra';
 import type { CommandResult } from '@alcalzone/pak';
 import * as url from 'node:url';
 
-import { PluginHandler, type IoPackageFile } from '@iobroker/plugin-base';
 import {
     EXIT_CODES,
     getObjectsConstructor,
@@ -60,7 +59,7 @@ import {
     SYSTEM_ADMIN_GROUP,
     SYSTEM_ADMIN_USER,
 } from '@/lib/adapter/constants.js';
-import type { PluginHandlerSettings } from '@iobroker/plugin-base';
+import { type PluginHandlerSettings, PluginHandler, type IoPackageFile } from '@iobroker/plugin-base';
 import type {
     AdapterOptions,
     AliasDetails,
@@ -787,8 +786,7 @@ export interface AdapterClass {
     ): Promise<void>;
 
     /**
-     * Returns a list of all channels in this adapter instance @param parentDevice (optional) Name
-     * of the parent device to filter the channels by @param options (optional) Some internal options.
+     * Returns a list of all channels in this adapter instance
      */
     getChannelsOfAsync(): Promise<ioBroker.ChannelObject[]>;
     /**
@@ -827,8 +825,8 @@ export interface AdapterClass {
     ): void;
 
     /**
-     * Returns a list of all channels in this adapter instance @param parentDevice (optional)
-     * Name of the parent device to filter the channels by @param options (optional) Some internal options.
+     * Returns a list of all channels in this adapter instance {@link parentDevice} (optional)
+     * Name of the parent device to filter the channels by {@link options} (optional) Some internal options.
      */
     getChannelsAsync(): Promise<ioBroker.ChannelObject[]>;
     /**
@@ -843,9 +841,7 @@ export interface AdapterClass {
     ): Promise<ioBroker.ChannelObject[]>;
 
     /**
-     * Returns a list of all states in this adapter instance @param parentDevice (optional)
-     * Name of the parent device to filter the channels by @param parentChannel (optional)
-     * Name of the parent channel to filter the channels by @param options (optional) Some internal options.
+     * Returns a list of all states in this adapter instance
      */
     getStatesOfAsync(): Promise<ioBroker.StateObject[]>;
     /**
@@ -3579,7 +3575,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            tools.validateGeneralObjectProperties(obj as ioBroker.AnyObject, false);
+            tools.validateGeneralObjectProperties(obj, false);
         } catch (e) {
             await this.reportDeprecation({
                 deprecationMessage: `Object ${id} is invalid: ${e.message}`,
@@ -3759,7 +3755,7 @@ export class AdapterClass extends EventEmitter {
      * }
      * ```
      *
-     * If following object will be passed as argument
+     * If the following object will be passed as an argument
      *
      * ```js
      * {
@@ -3836,7 +3832,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            tools.validateGeneralObjectProperties(options.obj as ioBroker.AnyObject, true);
+            tools.validateGeneralObjectProperties(options.obj, true);
         } catch (e) {
             await this.reportDeprecation({
                 deprecationMessage: `Object ${options.id} is invalid: ${e.message}`,
@@ -3937,12 +3933,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (!oldObj) {
-            // if old object is not existing we behave like setObject
+            // if old object is not existing, we behave like setObject
             return this.setForeignObject(options.id, options.obj, options.options, options.callback);
         }
 
         try {
-            const cbObj = await this.#objects.extendObjectAsync(options.id, options.obj, options.options || {});
+            const cbObj = await this.#objects.extendObject(options.id, options.obj, options.options);
             let defState;
             if (options.obj.type === 'state' || oldObj.type === 'state') {
                 if (options.obj.common && 'def' in options.obj.common && options.obj.common.def !== undefined) {
@@ -4328,7 +4324,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            const cbObj = await this.#objects.extendObjectAsync(id, obj, options || {});
+            const cbObj = await this.#objects.extendObject(id, obj, options);
             if (cbObj?.value.type === 'state') {
                 let defState;
                 if (obj.common && 'def' in obj.common && (obj.common as ioBroker.StateCommon)?.def !== undefined) {
@@ -7001,9 +6997,7 @@ export class AdapterClass extends EventEmitter {
                     for (const row of res.rows) {
                         try {
                             const obj = (await this.#objects!.getObject(row.id, options)) as
-                                | ioBroker.EnumObject
-                                | null
-                                | undefined;
+                                ioBroker.EnumObject | null | undefined;
 
                             if (obj?.common?.members) {
                                 const pos = obj.common.members.indexOf(objId);
@@ -9183,7 +9177,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        const fixedId = this._utils.fixId(id as string, false);
+        const fixedId = this._utils.fixId(id, false);
         let stateObj: ioBroker.SettableState;
 
         if (tools.isObject(state)) {
@@ -9269,9 +9263,7 @@ export class AdapterClass extends EventEmitter {
                         targetObj = (await this._checkStates(aliasId, options || {}, 'setState')).objs[0];
                     } else {
                         targetObj = (await this.#objects.getObject(aliasId, options)) as
-                            | ioBroker.StateObject
-                            | null
-                            | undefined;
+                            ioBroker.StateObject | null | undefined;
                     }
                 } catch (e) {
                     return tools.maybeCallbackWithError(callback, e);
@@ -9848,7 +9840,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        const fixedId = this._utils.fixId(id as string, false);
+        const fixedId = this._utils.fixId(id, false);
 
         let stateObj: ioBroker.SettableState;
 
@@ -10509,7 +10501,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      *
-     *        See possible attributes of the state in @setState explanation
+     *        See possible attributes of the state in `setState` explanation
      */
     getState(id: unknown, options?: unknown, callback?: unknown): ioBroker.GetStatePromise {
         // we use any types here, because validation takes place in foreign method
@@ -10560,7 +10552,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      *
-     *        See possible attributes of the state in @setState explanation
+     *        See possible attributes of the state in `setState` explanation
      */
     getForeignState(
         id: unknown,
@@ -10786,7 +10778,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      *
-     *        See possible attributes of the state in @setState explanation
+     *        See possible attributes of the state in `setState` explanation
      */
     getHistory(id: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
@@ -10904,7 +10896,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Deletes a state of this instance.
-     * The object will NOT be deleted. If you want to delete it too, use @delObject instead.
+     * The object will NOT be deleted. If you want to delete it too, use `delObject` instead.
      *
      * It is not required to provice the adapter namespace, because it will automatically be added.
      * E.g. to delete "adapterName.X.myObject", only "myObject" is required as ID.
@@ -10973,7 +10965,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Deletes a state of any adapter.
-     * The object is NOT deleted. If you want to delete it too, use @delForeignObject instead.
+     * The object is NOT deleted. If you want to delete it too, use `delForeignObject` instead.
      *
      * No error is returned if state does not exist.
      *
@@ -13895,7 +13887,7 @@ export class AdapterClass extends EventEmitter {
             from: `system.adapter.${this.namespace}`,
         };
 
-        await this.#states.pushMessage(`system.host.${this.host}`, obj as any);
+        await this.#states.pushMessage(`system.host.${this.host}`, obj);
     }
 
     /**

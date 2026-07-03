@@ -41,11 +41,11 @@ export interface UserContext {
 export interface FileMimeInformation {
     /** the mime type, of the file */
     mimeType: string;
-    /** if content is binary or textual */
+    /** if the content is binary or textual */
     isBinary: boolean;
 }
 
-/** Access control list of an object, state or file */
+/** The access control list of an object, state or file */
 export interface ACLObject {
     /** The user that owns the object */
     owner: ioBroker.ObjectIDs.User;

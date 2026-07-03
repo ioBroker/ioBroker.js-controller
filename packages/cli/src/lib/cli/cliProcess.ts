@@ -158,8 +158,7 @@ export class CLIProcess extends CLICommand {
             const { objects } = params;
 
             const obj = (await objects.getObject(`system.adapter.${instance}`)) as
-                | ioBroker.InstanceObject
-                | ioBroker.AdapterObject;
+                ioBroker.InstanceObject | ioBroker.AdapterObject;
 
             if (!obj || obj.type !== 'instance') {
                 CLI.error.invalidInstance(instance);

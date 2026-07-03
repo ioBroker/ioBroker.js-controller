@@ -6,7 +6,9 @@
 
 # Interface: UserContext
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:14
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:15
+
+Resolved permission context of the user performing a request
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:14
 
 > **acl**: [`ObjectPermissions`](ObjectPermissions.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:18
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:23
+
+The effective permissions resolved from the user and its groups
 
 ***
 
@@ -22,7 +26,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:18
 
 > `optional` **checked?**: `boolean`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:19
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:25
+
+Whether the permissions have already been resolved/checked
 
 ***
 
@@ -30,7 +36,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:19
 
 > **group**: `` `system.group.${string}` ``
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:16
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:19
+
+The primary group of the user
 
 ***
 
@@ -38,7 +46,9 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:16
 
 > **groups**: `` `system.group.${string}` ``[]
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:17
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:21
+
+All groups the user is a member of
 
 ***
 
@@ -46,4 +56,6 @@ Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:17
 
 > **user**: `` `system.user.${string}` ``
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:15
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:17
+
+The user on whose behalf the request is performed

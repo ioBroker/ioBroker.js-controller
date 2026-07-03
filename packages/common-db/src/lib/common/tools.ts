@@ -15,11 +15,16 @@ import { createRequire } from 'node:module';
 import forge from 'node-forge';
 import fs from 'fs-extra';
 import deepClone from 'deep-clone';
-import { type ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
-import type { CommandResult, InstallOptions, PackageManager } from '@alcalzone/pak';
-import { detectPackageManager, packageManagers } from '@alcalzone/pak';
+
+import {
+    detectPackageManager,
+    packageManagers,
+    type CommandResult,
+    type InstallOptions,
+    type PackageManager,
+} from '@alcalzone/pak';
 import jwt from 'jsonwebtoken';
-import axios from 'axios';
+import axios, { type AxiosResponse } from 'axios';
 // @ts-expect-error has no types
 import extend from 'node.extend';
 import type * as DiskUsage from 'diskusage';
@@ -37,6 +42,8 @@ import { DEFAULT_OBJECTS_WARN_LIMIT } from '@/lib/common/constants.js';
 // import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 type ObjectsRedisClient = any;
 type StatesRedisClient = any;
+
+const HASH_TEXT = 'hash';
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
@@ -117,7 +124,7 @@ interface DockerHubResponse {
         {
             /** Contains the version like v1.5.3 */
             name: string;
-            /** Timestamp of last update of this image, like 2024-08-29T01:26:32.378554Z */
+            /** Timestamp of the last update of this image, like 2024-08-29T01:26:32.378554Z */
             last_updated: string;
             [other: string]: unknown;
         },
@@ -154,13 +161,13 @@ const OFFICIAL_DOCKER_FILE = '/opt/scripts/.docker_config/.thisisdocker';
 const DOCKER_INFO_URL = 'https://hub.docker.com/v2/namespaces/iobroker/repositories/iobroker/tags?page_size=1';
 /** Time the image approx. needs to be built and published to DockerHub */
 const DOCKER_HUB_BUILD_TIME_MS = 6 * 60 * 60 * 1_000;
-/** Version of official Docker image which started to support UI upgrade */
+/** Version of the official Docker image that started to support UI upgrade */
 const DOCKER_VERSION_UI_UPGRADE = '8.1.0';
 
 let lastCalculationOfIps: number;
 let ownIpArr: string[] = [];
 // Here we define all characters that are forbidden in IDs. Since we want to allow multiple
-// unicode character classes, we do that by OR-ing the character classes and negating the result.
+// Unicode character classes, we do that by OR-ing the character classes and negating the result.
 // Also, we can easily whitelist characters this way.
 //
 // We allow:
@@ -288,7 +295,7 @@ export function checkNonEditable(
 }
 
 /**
- * Checks if a version is up-to-date, throws error on invalid version strings
+ * Checks if a version is up to date, throws error on invalid version strings
  *
  * @param repoVersion version in repository
  * @param installedVersion the current installed version
@@ -298,42 +305,67 @@ export function upToDate(repoVersion: string, installedVersion: string): boolean
     return semver.gte(installedVersion, repoVersion);
 }
 
+/**
+ * Derive the key and IV from a password exactly as the legacy `crypto.createCipher`/`createDecipher`
+ * functions did: OpenSSL's `EVP_BytesToKey` with MD5, a single iteration and no salt. Needed to stay
+ * compatible with data that was encrypted before `createDecipheriv` was used.
+ *
+ * @param password The password to derive the key material from (interpreted as UTF-8, like legacy Node)
+ * @param keyLen Required key length in bytes
+ * @param ivLen Required IV length in bytes
+ * @returns The derived key and IV
+ */
+function evpBytesToKeyMD5(password: string, keyLen: number, ivLen: number): { key: Buffer; iv: Buffer } {
+    const passwordBuffer = Buffer.from(password, 'utf8');
+    let material = Buffer.alloc(0);
+    let block = Buffer.alloc(0);
+    while (material.length < keyLen + ivLen) {
+        block = crypto
+            .createHash('md5')
+            .update(Buffer.concat([block, passwordBuffer]))
+            .digest();
+        material = Buffer.concat([material, block]);
+    }
+    return {
+        key: material.subarray(0, keyLen),
+        iv: material.subarray(keyLen, keyLen + ivLen),
+    };
+}
+
 // TODO: this is only here for backward compatibility, if MULTIHOST password was still setup with old decryption
 /**
  * Decrypt a phrase that was encrypted with the legacy aes192 algorithm
  *
  * @param password The password used to derive the decryption key
  * @param data The encrypted data to decrypt
- * @param callback Called with the decrypted string, or null on error
  */
-export function decryptPhrase(
-    password: string,
-    data: string | Buffer,
-    callback: (decrypted?: null | string) => void,
-): void {
-    const decipher = crypto.createDecipher('aes192', password);
+export function decryptPhrase(password: string, data: string | Buffer): Promise<null | string> {
+    const { key, iv } = evpBytesToKeyMD5(password, 24, 16);
+    const decipher = crypto.createDecipheriv('aes-192-cbc', key, iv);
 
-    try {
-        let decrypted = '';
-        decipher.on('readable', () => {
-            const data = decipher.read();
-            if (data) {
-                decrypted += data.toString('utf8');
-            }
-        });
-        decipher.on('error', error => {
-            console.error(`Cannot decode secret: ${error.message}`);
-            callback(null);
-        });
+    return new Promise<string | null>(resolve => {
+        try {
+            let decrypted = '';
+            decipher.on('readable', () => {
+                const data = decipher.read();
+                if (data) {
+                    decrypted += data.toString('utf8');
+                }
+            });
+            decipher.on('error', error => {
+                console.error(`Cannot decode secret: ${error.message}`);
+                resolve(null);
+            });
 
-        decipher.on('end', () => callback(decrypted));
+            decipher.on('end', () => resolve(decrypted));
 
-        decipher.write(data, 'hex');
-        decipher.end();
-    } catch (e) {
-        console.error(`Cannot decode secret: ${e.message}`);
-        callback(null);
-    }
+            decipher.write(data, 'hex');
+            decipher.end();
+        } catch (e) {
+            console.error(`Cannot decode secret: ${e.message}`);
+            resolve(null);
+        }
+    });
 }
 
 /**
@@ -426,7 +458,7 @@ export function findIPs(): string[] {
 }
 
 /**
- * Find the correct path based on given path and url
+ * Find the correct path based on the given path and url
  *
  * @param path The base path the url may be relative to
  * @param url The url or relative/absolute path to resolve
@@ -448,7 +480,7 @@ function findPath(path: string, url: string): string {
 }
 
 /**
- * Get MAC address of this host
+ * Get the MAC address of this host
  */
 async function getMac(): Promise<string> {
     const macRegex = /(?:[a-z0-9]{2}[:-]){5}[a-z0-9]{2}/gi;
@@ -462,7 +494,7 @@ async function getMac(): Promise<string> {
     }
 
     if (typeof stdout !== 'string') {
-        throw new Error(`Unexpected stdout: ${stdout?.toString()}`);
+        throw new Error(`Unexpected stdout: ${typeof stdout}`);
     }
 
     let macAddress;
@@ -581,7 +613,7 @@ export function isDocker(): boolean {
  * @param givenMac the given MAC address
  */
 async function uuid(givenMac?: string): Promise<string> {
-    givenMac = givenMac ?? '';
+    givenMac ??= '';
     const _isDocker = isDocker();
 
     // return constant UUID for all CI environments to keep the statistics clean
@@ -589,10 +621,9 @@ async function uuid(givenMac?: string): Promise<string> {
         return '55travis-pipe-line-cior-githubaction';
     }
 
-    let mac = givenMac !== null ? givenMac || '' : null;
-    let u;
+    let u: string;
 
-    if (!_isDocker && mac === '') {
+    if (!_isDocker && !givenMac) {
         const ifaces = os.networkInterfaces();
 
         // Find first not empty MAC
@@ -600,28 +631,28 @@ async function uuid(givenMac?: string): Promise<string> {
             if (iface) {
                 for (const entry of iface) {
                     if (entry.mac !== '00:00:00:00:00:00') {
-                        mac = entry.mac;
+                        givenMac = entry.mac;
                         break;
                     }
                 }
             }
 
-            if (mac) {
+            if (givenMac) {
                 break;
             }
         }
     }
 
-    if (!_isDocker && mac === '') {
+    if (!_isDocker && !givenMac) {
         const mac = await getMac();
         return uuid(mac);
     }
 
-    if (!_isDocker && mac) {
+    if (!_isDocker && givenMac) {
         const md5sum = crypto.createHash('md5');
-        md5sum.update(mac);
-        mac = md5sum.digest('hex');
-        u = `${mac.substring(0, 8)}-${mac.substring(8, 12)}-${mac.substring(12, 16)}-${mac.substring(16, 20)}-${mac.substring(20)}`;
+        md5sum.update(givenMac);
+        givenMac = md5sum.digest('hex');
+        u = `${givenMac.substring(0, 8)}-${givenMac.substring(8, 12)}-${givenMac.substring(12, 16)}-${givenMac.substring(16, 20)}-${givenMac.substring(20)}`;
     } else {
         // Returns a RFC4122 compliant v4 UUID https://gist.github.com/LeverOne/1308368 (DO WTF YOU WANT TO PUBLIC LICENSE)
         let a: any;
@@ -765,13 +796,13 @@ export async function createUuid(objects: ObjectsRedisClient): Promise<void | st
 }
 
 /**
- * Download file to tmp or return file name directly
+ * Download the file to tmp or return the file name directly
  *
  * @param urlOrPath URL to download from, or a local file path
  * @param fileName Target file name used when the source is downloaded to the tmp directory
- * @param callback Called with the path to the local file
+ * @returns The path to the local file
  */
-export async function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void): Promise<void> {
+export async function getFile(urlOrPath: string, fileName: string): Promise<string> {
     // If object was read
     if (
         urlOrPath.substring(0, 'http://'.length) === 'http://' ||
@@ -789,30 +820,31 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
                 },
             });
 
-            res.data.pipe(fs.createWriteStream(tmpFile)).on('close', () => {
-                console.log(`downloaded ${tmpFile}`);
-                callback && callback(tmpFile);
+            await new Promise<void>((resolve, reject) => {
+                res.data.pipe(fs.createWriteStream(tmpFile)).on('close', resolve).on('error', reject);
             });
+            console.log(`downloaded ${tmpFile}`);
         } catch (e) {
             console.log(`Cannot download "${tmpFile}": ${e.message}`);
-            callback && callback(tmpFile);
         }
-    } else {
-        try {
-            if (fs.existsSync(urlOrPath)) {
-                callback && callback(urlOrPath);
-            } else if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
-                callback && callback(`${thisDir}/../${urlOrPath}`);
-            } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
-                callback && callback(`${thisDir}/../tmp/${urlOrPath}`);
-            } else {
-                console.log(`File not found: ${urlOrPath}`);
-                process.exit(EXIT_CODES.FILE_NOT_FOUND);
-            }
-        } catch (err) {
-            console.log(`File "${urlOrPath}" could no be read: ${err.message}`);
-            process.exit(EXIT_CODES.FILE_NOT_FOUND);
+        return tmpFile;
+    }
+
+    try {
+        if (fs.existsSync(urlOrPath)) {
+            return urlOrPath;
         }
+        if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
+            return `${thisDir}/../${urlOrPath}`;
+        }
+        if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
+            return `${thisDir}/../tmp/${urlOrPath}`;
+        }
+        console.log(`File not found: ${urlOrPath}`);
+        process.exit(EXIT_CODES.FILE_NOT_FOUND);
+    } catch (err) {
+        console.log(`File "${urlOrPath}" could no be read: ${err.message}`);
+        process.exit(EXIT_CODES.FILE_NOT_FOUND);
     }
 }
 
@@ -821,85 +853,70 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
  *
  * @param urlOrPath URL to download the JSON from, or a local file path
  * @param agent User agent string used for the download request
- * @param callback Called with the parsed sources and the resolved url/path
  */
-export async function getJson<T>(
-    urlOrPath: string,
-    agent: string,
-    callback: (result?: T | null, urlOrPath?: string | null) => void,
-): Promise<void> {
-    if (typeof agent === 'function') {
-        callback = agent;
-        agent = '';
-    }
+export async function getJson<T>(urlOrPath: string, agent?: string): Promise<T | null> {
     agent ||= '';
 
     let result: T = {} as T;
     // If object was read
-    if (urlOrPath && typeof urlOrPath === 'object') {
-        callback?.(urlOrPath as unknown as T);
-    } else if (!urlOrPath) {
+    if (!urlOrPath) {
         console.log('Empty url!');
-        callback?.(null);
-    } else {
-        if (
-            urlOrPath.substring(0, 'http://'.length) === 'http://' ||
-            urlOrPath.substring(0, 'https://'.length) === 'https://'
-        ) {
-            try {
-                const res = await axios.get(urlOrPath, {
-                    headers: { 'Accept-Encoding': 'gzip', timeout: 10000, 'User-Agent': agent },
-                });
+        return null;
+    }
 
-                if (res.status !== 200 || !res.data) {
-                    throw new Error(`Invalid response, body: ${res.data}, status code: ${res.status}`);
-                }
+    if (
+        urlOrPath.substring(0, 'http://'.length) === 'http://' ||
+        urlOrPath.substring(0, 'https://'.length) === 'https://'
+    ) {
+        try {
+            const res = await axios.get(urlOrPath, {
+                headers: { 'Accept-Encoding': 'gzip', timeout: 10000, 'User-Agent': agent },
+            });
 
-                result = res.data;
-
-                callback?.(result, urlOrPath);
-            } catch (e) {
-                console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
-                callback?.(null, urlOrPath);
-                return;
+            if (res.status !== 200 || !res.data) {
+                throw new Error(`Invalid response, body: ${res.data}, status code: ${res.status}`);
             }
-        } else {
-            if (fs.existsSync(urlOrPath)) {
-                try {
-                    result = fs.readJSONSync(urlOrPath);
-                } catch (e) {
-                    console.log(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
-                    callback?.(null, urlOrPath);
-                    return;
-                }
-                callback?.(result, urlOrPath);
-            } else if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
-                try {
-                    result = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
-                } catch (e) {
-                    console.log(`Cannot parse json file from ${thisDir}/../${urlOrPath}. Error: ${e.message}`);
-                    callback?.(null, urlOrPath);
-                    return;
-                }
-                callback?.(result, urlOrPath);
-            } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
-                try {
-                    result = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
-                } catch (e) {
-                    console.log(`Cannot parse json file from ${thisDir}/../tmp/${urlOrPath}. Error: ${e.message}`);
-                    callback?.(null, urlOrPath);
-                    return;
-                }
-                callback?.(result, urlOrPath);
-            } else {
-                callback?.(null, urlOrPath);
-            }
+
+            result = res.data;
+
+            return result;
+        } catch (e) {
+            console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
+            return null;
         }
     }
+    if (fs.existsSync(urlOrPath)) {
+        try {
+            result = fs.readJSONSync(urlOrPath);
+        } catch (e) {
+            console.log(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
+            return null;
+        }
+        return result;
+    }
+    if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
+        try {
+            result = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
+        } catch (e) {
+            console.log(`Cannot parse json file from ${thisDir}/../${urlOrPath}. Error: ${e.message}`);
+            return null;
+        }
+        return result;
+    }
+    if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
+        try {
+            result = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
+        } catch (e) {
+            console.log(`Cannot parse json file from ${thisDir}/../tmp/${urlOrPath}. Error: ${e.message}`);
+            return null;
+        }
+        return result;
+    }
+    return null;
 }
 
 /**
- * Return content of the json file. Download it or read directly
+ * Return the content of the json file. Download it or read directly
  *
  * @param urlOrPath URL where the json file could be found
  * @param agent optional agent identifier like "Windows Chrome 12.56"
@@ -960,7 +977,7 @@ export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<R
 }
 
 /**
- * Scans directory for adapters and adds information to list
+ * Scans the directory for adapters and adds information to list
  *
  * @param dirName name of the directory to scan
  * @param list prefilled list to extend adapters too
@@ -1036,7 +1053,7 @@ export interface AdapterInformation {
     version: string;
     /** path to icon of the adapter */
     icon: string;
-    /** path to local icon of the adater */
+    /** path to the local icon of the adapter */
     localIcon?: string;
     /** title of the adapter */
     title: string;
@@ -1121,213 +1138,148 @@ export function getInstalledInfo(hostRunningVersion?: string): Record<string, Ad
  * Reads an adapter's npm version
  *
  * @param adapter The adapter to read the npm version from. Null for the root ioBroker packet
- * @param callback Called with the npm version, or an error if the lookup failed
  */
-function getNpmVersion(adapter: string, callback?: (err: Error | null, version?: string | null) => void): void {
+async function getNpmVersion(adapter: string): Promise<string> {
     adapter = adapter ? `${appName}.${adapter}` : appName;
     adapter = adapter.toLowerCase();
 
     const cliCommand = `npm view ${adapter}@latest version`;
 
-    exec(cliCommand, { timeout: 2000, windowsHide: true }, (error, stdout, _stderr) => {
-        let version;
-        if (error) {
-            // command failed
-            if (typeof callback === 'function') {
-                callback(error);
-                return;
-            }
-        } else if (stdout) {
-            version = semver.valid(stdout.trim());
-        }
-        if (typeof callback === 'function') {
-            callback(null, version);
-        }
-    });
+    const result = await execAsync(cliCommand, { timeout: 2000, windowsHide: true });
+    let version;
+    if (result?.stdout) {
+        version = semver.valid(result.stdout.trim());
+    }
+    return version || '';
 }
 
-interface RepositoryHelper {
-    failCounter: string[];
-    timeout: NodeJS.Timeout | null;
-}
-
-function getIoPack(sources: ioBroker.RepositoryJson, name: string, callback: () => void): void {
+async function getIoPack(sources: ioBroker.RepositoryJson, name: string, failCounter: string[]): Promise<void> {
     let packSource = sources[name] as ioBroker.RepositoryJsonAdapterContent;
-    getJson<ioBroker.AdapterObject>(packSource.meta, '', ioPack => {
+    try {
+        const ioPack = await getJson<ioBroker.AdapterObject>(packSource.meta);
         const packUrl = packSource.meta.replace('io-package.json', 'package.json');
         if (!ioPack) {
-            (sources._helper as unknown as RepositoryHelper)?.failCounter.push(name);
-            callback?.();
-        } else {
-            setImmediate(() => {
-                return getJson<ioBroker.RepositoryJsonAdapterContent>(packUrl, '', pack => {
-                    const version = packSource.version;
-                    const type = packSource.type;
-                    // If installed from git or something else,
-                    // js-controller is exception, because can be installed from npm and from git
-                    if (packSource.url && name !== 'js-controller') {
-                        if (ioPack?.common) {
-                            sources[name] = extend(true, packSource, ioPack.common);
-                            packSource = sources[name] as ioBroker.RepositoryJsonAdapterContent;
-
-                            // overwrite type of adapter from repository
-                            if (type) {
-                                packSource.type = type;
-                            }
-                            if (pack?.licenses?.length) {
-                                packSource.license ||= pack.licenses[0].type;
-                                packSource.licenseUrl ||= pack.licenses[0].url;
-                            }
-                        }
-
-                        callback?.();
-                    } else {
-                        if (ioPack?.common) {
-                            sources[name] = extend(true, packSource, ioPack.common);
-                            packSource = sources[name] as ioBroker.RepositoryJsonAdapterContent;
-                            if (pack?.licenses?.length) {
-                                packSource.license ||= pack.licenses[0].type;
-                                packSource.licenseUrl ||= pack.licenses[0].url;
-                            }
-                        }
-
-                        // overwrite type of adapter from repository
-                        if (type) {
-                            packSource.type = type;
-                        }
-
-                        if (version) {
-                            packSource.version = version;
-                            callback?.();
-                        } else {
-                            if (
-                                packSource.meta.substring(0, 'http://'.length) === 'http://' ||
-                                packSource.meta.substring(0, 'https://'.length) === 'https://'
-                            ) {
-                                //installed from npm
-                                getNpmVersion(name, (_err, version) => {
-                                    if (version) {
-                                        packSource.version = version;
-                                    } else {
-                                        packSource.version = 'npm error';
-                                    }
-                                    callback?.();
-                                });
-                            } else {
-                                callback?.();
-                            }
-                        }
-                    }
-                });
-            });
-        }
-    }).catch(e => console.error(`Cannot prepare repository entry for ${name}: ${e.message}`));
-}
-
-function _getRepositoryFile(
-    sources: ioBroker.RepositoryJson,
-    path: string,
-    helper?: RepositoryHelper,
-    callback?: (err?: Error, sources?: ioBroker.RepositoryJson) => void,
-): void {
-    if (!helper) {
-        let count = 0;
-        for (const _name in sources) {
-            if (!Object.prototype.hasOwnProperty.call(sources, _name)) {
-                continue;
-            }
-            count++;
-        }
-        helper = { failCounter: [], timeout: null } as RepositoryHelper;
-
-        helper.timeout = setTimeout(() => {
-            if (helper) {
-                for (const __name of Object.keys(sources)) {
-                    if ((sources[__name] as ioBroker.RepositoryJsonAdapterContent).processed !== undefined) {
-                        delete (sources[__name] as ioBroker.RepositoryJsonAdapterContent).processed;
-                    }
-                }
-                if (callback) {
-                    callback(new Error(`Timeout by read all package.json (${count}) seconds`), sources);
-                    callback = undefined;
-                }
-            }
-        }, count * 1000);
-    }
-
-    for (const name of Object.keys(sources)) {
-        const typedSource = sources[name] as ioBroker.RepositoryJsonAdapterContent;
-        if (typedSource.processed || name === '_helper') {
-            continue;
-        }
-
-        typedSource.processed = true;
-        if (typedSource.url) {
-            typedSource.url = findPath(path, typedSource.url);
-        }
-        if (typedSource.meta) {
-            typedSource.meta = findPath(path, typedSource.meta);
-        }
-        if (typedSource.icon) {
-            typedSource.icon = findPath(path, typedSource.icon);
-        }
-
-        if (!typedSource.name && typedSource.meta) {
-            getIoPack(sources, name, () => {
-                if (helper && helper.failCounter.length > 10) {
-                    if (helper.timeout) {
-                        clearTimeout(helper.timeout);
-                        helper.timeout = null;
-                    }
-                    for (const _name of Object.keys(sources)) {
-                        const _typedSource = sources[_name] as ioBroker.RepositoryJsonAdapterContent;
-                        if (_typedSource.processed !== undefined) {
-                            delete _typedSource.processed;
-                        }
-                    }
-                    if (callback) {
-                        callback(new Error('Looks like there is no internet.'), sources);
-                        callback = undefined;
-                    }
-                } else {
-                    // process next
-                    setImmediate(() => _getRepositoryFile(sources, path, helper, callback));
-                }
-            });
+            failCounter.push(name);
             return;
         }
-    }
+        const pack = await getJson<ioBroker.RepositoryJsonAdapterContent>(packUrl);
+        const version = packSource.version;
+        const type = packSource.type;
 
-    // all packages are processed
-    if (helper) {
-        let err;
-        if (helper.failCounter.length) {
-            err = new Error(`Following packages cannot be read: ${helper.failCounter.join(', ')}`);
+        // If installed from git or something else,
+        // js-controller is exception, because can be installed from npm and from git
+        if (packSource.url && name !== 'js-controller') {
+            if (ioPack?.common) {
+                sources[name] = extend(true, packSource, ioPack.common);
+                packSource = sources[name] as ioBroker.RepositoryJsonAdapterContent;
+
+                // overwrite type of adapter from repository
+                if (type) {
+                    packSource.type = type;
+                }
+                if (pack?.licenses?.length) {
+                    packSource.license ||= pack.licenses[0].type;
+                    packSource.licenseUrl ||= pack.licenses[0].url;
+                }
+            }
+
+            return;
         }
-        if (helper.timeout) {
-            clearTimeout(helper.timeout);
-            helper.timeout = null;
-        }
-        for (const __name of Object.keys(sources)) {
-            if ((sources[__name] as ioBroker.RepositoryJsonAdapterContent).processed !== undefined) {
-                delete (sources[__name] as ioBroker.RepositoryJsonAdapterContent).processed;
+
+        if (ioPack?.common) {
+            sources[name] = extend(true, packSource, ioPack.common);
+            packSource = sources[name] as ioBroker.RepositoryJsonAdapterContent;
+            if (pack?.licenses?.length) {
+                packSource.license ||= pack.licenses[0].type;
+                packSource.licenseUrl ||= pack.licenses[0].url;
             }
         }
-        if (callback) {
-            callback(err, sources);
-            callback = undefined;
+
+        // overwrite type of adapter from repository
+        if (type) {
+            packSource.type = type;
         }
+
+        if (version) {
+            packSource.version = version;
+            return;
+        }
+        if (
+            packSource.meta.substring(0, 'http://'.length) === 'http://' ||
+            packSource.meta.substring(0, 'https://'.length) === 'https://'
+        ) {
+            // installed from npm
+            try {
+                const version = await getNpmVersion(name);
+                if (version) {
+                    packSource.version = version;
+                } else {
+                    packSource.version = 'npm error';
+                }
+            } catch {
+                packSource.version = 'npm error';
+            }
+        }
+    } catch (e) {
+        console.error(`Cannot prepare repository entry for ${name}: ${e.message}`);
+    }
+}
+
+async function _getRepositoryFile(sources: ioBroker.RepositoryJson, path = ''): Promise<Error | null> {
+    const names = Object.keys(sources).filter(name => name !== '_helper');
+    const failCounter: string[] = [];
+    let aborted = false;
+
+    // Hard time limit: one second per repository entry. Raced against the processing so a hanging
+    // network request cannot block forever.
+    let timeout: NodeJS.Timeout | undefined;
+    const timeoutPromise = new Promise<Error>(resolve => {
+        timeout = setTimeout(() => {
+            aborted = true;
+            resolve(new Error(`Timeout by read all package.json (${names.length}) seconds`));
+        }, names.length * 10_000);
+    });
+
+    const processPromise = (async (): Promise<Error | null> => {
+        for (const name of names) {
+            if (aborted) {
+                // the timeout already won the race; this result is discarded
+                return null;
+            }
+            const source = sources[name] as ioBroker.RepositoryJsonAdapterContent;
+
+            if (source.url) {
+                source.url = findPath(path, source.url);
+            }
+            if (source.meta) {
+                source.meta = findPath(path, source.meta);
+            }
+            if (source.icon) {
+                source.icon = findPath(path, source.icon);
+            }
+
+            if (!source.name && source.meta) {
+                await getIoPack(sources, name, failCounter);
+                if (failCounter.length > 10) {
+                    return new Error('Looks like there is no internet.');
+                }
+            }
+        }
+
+        return failCounter.length ? new Error(`Following packages cannot be read: ${failCounter.join(', ')}`) : null;
+    })();
+
+    try {
+        return await Promise.race([processPromise, timeoutPromise]);
+    } finally {
+        clearTimeout(timeout);
     }
 }
 
 /**
  * Get a list of all adapters and controller in some repository file or in /conf/source-dist.json
- *
- * @param callback function (err, sources, actualHash) { }
  */
-export function getRepositoryFile(
-    callback: (err?: Error | null, sources?: ioBroker.RepositoryJson, actualHash?: string | number) => void,
-): void {
+export async function getRepositoryFile(): Promise<ioBroker.RepositoryJson> {
     let sources: ioBroker.RepositoryJson = {} as ioBroker.RepositoryJson;
     let controllerDir: string | undefined;
     try {
@@ -1347,20 +1299,20 @@ export function getRepositoryFile(
         // continue regardless of error
     }
 
-    _getRepositoryFile(sources, '', undefined, err => {
-        if (err) {
-            console.error(`[${new Date().toString()}] ${err.message}`);
-        }
-        if (typeof callback === 'function') {
-            callback(err, sources);
-        }
-    });
+    const error = await _getRepositoryFile(sources);
+    if (error) {
+        console.error(`[${new Date().toString()}] ${error.message}`);
+    }
+    if (!error || Object.keys(sources).length > 0) {
+        return sources;
+    }
+    throw error;
 }
 
 /** Result of getRepositoryFileAsync */
 export interface RepositoryFile {
     /** The repository JSON content */
-    json: ioBroker.RepositoryJson;
+    json: ioBroker.RepositoryJson | null;
     /** Whether the repository has changed compared to the provided hash */
     changed: boolean;
     /** The actual hash of the repository */
@@ -1381,30 +1333,33 @@ export async function getRepositoryFileAsync(
     force?: boolean,
     _actualRepo?: ioBroker.RepositoryJson | null,
 ): Promise<RepositoryFile> {
-    let _hash;
-    let data;
+    let hashResponse: AxiosResponse<{ hash: string }> | undefined;
+    let data: ioBroker.RepositoryJson | null = null;
 
     if (url.startsWith('http://') || url.startsWith('https://')) {
         try {
-            _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10_000 });
+            hashResponse = await axios<{ hash: string }>({
+                url: url.replace(/\.json$/, `-${HASH_TEXT}.json`),
+                timeout: 10_000,
+            });
         } catch {
             // ignore missing hash file
         }
 
         // If we have the actual repo and the hash matches, return it
-        if (_actualRepo && !force && hash && _hash?.data && _hash.data.hash === hash) {
+        if (_actualRepo && !force && hash && hashResponse?.data?.hash === hash) {
             data = _actualRepo;
         } else {
             const agent = `${appName}, RND: ${randomID}, Node:${process.version}, V:${
                 require('@iobroker/js-controller-common/package.json').version
             }`;
             try {
-                data = await axios({
+                const response = await axios<ioBroker.RepositoryJson>({
                     url,
                     timeout: 10_000,
                     headers: { 'User-Agent': agent },
                 });
-                data = data.data;
+                data = response.data;
             } catch (e) {
                 throw new Error(`Cannot download repository file from "${url}": ${e.message}`);
             }
@@ -1423,8 +1378,8 @@ export async function getRepositoryFileAsync(
 
     return {
         json: data,
-        changed: _hash?.data ? hash !== _hash.data.hash : true,
-        hash: _hash?.data ? _hash.data.hash : '',
+        changed: hashResponse?.data ? hash !== hashResponse.data.hash : true,
+        hash: hashResponse?.data ? hashResponse.data.hash : '',
     };
 }
 
@@ -1470,7 +1425,7 @@ export function getAdapterDir(adapter: string): string | null {
 
     let adapterPath;
     for (const possibility of possibilities) {
-        // special case to not read adapters from js-controller/node_module/adapter and check first in parent directory
+        // special case to didn't read adapters from js-controller/node_module/adapter and check first in parent directory
         if (fs.existsSync(path.join(getControllerDir(), '..', possibility))) {
             adapterPath = path.join(getControllerDir(), '..', possibility);
         } else if (fs.existsSync(path.join(getControllerDir(), 'node_modules', possibility))) {
@@ -1513,63 +1468,29 @@ export function getHostName(): string {
 }
 
 /**
- * Read version of system npm
+ * Read version of system NPM
  *
- * @param callback return result
- *        <pre><code>
- *            function (err, version) {
- *              adapter.log.debug('NPM version is: ' + version);
- *            }
- *        </code></pre>
+ * @returns NPM version
  */
-function getSystemNpmVersion(callback?: (err?: Error | null, version?: string | null) => void): void {
-    // remove local node_modules\.bin dir from a path
+async function getSystemNpmVersion(): Promise<string | null> {
+    // remove local node_modules\.bin dir from a path,
     // or we potentially get a wrong npm version
     const newEnv = Object.assign({}, process.env);
-    // @ts-expect-error TODO
-    newEnv.PATH = (newEnv.PATH || newEnv.Path || newEnv.path)
+
+    newEnv.PATH = (newEnv.PATH || newEnv.Path || newEnv.path || '')
         .split(path.delimiter)
         .filter(dir => {
             dir = dir.toLowerCase();
             return !dir.includes('iobroker') || !dir.includes(path.join('node_modules', '.bin'));
         })
         .join(path.delimiter);
-    try {
-        let timeout: NodeJS.Timeout | null = setTimeout(() => {
-            timeout = null;
-            if (callback) {
-                callback(new Error('timeout'));
-                callback = undefined;
-            }
-        }, 10_000);
-
-        exec(
-            'npm -v',
-            { encoding: 'utf8', env: newEnv, windowsHide: true },
-            (error: Error | null, stdout: string | undefined | null) => {
-                //, stderr) {
-                if (timeout) {
-                    clearTimeout(timeout);
-                    timeout = null;
-                }
-                if (stdout) {
-                    stdout = semver.valid(stdout.trim());
-                }
-                if (callback) {
-                    callback(error, stdout);
-                    callback = undefined;
-                }
-            },
-        );
-    } catch (e) {
-        if (callback) {
-            callback(e);
-            callback = undefined;
-        }
+    const result = await execAsync('npm -v', { env: newEnv, timeout: 10_000 });
+    let version;
+    if (result.stdout) {
+        version = semver.valid(result.stdout.trim());
     }
+    return version || null;
 }
-
-const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
 
 /** Options for installing a node module */
 export interface InstallNodeModuleOptions {
@@ -1699,7 +1620,7 @@ export interface RebuildNodeModulesOptions {
     debug?: boolean;
     /** Which directory to work in. If none is given, this defaults to ioBroker's root directory. */
     cwd?: string;
-    /** module which should be rebuilt */
+    /** module that should be rebuilt */
     module?: string;
 }
 
@@ -1740,7 +1661,7 @@ export interface GetDiskInfoResponse {
 }
 
 /**
- * Read disk free space
+ * Read the disk-free space
  */
 export async function getDiskInfo(): Promise<GetDiskInfoResponse | null> {
     const platform = process.platform;
@@ -1810,13 +1731,13 @@ export interface CertificateInfo {
     serialNumber: string;
     /** type of signature as text like "RSA" */
     signature: string;
-    /** bits used for encryption key like 2048 */
+    /** bits used for an encryption key like 2048 */
     keyLength: number;
     /** issuer of the certificate */
     issuer: Record<string, any>;
     /** subject that is signed */
     subject: Record<string, any>;
-    /** server name this certificate belong to */
+    /** server name this certificate belongs to */
     dnsNames: {
         /** Type of the subject alternative name entry */
         type: number;
@@ -1884,7 +1805,7 @@ export function getCertificateInfo(cert: string): null | CertificateInfo {
 
 /** Default self-signed certificates shipped with the controller */
 export interface DefaultCertificates {
-    /** PEM encoded default private key */
+    /** PEM encoded a default private key */
     defaultPrivate: string;
     /** PEM encoded default public certificate */
     defaultPublic: string;
@@ -1999,7 +1920,7 @@ function makeid(length: number): string {
 /**
  * Collects information about host and available adapters
  *
- *  Following info will be collected:
+ *  The following info will be collected:
  *    - available adapters
  *    - node.js --version
  *    - npm --version
@@ -2031,7 +1952,7 @@ export async function getHostInfo(objects: ObjectsRedisClient): Promise<HostInfo
 
     if (!npmVersion) {
         try {
-            npmVersion = await getSystemNpmVersionAsync();
+            npmVersion = (await getSystemNpmVersion()) || '';
         } catch (e) {
             console.error(`Cannot get NPM version: ${e.message}`);
         }
@@ -2087,8 +2008,8 @@ export function getControllerDir(): string {
     const possibilities = ['iobroker.js-controller', 'ioBroker.js-controller'];
     for (const pkg of possibilities) {
         try {
-            // package.json is guaranteed to be in the module root folder
-            // so once that is resolved, take the dirname and we're done
+            // package.json is guaranteed to be in the module root folder,
+            // so once that is resolved, take the dirname, and we're done
             const possiblePath = require.resolve(`${pkg}/package.json`);
 
             if (fs.existsSync(possiblePath)) {
@@ -2143,7 +2064,7 @@ export function isDevServerInstallation(): boolean {
 
 /**
  * All paths are returned always relative to /node_modules/' + appName + '.js-controller
- * the result has always "/" as last symbol
+ * the result has always "/" as the last symbol
  */
 export function getDefaultDataDir(): string {
     // Allow overriding the data directory with an environment variable
@@ -2386,7 +2307,7 @@ export function setQualityForInstance(
                     }
                     // read all values for IDs
                     states.getStates(keys, async (_err: Error | null, values: Record<string, ioBroker.State>) => {
-                        // Get only states, that have ack = true
+                        // Get only states that have ack = true
                         keys = keys.filter((_id, i) => values[i] && values[i].ack);
                         // update quality code of the states to new one
                         await _setQualityForStates(states, keys, q);
@@ -2509,7 +2430,7 @@ function decryptLegacy(key: string, value: string): string {
  */
 export function encrypt(key: string, value: string): string {
     if (!/^[0-9a-f]{48}$/.test(key)) {
-        // key length is not matching for AES-192-CBC or key is no valid hex - fallback to old encryption
+        // key length is not matching for AES-192-CBC, or key is no valid hex - fallback to old encryption
         return encryptLegacy(key, value);
     }
 
@@ -2592,7 +2513,7 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
         // we use Math.max to handle a case where timers are running efficiently
         // and our callback executes earlier than `ms` due to how timers are
         // implemented. this is ok. it means we're healthy.
-        cb && cb(Math.max(0, t - start - ms));
+        cb?.(Math.max(0, t - start - ms));
         start = t;
 
         timeout = setTimeout(check, ms);
@@ -2606,7 +2527,7 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
 }
 
 /**
- * This function convert state values by read and write of aliases. Function is synchronous.
+ * This function converts state values by read and write of aliases. Function is synchronous.
  * On errors, null is returned instead
  *
  * @param options Source and target common/id definitions, the state to convert and a logger
@@ -2711,7 +2632,7 @@ export async function removeIdFromAllEnums(
 }
 
 /**
- * Parses dependencies to standardized object of form
+ * Parses dependencies to a standardized object of form
  *
  * @param dependencies dependencies array or single dependency
  * @returns parsedDeps parsed dependencies
@@ -2748,7 +2669,7 @@ export function parseDependencies(
  *
  * @param obj an object which will be validated
  * @param extend (optional) if true checks allow more optional cases for extendObject calls
- * @throws Error if a property has the wrong type or `obj.type` is non-existing
+ * @throws {Error} if a property has the wrong type or `obj.type` is non-existing
  */
 export function validateGeneralObjectProperties(
     obj: ioBroker.SettableObject | null | undefined,
@@ -2859,19 +2780,17 @@ export function validateGeneralObjectProperties(
                 }
             }
 
-            // ensure, that default value has correct type
-            if (obj.common.def !== undefined && obj.common.def !== null) {
+            // ensure that default value has correct type
+            if (obj.common.def != null) {
                 // else do what strictObjectChecks does for val
-                if (
-                    !(
-                        (obj.common.type === 'mixed' && typeof obj.common.def !== 'object') ||
-                        (obj.common.type !== 'object' && obj.common.type === typeof obj.common.def) ||
-                        (obj.common.type === 'array' && typeof obj.common.def === 'string') ||
-                        // @ts-expect-error deprecated
-                        (obj.common.type === 'json' && typeof obj.common.def === 'string') ||
-                        (obj.common.type === 'object' && typeof obj.common.def === 'string')
-                    )
-                ) {
+                if (!(
+                    (obj.common.type === 'mixed' && typeof obj.common.def !== 'object') ||
+                    (obj.common.type !== 'object' && obj.common.type === typeof obj.common.def) ||
+                    (obj.common.type === 'array' && typeof obj.common.def === 'string') ||
+                    // @ts-expect-error deprecated
+                    (obj.common.type === 'json' && typeof obj.common.def === 'string') ||
+                    (obj.common.type === 'object' && typeof obj.common.def === 'string')
+                )) {
                     // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json';
                     // 'array', 'object', 'json' need to be string
                     if (['object', 'json', 'array'].includes(obj.common.type)) {
@@ -2920,12 +2839,7 @@ export function validateGeneralObjectProperties(
         );
     }
 
-    if (
-        obj.type === 'state' &&
-        obj.common.custom !== undefined &&
-        obj.common.custom !== null &&
-        !isObject(obj.common.custom)
-    ) {
+    if (obj.type === 'state' && obj.common.custom != null && !isObject(obj.common.custom)) {
         throw new Error(
             `obj.common.custom has an invalid type! Expected "object", received "${typeof obj.common.custom}"`,
         );
@@ -2933,8 +2847,7 @@ export function validateGeneralObjectProperties(
 
     // common.states needs to be a real object or an array
     if (
-        (obj.common as ioBroker.StateCommon).states !== null && // we allow null for deletion TODO: implement https://github.com/ioBroker/ioBroker.js-controller/issues/1735
-        (obj.common as ioBroker.StateCommon).states !== undefined &&
+        (obj.common as ioBroker.StateCommon).states != null && // we allow null for deletion TODO: implement https://github.com/ioBroker/ioBroker.js-controller/issues/1735
         !isObject((obj.common as ioBroker.StateCommon).states) &&
         !Array.isArray((obj.common as ioBroker.StateCommon).states)
     ) {
@@ -3036,13 +2949,19 @@ export async function getInstances<TWithObjects extends boolean>(
 
 /**
  * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
- * On error, the promise rejects with the exit code or signal, as well as stdout and stderr.
+ * In error, the promise rejects with the exit code or signal, as well as stdout and stderr.
  *
  * @param command The command to execute
  * @param execOptions The options for child_process.exec
  * @returns child process promise
  */
-export function execAsync(command: string, execOptions?: ExecOptions): ChildProcessPromise {
+export function execAsync(
+    command: string,
+    execOptions?: ExecOptions,
+): Promise<{
+    stdout?: string;
+    stderr?: string;
+}> {
     const defaultOptions = {
         // we do not want to show the node.js window on Windows
         windowsHide: true,
@@ -3050,7 +2969,21 @@ export function execAsync(command: string, execOptions?: ExecOptions): ChildProc
         encoding: 'utf8',
     };
 
-    return cpExecAsync(command, { ...defaultOptions, ...execOptions });
+    return new Promise<{
+        stdout: string;
+        stderr: string;
+    }>((resolve, reject) => {
+        exec(command, { ...defaultOptions, ...execOptions }, (error, stdout, stderr) => {
+            if (error) {
+                reject(stderr ? new Error(stderr.toString()) : error);
+            } else {
+                resolve({
+                    stderr: stderr?.toString(),
+                    stdout: stdout?.toString(),
+                });
+            }
+        });
+    });
 }
 
 /**
@@ -3145,7 +3078,7 @@ export async function resolveAdapterMainFile(adapter: string): Promise<string> {
  */
 export function getDefaultNodeArgs(mainFile: string): string[] {
     const ret: string[] = [];
-    // Support executing TypeScript files directly
+    // Support for executing TypeScript files directly
     if (mainFile.endsWith('.ts')) {
         ret.push('-r', '@alcalzone/esbuild-register');
     }
@@ -3266,7 +3199,7 @@ export function removePreservedProperties(
                 // array, only rm selected subattributes instead of whole attribute
                 for (const rmProp of preserve[prop]) {
                     if (oldObj[prop][rmProp] !== undefined && newObj[prop][rmProp] !== undefined) {
-                        // only delete if conflicting
+                        // only delete it if conflicting
                         delete newObj[prop][rmProp];
                     }
                 }
@@ -3541,7 +3474,7 @@ export async function setExecutableCapabilities(
         return;
     }
 
-    // if Docker and Admin Capabilities should be set check if we are allowed to do that
+    // if Docker and Admin Capabilities should be set, check if we are allowed to do that
     if (isDocker() && capabilities.includes('cap_net_admin')) {
         try {
             const systemCaps = fs.readFileSync(`/proc/${process.pid}/status`, 'utf-8');
@@ -3793,7 +3726,7 @@ export function compressFileGZip(
 
 /** Result of validating a configured data directory */
 export interface DataDirValidation {
-    /** if data directory is valid */
+    /** if the data directory is valid */
     valid: boolean;
     /** absolute path it resolves too */
     path: string;
@@ -3802,7 +3735,7 @@ export interface DataDirValidation {
 }
 
 /**
- * Validate if the dir, is a valid dataDir
+ * Validate if the dir is a valid dataDir
  * Data dirs in node_modules are not allowed, note that dataDirs are relative to js-controller dir or absolute
  *
  * @param dataDir dataDir to check
@@ -3824,7 +3757,7 @@ export function validateDataDir(dataDir: string): DataDirValidation {
 }
 
 /**
- * If an array is passed it will be stringified, else the parameter is returned
+ * If an array is passed, it will be stringified, else the parameter is returned
  *
  * @param maybeArr parameter which will be stringified if it is an array
  */
@@ -3860,7 +3793,7 @@ function getDNSResolutionOrder(): DNSOrder {
 }
 
 /**
- * Checks if given ip address is matching ipv4 or ipv6 localhost
+ * Checks if the given ip address is matching ipv4 or ipv6 localhost
  *
  * @param ip ipv4 or ipv6 address
  */
@@ -3871,7 +3804,7 @@ export function isLocalAddress(ip: string): boolean {
 }
 
 /**
- * Checks if given ip address is matching ipv4 or ipv6 "listen all" address
+ * Checks if the given ip address is matching ipv4 or ipv6 "listen all" address
  *
  * @param ip ipv4 or ipv6 address
  */
@@ -3889,7 +3822,7 @@ export function getLocalAddress(): '127.0.0.1' | '::1' {
 }
 
 /**
- * Get the ip to listen to all addresses according to configured DNS resolution strategy
+ * Get the ip to listen to all addresses according to a configured DNS resolution strategy
  */
 export function getListenAllAddress(): '0.0.0.0' | '::' {
     const dnsOrder = getDNSResolutionOrder();
@@ -3906,7 +3839,7 @@ export function ensureDNSOrder(): void {
 }
 
 /**
- * Determine if ioBroker is installed as systemd service
+ * Determine if ioBroker is installed as a systemd service
  */
 export async function isIoBrokerInstalledAsSystemd(): Promise<boolean> {
     try {
@@ -4015,7 +3948,7 @@ export async function getPids(): Promise<number[]> {
 }
 
 /**
- * Check if given string is a valid loglevel
+ * Check if a given string is a valid loglevel
  *
  * @param level level to validate
  */

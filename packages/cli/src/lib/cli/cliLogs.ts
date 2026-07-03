@@ -97,10 +97,13 @@ export class CLILogs extends CLICommand {
         options: CLILogsOptions,
         event: string,
         path: string,
-        stats: {
+        stats?: {
             size: number;
         },
     ): void {
+        if (!stats) {
+            return;
+        }
         if (event === 'add' || !this.fileSizes.has(path)) {
             this.fileSizes.set(path, stats.size);
             if (stats.size > 0 && (this.isReady || (options.complete && this.isTodaysLogfile(path)))) {
