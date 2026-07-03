@@ -1404,7 +1404,7 @@ export class Install {
      */
     private async _deleteAdapterFiles(adapter: string, metaFilesToDelete: string[]): Promise<void> {
         // special files, which are not meta (vis widgets), combined with meta object ids
-        const filesToDelete = [
+        const filesToDelete: { id: string; name?: string }[] = [
             { id: 'vis', name: `widgets/${adapter}` },
             { id: 'vis', name: `widgets/${adapter}.html` },
             { id: 'vis-2', name: `widgets/${adapter}` },
