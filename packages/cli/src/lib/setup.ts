@@ -1370,9 +1370,9 @@ async function processCommandPackage(options: ProcessCommandOptions): Promise<vo
 
         fs.writeFileSync(path.join(tools.getRootDir(), 'package.json'), JSON.stringify(json, null, 2));
         return void callback();
-    } catch (e) {
-        console.error(`Cannot read repository file: ${e as Error}`);
-    }
+} catch (e) {
+    console.error(`Cannot read repository file: ${e as Error}`);
+    return void callback(EXIT_CODES.UNKNOWN_ERROR);
 }
 
 /**
