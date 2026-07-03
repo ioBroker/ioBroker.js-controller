@@ -7,6 +7,8 @@ import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import { SYSTEM_CONFIG_ID, SYSTEM_REPOSITORIES_ID } from '@iobroker/js-controller-common-db/constants';
 import { BETA_REPO_URL, isIntegerLikeInput, isVersionIgnored, STABLE_REPO_URL } from '@/lib/setup/utils.js';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { dbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
 
 /** The options passed to the Repo constructor */
 export interface CLIRepoOptions {
@@ -644,6 +646,146 @@ export class Repo {
                     throw new Error(`Could not set "${newName}" as active repository: ${e.message}`);
                 }
             }
+        }
+    }
+}
+
+/**
+ * Handles the `update` CLI command
+ *
+ * @param options the process command options
+ */
+export function processCommandUpdate(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+
+    const repoUrl = args[0]; // Repo url or name
+    dbConnect(params, async ({ objects, states }) => {
+        const repo = new Repo({
+            objects,
+            states,
+        });
+
+        await repo.showRepo(repoUrl, params);
+        setTimeout(callback, 1_000);
+    });
+}
+
+/**
+ * Handles the `repo` CLI command
+ *
+ * @param options the process command options
+ */
+export async function processCommandRepo(options: ProcessCommandOptions): Promise<void> {
+    const { args, params, callback } = options;
+
+    let repoUrlOrCommand: string | undefined = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset" / "unset"
+    let repoName: string | undefined = args[1]; // Repo url or name
+    let repoUrl: string | undefined = args[2]; // Repo url or name
+    if (
+        repoUrlOrCommand !== 'add' &&
+        repoUrlOrCommand !== 'del' &&
+        repoUrlOrCommand !== 'set' &&
+        repoUrlOrCommand !== 'show' &&
+        repoUrlOrCommand !== 'addset' &&
+        repoUrlOrCommand !== 'unset'
+    ) {
+        repoUrl = repoUrlOrCommand;
+        repoUrlOrCommand = 'show';
+    }
+
+    const { objects, states } = await dbConnectAsync(false, params);
+    const repo = new Repo({
+        objects,
+        states,
+    });
+
+    if (repoUrlOrCommand === 'show') {
+        try {
+            await repo.showRepoStatus();
+            return void callback();
+        } catch (e) {
+            console.error(`Cannot show repository status: ${e.message}`);
+            return void callback(EXIT_CODES.INVALID_REPO);
+        }
+    }
+
+    if (
+        repoUrlOrCommand === 'add' ||
+        repoUrlOrCommand === 'del' ||
+        repoUrlOrCommand === 'set' ||
+        repoUrlOrCommand === 'addset' ||
+        repoUrlOrCommand === 'unset'
+    ) {
+        if (!repoName || !repoName.match(/[-_\w]+/)) {
+            console.error(`Invalid repository name: "${repoName}"`);
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+        }
+
+        if (isIntegerLikeInput(repoName)) {
+            try {
+                repoName = await repo.getNameByIndex(parseInt(repoName));
+            } catch (e) {
+                console.error(e.message);
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            }
+        }
+
+        if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'addset') {
+            if (!repoUrl) {
+                console.warn(
+                    `Please define repository URL or path: ${tools.appName.toLowerCase()} add <repoName> <repoUrlOrPath>`,
+                );
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            }
+            try {
+                await repo.add(repoName, repoUrl);
+
+                if (repoUrlOrCommand === 'addset') {
+                    await repo.setActive(repoName);
+                    console.log(`Repository "${repoName}" set as active: "${repoUrl}"`);
+                    await repo.showRepoStatus();
+                    return void callback();
+                }
+                console.log(`Repository "${repoName}" added as "${repoUrl}"`);
+                await repo.showRepoStatus();
+                return void callback();
+            } catch (e) {
+                console.error(`Cannot add repository location: ${e.message}`);
+                return void callback(EXIT_CODES.INVALID_REPO);
+            }
+        } else if (repoUrlOrCommand === 'set') {
+            try {
+                await repo.setActive(repoName);
+                console.log(`Repository "${repoName}" set as active.`);
+                await repo.showRepoStatus();
+                return void callback();
+            } catch (e) {
+                console.error(`Cannot activate repository: ${e.message}`);
+                return void callback(EXIT_CODES.INVALID_REPO);
+            }
+        } else if (repoUrlOrCommand === 'del') {
+            try {
+                await repo.del(repoName);
+                console.log(`Repository "${repoName}" deleted.`);
+                await repo.showRepoStatus();
+                return void callback();
+            } catch (e) {
+                console.error(`Cannot remove repository: ${e.message}`);
+                return void callback(EXIT_CODES.INVALID_REPO);
+            }
+        } else if (repoUrlOrCommand === 'unset') {
+            try {
+                await repo.setInactive(repoName);
+                console.log(`Repository "${repoName}" deactivated.`);
+                await repo.showRepoStatus();
+                return void callback();
+            } catch (e) {
+                console.error(`Cannot deactivate repository: ${e.message}`);
+                return void callback(EXIT_CODES.INVALID_REPO);
+            }
+        } else {
+            console.warn(`Unknown repo command: ${repoUrlOrCommand as string}`);
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
         }
     }
 }

@@ -1,6 +1,4 @@
 import fs from 'fs-extra';
-import deepClone from 'deep-clone';
-import { isDeepStrictEqual } from 'node:util';
 import Debug from 'debug';
 import path from 'node:path';
 import yargs from 'yargs/yargs';
@@ -8,16 +6,9 @@ import * as url from 'node:url';
 import * as events from 'node:events';
 import { createRequire } from 'node:module';
 
-import {
-    tools,
-    EXIT_CODES,
-    objectsDbHasServer,
-    isLocalObjectsDbServer,
-    isLocalStatesDbServer,
-} from '@iobroker/js-controller-common';
+import { tools, EXIT_CODES, objectsDbHasServer } from '@iobroker/js-controller-common';
 import { SYSTEM_CONFIG_ID, SYSTEM_REPOSITORIES_ID } from '@iobroker/js-controller-common-db/constants';
 
-import * as CLITools from '@/lib/cli/cliTools.js';
 import { CLIHost } from '@/lib/cli/cliHost.js';
 import { CLIStates } from '@/lib/cli/cliStates.js';
 import { CLIDebug } from '@/lib/cli/cliDebug.js';
@@ -29,15 +20,8 @@ import { CLIProcess } from '@/lib/cli/cliProcess.js';
 import { CLIMessage } from '@/lib/cli/cliMessage.js';
 import { CLIPlugin } from '@/lib/cli/cliPlugin.js';
 import { error as CLIError } from '@/lib/cli/messages.js';
-import type { CLICommandContext, CLICommandOptions } from '@/lib/cli/cliCommand.js';
-import {
-    BETA_REPO_URL,
-    getRepository,
-    ignoreVersion,
-    isIntegerLikeInput,
-    recognizeVersion,
-    STABLE_REPO_URL,
-} from '@/lib/setup/utils.js';
+import type { CLICommandContext, CLICommandOptions, ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { ignoreVersion, recognizeVersion } from '@/lib/setup/utils.js';
 import { dbConnect, dbConnectAsync, exitApplicationSave } from '@/lib/setup/dbConnection.js';
 import { IoBrokerError } from '@/lib/setup/customError.js';
 import { List, type ListType } from '@/lib/setup/setupList.js';
@@ -542,6 +526,15 @@ async function processCommand(
 ): Promise<void> {
     const commandContext: CLICommandContext = { dbConnect, callback, showHelp };
     const commandOptions: CLICommandOptions = { ...params, ...commandContext };
+    const options: ProcessCommandOptions = {
+        command,
+        args,
+        params,
+        callback,
+        commandOptions,
+        cleanDatabase,
+        restartController,
+    };
     debug(`commandOptions: ${JSON.stringify(commandOptions)}`);
     debug(`args: ${JSON.stringify(args)}`);
 
@@ -579,584 +572,47 @@ async function processCommand(
             break;
 
         case 'update': {
-            const repoUrl = args[0]; // Repo url or name
-            dbConnect(params, async ({ objects, states }) => {
-                const { Repo } = await import('./setup/setupRepo.js');
-                const repo = new Repo({
-                    objects,
-                    states,
-                });
-
-                await repo.showRepo(repoUrl, params);
-                setTimeout(callback, 1_000);
-            });
-            break;
+            const { processCommandUpdate } = await import('@/lib/setup/setupRepo.js');
+            return processCommandUpdate(options);
         }
 
         case 'setup': {
-            const { Setup } = await import('./setup/setupSetup.js');
-            const setup = new Setup({
-                processExit: callback,
-                cleanDatabase,
-                restartController,
-                params,
-            });
-            if (args[0] === 'custom' || params.custom) {
-                const exitCode = await setup.setupCustom();
-                callback(exitCode);
-                return;
-            }
-
-            let isFirst = false;
-            let isRedis = false;
-
-            // we support "first" and "redis" without "--" flag
-            for (const arg of args) {
-                if (arg === 'first') {
-                    isFirst = true;
-                } else if (arg === 'redis') {
-                    isRedis = true;
-                }
-            }
-
-            // and as --flag
-            isRedis = (params.redis as boolean) || isRedis;
-            isFirst = (params.first as boolean) || isFirst;
-
-            setup.setup({
-                callback: async () => {
-                    const { states, objects } = await dbConnectAsync(false, params);
-                    if (isFirst) {
-                        // Creates all instances that are needed on a fresh installation
-                        const { Install } = await import('./setup/setupInstall.js');
-                        const install = new Install({
-                            objects,
-                            states,
-                            processExit: callback,
-                            params,
-                        });
-                        // Define the necessary instances
-                        const initialInstances = ['admin', 'discovery', 'backitup'];
-                        // And try to install each of them
-                        for (const instance of initialInstances) {
-                            try {
-                                const adapterInstalled = !!require.resolve(
-                                    `${tools.appName.toLowerCase()}.${instance}`,
-                                );
-
-                                if (adapterInstalled) {
-                                    let otherInstanceExists = false;
-                                    try {
-                                        // check if another instance exists
-                                        const res = await objects.getObjectViewAsync('system', 'instance', {
-                                            startkey: `system.adapter.${instance}`,
-                                            endkey: `system.adapter.${instance}\u9999`,
-                                        });
-
-                                        otherInstanceExists = !!res.rows.length;
-                                    } catch {
-                                        // ignore - on install we have no object views
-                                    }
-
-                                    if (!otherInstanceExists) {
-                                        await install.createInstance(instance, {
-                                            enabled: true,
-                                            ignoreIfExists: true,
-                                        });
-                                    }
-                                }
-                            } catch {
-                                // not found, just continue
-                            }
-                        }
-
-                        await new Promise(resolve => {
-                            // Creates a fresh certificate
-                            // Create a new instance of the cert command,
-                            // but use the resolve method as a callback
-                            const cert = new CLICert({ ...commandOptions, callback: resolve });
-                            cert.create().catch(e => console.error(`Cannot create certificate: ${e.message}`));
-                        });
-                    }
-
-                    // we update existing things, in first as well as normal setup
-                    // Rename repositories
-                    const { Repo } = await import('./setup/setupRepo.js');
-                    const repo = new Repo({ objects, states });
-
-                    try {
-                        await repo.rename('default', 'stable', STABLE_REPO_URL);
-                        await repo.rename('latest', 'beta', BETA_REPO_URL);
-                    } catch (err) {
-                        console.warn(`Cannot rename: ${err.message}`);
-                    }
-
-                    // there has been a bug that user can upload js-controller
-                    try {
-                        await objects.delObjectAsync('system.adapter.js-controller');
-                    } catch {
-                        // ignore
-                    }
-
-                    try {
-                        const configFile = tools.getConfigFileName();
-
-                        const configOrig = fs.readJSONSync(configFile);
-                        const config = deepClone(configOrig);
-
-                        config.objects.options = config.objects.options || {
-                            auth_pass: null,
-                            retry_max_delay: 5_000,
-                        };
-                        if (
-                            config.objects.options.retry_max_delay === 15_000 ||
-                            !config.objects.options.retry_max_delay
-                        ) {
-                            config.objects.options.retry_max_delay = 5_000;
-                        }
-                        config.states.options = config.states.options || {
-                            auth_pass: null,
-                            retry_max_delay: 5_000,
-                        };
-                        if (
-                            config.states.options.retry_max_delay === 15_000 ||
-                            !config.states.options.retry_max_delay
-                        ) {
-                            config.states.options.retry_max_delay = 5_000;
-                        }
-
-                        let migrated = '';
-                        // We migrate file to jsonl
-                        if (config.states.type === 'file') {
-                            config.states.type = 'jsonl';
-
-                            const hasLocalStatesServer = await isLocalStatesDbServer('file', config.states.host);
-                            if (hasLocalStatesServer) {
-                                // silent config change on secondaries
-                                console.log('States DB type migrated from "file" to "jsonl"');
-                                migrated += 'States';
-                            }
-                        }
-
-                        if (config.objects.type === 'file') {
-                            config.objects.type = 'jsonl';
-
-                            const hasLocalObjectsServer = await isLocalObjectsDbServer('file', config.objects.host);
-                            if (hasLocalObjectsServer) {
-                                // silent config change on secondaries
-                                console.log('Objects DB type migrated from "file" to "jsonl"');
-                                migrated += migrated ? ' and Objects' : 'Objects';
-                            }
-                        }
-
-                        if (migrated) {
-                            const { NotificationHandler } = await import('@iobroker/js-controller-common');
-
-                            const hostname = tools.getHostName();
-
-                            const notificationSettings = {
-                                states,
-                                objects,
-                                log: console,
-                                logPrefix: '',
-                                host: hostname,
-                            };
-
-                            const notificationHandler = new NotificationHandler(notificationSettings);
-
-                            try {
-                                const ioPackage = fs.readJsonSync(
-                                    path.join(tools.getControllerDir(), 'io-package.json'),
-                                );
-                                await notificationHandler.addConfig(ioPackage.notifications);
-
-                                await notificationHandler.addMessage({
-                                    scope: 'system',
-                                    category: 'fileToJsonl',
-                                    message: `Migrated: ${migrated}`,
-                                    instance: `system.host.${hostname}`,
-                                });
-
-                                notificationHandler.storeNotifications();
-                            } catch (e) {
-                                console.warn(`Could not add File-to-JSONL notification: ${e.message}`);
-                            }
-                        }
-
-                        if (!isDeepStrictEqual(config, configOrig)) {
-                            fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
-                            console.log('ioBroker configuration updated');
-                        }
-                    } catch (err) {
-                        console.log(`Could not update ioBroker configuration: ${err.message}`);
-                    }
-
-                    return void callback();
-                },
-                ignoreIfExist: isFirst,
-                useRedis: isRedis,
-            });
-            break;
+            const { processCommandSetup } = await import('@/lib/setup/setupSetup.js');
+            return processCommandSetup(options);
         }
 
         case 'url': {
-            let url = args[0];
-            const name = args[1];
-
-            if (!url) {
-                console.log('Please provide a URL to install from and optionally a name of the adapter to install');
-                callback(EXIT_CODES.INVALID_ARGUMENTS);
-            }
-
-            if (url[0] === '"' && url[url.length - 1] === '"') {
-                url = url.substring(1, url.length - 1);
-            }
-            url = url.trim();
-
-            dbConnect(params, async ({ objects, states }) => {
-                const { Install } = await import('./setup/setupInstall.js');
-                const install = new Install({
-                    objects,
-                    states,
-                    processExit: callback,
-                    params,
-                });
-
-                try {
-                    await install.installAdapterFromUrl(url, name);
-                    return void callback(EXIT_CODES.NO_ERROR);
-                } catch (e) {
-                    console.error(`Could not install adapter from url: ${e.message}`);
-                    return void callback(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
-                }
-            });
-            break;
+            const { processCommandUrl } = await import('@/lib/setup/setupInstall.js');
+            return processCommandUrl(options);
         }
 
-        case 'info': {
-            dbConnect(params, async ({ objects }) => {
-                try {
-                    const data = await tools.getHostInfo(objects);
-
-                    for (const attr in data) {
-                        let info: string;
-                        if (attr === 'Uptime' || attr === 'System uptime') {
-                            info = formatters.formatSeconds(data[attr as keyof tools.HostInfo] as number);
-                        } else if (attr === 'RAM') {
-                            info = formatters.formatRam(data[attr as keyof tools.HostInfo] as number);
-                        } else if (attr === 'Speed') {
-                            info = formatters.formatSpeed(data[attr as keyof tools.HostInfo] as number);
-                        } else if (attr === 'Disk size' || attr === 'Disk free') {
-                            info = formatters.formatBytes(data[attr as keyof tools.HostInfo] as number);
-                        } else {
-                            info = data[attr as keyof tools.HostInfo] as string;
-                        }
-                        console.log(
-                            `${attr}${attr.length < 16 ? new Array(16 - attr.length).join(' ') : ''}: ${info || ''}`,
-                        );
-                    }
-                } catch (err) {
-                    console.error(`Cannot read host info: ${typeof err === 'object' ? JSON.stringify(err) : err}`);
-                    return callback(EXIT_CODES.CANNOT_GET_HOST_INFO);
-                }
-
-                return void callback();
-            });
-            break;
-        }
+        case 'info':
+            return processCommandInfo(options);
 
         case 'a':
         case 'add':
         case 'install':
         case 'i': {
-            let name = args[0];
-            let instance: string | undefined = args[1];
-            let repoUrl: string | undefined = args[2];
-
-            if (parseInt(instance, 10).toString() !== (instance || '').toString()) {
-                repoUrl = instance;
-                instance = undefined;
-            }
-            if (parseInt(repoUrl, 10).toString() === (repoUrl || '').toString()) {
-                const temp = instance;
-                instance = repoUrl;
-                repoUrl = temp;
-            }
-            if (instance && parseInt(instance, 10).toString() === (instance || '').toString()) {
-                params.instance = parseInt(instance, 10);
-            }
-
-            // If user accidentally wrote tools.appName.adapter => remove adapter
-            name = CLITools.normalizeAdapterName(name);
-
-            const parsedName = CLITools.splitAdapterOrInstanceIdentifierWithVersion(name);
-            if (!parsedName) {
-                console.log('Invalid adapter name for install');
-                showHelp();
-                return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
-            }
-
-            // split the adapter into its parts if necessary
-            if (parsedName.instance !== null) {
-                params.instance = parsedName.instance;
-            }
-            name = parsedName.name;
-            const installName = parsedName.nameWithVersion;
-
-            const adapterDir = tools.getAdapterDir(name);
-
-            dbConnect(params, async ({ objects, states }) => {
-                const { Install } = await import('./setup/setupInstall.js');
-                const install = new Install({
-                    objects,
-                    states,
-                    processExit: callback,
-                    params,
-                });
-
-                if (params.host && params.host !== tools.getHostName()) {
-                    // if host argument provided we should check, that host actually exists in mh environment
-                    let obj;
-                    try {
-                        obj = await objects.getObjectAsync(`system.host.${params.host}`);
-                    } catch (err) {
-                        console.warn(`Could not check existence of host "${params.host}": ${err.message}`);
-                    }
-
-                    if (!obj) {
-                        console.error(`Cannot add instance to non-existing host "${params.host}"`);
-                        return void callback(EXIT_CODES.NON_EXISTING_HOST);
-                    }
-                }
-
-                if (!adapterDir || !fs.existsSync(adapterDir)) {
-                    try {
-                        const { stoppedList } = await install.downloadPacket(repoUrl, installName);
-                        await install.installAdapter(installName, repoUrl);
-                        await install.enableInstances(stoppedList, true); // even if unlikely make sure to re-enable disabled instances
-                        if (command !== 'install' && command !== 'i') {
-                            await install.createInstance(name, params);
-                        }
-                        return void callback();
-                    } catch (e) {
-                        console.error(`adapter "${name}" cannot be installed: ${e.message}`);
-                        return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
-                    }
-                } else if (command !== 'install' && command !== 'i') {
-                    try {
-                        await install.createInstance(name, params);
-                        return void callback();
-                    } catch (err) {
-                        console.error(`adapter "${name}" cannot be installed: ${err.message}`);
-                        return void callback(EXIT_CODES.UNKNOWN_ERROR);
-                    }
-                } else {
-                    console.log(`adapter "${name}" already installed. Use "upgrade" to upgrade to a newer version.`);
-                    return void callback(EXIT_CODES.ADAPTER_ALREADY_INSTALLED);
-                }
-            });
-            break;
+            const { processCommandInstall } = await import('@/lib/setup/setupInstall.js');
+            return processCommandInstall(options);
         }
 
-        case 'rebuild': {
-            const options: InternalRebuildOptions = { debug: process.argv.includes('--debug') };
-
-            if (commandOptions.path) {
-                if (path.isAbsolute(commandOptions.path)) {
-                    options.cwd = commandOptions.path;
-                } else {
-                    console.log('Path argument needs to be an absolute path!');
-                    return void exitApplicationSave(EXIT_CODES.INVALID_ARGUMENTS);
-                }
-            }
-
-            if (commandOptions.module) {
-                options.module = commandOptions.module;
-                console.log(
-                    `Rebuilding native module "${commandOptions.module}"${options.cwd ? ` in ${options.cwd}` : ''} ...`,
-                );
-            } else {
-                console.log(`Rebuilding native modules${options.cwd ? ` in ${options.cwd}` : ''} ...`);
-            }
-
-            const result = await tools.rebuildNodeModules(options);
-
-            if (result.success) {
-                console.log();
-                console.log(`Rebuilding native modules done`);
-                return void callback();
-            }
-            console.error('Rebuilding native modules failed');
-            return void exitApplicationSave(result.exitCode);
-        }
+        case 'rebuild':
+            return processCommandRebuild(options);
 
         case 'upload':
         case 'u': {
-            const name = args[0];
-            const subTree = args[1];
-            if (name) {
-                dbConnect(params, async ({ objects, states }) => {
-                    const { Upload } = await import('./setup/setupUpload.js');
-                    const upload = new Upload({ states, objects });
-
-                    if (name === 'all') {
-                        try {
-                            const objs = await objects.getObjectListAsync({
-                                startkey: 'system.adapter.',
-                                endkey: 'system.adapter.\u9999',
-                            });
-
-                            if (objs) {
-                                const adapters = [];
-
-                                for (const row of objs.rows) {
-                                    if (row.value.type !== 'adapter') {
-                                        continue;
-                                    }
-
-                                    adapters.push(
-                                        tools.isObject(row.value.common.name)
-                                            ? row.value.common.name.en
-                                            : row.value.common.name,
-                                    );
-                                }
-
-                                await upload.uploadAdapterFullAsync(adapters);
-                            }
-                            callback();
-                        } catch (err) {
-                            console.error(`Cannot upload all adapters: ${err.message}`);
-                            return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
-                        }
-                    } else {
-                        // if upload of file
-                        if (name.includes('.')) {
-                            if (!subTree) {
-                                console.log(
-                                    `Please specify target name, like:\n${tools.appName} upload /file/picture.png /vis-2.0/main/img/picture.png`,
-                                );
-                                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                            }
-
-                            try {
-                                const newName = await upload.uploadFile(name, subTree);
-                                console.log(`File "${name}" is successfully saved under ${newName}`);
-                                return void callback();
-                            } catch (err) {
-                                console.error(`Cannot upload file "${name}": ${err.message}`);
-                                return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
-                            }
-                        } else {
-                            try {
-                                if (subTree) {
-                                    await upload.uploadAdapter(name, false, true, subTree);
-                                } else {
-                                    await upload.uploadAdapterFullAsync([name]);
-                                }
-                                return void callback();
-                            } catch (err) {
-                                console.error(`Cannot upload files "${name}": ${err.message}`);
-                                return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
-                            }
-                        }
-                    }
-                });
-            } else {
-                console.log('No adapter name found!');
-                showHelp();
-                return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
-            }
-            break;
+            const { processCommandUpload } = await import('@/lib/setup/setupUpload.js');
+            return processCommandUpload(options);
         }
 
         case 'delete':
         case 'del': {
-            let adapter = args[0];
-            let instance = args[1];
-
-            // The adapter argument is required
-            if (!adapter) {
-                showHelp();
-                return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
-            }
-            // If the user accidentally wrote <tools.appName>.adapter,
-            // remove <tools.appName> from the adapter name
-            adapter = CLITools.normalizeAdapterName(adapter);
-
-            // Avoid deleting stuff we don't want to delete
-            // e.g. `system.adapter.*`
-            if (!instance) {
-                // Ensure that adapter contains a valid adapter (without instance nr)
-                // or instance (with instance nr) identifier
-                if (!CLITools.validateAdapterOrInstanceIdentifier(adapter)) {
-                    showHelp();
-                    return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
-                }
-                // split the adapter into adapter + instance if necessary
-                if (adapter.indexOf('.') > -1) {
-                    [adapter, instance] = adapter.split('.', 2);
-                }
-            } else {
-                // ensure that adapter contains a valid adapter identifier
-                // and the instance is a number
-                if (!CLITools.validateAdapterIdentifier(adapter) || !/^\d+$/.test(instance)) {
-                    showHelp();
-                    return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
-                }
-            }
-
-            if (instance) {
-                dbConnect(params, async ({ objects, states }) => {
-                    const { Install } = await import('@/lib/setup/setupInstall.js');
-                    const install = new Install({
-                        objects,
-                        states,
-                        processExit: callback,
-                        params,
-                    });
-
-                    console.log(`Delete instance "${adapter}.${instance}"`);
-                    await install.deleteInstance(adapter, parseInt(instance));
-                    callback();
-                });
-            } else {
-                dbConnect(params, async ({ objects, states }) => {
-                    const { Install } = await import('@/lib/setup/setupInstall.js');
-                    const install = new Install({
-                        objects,
-                        states,
-                        processExit: callback,
-                        params,
-                    });
-                    console.log(`Delete adapter "${adapter}"`);
-                    const resultCode = await install.deleteAdapter(adapter);
-                    callback(resultCode);
-                });
-            }
-            break;
+            const { processCommandDelete } = await import('@/lib/setup/setupInstall.js');
+            return processCommandDelete(options);
         }
-        case 'unsetup': {
-            const rl = (await import('node:readline')).createInterface({
-                input: process.stdin,
-                output: process.stdout,
-            });
-
-            if (params.yes || params.y || params.Y) {
-                unsetup(params, callback).catch(e => console.error(`Cannot unsetup: ${e.message}`));
-            } else {
-                rl.question('UUID will be deleted. Are you sure? [y/N]: ', answer => {
-                    rl.close();
-                    answer = answer.toLowerCase();
-                    if (answer === 'y' || answer === 'yes' || answer === 'ja' || answer === 'j') {
-                        unsetup(params, callback).catch(e => console.error(`Cannot unsetup: ${e.message}`));
-                        return;
-                    }
-                    console.log('Nothing deleted');
-                    return void callback();
-                });
-            }
-            break;
-        }
+        case 'unsetup':
+            return processCommandUnsetup(options);
 
         case 'o':
         case 'object': {
@@ -1186,175 +642,26 @@ async function processCommand(
         }
 
         case 'upgrade': {
-            let adapter: string | null = CLITools.normalizeAdapterName(args[0]);
-
-            if (adapter === 'all') {
-                adapter = null;
-            }
-
-            dbConnect(params, async ({ objects, states }) => {
-                const { Upgrade } = await import('./setup/setupUpgrade.js');
-                const upgrade = new Upgrade({
-                    objects,
-                    states,
-                    params,
-                    processExit: callback,
-                });
-
-                if (adapter) {
-                    try {
-                        if (adapter.split('@')[0] === 'self') {
-                            const hostAlive = await states.getStateAsync(`system.host.${tools.getHostName()}.alive`);
-                            const version = adapter.split('@')[1];
-
-                            await upgrade.upgradeController({
-                                forceDowngrade: (params.force as boolean) || (params.f as boolean),
-                                controllerRunning: !!hostAlive?.val,
-                                version,
-                            });
-                        } else {
-                            await upgrade.upgradeAdapter(
-                                '',
-                                adapter,
-                                (params.force as boolean) || (params.f as boolean),
-                                (params.y as boolean) || (params.yes as boolean),
-                                false,
-                            );
-                        }
-                        return void callback();
-                    } catch (err) {
-                        console.error(`Cannot upgrade: ${err.message}`);
-                        return void callback(EXIT_CODES.INVALID_REPO);
-                    }
-                } else {
-                    // upgrade all
-                    try {
-                        const links = await getRepository({ objects });
-                        if (!links) {
-                            return void callback(EXIT_CODES.INVALID_REPO);
-                        }
-                        await upgrade.upgradeAdapterHelper(
-                            links,
-                            Object.keys(links).sort(),
-                            false,
-                            (params.y as boolean) || (params.yes as boolean),
-                        );
-                        return void callback();
-                    } catch (e) {
-                        console.error(`Cannot upgrade: ${e.message}`);
-                        return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.INVALID_REPO);
-                    }
-                }
-            });
-            break;
+            const { processCommandUpgrade } = await import('@/lib/setup/setupUpgrade.js');
+            return processCommandUpgrade(options);
         }
 
-        case 'clean': {
-            const yes = args[0];
-            if (yes !== 'yes') {
-                console.log(
-                    `Command "clean" clears all Objects and States. To execute it write "${tools.appName} clean yes"`,
-                );
-            } else {
-                dbConnect(params, async ({ isOffline }) => {
-                    if (!isOffline) {
-                        console.error(`Stop ${tools.appName} first!`);
-                        return void callback(EXIT_CODES.CONTROLLER_RUNNING);
-                    }
-
-                    try {
-                        const count = await cleanDatabase(true);
-                        console.log(`Deleted ${count} states`);
-                    } catch {
-                        // ignore
-                    }
-                    restartController().catch(e => console.error(`Cannot restart controller: ${e.message}`));
-                    console.log(`Restarting ${tools.appName}...`);
-                    callback();
-                });
-            }
-            break;
-        }
+        case 'clean':
+            return processCommandClean(options);
 
         case 'restore': {
-            const { BackupRestore } = await import('./setup/setupBackup.js');
-
-            dbConnect(params, async ({ isOffline, objects, states }) => {
-                if (!isOffline) {
-                    console.error(`Stop ${tools.appName} first!`);
-                    return void callback(EXIT_CODES.CONTROLLER_RUNNING);
-                }
-
-                const backup = new BackupRestore({
-                    states,
-                    objects,
-                    cleanDatabase,
-                    restartController,
-                    processExit: callback,
-                });
-
-                const { exitCode } = await backup.restoreBackup({
-                    name: args[0],
-                    force: !!params.force,
-                    dontDeleteAdapters: false,
-                });
-
-                if (exitCode === EXIT_CODES.NO_ERROR) {
-                    console.log('System successfully restored!');
-                }
-                return void callback(exitCode);
-            });
-            break;
+            const { processCommandRestore } = await import('@/lib/setup/setupBackup.js');
+            return processCommandRestore(options);
         }
 
         case 'backup': {
-            const name = args[0];
-            const { BackupRestore } = await import('./setup/setupBackup.js');
-
-            dbConnect(params, async ({ states, objects }) => {
-                const backup = new BackupRestore({
-                    states,
-                    objects,
-                    cleanDatabase,
-                    restartController,
-                    processExit: callback,
-                });
-
-                try {
-                    const filePath = await backup.createBackup(name);
-                    console.log(`Backup created: ${filePath}`);
-                    console.log('This backup can only be restored with js-controller version 7.0 or higher');
-                    return void callback(EXIT_CODES.NO_ERROR);
-                } catch (e) {
-                    console.log(`Cannot create backup: ${e.message}`);
-                    return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
-                }
-            });
-            break;
+            const { processCommandBackup } = await import('@/lib/setup/setupBackup.js');
+            return processCommandBackup(options);
         }
 
         case 'validate': {
-            const name = args[0];
-            const { BackupRestore } = await import('./setup/setupBackup.js');
-            dbConnect(params, async ({ objects, states }) => {
-                const backup = new BackupRestore({
-                    states,
-                    objects,
-                    cleanDatabase,
-                    restartController,
-                    processExit: callback,
-                });
-
-                try {
-                    await backup.validateBackup(name);
-                    console.log('Backup OK');
-                    return void exitApplicationSave(0);
-                } catch (e) {
-                    console.log(`Backup check failed: ${e.message}`);
-                    return void exitApplicationSave(e instanceof IoBrokerError ? e.code : 1);
-                }
-            });
-            break;
+            const { processCommandValidate } = await import('@/lib/setup/setupBackup.js');
+            return processCommandValidate(options);
         }
 
         case 'l':
@@ -1370,777 +677,52 @@ async function processCommand(
             break;
         }
 
-        case 'touch': {
-            let pattern = args[0];
+        case 'touch':
+            return processCommandTouch(options);
 
-            if (!pattern) {
-                console.log('No file path found. Example: "touch /vis-2.0/main/*"');
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            }
-            dbConnect(params, ({ objects }) => {
-                // extract id
-                pattern = pattern.replace(/\\/g, '/');
-                if (pattern[0] === '/') {
-                    pattern = pattern.substring(1);
-                }
+        case 'rm':
+            return processCommandRm(options);
 
-                if (pattern === '*') {
-                    objects.getObjectList(
-                        {
-                            startkey: 'system.adapter.',
-                            endkey: 'system.adapter.\u9999',
-                        },
-                        async (err, arr) => {
-                            if (!err && arr?.rows) {
-                                const files: string[] = [];
-                                for (const row of arr.rows) {
-                                    const rowTyped = row.value as ioBroker.AdapterObject | ioBroker.InstanceObject;
-                                    if (rowTyped.type !== 'adapter') {
-                                        continue;
-                                    }
-                                    await new Promise<void>(resolve =>
-                                        objects.touch(rowTyped.common.name, '*', { user: 'system.user.admin' }, err => {
-                                            if (!err) {
-                                                files.push(rowTyped.common.name);
-                                            } else {
-                                                console.warn(`Cannot touch file ${rowTyped.common.name}`);
-                                            }
-                                            resolve();
-                                        }),
-                                    );
-                                }
-                                files.sort((a, b) => a.localeCompare(b));
+        case 'chmod':
+            return processCommandChmod(options);
 
-                                for (const file of files) {
-                                    console.log(`Touched ${file}`);
-                                }
-                                setTimeout(callback, 1_000);
-                            }
-                        },
-                    );
-                } else {
-                    const parts = pattern.split('/');
-                    const id = parts.shift()!;
-                    const path = parts.join('/');
-
-                    objects.touch(id, path, { user: 'system.user.admin' }, err => {
-                        if (err) {
-                            console.error(err);
-                        } else {
-                            console.log(`Touched ${id}/${path}`);
-                        }
-                        setTimeout(callback, 1_000);
-                    });
-                }
-            });
-            break;
-        }
-
-        case 'rm': {
-            let pattern = args[0];
-
-            if (!pattern) {
-                console.log('No file path found. Example: "touch /vis-2.0/main/*"');
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            }
-            dbConnect(params, ({ objects }) => {
-                // extract id
-                pattern = pattern.replace(/\\/g, '/');
-                if (pattern[0] === '/') {
-                    pattern = pattern.substring(1);
-                }
-
-                if (pattern === '*') {
-                    objects.getObjectList(
-                        {
-                            startkey: 'system.adapter.',
-                            endkey: 'system.adapter.\u9999',
-                        },
-                        async (err, arr) => {
-                            if (!err && arr?.rows) {
-                                const files: { id: string; processed: ioBroker.RmResult[] }[] = [];
-                                for (const row of arr.rows) {
-                                    const rowTyped = row.value as ioBroker.AdapterObject | ioBroker.InstanceObject;
-                                    if (rowTyped.type !== 'adapter') {
-                                        continue;
-                                    }
-                                    await new Promise<void>(resolve =>
-                                        objects.rm(
-                                            rowTyped.common.name,
-                                            '*',
-                                            { user: 'system.user.admin' },
-                                            (err, processed) => {
-                                                if (!err && processed) {
-                                                    files.push({ id: rowTyped.common.name, processed });
-                                                }
-                                                resolve();
-                                            },
-                                        ),
-                                    );
-                                }
-                                files.sort((a, b) => a.id.localeCompare(b.id));
-
-                                for (const file of files) {
-                                    for (const processedFile of file.processed) {
-                                        console.log(`Removed ${processedFile.path}/${processedFile.file}`);
-                                    }
-                                }
-                                setTimeout(callback, 1_000);
-                            }
-                        },
-                    );
-                } else {
-                    const parts = pattern.split('/');
-                    const id = parts.shift()!;
-                    const path = parts.join('/');
-
-                    objects.rm(id, path, { user: 'system.user.admin' }, (err, processed) => {
-                        if (err) {
-                            console.error(err);
-                        } else {
-                            if (processed) {
-                                for (const file of processed) {
-                                    console.log(`Removed ${file.path}/${file.file}`);
-                                }
-                            }
-                        }
-                        setTimeout(callback, 1_000);
-                    });
-                }
-            });
-            break;
-        }
-
-        case 'chmod': {
-            let mode: string | number = args[0];
-            let pattern = args[1];
-
-            if (!mode) {
-                CLIError.requiredArgumentMissing('mode', 'chmod 777 /vis-2.0/main/*');
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            }
-            // yargs has converted it to number
-            mode = parseInt(mode.toString(), 16);
-
-            if (!pattern) {
-                CLIError.requiredArgumentMissing('file path', 'chmod 777 /vis-2.0/main/*');
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            }
-            dbConnect(params, ({ objects, states }) => {
-                // extract id
-                pattern = pattern.replace(/\\/g, '/');
-                if (pattern[0] === '/') {
-                    pattern = pattern.substring(1);
-                }
-
-                if (pattern === '*') {
-                    objects.getObjectList(
-                        {
-                            startkey: 'system.adapter.',
-                            endkey: 'system.adapter.\u9999',
-                        },
-                        async (err, arr) => {
-                            if (!err && arr?.rows) {
-                                const files: { id: string; processed: ioBroker.ChownFileResult[] }[] = [];
-                                for (const row of arr.rows) {
-                                    const rowTyped = row.value as ioBroker.AdapterObject | ioBroker.InstanceObject;
-                                    if (rowTyped.type !== 'adapter') {
-                                        continue;
-                                    }
-                                    await new Promise<void>(resolve =>
-                                        objects.chmodFile(
-                                            rowTyped.common.name,
-                                            '*',
-                                            {
-                                                user: 'system.user.admin',
-                                                mode,
-                                            },
-                                            (err, processed) => {
-                                                if (!err && processed) {
-                                                    files.push({ id: rowTyped.common.name, processed });
-                                                }
-                                                resolve();
-                                            },
-                                        ),
-                                    );
-                                }
-                                const list = new List({
-                                    states,
-                                    objects,
-                                    processExit: callback,
-                                });
-                                files.sort((a, b) => a.id.localeCompare(b.id));
-
-                                list.showFileHeader();
-                                for (const file of files) {
-                                    for (const processedFile of file.processed) {
-                                        list.showFile(file.id, processedFile.path, processedFile);
-                                    }
-                                }
-                                setTimeout(callback, 1_000);
-                            }
-                        },
-                    );
-                } else {
-                    const parts = pattern.split('/');
-                    const id = parts.shift()!;
-                    const path = parts.join('/');
-
-                    objects.chmodFile(id, path, { user: 'system.user.admin', mode: mode }, (err, processed) => {
-                        if (err) {
-                            console.error(err);
-                        } else {
-                            if (processed) {
-                                const list = new List({
-                                    states,
-                                    objects,
-                                    processExit: callback,
-                                });
-                                list.showFileHeader();
-                                for (const file of processed) {
-                                    list.showFile(id, file.path, file);
-                                }
-                            }
-                        }
-                        setTimeout(callback, 1_000);
-                    });
-                }
-            });
-            break;
-        }
-
-        case 'chown': {
-            let user = args[0] as ioBroker.ObjectIDs.User;
-            let group: ioBroker.ObjectIDs.Group | undefined = args[1] as ioBroker.ObjectIDs.Group;
-            let pattern = args[2];
-
-            if (!pattern) {
-                pattern = group;
-                group = undefined;
-            }
-
-            if (!user) {
-                CLIError.requiredArgumentMissing('user', 'chown user /vis-2.0/main/*');
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            }
-            if (user.substring(12) !== 'system.user.') {
-                user = `system.user.${user}`;
-            }
-            if (group && group.substring(13) !== 'system.group.') {
-                group = `system.group.${group}`;
-            }
-
-            if (!pattern) {
-                CLIError.requiredArgumentMissing('file path', 'chown user /vis-2.0/main/*');
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            }
-            dbConnect(params, ({ objects, states }) => {
-                // extract id
-                pattern = pattern.replace(/\\/g, '/');
-                if (pattern[0] === '/') {
-                    pattern = pattern.substring(1);
-                }
-
-                if (pattern === '*') {
-                    objects.getObjectList(
-                        {
-                            startkey: 'system.adapter.',
-                            endkey: 'system.adapter.\u9999',
-                        },
-                        async (err, arr) => {
-                            if (!err && arr?.rows) {
-                                const files: { id: string; processed: ioBroker.ChownFileResult[] }[] = [];
-                                for (const row of arr.rows) {
-                                    const rowTyped = row.value as ioBroker.AdapterObject | ioBroker.InstanceObject;
-                                    if (rowTyped.type !== 'adapter') {
-                                        continue;
-                                    }
-                                    await new Promise<void>(resolve =>
-                                        objects.chownFile(
-                                            rowTyped.common.name,
-                                            '*',
-                                            {
-                                                user: 'system.user.admin',
-                                                owner: user,
-                                                ownerGroup: group,
-                                            },
-                                            (err, processed) => {
-                                                if (!err && processed) {
-                                                    files.push({ id: rowTyped.common.name, processed });
-                                                }
-                                                resolve();
-                                            },
-                                        ),
-                                    );
-                                }
-                                if (!files.length) {
-                                    console.log('Nothing found');
-                                    return void callback();
-                                }
-                                const list = new List({
-                                    states,
-                                    objects,
-                                    processExit: callback,
-                                });
-                                files.sort((a, b) => a.id.localeCompare(b.id));
-
-                                list.showFileHeader();
-                                for (let k = 0; k < files.length; k++) {
-                                    for (let t = 0; t < files[k].processed.length; t++) {
-                                        list.showFile(files[k].id, files[k].processed[t].path, files[k].processed[t]);
-                                    }
-                                }
-                                setTimeout(callback, 1_000);
-                            }
-                        },
-                    );
-                } else {
-                    const parts = pattern.split('/');
-                    const id = parts.shift()!;
-                    const path = parts.join('/');
-
-                    objects.chownFile(
-                        id,
-                        path,
-                        {
-                            user: 'system.user.admin',
-                            owner: user,
-                            ownerGroup: group,
-                        },
-                        (err, processed) => {
-                            if (err) {
-                                console.error(err);
-                            } else {
-                                // call here list
-                                if (processed) {
-                                    const list = new List({
-                                        states,
-                                        objects,
-                                        processExit: callback,
-                                    });
-                                    list.showFileHeader();
-                                    for (const file of processed) {
-                                        list.showFile(id, file.path, file);
-                                    }
-                                }
-                            }
-                            setTimeout(callback, 1_000);
-                        },
-                    );
-                }
-            });
-            break;
-        }
+        case 'chown':
+            return processCommandChown(options);
 
         case 'user': {
-            const command = args[0] || '';
-            let user = args[1] || '';
-
-            if (user?.startsWith('system.user.')) {
-                user = user.substring('system.user.'.length);
-            }
-
-            dbConnect(params, async ({ objects }) => {
-                const { Users } = await import('./setup/setupUsers.js');
-                const users = new Users({
-                    objects,
-                    processExit: callback,
-                });
-                const password = params.password as string;
-                const group: ioBroker.ObjectIDs.Group =
-                    (params.ingroup as ioBroker.ObjectIDs.Group) || 'system.group.administrator';
-
-                if (command === 'add') {
-                    users.addUserPrompt(user, group, password, (err: Error | null | undefined) => {
-                        if (err) {
-                            console.error(err);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`User "${user}" created (Group: ${group.replace('system.group.', '')})`);
-                        return void callback();
-                    });
-                } else if (command === 'del' || command === 'delete') {
-                    users.delUser(user, (err: Error | null | undefined) => {
-                        if (err) {
-                            console.error(err);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`User "${user}" deleted`);
-                        return void callback();
-                    });
-                } else if (command === 'check') {
-                    users.checkUserPassword(user, password, err => {
-                        if (err) {
-                            console.error(err.message);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`Password for user "${user}" matches.`);
-                        return void callback();
-                    });
-                } else if (command === 'set' || command === 'passwd') {
-                    users
-                        .setUserPassword(user, password, err => {
-                            if (err) {
-                                console.error(err.message);
-                                return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                            }
-                            console.log(`Password for "${user}" was successfully set.`);
-                            return void callback();
-                        })
-                        .catch(e => console.error(`Cannot set password: ${e.message}`));
-                } else if (command === 'enable' || command === 'e') {
-                    users.enableUser(user, true, err => {
-                        if (err) {
-                            console.error(err.message);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`User "${user}" was successfully enabled.`);
-                        return void callback();
-                    });
-                } else if (command === 'disable' || command === 'd') {
-                    users.enableUser(user, false, err => {
-                        if (err) {
-                            console.error(err.message);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`User "${user}" was successfully disabled.`);
-                        return void callback();
-                    });
-                } else if (command === 'get') {
-                    users.getUser(user, (err, isEnabled) => {
-                        if (err) {
-                            console.error(err.message);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`User "${user}" is ${isEnabled ? 'enabled' : 'disabled'}`);
-                        return void callback();
-                    });
-                } else {
-                    console.warn(
-                        `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, check, get`,
-                    );
-                    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                }
-            });
-            break;
+            const { processCommandUser } = await import('@/lib/setup/setupUsers.js');
+            return processCommandUser(options);
         }
 
         case 'g':
         case 'group': {
-            const command = args[0] || '';
-            let group = args[1] || '';
-            let user = args[2] || '';
-
-            if (group?.startsWith('system.group.')) {
-                group = group.substring('system.group.'.length);
-            }
-            if (user?.startsWith('system.user.')) {
-                user = user.substring('system.user.'.length);
-            }
-            if (!command) {
-                console.warn(
-                    `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`,
-                );
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            }
-            if (!group) {
-                console.warn(`Please define group name: group ${command} groupName`);
-                return callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-            }
-
-            dbConnect(params, async ({ objects }) => {
-                const { Users } = await import('./setup/setupUsers.js');
-                const users = new Users({
-                    objects,
-                    processExit: callback,
-                });
-
-                if (command === 'useradd' || command === 'adduser') {
-                    if (!user) {
-                        console.warn('Please define user name: "group useradd groupName userName"');
-                        return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                    }
-                    users.addUserToGroup(user, group, (err: Error | null | undefined) => {
-                        if (err) {
-                            console.error(err);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`User "${user}" was added to group "${group}"`);
-                        return void callback();
-                    });
-                } else if (command === 'userdel' || command === 'deluser') {
-                    if (!user) {
-                        console.warn('Please define user name: "group userdel groupName userName"');
-                        return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                    }
-                    users.removeUserFromGroup(user, group, (err: Error | null | undefined) => {
-                        if (err) {
-                            console.error(err);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`User "${user}" was deleted from group "${group}"`);
-                        return void callback();
-                    });
-                } else if (command === 'add') {
-                    try {
-                        await users.addGroup(group);
-                        console.log(`Group "${group}" was created`);
-                        return void callback();
-                    } catch {
-                        return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                    }
-                } else if (command === 'del' || command === 'delete') {
-                    users.delGroup(group, (err: Error | null | undefined) => {
-                        if (err) {
-                            console.error(err);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`Group "${group}" was deleted`);
-                        return void callback();
-                    });
-                } else if (command === 'list' || command === 'l') {
-                    users.getGroup(group, (err, isEnabled, members) => {
-                        if (err) {
-                            console.error(err);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(
-                            `Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'} and has following members:`,
-                        );
-                        if (members) {
-                            for (const member of members) {
-                                console.log(member.substring('system.user.'.length));
-                            }
-                        }
-                        return void callback();
-                    });
-                } else if (command === 'enable' || command === 'e') {
-                    users.enableGroup(group, true, (err: Error | null | undefined) => {
-                        if (err) {
-                            console.error(err);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`Group "${group}" was successfully enabled.`);
-                        return void callback();
-                    });
-                } else if (command === 'disable' || command === 'd') {
-                    users.enableGroup(group, false, (err: Error | null | undefined) => {
-                        if (err) {
-                            console.error(err);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`Group "${group}" was successfully disabled.`);
-                        return void callback();
-                    });
-                } else if (command === 'get') {
-                    users.getGroup(group, (err, isEnabled) => {
-                        if (err) {
-                            console.error(err);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'}`);
-                        return void callback();
-                    });
-                } else {
-                    console.warn(
-                        `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`,
-                    );
-                    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                }
-            });
-            break;
+            const { processCommandGroup } = await import('@/lib/setup/setupUsers.js');
+            return processCommandGroup(options);
         }
 
         case 'adduser': {
-            const user = args[0];
-            const group = (params.ingroup as ioBroker.ObjectIDs.Group) || 'system.group.administrator';
-            const password = params.password as string;
-
-            dbConnect(params, async ({ objects }) => {
-                const { Users } = await import('./setup/setupUsers.js');
-                const users = new Users({
-                    objects,
-                    processExit: callback,
-                });
-                users.addUserPrompt(user, group, password, (err: Error | null | undefined) => {
-                    if (err) {
-                        console.error(err);
-                        return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                    }
-                    console.log(`User "${user}" created (Group: ${group.replace('system.group.', '')})`);
-                    return void callback();
-                });
-            });
-            break;
+            const { processCommandAddUser } = await import('@/lib/setup/setupUsers.js');
+            return processCommandAddUser(options);
         }
 
         case 'passwd': {
-            const user = args[0];
-            const password = params.password as string;
-            dbConnect(params, async ({ objects }) => {
-                const { Users } = await import('./setup/setupUsers.js');
-                const users = new Users({
-                    objects,
-                    processExit: callback,
-                });
-                users
-                    .setUserPassword(user, password, (err: Error | null | undefined) => {
-                        if (err) {
-                            console.error(err);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                        console.log(`Password for "${user}" was successfully set.`);
-                        return void callback();
-                    })
-                    .catch(e => console.error(`Cannot set password: ${e.message}`));
-            });
-            break;
+            const { processCommandPassword } = await import('@/lib/setup/setupUsers.js');
+            return processCommandPassword(options);
         }
 
         case 'ud':
         case 'udel':
         case 'userdel':
         case 'deluser': {
-            const user = args[0];
-
-            dbConnect(params, async ({ objects }) => {
-                const { Users } = await import('./setup/setupUsers.js');
-                const users = new Users({
-                    objects,
-                    processExit: callback,
-                });
-                users.delUser(user, (err: Error | null | undefined) => {
-                    if (err) {
-                        console.error(err);
-                        return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                    }
-                    console.log(`User "${user}" deleted`);
-                    return void callback();
-                });
-            });
-            break;
+            const { processCommandUserDel } = await import('@/lib/setup/setupUsers.js');
+            return processCommandUserDel(options);
         }
 
-        // Create package.json in /opt/' + tools.appName + '
-        case 'package': {
-            const json = {
-                name: tools.appName,
-                engines: {
-                    node: '>=22',
-                },
-                optionalDependencies: {} as Record<string, string>,
-                dependencies: {
-                    [`${tools.appName.toLowerCase()}.js-controller`]: '*',
-                    [`${tools.appName.toLowerCase()}.admin`]: '*',
-                },
-                author: 'bluefox <dogafox@gmail.com>',
-            };
+        case 'package':
+            return processCommandPackage(options);
 
-            try {
-                const sources = await tools.getRepositoryFile();
-                if (sources) {
-                    for (const s in sources) {
-                        if (Object.prototype.hasOwnProperty.call(sources, s)) {
-                            if ((sources[s] as ioBroker.RepositoryJsonAdapterContent).url) {
-                                if (!json.dependencies[`${tools.appName}.${s}`]) {
-                                    json.optionalDependencies[`${tools.appName}.${s}`] = (
-                                        sources[s] as ioBroker.RepositoryJsonAdapterContent
-                                    ).url!;
-                                }
-                            } else {
-                                if (!json.dependencies[`${tools.appName}.${s}`]) {
-                                    json.optionalDependencies[`${tools.appName}.${s}`] = '*';
-                                }
-                            }
-                        }
-                    }
-                }
-
-                fs.writeFileSync(path.join(tools.getRootDir(), 'package.json'), JSON.stringify(json, null, 2));
-                return void callback();
-            } catch (e) {
-                console.error(`Cannot read repository file: ${e as Error}`);
-            }
-            break;
-        }
-
-        case 'set': {
-            const instance = args[0] as `${string}.${number}`;
-            if (!instance) {
-                console.warn('please specify instance.');
-                return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
-            }
-            if (!instance.includes('.')) {
-                console.warn(`please specify instance, like "${instance}.0"`);
-                return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
-            }
-            const { objects } = await dbConnectAsync(false, params);
-
-            let obj: ioBroker.InstanceObject | undefined | null;
-
-            try {
-                obj = await objects.getObjectAsync(`system.adapter.${instance}`);
-            } catch {
-                // ignore
-            }
-
-            if (obj) {
-                let changed = false;
-                for (let a = 0; a < process.argv.length; a++) {
-                    if (
-                        process.argv[a].startsWith('--') &&
-                        process.argv[a + 1] &&
-                        !process.argv[a + 1].startsWith('--')
-                    ) {
-                        const attr = process.argv[a].substring(2);
-                        let val: number | string | boolean = process.argv[a + 1];
-                        if (val === '__EMPTY__') {
-                            val = '';
-                        } else if (val === 'true') {
-                            val = true;
-                        } else if (val === 'false') {
-                            val = false;
-                        } else if (parseFloat(val).toString() === val) {
-                            val = parseFloat(val);
-                        }
-                        if (attr.indexOf('.') !== -1) {
-                            const parts = attr.split('.');
-                            if (!obj.native[parts[0]] || obj.native[parts[0]][parts[1]] === undefined) {
-                                console.warn(`Adapter "${instance}" has no setting "${attr}".`);
-                            } else {
-                                changed = true;
-                                obj.native[parts[0]][parts[1]] = val;
-                                console.log(`New ${attr} for "${instance}" is: ${val}`);
-                            }
-                        } else {
-                            if (obj.native[attr] === undefined) {
-                                console.warn(`Adapter "${instance}" has no setting "${attr}".`);
-                            } else {
-                                changed = true;
-                                obj.native[attr] = val;
-                                console.log(`New ${attr} for "${instance}" is: ${val}`);
-                            }
-                        }
-                        a++;
-                    }
-                }
-                if (changed) {
-                    obj.from = `system.host.${tools.getHostName()}.cli`;
-                    obj.ts = new Date().getTime();
-                    objects.setObject(`system.adapter.${instance}`, obj, () => {
-                        console.log(`Instance settings for "${instance}" are changed.`);
-                        return void callback();
-                    });
-                } else {
-                    console.log('No parameters set.');
-                    return void callback();
-                }
-            } else {
-                CLIError.invalidInstance(instance);
-                return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
-            }
-            break;
-        }
+        case 'set':
+            return processCommandSet(options);
 
         case 'host': {
             const hostCommand = new CLIHost(commandOptions);
@@ -2149,561 +731,39 @@ async function processCommand(
         }
 
         case 'visdebug': {
-            let widgetset = args[0];
-            if (widgetset?.startsWith('vis-')) {
-                widgetset = widgetset.substring(4);
-            }
-            const { VisDebug } = await import('./setup/setupVisDebug.js');
-
-            dbConnect(params, ({ objects }) => {
-                const visDebug = new VisDebug({
-                    objects,
-                    processExit: callback,
-                });
-
-                visDebug.enableDebug(widgetset).catch(e => console.error(`Cannot enable debug: ${e.message}`));
-            });
-            break;
+            const { processCommandVisDebug } = await import('@/lib/setup/setupVisDebug.js');
+            return processCommandVisDebug(options);
         }
 
         case 'file':
-        case 'f': {
-            const cmd = args[0];
-            if (
-                cmd !== 'read' &&
-                cmd !== 'r' &&
-                cmd !== 'w' &&
-                cmd !== 'write' &&
-                cmd !== 'sync' &&
-                cmd !== 'rm' &&
-                cmd !== 'unlink' &&
-                cmd !== 'del'
-            ) {
-                console.log(
-                    'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file',
-                );
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            }
-            if (cmd !== 'sync' && !args[1]) {
-                console.log(
-                    'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk',
-                );
-                console.log(
-                    'or                        "file write /opt/SOURCE/image.png /vis-2.0/main/DESTINATION/picture.png" to write the file into DB from disk',
-                );
-                console.log(
-                    'or                        "file rm /vis-2.0/main/img/picture.png" to delete the file in DB',
-                );
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            }
-
-            dbConnect(params, async ({ objects, objectsDBType }) => {
-                if (cmd === 'read' || cmd === 'r') {
-                    const toRead = args[1];
-                    const parts = toRead.replace(/\\/g, '/').split('/');
-
-                    const path = (args[2] || process.cwd()).replace(/\\/g, '/').split('/');
-                    const file = path[path.length - 1];
-                    if (!file.match(/\.[a-zA-Z0-9]+$/)) {
-                        // If destination location seems to be a directory, add filename
-                        if (file !== '') {
-                            path.push(parts[parts.length - 1]);
-                        } else {
-                            // trailing slash
-                            path[path.length - 1] = parts[parts.length - 1];
-                        }
-                    }
-                    let adapt = parts.shift();
-                    if (!adapt) {
-                        // leading slash
-                        adapt = parts.shift();
-                    }
-                    if (!adapt) {
-                        console.log(`Invalid parameters: adapter cannot be found!`);
-                        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                    }
-                    if (!parts.length) {
-                        console.log('Invalid parameters: file cannot be found: file not provided');
-                        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                    }
-
-                    objects.readFile(adapt, parts.join('/'), null, (err, data) => {
-                        if (err) {
-                            console.error(err);
-                        }
-                        if (data) {
-                            const destFilename = path.join('/');
-                            fs.writeFileSync(destFilename, data);
-                            console.log(`File "${toRead}" stored as "${destFilename}"`);
-                        }
-                        return void callback(EXIT_CODES.NO_ERROR);
-                    });
-                } else if (cmd === 'write' || cmd === 'w') {
-                    const toRead = args[1] || '';
-                    const parts = toRead.replace(/\\/g, '/').split('/');
-
-                    const path = (args[2] || '').replace(/\\/g, '/').split('/');
-
-                    let adapt = path.shift();
-                    if (!adapt) {
-                        adapt = path.shift();
-                    }
-                    if (!path.length) {
-                        path.push('');
-                    }
-
-                    const fileSrc = parts[parts.length - 1];
-                    let fileDest = path[path.length - 1];
-                    if (!fileDest || !fileDest.match(/\.[a-zA-Z0-9]+$/)) {
-                        // last portion of destination has no extension, consider being a directory
-                        fileDest = '';
-                    }
-                    if (!fileSrc || !fs.existsSync(toRead)) {
-                        console.log(
-                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis-2/DESTINATION/script.js"`,
-                        );
-                        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                    }
-                    const srcStat = fs.statSync(toRead);
-                    if (!srcStat.isFile()) {
-                        console.log(
-                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis-2/DESTINATION/script.js"`,
-                        );
-                        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                    }
-                    if (!fileDest) {
-                        // destination filename is not given, use same name as source file
-                        fileDest = fileSrc;
-                    }
-                    if (fileDest !== path[path.length - 1]) {
-                        // if last part of path is different then filename, add filename
-                        if (path[path.length - 1] !== '') {
-                            path.push(fileDest);
-                        } else {
-                            // trailing slash
-                            path[path.length - 1] = fileDest;
-                        }
-                    }
-                    const destFilename = path.length ? path.join('/') : '/';
-                    const data = fs.readFileSync(toRead);
-
-                    if (!adapt) {
-                        console.log('Invalid parameters: destination adapter cannot be found!');
-                        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                    }
-
-                    objects
-                        .writeFile(adapt, destFilename, data, _err => {
-                            console.log(`File "${toRead}" stored as "${destFilename}"`);
-                            return void callback(EXIT_CODES.NO_ERROR);
-                        })
-                        .catch(e => console.error(`Cannot write file: ${e.message}`));
-                } else if (cmd === 'del' || cmd === 'rm' || cmd === 'unlink') {
-                    const toDelete = args[1];
-                    const parts = toDelete.replace(/\\/g, '/').split('/');
-
-                    let adapt = parts.shift();
-                    if (!adapt) {
-                        // leading slash
-                        adapt = parts.shift();
-                    }
-
-                    if (!adapt) {
-                        console.log('Invalid parameters: adapter cannot be found!');
-                        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                    }
-                    if (!parts.length) {
-                        console.log('Invalid parameters: file cannot be found: file not provided');
-                        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                    }
-
-                    objects.unlink(adapt, parts.join('/'), null, err => {
-                        if (err) {
-                            console.error(err);
-                        } else {
-                            console.log(`File "${toDelete}" was deleted`);
-                        }
-                        return void callback(EXIT_CODES.NO_ERROR);
-                    });
-                } else if (cmd === 'sync') {
-                    // Sync
-                    if (objectsDBType === 'redis') {
-                        console.log('File Sync is not available when database type "redis" is used.');
-                        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                    }
-                    // @ts-expect-error todo look in depth how to handle
-                    if (!objects.syncFileDirectory || !objects.dirExists) {
-                        // functionality only exists in server class
-                        console.log(
-                            'Please stop ioBroker before syncing files and only use this command on the ioBroker master host!',
-                        );
-                        return void callback(EXIT_CODES.CONTROLLER_RUNNING);
-                    }
-
-                    // check meta.user
-                    try {
-                        const objExists = await objects.objectExists('meta.user');
-                        if (objExists) {
-                            // check if dir is missing
-                            // @ts-expect-error todo look in depth how to handle
-                            const dirExists = objects.dirExists('meta.user');
-                            if (!dirExists) {
-                                // create meta.user, so users see them as upload target
-                                await objects.mkdirAsync('meta.user');
-                                console.log('Successfully created "meta.user" directory');
-                            }
-                        }
-                    } catch (err) {
-                        console.warn(`Could not create directory "meta.user": ${err.message}`);
-                    }
-
-                    try {
-                        // @ts-expect-error todo types needed for this one? but only exists sometimes..
-                        const { numberSuccess, notifications } = objects.syncFileDirectory(args[1]);
-                        console.log(`${numberSuccess} file(s) successfully synchronized with ioBroker storage`);
-                        if (notifications.length) {
-                            console.log('\nThe following notifications happened during sync: ');
-                            notifications.forEach((el: string) => console.log(`- ${el}`));
-                        }
-                        return void callback(EXIT_CODES.NO_ERROR);
-                    } catch (err) {
-                        console.error(`Error on sync: ${err.message}. Partial content might have been synced.`);
-                        return void callback(EXIT_CODES.CANNOT_SYNC_FILES);
-                    }
-                } else {
-                    console.log(
-                        'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk',
-                    );
-                    console.log(
-                        'or                        "file write /opt/SOURCE/image.png /vis-2.0/main/DESTINATION/picture.png" to write the file into DB from disk',
-                    );
-                    console.log(
-                        'or                        "file rm /vis-2.0/main/img/picture.png" to delete the file in DB',
-                    );
-                    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                }
-            });
-            break;
-        }
+        case 'f':
+            return processCommandFile(options);
 
         case 'id':
-        case 'uuid': {
-            dbConnect(params, ({ objects }) => {
-                objects.getObject('system.meta.uuid', (err, obj) => {
-                    if (err) {
-                        console.error(`Error: ${err.message}`);
-                        return void callback(EXIT_CODES.CANNOT_GET_UUID);
-                    }
-                    if (obj?.native) {
-                        console.log(obj.native.uuid);
-                        return void callback();
-                    }
-                    console.error('Error: no UUID found');
-                    return void callback(EXIT_CODES.CANNOT_GET_UUID);
-                });
-            });
-            break;
-        }
+        case 'uuid':
+            return processCommandUuid(options);
 
         case 'v':
-        case 'version': {
-            const adapter = params.adapter as string;
+        case 'version':
+            return processCommandVersion(options);
 
-            if (params.ignore) {
-                try {
-                    const { objects } = await dbConnectAsync(false, params);
-                    await ignoreVersion({ adapterName: adapter, version: params.ignore as string, objects });
-                } catch (e) {
-                    console.error(e.message);
-                    callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
-                    return;
-                }
-                console.log(`Successfully ignored version "${params.ignore}" of adapter "${params.adapter}"!`);
-                callback();
-                return;
-            }
-
-            if (params.recognize) {
-                try {
-                    const { objects } = await dbConnectAsync(false, params);
-                    await recognizeVersion({ adapterName: adapter, objects });
-                } catch (e) {
-                    console.error(e.message);
-                    callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
-                }
-                console.log(`Successfully recognized all versions of adapter "${params.adapter}" again!`);
-                callback();
-                return;
-            }
-
-            let packJson;
-            if (adapter) {
-                try {
-                    packJson = require(`${tools.appName.toLowerCase()}.${adapter}/package.json`);
-                } catch {
-                    packJson = { version: `"${adapter}" not found` };
-                }
-            } else {
-                packJson = require(`@iobroker/js-controller-common/package.json`);
-            }
-            console.log(packJson.version);
-
-            return void callback();
-        }
-
-        case 'checklog': {
-            dbConnect(params, async ({ objects, states, isOffline, objectsDBType }) => {
-                const hasLocalObjectsServer = await objectsDbHasServer(objectsDBType);
-                if (isOffline && hasLocalObjectsServer) {
-                    console.log(`${tools.appName} is not running`);
-                    return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
-                }
-                console.log(`${tools.appName} is running`);
-                objects.getObjectList(
-                    {
-                        startkey: 'system.host.',
-                        endkey: `system.host.\u9999`,
-                    },
-                    null,
-                    (err, res) => {
-                        if (!err && res?.rows.length) {
-                            for (const row of res.rows) {
-                                const parts = row.id.split('.');
-                                // ignore system.host.name.alive and so on
-                                if (parts.length === 3) {
-                                    states
-                                        .pushMessage(row.id, {
-                                            command: 'checkLogging',
-                                            message: null,
-                                            from: 'console',
-                                        })
-                                        .catch(e => console.error(`Cannot push checkLogging message: ${e.message}`));
-                                }
-                            }
-                        }
-                        setTimeout(callback, 200);
-                    },
-                );
-            });
-            break;
-        }
+        case 'checklog':
+            return processCommandCheckLog(options);
 
         case 'repo': {
-            let repoUrlOrCommand: string | undefined = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset" / "unset"
-            let repoName: string | undefined = args[1]; // Repo url or name
-            let repoUrl: string | undefined = args[2]; // Repo url or name
-            if (
-                repoUrlOrCommand !== 'add' &&
-                repoUrlOrCommand !== 'del' &&
-                repoUrlOrCommand !== 'set' &&
-                repoUrlOrCommand !== 'show' &&
-                repoUrlOrCommand !== 'addset' &&
-                repoUrlOrCommand !== 'unset'
-            ) {
-                repoUrl = repoUrlOrCommand;
-                repoUrlOrCommand = 'show';
-            }
-
-            const { objects, states } = await dbConnectAsync(false, params);
-            const { Repo } = await import('./setup/setupRepo.js');
-            const repo = new Repo({
-                objects,
-                states,
-            });
-
-            if (repoUrlOrCommand === 'show') {
-                try {
-                    await repo.showRepoStatus();
-                    return void callback();
-                } catch (e) {
-                    console.error(`Cannot show repository status: ${e.message}`);
-                    return void callback(EXIT_CODES.INVALID_REPO);
-                }
-            }
-
-            if (
-                repoUrlOrCommand === 'add' ||
-                repoUrlOrCommand === 'del' ||
-                repoUrlOrCommand === 'set' ||
-                repoUrlOrCommand === 'addset' ||
-                repoUrlOrCommand === 'unset'
-            ) {
-                if (!repoName || !repoName.match(/[-_\w]+/)) {
-                    console.error(`Invalid repository name: "${repoName}"`);
-                    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                }
-
-                if (isIntegerLikeInput(repoName)) {
-                    try {
-                        repoName = await repo.getNameByIndex(parseInt(repoName));
-                    } catch (e) {
-                        console.error(e.message);
-                        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                    }
-                }
-
-                if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'addset') {
-                    if (!repoUrl) {
-                        console.warn(
-                            `Please define repository URL or path: ${tools.appName.toLowerCase()} add <repoName> <repoUrlOrPath>`,
-                        );
-                        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                    }
-                    try {
-                        await repo.add(repoName, repoUrl);
-
-                        if (repoUrlOrCommand === 'addset') {
-                            await repo.setActive(repoName);
-                            console.log(`Repository "${repoName}" set as active: "${repoUrl}"`);
-                            await repo.showRepoStatus();
-                            return void callback();
-                        }
-                        console.log(`Repository "${repoName}" added as "${repoUrl}"`);
-                        await repo.showRepoStatus();
-                        return void callback();
-                    } catch (e) {
-                        console.error(`Cannot add repository location: ${e.message}`);
-                        return void callback(EXIT_CODES.INVALID_REPO);
-                    }
-                } else if (repoUrlOrCommand === 'set') {
-                    try {
-                        await repo.setActive(repoName);
-                        console.log(`Repository "${repoName}" set as active.`);
-                        await repo.showRepoStatus();
-                        return void callback();
-                    } catch (e) {
-                        console.error(`Cannot activate repository: ${e.message}`);
-                        return void callback(EXIT_CODES.INVALID_REPO);
-                    }
-                } else if (repoUrlOrCommand === 'del') {
-                    try {
-                        await repo.del(repoName);
-                        console.log(`Repository "${repoName}" deleted.`);
-                        await repo.showRepoStatus();
-                        return void callback();
-                    } catch (e) {
-                        console.error(`Cannot remove repository: ${e.message}`);
-                        return void callback(EXIT_CODES.INVALID_REPO);
-                    }
-                } else if (repoUrlOrCommand === 'unset') {
-                    try {
-                        await repo.setInactive(repoName);
-                        console.log(`Repository "${repoName}" deactivated.`);
-                        await repo.showRepoStatus();
-                        return void callback();
-                    } catch (e) {
-                        console.error(`Cannot deactivate repository: ${e.message}`);
-                        return void callback(EXIT_CODES.INVALID_REPO);
-                    }
-                } else {
-                    console.warn(`Unknown repo command: ${repoUrlOrCommand as string}`);
-                    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                }
-            }
-            break;
+            const { processCommandRepo } = await import('@/lib/setup/setupRepo.js');
+            return processCommandRepo(options);
         }
 
         case 'multihost':
         case 'mh': {
-            const cmd = args[0];
-            if (
-                cmd !== 'c' &&
-                cmd !== 'connect' &&
-                cmd !== 's' &&
-                cmd !== 'status' &&
-                cmd !== 'b' &&
-                cmd !== 'browse' &&
-                cmd !== 'e' &&
-                cmd !== 'enable' &&
-                cmd !== 'd' &&
-                cmd !== 'disable'
-            ) {
-                console.log('Invalid parameters. Following is possible: enable, browse, connect, status');
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            }
-            dbConnect(params, async ({ objects, states }) => {
-                const { Multihost } = await import('./setup/setupMultihost.js');
-                const mh = new Multihost({
-                    params,
-                    objects,
-                });
-
-                if (cmd === 's' || cmd === 'status') {
-                    mh.status();
-                    return void callback();
-                } else if (cmd === 'b' || cmd === 'browse') {
-                    try {
-                        const list = await mh.browse();
-                        mh.showHosts(list);
-                        return void callback();
-                    } catch (e) {
-                        console.error(e.message);
-                        return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                    }
-                } else if (cmd === 'e' || cmd === 'enable') {
-                    mh.enable(true, async (err: Error | null | undefined) => {
-                        if (err) {
-                            console.error(err);
-                            return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
-                        }
-                        await states.pushMessage(`system.host.${tools.getHostName()}`, {
-                            command: 'updateMultihost',
-                            message: null,
-                            from: 'setup',
-                        });
-
-                        callback();
-                    });
-                } else if (cmd === 'd' || cmd === 'disable') {
-                    mh.enable(false, async (err: Error | null | undefined) => {
-                        if (err) {
-                            console.error(err);
-                            return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
-                        }
-                        await states.pushMessage(`system.host.${tools.getHostName()}`, {
-                            command: 'updateMultihost',
-                            message: null,
-                            from: 'setup',
-                        });
-
-                        callback();
-                    });
-                } else if (cmd === 'c' || cmd === 'connect') {
-                    mh.connect(parseInt(args[1]), args[2], (err: Error | null | undefined) => {
-                        if (err) {
-                            console.error(err);
-                        }
-                        return void callback(err ? 1 : 0);
-                    }).catch(e => console.error(`Cannot connect multihost: ${e.message}`));
-                }
-            });
-
-            break;
+            const { processCommandMultihost } = await import('@/lib/setup/setupMultihost.js');
+            return processCommandMultihost(options);
         }
 
         case 'vendor': {
-            const password = args[0];
-            const file = args[1];
-            const javascriptPassword = args[2];
-            if (!password) {
-                console.warn(
-                    `Please specify the password to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`,
-                );
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            }
-
-            const { objects } = await dbConnectAsync(false, params);
-            const { Vendor } = await import('./setup/setupVendor.js');
-            const vendor = new Vendor({ objects });
-
-            try {
-                await vendor.checkVendor(file, password, javascriptPassword);
-                console.log(`Synchronised vendor information.`);
-                return void callback();
-            } catch (err) {
-                console.error(`Cannot update vendor information: ${err.message}`);
-                return void callback(EXIT_CODES.CANNOT_UPDATE_VENDOR);
-            }
+            const { processCommandVendor } = await import('@/lib/setup/setupVendor.js');
+            return processCommandVendor(options);
         }
 
         case 'cert': {
@@ -2727,27 +787,8 @@ async function processCommand(
         }
 
         case 'license': {
-            const file = args[0];
-            if (!file) {
-                console.warn(
-                    `Please specify the path to the license file or place license text directly!\n${tools.appName.toLowerCase()} license <license.file or license.text>`,
-                );
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            }
-            dbConnect(params, async ({ objects }) => {
-                const { License } = await import('./setup/setupLicense.js');
-                const license = new License({ objects });
-                try {
-                    await license.setLicense(file);
-                    console.log(`License updated.`);
-                    return void callback();
-                } catch (err) {
-                    console.error(`Cannot update license: ${err.message}`);
-                    return void callback(EXIT_CODES.CANNOT_UPDATE_LICENSE);
-                }
-            });
-
-            break;
+            const { processCommandLicense } = await import('@/lib/setup/setupLicense.js');
+            return processCommandLicense(options);
         }
 
         default: {
@@ -2770,6 +811,982 @@ async function processCommand(
             return void callback();
         }
     }
+}
+
+/**
+ * Process the `info` CLI command: print host information
+ *
+ * @param options command options provided by the dispatcher
+ */
+function processCommandInfo(options: ProcessCommandOptions): void {
+    const { params, callback } = options;
+    dbConnect(params, async ({ objects }) => {
+        try {
+            const data = await tools.getHostInfo(objects);
+
+            for (const attr in data) {
+                let info: string;
+                if (attr === 'Uptime' || attr === 'System uptime') {
+                    info = formatters.formatSeconds(data[attr as keyof tools.HostInfo] as number);
+                } else if (attr === 'RAM') {
+                    info = formatters.formatRam(data[attr as keyof tools.HostInfo] as number);
+                } else if (attr === 'Speed') {
+                    info = formatters.formatSpeed(data[attr as keyof tools.HostInfo] as number);
+                } else if (attr === 'Disk size' || attr === 'Disk free') {
+                    info = formatters.formatBytes(data[attr as keyof tools.HostInfo] as number);
+                } else {
+                    info = data[attr as keyof tools.HostInfo] as string;
+                }
+                console.log(`${attr}${attr.length < 16 ? new Array(16 - attr.length).join(' ') : ''}: ${info || ''}`);
+            }
+        } catch (err) {
+            console.error(`Cannot read host info: ${typeof err === 'object' ? JSON.stringify(err) : err}`);
+            return callback(EXIT_CODES.CANNOT_GET_HOST_INFO);
+        }
+
+        return void callback();
+    });
+}
+
+/**
+ * Process the `rebuild` CLI command: rebuild all native modules or a single native module
+ *
+ * @param options command options provided by the dispatcher
+ */
+async function processCommandRebuild(options: ProcessCommandOptions): Promise<void> {
+    const { callback, commandOptions } = options;
+    const rebuildOptions: InternalRebuildOptions = { debug: process.argv.includes('--debug') };
+
+    if (commandOptions.path) {
+        if (path.isAbsolute(commandOptions.path)) {
+            rebuildOptions.cwd = commandOptions.path;
+        } else {
+            console.log('Path argument needs to be an absolute path!');
+            return void exitApplicationSave(EXIT_CODES.INVALID_ARGUMENTS);
+        }
+    }
+
+    if (commandOptions.module) {
+        rebuildOptions.module = commandOptions.module;
+        console.log(
+            `Rebuilding native module "${commandOptions.module}"${rebuildOptions.cwd ? ` in ${rebuildOptions.cwd}` : ''} ...`,
+        );
+    } else {
+        console.log(`Rebuilding native modules${rebuildOptions.cwd ? ` in ${rebuildOptions.cwd}` : ''} ...`);
+    }
+
+    const result = await tools.rebuildNodeModules(rebuildOptions);
+
+    if (result.success) {
+        console.log();
+        console.log(`Rebuilding native modules done`);
+        return void callback();
+    }
+    console.error('Rebuilding native modules failed');
+    return void exitApplicationSave(result.exitCode);
+}
+
+/**
+ * Process the `unsetup` CLI command: delete the installation UUID after confirmation
+ *
+ * @param options command options provided by the dispatcher
+ */
+async function processCommandUnsetup(options: ProcessCommandOptions): Promise<void> {
+    const { params, callback } = options;
+    const rl = (await import('node:readline')).createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+
+    if (params.yes || params.y || params.Y) {
+        unsetup(params, callback).catch(e => console.error(`Cannot unsetup: ${e.message}`));
+    } else {
+        rl.question('UUID will be deleted. Are you sure? [y/N]: ', answer => {
+            rl.close();
+            answer = answer.toLowerCase();
+            if (answer === 'y' || answer === 'yes' || answer === 'ja' || answer === 'j') {
+                unsetup(params, callback).catch(e => console.error(`Cannot unsetup: ${e.message}`));
+                return;
+            }
+            console.log('Nothing deleted');
+            return void callback();
+        });
+    }
+}
+
+/**
+ * Process the `clean` CLI command: clear all objects and states
+ *
+ * @param options command options provided by the dispatcher
+ */
+function processCommandClean(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    const yes = args[0];
+    if (yes !== 'yes') {
+        console.log(`Command "clean" clears all Objects and States. To execute it write "${tools.appName} clean yes"`);
+    } else {
+        dbConnect(params, async ({ isOffline }) => {
+            if (!isOffline) {
+                console.error(`Stop ${tools.appName} first!`);
+                return void callback(EXIT_CODES.CONTROLLER_RUNNING);
+            }
+
+            try {
+                const count = await cleanDatabase(true);
+                console.log(`Deleted ${count} states`);
+            } catch {
+                // ignore
+            }
+            restartController().catch(e => console.error(`Cannot restart controller: ${e.message}`));
+            console.log(`Restarting ${tools.appName}...`);
+            callback();
+        });
+    }
+}
+
+/**
+ * Process the `touch` CLI command: touch files matching the given pattern
+ *
+ * @param options command options provided by the dispatcher
+ */
+function processCommandTouch(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    let pattern = args[0];
+
+    if (!pattern) {
+        console.log('No file path found. Example: "touch /vis-2.0/main/*"');
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+    dbConnect(params, ({ objects }) => {
+        // extract id
+        pattern = pattern.replace(/\\/g, '/');
+        if (pattern[0] === '/') {
+            pattern = pattern.substring(1);
+        }
+
+        if (pattern === '*') {
+            objects.getObjectList(
+                {
+                    startkey: 'system.adapter.',
+                    endkey: 'system.adapter.\u9999',
+                },
+                async (err, arr) => {
+                    if (!err && arr?.rows) {
+                        const files: string[] = [];
+                        for (const row of arr.rows) {
+                            const rowTyped = row.value as ioBroker.AdapterObject | ioBroker.InstanceObject;
+                            if (rowTyped.type !== 'adapter') {
+                                continue;
+                            }
+                            await new Promise<void>(resolve =>
+                                objects.touch(rowTyped.common.name, '*', { user: 'system.user.admin' }, err => {
+                                    if (!err) {
+                                        files.push(rowTyped.common.name);
+                                    } else {
+                                        console.warn(`Cannot touch file ${rowTyped.common.name}`);
+                                    }
+                                    resolve();
+                                }),
+                            );
+                        }
+                        files.sort((a, b) => a.localeCompare(b));
+
+                        for (const file of files) {
+                            console.log(`Touched ${file}`);
+                        }
+                        setTimeout(callback, 1_000);
+                    }
+                },
+            );
+        } else {
+            const parts = pattern.split('/');
+            const id = parts.shift()!;
+            const path = parts.join('/');
+
+            objects.touch(id, path, { user: 'system.user.admin' }, err => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log(`Touched ${id}/${path}`);
+                }
+                setTimeout(callback, 1_000);
+            });
+        }
+    });
+}
+
+/**
+ * Process the `rm` CLI command: remove files matching the given pattern
+ *
+ * @param options command options provided by the dispatcher
+ */
+function processCommandRm(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    let pattern = args[0];
+
+    if (!pattern) {
+        console.log('No file path found. Example: "touch /vis-2.0/main/*"');
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+    dbConnect(params, ({ objects }) => {
+        // extract id
+        pattern = pattern.replace(/\\/g, '/');
+        if (pattern[0] === '/') {
+            pattern = pattern.substring(1);
+        }
+
+        if (pattern === '*') {
+            objects.getObjectList(
+                {
+                    startkey: 'system.adapter.',
+                    endkey: 'system.adapter.\u9999',
+                },
+                async (err, arr) => {
+                    if (!err && arr?.rows) {
+                        const files: { id: string; processed: ioBroker.RmResult[] }[] = [];
+                        for (const row of arr.rows) {
+                            const rowTyped = row.value as ioBroker.AdapterObject | ioBroker.InstanceObject;
+                            if (rowTyped.type !== 'adapter') {
+                                continue;
+                            }
+                            await new Promise<void>(resolve =>
+                                objects.rm(
+                                    rowTyped.common.name,
+                                    '*',
+                                    { user: 'system.user.admin' },
+                                    (err, processed) => {
+                                        if (!err && processed) {
+                                            files.push({ id: rowTyped.common.name, processed });
+                                        }
+                                        resolve();
+                                    },
+                                ),
+                            );
+                        }
+                        files.sort((a, b) => a.id.localeCompare(b.id));
+
+                        for (const file of files) {
+                            for (const processedFile of file.processed) {
+                                console.log(`Removed ${processedFile.path}/${processedFile.file}`);
+                            }
+                        }
+                        setTimeout(callback, 1_000);
+                    }
+                },
+            );
+        } else {
+            const parts = pattern.split('/');
+            const id = parts.shift()!;
+            const path = parts.join('/');
+
+            objects.rm(id, path, { user: 'system.user.admin' }, (err, processed) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    if (processed) {
+                        for (const file of processed) {
+                            console.log(`Removed ${file.path}/${file.file}`);
+                        }
+                    }
+                }
+                setTimeout(callback, 1_000);
+            });
+        }
+    });
+}
+
+/**
+ * Process the `chmod` CLI command: change file rights for files matching the given pattern
+ *
+ * @param options command options provided by the dispatcher
+ */
+function processCommandChmod(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    let mode: string | number = args[0];
+    let pattern = args[1];
+
+    if (!mode) {
+        CLIError.requiredArgumentMissing('mode', 'chmod 777 /vis-2.0/main/*');
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+    // yargs has converted it to number
+    mode = parseInt(mode.toString(), 16);
+
+    if (!pattern) {
+        CLIError.requiredArgumentMissing('file path', 'chmod 777 /vis-2.0/main/*');
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+    dbConnect(params, ({ objects, states }) => {
+        // extract id
+        pattern = pattern.replace(/\\/g, '/');
+        if (pattern[0] === '/') {
+            pattern = pattern.substring(1);
+        }
+
+        if (pattern === '*') {
+            objects.getObjectList(
+                {
+                    startkey: 'system.adapter.',
+                    endkey: 'system.adapter.\u9999',
+                },
+                async (err, arr) => {
+                    if (!err && arr?.rows) {
+                        const files: { id: string; processed: ioBroker.ChownFileResult[] }[] = [];
+                        for (const row of arr.rows) {
+                            const rowTyped = row.value as ioBroker.AdapterObject | ioBroker.InstanceObject;
+                            if (rowTyped.type !== 'adapter') {
+                                continue;
+                            }
+                            await new Promise<void>(resolve =>
+                                objects.chmodFile(
+                                    rowTyped.common.name,
+                                    '*',
+                                    {
+                                        user: 'system.user.admin',
+                                        mode,
+                                    },
+                                    (err, processed) => {
+                                        if (!err && processed) {
+                                            files.push({ id: rowTyped.common.name, processed });
+                                        }
+                                        resolve();
+                                    },
+                                ),
+                            );
+                        }
+                        const list = new List({
+                            states,
+                            objects,
+                            processExit: callback,
+                        });
+                        files.sort((a, b) => a.id.localeCompare(b.id));
+
+                        list.showFileHeader();
+                        for (const file of files) {
+                            for (const processedFile of file.processed) {
+                                list.showFile(file.id, processedFile.path, processedFile);
+                            }
+                        }
+                        setTimeout(callback, 1_000);
+                    }
+                },
+            );
+        } else {
+            const parts = pattern.split('/');
+            const id = parts.shift()!;
+            const path = parts.join('/');
+
+            objects.chmodFile(id, path, { user: 'system.user.admin', mode: mode }, (err, processed) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    if (processed) {
+                        const list = new List({
+                            states,
+                            objects,
+                            processExit: callback,
+                        });
+                        list.showFileHeader();
+                        for (const file of processed) {
+                            list.showFile(id, file.path, file);
+                        }
+                    }
+                }
+                setTimeout(callback, 1_000);
+            });
+        }
+    });
+}
+
+/**
+ * Process the `chown` CLI command: change file ownership for files matching the given pattern
+ *
+ * @param options command options provided by the dispatcher
+ */
+function processCommandChown(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    let user = args[0] as ioBroker.ObjectIDs.User;
+    let group: ioBroker.ObjectIDs.Group | undefined = args[1] as ioBroker.ObjectIDs.Group;
+    let pattern = args[2];
+
+    if (!pattern) {
+        pattern = group;
+        group = undefined;
+    }
+
+    if (!user) {
+        CLIError.requiredArgumentMissing('user', 'chown user /vis-2.0/main/*');
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+    if (user.substring(12) !== 'system.user.') {
+        user = `system.user.${user}`;
+    }
+    if (group && group.substring(13) !== 'system.group.') {
+        group = `system.group.${group}`;
+    }
+
+    if (!pattern) {
+        CLIError.requiredArgumentMissing('file path', 'chown user /vis-2.0/main/*');
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+    dbConnect(params, ({ objects, states }) => {
+        // extract id
+        pattern = pattern.replace(/\\/g, '/');
+        if (pattern[0] === '/') {
+            pattern = pattern.substring(1);
+        }
+
+        if (pattern === '*') {
+            objects.getObjectList(
+                {
+                    startkey: 'system.adapter.',
+                    endkey: 'system.adapter.\u9999',
+                },
+                async (err, arr) => {
+                    if (!err && arr?.rows) {
+                        const files: { id: string; processed: ioBroker.ChownFileResult[] }[] = [];
+                        for (const row of arr.rows) {
+                            const rowTyped = row.value as ioBroker.AdapterObject | ioBroker.InstanceObject;
+                            if (rowTyped.type !== 'adapter') {
+                                continue;
+                            }
+                            await new Promise<void>(resolve =>
+                                objects.chownFile(
+                                    rowTyped.common.name,
+                                    '*',
+                                    {
+                                        user: 'system.user.admin',
+                                        owner: user,
+                                        ownerGroup: group,
+                                    },
+                                    (err, processed) => {
+                                        if (!err && processed) {
+                                            files.push({ id: rowTyped.common.name, processed });
+                                        }
+                                        resolve();
+                                    },
+                                ),
+                            );
+                        }
+                        if (!files.length) {
+                            console.log('Nothing found');
+                            return void callback();
+                        }
+                        const list = new List({
+                            states,
+                            objects,
+                            processExit: callback,
+                        });
+                        files.sort((a, b) => a.id.localeCompare(b.id));
+
+                        list.showFileHeader();
+                        for (let k = 0; k < files.length; k++) {
+                            for (let t = 0; t < files[k].processed.length; t++) {
+                                list.showFile(files[k].id, files[k].processed[t].path, files[k].processed[t]);
+                            }
+                        }
+                        setTimeout(callback, 1_000);
+                    }
+                },
+            );
+        } else {
+            const parts = pattern.split('/');
+            const id = parts.shift()!;
+            const path = parts.join('/');
+
+            objects.chownFile(
+                id,
+                path,
+                {
+                    user: 'system.user.admin',
+                    owner: user,
+                    ownerGroup: group,
+                },
+                (err, processed) => {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        // call here list
+                        if (processed) {
+                            const list = new List({
+                                states,
+                                objects,
+                                processExit: callback,
+                            });
+                            list.showFileHeader();
+                            for (const file of processed) {
+                                list.showFile(id, file.path, file);
+                            }
+                        }
+                    }
+                    setTimeout(callback, 1_000);
+                },
+            );
+        }
+    });
+}
+
+/**
+ * Process the `package` CLI command: create the package.json for the ioBroker installation
+ *
+ * @param options command options provided by the dispatcher
+ */
+async function processCommandPackage(options: ProcessCommandOptions): Promise<void> {
+    const { callback } = options;
+    // Create package.json in /opt/' + tools.appName + '
+    const json = {
+        name: tools.appName,
+        engines: {
+            node: '>=22',
+        },
+        optionalDependencies: {} as Record<string, string>,
+        dependencies: {
+            [`${tools.appName.toLowerCase()}.js-controller`]: '*',
+            [`${tools.appName.toLowerCase()}.admin`]: '*',
+        },
+        author: 'bluefox <dogafox@gmail.com>',
+    };
+
+    try {
+        const sources = await tools.getRepositoryFile();
+        if (sources) {
+            for (const s in sources) {
+                if (Object.prototype.hasOwnProperty.call(sources, s)) {
+                    if ((sources[s] as ioBroker.RepositoryJsonAdapterContent).url) {
+                        if (!json.dependencies[`${tools.appName}.${s}`]) {
+                            json.optionalDependencies[`${tools.appName}.${s}`] = (
+                                sources[s] as ioBroker.RepositoryJsonAdapterContent
+                            ).url!;
+                        }
+                    } else {
+                        if (!json.dependencies[`${tools.appName}.${s}`]) {
+                            json.optionalDependencies[`${tools.appName}.${s}`] = '*';
+                        }
+                    }
+                }
+            }
+        }
+
+        fs.writeFileSync(path.join(tools.getRootDir(), 'package.json'), JSON.stringify(json, null, 2));
+        return void callback();
+    } catch (e) {
+        console.error(`Cannot read repository file: ${e as Error}`);
+    }
+}
+
+/**
+ * Process the `set` CLI command: change settings of an adapter instance config
+ *
+ * @param options command options provided by the dispatcher
+ */
+async function processCommandSet(options: ProcessCommandOptions): Promise<void> {
+    const { args, params, callback } = options;
+    const instance = args[0] as `${string}.${number}`;
+    if (!instance) {
+        console.warn('please specify instance.');
+        return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+    }
+    if (!instance.includes('.')) {
+        console.warn(`please specify instance, like "${instance}.0"`);
+        return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+    }
+    const { objects } = await dbConnectAsync(false, params);
+
+    let obj: ioBroker.InstanceObject | undefined | null;
+
+    try {
+        obj = await objects.getObjectAsync(`system.adapter.${instance}`);
+    } catch {
+        // ignore
+    }
+
+    if (obj) {
+        let changed = false;
+        for (let a = 0; a < process.argv.length; a++) {
+            if (process.argv[a].startsWith('--') && process.argv[a + 1] && !process.argv[a + 1].startsWith('--')) {
+                const attr = process.argv[a].substring(2);
+                let val: number | string | boolean = process.argv[a + 1];
+                if (val === '__EMPTY__') {
+                    val = '';
+                } else if (val === 'true') {
+                    val = true;
+                } else if (val === 'false') {
+                    val = false;
+                } else if (parseFloat(val).toString() === val) {
+                    val = parseFloat(val);
+                }
+                if (attr.indexOf('.') !== -1) {
+                    const parts = attr.split('.');
+                    if (!obj.native[parts[0]] || obj.native[parts[0]][parts[1]] === undefined) {
+                        console.warn(`Adapter "${instance}" has no setting "${attr}".`);
+                    } else {
+                        changed = true;
+                        obj.native[parts[0]][parts[1]] = val;
+                        console.log(`New ${attr} for "${instance}" is: ${val}`);
+                    }
+                } else {
+                    if (obj.native[attr] === undefined) {
+                        console.warn(`Adapter "${instance}" has no setting "${attr}".`);
+                    } else {
+                        changed = true;
+                        obj.native[attr] = val;
+                        console.log(`New ${attr} for "${instance}" is: ${val}`);
+                    }
+                }
+                a++;
+            }
+        }
+        if (changed) {
+            obj.from = `system.host.${tools.getHostName()}.cli`;
+            obj.ts = new Date().getTime();
+            objects.setObject(`system.adapter.${instance}`, obj, () => {
+                console.log(`Instance settings for "${instance}" are changed.`);
+                return void callback();
+            });
+        } else {
+            console.log('No parameters set.');
+            return void callback();
+        }
+    } else {
+        CLIError.invalidInstance(instance);
+        return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+    }
+}
+
+/**
+ * Process the `file` CLI command: read, write, delete or sync files in the objects DB
+ *
+ * @param options command options provided by the dispatcher
+ */
+function processCommandFile(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    const cmd = args[0];
+    if (
+        cmd !== 'read' &&
+        cmd !== 'r' &&
+        cmd !== 'w' &&
+        cmd !== 'write' &&
+        cmd !== 'sync' &&
+        cmd !== 'rm' &&
+        cmd !== 'unlink' &&
+        cmd !== 'del'
+    ) {
+        console.log(
+            'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file',
+        );
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+    if (cmd !== 'sync' && !args[1]) {
+        console.log(
+            'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk',
+        );
+        console.log(
+            'or                        "file write /opt/SOURCE/image.png /vis-2.0/main/DESTINATION/picture.png" to write the file into DB from disk',
+        );
+        console.log('or                        "file rm /vis-2.0/main/img/picture.png" to delete the file in DB');
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+
+    dbConnect(params, async ({ objects, objectsDBType }) => {
+        if (cmd === 'read' || cmd === 'r') {
+            const toRead = args[1];
+            const parts = toRead.replace(/\\/g, '/').split('/');
+
+            const path = (args[2] || process.cwd()).replace(/\\/g, '/').split('/');
+            const file = path[path.length - 1];
+            if (!file.match(/\.[a-zA-Z0-9]+$/)) {
+                // If destination location seems to be a directory, add filename
+                if (file !== '') {
+                    path.push(parts[parts.length - 1]);
+                } else {
+                    // trailing slash
+                    path[path.length - 1] = parts[parts.length - 1];
+                }
+            }
+            let adapt = parts.shift();
+            if (!adapt) {
+                // leading slash
+                adapt = parts.shift();
+            }
+            if (!adapt) {
+                console.log(`Invalid parameters: adapter cannot be found!`);
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            }
+            if (!parts.length) {
+                console.log('Invalid parameters: file cannot be found: file not provided');
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            }
+
+            objects.readFile(adapt, parts.join('/'), null, (err, data) => {
+                if (err) {
+                    console.error(err);
+                }
+                if (data) {
+                    const destFilename = path.join('/');
+                    fs.writeFileSync(destFilename, data);
+                    console.log(`File "${toRead}" stored as "${destFilename}"`);
+                }
+                return void callback(EXIT_CODES.NO_ERROR);
+            });
+        } else if (cmd === 'write' || cmd === 'w') {
+            const toRead = args[1] || '';
+            const parts = toRead.replace(/\\/g, '/').split('/');
+
+            const path = (args[2] || '').replace(/\\/g, '/').split('/');
+
+            let adapt = path.shift();
+            if (!adapt) {
+                adapt = path.shift();
+            }
+            if (!path.length) {
+                path.push('');
+            }
+
+            const fileSrc = parts[parts.length - 1];
+            let fileDest = path[path.length - 1];
+            if (!fileDest || !fileDest.match(/\.[a-zA-Z0-9]+$/)) {
+                // last portion of destination has no extension, consider being a directory
+                fileDest = '';
+            }
+            if (!fileSrc || !fs.existsSync(toRead)) {
+                console.log(
+                    `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis-2/DESTINATION/script.js"`,
+                );
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            }
+            const srcStat = fs.statSync(toRead);
+            if (!srcStat.isFile()) {
+                console.log(
+                    `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis-2/DESTINATION/script.js"`,
+                );
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            }
+            if (!fileDest) {
+                // destination filename is not given, use same name as source file
+                fileDest = fileSrc;
+            }
+            if (fileDest !== path[path.length - 1]) {
+                // if last part of path is different then filename, add filename
+                if (path[path.length - 1] !== '') {
+                    path.push(fileDest);
+                } else {
+                    // trailing slash
+                    path[path.length - 1] = fileDest;
+                }
+            }
+            const destFilename = path.length ? path.join('/') : '/';
+            const data = fs.readFileSync(toRead);
+
+            if (!adapt) {
+                console.log('Invalid parameters: destination adapter cannot be found!');
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            }
+
+            objects
+                .writeFile(adapt, destFilename, data, _err => {
+                    console.log(`File "${toRead}" stored as "${destFilename}"`);
+                    return void callback(EXIT_CODES.NO_ERROR);
+                })
+                .catch(e => console.error(`Cannot write file: ${e.message}`));
+        } else if (cmd === 'del' || cmd === 'rm' || cmd === 'unlink') {
+            const toDelete = args[1];
+            const parts = toDelete.replace(/\\/g, '/').split('/');
+
+            let adapt = parts.shift();
+            if (!adapt) {
+                // leading slash
+                adapt = parts.shift();
+            }
+
+            if (!adapt) {
+                console.log('Invalid parameters: adapter cannot be found!');
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            }
+            if (!parts.length) {
+                console.log('Invalid parameters: file cannot be found: file not provided');
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            }
+
+            objects.unlink(adapt, parts.join('/'), null, err => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log(`File "${toDelete}" was deleted`);
+                }
+                return void callback(EXIT_CODES.NO_ERROR);
+            });
+        } else if (cmd === 'sync') {
+            // Sync
+            if (objectsDBType === 'redis') {
+                console.log('File Sync is not available when database type "redis" is used.');
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            }
+            // @ts-expect-error todo look in depth how to handle
+            if (!objects.syncFileDirectory || !objects.dirExists) {
+                // functionality only exists in server class
+                console.log(
+                    'Please stop ioBroker before syncing files and only use this command on the ioBroker master host!',
+                );
+                return void callback(EXIT_CODES.CONTROLLER_RUNNING);
+            }
+
+            // check meta.user
+            try {
+                const objExists = await objects.objectExists('meta.user');
+                if (objExists) {
+                    // check if dir is missing
+                    // @ts-expect-error todo look in depth how to handle
+                    const dirExists = objects.dirExists('meta.user');
+                    if (!dirExists) {
+                        // create meta.user, so users see them as upload target
+                        await objects.mkdirAsync('meta.user');
+                        console.log('Successfully created "meta.user" directory');
+                    }
+                }
+            } catch (err) {
+                console.warn(`Could not create directory "meta.user": ${err.message}`);
+            }
+
+            try {
+                // @ts-expect-error todo types needed for this one? but only exists sometimes..
+                const { numberSuccess, notifications } = objects.syncFileDirectory(args[1]);
+                console.log(`${numberSuccess} file(s) successfully synchronized with ioBroker storage`);
+                if (notifications.length) {
+                    console.log('\nThe following notifications happened during sync: ');
+                    notifications.forEach((el: string) => console.log(`- ${el}`));
+                }
+                return void callback(EXIT_CODES.NO_ERROR);
+            } catch (err) {
+                console.error(`Error on sync: ${err.message}. Partial content might have been synced.`);
+                return void callback(EXIT_CODES.CANNOT_SYNC_FILES);
+            }
+        } else {
+            console.log(
+                'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk',
+            );
+            console.log(
+                'or                        "file write /opt/SOURCE/image.png /vis-2.0/main/DESTINATION/picture.png" to write the file into DB from disk',
+            );
+            console.log('or                        "file rm /vis-2.0/main/img/picture.png" to delete the file in DB');
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+        }
+    });
+}
+
+/**
+ * Process the `uuid` CLI command: print the installation UUID
+ *
+ * @param options command options provided by the dispatcher
+ */
+function processCommandUuid(options: ProcessCommandOptions): void {
+    const { params, callback } = options;
+    dbConnect(params, ({ objects }) => {
+        objects.getObject('system.meta.uuid', (err, obj) => {
+            if (err) {
+                console.error(`Error: ${err.message}`);
+                return void callback(EXIT_CODES.CANNOT_GET_UUID);
+            }
+            if (obj?.native) {
+                console.log(obj.native.uuid);
+                return void callback();
+            }
+            console.error('Error: no UUID found');
+            return void callback(EXIT_CODES.CANNOT_GET_UUID);
+        });
+    });
+}
+
+/**
+ * Process the `version` CLI command: show version of js-controller or a specified adapter
+ *
+ * @param options command options provided by the dispatcher
+ */
+async function processCommandVersion(options: ProcessCommandOptions): Promise<void> {
+    const { params, callback } = options;
+    const adapter = params.adapter as string;
+
+    if (params.ignore) {
+        try {
+            const { objects } = await dbConnectAsync(false, params);
+            await ignoreVersion({ adapterName: adapter, version: params.ignore as string, objects });
+        } catch (e) {
+            console.error(e.message);
+            callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
+            return;
+        }
+        console.log(`Successfully ignored version "${params.ignore}" of adapter "${params.adapter}"!`);
+        callback();
+        return;
+    }
+
+    if (params.recognize) {
+        try {
+            const { objects } = await dbConnectAsync(false, params);
+            await recognizeVersion({ adapterName: adapter, objects });
+        } catch (e) {
+            console.error(e.message);
+            callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
+        }
+        console.log(`Successfully recognized all versions of adapter "${params.adapter}" again!`);
+        callback();
+        return;
+    }
+
+    let packJson;
+    if (adapter) {
+        try {
+            packJson = require(`${tools.appName.toLowerCase()}.${adapter}/package.json`);
+        } catch {
+            packJson = { version: `"${adapter}" not found` };
+        }
+    } else {
+        packJson = require(`@iobroker/js-controller-common/package.json`);
+    }
+    console.log(packJson.version);
+
+    return void callback();
+}
+
+/**
+ * Process the `checklog` CLI command: trigger a logging check on all hosts
+ *
+ * @param options command options provided by the dispatcher
+ */
+function processCommandCheckLog(options: ProcessCommandOptions): void {
+    const { params, callback } = options;
+    dbConnect(params, async ({ objects, states, isOffline, objectsDBType }) => {
+        const hasLocalObjectsServer = await objectsDbHasServer(objectsDBType);
+        if (isOffline && hasLocalObjectsServer) {
+            console.log(`${tools.appName} is not running`);
+            return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
+        }
+        console.log(`${tools.appName} is running`);
+        objects.getObjectList(
+            {
+                startkey: 'system.host.',
+                endkey: `system.host.\u9999`,
+            },
+            null,
+            (err, res) => {
+                if (!err && res?.rows.length) {
+                    for (const row of res.rows) {
+                        const parts = row.id.split('.');
+                        // ignore system.host.name.alive and so on
+                        if (parts.length === 3) {
+                            states
+                                .pushMessage(row.id, {
+                                    command: 'checkLogging',
+                                    message: null,
+                                    from: 'console',
+                                })
+                                .catch(e => console.error(`Cannot push checkLogging message: ${e.message}`));
+                        }
+                    }
+                }
+                setTimeout(callback, 200);
+            },
+        );
+    });
 }
 
 const OBJECTS_THAT_CANNOT_BE_DELETED = [
