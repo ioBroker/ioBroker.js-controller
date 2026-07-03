@@ -1576,6 +1576,10 @@ function processCommandFile(options: ProcessCommandOptions): void {
                 }
             }
             const destFilename = path.length ? path.join('/') : '/';
+            if (!fs.existsSync(toRead)) {
+                console.log('Invalid parameters: file does not exist!');
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            }
             const data = fs.readFileSync(toRead);
 
             if (!adapt) {
