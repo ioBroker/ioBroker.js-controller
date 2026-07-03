@@ -536,6 +536,16 @@ declare global {
         export interface DevicesWidgets {
             /** Link to the file with components relatively to `admin/dm-widgets` in admin or `${adapterName}` in web. Default is customDevices.js */
             url?: string;
+            /**
+             * Link to the file (icons.json) with specific icons in form
+             * ```ts
+             *  type IconDescription = {
+             *   name: ioBroker.Translated,
+             *   icons: [{id: string, label: ioBroker.Translated, category: string, icon: 'data:image/svg+xml;base64,...'}]
+             *  };
+             *  ```
+             */
+            iconsManifest?: string;
             /** Description of the components (widgets). It could be multiple widgets in one adapter */
             components: {
                 /** Name of the class */
@@ -686,13 +696,13 @@ declare global {
             blockedVersions?: string[];
             /** Whether this adapter includes custom blocks for Blockly. If true, `admin/blockly.js` must exist. */
             blockly?: boolean;
-            /** Where the adapter will get its data from. Set this together with @see dataSource */
+            /** Where the adapter will get its data from. Set this together with {@link dataSource} */
             connectionType?: ConnectionType;
             /** If true, this adapter can be started in compact mode (in the same process as other adapters) */
             compact?: boolean;
             /** The directory relative to iobroker-data where the adapter stores the data. Supports the placeholder `%INSTANCE%`. This folder will be backed up and restored automatically. */
             dataFolder?: string;
-            /** How the adapter will mainly receive its data. Set this together with @see connectionType */
+            /** How the adapter will mainly receive its data. Set this together with {@link connectionType} */
             dataSource?: 'poll' | 'push' | 'assumption';
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter on the same host. */
             dependencies?: Dependencies;
@@ -724,7 +734,7 @@ declare global {
             keywords?: string[];
             /** A dictionary of links to web services this adapter provides */
             localLinks?: Record<string, string | LocalLink>;
-            /** @deprecated Use @see localLinks */
+            /** @deprecated Use {@link localLinks} */
             localLink?: string;
             /** Default log level for this adapter. It can be changed for every instance separately */
             loglevel?: LogLevel;
@@ -737,7 +747,7 @@ declare global {
             /** Whether the admin configuration dialog is written in a materialized style. Required for Admin 3+ */
             /** @deprecated Use adminUI with config = "materialize". But better use jsonConfig.json */
             materialize: boolean;
-            /** @deprecated Use @see supportedMessages up from controller v5 */
+            /** @deprecated Use {@link supportedMessages} up from controller v5 */
             messagebox?: true;
             /** Messages which are supported by the adapter, supportedMessages.custom: true is the equivalent to messagebox: true */
             supportedMessages?: SupportedMessages;
@@ -794,11 +804,11 @@ declare global {
             subscribable?: boolean;
             /** If `true`, this adapter provides custom per-state settings. Requires a `custom_m.html` file in the `admin` directory. */
             supportCustoms?: boolean;
-            /** @deprecated Use @see supportedMessages up from controller v5 */
+            /** @deprecated Use {@link supportedMessages} up from controller v5 */
             supportStopInstance?: boolean;
             /** The translated names of this adapter to be shown in the admin UI */
             titleLang?: StringOrTranslated;
-            /** @deprecated The name of this adapter to be shown in the admin UI. Use @see titleLang instead. */
+            /** @deprecated The name of this adapter to be shown in the admin UI. Use {@link titleLang} instead. */
             title?: string;
             /** The type of this adapter */
             type?:
@@ -842,7 +852,7 @@ declare global {
             webByVersion?: boolean;
             /** Whether the web server in this adapter can be extended with plugin/extensions */
             webExtendable?: boolean;
-            /** Relative path to a module that contains an extension for the web adapter. Use together with @see native.webInstance to configure which instances this affects */
+            /** Relative path to a module that contains an extension for the web adapter. Use together with {@link native.webInstance} to configure which instances this affects */
             webExtension?: string;
             /** List of parameters that must be included in info.js by webServer adapter. (Example material: `"webPreSettings": { "materialBackground": "native.loadingBackground" }`). Web adapter uses this setting to create a customized info.js file to provide some essential settings for the index.html file before the socket connection is established to provide e.g., background color of the loading screen. */
             webPreSettings?: Record<string, any>;
@@ -1438,12 +1448,11 @@ declare global {
                                         : View extends 'schedule'
                                           ? ScheduleObject
                                           : View extends 'config'
-                                            ?
-                                                  | RepositoryObject
-                                                  | SystemConfigObject
-                                                  | (OtherObject & {
-                                                        type: 'config';
-                                                    })
+                                            ? | RepositoryObject
+                                              | SystemConfigObject
+                                              | (OtherObject & {
+                                                    type: 'config';
+                                                })
                                             : View extends 'custom'
                                               ? NonNullable<StateObject['common']['custom']>
                                               : ioBroker.Object

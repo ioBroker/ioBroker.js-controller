@@ -24,8 +24,10 @@
     "*.config.mjs",
     "packages/**/*.js",
     "packages/**/*.ts",
+    "packages/**/*.mts",
     "packages/controller/io-package.json",
-    "schemas/**/*.ts"
+    "schemas/**/*.ts",
+    "schemas/**/*.mts"
   ],
   "exclude": [
     "packages/**/build"

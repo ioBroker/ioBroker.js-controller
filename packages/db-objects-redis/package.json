@@ -3,15 +3,15 @@
     "type": "module",
     "version": "7.2.3-alpha.4-20260701-7709d5328",
     "engines": {
-        "node": ">=16.4.0"
+        "node": ">=22.0.0"
     },
     "dependencies": {
         "@iobroker/db-base": "file:../db-base",
         "deep-clone": "^3.0.3",
-        "ioredis": "^4.28.2",
-        "mime-types": "^2.1.35",
-        "node.extend": "^2.0.2",
-        "semver": "^7.5.2"
+        "ioredis": "^5.11.1",
+        "mime-types": "^3.0.2",
+        "node.extend": "^2.0.3",
+        "semver": "^7.8.5"
     },
     "keywords": [
         "ioBroker",
@@ -30,7 +30,7 @@
     },
     "scripts": {
         "build": "tsc -b tsconfig.build.json && tsc-alias",
-        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./lib/objects/**/*.lua ./build/esm/lib/objects/ --cwd=src && cpy ./lib/objects/**/*.lua ./build/cjs/lib/objects/ --cwd=src && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
+        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./lib/objects/**/*.lua ../build/esm/lib/objects/ --cwd=src && cpy ./lib/objects/**/*.lua ../build/cjs/lib/objects/ --cwd=src && cpy ./**/*.d.ts ../cjs/ --cwd=build/esm/"
     },
     "main": "build/cjs/index.js",
     "module": "build/esm/index.js",

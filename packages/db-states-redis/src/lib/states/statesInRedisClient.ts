@@ -8,11 +8,12 @@
  *
  */
 
-import Redis from 'ioredis';
-import { tools } from '@iobroker/db-base';
 import { isDeepStrictEqual } from 'node:util';
-import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
+import Redis from 'ioredis';
 import type IORedis from 'ioredis';
+
+import { tools } from '@iobroker/db-base';
+import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import type { DbStatus, ConnectionOptions } from '@iobroker/db-base/inMemFileDB';
 
 type JSONDecoderValue = Record<string, any>;
@@ -256,7 +257,7 @@ export class StateRedisClient {
         // REDIS does not allow whitespaces, we have some because of pid
         this.settings.connection.options.connectionName = this.namespace.replace(/\s/g, '');
 
-        this.client = new Redis(this.settings.connection.options as Redis.RedisOptions);
+        this.client = new Redis.Redis(this.settings.connection.options as Redis.RedisOptions);
 
         this.client.on('error', error => {
             this.settings.connection.enhancedLogging &&
@@ -354,10 +355,10 @@ export class StateRedisClient {
                 }
 
                 this.log.debug(`${this.namespace} States create System PubSub Client`);
-                this.subSystem = new Redis(this.settings.connection.options as Redis.RedisOptions);
+                this.subSystem = new Redis.Redis(this.settings.connection.options as Redis.RedisOptions);
 
                 if (typeof onChange === 'function') {
-                    this.subSystem.on('pmessage', (pattern, channel, message) => {
+                    this.subSystem.on('pmessage', (pattern: string, channel: string, message: string): void => {
                         setImmediate(() => {
                             this.log.silly(
                                 `${this.namespace} States system redis pmessage ${pattern}/${channel}:${message}`,
@@ -379,20 +380,21 @@ export class StateRedisClient {
                                 return;
                             }
 
+                            let stateObj: ioBroker.State | null;
                             try {
-                                message = message
+                                stateObj = message
                                     ? JSON.parse(message, message.includes('"Buffer"') ? bufferJsonDecoder : undefined)
                                     : null;
                             } catch {
                                 this.log.warn(`${this.namespace} Cannot parse system pmessage "${message}"`);
-                                message = null;
+                                stateObj = null;
                             }
 
                             try {
                                 if (channel.startsWith(this.namespaceRedis) && channel.length > this.namespaceRedisL) {
-                                    onChange(channel.substring(this.namespaceRedisL), message);
+                                    onChange(channel.substring(this.namespaceRedisL), stateObj);
                                 } else {
-                                    onChange(channel, message);
+                                    onChange(channel, stateObj);
                                 }
                             } catch (e) {
                                 this.log.warn(
@@ -405,6 +407,7 @@ export class StateRedisClient {
                         });
                     });
                 }
+
                 if (typeof onChange === 'function' || typeof onChangeUser === 'function') {
                     // subscribe on key expired or evicted (auto removed because of memory full) message
                     this.subSystem.on('message', (channel, message) =>
@@ -469,19 +472,20 @@ export class StateRedisClient {
                         ),
                     );
 
-                    this.subSystem.on('reconnecting', reconnectCounter =>
+                    this.subSystem.on('reconnecting', (reconnectCounter: number): void =>
                         this.log.silly(
                             `${this.namespace} PubSub client States-Redis System Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`,
                         ),
                     );
                 }
 
-                this.subSystem.on('ready', async _error => {
+                this.subSystem.on('ready', async () => {
                     try {
-                        this.subSystem &&
-                            (await this.subSystem.subscribe(
+                        if (this.subSystem) {
+                            await this.subSystem.subscribe(
                                 `__keyevent@${this.settings.connection.options.db}__:expired`,
-                            ));
+                            );
+                        }
                     } catch (e) {
                         this.log.warn(
                             `${this.namespace} Unable to subscribe to expiry Keyspace events from Redis Server: ${e.message}`,
@@ -489,10 +493,11 @@ export class StateRedisClient {
                     }
 
                     try {
-                        this.subSystem &&
-                            (await this.subSystem.subscribe(
+                        if (this.subSystem) {
+                            await this.subSystem.subscribe(
                                 `__keyevent@${this.settings.connection.options.db}__:evicted`,
-                            ));
+                            );
+                        }
                     } catch (e) {
                         this.log.warn(
                             `${this.namespace} Unable to subscribe to evicted Keyspace events from Redis Server: ${e.message}`,
@@ -501,7 +506,9 @@ export class StateRedisClient {
 
                     // subscribe to meta changes
                     try {
-                        this.subSystem && (await this.subSystem.psubscribe(`${this.metaNamespace}*`));
+                        if (this.subSystem) {
+                            await this.subSystem.psubscribe(`${this.metaNamespace}*`);
+                        }
                     } catch (e) {
                         this.log.warn(
                             `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`,
@@ -524,8 +531,12 @@ export class StateRedisClient {
                                 )}:${tools.maybeArrayToString(this.settings.connection.port)}`,
                             );
                         }
-                        !ready && typeof this.settings.connected === 'function' && this.settings.connected();
-                        ready = true;
+                        if (!ready) {
+                            if (typeof this.settings.connected === 'function') {
+                                this.settings.connected();
+                            }
+                            ready = true;
+                        }
                     }
 
                     if (this.subSystem) {
@@ -544,26 +555,27 @@ export class StateRedisClient {
                 initCounter++;
 
                 this.log.debug(`${this.namespace} States create User PubSub Client`);
-                this.sub = new Redis(this.settings.connection.options as Redis.RedisOptions);
+                this.sub = new Redis.Redis(this.settings.connection.options as Redis.RedisOptions);
 
                 this.sub.on('pmessage', (pattern, channel, message) => {
                     setImmediate(() => {
                         this.log.silly(`${this.namespace} States user redis pmessage ${pattern}/${channel}:${message}`);
 
+                        let stateObj: ioBroker.State | null;
                         try {
-                            message = message
+                            stateObj = message
                                 ? JSON.parse(message, message.includes('"Buffer"') ? bufferJsonDecoder : undefined)
                                 : null;
                         } catch {
                             this.log.warn(`${this.namespace} Cannot parse user pmessage "${message}"`);
-                            message = null;
+                            stateObj = null;
                         }
 
                         try {
                             if (channel.startsWith(this.namespaceRedis) && channel.length > this.namespaceRedisL) {
-                                onChangeUser(channel.substring(this.namespaceRedisL), message);
+                                onChangeUser(channel.substring(this.namespaceRedisL), stateObj);
                             } else {
-                                onChangeUser(channel, message);
+                                onChangeUser(channel, stateObj);
                             }
                         } catch (e) {
                             this.log.warn(
@@ -608,14 +620,14 @@ export class StateRedisClient {
                         );
                     });
 
-                    this.sub.on('reconnecting', reconnectCounter => {
+                    this.sub.on('reconnecting', (reconnectCounter: number): void => {
                         this.log.silly(
                             `${this.namespace} PubSub client States-Redis User Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`,
                         );
                     });
                 }
 
-                this.sub.on('ready', async _error => {
+                this.sub.on('ready', async () => {
                     if (!this.sub) {
                         // client gone while ready emitted, can maybe not happen but ts is happy
                         return;

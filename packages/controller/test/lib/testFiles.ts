@@ -44,6 +44,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         const { file, mimeType } = await context.adapter.readFileAsync(objId, fileName);
 
         assert.strictEqual(mimeType, 'application/octet-stream');
+        assert.ok(file);
         assert.strictEqual(file.toString('utf8'), dataBinary.toString('utf8'));
     });
 

@@ -1,23 +1,25 @@
-import { type ChildProcessPromise, exec as execAsync } from 'promisify-child-process';
-import { tools, logger } from '@iobroker/js-controller-common';
-import { valid } from 'semver';
-import { dbConnectAsync } from '@iobroker/js-controller-cli';
 import http from 'node:http';
 import https from 'node:https';
-import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import { setTimeout as wait } from 'node:timers/promises';
-import type { Logger } from 'winston';
-import fs from 'fs-extra';
 import type { Socket } from 'node:net';
 import type { Duplex } from 'node:stream';
 import url from 'node:url';
 import process from 'node:process';
 
+import { valid } from 'semver';
+import type { Logger } from 'winston';
+import fs from 'fs-extra';
+
+import { tools, logger } from '@iobroker/js-controller-common';
+import { dbConnectAsync } from '@iobroker/js-controller-cli';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import { execAsync } from '@iobroker/js-controller-common-db/tools';
+
 /** The upgrade arguments provided to the constructor of the UpgradeManager */
 export interface UpgradeArguments {
     /** Version of controller to upgrade too */
     version: string;
-    /** Admin instance which triggered the upgrade */
+    /** Admin instance that triggered the upgrade */
     adminInstance: number;
     /** User id the process should run as */
     uid: number;
@@ -56,7 +58,7 @@ interface ServerResponse {
     running: boolean;
     stderr: string[];
     stdout: string[];
-    /** if installation process succeeded */
+    /** if the installation process succeeded */
     success?: boolean;
 }
 
@@ -81,7 +83,7 @@ class UpgradeManager {
     };
     /** Used to stop the stop shutdown timeout */
     private shutdownAbortController?: AbortController;
-    /** Logger to log to file and other transports */
+    /** Logger to log to a file and other transports */
     private readonly logger: Logger;
 
     /** The server used for communicating upgrade status */
@@ -120,7 +122,7 @@ class UpgradeManager {
     }
 
     /**
-     * Set up the logger, to stream to file and other configured transports
+     * Set up the logger to stream to a file and other configured transports
      */
     private setupLogger(): Logger {
         const config = fs.readJSONSync(tools.getConfigFileName());
@@ -184,23 +186,31 @@ class UpgradeManager {
      * Stops the js-controller via cli call
      */
     async stopController(): Promise<void> {
+        let command: string;
         if (tools.isDocker()) {
-            await execAsync('/opt/scripts/maintenance.sh on -kbn');
+            command = '/opt/scripts/maintenance.sh on -kbn';
         } else {
-            await execAsync(`${tools.appNameLowerCase} stop`);
+            command = `${tools.appNameLowerCase} stop`;
         }
+        await execAsync(command);
+
         await wait(this.STOP_TIMEOUT_MS);
     }
 
     /**
      * Starts the js-controller via cli
      */
-    startController(): ChildProcessPromise {
+    startController(): Promise<{
+        stderr?: string;
+        stdout?: string;
+    }> {
+        let command: string;
         if (tools.isDocker()) {
-            return execAsync('/opt/scripts/maintenance.sh off -y');
+            command = '/opt/scripts/maintenance.sh off -y';
+        } else {
+            command = `${tools.appNameLowerCase} start`;
         }
-
-        return execAsync(`${tools.appNameLowerCase} start`);
+        return execAsync(command);
     }
 
     /**
@@ -211,7 +221,7 @@ class UpgradeManager {
     }
 
     /**
-     * Install given version of js-controller
+     * Install a given version of js-controller
      */
     async npmInstall(): Promise<void> {
         const res = await tools.installNodeModule(`iobroker.js-controller@${this.version}`, {
@@ -266,7 +276,7 @@ class UpgradeManager {
     }
 
     /**
-     * Destroy all sockets, to prevent requests from keeping server alive
+     * Destroy all sockets to prevent requests from keeping the server alive
      */
     destroySockets(): void {
         for (const socket of this.sockets) {
@@ -374,7 +384,7 @@ class UpgradeManager {
     }
 
     /**
-     * Collect parameters for webserver from admin instance
+     * Collect parameters for a webserver from an admin instance
      */
     async collectWebServerParameters(): Promise<WebServerParameters> {
         const { objects } = await dbConnectAsync(false);
@@ -409,7 +419,7 @@ class UpgradeManager {
     }
 
     /**
-     * Tells the upgrade manager, that server can be shut down on next response or on timeout
+     * Tells the upgrade manager that the server can be shut down on the next response or on timeout
      */
     async setFinished(): Promise<void> {
         this.response.running = false;
@@ -418,7 +428,7 @@ class UpgradeManager {
     }
 
     /**
-     * Start a timeout which starts controller and shuts down the app if expired
+     * Start a timeout which starts the controller and shuts down the app if expired
      */
     async startShutdownTimeout(): Promise<void> {
         this.shutdownAbortController = new AbortController();
@@ -478,7 +488,7 @@ function registerErrorHandlers(upgradeManager: UpgradeManager): void {
 }
 
 /**
- * This file always needs to be executed in a process different from js-controller
+ * This file always needs to be executed in a process different from js-controller,
  * else it will be canceled when the file itself stops the controller
  */
 // eslint-disable-next-line unicorn/prefer-module

@@ -146,9 +146,7 @@ export async function requestModuleNameByUrl(url: string): Promise<string> {
     const res = await execAsync(`npm view ${url} name`);
 
     if (typeof res.stdout !== 'string') {
-        throw new Error(
-            `Could not determine module name for url "${url}". Unexpected stdout: "${res.stdout ? res.stdout.toString() : ''}"`,
-        );
+        throw new Error(`Could not determine module name for url "${url}". Unexpected stdout: "${typeof res.stdout}"`);
     }
 
     return res.stdout.trim();
