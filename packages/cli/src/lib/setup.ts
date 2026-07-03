@@ -1219,10 +1219,10 @@ function processCommandChown(options: ProcessCommandOptions): void {
         CLIError.requiredArgumentMissing('user', 'chown user /vis-2.0/main/*');
         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
     }
-    if (user.substring(12) !== 'system.user.') {
+    if (!user.startsWith('system.user.')) {
         user = `system.user.${user}`;
     }
-    if (group && group.substring(13) !== 'system.group.') {
+    if (group && !group.startsWith('system.group.')) {
         group = `system.group.${group}`;
     }
 
