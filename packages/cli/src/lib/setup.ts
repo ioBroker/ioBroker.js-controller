@@ -922,27 +922,26 @@ async function processCommandUnsetup(options: ProcessCommandOptions): Promise<vo
 function processCommandClean(options: ProcessCommandOptions): void {
     const { args, params, callback } = options;
     const yes = args[0];
-if (yes !== 'yes') {
-    console.log(`Command "clean" clears all Objects and States. To execute it write "${tools.appName} clean yes"`);
-    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-} else {
-        dbConnect(params, async ({ isOffline }) => {
-            if (!isOffline) {
-                console.error(`Stop ${tools.appName} first!`);
-                return void callback(EXIT_CODES.CONTROLLER_RUNNING);
-            }
-
-            try {
-                const count = await cleanDatabase(true);
-                console.log(`Deleted ${count} states`);
-            } catch {
-                // ignore
-            }
-            restartController().catch(e => console.error(`Cannot restart controller: ${e.message}`));
-            console.log(`Restarting ${tools.appName}...`);
-            callback();
-        });
+    if (yes !== 'yes') {
+        console.log(`Command "clean" clears all Objects and States. To execute it write "${tools.appName} clean yes"`);
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
     }
+    dbConnect(params, async ({ isOffline }) => {
+        if (!isOffline) {
+            console.error(`Stop ${tools.appName} first!`);
+            return void callback(EXIT_CODES.CONTROLLER_RUNNING);
+        }
+
+        try {
+            const count = await cleanDatabase(true);
+            console.log(`Deleted ${count} states`);
+        } catch {
+            // ignore
+        }
+        restartController().catch(e => console.error(`Cannot restart controller: ${e.message}`));
+        console.log(`Restarting ${tools.appName}...`);
+        callback();
+    });
 }
 
 /**
@@ -1370,9 +1369,10 @@ async function processCommandPackage(options: ProcessCommandOptions): Promise<vo
 
         fs.writeFileSync(path.join(tools.getRootDir(), 'package.json'), JSON.stringify(json, null, 2));
         return void callback();
-} catch (e) {
-    console.error(`Cannot read repository file: ${e as Error}`);
-    return void callback(EXIT_CODES.UNKNOWN_ERROR);
+    } catch (e) {
+        console.error(`Cannot read repository file: ${e as Error}`);
+        return void callback(EXIT_CODES.UNKNOWN_ERROR);
+    }
 }
 
 /**
@@ -1931,7 +1931,7 @@ async function restartController(): Promise<void> {
 }
 
 /**
- * Method which should be called from CLI to initialize the handling of all args
+ * Method that should be called from CLI to initialize the handling of all args
  */
 export function execute(): void {
     // direct call
