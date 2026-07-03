@@ -945,34 +945,6 @@ export class ObjectsInRedisClient {
     }
 
     /**
-     * Run a Lua script via EVALSHA. ioredis flattens the argument array at runtime; its types now
-     * require spread args and return `unknown`, so we keep the array-based call here and cast.
-     *
-     * @param args [sha, numkeys, ...keysAndArgs]
-     * @returns the raw script result
-     */
-    private _evalsha(args: unknown[]): Promise<any> {
-        if (!this.client) {
-            throw new Error(ERRORS.ERROR_DB_CLOSED);
-        }
-        return (this.client.evalsha as (...a: unknown[]) => Promise<any>)(args);
-    }
-
-    /**
-     * Run a Redis SCRIPT subcommand (EXISTS/LOAD). ioredis flattens the argument array at runtime;
-     * its types now require spread args and return `unknown`, so we keep the array-based call and cast.
-     *
-     * @param args [subcommand, ...args]
-     * @returns the raw script result
-     */
-    private _script(args: unknown[]): Promise<any> {
-        if (!this.client) {
-            throw new Error(ERRORS.ERROR_DB_CLOSED);
-        }
-        return (this.client.script as (...a: unknown[]) => Promise<any>)(args);
-    }
-
-    /**
      * deletes binary state of a given ID from redis db
      *
      * @param id - id to delete, with namespace prefix
@@ -4697,7 +4669,7 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = await this._evalsha([
+                    objs = (await this.client.evalsha(
                         this.scripts.filter,
                         6,
                         this.objNamespace,
@@ -4706,7 +4678,7 @@ export class ObjectsInRedisClient {
                         matches[1],
                         cursor,
                         `${this.setNamespace}object.type.${matches[1]}`,
-                    ]);
+                    )) as string[];
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
                     throw e;
@@ -4790,7 +4762,7 @@ export class ObjectsInRedisClient {
                 }
                 let res: string[] | [objStrings: string[], cursor: string];
                 try {
-                    res = await this._evalsha([
+                    res = (await this.client.evalsha(
                         this.scripts.script,
                         5,
                         this.objNamespace,
@@ -4798,7 +4770,7 @@ export class ObjectsInRedisClient {
                         params.endkey,
                         cursor,
                         `${this.setNamespace}object.type.script`,
-                    ]);
+                    )) as string[];
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get "scripts" view: ${e.message}`);
                     throw e;
@@ -4812,7 +4784,7 @@ export class ObjectsInRedisClient {
                 } else {
                     cursor = '0';
                     filterRequired = false;
-                    objs = res as string[];
+                    objs = res;
                 }
 
                 const currRows = objs.map(obj => {
@@ -4848,7 +4820,7 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = await this._evalsha([
+                    objs = (await this.client.evalsha(
                         this.scripts.programs,
                         5,
                         `${this.objNamespace}hm-rega.`,
@@ -4856,7 +4828,7 @@ export class ObjectsInRedisClient {
                         params.endkey,
                         cursor,
                         `${this.setNamespace}object.type.channel`,
-                    ]);
+                    )) as string[];
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
                     throw e;
@@ -4903,7 +4875,7 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = await this._evalsha([
+                    objs = (await this.client.evalsha(
                         this.scripts.variables,
                         5,
                         `${this.objNamespace}hm-rega.`,
@@ -4911,7 +4883,7 @@ export class ObjectsInRedisClient {
                         params.endkey,
                         cursor,
                         `${this.setNamespace}object.type.state`,
-                    ]);
+                    )) as string[];
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view ${e.message}`);
                     throw e;
@@ -4957,7 +4929,7 @@ export class ObjectsInRedisClient {
                 }
                 let objs: string[];
                 try {
-                    objs = await this._evalsha([
+                    objs = (await this.client.evalsha(
                         this.scripts.custom,
                         5,
                         this.objNamespace,
@@ -4965,7 +4937,7 @@ export class ObjectsInRedisClient {
                         params.endkey,
                         cursor,
                         `${this.setNamespace}object.common.custom`,
-                    ]);
+                    )) as string[];
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
                     throw e;
@@ -5914,15 +5886,14 @@ export class ObjectsInRedisClient {
             return { name: name.replace(/\.lua$/, ''), text: script, hash };
         });
 
-        const hashes = scripts.map(e => e.hash);
-        hashes.unshift('EXISTS');
+        const hashes: string[] = scripts.map(e => e.hash);
 
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         try {
-            const arr: string[] = await this._script(hashes);
+            const arr: string[] = (await this.client.script('EXISTS', ...hashes)) as string[];
             if (arr) {
                 scripts.forEach((_e, i) => (scripts[i].loaded = !!arr[i]));
             }
@@ -5936,9 +5907,9 @@ export class ObjectsInRedisClient {
 
         for (const script of scripts) {
             if (!script.loaded) {
-                let hash;
+                let hash: string | undefined;
                 try {
-                    hash = await this._script(['LOAD', script.text]);
+                    hash = (await this.client.script('LOAD', script.text)) as string;
                     script.loaded = true;
                 } catch (e) {
                     script.loaded = false;
@@ -5949,7 +5920,7 @@ export class ObjectsInRedisClient {
                         throw new Error(`Cannot load "${script.name}" into objects database: ${e.message}`);
                     }
                 }
-                script.hash = hash;
+                script.hash = hash || '';
             }
         }
         this.scripts = {};
@@ -6083,13 +6054,13 @@ export class ObjectsInRedisClient {
         }
 
         // try to extend lock
-        return this._evalsha([
+        return this.client.evalsha(
             this.scripts.redlock_extend,
             3,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,
             ms,
-        ]);
+        ) as Promise<number>;
     }
 
     /**
@@ -6110,13 +6081,13 @@ export class ObjectsInRedisClient {
         }
 
         // try to acquire lock
-        return this._evalsha([
+        return this.client.evalsha(
             this.scripts.redlock_acquire,
             3,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,
             ms,
-        ]);
+        ) as Promise<number>;
     }
 
     /**
@@ -6148,14 +6119,14 @@ export class ObjectsInRedisClient {
         }
 
         // try to release lock
-        return this._evalsha([
+        return this.client.evalsha(
             this.scripts.redlock_release,
             4,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,
-            this.settings.connection.options.db,
+            this.settings.connection.options.db || 0,
             `${this.metaNamespace}objects.primaryHost`,
-        ]);
+        ) as Promise<void>;
     }
 
     /**
