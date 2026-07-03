@@ -371,6 +371,6 @@ export class MessagingManager {
             from: `system.adapter.${this.ctx.namespace}`,
         };
 
-        await states.pushMessage(`system.host.${this.ctx.host}`, obj as any);
+        await states.pushMessage(`system.host.${this.ctx.host}`, obj);
     }
 }

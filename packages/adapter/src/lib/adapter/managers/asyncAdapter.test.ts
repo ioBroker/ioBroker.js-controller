@@ -102,12 +102,12 @@ describe('AsyncAdapter.sendToHost', () => {
 describe('AsyncAdapter validation', () => {
     it('sendTo rejects when instanceName is not a string', async () => {
         const adapter = new AsyncAdapter(makeContext({ states: { pushMessage: sinon.stub().resolves() } as any }));
-        await assert.rejects(() => adapter.sendTo(42 as any, 'cmd', {}), /instanceName/);
+        await assert.rejects(() => adapter.sendTo(42, 'cmd', {}), /instanceName/);
     });
 
     it('sendTo rejects when command is not a string', async () => {
         const adapter = new AsyncAdapter(makeContext({ states: { pushMessage: sinon.stub().resolves() } as any }));
-        await assert.rejects(() => adapter.sendTo('inst.0', 42 as any, {}), /command/);
+        await assert.rejects(() => adapter.sendTo('inst.0', 42, {}), /command/);
     });
 
     it('sendTo rejects when options is not an object', async () => {
@@ -117,12 +117,12 @@ describe('AsyncAdapter validation', () => {
 
     it('sendToHost rejects when hostName is a non-null non-string', async () => {
         const adapter = new AsyncAdapter(makeContext({ states: { pushMessage: sinon.stub().resolves() } as any }));
-        await assert.rejects(() => adapter.sendToHost(42 as any, 'cmd', {}), /hostName/);
+        await assert.rejects(() => adapter.sendToHost(42, 'cmd', {}), /hostName/);
     });
 
     it('sendToHost rejects when command is not a string', async () => {
         const adapter = new AsyncAdapter(makeContext({ states: { pushMessage: sinon.stub().resolves() } as any }));
-        await assert.rejects(() => adapter.sendToHost('host', 42 as any, {}), /command/);
+        await assert.rejects(() => adapter.sendToHost('host', 42, {}), /command/);
     });
 
     it('sendToUI throws when clientId is not a string', () => {
