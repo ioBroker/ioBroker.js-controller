@@ -1993,10 +1993,10 @@ export function processCommandUrl(options: ProcessCommandOptions): void {
     let url = args[0];
     const name = args[1];
 
-    if (!url) {
-        console.log('Please provide a URL to install from and optionally a name of the adapter to install');
-        callback(EXIT_CODES.INVALID_ARGUMENTS);
-    }
+if (!url) {
+    console.log('Please provide a URL to install from and optionally a name of the adapter to install');
+    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+}
 
     if (url[0] === '"' && url[url.length - 1] === '"') {
         url = url.substring(1, url.length - 1);
