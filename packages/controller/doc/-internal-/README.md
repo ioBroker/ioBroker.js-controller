@@ -237,7 +237,6 @@
 - [ErrnoCallback](type-aliases/ErrnoCallback.md)
 - [ErrorCallback](type-aliases/ErrorCallback.md)
 - [ErrorHandler](type-aliases/ErrorHandler.md)
-- [ExtendObjectCallback](type-aliases/ExtendObjectCallback.md)
 - [FileChangeHandler](type-aliases/FileChangeHandler.md)
 - [FindObjectCallback](type-aliases/FindObjectCallback.md)
 - [GenericAccessFlags](type-aliases/GenericAccessFlags.md)

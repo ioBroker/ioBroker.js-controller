@@ -6,6 +6,6 @@
 
 # Type Alias: ReadFilePromise
 
-> **ReadFilePromise** = `Promise`\<\{ `file`: `string` \| `Buffer`; `mimeType?`: `string`; \}\>
+> **ReadFilePromise** = `Promise`\<\{ `file`: `string` \| `Buffer` \| `null`; `mimeType?`: `string`; \}\>
 
-Defined in: [types-dev/index.d.ts:552](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/types-dev/index.d.ts#L552)
+Defined in: [types-dev/index.d.ts:556](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/types-dev/index.d.ts#L556)
