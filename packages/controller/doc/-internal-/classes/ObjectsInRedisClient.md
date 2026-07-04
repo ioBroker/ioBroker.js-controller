@@ -36,7 +36,7 @@ Settings for the objects client including connection and namespaces
 
 > **activateSets**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1202
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1180
 
 Activates the usage of sets
 
@@ -50,7 +50,7 @@ Activates the usage of sets
 
 > **addPreserveSettings**(`settings`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1113
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1091
 
 Add object property paths that should be preserved when an object is overwritten (controller only)
 
@@ -94,7 +94,7 @@ The file name
 
 [`UserContext`](../interfaces/UserContext.md)
 
-The resolved user context to check the rights against
+The resolved user context used for permission checks
 
 ##### flag
 
@@ -590,7 +590,7 @@ Connect to the objects database and set up the change and file subscriptions
 
 > **deactivateSets**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1206
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1184
 
 Deactivates the usage of sets
 
@@ -606,7 +606,7 @@ Deactivates the usage of sets
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:281
 
-Delete a file of an object (alias for unlink)
+Delete a file of an object (alias for [unlink](#unlink))
 
 #### Parameters
 
@@ -786,7 +786,7 @@ The current request options including the user
 
 `` `system.user.${string}` ``
 
-The user on whose behalf the object is deleted
+The user on whose behalf the operation is performed
 
 #### Returns
 
@@ -798,7 +798,7 @@ The user on whose behalf the object is deleted
 
 > **destroy**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1137
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1115
 
 Destructor of the class. Called when shutting down to close the redis connections.
 
@@ -812,7 +812,7 @@ Destructor of the class. Called when shutting down to close the redis connection
 
 > **destroyDB**(`options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1122
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1100
 
 Delete the whole objects database (requires admin rights)
 
@@ -840,7 +840,7 @@ Called once the database has been destroyed
 
 > **destroyDBAsync**(`options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1131
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1109
 
 Promise-version of destroyDB
 
@@ -954,159 +954,41 @@ The current request options including the user
 
 ### extendObject()
 
-#### Call Signature
-
-> **extendObject**\<`T`\>(`id`, `obj`, `options?`): `Promise`\<\{ `id`: `string`; `value`: [`Object`](../type-aliases/Object.md); \} \| `undefined`\>
+> **extendObject**\<`T`\>(`id`, `obj`, `options?`): `Promise`\<\{ `id`: `string`; `value`: [`AnyObject`](../type-aliases/AnyObject.md); \}\>
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1039
 
 Extend an existing object with the given partial object, creating it if it does not exist
 
-##### Type Parameters
+#### Type Parameters
 
-###### T
-
-`T` *extends* `string`
-
-##### Parameters
-
-###### id
-
-`T`
-
-The id of the object to extend
-
-###### obj
-
-[`PartialObjectWorker`](../type-aliases/PartialObjectWorker.md)\<[`ObjectIdToObjectType`](../type-aliases/ObjectIdToObjectType.md)\<`T`, `"write"`\>\>
-
-The partial object to merge into the existing object
-
-###### options?
-
-[`ExtendObjectOptions`](../interfaces/ExtendObjectOptions.md) \| `null`
-
-The current request options including the user
-
-##### Returns
-
-`Promise`\<\{ `id`: `string`; `value`: [`Object`](../type-aliases/Object.md); \} \| `undefined`\>
-
-#### Call Signature
-
-> **extendObject**\<`T`\>(`id`, `obj`, `options`, `callback`): `void`
-
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1048
-
-Extend an existing object with the given partial object, creating it if it does not exist
-
-##### Type Parameters
-
-###### T
+##### T
 
 `T` *extends* `string`
-
-##### Parameters
-
-###### id
-
-`T`
-
-The id of the object to extend
-
-###### obj
-
-[`PartialObjectWorker`](../type-aliases/PartialObjectWorker.md)\<[`ObjectIdToObjectType`](../type-aliases/ObjectIdToObjectType.md)\<`T`, `"write"`\>\>
-
-The partial object to merge into the existing object
-
-###### options
-
-[`ExtendObjectOptions`](../interfaces/ExtendObjectOptions.md) \| `null` \| `undefined`
-
-The current request options including the user
-
-###### callback
-
-[`ExtendObjectCallback`](../type-aliases/ExtendObjectCallback.md)
-
-Called with the resulting object and its id
-
-##### Returns
-
-`void`
-
-#### Call Signature
-
-> **extendObject**\<`T`\>(`id`, `obj`, `callback`): `void`
-
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1056
-
-Extend an existing object with the given partial object, creating it if it does not exist
-
-##### Type Parameters
-
-###### T
-
-`T` *extends* `string`
-
-##### Parameters
-
-###### id
-
-`T`
-
-The id of the object to extend
-
-###### obj
-
-[`PartialObjectWorker`](../type-aliases/PartialObjectWorker.md)\<[`ObjectIdToObjectType`](../type-aliases/ObjectIdToObjectType.md)\<`T`, `"write"`\>\>
-
-The partial object to merge into the existing object
-
-###### callback
-
-[`ExtendObjectCallback`](../type-aliases/ExtendObjectCallback.md)
-
-Called with the resulting object and its id
-
-##### Returns
-
-`void`
-
-***
-
-### extendObjectAsync()
-
-> **extendObjectAsync**(`id`, `obj`, `options?`): `Promise`\<\{ `id`: `string`; `value`: [`Object`](../type-aliases/Object.md); \} \| `undefined`\>
-
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1064
-
-Promise-version of extendObject
 
 #### Parameters
 
 ##### id
 
-`string`
+`T`
 
 The id of the object to extend
 
 ##### obj
 
-`Partial`\<[`AnyObject`](../type-aliases/AnyObject.md)\>
+[`PartialObjectWorker`](../type-aliases/PartialObjectWorker.md)\<[`ObjectIdToObjectType`](../type-aliases/ObjectIdToObjectType.md)\<`T`, `"write"`\>\>
 
 The partial object to merge into the existing object
 
 ##### options?
 
-[`ExtendObjectOptions`](../interfaces/ExtendObjectOptions.md)
+[`ExtendObjectOptions`](../interfaces/ExtendObjectOptions.md) \| `null`
 
-The current request options including the user
+The current request options including the user, or the callback
 
 #### Returns
 
-`Promise`\<\{ `id`: `string`; `value`: [`Object`](../type-aliases/Object.md); \} \| `undefined`\>
+`Promise`\<\{ `id`: `string`; `value`: [`AnyObject`](../type-aliases/AnyObject.md); \}\>
 
 ***
 
@@ -1114,7 +996,7 @@ The current request options including the user
 
 > **extendPrimaryHostLock**(`ms`): `Promise`\<`number`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1172
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1150
 
 Extend the primary host lock time
 Value will expire after ms milliseconds
@@ -1141,7 +1023,7 @@ ms until value expires
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:248
 
-Check if given file exists
+Check if a given file exists
 
 #### Parameters
 
@@ -1149,7 +1031,7 @@ Check if given file exists
 
 `string`
 
-id of the namespace
+ID of the namespace
 
 ##### name
 
@@ -1175,7 +1057,7 @@ optional user context
 
 > **findObject**(`idOrName`, `type`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1085
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1063
 
 Find an object by its id or name
 
@@ -1213,7 +1095,7 @@ Called with the found id and the original id/name
 
 > **findObject**(`idOrName`, `type`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1096
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1074
 
 Find an object by its id or name
 
@@ -1245,7 +1127,7 @@ Called with the found id and the original id/name
 
 > **findObject**(`idOrName`, `type?`, `options?`): `Promise`\<`string` \| `undefined`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1104
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1082
 
 Find an object by its id or name
 
@@ -1289,7 +1171,7 @@ Build the internal redis key for a file
 
 `string`
 
-The id of the object owning the file
+The ID of the object owning the file
 
 ##### name
 
@@ -1301,7 +1183,7 @@ The file name
 
 `boolean`
 
-Whether to return the key of the meta entry (true) or the data entry (false)
+Whether to return the key of the meta-entry (true) or the data entry (false)
 
 #### Returns
 
@@ -1451,7 +1333,7 @@ The user on whose behalf the keys are read
 
 > **getMeta**(`id`): `Promise`\<`string` \| `null`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1212
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1190
 
 Get value from meta namespace
 
@@ -2183,9 +2065,9 @@ The user on whose behalf the view is queried
 
 > **getPrimaryHost**(): `Promise`\<`string` \| `null`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1184
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1162
 
-Get name of the primary host
+Get the name of the primary host
 
 #### Returns
 
@@ -2197,7 +2079,7 @@ Get name of the primary host
 
 > **getProtocolVersion**(): `Promise`\<`string` \| `null`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1164
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1142
 
 Returns the protocol version from DB
 
@@ -2241,7 +2123,7 @@ The id of the user to look up
 
 [`GetUserGroupCallbackNoError`](../type-aliases/GetUserGroupCallbackNoError.md)
 
-Called with the user, its groups and the effective ACL
+Called with the user, its groups, and the effective ACL
 
 #### Returns
 
@@ -2255,7 +2137,7 @@ Called with the user, its groups and the effective ACL
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:938
 
-Function to checks if comparisons will work according to the configured Locale
+Function to check if comparisons will work according to the configured Locale
 
 #### Returns
 
@@ -2267,7 +2149,7 @@ Function to checks if comparisons will work according to the configured Locale
 
 > **loadLuaScripts**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1141
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1119
 
 Load and register the Lua scripts used for atomic operations on the redis server
 
@@ -2281,7 +2163,7 @@ Load and register the Lua scripts used for atomic operations on the redis server
 
 > **migrateToSets**(): `Promise`\<`number`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1160
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1138
 
 Migrate all objects to sets
 
@@ -2395,7 +2277,7 @@ The file name to normalize
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:238
 
-Check if given object exists
+Check if a given object exists
 
 #### Parameters
 
@@ -2403,7 +2285,7 @@ Check if given object exists
 
 `string`
 
-id of the object
+ID of the object
 
 ##### options?
 
@@ -2507,7 +2389,7 @@ Read a file of an object
 
 `string`
 
-The id of the object owning the file
+The ID of the object owning the file
 
 ###### name
 
@@ -2539,7 +2421,7 @@ Read a file of an object
 
 `string`
 
-The id of the object owning the file
+The ID of the object owning the file
 
 ###### name
 
@@ -2569,7 +2451,7 @@ Called with the file content and mime type
 
 > **releasePrimaryHost**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1188
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1166
 
 Ensure we are no longer the primary host
 
@@ -2661,7 +2543,7 @@ The current request options including the user
 
 `` `system.user.${string}` ``
 
-The user on whose behalf the rename is performed
+The user on whose behalf the operation is performed
 
 #### Returns
 
@@ -2739,7 +2621,7 @@ The current request options including the user
 
 `` `system.user.${string}` ``
 
-The user on whose behalf the file is deleted
+The user on whose behalf the operation is performed
 
 #### Returns
 
@@ -2773,7 +2655,7 @@ The default ACL to use, or null to use the built-in default
 
 > **setExists**(`id`): `Promise`\<`boolean`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1154
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1132
 
 Checks if a given set exists
 
@@ -2957,10 +2839,10 @@ use `setObject` without callback instead
 
 > **setPrimaryHost**(`ms`): `Promise`\<`number`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1180
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1158
 
-Sets current host as primary if no primary host active
-Value will expire after ms milliseconds
+Sets the current host as primary if no primary host active
+Value expires after ms milliseconds
 
 #### Parameters
 
@@ -2982,7 +2864,7 @@ ms until value expires
 
 > **setProtocolVersion**(`version`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1194
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1172
 
 Sets the protocol version to the DB
 
@@ -3094,9 +2976,9 @@ The current request options including the user
 
 > **subscribePrimaryHost**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1198
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1176
 
-Subscribe to expired events to get expiration of primary host
+Subscribe to expired events to get expiration of the primary host
 
 #### Returns
 
@@ -3298,7 +3180,7 @@ The current request options including the user
 
 `` `system.user.${string}` ``
 
-The user on whose behalf the file is touched
+The user on whose behalf the operation is performed
 
 #### Returns
 
@@ -3588,7 +3470,7 @@ to check
 
 #### Throws
 
-Error if id is invalid
+if id is invalid
 
 ***
 
@@ -3692,7 +3574,7 @@ Promise-version of writeFile
 
 `string`
 
-The id of the object owning the file
+The ID of the object owning the file
 
 ##### name
 
