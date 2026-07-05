@@ -7,7 +7,7 @@ import type {
     SendToUserInterfaceClientOptions,
 } from '../../_Types.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
-import { tools } from '@iobroker/js-controller-common';
+import { AdapterContextBase } from '@/lib/adapter/managers/AdapterContextBase.js';
 import { isMessageboxSupported } from '@/lib/adapter/utils.js';
 
 /** Entry in the pending-reply registry for sendTo calls with expectReply=true */
@@ -19,7 +19,7 @@ interface PendingReply {
 }
 
 /** Owns the adapter's outbound messaging and the pending-reply registry. */
-export class MessagingManager {
+export class MessagingManager extends AdapterContextBase {
     readonly #pending = new Map<number, PendingReply>();
     #callbackId = 1;
     #mboxSubscribed = false;
@@ -27,7 +27,9 @@ export class MessagingManager {
     /**
      * @param ctx Shared adapter context providing live runtime state
      */
-    constructor(private readonly ctx: AdapterContext) {}
+    constructor(ctx: AdapterContext) {
+        super(ctx);
+    }
 
     /**
      * Sends a message to another adapter instance.
@@ -53,33 +55,23 @@ export class MessagingManager {
         const obj: ioBroker.SendableMessage = {
             command,
             message,
-            from: `system.adapter.${this.ctx.namespace}`,
+            from: `system.adapter.${this.namespace}`,
         };
 
-        const states = this.ctx.states;
-        if (!states) {
-            this.ctx.logger.info(`${this.ctx.namespaceLog} sendTo not processed because States database not connected`);
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-        }
+        const states = this.states;
 
         if (typeof message !== 'object') {
-            this.ctx.logger.silly(
-                `${this.ctx.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.ctx.namespace}: ${message}`,
+            this.logger.silly(
+                `${this.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.namespace}: ${message}`,
             );
         } else {
-            this.ctx.logger.silly(
-                `${this.ctx.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.ctx.namespace}`,
+            this.logger.silly(
+                `${this.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.namespace}`,
             );
         }
 
         if (!instanceName.match(/\.[0-9]+$/)) {
-            const objects = this.ctx.objects;
-            if (!objects) {
-                this.ctx.logger.info(
-                    `${this.ctx.namespaceLog} sendTo not processed because Objects database not connected`,
-                );
-                throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-            }
+            const objects = this.objects;
 
             try {
                 const res = await objects.getObjectView('system', 'instance', {
@@ -116,14 +108,12 @@ export class MessagingManager {
      * @param states the connected states DB client
      */
     #maybeSubscribe(states: StatesInRedisClient): void {
-        const common = this.ctx.common;
+        const common = this.common;
         if (common && !isMessageboxSupported(common) && !this.#mboxSubscribed) {
             this.#mboxSubscribed = true;
             states
-                .subscribeMessage(`system.adapter.${this.ctx.namespace}`)
-                .catch(e =>
-                    this.ctx.logger.error(`${this.ctx.namespaceLog} Cannot subscribe to messages: ${e.message}`),
-                );
+                .subscribeMessage(`system.adapter.${this.namespace}`)
+                .catch(e => this.logger.error(`${this.namespaceLog} Cannot subscribe to messages: ${e.message}`));
         }
     }
 
@@ -208,43 +198,26 @@ export class MessagingManager {
         const obj: ioBroker.SendableMessage = {
             command,
             message,
-            from: `system.adapter.${this.ctx.namespace}`,
+            from: `system.adapter.${this.namespace}`,
         };
 
-        const states = this.ctx.states;
-        if (!states) {
-            this.ctx.logger.info(
-                `${this.ctx.namespaceLog} sendToHost not processed because States database not connected`,
-            );
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-        }
+        const states = this.states;
 
         if (hostName && !hostName.startsWith('system.host.')) {
             hostName = `system.host.${hostName}`;
         }
 
         if (!hostName) {
-            const objects = this.ctx.objects;
-            if (!objects) {
-                this.ctx.logger.info(
-                    `${this.ctx.namespaceLog} sendToHost not processed because Objects database not connected`,
-                );
-                throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-            }
+            const objects = this.objects;
 
             const res = await objects.getObjectList({ startkey: 'system.host.', endkey: 'system.host.香' });
-
-            const broadcastStates = this.ctx.states;
-            if (!broadcastStates) {
-                return;
-            }
 
             if (res?.rows.length) {
                 for (const row of res.rows) {
                     const parts: string[] = row.id.split('.');
                     // ignore system.host.name.alive and so on
                     if (parts.length === 3) {
-                        await broadcastStates.pushMessage(row.id, obj);
+                        await states.pushMessage(row.id, obj);
                     }
                 }
             }
@@ -312,21 +285,18 @@ export class MessagingManager {
      * @param options clientId and data options
      */
     sendToUI(options: SendToUserInterfaceClientOptions): Promise<void> {
-        const states = this.ctx.states;
-        if (!states) {
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-        }
+        const states = this.states;
 
         const { clientId, data } = options;
 
         if (clientId === undefined) {
-            return this.ctx.uiMessagingController.sendToAllClients({
+            return this.uiMessagingController.sendToAllClients({
                 data,
                 states,
             });
         }
 
-        return this.ctx.uiMessagingController.sendToClient({
+        return this.uiMessagingController.sendToClient({
             clientId,
             data,
             states,
@@ -347,13 +317,7 @@ export class MessagingManager {
         message: string,
         options?: NotificationOptions,
     ): Promise<void> {
-        const states = this.ctx.states;
-        if (!states) {
-            this.ctx.logger.info(
-                `${this.ctx.namespaceLog} registerNotification not processed because States database not connected`,
-            );
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-        }
+        const states = this.states;
 
         const obj = {
             command: 'addNotification',
@@ -361,12 +325,12 @@ export class MessagingManager {
                 scope,
                 category,
                 message,
-                instance: this.ctx.namespace,
+                instance: this.namespace,
                 contextData: options?.contextData,
             },
-            from: `system.adapter.${this.ctx.namespace}`,
+            from: `system.adapter.${this.namespace}`,
         };
 
-        await states.pushMessage(`system.host.${this.ctx.host}`, obj);
+        await states.pushMessage(`system.host.${this.host}`, obj);
     }
 }
