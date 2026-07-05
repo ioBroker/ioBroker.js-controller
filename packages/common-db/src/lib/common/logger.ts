@@ -124,6 +124,12 @@ const IoSeq =
 
 // Class used to inform adapter about new log entry
 class NotifierTransport extends Transport {
+    /**
+     * Name used by controller and adapters to locate this transport via
+     * `logger.transports.find(t => t.name === 'NT')`. Must stay 'NT'.
+     */
+    public readonly name = 'NT';
+
     constructor(opts?: TransportStreamOptions) {
         super(opts);
     }
