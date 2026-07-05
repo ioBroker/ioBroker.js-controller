@@ -252,17 +252,13 @@ describe('MessagingManager.sendToHost', () => {
     it('broadcasts to all system.host.<name> entries (null hostName)', async () => {
         const pushMessage = sinon.stub().resolves();
         const fakeStates = { pushMessage } as any;
-        const getObjectList = sinon
-            .stub()
-            .callsFake((_params: unknown, _options: unknown, cb: (err: null, result: unknown) => void) => {
-                cb(null, {
-                    rows: [
-                        { id: 'system.host.mypc' },
-                        { id: 'system.host.mypc.alive' }, // should be ignored (4 parts)
-                        { id: 'system.host.server2' },
-                    ],
-                });
-            });
+        const getObjectList = sinon.stub().resolves({
+            rows: [
+                { id: 'system.host.mypc' },
+                { id: 'system.host.mypc.alive' }, // should be ignored (4 parts)
+                { id: 'system.host.server2' },
+            ],
+        });
         const fakeObjects = { getObjectList } as any;
         const mgr = new MessagingManager(makeContext({ states: fakeStates, objects: fakeObjects }));
 

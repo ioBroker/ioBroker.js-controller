@@ -87,7 +87,7 @@ describe('AsyncAdapter.sendTo', () => {
 describe('AsyncAdapter.sendToHost', () => {
     it('never waits for a reply on broadcast (hostName === null)', async () => {
         const pushMessage = sinon.stub().resolves();
-        const getObjectList = sinon.stub().callsFake((_q, _o, cb) => cb(null, { rows: [{ id: 'system.host.a' }] }));
+        const getObjectList = sinon.stub().resolves({ rows: [{ id: 'system.host.a' }] });
         const adapter = new AsyncAdapter(
             makeContext({ states: { pushMessage } as any, objects: { getObjectList } as any }),
         );

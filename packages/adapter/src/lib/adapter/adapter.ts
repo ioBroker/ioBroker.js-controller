@@ -8843,14 +8843,15 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (tools.isObject(callback)) {
-            this.#async
-                .sendTo(
+            this.#fireAndForget(
+                this.#async.sendTo(
                     instanceName,
                     command,
                     message,
                     this.#withSendFlags(options, { callback: callback as ioBroker.MessageCallbackInfo }),
-                )
-                .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendTo: ${err.message}`));
+                ),
+                'Error in sendTo',
+            );
             return;
         }
 
@@ -8863,9 +8864,10 @@ export class AdapterClass extends EventEmitter {
             return;
         }
 
-        this.#async
-            .sendTo(instanceName, command, message, this.#withSendFlags(options, { expectReply: false }))
-            .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendTo: ${err.message}`));
+        this.#fireAndForget(
+            this.#async.sendTo(instanceName, command, message, this.#withSendFlags(options, { expectReply: false })),
+            'Error in sendTo',
+        );
     }
 
     /**
@@ -8882,6 +8884,20 @@ export class AdapterClass extends EventEmitter {
             return options;
         }
         return { ...options, ...flags };
+    }
+
+    /**
+     * Observes a fire-and-forget promise from the callback-compat layer, logging any rejection without
+     * rethrowing. Used only where the legacy callback API had no channel to surface the error; async
+     * callers on {@link AsyncAdapter} instead await and catch.
+     *
+     * @param promise the promise to observe
+     * @param errorMessage log prefix describing the failed action
+     */
+    #fireAndForget(promise: Promise<unknown>, errorMessage: string): void {
+        promise.catch((e: unknown) =>
+            this._logger.error(`${this.namespaceLog} ${errorMessage}: ${e instanceof Error ? e.message : String(e)}`),
+        );
     }
 
     /**
@@ -8964,9 +8980,10 @@ export class AdapterClass extends EventEmitter {
             message = command;
             command = 'send';
         }
-        this.#async
-            .sendToHost(hostName, command, message, { expectReply: false })
-            .catch((err: Error) => this._logger.error(`${this.namespaceLog} Error in sendToHost: ${err.message}`));
+        this.#fireAndForget(
+            this.#async.sendToHost(hostName, command, message, { expectReply: false }),
+            'Error in sendToHost',
+        );
     }
 
     /**

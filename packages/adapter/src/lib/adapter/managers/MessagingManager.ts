@@ -232,11 +232,7 @@ export class MessagingManager {
                 throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
             }
 
-            const res = await new Promise<{ rows: { id: string }[] } | undefined>((resolve, reject) =>
-                objects.getObjectList({ startkey: 'system.host.', endkey: 'system.host.香' }, null, (err, result) =>
-                    err ? reject(err) : resolve(result as { rows: { id: string }[] } | undefined),
-                ),
-            );
+            const res = await objects.getObjectList({ startkey: 'system.host.', endkey: 'system.host.香' });
 
             const broadcastStates = this.ctx.states;
             if (!broadcastStates) {
