@@ -6,7 +6,7 @@
 
 # Interface: InternalCheckPasswordOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:355](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L355)
+Defined in: [adapter/src/lib/\_Types.ts:355](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L355)
 
 Options for checking a user's password
 
@@ -16,7 +16,7 @@ Options for checking a user's password
 
 > **callback**: [`CheckPasswordCallback`](../type-aliases/CheckPasswordCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:363](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L363)
+Defined in: [adapter/src/lib/\_Types.ts:363](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L363)
 
 Called with the result of the check
 
@@ -26,7 +26,7 @@ Called with the result of the check
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:361](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L361)
+Defined in: [adapter/src/lib/\_Types.ts:361](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L361)
 
 Optional settings including the user context
 
@@ -36,7 +36,7 @@ Optional settings including the user context
 
 > **pw**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:359](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L359)
+Defined in: [adapter/src/lib/\_Types.ts:359](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L359)
 
 The password to verify
 
@@ -46,6 +46,6 @@ The password to verify
 
 > **user**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:357](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L357)
+Defined in: [adapter/src/lib/\_Types.ts:357](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L357)
 
 The user to check
