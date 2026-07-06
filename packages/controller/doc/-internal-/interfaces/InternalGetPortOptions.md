@@ -6,7 +6,7 @@
 
 # Interface: InternalGetPortOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:343](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L343)
+Defined in: [adapter/src/lib/\_Types.ts:343](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L343)
 
 Options for finding a free port
 
@@ -16,7 +16,7 @@ Options for finding a free port
 
 > `optional` **callback?**: (`port`) => `void`
 
-Defined in: [adapter/src/lib/\_Types.ts:349](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L349)
+Defined in: [adapter/src/lib/\_Types.ts:349](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L349)
 
 Called with the free port that was found
 
@@ -36,7 +36,7 @@ Called with the free port that was found
 
 > `optional` **host?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:347](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L347)
+Defined in: [adapter/src/lib/\_Types.ts:347](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L347)
 
 The host to bind to
 
@@ -46,6 +46,6 @@ The host to bind to
 
 > **port**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:345](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L345)
+Defined in: [adapter/src/lib/\_Types.ts:345](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L345)
 
 The preferred port to start searching from

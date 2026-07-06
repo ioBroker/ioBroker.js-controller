@@ -6,7 +6,7 @@
 
 # Interface: InternalSetStateOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:604](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L604)
+Defined in: [adapter/src/lib/\_Types.ts:604](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L604)
 
 Options for setting a state
 
@@ -20,7 +20,7 @@ Options for setting a state
 
 > `optional` **ack?**: `boolean`
 
-Defined in: [adapter/src/lib/\_Types.ts:610](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L610)
+Defined in: [adapter/src/lib/\_Types.ts:610](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L610)
 
 Whether the state should be acknowledged
 
@@ -30,7 +30,7 @@ Whether the state should be acknowledged
 
 > `optional` **callback?**: [`SetStateCallback`](../type-aliases/SetStateCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:614](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L614)
+Defined in: [adapter/src/lib/\_Types.ts:614](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L614)
 
 Called once the state has been set
 
@@ -40,7 +40,7 @@ Called once the state has been set
 
 > **id**: `string` \| [`IdObject`](IdObject.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:606](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L606)
+Defined in: [adapter/src/lib/\_Types.ts:606](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L606)
 
 The id of the state, or an id object
 
@@ -50,7 +50,7 @@ The id of the state, or an id object
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:612](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L612)
+Defined in: [adapter/src/lib/\_Types.ts:612](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L612)
 
 Optional settings including the user context
 
@@ -60,6 +60,6 @@ Optional settings including the user context
 
 > **state**: [`SettableState`](../type-aliases/SettableState.md) \| [`StateValue`](../type-aliases/StateValue.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:608](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L608)
+Defined in: [adapter/src/lib/\_Types.ts:608](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L608)
 
 The value (or full state object) to set

@@ -6,7 +6,7 @@
 
 # Interface: InternalGetSessionOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L327)
+Defined in: [adapter/src/lib/\_Types.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L327)
 
 Options for reading a session
 
@@ -16,7 +16,7 @@ Options for reading a session
 
 > **callback**: [`GetSessionCallback`](../type-aliases/GetSessionCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L331)
+Defined in: [adapter/src/lib/\_Types.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L331)
 
 Called with the session data
 
@@ -26,6 +26,6 @@ Called with the session data
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:329](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L329)
+Defined in: [adapter/src/lib/\_Types.ts:329](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L329)
 
 The session id

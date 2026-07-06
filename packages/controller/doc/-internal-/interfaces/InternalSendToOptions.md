@@ -6,7 +6,7 @@
 
 # Interface: InternalSendToOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:676](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L676)
+Defined in: [adapter/src/lib/\_Types.ts:676](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L676)
 
 Options for sending a message to another instance
 
@@ -16,7 +16,7 @@ Options for sending a message to another instance
 
 > `optional` **callback?**: [`MessageCallback`](../type-aliases/MessageCallback.md) \| [`MessageCallbackInfo`](MessageCallbackInfo.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:684](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L684)
+Defined in: [adapter/src/lib/\_Types.ts:684](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L684)
 
 Called with the response
 
@@ -26,7 +26,7 @@ Called with the response
 
 > **command**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:680](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L680)
+Defined in: [adapter/src/lib/\_Types.ts:680](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L680)
 
 The command to send
 
@@ -36,7 +36,7 @@ The command to send
 
 > **instanceName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:678](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L678)
+Defined in: [adapter/src/lib/\_Types.ts:678](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L678)
 
 The instance to send the message to
 
@@ -46,7 +46,7 @@ The instance to send the message to
 
 > **message**: `any`
 
-Defined in: [adapter/src/lib/\_Types.ts:682](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L682)
+Defined in: [adapter/src/lib/\_Types.ts:682](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L682)
 
 The message payload
 
@@ -56,6 +56,6 @@ The message payload
 
 > `optional` **options?**: [`SendToOptions`](SendToOptions.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:686](https://github.com/ioBroker/ioBroker.js-controller/blob/fdfa3f85955579352bce54ed1205ba1bf9a4297a/packages/adapter/src/lib/_Types.ts#L686)
+Defined in: [adapter/src/lib/\_Types.ts:686](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/_Types.ts#L686)
 
 Additional send options
