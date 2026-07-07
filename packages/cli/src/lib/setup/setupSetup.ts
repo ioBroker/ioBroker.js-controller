@@ -1238,7 +1238,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
      * Replace the `controller.js` file in the root directory to work with ESM
      */
     async _fixWindowsControllerJs(): Promise<void> {
-        const content = `import('./node_modules/iobroker.js-controller/controller.js');`;
+        const content = `import('./node_modules/iobroker.js-controller/controller.js');\n`;
         const filePath = path.join(tools.getRootDir(), 'controller.js');
 
         try {

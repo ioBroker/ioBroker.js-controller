@@ -8,7 +8,7 @@
 
 > **ChownObjectCallback** = (`err?`, `list?`) => `void`
 
-Defined in: [types-dev/index.d.ts:584](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/types-dev/index.d.ts#L584)
+Defined in: [types-dev/index.d.ts:588](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/index.d.ts#L588)
 
 ## Parameters
 

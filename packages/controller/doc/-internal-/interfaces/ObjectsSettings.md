@@ -136,7 +136,7 @@ Logger instance to use
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:37
 
-Namespace used for meta information
+Namespace used for meta-information
 
 ***
 

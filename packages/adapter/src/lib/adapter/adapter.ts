@@ -534,7 +534,7 @@ export interface AdapterClass {
     /**
      * Sends a message to a specific host or all hosts.
      */
-    sendToHostAsync(hostName: string, message: ioBroker.MessagePayload): Promise<ioBroker.Message | undefined>;
+    sendToHostAsync(hostName: string, message: ioBroker.MessagePayload): Promise<ioBroker.MessagePayload>;
     /**
      * Sends a message to a specific host or all hosts.
      *
@@ -546,12 +546,12 @@ export interface AdapterClass {
         hostName: string,
         command: string,
         message: ioBroker.MessagePayload,
-    ): Promise<ioBroker.Message | undefined>;
+    ): Promise<ioBroker.MessagePayload>;
 
     /**
      * Sends a message to a specific instance or all instances of some specific adapter.
      */
-    sendToAsync(instanceName: string, message: ioBroker.MessagePayload): Promise<ioBroker.Message | undefined>;
+    sendToAsync(instanceName: string, message: ioBroker.MessagePayload): Promise<ioBroker.MessagePayload>;
     /**
      * Sends a message to a specific instance or all instances of some specific adapter.
      *
@@ -565,7 +565,7 @@ export interface AdapterClass {
         command: string,
         message: ioBroker.MessagePayload,
         options?: SendToOptions,
-    ): Promise<ioBroker.Message | undefined>;
+    ): Promise<ioBroker.MessagePayload>;
 
     /**
      * Deletes a given file
@@ -10820,14 +10820,13 @@ export class AdapterClass extends EventEmitter {
         try {
             this._utils.validateId(id, true, null);
         } catch (e) {
-            // @ts-expect-error
             return tools.maybeCallbackWithError(callback, e);
         }
 
-        options = options || {};
-        options.end = options.end || Date.now() + 5000000;
+        options ||= {};
+        options.end ||= Date.now() + 5000000;
         if (!options.count && !options.start) {
-            options.start = options.start || Date.now() - 604800000; // - 1 week
+            options.start ||= Date.now() - 604800000; // - 1 week
         }
 
         if (!options.instance) {
@@ -10843,15 +10842,23 @@ export class AdapterClass extends EventEmitter {
             try {
                 await this._checkStates(id, options, 'getState');
             } catch (e) {
-                // @ts-expect-error
                 return tools.maybeCallbackWithError(callback, e);
             }
         }
 
-        this.sendTo(options.instance || 'history.0', 'getHistory', { id, options }, res => {
-            // @ts-expect-error
-            tools.maybeCallbackWithError(callback, res.error, res.result, res.step, res.sessionId);
-        });
+        this.sendTo(
+            options.instance || 'history.0',
+            'getHistory',
+            { id, options },
+            (res: {
+                error?: Error | null;
+                result?: ioBroker.GetHistoryResult;
+                step?: number;
+                sessionId?: number;
+            }): void => {
+                tools.maybeCallbackWithError(callback, res.error, res.result, res.step, res.sessionId);
+            },
+        );
     }
 
     /**

@@ -448,7 +448,7 @@ declare global {
         type GenericCallback<T> = (err?: Error | null, result?: T) => void;
 
         /** Due to backward compatibility first param can be result or error */
-        type MessageCallback = (response?: Message | Error) => void;
+        type MessageCallback = (response?: MessagePayload) => void;
 
         type SetObjectCallback = (err?: Error | null, obj?: { id: string }) => void;
         type SetObjectPromise = Promise<NonNullCallbackReturnTypeOf<SetObjectCallback>>;
@@ -522,7 +522,7 @@ declare global {
 
         type GetHistoryResult = Array<State & { id?: string }>;
         type GetHistoryCallback = (
-            err: Error | null,
+            err: Error | null | undefined,
             result?: GetHistoryResult,
             step?: number,
             sessionId?: number,
