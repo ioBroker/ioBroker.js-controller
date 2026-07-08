@@ -8,7 +8,7 @@
 
 Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:35
 
-Access control list of an object, state or file
+The access control list of an object, state or file
 
 ## Properties
 

@@ -8,4 +8,4 @@
 
 > **GetObjectListPromise** = `Promise`\<[`NonNullCallbackReturnTypeOf`](NonNullCallbackReturnTypeOf.md)\<[`GetObjectListCallback`](GetObjectListCallback.md)\<[`Object`](Object.md)\>\>\>
 
-Defined in: [types-dev/index.d.ts:610](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/types-dev/index.d.ts#L610)
+Defined in: [types-dev/index.d.ts:614](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/index.d.ts#L614)

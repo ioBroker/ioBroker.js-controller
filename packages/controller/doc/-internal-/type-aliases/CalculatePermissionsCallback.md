@@ -8,7 +8,7 @@
 
 > **CalculatePermissionsCallback** = (`result`) => `void`
 
-Defined in: [adapter/src/lib/\_Types.ts:415](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/_Types.ts#L415)
+Defined in: [adapter/src/lib/\_Types.ts:411](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/_Types.ts#L411)
 
 ## Parameters
 

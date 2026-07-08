@@ -1,14 +1,19 @@
 {
-    "version": "7.2.3-alpha.4-20260701-7709d5328",
-    "command": {
-        "run": {
-            "stream": true
-        },
-        "version": {
-            "allowBranch": ["master", "*.x"],
-            "ignoreChanges": ["*.md"],
-            "exact": true
-        }
+  "version": "7.2.3-alpha.7-20260708-0b1c41301",
+  "command": {
+    "run": {
+      "stream": true
     },
-    "$schema": "node_modules/lerna/schemas/lerna-schema.json"
+    "version": {
+      "allowBranch": [
+        "master",
+        "*.x"
+      ],
+      "ignoreChanges": [
+        "*.md"
+      ],
+      "exact": true
+    }
+  },
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }

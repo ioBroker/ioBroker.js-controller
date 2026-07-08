@@ -8,6 +8,6 @@
 
 > **Dependencies** = `object`[] \| `string`[]
 
-Defined in: [types-dev/objects.d.ts:643](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/types-dev/objects.d.ts#L643)
+Defined in: [types-dev/objects.d.ts:653](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/objects.d.ts#L653)
 
 Format for local and global dependencies

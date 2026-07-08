@@ -6,7 +6,7 @@
 
 # Interface: MessagingControllerOptions
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L19)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L19)
 
 Options for the UI messaging controller
 
@@ -16,7 +16,7 @@ Options for the UI messaging controller
 
 > **adapter**: [`AdapterClass`](../../classes/AdapterClass.md)
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L21)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L21)
 
 The adapter using this messaging controller
 
@@ -26,7 +26,7 @@ The adapter using this messaging controller
 
 > `optional` **subscribeCallback?**: [`UserInterfaceClientSubscribeHandler`](../type-aliases/UserInterfaceClientSubscribeHandler.md)
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:23](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L23)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:23](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L23)
 
 Callback to call if successfully subscribed
 
@@ -36,6 +36,6 @@ Callback to call if successfully subscribed
 
 > `optional` **unsubscribeCallback?**: [`UserInterfaceClientUnsubscribeHandler`](../type-aliases/UserInterfaceClientUnsubscribeHandler.md)
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/7709d5328469497cdfdd530667d5ad433c01ada0/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L25)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L25)
 
 Callback to call if successfully unsubscribed
