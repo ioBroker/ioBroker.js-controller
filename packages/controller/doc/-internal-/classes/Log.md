@@ -6,7 +6,7 @@
 
 # Class: Log
 
-Defined in: [adapter/src/lib/adapter/log.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/adapter/log.ts#L8)
+Defined in: [adapter/src/lib/adapter/log.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/adapter/log.ts#L8)
 
 Log class for adapter.js
 
@@ -22,7 +22,7 @@ It prefixes every message with the given namespace
 
 > **new Log**(`namespaceLog`, `level`, `logger`): `Log`
 
-Defined in: [adapter/src/lib/adapter/log.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/adapter/log.ts#L25)
+Defined in: [adapter/src/lib/adapter/log.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/adapter/log.ts#L25)
 
 #### Parameters
 
@@ -54,7 +54,7 @@ logger instance
 
 > `readonly` **level**: [`LogLevel`](../type-aliases/LogLevel.md)
 
-Defined in: [adapter/src/lib/adapter/log.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/adapter/log.ts#L10)
+Defined in: [adapter/src/lib/adapter/log.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/adapter/log.ts#L10)
 
 Verbosity of the log output
 
@@ -68,7 +68,7 @@ Verbosity of the log output
 
 > **debug**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/adapter/log.ts#L55)
+Defined in: [adapter/src/lib/adapter/log.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/adapter/log.ts#L55)
 
 Log a message at the debug level, prefixed with the adapter namespace
 
@@ -94,7 +94,7 @@ the message to log
 
 > **error**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:73](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/adapter/log.ts#L73)
+Defined in: [adapter/src/lib/adapter/log.ts:73](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/adapter/log.ts#L73)
 
 Log a message at the error level, prefixed with the adapter namespace
 
@@ -120,7 +120,7 @@ the message to log
 
 > **info**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:64](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/adapter/log.ts#L64)
+Defined in: [adapter/src/lib/adapter/log.ts:64](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/adapter/log.ts#L64)
 
 Log a message at the info level, prefixed with the adapter namespace
 
@@ -146,7 +146,7 @@ the message to log
 
 > **silly**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:46](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/adapter/log.ts#L46)
+Defined in: [adapter/src/lib/adapter/log.ts:46](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/adapter/log.ts#L46)
 
 Log a message at the silly level, prefixed with the adapter namespace
 
@@ -172,7 +172,7 @@ the message to log
 
 > **warn**(`msg`): `void`
 
-Defined in: [adapter/src/lib/adapter/log.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/adapter/src/lib/adapter/log.ts#L82)
+Defined in: [adapter/src/lib/adapter/log.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/adapter/log.ts#L82)
 
 Log a message at the warn level, prefixed with the adapter namespace
 
