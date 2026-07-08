@@ -701,6 +701,8 @@ export interface InternalSendToHostOptions {
     message: any;
     /** When true and a specific host is targeted, the manager registers a reply resolver and resolves with the reply */
     expectReply?: boolean;
+    /** Legacy callback-info header to attach to the outbound message (relayed reply descriptor) */
+    callback?: ioBroker.MessageCallbackInfo;
     /** Additional send options */
     options?: SendToOptions;
 }

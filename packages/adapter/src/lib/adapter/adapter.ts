@@ -8842,6 +8842,16 @@ export class AdapterClass extends EventEmitter {
             command = 'send';
         }
 
+        // Legacy contract: bad arguments throw synchronously on the callback-style API.
+        Validator.assertString(instanceName, 'instanceName');
+        Validator.assertString(command, 'command');
+        if (!tools.isObject(callback)) {
+            Validator.assertOptionalCallback(callback, 'callback');
+        }
+        if (options !== undefined) {
+            Validator.assertObject<SendToOptions>(options, 'options');
+        }
+
         if (tools.isObject(callback)) {
             this.#fireAndForget(
                 this.#async.sendTo(
@@ -8966,20 +8976,40 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
     sendToHost(hostName: unknown, command: unknown, message: unknown, callback?: unknown): any {
-        const cb = typeof callback === 'function' ? (callback as ioBroker.MessageCallback) : undefined;
+        if (typeof message === 'undefined') {
+            message = command;
+            command = 'send';
+        }
+
+        // Legacy contract: bad arguments throw synchronously on the callback-style API.
+        if (hostName !== null) {
+            Validator.assertString(hostName, 'hostName');
+        }
+        Validator.assertString(command, 'command');
+        if (!tools.isObject(callback)) {
+            Validator.assertOptionalCallback(callback, 'callback');
+        }
+
+        if (tools.isObject(callback)) {
+            this.#fireAndForget(
+                this.#async.sendToHost(hostName, command, message, {
+                    callback: callback as ioBroker.MessageCallbackInfo,
+                }),
+                'Error in sendToHost',
+            );
+            return;
+        }
+
+        const cb = callback as ioBroker.MessageCallback | undefined;
 
         // A broadcast (hostName === null) yields many replies, so the callback is ignored — matching legacy behavior.
-        if (cb && hostName !== null) {
+        if (typeof cb === 'function' && hostName !== null) {
             this.sendToHostAsync(hostName, command, message)
                 .then((reply: any) => cb(reply))
                 .catch((err: Error) => cb(err));
             return;
         }
 
-        if (typeof message === 'undefined') {
-            message = command;
-            command = 'send';
-        }
         this.#fireAndForget(
             this.#async.sendToHost(hostName, command, message, { expectReply: false }),
             'Error in sendToHost',

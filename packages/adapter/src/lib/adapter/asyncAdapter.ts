@@ -89,7 +89,7 @@ export class AsyncAdapter {
         hostName: string | null,
         command: string,
         message: any,
-        options?: SendToOptions & { expectReply?: boolean },
+        options?: SendToOptions & { expectReply?: boolean; callback?: ioBroker.MessageCallbackInfo },
     ): Promise<any>;
     /**
      * @internal
@@ -111,17 +111,21 @@ export class AsyncAdapter {
         }
         Validator.assertString(command, 'command');
         if (options !== undefined) {
-            Validator.assertObject<SendToOptions & { expectReply?: boolean }>(options, 'options');
+            Validator.assertObject<SendToOptions & { expectReply?: boolean; callback?: ioBroker.MessageCallbackInfo }>(
+                options,
+                'options',
+            );
         }
 
-        const { expectReply, ...sendOptions } = options ?? {};
+        const { expectReply, callback, ...sendOptions } = options ?? {};
         return this.#messaging.sendToHost({
             hostName,
             command,
             message,
+            callback,
             options: Object.keys(sendOptions).length ? sendOptions : undefined,
             // broadcast (null host) yields many responses → never wait for a reply
-            expectReply: hostName !== null && (expectReply ?? true),
+            expectReply: hostName !== null && !callback && (expectReply ?? true),
         });
     }
 

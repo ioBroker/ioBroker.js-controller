@@ -6,7 +6,7 @@ import { tools } from '@iobroker/js-controller-common';
 /**
  * Base class for adapter managers that read from the shared {@link AdapterContext}.
  *
- * Holds the context in a private `#ctx` field so subclasses cannot bypass the connected-checked
+ * Holds the context in a private `#ctx` field so subclasses cannot bypass the connection-checked
  * getters and reach the raw (possibly null) DB clients directly. Access to `states`/`objects` goes
  * through the throwing getters, which raise `ERROR_DB_CLOSED` when the respective database is not
  * connected; the other getters pass ctx values through unchanged.

@@ -73,19 +73,18 @@ export class MessagingManager extends AdapterContextBase {
         if (!instanceName.match(/\.[0-9]+$/)) {
             const objects = this.objects;
 
-            try {
-                const res = await objects.getObjectView('system', 'instance', {
+            // Only the instance lookup is best-effort; per-instance push errors must surface.
+            const res = await objects
+                .getObjectView('system', 'instance', {
                     startkey: `${instanceName}.`,
-                    endkey: `${instanceName}.香`,
-                });
+                    endkey: `${instanceName}.\u9999`,
+                })
+                .catch(() => undefined);
 
-                if (res) {
-                    for (const row of res.rows) {
-                        await states.pushMessage(row.id, obj);
-                    }
+            if (res) {
+                for (const row of res.rows) {
+                    await states.pushMessage(row.id, obj);
                 }
-            } catch {
-                // broadcast errors are ignored (mirrors original behavior)
             }
             return;
         }
@@ -193,7 +192,7 @@ export class MessagingManager extends AdapterContextBase {
      * @param opts Normalized send options
      */
     async sendToHost(opts: InternalSendToHostOptions): Promise<any> {
-        const { command, message, expectReply, options } = opts;
+        const { command, message, expectReply, options, callback } = opts;
         let { hostName } = opts;
         const obj: ioBroker.SendableMessage = {
             command,
@@ -210,7 +209,7 @@ export class MessagingManager extends AdapterContextBase {
         if (!hostName) {
             const objects = this.objects;
 
-            const res = await objects.getObjectList({ startkey: 'system.host.', endkey: 'system.host.香' });
+            const res = await objects.getObjectList({ startkey: 'system.host.', endkey: 'system.host.\u9999' });
 
             if (res?.rows.length) {
                 for (const row of res.rows) {
@@ -226,6 +225,10 @@ export class MessagingManager extends AdapterContextBase {
 
         if (expectReply) {
             return this.#registerReply(states, hostName, obj, options);
+        }
+
+        if (callback) {
+            obj.callback = { ...callback, ack: true };
         }
 
         await states.pushMessage(hostName, obj);

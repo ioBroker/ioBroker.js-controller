@@ -64,6 +64,15 @@ describe('MessagingManager.sendTo', () => {
         );
     });
 
+    it('surfaces a per-instance pushMessage error on broadcast (does not swallow it)', async () => {
+        const pushMessage = sinon.stub().rejects(new Error('push failed'));
+        const getObjectView = sinon.stub().resolves({ rows: [{ id: 'system.adapter.inst.0' }] });
+        const mgr = new MessagingManager(
+            makeContext({ states: { pushMessage } as any, objects: { getObjectView } as any }),
+        );
+        await assert.rejects(() => mgr.sendTo({ instanceName: 'inst', command: 'cmd', message: {} }), /push failed/);
+    });
+
     it('resolves void without registering a reply when expectReply is not set', async () => {
         const pushMessage = sinon.stub().resolves();
         const fakeStates = { pushMessage } as any;
@@ -214,6 +223,18 @@ describe('MessagingManager.sendToHost', () => {
         assert.equal(pushMessage.calledOnce, true);
         const [, sentObj] = pushMessage.firstCall.args as [string, ioBroker.SendableMessage];
         assert.equal(sentObj.callback, undefined);
+    });
+
+    it('attaches a legacy MessageCallbackInfo header with ack=true', async () => {
+        const pushMessage = sinon.stub().resolves();
+        const mgr = new MessagingManager(makeContext({ states: { pushMessage } as any }));
+        const callback = { message: { orig: 1 }, id: 7, ack: false, time: 123 } as ioBroker.MessageCallbackInfo;
+
+        await mgr.sendToHost({ hostName: 'myhost', command: 'cmd', message: {}, callback });
+
+        const [, sentObj] = pushMessage.firstCall.args as [string, ioBroker.SendableMessage];
+        assert.equal(sentObj.callback?.id, 7);
+        assert.equal(sentObj.callback?.ack, true);
     });
 
     it('resolves with reply when resolveCallback is called (expectReply=true)', async () => {
