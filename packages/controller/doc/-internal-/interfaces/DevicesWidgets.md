@@ -6,7 +6,7 @@
 
 # Interface: DevicesWidgets
 
-Defined in: [types-dev/objects.d.ts:536](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/objects.d.ts#L536)
+Defined in: [types-dev/objects.d.ts:536](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/objects.d.ts#L536)
 
 This structure defines the widgets for "devices" adapter
 
@@ -16,7 +16,7 @@ This structure defines the widgets for "devices" adapter
 
 > **components**: `object`[]
 
-Defined in: [types-dev/objects.d.ts:550](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/objects.d.ts#L550)
+Defined in: [types-dev/objects.d.ts:550](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/objects.d.ts#L550)
 
 Description of the components (widgets). It could be multiple widgets in one adapter
 
@@ -50,7 +50,7 @@ Name of the class
 
 > `optional` **iconsManifest?**: `string`
 
-Defined in: [types-dev/objects.d.ts:548](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/objects.d.ts#L548)
+Defined in: [types-dev/objects.d.ts:548](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/objects.d.ts#L548)
 
 Link to the file (icons.json) with specific icons in form
 ```ts
@@ -66,6 +66,6 @@ Link to the file (icons.json) with specific icons in form
 
 > `optional` **url?**: `string`
 
-Defined in: [types-dev/objects.d.ts:538](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/objects.d.ts#L538)
+Defined in: [types-dev/objects.d.ts:538](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/objects.d.ts#L538)
 
 Link to the file with components relatively to `admin/dm-widgets` in admin or `${adapterName}` in web. Default is customDevices.js

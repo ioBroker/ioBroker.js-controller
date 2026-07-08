@@ -287,6 +287,7 @@
 - [MaybePromise](type-aliases/MaybePromise.md)
 - [MessageCallback](type-aliases/MessageCallback.md)
 - [MessageHandler](type-aliases/MessageHandler.md)
+- [MessagePayload](type-aliases/MessagePayload.md)
 - [MessageUnsubscribeReason](type-aliases/MessageUnsubscribeReason.md)
 - [Meta](type-aliases/Meta.md)
 - [Misc](type-aliases/Misc.md)
