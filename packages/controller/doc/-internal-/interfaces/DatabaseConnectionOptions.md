@@ -6,7 +6,7 @@
 
 # Interface: DatabaseConnectionOptions
 
-Defined in: [types-dev/config.d.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L49)
+Defined in: [types-dev/config.d.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L49)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/config.d.ts:49](https://github.com/ioBroker/ioBroker.js-c
 
 > **auth\_pass**: `string`
 
-Defined in: [types-dev/config.d.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L51)
+Defined in: [types-dev/config.d.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L51)
 
 Password used to authenticate against the database
 
@@ -24,7 +24,7 @@ Password used to authenticate against the database
 
 > `optional` **autoResubscribe?**: `boolean`
 
-Defined in: [types-dev/config.d.ts:104](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L104)
+Defined in: [types-dev/config.d.ts:104](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L104)
 
 After reconnected, if the previous connection was in the subscriber mode, client will auto re-subscribe these channels.
 default: true.
@@ -35,7 +35,7 @@ default: true.
 
 > `optional` **connectionName?**: `string`
 
-Defined in: [types-dev/config.d.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L79)
+Defined in: [types-dev/config.d.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L79)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [types-dev/config.d.ts:79](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **db?**: `number`
 
-Defined in: [types-dev/config.d.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L87)
+Defined in: [types-dev/config.d.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L87)
 
 Database index to use.
 
@@ -53,7 +53,7 @@ Database index to use.
 
 > `optional` **enableReadyCheck?**: `boolean`
 
-Defined in: [types-dev/config.d.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L94)
+Defined in: [types-dev/config.d.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L94)
 
 When a connection is established to the Redis server, the server might still be loading
 the database from disk. While loading, the server not respond to any commands.
@@ -66,7 +66,7 @@ and when the Redis server is able to process commands, a ready event will be emi
 
 > `optional` **family?**: `number`
 
-Defined in: [types-dev/config.d.ts:74](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L74)
+Defined in: [types-dev/config.d.ts:74](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L74)
 
 4 (IPv4) or 6 (IPv6), Defaults to 4.
 
@@ -76,7 +76,7 @@ Defined in: [types-dev/config.d.ts:74](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **host?**: `string` \| `string`[]
 
-Defined in: [types-dev/config.d.ts:70](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L70)
+Defined in: [types-dev/config.d.ts:70](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L70)
 
 ***
 
@@ -84,7 +84,7 @@ Defined in: [types-dev/config.d.ts:70](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **name?**: `string`
 
-Defined in: [types-dev/config.d.ts:108](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L108)
+Defined in: [types-dev/config.d.ts:108](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L108)
 
 default: null.
 
@@ -94,7 +94,7 @@ default: null.
 
 > `optional` **password?**: `string`
 
-Defined in: [types-dev/config.d.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L83)
+Defined in: [types-dev/config.d.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L83)
 
 If set, client will send AUTH command with the value of this option when connected.
 
@@ -104,7 +104,7 @@ If set, client will send AUTH command with the value of this option when connect
 
 > `optional` **path?**: `string`
 
-Defined in: [types-dev/config.d.ts:78](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L78)
+Defined in: [types-dev/config.d.ts:78](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L78)
 
 Local domain socket path. If set the port, host and family will be ignored.
 
@@ -114,7 +114,7 @@ Local domain socket path. If set the port, host and family will be ignored.
 
 > `optional` **port?**: `number` \| `number`[]
 
-Defined in: [types-dev/config.d.ts:69](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L69)
+Defined in: [types-dev/config.d.ts:69](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L69)
 
 ***
 
@@ -122,7 +122,7 @@ Defined in: [types-dev/config.d.ts:69](https://github.com/ioBroker/ioBroker.js-c
 
 > **retry\_max\_count**: `number`
 
-Defined in: [types-dev/config.d.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L55)
+Defined in: [types-dev/config.d.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L55)
 
 Maximum number of reconnection attempts
 
@@ -132,7 +132,7 @@ Maximum number of reconnection attempts
 
 > `optional` **retry\_max\_delay?**: `number`
 
-Defined in: [types-dev/config.d.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L53)
+Defined in: [types-dev/config.d.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L53)
 
 Maximum delay in milliseconds between reconnection attempts
 
@@ -142,7 +142,7 @@ Maximum delay in milliseconds between reconnection attempts
 
 > `optional` **sentinels?**: `object`[]
 
-Defined in: [types-dev/config.d.ts:109](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L109)
+Defined in: [types-dev/config.d.ts:109](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L109)
 
 #### host
 
@@ -158,7 +158,7 @@ Defined in: [types-dev/config.d.ts:109](https://github.com/ioBroker/ioBroker.js-
 
 > `optional` **tls?**: `object`
 
-Defined in: [types-dev/config.d.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L57)
+Defined in: [types-dev/config.d.ts:57](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L57)
 
 As soon as the tls property is defined, redis will try to connect via tls (currently only for redis)
 
@@ -192,7 +192,7 @@ Needs to be false with self-signed certs
 
 > `optional` **retryStrategy**(`times`): `number` \| `Error`
 
-Defined in: [types-dev/config.d.ts:99](https://github.com/ioBroker/ioBroker.js-controller/blob/145570d2c8ee8cfe3cedd5279a30628b5a1ed28e/packages/types-dev/config.d.ts#L99)
+Defined in: [types-dev/config.d.ts:99](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/config.d.ts#L99)
 
 When the return value isn't a number, ioredis will stop trying to reconnect.
 Fixed in: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/15858
