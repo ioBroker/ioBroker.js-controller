@@ -6,7 +6,7 @@
 
 # Interface: LicenseInformationWithPayment
 
-Defined in: [types-dev/objects.d.ts:585](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/objects.d.ts#L585)
+Defined in: [types-dev/objects.d.ts:585](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/objects.d.ts#L585)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/objects.d.ts:585](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **license?**: `string`
 
-Defined in: [types-dev/objects.d.ts:587](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/objects.d.ts#L587)
+Defined in: [types-dev/objects.d.ts:587](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/objects.d.ts#L587)
 
 License of the software
 
@@ -24,7 +24,7 @@ License of the software
 
 > **link**: `string`
 
-Defined in: [types-dev/objects.d.ts:594](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/objects.d.ts#L594)
+Defined in: [types-dev/objects.d.ts:594](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/objects.d.ts#L594)
 
 Hyperlink, where information about the license can be found. For non-free licenses, the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information.
 This is required if the license type is different from 'free'. For 'free' licenses, an optional link to the license file can be placed here.
@@ -35,6 +35,6 @@ This is required if the license type is different from 'free'. For 'free' licens
 
 > **type**: [`PaidLicenseType`](../type-aliases/PaidLicenseType.md)
 
-Defined in: [types-dev/objects.d.ts:589](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/objects.d.ts#L589)
+Defined in: [types-dev/objects.d.ts:589](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/objects.d.ts#L589)
 
 Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license.
