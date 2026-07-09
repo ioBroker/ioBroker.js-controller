@@ -9256,6 +9256,174 @@ export class AdapterClass extends EventEmitter {
         await this.#states.pushMessage(`system.host.${this.host}`, obj);
     }
 
+    /**
+     * Register an exclusive resource (serial port, TCP/UDP port, USB device, ...) as used by this instance.
+     *
+     * Exclusive resources are the ones that cannot be occupied by more than one instance at the same time.
+     * The information is forwarded to the host this instance runs on and stored under
+     * `system.host.<hostname>.usedResources.<type>`, so the user gets an overview of the occupied resources
+     * and can pick a free one when configuring a new instance.
+     *
+     * By default the host first drops all resources this instance had registered before, because the user may
+     * have changed the settings before the (re)start and the old registrations could be invalid. To register
+     * more than one resource for this instance, pass `doNotDeleteAlreadyUsed = true` on every call except the first.
+     *
+     * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
+     * @param data the strictly typed payload describing the resource, e.g. `{ port: '/dev/ttyUSB0' }`
+     * @param doNotDeleteAlreadyUsed if true, keep the resources this instance already registered instead of replacing them
+     */
+    async registerUsedResource<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data: ioBroker.UsedResourceData<T>,
+        doNotDeleteAlreadyUsed?: boolean,
+    ): Promise<void> {
+        if (!this.#states) {
+            // if states is no longer existing, we do not need to set
+            this._logger.info(
+                `${this.namespaceLog} registerUsedResource not processed because States database not connected`,
+            );
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        Validator.assertString(type, 'type');
+        Validator.assertObject(data, 'data');
+        if (doNotDeleteAlreadyUsed !== undefined) {
+            Validator.assertBoolean(doNotDeleteAlreadyUsed, 'doNotDeleteAlreadyUsed');
+        }
+
+        const obj = {
+            command: 'registerUsedResource',
+            message: {
+                type,
+                data,
+                instance: this.namespace,
+                doNotDeleteAlreadyUsed: !!doNotDeleteAlreadyUsed,
+            },
+            from: `system.adapter.${this.namespace}`,
+        };
+
+        await this.#states.pushMessage(`system.host.${this.host}`, obj);
+    }
+
+    /**
+     * Free a previously registered exclusive resource of this instance.
+     *
+     * If `data` is omitted, all registered resources of the given `type` for this instance are freed.
+     * The change is forwarded to the host this instance runs on and reflected in
+     * `system.host.<hostname>.usedResources.<type>`.
+     *
+     * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
+     * @param data the strictly typed payload of the resource to free; if omitted, all resources of `type` are freed
+     */
+    async freeUsedResource<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data?: ioBroker.UsedResourceData<T>,
+    ): Promise<void> {
+        if (!this.#states) {
+            // if states is no longer existing, we do not need to set
+            this._logger.info(
+                `${this.namespaceLog} freeUsedResource not processed because States database not connected`,
+            );
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        Validator.assertString(type, 'type');
+        if (data !== undefined) {
+            Validator.assertObject(data, 'data');
+        }
+
+        const obj = {
+            command: 'freeUsedResource',
+            message: {
+                type,
+                data,
+                instance: this.namespace,
+            },
+            from: `system.adapter.${this.namespace}`,
+        };
+
+        await this.#states.pushMessage(`system.host.${this.host}`, obj);
+    }
+
+    /**
+     * Query the exclusive resources currently registered as used on the host this instance runs on.
+     *
+     * Reading is done directly from the state's DB (`system.host.<hostname>.usedResources.<type>`), which the
+     * host keeps up to date. Only `registerUsedResource`/`freeUsedResource` go through the host to keep the
+     * registry consistent. Returns the resources of all instances on this host, so the user (or an admin UI)
+     * can present an overview of the occupied resources. Optionally filtered by resource `type`.
+     *
+     * @param type optional resource type to filter for, e.g. "serialPort"; if omitted, all types are returned
+     * @returns the list of registered resources (across all instances of this host)
+     */
+    async getUsedResources<T extends ioBroker.UsedResourceType>(type: T): Promise<ioBroker.RegisteredResource<T>[]> {
+        if (type !== undefined) {
+            Validator.assertString(type, 'type');
+        }
+
+        if (!this.host) {
+            throw new Error('getUsedResources: host of this instance is unknown');
+        }
+
+        const baseId = `system.host.${this.host}.usedResources`;
+        const resources: ioBroker.RegisteredResource<T>[] = [];
+
+        const state = await this.getForeignStateAsync(`${baseId}.${type}`);
+
+        if (state && typeof state.val === 'string' && state.val) {
+            try {
+                const parsed: unknown = JSON.parse(state.val);
+                if (Array.isArray(parsed)) {
+                    resources.push(...(parsed as ioBroker.RegisteredResource<T>[]));
+                }
+            } catch {
+                // ignore malformed content
+            }
+        }
+
+        return resources as ioBroker.RegisteredResource<T>[];
+    }
+
+    /**
+     * Query the exclusive resources currently registered as used on the host this instance runs on.
+     *
+     * Reading is done directly from the state's DB (`system.host.<hostname>.usedResources.<type>`), which the
+     * host keeps up to date. Only `registerUsedResource`/`freeUsedResource` go through the host to keep the
+     * registry consistent. Returns the resources of all instances on this host, so the user (or an admin UI)
+     * can present an overview of the occupied resources. Optionally filtered by resource `type`.
+     *
+     * @param type optional resource type to filter for, e.g. "serialPort"; if omitted, all types are returned
+     * @returns the list of registered resources (across all instances of this host)
+     */
+    async getAllUsedResources(): Promise<ioBroker.RegisteredResource[]> {
+        if (!this.host) {
+            throw new Error('getUsedResources: host of this instance is unknown');
+        }
+
+        const baseId = `system.host.${this.host}.usedResources`;
+        const resources: ioBroker.RegisteredResource[] = [];
+
+        const collect = (state: ioBroker.State | null | undefined): void => {
+            if (state && typeof state.val === 'string' && state.val) {
+                try {
+                    const parsed: unknown = JSON.parse(state.val);
+                    if (Array.isArray(parsed)) {
+                        resources.push(...(parsed as ioBroker.RegisteredResource[]));
+                    }
+                } catch {
+                    // ignore malformed content
+                }
+            }
+        };
+
+        const states = await this.getForeignStatesAsync(`${baseId}.*`);
+        for (const id of Object.keys(states)) {
+            collect(states[id]);
+        }
+
+        return resources as ioBroker.RegisteredResource[];
+    }
+
     // external signatures
     /**
      * Writes value into states DB.
