@@ -13,6 +13,20 @@ leads to conflicts, silent failures, and hard-to-debug "device busy" errors.
 The registry gives the user (and the admin UI) a clear overview of occupied vs. free resources per host, so a
 free one can be picked confidently when creating or reconfiguring an instance.
 
+## Who fills the registry
+
+There are two ways an instance's resources end up in the registry:
+
+- **Adapter-managed** — the adapter sets `common.usedResources: true` in its `io-package.json` and calls
+  `registerUsedResource(...)` / `freeUsedResource(...)` itself. Use this when the occupied resources are not
+  simply the configured `native.port` (serial ports, multiple ports, USB devices, …).
+- **Controller-managed (automatic)** — if `common.usedResources` is _not_ set, js-controller tracks the
+  instance for the adapter: when the instance starts, its configured `native.port` (if any) is auto-registered
+  as a `tcpPort`. No adapter code is required.
+
+Whether the controller supports the registry at all can be checked with
+`adapter.supportsFeature('CONTROLLER_USED_RESOURCES')`.
+
 ## How it works
 
 1. A running adapter declares the resources it occupies by calling `registerUsedResource(...)`.
@@ -120,6 +134,7 @@ The host (js-controller) keeps the registry and `isBlocked` in sync with the ins
 | ---------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | Instance start → adapter `register` (1st call) | previous registrations of this instance are dropped, new entry added with `isBlocked = true` |
 | further `register(..., true)`                  | additional entry added with `isBlocked = true`                                               |
+| Instance start (no `common.usedResources`)     | the controller auto-registers `native.port` as a `tcpPort` with `isBlocked = true`           |
 | Instance stop / crash (process exit)           | entries are **kept**, but set to `isBlocked = false`                                         |
 | Instance deleted (controller running)          | all entries of the instance are removed by the host                                          |
 | Instance deleted via CLI (controller stopped)  | the CLI removes the instance's entries from every host's registry states                     |

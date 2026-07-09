@@ -79,7 +79,8 @@ declare global {
             | 'CONTROLLER_UI_UPGRADE'
             | 'ADAPTER_WEBSERVER_UPGRADE'
             | 'CONTROLLER_CMD_EXEC_FILES'
-            | 'CONTROLLER_FEATURE_REQUEST';
+            | 'CONTROLLER_FEATURE_REQUEST'
+            | 'CONTROLLER_USED_RESOURCES';
 
         // #region Used resources
         // ---------------------------------------------------------------------------------------------------

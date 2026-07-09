@@ -220,6 +220,11 @@ let compactGroupController = false;
 let compactGroup: null | number = null;
 const compactProcs: Record<string, CompactProcess> = {};
 const scheduledInstances: Record<string, any> = {};
+/**
+ * In-memory registry of the exclusive resources (serial ports, TCP/UDP ports, USB devices, ...) currently used
+ * by the instances running on this host. Mirrored into `system.host.<name>.usedResources.<type>`.
+ */
+const usedResources = new UsedResourcesRegistry();
 /** If less than this disk space free in %, generate a warning */
 let diskWarningLevel = DEFAULT_DISK_WARNING_LEVEL;
 
@@ -2076,12 +2081,6 @@ async function uploadAdapter(task: UploadTask): Promise<void> {
 }
 
 /**
- * In-memory registry of the exclusive resources (serial ports, TCP/UDP ports, USB devices, ...) currently used
- * by the instances running on this host. The registry is mirrored into `system.host.<name>.usedResources.<type>`.
- */
-const usedResources = new UsedResourcesRegistry();
-
-/**
  * Persist the used resources of a given type into `system.host.<name>.usedResources.<type>`, creating the
  * corresponding object on demand. The state holds the JSON-serialized array of registered resources.
  *
@@ -2173,6 +2172,33 @@ async function loadUsedResources(): Promise<void> {
     } catch (e) {
         logger.warn(`${hostLogPrefix} Cannot load used resources: ${e.message}`);
     }
+}
+
+/**
+ * For adapters that do not manage their used resources themselves (`common.usedResources` not set), let the
+ * controller register the instance's configured TCP port (`native.port`) in the used-resources registry, so the
+ * port shows up as occupied even though the adapter never calls `registerUsedResource` itself.
+ *
+ * @param id the instance id, e.g. "system.adapter.mqtt.0"
+ * @param instance the instance object
+ */
+function autoRegisterUsedResources(id: string, instance: ioBroker.InstanceObject): void {
+    if (instance.common.usedResources) {
+        // the adapter registers its resources itself
+        return;
+    }
+
+    const port = instance.native?.port;
+    const portNumber =
+        typeof port === 'number' ? port : typeof port === 'string' && port.trim() !== '' ? Number(port) : Number.NaN;
+    if (Number.isNaN(portNumber)) {
+        return;
+    }
+
+    const namespace = id.startsWith(SYSTEM_ADAPTER_PREFIX) ? id.substring(SYSTEM_ADAPTER_PREFIX.length) : id;
+    persistUsedResourceTypes(usedResources.register('tcpPort', { port: portNumber }, namespace)).catch(e =>
+        logger.warn(`${hostLogPrefix} Cannot auto-register used resource of ${id}: ${e.message}`),
+    );
 }
 
 /**
@@ -4793,6 +4819,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`,
                             );
                         }
+
+                        // let the controller track the instance's port if the adapter does not do it itself
+                        autoRegisterUsedResources(id, instance);
                     }
                 };
 
@@ -6192,6 +6221,9 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
     await states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
 
     const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
+
+    // the instance is no longer running: keep its resource registrations but mark them as not actively blocked
+    await persistUsedResourceTypes(usedResources.setInstanceBlocked(adapterInstance, false));
 
     const state = await states!.getState(`${adapterInstance}.info.connection`);
 
