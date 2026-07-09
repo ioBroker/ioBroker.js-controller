@@ -6,7 +6,7 @@
 
 # Interface: LogMessage
 
-Defined in: [types-dev/index.d.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/index.d.ts#L259)
+Defined in: [types-dev/index.d.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/index.d.ts#L259)
 
 Log message
 
@@ -16,7 +16,7 @@ Log message
 
 > **\_id**: `number`
 
-Defined in: [types-dev/index.d.ts:261](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/index.d.ts#L261)
+Defined in: [types-dev/index.d.ts:261](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/index.d.ts#L261)
 
 unique ID
 
@@ -26,7 +26,7 @@ unique ID
 
 > **from**: `string`
 
-Defined in: [types-dev/index.d.ts:263](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/index.d.ts#L263)
+Defined in: [types-dev/index.d.ts:263](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/index.d.ts#L263)
 
 id of the source instance
 
@@ -36,7 +36,7 @@ id of the source instance
 
 > **message**: `string`
 
-Defined in: [types-dev/index.d.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/index.d.ts#L269)
+Defined in: [types-dev/index.d.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/index.d.ts#L269)
 
 actual content
 
@@ -46,7 +46,7 @@ actual content
 
 > **severity**: `string`
 
-Defined in: [types-dev/index.d.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/index.d.ts#L265)
+Defined in: [types-dev/index.d.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/index.d.ts#L265)
 
 log level
 
@@ -56,6 +56,6 @@ log level
 
 > **ts**: `number`
 
-Defined in: [types-dev/index.d.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/types-dev/index.d.ts#L267)
+Defined in: [types-dev/index.d.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/index.d.ts#L267)
 
 timestamp
