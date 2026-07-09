@@ -9381,7 +9381,7 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        return resources as ioBroker.RegisteredResource<T>[];
+        return resources;
     }
 
     /**
@@ -9392,7 +9392,6 @@ export class AdapterClass extends EventEmitter {
      * registry consistent. Returns the resources of all instances on this host, so the user (or an admin UI)
      * can present an overview of the occupied resources. Optionally filtered by resource `type`.
      *
-     * @param type optional resource type to filter for, e.g. "serialPort"; if omitted, all types are returned
      * @returns the list of registered resources (across all instances of this host)
      */
     async getAllUsedResources(): Promise<ioBroker.RegisteredResource[]> {
@@ -9421,7 +9420,7 @@ export class AdapterClass extends EventEmitter {
             collect(states[id]);
         }
 
-        return resources as ioBroker.RegisteredResource[];
+        return resources;
     }
 
     // external signatures
