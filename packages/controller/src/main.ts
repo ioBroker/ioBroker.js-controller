@@ -2195,8 +2195,15 @@ function autoRegisterUsedResources(id: string, instance: ioBroker.InstanceObject
         return;
     }
 
+    const data: ioBroker.TcpPortResourceData = { port: portNumber };
+    // if the instance also binds to a specific interface, register it together with the port
+    const bind = instance.native?.bind;
+    if (typeof bind === 'string' && bind.trim() !== '') {
+        data.bind = bind;
+    }
+
     const namespace = id.startsWith(SYSTEM_ADAPTER_PREFIX) ? id.substring(SYSTEM_ADAPTER_PREFIX.length) : id;
-    persistUsedResourceTypes(usedResources.register('tcpPort', { port: portNumber }, namespace)).catch(e =>
+    persistUsedResourceTypes(usedResources.register('tcpPort', data, namespace)).catch(e =>
         logger.warn(`${hostLogPrefix} Cannot auto-register used resource of ${id}: ${e.message}`),
     );
 }
