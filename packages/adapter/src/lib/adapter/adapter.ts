@@ -8976,6 +8976,10 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
     sendToHost(hostName: unknown, command: unknown, message: unknown, callback?: unknown): any {
+        if (typeof message === 'function' && typeof callback === 'undefined') {
+            callback = message;
+            message = undefined;
+        }
         if (typeof message === 'undefined') {
             message = command;
             command = 'send';
