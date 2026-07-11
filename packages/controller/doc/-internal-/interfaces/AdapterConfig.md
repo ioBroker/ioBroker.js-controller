@@ -6,4 +6,4 @@
 
 # Interface: AdapterConfig
 
-Defined in: [types-dev/index.d.ts:431](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/index.d.ts#L431)
+Defined in: [types-dev/index.d.ts:431](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/types-dev/index.d.ts#L431)

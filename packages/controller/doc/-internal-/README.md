@@ -12,7 +12,10 @@
 
 ## Classes
 
+- [AdapterContextBase](classes/AdapterContextBase.md)
+- [AsyncAdapter](classes/AsyncAdapter.md)
 - [Log](classes/Log.md)
+- [MessagingManager](classes/MessagingManager.md)
 - [ObjectsInRedisClient](classes/ObjectsInRedisClient.md)
 - [StateRedisClient](classes/StateRedisClient.md)
 - [UserInterfaceMessagingController](classes/UserInterfaceMessagingController.md)
@@ -23,6 +26,7 @@
 - [ACLObject](interfaces/ACLObject.md)
 - [AdapterCommon](interfaces/AdapterCommon.md)
 - [AdapterConfig](interfaces/AdapterConfig.md)
+- [AdapterContext](interfaces/AdapterContext.md)
 - [AdapterObject](interfaces/AdapterObject.md)
 - [AdapterOptions](interfaces/AdapterOptions.md)
 - [AdapterOptionsConfig](interfaces/AdapterOptionsConfig.md)
@@ -128,7 +132,6 @@
 - [LogMessage](interfaces/LogMessage.md)
 - [Message](interfaces/Message.md)
 - [MessageCallbackInfo](interfaces/MessageCallbackInfo.md)
-- [MessageCallbackObject](interfaces/MessageCallbackObject.md)
 - [MessageRule](interfaces/MessageRule.md)
 - [MessagingControllerOptions](interfaces/MessagingControllerOptions.md)
 - [MetaCommon](interfaces/MetaCommon.md)
@@ -163,6 +166,7 @@
 - [PartialStateObject](interfaces/PartialStateObject.md)
 - [PartialSystemConfigObject](interfaces/PartialSystemConfigObject.md)
 - [PartialUserObject](interfaces/PartialUserObject.md)
+- [PendingReply](interfaces/PendingReply.md)
 - [PermissionSet](interfaces/PermissionSet.md)
 - [ReadDirResult](interfaces/ReadDirResult.md)
 - [RedisConnectionOptions](interfaces/RedisConnectionOptions.md)
@@ -206,6 +210,7 @@
 
 - [Adapter](type-aliases/Adapter.md)
 - [AdapterScopedObject](type-aliases/AdapterScopedObject.md)
+- [AllPropsUnknown](type-aliases/AllPropsUnknown.md)
 - [AnyObject](type-aliases/AnyObject.md)
 - [AnyPartialObject](type-aliases/AnyPartialObject.md)
 - [AtLeastOne](type-aliases/AtLeastOne.md)
