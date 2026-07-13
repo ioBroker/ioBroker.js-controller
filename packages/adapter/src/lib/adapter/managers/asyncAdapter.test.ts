@@ -144,6 +144,24 @@ describe('AsyncAdapter validation', () => {
     });
 });
 
+describe('AsyncAdapter lazy instantiation', () => {
+    it('resolveReply on an unused adapter returns false without constructing the manager', () => {
+        const adapter = new AsyncAdapter(makeContext());
+        const handled = adapter.resolveReply({
+            command: 'cmd',
+            message: {},
+            from: 'system.adapter.inst.0',
+            callback: { ack: true, id: 1, time: Date.now() },
+        } as any);
+        assert.equal(handled, false);
+    });
+
+    it('clearPending on an unused adapter is a no-op', () => {
+        const adapter = new AsyncAdapter(makeContext());
+        assert.doesNotThrow(() => adapter.clearPending());
+    });
+});
+
 describe('AsyncAdapter.clearPending', () => {
     it('rejects pending replies with "Adapter stopped"', async () => {
         const pushMessage = sinon.stub().resolves();

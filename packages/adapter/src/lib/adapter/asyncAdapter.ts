@@ -13,13 +13,19 @@ import { Validator } from '@/lib/adapter/validator.js';
  * and exposes promise-based methods without the legacy `*Async` postfix.
  */
 export class AsyncAdapter {
-    readonly #messaging: MessagingManager;
+    readonly #ctx: AdapterContext;
+    #messagingInstance?: MessagingManager;
 
     /**
      * @param ctx Shared adapter context providing live runtime state
      */
     constructor(ctx: AdapterContext) {
-        this.#messaging = new MessagingManager(ctx);
+        this.#ctx = ctx;
+    }
+
+    /** Lazily-constructed outbound messaging manager. */
+    get #messaging(): MessagingManager {
+        return (this.#messagingInstance ??= new MessagingManager(this.#ctx));
     }
 
     /**
@@ -189,13 +195,13 @@ export class AsyncAdapter {
      * @param obj incoming message object from the messagebox
      */
     resolveReply(obj: ioBroker.Message): boolean {
-        return this.#messaging.resolveCallback(obj);
+        return this.#messagingInstance?.resolveCallback(obj) ?? false;
     }
 
     /**
      * Rejects all pending reply promises and clears their timers (used on stop).
      */
     clearPending(): void {
-        this.#messaging.clearPendingCallbacks();
+        this.#messagingInstance?.clearPendingCallbacks();
     }
 }
