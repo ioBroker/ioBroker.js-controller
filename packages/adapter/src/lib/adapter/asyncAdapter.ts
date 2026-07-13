@@ -1,10 +1,13 @@
 import type {
     AllPropsUnknown,
+    InternalAdapterConfig,
+    InternalGetCertificatesResult,
     NotificationOptions,
     SendToOptions,
     SendToUserInterfaceClientOptions,
 } from '@/lib/_Types.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
+import { CertificateManager } from '@/lib/adapter/managers/CertificateManager.js';
 import { MessagingManager } from '@/lib/adapter/managers/MessagingManager.js';
 import { Validator } from '@/lib/adapter/validator.js';
 
@@ -15,6 +18,7 @@ import { Validator } from '@/lib/adapter/validator.js';
 export class AsyncAdapter {
     readonly #ctx: AdapterContext;
     #messagingInstance?: MessagingManager;
+    #certificatesInstance?: CertificateManager;
 
     /**
      * @param ctx Shared adapter context providing live runtime state
@@ -26,6 +30,11 @@ export class AsyncAdapter {
     /** Lazily-constructed outbound messaging manager. */
     get #messaging(): MessagingManager {
         return (this.#messagingInstance ??= new MessagingManager(this.#ctx));
+    }
+
+    /** Lazily-constructed certificate manager. */
+    get #certificates(): CertificateManager {
+        return (this.#certificatesInstance ??= new CertificateManager(this.#ctx));
     }
 
     /**
@@ -186,6 +195,58 @@ export class AsyncAdapter {
             Validator.assertObject<NotificationOptions>(options, 'options');
         }
         return this.#messaging.registerNotification(scope, category, message, options);
+    }
+
+    /**
+     * Loads SSL certificates by name, falling back to the instance config defaults. File-backed
+     * certificate values are resolved to their content and their paths returned for watching.
+     *
+     * @param publicName public certificate name (defaults to `config.certPublic`)
+     * @param privateName private key name (defaults to `config.certPrivate`)
+     * @param chainedName chained certificate name (defaults to `config.certChained`)
+     */
+    getCertificates(
+        publicName?: string,
+        privateName?: string,
+        chainedName?: string,
+    ): Promise<InternalGetCertificatesResult>;
+    /**
+     * @internal
+     * @param publicName public certificate name
+     * @param privateName private key name
+     * @param chainedName chained certificate name
+     */
+    getCertificates(
+        publicName?: unknown,
+        privateName?: unknown,
+        chainedName?: unknown,
+    ): Promise<InternalGetCertificatesResult>;
+    /**
+     * @param publicName public certificate name
+     * @param privateName private key name
+     * @param chainedName chained certificate name
+     */
+    async getCertificates(
+        publicName?: unknown,
+        privateName?: unknown,
+        chainedName?: unknown,
+    ): Promise<InternalGetCertificatesResult> {
+        const config = this.#ctx.config as InternalAdapterConfig;
+        publicName = publicName || config.certPublic;
+        privateName = privateName || config.certPrivate;
+        chainedName = chainedName || config.certChained;
+
+        if (publicName !== undefined) {
+            Validator.assertString(publicName, 'publicName');
+        }
+        if (privateName !== undefined) {
+            Validator.assertString(privateName, 'privateName');
+        }
+        if (chainedName !== undefined) {
+            Validator.assertString(chainedName, 'chainedName');
+        }
+
+        return this.#certificates.getCertificates({ publicName, privateName, chainedName });
     }
 
     /**

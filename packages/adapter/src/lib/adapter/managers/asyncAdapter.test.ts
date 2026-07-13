@@ -179,3 +179,43 @@ describe('AsyncAdapter.clearPending', () => {
         await assert.rejects(replyPromise, /Adapter stopped/);
     });
 });
+
+describe('AsyncAdapter.getCertificates', () => {
+    const certsObj = {
+        native: {
+            certificates: { defaultPublic: 'PUB', defaultPrivate: 'PRIV' },
+            letsEncrypt: false,
+        },
+    } as any;
+
+    it('delegates to the manager and returns its result', async () => {
+        const getObject = sinon.stub().resolves(certsObj);
+        const adapter = new AsyncAdapter(makeContext({ objects: { getObject } as any }));
+
+        const res = await adapter.getCertificates('defaultPublic', 'defaultPrivate');
+
+        assert.equal(res.certs.cert, 'PUB');
+        assert.equal(res.certs.key, 'PRIV');
+        assert.deepEqual(res.certFilePaths, []);
+    });
+
+    it('falls back to config.cert* defaults when names are omitted', async () => {
+        const getObject = sinon.stub().resolves(certsObj);
+        const adapter = new AsyncAdapter(
+            makeContext({
+                objects: { getObject } as any,
+                config: { certPublic: 'defaultPublic', certPrivate: 'defaultPrivate' } as any,
+            }),
+        );
+
+        const res = await adapter.getCertificates();
+
+        assert.equal(res.certs.cert, 'PUB');
+        assert.equal(res.certs.key, 'PRIV');
+    });
+
+    it('rejects when a provided name is not a string', async () => {
+        const adapter = new AsyncAdapter(makeContext({ objects: { getObject: sinon.stub() } as any }));
+        await assert.rejects(() => adapter.getCertificates(42, 'defaultPrivate'), /publicName/);
+    });
+});
