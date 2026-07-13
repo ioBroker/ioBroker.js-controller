@@ -1204,6 +1204,9 @@ export class AdapterClass extends EventEmitter {
             get common() {
                 return self.common;
             },
+            get config() {
+                return self.config;
+            },
         };
 
         this.#async = new AsyncAdapter(this.#context);
