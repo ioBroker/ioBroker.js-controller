@@ -367,7 +367,9 @@ export class Install {
         });
 
         // code 1 is sometimes a real error and sometimes a strange error, where everything is installed but still the error
-        const isSuccess = result.success || (result.exitCode === 1 && !result.stderr.startsWith('npm ERR!'));
+        const isSuccess =
+            result.success ||
+            (result.exitCode === 1 && !result.stderr.startsWith('npm ERR!') && !result.stderr.startsWith('npm error '));
 
         if (isSuccess) {
             // Determine where the packet would be installed if npm succeeds

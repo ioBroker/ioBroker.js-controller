@@ -3,6 +3,9 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (@krobipd) Fixed a failed adapter install/update being reported as success on npm >= 10.6.0: when npm exits with code 1 the result was only treated as an error if stderr started with the old `npm ERR!` prefix, which modern npm no longer uses (`npm error`)
+
 ## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling
 
