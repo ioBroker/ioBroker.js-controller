@@ -8812,9 +8812,10 @@ export class AdapterClass extends EventEmitter {
         const cb = callback as ioBroker.MessageCallback | undefined;
 
         if (typeof cb === 'function') {
-            this.sendToAsync(instanceName, command, message, options)
-                .then((reply: any) => cb(reply))
-                .catch((err: Error) => cb(err));
+            this.sendToAsync(instanceName, command, message, options).then(
+                (reply: any) => cb(reply),
+                (err: Error) => cb(err),
+            );
             return;
         }
 
@@ -8952,9 +8953,10 @@ export class AdapterClass extends EventEmitter {
 
         // A broadcast (hostName === null) yields many replies, so the callback is ignored — matching legacy behavior.
         if (typeof cb === 'function' && hostName !== null) {
-            this.sendToHostAsync(hostName, command, message)
-                .then((reply: any) => cb(reply))
-                .catch((err: Error) => cb(err));
+            this.sendToHostAsync(hostName, command, message).then(
+                (reply: any) => cb(reply),
+                (err: Error) => cb(err),
+            );
             return;
         }
 
