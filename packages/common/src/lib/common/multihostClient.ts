@@ -1,10 +1,14 @@
 /**
- * Multihost discovery client used by the CLI setup utilities.
+ * Multihost discovery client.
  *
  * This module implements a lightweight UDP-based discovery protocol (multicast/broadcast)
  * to find other ioBroker hosts on the local network. It supports an optional
  * password-based handshake and returns the objects/states database configuration
  * necessary for remote setup and connection.
+ *
+ * It is used both by the CLI setup utilities (`iobroker multihost ...`) and by the
+ * controller message handler `multihostConnect`, which lets the Admin GUI trigger a
+ * multihost connection to a host that was discovered via mDNS.
  */
 
 import dgram from 'node:dgram';

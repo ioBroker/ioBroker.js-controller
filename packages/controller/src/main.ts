@@ -17,6 +17,7 @@ import {
     isLocalObjectsDbServer,
     isLocalStatesDbServer,
     NotificationHandler,
+    MHClient,
     getObjectsConstructor,
     getStatesConstructor,
     zipFiles,
@@ -2949,6 +2950,92 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             const result = startMultihost();
             if (msg.callback) {
                 sendTo(msg.from, msg.command, { result: result }, msg.callback);
+            }
+            break;
+        }
+
+        case 'multihostConnect': {
+            // Triggered by the Admin GUI after a host was discovered via the mDNS plugin.
+            // Performs the existing multihost handshake (browse => auth => browse) against the
+            // discovered master, stores the received objects/states DB config and restarts.
+            const message = msg.message || {};
+            const ip: string = message.ip;
+            const password: string = message.password || '';
+
+            if (!ip) {
+                if (msg.callback) {
+                    sendTo(msg.from, msg.command, { result: false, error: 'No IP address provided' }, msg.callback);
+                }
+                break;
+            }
+
+            logger.info(`${hostLogPrefix} Multihost connect requested to "${ip}"`);
+
+            const result = await new Promise<{ result: boolean; error?: string; restarting?: boolean }>(resolve => {
+                const mhClient = new MHClient();
+                mhClient.connect(ip, password, async (err, oObjects, oStates, ipHost) => {
+                    if (err) {
+                        resolve({ result: false, error: err.message });
+                        return;
+                    }
+                    if (!oObjects || !oStates) {
+                        resolve({ result: false, error: 'No configuration received from remote host' });
+                        return;
+                    }
+                    try {
+                        const configFile = tools.getConfigFileName();
+                        const config: ioBroker.IoBrokerJson = fs.readJsonSync(configFile);
+                        config.objects = oObjects;
+                        config.states = oStates;
+
+                        const hasLocalObjectsServer = await isLocalObjectsDbServer(
+                            config.objects.type,
+                            config.objects.host,
+                            true,
+                        );
+                        const hasLocalStatesServer = await isLocalStatesDbServer(
+                            config.states.type,
+                            config.states.host,
+                            true,
+                        );
+
+                        if (hasLocalObjectsServer || hasLocalStatesServer) {
+                            resolve({
+                                result: false,
+                                error: `The remote host points back to a local database (${tools.getLocalAddress()}). This host cannot join it.`,
+                            });
+                            return;
+                        }
+
+                        // If the remote delivers a "listen all" address (0.0.0.0 / ::), use its actual IP instead.
+                        const replaceListenAll = (host: string | string[]): string | string[] =>
+                            Array.isArray(host)
+                                ? host.map(h => (tools.isListenAllAddress(h) ? (ipHost ?? '') : h))
+                                : tools.isListenAllAddress(host)
+                                  ? (ipHost ?? '')
+                                  : host;
+                        config.objects.host = replaceListenAll(config.objects.host);
+                        config.states.host = replaceListenAll(config.states.host);
+
+                        fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+                        logger.info(
+                            `${hostLogPrefix} Multihost connect to "${ip}" succeeded. Restarting controller...`,
+                        );
+                        resolve({ result: true, restarting: true });
+                    } catch (e) {
+                        resolve({ result: false, error: `Cannot store new configuration: ${e.message}` });
+                    }
+                });
+            });
+
+            if (msg.callback) {
+                sendTo(msg.from, msg.command, result, msg.callback);
+            }
+
+            if (result.restarting) {
+                // give the response time to be delivered before restarting
+                await wait(1_000);
+                await restart(() => !isStopping && stop(false));
             }
             break;
         }

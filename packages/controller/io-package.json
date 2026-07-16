@@ -189,6 +189,12 @@
           "@iobroker",
           "iobroker.js-controller"
         ]
+      },
+      "mdns": {
+        "enabled": true,
+        "announce": true,
+        "discover": true,
+        "announceInterval": 60
       }
     }
   },
