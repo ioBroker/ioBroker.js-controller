@@ -132,6 +132,7 @@ import type {
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { AsyncAdapter } from '@/lib/adapter/asyncAdapter.js';
+import { CERTIFICATES_OBJECT_ID } from '@/lib/adapter/managers/CertificateManager.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
 import { SYSTEM_ADAPTER_PREFIX, DEFAULT_OBJECTS_WARN_LIMIT } from '@iobroker/js-controller-common-db/constants';
 import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
@@ -1013,6 +1014,10 @@ export class AdapterClass extends EventEmitter {
     #context!: AdapterContext;
     #async!: AsyncAdapter;
     readonly #certWatchers = new Map<string, fs.FSWatcher>();
+    /** True once `system.certificates` is subscribed, i.e. certificates have been requested */
+    #certObjectSubscribed = false;
+    /** True once a certificate change scheduled a restart, so concurrent changes schedule only one */
+    #certRestartScheduled = false;
 
     /**
      * @param options Adapter options, or the adapter name as a string
@@ -2759,6 +2764,15 @@ export class AdapterClass extends EventEmitter {
                 }
                 this.#certWatchers.clear();
 
+                if (this.#certObjectSubscribed && this.#objects) {
+                    this.#certObjectSubscribed = false;
+                    try {
+                        await this.#objects.unsubscribeAsync(CERTIFICATES_OBJECT_ID);
+                    } catch {
+                        // ignore, we are stopping anyway
+                    }
+                }
+
                 if (this.#states && updateAliveState) {
                     this.outputCount++;
                     try {
@@ -2848,8 +2862,7 @@ export class AdapterClass extends EventEmitter {
             }
             try {
                 const watcher = fs.watch(certFile, (_eventType, filename) => {
-                    this._logger.warn(`${this.namespaceLog} New certificate "${filename}" detected. Restart adapter`);
-                    setTimeout(() => this._stop({ isPause: false, isScheduled: true }), 2_000);
+                    this.#scheduleCertificateRestart(`New certificate "${filename}" detected`);
                 });
                 this.#certWatchers.set(certFile, watcher);
             } catch (e: any) {
@@ -2859,8 +2872,49 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Loads SSL certificates by name and installs restart-on-change watchers for any file-backed
-     * certificate values.
+     * Schedules a graceful restart, so the adapter reloads its certificates. Called by both the
+     * file watchers and the `system.certificates` subscription; the first caller wins, so a change
+     * seen through both channels restarts the adapter only once.
+     *
+     * @param reason human-readable cause, logged as a warning
+     */
+    #scheduleCertificateRestart(reason: string): void {
+        if (this.#certRestartScheduled) {
+            return;
+        }
+        this.#certRestartScheduled = true;
+        this._logger.warn(`${this.namespaceLog} ${reason}. Restart adapter`);
+        setTimeout(() => this._stop({ isPause: false, isScheduled: true }), 2_000);
+    }
+
+    /**
+     * Subscribes to the `system.certificates` object, so inline (text) certificates are watched the
+     * same way file-backed ones are watched on disk. Subscribing on the system level channel keeps
+     * these events out of the adapter's own `objectChange` handler.
+     *
+     * Called after certificates have been requested, so only adapters actually using certificates
+     * pay for the subscription.
+     */
+    async #subscribeCertObject(): Promise<void> {
+        if (this.#certObjectSubscribed || !this.#objects) {
+            return;
+        }
+        // set before awaiting, so concurrent getCertificates calls subscribe only once
+        this.#certObjectSubscribed = true;
+        try {
+            await this.#objects.subscribeAsync(CERTIFICATES_OBJECT_ID);
+        } catch (e: any) {
+            this.#certObjectSubscribed = false;
+            this._logger.error(
+                `${this.namespaceLog} Cannot watch certificate object ${CERTIFICATES_OBJECT_ID}: ${e.message}`,
+            );
+        }
+    }
+
+    /**
+     * Loads SSL certificates by name and installs restart-on-change watchers: file watchers for
+     * file-backed certificate values, and a subscription to `system.certificates` covering inline
+     * ones and repointed paths.
      *
      * @param publicName public certificate name (defaults to `config.certPublic`)
      * @param privateName private key name (defaults to `config.certPrivate`)
@@ -2877,6 +2931,7 @@ export class AdapterClass extends EventEmitter {
             chainedName,
         );
         this.#watchCertFiles(certFilePaths);
+        await this.#subscribeCertObject();
         return [certs, useLetsEncrypt];
     }
 
@@ -12968,6 +13023,14 @@ export class AdapterClass extends EventEmitter {
                     this._stop().catch(e =>
                         this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`),
                     );
+                    return;
+                }
+
+                // a certificate we are using has been changed => restart to reload it
+                if (id === CERTIFICATES_OBJECT_ID) {
+                    if (this.#async.hasRelevantCertificateChange(obj as ioBroker.OtherObject | null)) {
+                        this.#scheduleCertificateRestart('Changed certificate detected');
+                    }
                     return;
                 }
 

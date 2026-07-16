@@ -250,6 +250,17 @@ export class AsyncAdapter {
     }
 
     /**
+     * Tells whether a new version of the `system.certificates` object changes one of the certificates
+     * handed out by the last {@link getCertificates} call. Returns false if certificates were never
+     * requested, so unrelated certificate edits do not concern this adapter.
+     *
+     * @param obj the new `system.certificates` object, or null/undefined if it was deleted
+     */
+    hasRelevantCertificateChange(obj: ioBroker.OtherObject | null | undefined): boolean {
+        return this.#certificatesInstance?.hasRelevantChange(obj) ?? false;
+    }
+
+    /**
      * Resolves a pending reply promise for an acked messagebox message.
      * Returns true if a pending entry was found and consumed.
      *

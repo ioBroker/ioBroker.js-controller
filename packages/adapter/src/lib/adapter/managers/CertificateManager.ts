@@ -4,13 +4,53 @@ import type { InternalGetCertificatesResult } from '../../_Types.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
 import { AdapterContextBase } from '@/lib/adapter/managers/AdapterContextBase.js';
 
+/** ID of the object holding all configured certificates */
+export const CERTIFICATES_OBJECT_ID = 'system.certificates';
+
 /** Fetches SSL certificates from `system.certificates`, resolving file-backed values to their contents. */
 export class CertificateManager extends AdapterContextBase {
+    /**
+     * Raw (unresolved) values of the certificates handed out by the last {@link getCertificates} call,
+     * keyed by certificate name. Used to tell a relevant change of `system.certificates` from an
+     * unrelated one. `undefined` until certificates have been requested at least once.
+     */
+    #usedCertificates?: Map<string, string>;
+
     /**
      * @param ctx Shared adapter context providing live runtime state
      */
     constructor(ctx: AdapterContext) {
         super(ctx);
+    }
+
+    /**
+     * Tells whether a new version of the `system.certificates` object actually changes one of the
+     * certificates handed out by the last {@link getCertificates} call. Unrelated certificates being
+     * added, changed or removed are ignored, so that editing some other adapter's certificate does
+     * not restart this one.
+     *
+     * Compares the raw (unresolved) values: for a file-backed certificate that is the path, so
+     * repointing it to a different file counts as a change, while a change of the file content is
+     * left to the file watcher.
+     *
+     * @param obj the new `system.certificates` object, or null/undefined if it was deleted
+     */
+    hasRelevantChange(obj: ioBroker.OtherObject | null | undefined): boolean {
+        const usedCertificates = this.#usedCertificates;
+        if (!usedCertificates) {
+            // certificates were never requested, so nothing can have changed for us
+            return false;
+        }
+
+        const certificates: Record<string, string> | undefined = obj?.native?.certificates;
+
+        for (const [name, value] of usedCertificates) {
+            if (certificates?.[name] !== value) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -35,7 +75,7 @@ export class CertificateManager extends AdapterContextBase {
 
         let obj: ioBroker.OtherObject | undefined | null;
         try {
-            obj = await objects.getObject('system.certificates');
+            obj = await objects.getObject(CERTIFICATES_OBJECT_ID);
         } catch {
             // ignore
         }
@@ -83,6 +123,14 @@ export class CertificateManager extends AdapterContextBase {
             cert: this.#resolveCert(obj.native.certificates[publicName], certFilePaths),
             ca,
         };
+
+        // remember the raw values, so a change of `system.certificates` can be told from an unrelated one
+        this.#usedCertificates = new Map<string, string>();
+        for (const name of [publicName, privateName, chainedName]) {
+            if (name) {
+                this.#usedCertificates.set(name, obj.native.certificates[name]);
+            }
+        }
 
         return { certs, useLetsEncrypt: obj.native.letsEncrypt, certFilePaths };
     }
