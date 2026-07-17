@@ -433,7 +433,7 @@ export class Install {
 
         const errorFilePath = result.stderr
             .split('\n')
-            ?.find(line => line.startsWith('npm ERR! dest'))
+            ?.find(line => line.startsWith('npm ERR! dest') || line.startsWith('npm error dest'))
             ?.split('dest')[1]
             .trim();
 
