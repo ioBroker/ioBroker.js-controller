@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@krobipd) Fixed a failed adapter install/update being reported as success on npm >= 10.6.0
 * (@krobipd) Fixed the automatic ENOTEMPTY recovery not removing the blocking npm temp directory on npm >= 10.6.0
 
 ## 7.2.2 (2026-06-16)
