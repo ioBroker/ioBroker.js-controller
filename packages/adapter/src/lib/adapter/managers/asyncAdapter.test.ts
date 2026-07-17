@@ -13,6 +13,7 @@ function makeContext(over: Partial<AdapterContext> = {}): AdapterContext {
         states: null,
         objects: null,
         common: undefined,
+        config: {} as ioBroker.AdapterConfig,
         host: 'localhost',
         ...over,
     };
@@ -143,6 +144,24 @@ describe('AsyncAdapter validation', () => {
     });
 });
 
+describe('AsyncAdapter lazy instantiation', () => {
+    it('resolveReply on an unused adapter returns false without constructing the manager', () => {
+        const adapter = new AsyncAdapter(makeContext());
+        const handled = adapter.resolveReply({
+            command: 'cmd',
+            message: {},
+            from: 'system.adapter.inst.0',
+            callback: { ack: true, id: 1, time: Date.now() },
+        } as any);
+        assert.equal(handled, false);
+    });
+
+    it('clearPending on an unused adapter is a no-op', () => {
+        const adapter = new AsyncAdapter(makeContext());
+        assert.doesNotThrow(() => adapter.clearPending());
+    });
+});
+
 describe('AsyncAdapter.clearPending', () => {
     it('rejects pending replies with "Adapter stopped"', async () => {
         const pushMessage = sinon.stub().resolves();
@@ -158,5 +177,45 @@ describe('AsyncAdapter.clearPending', () => {
         adapter.clearPending();
 
         await assert.rejects(replyPromise, /Adapter stopped/);
+    });
+});
+
+describe('AsyncAdapter.getCertificates', () => {
+    const certsObj = {
+        native: {
+            certificates: { defaultPublic: 'PUB', defaultPrivate: 'PRIV' },
+            letsEncrypt: false,
+        },
+    } as any;
+
+    it('delegates to the manager and returns its result', async () => {
+        const getObject = sinon.stub().resolves(certsObj);
+        const adapter = new AsyncAdapter(makeContext({ objects: { getObject } as any }));
+
+        const res = await adapter.getCertificates('defaultPublic', 'defaultPrivate');
+
+        assert.equal(res.certs.cert, 'PUB');
+        assert.equal(res.certs.key, 'PRIV');
+        assert.deepEqual(res.certFilePaths, []);
+    });
+
+    it('falls back to config.cert* defaults when names are omitted', async () => {
+        const getObject = sinon.stub().resolves(certsObj);
+        const adapter = new AsyncAdapter(
+            makeContext({
+                objects: { getObject } as any,
+                config: { certPublic: 'defaultPublic', certPrivate: 'defaultPrivate' } as any,
+            }),
+        );
+
+        const res = await adapter.getCertificates();
+
+        assert.equal(res.certs.cert, 'PUB');
+        assert.equal(res.certs.key, 'PRIV');
+    });
+
+    it('rejects when a provided name is not a string', async () => {
+        const adapter = new AsyncAdapter(makeContext({ objects: { getObject: sinon.stub() } as any }));
+        await assert.rejects(() => adapter.getCertificates(42, 'defaultPrivate'), /publicName/);
     });
 });

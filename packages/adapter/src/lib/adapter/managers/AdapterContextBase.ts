@@ -54,6 +54,11 @@ export abstract class AdapterContextBase {
         return this.#ctx.common;
     }
 
+    /** Current adapter instance config (native) */
+    protected get config(): ioBroker.AdapterConfig {
+        return this.#ctx.config;
+    }
+
     /** Current host name (may be undefined before init) */
     protected get host(): string | undefined {
         return this.#ctx.host;

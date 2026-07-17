@@ -440,6 +440,16 @@ export type GetCertificatesCallback = (
 
 export type GetCertificatesPromiseReturnType = [cert: ioBroker.Certificates, useLetsEncryptCert?: boolean];
 
+/** Result of {@link CertificateManager.getCertificates}: certs, letsEncrypt flag, and file-backed cert paths to watch */
+export interface InternalGetCertificatesResult {
+    /** The resolved certificate content */
+    certs: ioBroker.Certificates;
+    /** Whether Let's Encrypt certificates are configured */
+    useLetsEncrypt?: boolean;
+    /** Paths of file-backed certificate values that were read, for the caller to watch */
+    certFilePaths: string[];
+}
+
 /** Options for reading the SSL certificates */
 export interface InternalGetCertificatesOptions {
     /** Name of the public certificate */
