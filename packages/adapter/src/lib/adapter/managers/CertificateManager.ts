@@ -41,8 +41,7 @@ export class CertificateManager extends AdapterContextBase {
         }
 
         if (
-            !obj ||
-            !obj.native.certificates ||
+            !obj?.native.certificates ||
             !publicName ||
             !privateName ||
             !obj.native.certificates[publicName] ||
