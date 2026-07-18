@@ -8,7 +8,7 @@
  */
 
 import fs from 'fs-extra';
-import { tools } from '@iobroker/js-controller-common';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'node:util';
 import axios from 'axios';
@@ -17,6 +17,8 @@ import { join } from 'node:path';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { dbConnect } from '@/lib/setup/dbConnection.js';
 
 const hostname = tools.getHostName();
 
@@ -963,5 +965,87 @@ export class Upload {
         }
 
         return name;
+    }
+}
+
+/**
+ * @param options The process command options
+ */
+export function processCommandUpload(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    const { showHelp } = options.commandOptions;
+
+    const name = args[0];
+    const subTree = args[1];
+    if (name) {
+        dbConnect(params, async ({ objects, states }) => {
+            const upload = new Upload({ states, objects });
+
+            if (name === 'all') {
+                try {
+                    const objs = await objects.getObjectListAsync({
+                        startkey: 'system.adapter.',
+                        endkey: 'system.adapter.\u9999',
+                    });
+
+                    if (objs) {
+                        const adapters = [];
+
+                        for (const row of objs.rows) {
+                            if (row.value.type !== 'adapter') {
+                                continue;
+                            }
+
+                            adapters.push(
+                                tools.isObject(row.value.common.name)
+                                    ? row.value.common.name.en
+                                    : row.value.common.name,
+                            );
+                        }
+
+                        await upload.uploadAdapterFullAsync(adapters);
+                    }
+                    callback();
+                } catch (err) {
+                    console.error(`Cannot upload all adapters: ${err.message}`);
+                    return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
+                }
+            } else {
+                // if upload of file
+                if (name.includes('.')) {
+                    if (!subTree) {
+                        console.log(
+                            `Please specify target name, like:\n${tools.appName} upload /file/picture.png /vis-2.0/main/img/picture.png`,
+                        );
+                        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+                    }
+
+                    try {
+                        const newName = await upload.uploadFile(name, subTree);
+                        console.log(`File "${name}" is successfully saved under ${newName}`);
+                        return void callback();
+                    } catch (err) {
+                        console.error(`Cannot upload file "${name}": ${err.message}`);
+                        return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
+                    }
+                } else {
+                    try {
+                        if (subTree) {
+                            await upload.uploadAdapter(name, false, true, subTree);
+                        } else {
+                            await upload.uploadAdapterFullAsync([name]);
+                        }
+                        return void callback();
+                    } catch (err) {
+                        console.error(`Cannot upload files "${name}": ${err.message}`);
+                        return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
+                    }
+                }
+            }
+        });
+    } else {
+        console.log('No adapter name found!');
+        showHelp();
+        return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
     }
 }

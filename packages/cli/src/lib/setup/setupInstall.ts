@@ -23,7 +23,10 @@ import { getRepository } from '@/lib/setup/utils.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '@/lib/_Types.js';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
 import { IoBrokerError } from '@/lib/setup/customError.js';
+import { dbConnect } from '@/lib/setup/dbConnection.js';
+import * as CLITools from '@/lib/cli/cliTools.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 
 // eslint-disable-next-line unicorn/prefer-module
@@ -1403,7 +1406,7 @@ export class Install {
      */
     private async _deleteAdapterFiles(adapter: string, metaFilesToDelete: string[]): Promise<void> {
         // special files, which are not meta (vis widgets), combined with meta object ids
-        const filesToDelete = [
+        const filesToDelete: { id: string; name?: string }[] = [
             { id: 'vis', name: `widgets/${adapter}` },
             { id: 'vis', name: `widgets/${adapter}.html` },
             { id: 'vis-2', name: `widgets/${adapter}` },
@@ -1980,5 +1983,205 @@ export class Install {
         }
 
         return instances as ioBroker.InstanceObject[];
+    }
+}
+
+/**
+ * @param options options provided by the processCommand dispatcher
+ */
+export function processCommandUrl(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+
+    let url = args[0];
+    const name = args[1];
+
+    if (!url) {
+        console.log('Please provide a URL to install from and optionally a name of the adapter to install');
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+
+    if (url[0] === '"' && url[url.length - 1] === '"') {
+        url = url.substring(1, url.length - 1);
+    }
+    url = url.trim();
+
+    dbConnect(params, async ({ objects, states }) => {
+        const install = new Install({
+            objects,
+            states,
+            processExit: callback,
+            params,
+        });
+
+        try {
+            await install.installAdapterFromUrl(url, name);
+            return void callback(EXIT_CODES.NO_ERROR);
+        } catch (e) {
+            console.error(`Could not install adapter from url: ${e.message}`);
+            return void callback(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
+        }
+    });
+}
+
+/**
+ * @param options options provided by the processCommand dispatcher
+ */
+export function processCommandInstall(options: ProcessCommandOptions): void {
+    const { command, args, params, callback } = options;
+    const { showHelp } = options.commandOptions;
+
+    let name = args[0];
+    let instance: string | undefined = args[1];
+    let repoUrl: string | undefined = args[2];
+
+    if (parseInt(instance, 10).toString() !== (instance || '').toString()) {
+        repoUrl = instance;
+        instance = undefined;
+    }
+    if (parseInt(repoUrl, 10).toString() === (repoUrl || '').toString()) {
+        const temp = instance;
+        instance = repoUrl;
+        repoUrl = temp;
+    }
+    if (instance && parseInt(instance, 10).toString() === (instance || '').toString()) {
+        params.instance = parseInt(instance, 10);
+    }
+
+    // If user accidentally wrote tools.appName.adapter => remove adapter
+    name = CLITools.normalizeAdapterName(name);
+
+    const parsedName = CLITools.splitAdapterOrInstanceIdentifierWithVersion(name);
+    if (!parsedName) {
+        console.log('Invalid adapter name for install');
+        showHelp();
+        return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+    }
+
+    // split the adapter into its parts if necessary
+    if (parsedName.instance !== null) {
+        params.instance = parsedName.instance;
+    }
+    name = parsedName.name;
+    const installName = parsedName.nameWithVersion;
+
+    const adapterDir = tools.getAdapterDir(name);
+
+    dbConnect(params, async ({ objects, states }) => {
+        const install = new Install({
+            objects,
+            states,
+            processExit: callback,
+            params,
+        });
+
+        if (params.host && params.host !== tools.getHostName()) {
+            // if host argument provided we should check, that host actually exists in mh environment
+            let obj;
+            try {
+                obj = await objects.getObjectAsync(`system.host.${params.host}`);
+            } catch (err) {
+                console.warn(`Could not check existence of host "${params.host}": ${err.message}`);
+            }
+
+            if (!obj) {
+                console.error(`Cannot add instance to non-existing host "${params.host}"`);
+                return void callback(EXIT_CODES.NON_EXISTING_HOST);
+            }
+        }
+
+        if (!adapterDir || !fs.existsSync(adapterDir)) {
+            try {
+                const { stoppedList } = await install.downloadPacket(repoUrl, installName);
+                await install.installAdapter(installName, repoUrl);
+                await install.enableInstances(stoppedList, true); // even if unlikely make sure to re-enable disabled instances
+                if (command !== 'install' && command !== 'i') {
+                    await install.createInstance(name, params);
+                }
+                return void callback();
+            } catch (e) {
+                console.error(`adapter "${name}" cannot be installed: ${e.message}`);
+                return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
+            }
+        } else if (command !== 'install' && command !== 'i') {
+            try {
+                await install.createInstance(name, params);
+                return void callback();
+            } catch (err) {
+                console.error(`adapter "${name}" cannot be installed: ${err.message}`);
+                return void callback(EXIT_CODES.UNKNOWN_ERROR);
+            }
+        } else {
+            console.log(`adapter "${name}" already installed. Use "upgrade" to upgrade to a newer version.`);
+            return void callback(EXIT_CODES.ADAPTER_ALREADY_INSTALLED);
+        }
+    });
+}
+
+/**
+ * @param options options provided by the processCommand dispatcher
+ */
+export function processCommandDelete(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    const { showHelp } = options.commandOptions;
+
+    let adapter = args[0];
+    let instance = args[1];
+
+    // The adapter argument is required
+    if (!adapter) {
+        showHelp();
+        return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+    }
+    // If the user accidentally wrote <tools.appName>.adapter,
+    // remove <tools.appName> from the adapter name
+    adapter = CLITools.normalizeAdapterName(adapter);
+
+    // Avoid deleting stuff we don't want to delete
+    // e.g. `system.adapter.*`
+    if (!instance) {
+        // Ensure that adapter contains a valid adapter (without instance nr)
+        // or instance (with instance nr) identifier
+        if (!CLITools.validateAdapterOrInstanceIdentifier(adapter)) {
+            showHelp();
+            return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+        }
+        // split the adapter into adapter + instance if necessary
+        if (adapter.indexOf('.') > -1) {
+            [adapter, instance] = adapter.split('.', 2);
+        }
+    } else {
+        // ensure that adapter contains a valid adapter identifier
+        // and the instance is a number
+        if (!CLITools.validateAdapterIdentifier(adapter) || !/^\d+$/.test(instance)) {
+            showHelp();
+            return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+        }
+    }
+
+    if (instance) {
+        dbConnect(params, async ({ objects, states }) => {
+            const install = new Install({
+                objects,
+                states,
+                processExit: callback,
+                params,
+            });
+
+            console.log(`Delete instance "${adapter}.${instance}"`);
+            await install.deleteInstance(adapter, parseInt(instance));
+            callback();
+        });
+    } else {
+        dbConnect(params, async ({ objects, states }) => {
+            const install = new Install({
+                objects,
+                states,
+                processExit: callback,
+                params,
+            });
+            console.log(`Delete adapter "${adapter}"`);
+            const resultCode = await install.deleteAdapter(adapter);
+            callback(resultCode);
+        });
     }
 }

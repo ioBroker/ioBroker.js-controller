@@ -1,7 +1,9 @@
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import { tools } from '@iobroker/js-controller-common';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
 import jwt from 'jsonwebtoken';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { dbConnect } from '@/lib/setup/dbConnection.js';
 
 /** Options for the license command */
 export interface CLILicenseOptions {
@@ -96,4 +98,30 @@ export class License {
             console.error(`no installations of ${adapter} found`);
         }
     }
+}
+
+/**
+ * @param options Process command options
+ */
+export function processCommandLicense(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+
+    const file = args[0];
+    if (!file) {
+        console.warn(
+            `Please specify the path to the license file or place license text directly!\n${tools.appName.toLowerCase()} license <license.file or license.text>`,
+        );
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+    dbConnect(params, async ({ objects }) => {
+        const license = new License({ objects });
+        try {
+            await license.setLicense(file);
+            console.log(`License updated.`);
+            return void callback();
+        } catch (err) {
+            console.error(`Cannot update license: ${err.message}`);
+            return void callback(EXIT_CODES.CANNOT_UPDATE_LICENSE);
+        }
+    });
 }
