@@ -370,7 +370,9 @@ export class Install {
         });
 
         // code 1 is sometimes a real error and sometimes a strange error, where everything is installed but still the error
-        const isSuccess = result.success || (result.exitCode === 1 && !result.stderr.startsWith('npm ERR!'));
+        const isSuccess =
+            result.success ||
+            (result.exitCode === 1 && !result.stderr.startsWith('npm ERR!') && !result.stderr.startsWith('npm error '));
 
         if (isSuccess) {
             // Determine where the packet would be installed if npm succeeds
@@ -434,7 +436,7 @@ export class Install {
 
         const errorFilePath = result.stderr
             .split('\n')
-            ?.find(line => line.startsWith('npm ERR! dest'))
+            ?.find(line => line.startsWith('npm ERR! dest') || line.startsWith('npm error dest'))
             ?.split('dest')[1]
             .trim();
 

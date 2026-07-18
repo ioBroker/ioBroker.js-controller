@@ -2,7 +2,7 @@ import config, { esmConfig } from '@iobroker/eslint-config';
 
 export default [
     {
-        ignores: ['**/build/*'],
+        ignores: ['**/build/*', 'packages/adapter/register-test.mjs'],
     },
     ...config,
     ...esmConfig,

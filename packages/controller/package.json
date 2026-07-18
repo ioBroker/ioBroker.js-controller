@@ -1,7 +1,7 @@
 {
     "name": "iobroker.js-controller",
     "type": "module",
-    "version": "7.2.3-alpha.7-20260708-0b1c41301",
+    "version": "7.2.3-alpha.10-20260718-b0890493e",
     "engines": {
         "node": ">=22.0.0"
     },
@@ -23,7 +23,7 @@
         "@iobroker/plugin-base": "~3.0.3",
         "@iobroker/plugin-sentry": "~3.1.2",
         "axios": "^1.18.0",
-        "cron-parser": "^5.5.0",
+        "cron-parser": "^5.6.1",
         "debug": "^4.4.3",
         "decache": "^4.6.2",
         "deep-clone": "^3.0.3",

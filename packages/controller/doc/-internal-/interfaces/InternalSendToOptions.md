@@ -6,7 +6,7 @@
 
 # Interface: InternalSendToOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:676](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/_Types.ts#L676)
+Defined in: [adapter/src/lib/\_Types.ts:686](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L686)
 
 Options for sending a message to another instance
 
@@ -14,11 +14,12 @@ Options for sending a message to another instance
 
 ### callback?
 
-> `optional` **callback?**: [`MessageCallback`](../type-aliases/MessageCallback.md) \| [`MessageCallbackInfo`](MessageCallbackInfo.md)
+> `optional` **callback?**: [`MessageCallbackInfo`](MessageCallbackInfo.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:684](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/_Types.ts#L684)
+Defined in: [adapter/src/lib/\_Types.ts:697](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L697)
 
-Called with the response
+Legacy callback-info object to pass through as the message's callback header.
+Function callbacks are not accepted here — use `expectReply` for the reply-wait path.
 
 ***
 
@@ -26,9 +27,19 @@ Called with the response
 
 > **command**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:680](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/_Types.ts#L680)
+Defined in: [adapter/src/lib/\_Types.ts:690](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L690)
 
 The command to send
+
+***
+
+### expectReply?
+
+> `optional` **expectReply?**: `boolean`
+
+Defined in: [adapter/src/lib/\_Types.ts:699](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L699)
+
+When true, the manager registers a promise resolver and resolves with the reply
 
 ***
 
@@ -36,7 +47,7 @@ The command to send
 
 > **instanceName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:678](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/_Types.ts#L678)
+Defined in: [adapter/src/lib/\_Types.ts:688](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L688)
 
 The instance to send the message to
 
@@ -46,7 +57,7 @@ The instance to send the message to
 
 > **message**: `any`
 
-Defined in: [adapter/src/lib/\_Types.ts:682](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/_Types.ts#L682)
+Defined in: [adapter/src/lib/\_Types.ts:692](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L692)
 
 The message payload
 
@@ -56,6 +67,6 @@ The message payload
 
 > `optional` **options?**: [`SendToOptions`](SendToOptions.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:686](https://github.com/ioBroker/ioBroker.js-controller/blob/0b1c41301d3844d4f8b3814b951fb59399cf9204/packages/adapter/src/lib/_Types.ts#L686)
+Defined in: [adapter/src/lib/\_Types.ts:701](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L701)
 
 Additional send options

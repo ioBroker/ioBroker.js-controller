@@ -70,9 +70,11 @@ jobs:
 
       - name: Prepare installation (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
+        shell: pwsh
         run: |
-          choco install redis-64 --version 3.0.503
-          powershell "Start-Process redis-server.exe -PassThru"
+          Invoke-WebRequest -Uri "https://github.com/tporadowski/redis/releases/download/v5.0.14.1/Redis-x64-5.0.14.1.zip" -OutFile "$env:RUNNER_TEMP\redis.zip"
+          Expand-Archive -Path "$env:RUNNER_TEMP\redis.zip" -DestinationPath "$env:RUNNER_TEMP\redis"
+          Start-Process -FilePath "$env:RUNNER_TEMP\redis\redis-server.exe" -PassThru
 
       - name: NPM version
         run: npm -v
