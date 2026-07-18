@@ -13,9 +13,12 @@ import crypto from 'node:crypto';
 import deepClone from 'deep-clone';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
+import { isDeepStrictEqual } from 'node:util';
 import rl from 'readline-sync';
 
 import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '@/lib/_Types.js';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { CLICert } from '@/lib/cli/cliCert.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
@@ -33,6 +36,7 @@ import { FORBIDDEN_CHARS, getHostObject } from '@iobroker/js-controller-common-d
 import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
 
 import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
+import { BETA_REPO_URL, STABLE_REPO_URL } from '@/lib/setup/utils.js';
 import { BackupRestore } from '@/lib/setup/setupBackup.js';
 import * as pluginInfos from '@/lib/setup/pluginInfos.js';
 import { Upload } from '@/lib/setup/setupUpload.js';
@@ -1635,4 +1639,205 @@ require('${path.normalize(`${thisDir}/..`)}/setup').execute();`;
 
         this.setupObjects(() => callback?.(isCreated)).catch(e => console.error(`Cannot setup objects: ${e.message}`));
     }
+}
+
+/**
+ * Process the `setup` command
+ *
+ * @param options the command options
+ */
+export async function processCommandSetup(options: ProcessCommandOptions): Promise<void> {
+    const { args, params, callback, commandOptions, cleanDatabase, restartController } = options;
+
+    const setup = new Setup({
+        processExit: callback,
+        cleanDatabase,
+        restartController,
+        params,
+    });
+    if (args[0] === 'custom' || params.custom) {
+        const exitCode = await setup.setupCustom();
+        callback(exitCode);
+        return;
+    }
+
+    let isFirst = false;
+    let isRedis = false;
+
+    // we support "first" and "redis" without "--" flag
+    for (const arg of args) {
+        if (arg === 'first') {
+            isFirst = true;
+        } else if (arg === 'redis') {
+            isRedis = true;
+        }
+    }
+
+    // and as --flag
+    isRedis = (params.redis as boolean) || isRedis;
+    isFirst = (params.first as boolean) || isFirst;
+
+    setup.setup({
+        callback: async () => {
+            const { states, objects } = await dbConnectAsync(false, params);
+            if (isFirst) {
+                // Creates all instances that are needed on a fresh installation
+                const { Install } = await import('@/lib/setup/setupInstall.js');
+                const install = new Install({
+                    objects,
+                    states,
+                    processExit: callback,
+                    params,
+                });
+                // Define the necessary instances
+                const initialInstances = ['admin', 'discovery', 'backitup'];
+                // And try to install each of them
+                for (const instance of initialInstances) {
+                    try {
+                        const adapterInstalled = !!require.resolve(`${tools.appName.toLowerCase()}.${instance}`);
+
+                        if (adapterInstalled) {
+                            let otherInstanceExists = false;
+                            try {
+                                // check if another instance exists
+                                const res = await objects.getObjectViewAsync('system', 'instance', {
+                                    startkey: `system.adapter.${instance}`,
+                                    endkey: `system.adapter.${instance}\u9999`,
+                                });
+
+                                otherInstanceExists = !!res.rows.length;
+                            } catch {
+                                // ignore - on install we have no object views
+                            }
+
+                            if (!otherInstanceExists) {
+                                await install.createInstance(instance, {
+                                    enabled: true,
+                                    ignoreIfExists: true,
+                                });
+                            }
+                        }
+                    } catch {
+                        // not found, just continue
+                    }
+                }
+
+                await new Promise(resolve => {
+                    // Creates a fresh certificate
+                    // Create a new instance of the cert command,
+                    // but use the resolve method as a callback
+                    const cert = new CLICert({ ...commandOptions, callback: resolve });
+                    cert.create().catch(e => console.error(`Cannot create certificate: ${e.message}`));
+                });
+            }
+
+            // we update existing things, in first as well as normal setup
+            // Rename repositories
+            const { Repo } = await import('@/lib/setup/setupRepo.js');
+            const repo = new Repo({ objects, states });
+
+            try {
+                await repo.rename('default', 'stable', STABLE_REPO_URL);
+                await repo.rename('latest', 'beta', BETA_REPO_URL);
+            } catch (err) {
+                console.warn(`Cannot rename: ${err.message}`);
+            }
+
+            // there has been a bug that user can upload js-controller
+            try {
+                await objects.delObjectAsync('system.adapter.js-controller');
+            } catch {
+                // ignore
+            }
+
+            try {
+                const configFile = tools.getConfigFileName();
+
+                const configOrig = fs.readJSONSync(configFile);
+                const config = deepClone(configOrig);
+
+                config.objects.options = config.objects.options || {
+                    auth_pass: null,
+                    retry_max_delay: 5_000,
+                };
+                if (config.objects.options.retry_max_delay === 15_000 || !config.objects.options.retry_max_delay) {
+                    config.objects.options.retry_max_delay = 5_000;
+                }
+                config.states.options = config.states.options || {
+                    auth_pass: null,
+                    retry_max_delay: 5_000,
+                };
+                if (config.states.options.retry_max_delay === 15_000 || !config.states.options.retry_max_delay) {
+                    config.states.options.retry_max_delay = 5_000;
+                }
+
+                let migrated = '';
+                // We migrate file to jsonl
+                if (config.states.type === 'file') {
+                    config.states.type = 'jsonl';
+
+                    const hasLocalStatesServer = await isLocalStatesDbServer('file', config.states.host);
+                    if (hasLocalStatesServer) {
+                        // silent config change on secondaries
+                        console.log('States DB type migrated from "file" to "jsonl"');
+                        migrated += 'States';
+                    }
+                }
+
+                if (config.objects.type === 'file') {
+                    config.objects.type = 'jsonl';
+
+                    const hasLocalObjectsServer = await isLocalObjectsDbServer('file', config.objects.host);
+                    if (hasLocalObjectsServer) {
+                        // silent config change on secondaries
+                        console.log('Objects DB type migrated from "file" to "jsonl"');
+                        migrated += migrated ? ' and Objects' : 'Objects';
+                    }
+                }
+
+                if (migrated) {
+                    const { NotificationHandler } = await import('@iobroker/js-controller-common');
+
+                    const hostname = tools.getHostName();
+
+                    const notificationSettings = {
+                        states,
+                        objects,
+                        log: console,
+                        logPrefix: '',
+                        host: hostname,
+                    };
+
+                    const notificationHandler = new NotificationHandler(notificationSettings);
+
+                    try {
+                        const ioPackage = fs.readJsonSync(path.join(tools.getControllerDir(), 'io-package.json'));
+                        await notificationHandler.addConfig(ioPackage.notifications);
+
+                        await notificationHandler.addMessage({
+                            scope: 'system',
+                            category: 'fileToJsonl',
+                            message: `Migrated: ${migrated}`,
+                            instance: `system.host.${hostname}`,
+                        });
+
+                        notificationHandler.storeNotifications();
+                    } catch (e) {
+                        console.warn(`Could not add File-to-JSONL notification: ${e.message}`);
+                    }
+                }
+
+                if (!isDeepStrictEqual(config, configOrig)) {
+                    fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+                    console.log('ioBroker configuration updated');
+                }
+            } catch (err) {
+                console.log(`Could not update ioBroker configuration: ${err.message}`);
+            }
+
+            return void callback();
+        },
+        ignoreIfExist: isFirst,
+        useRedis: isRedis,
+    });
 }
