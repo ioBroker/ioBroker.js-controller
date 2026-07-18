@@ -8,7 +8,7 @@
 
 > **Translated** = `object` & `{ [lang in Languages]?: string }`
 
-Defined in: [types-dev/objects.d.ts:163](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/types-dev/objects.d.ts#L163)
+Defined in: [types-dev/objects.d.ts:163](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/types-dev/objects.d.ts#L163)
 
 ## Type Declaration
 
