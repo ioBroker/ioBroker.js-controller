@@ -6,7 +6,7 @@
 
 # Class: AsyncAdapter
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/asyncAdapter.ts#L15)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/asyncAdapter.ts#L18)
 
 Clean async-only facade for the adapter's outbound messaging. Owns the [MessagingManager](MessagingManager.md)
 and exposes promise-based methods without the legacy `*Async` postfix.
@@ -17,7 +17,7 @@ and exposes promise-based methods without the legacy `*Async` postfix.
 
 > **new AsyncAdapter**(`ctx`): `AsyncAdapter`
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/asyncAdapter.ts#L21)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:26](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/asyncAdapter.ts#L26)
 
 #### Parameters
 
@@ -37,13 +37,100 @@ Shared adapter context providing live runtime state
 
 > **clearPending**(): `void`
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:198](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/asyncAdapter.ts#L198)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/asyncAdapter.ts#L265)
 
 Rejects all pending reply promises and clears their timers (used on stop).
 
 #### Returns
 
 `void`
+
+***
+
+### getCertificates()
+
+#### Param
+
+**publicName**
+
+public certificate name
+
+#### Param
+
+**privateName**
+
+private key name
+
+#### Param
+
+**chainedName**
+
+chained certificate name
+
+#### Call Signature
+
+> **getCertificates**(`publicName?`, `privateName?`, `chainedName?`): `Promise`\<[`InternalGetCertificatesResult`](../interfaces/InternalGetCertificatesResult.md)\>
+
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:208](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/asyncAdapter.ts#L208)
+
+Loads SSL certificates by name, falling back to the instance config defaults. File-backed
+certificate values are resolved to their content and their paths returned for watching.
+
+##### Parameters
+
+###### publicName?
+
+`string`
+
+public certificate name (defaults to `config.certPublic`)
+
+###### privateName?
+
+`string`
+
+private key name (defaults to `config.certPrivate`)
+
+###### chainedName?
+
+`string`
+
+chained certificate name (defaults to `config.certChained`)
+
+##### Returns
+
+`Promise`\<[`InternalGetCertificatesResult`](../interfaces/InternalGetCertificatesResult.md)\>
+
+#### Call Signature
+
+> **getCertificates**(`publicName?`, `privateName?`, `chainedName?`): `Promise`\<[`InternalGetCertificatesResult`](../interfaces/InternalGetCertificatesResult.md)\>
+
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/asyncAdapter.ts#L219)
+
+**`Internal`**
+
+##### Parameters
+
+###### publicName?
+
+`unknown`
+
+public certificate name
+
+###### privateName?
+
+`unknown`
+
+private key name
+
+###### chainedName?
+
+`unknown`
+
+chained certificate name
+
+##### Returns
+
+`Promise`\<[`InternalGetCertificatesResult`](../interfaces/InternalGetCertificatesResult.md)\>
 
 ***
 
@@ -77,7 +164,7 @@ additional notification options
 
 > **registerNotification**\<`Scope`\>(`scope`, `category`, `message`, `options?`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/asyncAdapter.ts#L153)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:168](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/asyncAdapter.ts#L168)
 
 Sends an addNotification command to the host of this adapter instance.
 
@@ -121,7 +208,7 @@ additional notification options
 
 > **registerNotification**(`scope`, `category`, `message`, `options?`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/asyncAdapter.ts#L166)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/asyncAdapter.ts#L181)
 
 **`Internal`**
 
@@ -161,7 +248,7 @@ additional notification options
 
 > **resolveReply**(`obj`): `boolean`
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:191](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/asyncAdapter.ts#L191)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:258](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/asyncAdapter.ts#L258)
 
 Resolves a pending reply promise for an acked messagebox message.
 Returns true if a pending entry was found and consumed.
@@ -210,7 +297,7 @@ send options
 
 > **sendTo**(`instanceName`, `command`, `message`, `options?`): `Promise`\<`any`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/asyncAdapter.ts#L37)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:52](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/asyncAdapter.ts#L52)
 
 Sends a message to another adapter instance and, unless `options.expectReply` is `false`,
 resolves with the reply when it arrives (or rejects with `Error('Timeout exceeded')` on timeout).
@@ -252,7 +339,7 @@ send options; set `expectReply: false` for fire-and-forget, or pass a legacy
 
 > **sendTo**(`instanceName`, `command`, `message?`, `options?`): `Promise`\<`any`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:50](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/asyncAdapter.ts#L50)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:65](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/asyncAdapter.ts#L65)
 
 **`Internal`**
 
@@ -318,7 +405,7 @@ send options
 
 > **sendToHost**(`hostName`, `command`, `message`, `options?`): `Promise`\<`any`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:88](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/asyncAdapter.ts#L88)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:103](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/asyncAdapter.ts#L103)
 
 Sends a message to a host, or broadcasts to all hosts when `hostName` is `null`.
 For a specific host, resolves with the reply unless `options.expectReply` is `false`.
@@ -358,7 +445,7 @@ send options; set `expectReply: false` for fire-and-forget
 
 > **sendToHost**(`hostName`, `command`, `message?`, `options?`): `Promise`\<`any`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:101](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/asyncAdapter.ts#L101)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/asyncAdapter.ts#L116)
 
 **`Internal`**
 
@@ -398,7 +485,7 @@ send options
 
 > **sendToUI**(`options`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:137](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/asyncAdapter.ts#L137)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:152](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/asyncAdapter.ts#L152)
 
 Sends a message to a single UI client, or broadcasts to all connected UI clients when `clientId` is omitted.
 

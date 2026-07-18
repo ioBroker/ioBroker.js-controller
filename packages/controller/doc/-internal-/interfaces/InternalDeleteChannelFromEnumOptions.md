@@ -6,7 +6,7 @@
 
 # Interface: InternalDeleteChannelFromEnumOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:744](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/_Types.ts#L744)
+Defined in: [adapter/src/lib/\_Types.ts:754](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L754)
 
 Options for removing a channel from an enum
 
@@ -16,7 +16,7 @@ Options for removing a channel from an enum
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:754](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/_Types.ts#L754)
+Defined in: [adapter/src/lib/\_Types.ts:764](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L764)
 
 Called once the channel has been removed
 
@@ -26,7 +26,7 @@ Called once the channel has been removed
 
 > **channelName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:750](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/_Types.ts#L750)
+Defined in: [adapter/src/lib/\_Types.ts:760](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L760)
 
 The name of the channel
 
@@ -36,7 +36,7 @@ The name of the channel
 
 > **enumName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:746](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/_Types.ts#L746)
+Defined in: [adapter/src/lib/\_Types.ts:756](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L756)
 
 The category of the enum (e.g. rooms, functions)
 
@@ -46,7 +46,7 @@ The category of the enum (e.g. rooms, functions)
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:752](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/_Types.ts#L752)
+Defined in: [adapter/src/lib/\_Types.ts:762](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L762)
 
 Optional settings including the user context
 
@@ -56,6 +56,6 @@ Optional settings including the user context
 
 > **parentDevice**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:748](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/_Types.ts#L748)
+Defined in: [adapter/src/lib/\_Types.ts:758](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L758)
 
 The parent device name
