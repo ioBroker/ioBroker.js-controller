@@ -4,9 +4,11 @@ import readline from 'node:readline';
 import readlineSync from 'readline-sync';
 import prompt from 'prompt';
 
-import { isLocalObjectsDbServer, isLocalStatesDbServer, tools } from '@iobroker/js-controller-common';
+import { isLocalObjectsDbServer, isLocalStatesDbServer, tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { MHClient, type BrowseResultEntry } from './multihostClient.js';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { dbConnect } from '@/lib/setup/dbConnection.js';
 
 interface MHParams {
     secure?: boolean;
@@ -427,4 +429,85 @@ export class Multihost {
             callback(undefined, list);
         }
     }
+}
+
+/**
+ * Handles the `multihost` / `mh` CLI command.
+ *
+ * @param options the process command options
+ */
+export function processCommandMultihost(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+
+    const cmd = args[0];
+    if (
+        cmd !== 'c' &&
+        cmd !== 'connect' &&
+        cmd !== 's' &&
+        cmd !== 'status' &&
+        cmd !== 'b' &&
+        cmd !== 'browse' &&
+        cmd !== 'e' &&
+        cmd !== 'enable' &&
+        cmd !== 'd' &&
+        cmd !== 'disable'
+    ) {
+        console.log('Invalid parameters. Following is possible: enable, browse, connect, status');
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+    dbConnect(params, async ({ objects, states }) => {
+        const mh = new Multihost({
+            params,
+            objects,
+        });
+
+        if (cmd === 's' || cmd === 'status') {
+            mh.status();
+            return void callback();
+        } else if (cmd === 'b' || cmd === 'browse') {
+            try {
+                const list = await mh.browse();
+                mh.showHosts(list);
+                return void callback();
+            } catch (e) {
+                console.error(e.message);
+                return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+            }
+        } else if (cmd === 'e' || cmd === 'enable') {
+            mh.enable(true, async (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
+                }
+                await states.pushMessage(`system.host.${tools.getHostName()}`, {
+                    command: 'updateMultihost',
+                    message: null,
+                    from: 'setup',
+                });
+
+                callback();
+            });
+        } else if (cmd === 'd' || cmd === 'disable') {
+            mh.enable(false, async (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
+                }
+                await states.pushMessage(`system.host.${tools.getHostName()}`, {
+                    command: 'updateMultihost',
+                    message: null,
+                    from: 'setup',
+                });
+
+                callback();
+            });
+        } else if (cmd === 'c' || cmd === 'connect') {
+            mh.connect(parseInt(args[1]), args[2], (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                }
+                return void callback(err ? 1 : 0);
+            }).catch(e => console.error(`Cannot connect multihost: ${e.message}`));
+        }
+    });
 }

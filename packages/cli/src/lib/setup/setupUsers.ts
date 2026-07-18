@@ -2,6 +2,8 @@ import { password, tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import type { ProcessExitCallback } from '../_Types.js';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import prompt from 'prompt';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { dbConnect } from '@/lib/setup/dbConnection.js';
 
 /** Options for the users command */
 export interface CLIUsersOptions {
@@ -685,4 +687,297 @@ export class Users {
             });
         });
     }
+}
+
+/**
+ * @param options Command execution options
+ */
+export function processCommandUser(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    const command = args[0] || '';
+    let user = args[1] || '';
+
+    if (user?.startsWith('system.user.')) {
+        user = user.substring('system.user.'.length);
+    }
+
+    dbConnect(params, ({ objects }) => {
+        const users = new Users({
+            objects,
+            processExit: callback,
+        });
+        const password = params.password as string;
+        const group: ioBroker.ObjectIDs.Group =
+            (params.ingroup as ioBroker.ObjectIDs.Group) || 'system.group.administrator';
+
+        if (command === 'add') {
+            users.addUserPrompt(user, group, password, (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`User "${user}" created (Group: ${group.replace('system.group.', '')})`);
+                return void callback();
+            });
+        } else if (command === 'del' || command === 'delete') {
+            users.delUser(user, (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`User "${user}" deleted`);
+                return void callback();
+            });
+        } else if (command === 'check') {
+            users.checkUserPassword(user, password, err => {
+                if (err) {
+                    console.error(err.message);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`Password for user "${user}" matches.`);
+                return void callback();
+            });
+        } else if (command === 'set' || command === 'passwd') {
+            users
+                .setUserPassword(user, password, err => {
+                    if (err) {
+                        console.error(err.message);
+                        return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                    }
+                    console.log(`Password for "${user}" was successfully set.`);
+                    return void callback();
+                })
+                .catch(e => console.error(`Cannot set password: ${e.message}`));
+        } else if (command === 'enable' || command === 'e') {
+            users.enableUser(user, true, err => {
+                if (err) {
+                    console.error(err.message);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`User "${user}" was successfully enabled.`);
+                return void callback();
+            });
+        } else if (command === 'disable' || command === 'd') {
+            users.enableUser(user, false, err => {
+                if (err) {
+                    console.error(err.message);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`User "${user}" was successfully disabled.`);
+                return void callback();
+            });
+        } else if (command === 'get') {
+            users.getUser(user, (err, isEnabled) => {
+                if (err) {
+                    console.error(err.message);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`User "${user}" is ${isEnabled ? 'enabled' : 'disabled'}`);
+                return void callback();
+            });
+        } else {
+            console.warn(
+                `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, check, get`,
+            );
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+        }
+    });
+}
+
+/**
+ * @param options Command execution options
+ */
+export function processCommandGroup(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    const command = args[0] || '';
+    let group = args[1] || '';
+    let user = args[2] || '';
+
+    if (group?.startsWith('system.group.')) {
+        group = group.substring('system.group.'.length);
+    }
+    if (user?.startsWith('system.user.')) {
+        user = user.substring('system.user.'.length);
+    }
+    if (!command) {
+        console.warn(
+            `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`,
+        );
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+    if (!group) {
+        console.warn(`Please define group name: group ${command} groupName`);
+        return callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+    }
+
+    dbConnect(params, async ({ objects }) => {
+        const users = new Users({
+            objects,
+            processExit: callback,
+        });
+
+        if (command === 'useradd' || command === 'adduser') {
+            if (!user) {
+                console.warn('Please define user name: "group useradd groupName userName"');
+                return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+            }
+            users.addUserToGroup(user, group, (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`User "${user}" was added to group "${group}"`);
+                return void callback();
+            });
+        } else if (command === 'userdel' || command === 'deluser') {
+            if (!user) {
+                console.warn('Please define user name: "group userdel groupName userName"');
+                return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+            }
+            users.removeUserFromGroup(user, group, (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`User "${user}" was deleted from group "${group}"`);
+                return void callback();
+            });
+        } else if (command === 'add') {
+            try {
+                await users.addGroup(group);
+                console.log(`Group "${group}" was created`);
+                return void callback();
+            } catch {
+                return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+            }
+        } else if (command === 'del' || command === 'delete') {
+            users.delGroup(group, (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`Group "${group}" was deleted`);
+                return void callback();
+            });
+        } else if (command === 'list' || command === 'l') {
+            users.getGroup(group, (err, isEnabled, members) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'} and has following members:`);
+                if (members) {
+                    for (const member of members) {
+                        console.log(member.substring('system.user.'.length));
+                    }
+                }
+                return void callback();
+            });
+        } else if (command === 'enable' || command === 'e') {
+            users.enableGroup(group, true, (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`Group "${group}" was successfully enabled.`);
+                return void callback();
+            });
+        } else if (command === 'disable' || command === 'd') {
+            users.enableGroup(group, false, (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`Group "${group}" was successfully disabled.`);
+                return void callback();
+            });
+        } else if (command === 'get') {
+            users.getGroup(group, (err, isEnabled) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'}`);
+                return void callback();
+            });
+        } else {
+            console.warn(
+                `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`,
+            );
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+        }
+    });
+}
+
+/**
+ * @param options Command execution options
+ */
+export function processCommandAddUser(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    const user = args[0];
+    const group = (params.ingroup as ioBroker.ObjectIDs.Group) || 'system.group.administrator';
+    const password = params.password as string;
+
+    dbConnect(params, ({ objects }) => {
+        const users = new Users({
+            objects,
+            processExit: callback,
+        });
+        users.addUserPrompt(user, group, password, (err: Error | null | undefined) => {
+            if (err) {
+                console.error(err);
+                return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+            }
+            console.log(`User "${user}" created (Group: ${group.replace('system.group.', '')})`);
+            return void callback();
+        });
+    });
+}
+
+/**
+ * @param options Command execution options
+ */
+export function processCommandPassword(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    const user = args[0];
+    const password = params.password as string;
+    dbConnect(params, ({ objects }) => {
+        const users = new Users({
+            objects,
+            processExit: callback,
+        });
+        users
+            .setUserPassword(user, password, (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                }
+                console.log(`Password for "${user}" was successfully set.`);
+                return void callback();
+            })
+            .catch(e => console.error(`Cannot set password: ${e.message}`));
+    });
+}
+
+/**
+ * @param options Command execution options
+ */
+export function processCommandUserDel(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    const user = args[0];
+
+    dbConnect(params, ({ objects }) => {
+        const users = new Users({
+            objects,
+            processExit: callback,
+        });
+        users.delUser(user, (err: Error | null | undefined) => {
+            if (err) {
+                console.error(err);
+                return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+            }
+            console.log(`User "${user}" deleted`);
+            return void callback();
+        });
+    });
 }
