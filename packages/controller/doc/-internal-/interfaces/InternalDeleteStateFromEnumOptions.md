@@ -6,7 +6,7 @@
 
 # Interface: InternalDeleteStateFromEnumOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:821](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/adapter/src/lib/_Types.ts#L821)
+Defined in: [adapter/src/lib/\_Types.ts:830](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L830)
 
 Options for removing a state from an enum
 
@@ -16,7 +16,7 @@ Options for removing a state from an enum
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:833](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/adapter/src/lib/_Types.ts#L833)
+Defined in: [adapter/src/lib/\_Types.ts:842](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L842)
 
 Called once the state has been removed
 
@@ -26,7 +26,7 @@ Called once the state has been removed
 
 > **enumName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:823](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/adapter/src/lib/_Types.ts#L823)
+Defined in: [adapter/src/lib/\_Types.ts:832](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L832)
 
 The category of the enum (e.g. rooms, functions)
 
@@ -36,7 +36,7 @@ The category of the enum (e.g. rooms, functions)
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:831](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/adapter/src/lib/_Types.ts#L831)
+Defined in: [adapter/src/lib/\_Types.ts:840](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L840)
 
 Optional settings including the user context
 
@@ -46,7 +46,7 @@ Optional settings including the user context
 
 > **parentChannel**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:827](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/adapter/src/lib/_Types.ts#L827)
+Defined in: [adapter/src/lib/\_Types.ts:836](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L836)
 
 The parent channel name
 
@@ -56,7 +56,7 @@ The parent channel name
 
 > **parentDevice**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:825](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/adapter/src/lib/_Types.ts#L825)
+Defined in: [adapter/src/lib/\_Types.ts:834](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L834)
 
 The parent device name
 
@@ -66,6 +66,6 @@ The parent device name
 
 > **stateName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:829](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/adapter/src/lib/_Types.ts#L829)
+Defined in: [adapter/src/lib/\_Types.ts:838](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L838)
 
 The name of the state

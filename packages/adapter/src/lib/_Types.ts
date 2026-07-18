@@ -440,6 +440,16 @@ export type GetCertificatesCallback = (
 
 export type GetCertificatesPromiseReturnType = [cert: ioBroker.Certificates, useLetsEncryptCert?: boolean];
 
+/** Result of {@link CertificateManager.getCertificates}: certs, letsEncrypt flag, and file-backed cert paths to watch */
+export interface InternalGetCertificatesResult {
+    /** The resolved certificate content */
+    certs: ioBroker.Certificates;
+    /** Whether Let's Encrypt certificates are configured */
+    useLetsEncrypt?: boolean;
+    /** Paths of file-backed certificate values that were read, for the caller to watch */
+    certFilePaths: string[];
+}
+
 /** Options for reading the SSL certificates */
 export interface InternalGetCertificatesOptions {
     /** Name of the public certificate */
@@ -680,20 +690,15 @@ export interface InternalSendToOptions {
     command: string;
     /** The message payload */
     message: any;
-    /** Called with the response */
-    callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo;
+    /**
+     * Legacy callback-info object to pass through as the message's callback header.
+     * Function callbacks are not accepted here — use `expectReply` for the reply-wait path.
+     */
+    callback?: ioBroker.MessageCallbackInfo;
+    /** When true, the manager registers a promise resolver and resolves with the reply */
+    expectReply?: boolean;
     /** Additional send options */
     options?: SendToOptions;
-}
-
-/** Message Callback used internally */
-export interface MessageCallbackObject {
-    /** the callback itself */
-    cb: ioBroker.MessageCallback;
-    /** The timestamp of the initial message */
-    time: number;
-    /** An optional timer, if a timeout has been specified */
-    timer?: NodeJS.Timeout;
 }
 
 /** Options for sending a message to a host */
@@ -704,8 +709,12 @@ export interface InternalSendToHostOptions {
     command: string;
     /** The message payload */
     message: any;
-    /** Called with the response */
-    callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo;
+    /** When true and a specific host is targeted, the manager registers a reply resolver and resolves with the reply */
+    expectReply?: boolean;
+    /** Legacy callback-info header to attach to the outbound message (relayed reply descriptor) */
+    callback?: ioBroker.MessageCallbackInfo;
+    /** Additional send options */
+    options?: SendToOptions;
 }
 
 /** Options for reading a state */

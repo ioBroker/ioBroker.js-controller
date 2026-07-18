@@ -8,7 +8,7 @@
 
 > **NotificationCategory** = `object`
 
-Defined in: [types-dev/objects.d.ts:1203](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/objects.d.ts#L1203)
+Defined in: [types-dev/objects.d.ts:1203](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/types-dev/objects.d.ts#L1203)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [types-dev/objects.d.ts:1203](https://github.com/ioBroker/ioBroker.j
 
 > **category**: `"memIssues"` \| `"fsIoErrors"` \| `"noDiskSpace"` \| `"accessErrors"` \| `"nonExistingFileErrors"` \| `"remoteHostErrors"` \| `"restartLoop"` \| `"fileToJsonl"` \| `"automaticAdapterUpgradeFailed"` \| `"automaticAdapterUpgradeSuccessful"` \| `"blockedVersions"` \| `"databaseErrors"` \| `"securityIssues"` \| `"packageUpdates"` \| `"systemRebootRequired"` \| `"diskSpaceIssues"` \| `string` & `object`
 
-Defined in: [types-dev/objects.d.ts:1205](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/objects.d.ts#L1205)
+Defined in: [types-dev/objects.d.ts:1205](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/types-dev/objects.d.ts#L1205)
 
 The unique category identifier
 
@@ -26,7 +26,7 @@ The unique category identifier
 
 > **description**: [`Translated`](Translated.md)
 
-Defined in: [types-dev/objects.d.ts:1226](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/objects.d.ts#L1226)
+Defined in: [types-dev/objects.d.ts:1226](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/types-dev/objects.d.ts#L1226)
 
 The human-readable category description
 
@@ -36,7 +36,7 @@ The human-readable category description
 
 > **limit**: `number`
 
-Defined in: [types-dev/objects.d.ts:1232](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/objects.d.ts#L1232)
+Defined in: [types-dev/objects.d.ts:1232](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/types-dev/objects.d.ts#L1232)
 
 Deletes older messages if more than the specified amount is present for this category
 
@@ -46,7 +46,7 @@ Deletes older messages if more than the specified amount is present for this cat
 
 > **name**: [`Translated`](Translated.md)
 
-Defined in: [types-dev/objects.d.ts:1224](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/objects.d.ts#L1224)
+Defined in: [types-dev/objects.d.ts:1224](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/types-dev/objects.d.ts#L1224)
 
 The human-readable category name
 
@@ -56,7 +56,7 @@ The human-readable category name
 
 > **regex**: `string`[]
 
-Defined in: [types-dev/objects.d.ts:1230](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/objects.d.ts#L1230)
+Defined in: [types-dev/objects.d.ts:1230](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/types-dev/objects.d.ts#L1230)
 
 If a regex is specified, the js-controller will check error messages on adapter crashes against this regex and will generate a notification of this category
 
@@ -66,6 +66,6 @@ If a regex is specified, the js-controller will check error messages on adapter 
 
 > **severity**: `"info"` \| `"notify"` \| `"alert"`
 
-Defined in: [types-dev/objects.d.ts:1228](https://github.com/ioBroker/ioBroker.js-controller/blob/8d8c9c5ed5ad4e65169ae0484170606409fde5eb/packages/types-dev/objects.d.ts#L1228)
+Defined in: [types-dev/objects.d.ts:1228](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/types-dev/objects.d.ts#L1228)
 
 Allows defining the severity of the notification with `info` being the lowest `notify` representing middle priority, `alert` representing high priority and often containing critical information
