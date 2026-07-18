@@ -90,8 +90,7 @@ export class CertificateManager extends AdapterContextBase {
         }
 
         if (
-            !obj ||
-            !obj.native.certificates ||
+            !obj?.native.certificates ||
             !publicName ||
             !privateName ||
             !obj.native.certificates[publicName] ||
@@ -132,14 +131,6 @@ export class CertificateManager extends AdapterContextBase {
             cert: this.#resolveCert(obj.native.certificates[publicName], certFilePaths),
             ca,
         };
-
-        // remember the raw values, so a change of `system.certificates` can be told from an unrelated one
-        this.#usedCertificates = new Map<string, string>();
-        for (const name of [publicName, privateName, chainedName]) {
-            if (name) {
-                this.#usedCertificates.set(name, obj.native.certificates[name]);
-            }
-        }
 
         return { certs, useLetsEncrypt: obj.native.letsEncrypt, certFilePaths };
     }

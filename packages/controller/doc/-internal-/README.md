@@ -14,6 +14,7 @@
 
 - [AdapterContextBase](classes/AdapterContextBase.md)
 - [AsyncAdapter](classes/AsyncAdapter.md)
+- [CertificateManager](classes/CertificateManager.md)
 - [Log](classes/Log.md)
 - [MessagingManager](classes/MessagingManager.md)
 - [ObjectsInRedisClient](classes/ObjectsInRedisClient.md)
@@ -96,7 +97,7 @@
 - [InternalDestroySessionOptions](interfaces/InternalDestroySessionOptions.md)
 - [InternalFormatDateOptions](interfaces/InternalFormatDateOptions.md)
 - [InternalGetAdapterObjectsOptions](interfaces/InternalGetAdapterObjectsOptions.md)
-- [InternalGetCertificatesOptions](interfaces/InternalGetCertificatesOptions.md)
+- [InternalGetCertificatesResult](interfaces/InternalGetCertificatesResult.md)
 - [InternalGetChannelsOfOptions](interfaces/InternalGetChannelsOfOptions.md)
 - [InternalGetDevicesOptions](interfaces/InternalGetDevicesOptions.md)
 - [InternalGetEncryptedConfigOptions](interfaces/InternalGetEncryptedConfigOptions.md)

@@ -6,7 +6,7 @@
 
 # Interface: InternalGetStateOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:711](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/_Types.ts#L711)
+Defined in: [adapter/src/lib/\_Types.ts:721](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L721)
 
 Options for reading a state
 
@@ -16,7 +16,7 @@ Options for reading a state
 
 > `optional` **callback?**: [`GetStateCallback`](../type-aliases/GetStateCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:717](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/_Types.ts#L717)
+Defined in: [adapter/src/lib/\_Types.ts:727](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L727)
 
 Called with the state
 
@@ -26,7 +26,7 @@ Called with the state
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:713](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/_Types.ts#L713)
+Defined in: [adapter/src/lib/\_Types.ts:723](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L723)
 
 The id of the state
 
@@ -36,6 +36,6 @@ The id of the state
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:715](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/_Types.ts#L715)
+Defined in: [adapter/src/lib/\_Types.ts:725](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L725)
 
 Optional settings including the user context

@@ -6,7 +6,7 @@
 
 # Interface: InternalGetEncryptedConfigOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:464](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/_Types.ts#L464)
+Defined in: [adapter/src/lib/\_Types.ts:474](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L474)
 
 Options for reading an encrypted config value
 
@@ -16,7 +16,7 @@ Options for reading an encrypted config value
 
 > **attribute**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:466](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/_Types.ts#L466)
+Defined in: [adapter/src/lib/\_Types.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L476)
 
 The config attribute to decrypt
 
@@ -26,6 +26,6 @@ The config attribute to decrypt
 
 > `optional` **callback?**: [`GetEncryptedConfigCallback`](../type-aliases/GetEncryptedConfigCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:468](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/_Types.ts#L468)
+Defined in: [adapter/src/lib/\_Types.ts:478](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/_Types.ts#L478)
 
 Called with the decrypted value

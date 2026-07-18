@@ -6,7 +6,7 @@
 
 # Interface: AdapterContext
 
-Defined in: [adapter/src/lib/adapter/context.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/context.ts#L13)
+Defined in: [adapter/src/lib/adapter/context.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/context.ts#L13)
 
 Live view of the adapter's shared runtime state, passed to managers at construction time.
 
@@ -20,9 +20,19 @@ fields, and every manager reads the same object.
 
 > `readonly` **common**: [`InstanceCommon`](InstanceCommon.md) \| `undefined`
 
-Defined in: [adapter/src/lib/adapter/context.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/context.ts#L19)
+Defined in: [adapter/src/lib/adapter/context.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/context.ts#L19)
 
 Current adapter common config
+
+***
+
+### config
+
+> `readonly` **config**: [`AdapterConfig`](AdapterConfig.md)
+
+Defined in: [adapter/src/lib/adapter/context.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/context.ts#L21)
+
+Current adapter instance config (native)
 
 ***
 
@@ -30,7 +40,7 @@ Current adapter common config
 
 > `readonly` **host**: `string` \| `undefined`
 
-Defined in: [adapter/src/lib/adapter/context.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/context.ts#L21)
+Defined in: [adapter/src/lib/adapter/context.ts:23](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/context.ts#L23)
 
 Current host name (may be undefined before init)
 
@@ -40,7 +50,7 @@ Current host name (may be undefined before init)
 
 > `readonly` **logger**: `Logger`
 
-Defined in: [adapter/src/lib/adapter/context.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/context.ts#L27)
+Defined in: [adapter/src/lib/adapter/context.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/context.ts#L29)
 
 Logger instance
 
@@ -50,7 +60,7 @@ Logger instance
 
 > `readonly` **namespace**: `` `${string}.${number}` ``
 
-Defined in: [adapter/src/lib/adapter/context.ts:23](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/context.ts#L23)
+Defined in: [adapter/src/lib/adapter/context.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/context.ts#L25)
 
 Current adapter namespace, e.g. `"adapter.0"`
 
@@ -60,7 +70,7 @@ Current adapter namespace, e.g. `"adapter.0"`
 
 > `readonly` **namespaceLog**: `string`
 
-Defined in: [adapter/src/lib/adapter/context.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/context.ts#L25)
+Defined in: [adapter/src/lib/adapter/context.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/context.ts#L27)
 
 Current namespace string used in log messages
 
@@ -70,7 +80,7 @@ Current namespace string used in log messages
 
 > `readonly` **objects**: [`ObjectsInRedisClient`](../classes/ObjectsInRedisClient.md) \| `null` \| `undefined`
 
-Defined in: [adapter/src/lib/adapter/context.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/context.ts#L17)
+Defined in: [adapter/src/lib/adapter/context.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/context.ts#L17)
 
 Current objects DB client
 
@@ -80,7 +90,7 @@ Current objects DB client
 
 > `readonly` **states**: [`StateRedisClient`](../classes/StateRedisClient.md) \| `null` \| `undefined`
 
-Defined in: [adapter/src/lib/adapter/context.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/context.ts#L15)
+Defined in: [adapter/src/lib/adapter/context.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/context.ts#L15)
 
 Current states DB client
 
@@ -90,6 +100,6 @@ Current states DB client
 
 > `readonly` **uiMessagingController**: [`UserInterfaceMessagingController`](../classes/UserInterfaceMessagingController.md)
 
-Defined in: [adapter/src/lib/adapter/context.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/context.ts#L29)
+Defined in: [adapter/src/lib/adapter/context.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/context.ts#L31)
 
 Controller for UI messaging

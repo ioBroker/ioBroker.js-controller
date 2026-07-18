@@ -6,7 +6,7 @@
 
 # Interface: PendingReply
 
-Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:14](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L14)
+Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:14](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L14)
 
 Entry in the pending-reply registry for sendTo calls with expectReply=true
 
@@ -16,7 +16,7 @@ Entry in the pending-reply registry for sendTo calls with expectReply=true
 
 > **reject**: (`e`) => `void`
 
-Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:16](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L16)
+Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:16](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L16)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:16](https://gi
 
 > **resolve**: (`msg`) => `void`
 
-Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L15)
+Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L15)
 
 #### Parameters
 
@@ -52,7 +52,7 @@ Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:15](https://gi
 
 > **time**: `number`
 
-Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L18)
+Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L18)
 
 ***
 
@@ -60,4 +60,4 @@ Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:18](https://gi
 
 > `optional` **timer?**: `Timeout`
 
-Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/3ea5f3c89aeec51f86485f57f5c7b330263229f6/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L17)
+Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L17)
