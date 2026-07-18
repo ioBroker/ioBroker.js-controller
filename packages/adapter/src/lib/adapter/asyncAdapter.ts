@@ -261,6 +261,15 @@ export class AsyncAdapter {
     }
 
     /**
+     * Forgets the certificates handed out by the last {@link getCertificates} call, so
+     * {@link hasRelevantCertificateChange} no longer reports changes to them. Used when the adapter
+     * stops watching its certificates.
+     */
+    stopWatchingCertificates(): void {
+        this.#certificatesInstance?.stopWatching();
+    }
+
+    /**
      * Resolves a pending reply promise for an acked messagebox message.
      * Returns true if a pending entry was found and consumed.
      *

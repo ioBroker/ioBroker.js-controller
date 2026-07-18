@@ -2759,19 +2759,7 @@ export class AdapterClass extends EventEmitter {
 
                 this.#async.clearPending();
 
-                for (const watcher of this.#certWatchers.values()) {
-                    watcher.close();
-                }
-                this.#certWatchers.clear();
-
-                if (this.#certObjectSubscribed && this.#objects) {
-                    this.#certObjectSubscribed = false;
-                    try {
-                        await this.#objects.unsubscribeAsync(CERTIFICATES_OBJECT_ID);
-                    } catch {
-                        // ignore, we are stopping anyway
-                    }
-                }
+                await this.stopWatchingCertificates();
 
                 if (this.#states && updateAliveState) {
                     this.outputCount++;
@@ -2903,11 +2891,39 @@ export class AdapterClass extends EventEmitter {
         this.#certObjectSubscribed = true;
         try {
             await this.#objects.subscribeAsync(CERTIFICATES_OBJECT_ID);
+            // stopWatchingCertificates() may have run while we were awaiting; it cleared the flag but could
+            // not unsubscribe a subscription that did not exist yet, so undo it now to avoid a leak.
+            if (!this.#certObjectSubscribed && this.#objects) {
+                await this.#objects.unsubscribeAsync(CERTIFICATES_OBJECT_ID);
+            }
         } catch (e: any) {
             this.#certObjectSubscribed = false;
             this._logger.error(
                 `${this.namespaceLog} Cannot watch certificate object ${CERTIFICATES_OBJECT_ID}: ${e.message}`,
             );
+        }
+    }
+
+    /**
+     * Tears down the certificate watching installed by {@link getCertificatesAsync}: closes the file
+     * watchers, unsubscribes from `system.certificates`, and forgets the certificates handed out by the
+     * last call, so a later change no longer schedules a restart. Called on adapter stop.
+     */
+    private async stopWatchingCertificates(): Promise<void> {
+        for (const watcher of this.#certWatchers.values()) {
+            watcher.close();
+        }
+        this.#certWatchers.clear();
+        this.#certRestartScheduled = false;
+        this.#async.stopWatchingCertificates();
+
+        if (this.#certObjectSubscribed && this.#objects) {
+            this.#certObjectSubscribed = false;
+            try {
+                await this.#objects.unsubscribeAsync(CERTIFICATES_OBJECT_ID);
+            } catch {
+                // ignore, e.g. when the objects DB is already gone
+            }
         }
     }
 

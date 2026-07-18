@@ -225,6 +225,23 @@ describe('CertificateManager.hasRelevantChange', () => {
         assert.equal(mgr.hasRelevantChange(null), true);
     });
 
+    it('reports no relevant change after stopWatching forgets the used certificates', async () => {
+        const mgr = await makeUsedManager(used);
+        // a changed used certificate is relevant while watching
+        assert.equal(
+            mgr.hasRelevantChange({ native: { certificates: { ...used, defaultPublic: 'CHANGED' } } } as any),
+            true,
+        );
+
+        mgr.stopWatching();
+
+        // after stopWatching the same change is no longer our concern
+        assert.equal(
+            mgr.hasRelevantChange({ native: { certificates: { ...used, defaultPublic: 'CHANGED' } } } as any),
+            false,
+        );
+    });
+
     it('tracks the chained certificate as well', async () => {
         const chainedValue = `-----BEGIN CERTIFICATE-----\n${'A'.repeat(200)}\n-----END CERTIFICATE-----\r\n`;
         const withChained = { ...used, defaultChained: chainedValue };

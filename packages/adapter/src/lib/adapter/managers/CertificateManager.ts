@@ -54,6 +54,15 @@ export class CertificateManager extends AdapterContextBase {
     }
 
     /**
+     * Forgets the certificates handed out by the last {@link getCertificates} call, so a subsequent
+     * change of `system.certificates` is no longer treated as relevant by {@link hasRelevantChange}.
+     * Used when the adapter stops watching its certificates.
+     */
+    stopWatching(): void {
+        this.#usedCertificates = undefined;
+    }
+
+    /**
      * Loads the named certificates from `system.certificates`. File-backed values (short strings that
      * are existing paths) are read from disk and their paths collected in `certFilePaths` so the caller
      * can watch them.
