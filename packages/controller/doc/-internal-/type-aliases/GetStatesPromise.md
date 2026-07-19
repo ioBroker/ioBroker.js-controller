@@ -8,4 +8,4 @@
 
 > **GetStatesPromise** = `Promise`\<[`NonNullCallbackReturnTypeOf`](NonNullCallbackReturnTypeOf.md)\<[`GetStatesCallback`](GetStatesCallback.md)\>\>
 
-Defined in: [types-dev/index.d.ts:513](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/types-dev/index.d.ts#L513)
+Defined in: [types-dev/index.d.ts:513](https://github.com/ioBroker/ioBroker.js-controller/blob/d3842b2ac919375043ba1c8bcfb637022c2bb575/packages/types-dev/index.d.ts#L513)
