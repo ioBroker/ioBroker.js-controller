@@ -76,7 +76,6 @@ import type {
     GetEncryptedConfigCallback,
     GetUserGroupsOptions,
     InstallNodeModuleOptions,
-    InternalAdapterConfig,
     InternalAddChannelToEnumOptions,
     InternalAddStateToEnumOptions,
     InternalCalculatePermissionsOptions,
@@ -94,7 +93,6 @@ import type {
     InternalDestroySessionOptions,
     InternalFormatDateOptions,
     InternalGetAdapterObjectsOptions,
-    InternalGetCertificatesOptions,
     InternalGetChannelsOfOptions,
     InternalGetDevicesOptions,
     InternalGetEncryptedConfigOptions,
@@ -1242,11 +1240,6 @@ export class AdapterClass extends EventEmitter {
          * Promise-version of `Adapter.calculatePermissions`
          */
         this.calculatePermissionsAsync = tools.promisifyNoError(this.calculatePermissions, this);
-
-        /**
-         * Promise-version of `Adapter.getCertificates`
-         */
-        this.getCertificatesAsync = tools.promisify(this.getCertificates, this);
 
         /**
          * Promise-version of `Adapter.setObject`

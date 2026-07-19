@@ -132,6 +132,14 @@ export class CertificateManager extends AdapterContextBase {
             ca,
         };
 
+        // remember the raw values, so a change of `system.certificates` can be told from an unrelated one
+        this.#usedCertificates = new Map<string, string>();
+        for (const name of [publicName, privateName, chainedName]) {
+            if (name) {
+                this.#usedCertificates.set(name, obj.native.certificates[name]);
+            }
+        }
+
         return { certs, useLetsEncrypt: obj.native.letsEncrypt, certFilePaths };
     }
 
