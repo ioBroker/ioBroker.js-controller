@@ -134,6 +134,15 @@ describe('CertificateManager.getCertificates', () => {
         );
     });
 
+    it('records the used certificates so a later change can be detected', async () => {
+        const getObject = sinon.stub().resolves(certsObj);
+        const mgr = new CertificateManager(makeContext({ objects: { getObject } as any }));
+
+        await mgr.getCertificates({ publicName: 'defaultPublic', privateName: 'defaultPrivate' });
+
+        assert.equal(mgr.hasRelevantChange(certsObj), false);
+    });
+
     it('falls back to the raw path value when reading the cert file throws', async () => {
         const existsSync = sinon.stub(fs, 'existsSync').returns(true);
         const readFileSync = sinon.stub(fs, 'readFileSync').throws(new Error('EACCES'));
@@ -148,6 +157,114 @@ describe('CertificateManager.getCertificates', () => {
             assert.equal(res.certs.cert, '/etc/c.pem');
             assert.equal(res.certs.key, '/etc/c.pem');
             assert.deepEqual(res.certFilePaths, []);
+        } finally {
+            existsSync.restore();
+            readFileSync.restore();
+        }
+    });
+});
+
+describe('CertificateManager.hasRelevantChange', () => {
+    /**
+     * Builds a manager that has handed out the given certificates under the default names
+     *
+     * @param certificates certificates to put into the `system.certificates` object
+     * @param chainedName name of the chained certificate to request, if any
+     */
+    async function makeUsedManager(
+        certificates: Record<string, string>,
+        chainedName?: string,
+    ): Promise<CertificateManager> {
+        const getObject = sinon.stub().resolves({ native: { certificates } });
+        const mgr = new CertificateManager(makeContext({ objects: { getObject } as any }));
+        await mgr.getCertificates({ publicName: 'defaultPublic', privateName: 'defaultPrivate', chainedName });
+        return mgr;
+    }
+
+    const used = {
+        defaultPublic: certsObj.native.certificates.defaultPublic,
+        defaultPrivate: certsObj.native.certificates.defaultPrivate,
+    };
+
+    it('returns false before certificates have ever been requested', () => {
+        const mgr = new CertificateManager(makeContext({ objects: null }));
+        assert.equal(mgr.hasRelevantChange({ native: { certificates: used } } as any), false);
+    });
+
+    it('returns false when the used certificates are unchanged', async () => {
+        const mgr = await makeUsedManager(used);
+        assert.equal(mgr.hasRelevantChange({ native: { certificates: { ...used } } } as any), false);
+    });
+
+    it('ignores an unrelated certificate being added', async () => {
+        const mgr = await makeUsedManager(used);
+        assert.equal(
+            mgr.hasRelevantChange({ native: { certificates: { ...used, otherPublic: 'OTHER' } } } as any),
+            false,
+        );
+    });
+
+    it('detects a changed value of a used certificate', async () => {
+        const mgr = await makeUsedManager(used);
+        assert.equal(
+            mgr.hasRelevantChange({ native: { certificates: { ...used, defaultPublic: 'CHANGED' } } } as any),
+            true,
+        );
+    });
+
+    it('detects a used certificate being removed', async () => {
+        const mgr = await makeUsedManager(used);
+        assert.equal(
+            mgr.hasRelevantChange({ native: { certificates: { defaultPublic: used.defaultPublic } } } as any),
+            true,
+        );
+    });
+
+    it('detects the whole certificates object being deleted', async () => {
+        const mgr = await makeUsedManager(used);
+        assert.equal(mgr.hasRelevantChange(null), true);
+    });
+
+    it('reports no relevant change after stopWatching forgets the used certificates', async () => {
+        const mgr = await makeUsedManager(used);
+        // a changed used certificate is relevant while watching
+        assert.equal(
+            mgr.hasRelevantChange({ native: { certificates: { ...used, defaultPublic: 'CHANGED' } } } as any),
+            true,
+        );
+
+        mgr.stopWatching();
+
+        // after stopWatching the same change is no longer our concern
+        assert.equal(
+            mgr.hasRelevantChange({ native: { certificates: { ...used, defaultPublic: 'CHANGED' } } } as any),
+            false,
+        );
+    });
+
+    it('tracks the chained certificate as well', async () => {
+        const chainedValue = `-----BEGIN CERTIFICATE-----\n${'A'.repeat(200)}\n-----END CERTIFICATE-----\r\n`;
+        const withChained = { ...used, defaultChained: chainedValue };
+        const mgr = await makeUsedManager(withChained, 'defaultChained');
+
+        assert.equal(mgr.hasRelevantChange({ native: { certificates: { ...withChained } } } as any), false);
+        assert.equal(
+            mgr.hasRelevantChange({ native: { certificates: { ...withChained, defaultChained: 'X' } } } as any),
+            true,
+        );
+    });
+
+    it('detects a file-backed certificate being repointed to another path', async () => {
+        const existsSync = sinon.stub(fs, 'existsSync').returns(true);
+        const readFileSync = sinon.stub(fs, 'readFileSync').returns('FILE-CERT-CONTENT');
+        try {
+            const mgr = await makeUsedManager({ defaultPublic: '/etc/c.pem', defaultPrivate: '/etc/k.pem' });
+            assert.equal(
+                mgr.hasRelevantChange({
+                    native: { certificates: { defaultPublic: '/etc/other.pem', defaultPrivate: '/etc/k.pem' } },
+                } as any),
+                true,
+            );
         } finally {
             existsSync.restore();
             readFileSync.restore();
