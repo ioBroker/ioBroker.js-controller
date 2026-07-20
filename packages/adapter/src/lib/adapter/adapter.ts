@@ -9117,32 +9117,7 @@ export class AdapterClass extends EventEmitter {
         data: ioBroker.UsedResourceData<T>,
         doNotDeleteAlreadyUsed?: boolean,
     ): Promise<void> {
-        if (!this.#states) {
-            // if states is no longer existing, we do not need to set
-            this._logger.info(
-                `${this.namespaceLog} registerUsedResource not processed because States database not connected`,
-            );
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        Validator.assertString(type, 'type');
-        Validator.assertObject(data, 'data');
-        if (doNotDeleteAlreadyUsed !== undefined) {
-            Validator.assertBoolean(doNotDeleteAlreadyUsed, 'doNotDeleteAlreadyUsed');
-        }
-
-        const obj = {
-            command: 'registerUsedResource',
-            message: {
-                type,
-                data,
-                instance: this.namespace,
-                doNotDeleteAlreadyUsed: !!doNotDeleteAlreadyUsed,
-            },
-            from: `system.adapter.${this.namespace}`,
-        };
-
-        await this.#states.pushMessage(`system.host.${this.host}`, obj);
+        return this.#async.registerUsedResource(type, data, doNotDeleteAlreadyUsed);
     }
 
     /**
@@ -9159,30 +9134,7 @@ export class AdapterClass extends EventEmitter {
         type: T,
         data?: ioBroker.UsedResourceData<T>,
     ): Promise<void> {
-        if (!this.#states) {
-            // if states is no longer existing, we do not need to set
-            this._logger.info(
-                `${this.namespaceLog} freeUsedResource not processed because States database not connected`,
-            );
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        Validator.assertString(type, 'type');
-        if (data !== undefined) {
-            Validator.assertObject(data, 'data');
-        }
-
-        const obj = {
-            command: 'freeUsedResource',
-            message: {
-                type,
-                data,
-                instance: this.namespace,
-            },
-            from: `system.adapter.${this.namespace}`,
-        };
-
-        await this.#states.pushMessage(`system.host.${this.host}`, obj);
+        return this.#async.freeUsedResource(type, data);
     }
 
     /**
@@ -9197,31 +9149,7 @@ export class AdapterClass extends EventEmitter {
      * @returns the list of registered resources (across all instances of this host)
      */
     async getUsedResources<T extends ioBroker.UsedResourceType>(type: T): Promise<ioBroker.RegisteredResource<T>[]> {
-        if (type !== undefined) {
-            Validator.assertString(type, 'type');
-        }
-
-        if (!this.host) {
-            throw new Error('getUsedResources: host of this instance is unknown');
-        }
-
-        const baseId = `system.host.${this.host}.usedResources`;
-        const resources: ioBroker.RegisteredResource<T>[] = [];
-
-        const state = await this.getForeignStateAsync(`${baseId}.${type}`);
-
-        if (state && typeof state.val === 'string' && state.val) {
-            try {
-                const parsed: unknown = JSON.parse(state.val);
-                if (Array.isArray(parsed)) {
-                    resources.push(...(parsed as ioBroker.RegisteredResource<T>[]));
-                }
-            } catch {
-                // ignore malformed content
-            }
-        }
-
-        return resources;
+        return this.#async.getUsedResources(type);
     }
 
     /**
@@ -9235,32 +9163,7 @@ export class AdapterClass extends EventEmitter {
      * @returns the list of registered resources (across all instances of this host)
      */
     async getAllUsedResources(): Promise<ioBroker.RegisteredResource[]> {
-        if (!this.host) {
-            throw new Error('getUsedResources: host of this instance is unknown');
-        }
-
-        const baseId = `system.host.${this.host}.usedResources`;
-        const resources: ioBroker.RegisteredResource[] = [];
-
-        const collect = (state: ioBroker.State | null | undefined): void => {
-            if (state && typeof state.val === 'string' && state.val) {
-                try {
-                    const parsed: unknown = JSON.parse(state.val);
-                    if (Array.isArray(parsed)) {
-                        resources.push(...(parsed as ioBroker.RegisteredResource[]));
-                    }
-                } catch {
-                    // ignore malformed content
-                }
-            }
-        };
-
-        const states = await this.getForeignStatesAsync(`${baseId}.*`);
-        for (const id of Object.keys(states)) {
-            collect(states[id]);
-        }
-
-        return resources;
+        return this.#async.getAllUsedResources();
     }
 
     // external signatures
