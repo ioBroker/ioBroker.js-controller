@@ -8,4 +8,4 @@
 
 > **CommonType** = `"number"` \| `"string"` \| `"boolean"` \| `"array"` \| `"object"` \| `"mixed"`
 
-Defined in: [types-dev/objects.d.ts:168](https://github.com/ioBroker/ioBroker.js-controller/blob/b0890493ef07142eea65eaaa9f128f16abadf220/packages/types-dev/objects.d.ts#L168)
+Defined in: [types-dev/objects.d.ts:168](https://github.com/ioBroker/ioBroker.js-controller/blob/d3842b2ac919375043ba1c8bcfb637022c2bb575/packages/types-dev/objects.d.ts#L168)
