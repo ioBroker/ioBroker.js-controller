@@ -67,7 +67,7 @@ export class UsedResourcesRegistry {
      *
      * @param type optional resource type to filter for; if omitted, resources of all types are returned
      */
-get(type?: ioBroker.UsedResourceType): ioBroker.RegisteredResource[] {
+    get(type?: ioBroker.UsedResourceType): ioBroker.RegisteredResource[] {
         const clone = (r: ioBroker.RegisteredResource): ioBroker.RegisteredResource => ({ ...r });
         if (type) {
             return (this.resources.get(type) || []).map(clone);
