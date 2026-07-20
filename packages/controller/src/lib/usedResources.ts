@@ -67,13 +67,14 @@ export class UsedResourcesRegistry {
      *
      * @param type optional resource type to filter for; if omitted, resources of all types are returned
      */
-    get(type?: ioBroker.UsedResourceType): ioBroker.RegisteredResource[] {
+get(type?: ioBroker.UsedResourceType): ioBroker.RegisteredResource[] {
+        const clone = (r: ioBroker.RegisteredResource): ioBroker.RegisteredResource => ({ ...r });
         if (type) {
-            return [...(this.resources.get(type) || [])];
+            return (this.resources.get(type) || []).map(clone);
         }
         const all: ioBroker.RegisteredResource[] = [];
         for (const list of this.resources.values()) {
-            all.push(...list);
+            all.push(...list.map(clone));
         }
         return all;
     }
