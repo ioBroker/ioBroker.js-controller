@@ -6,7 +6,7 @@
 
 # Class: CertificateManager
 
-Defined in: [adapter/src/lib/adapter/managers/CertificateManager.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/d3842b2ac919375043ba1c8bcfb637022c2bb575/packages/adapter/src/lib/adapter/managers/CertificateManager.ts#L8)
+Defined in: [adapter/src/lib/adapter/managers/CertificateManager.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/da1005b6bc059f298a1976c82df5fc4c6fcd7c65/packages/adapter/src/lib/adapter/managers/CertificateManager.ts#L11)
 
 Fetches SSL certificates from `system.certificates`, resolving file-backed values to their contents.
 
@@ -20,7 +20,7 @@ Fetches SSL certificates from `system.certificates`, resolving file-backed value
 
 > **new CertificateManager**(`ctx`): `CertificateManager`
 
-Defined in: [adapter/src/lib/adapter/managers/CertificateManager.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/d3842b2ac919375043ba1c8bcfb637022c2bb575/packages/adapter/src/lib/adapter/managers/CertificateManager.ts#L12)
+Defined in: [adapter/src/lib/adapter/managers/CertificateManager.ts:22](https://github.com/ioBroker/ioBroker.js-controller/blob/da1005b6bc059f298a1976c82df5fc4c6fcd7c65/packages/adapter/src/lib/adapter/managers/CertificateManager.ts#L22)
 
 #### Parameters
 
@@ -44,7 +44,7 @@ Shared adapter context providing live runtime state
 
 > **getCertificates**(`names`): `Promise`\<[`InternalGetCertificatesResult`](../interfaces/InternalGetCertificatesResult.md)\>
 
-Defined in: [adapter/src/lib/adapter/managers/CertificateManager.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/d3842b2ac919375043ba1c8bcfb637022c2bb575/packages/adapter/src/lib/adapter/managers/CertificateManager.ts#L28)
+Defined in: [adapter/src/lib/adapter/managers/CertificateManager.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/da1005b6bc059f298a1976c82df5fc4c6fcd7c65/packages/adapter/src/lib/adapter/managers/CertificateManager.ts#L77)
 
 Loads the named certificates from `system.certificates`. File-backed values (short strings that
 are existing paths) are read from disk and their paths collected in `certFilePaths` so the caller
@@ -85,3 +85,48 @@ Name of the public certificate
 #### Throws
 
 `ERROR_NOT_FOUND` when the requested certificates are not configured
+
+***
+
+### hasRelevantChange()
+
+> **hasRelevantChange**(`obj`): `boolean`
+
+Defined in: [adapter/src/lib/adapter/managers/CertificateManager.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/da1005b6bc059f298a1976c82df5fc4c6fcd7c65/packages/adapter/src/lib/adapter/managers/CertificateManager.ts#L38)
+
+Tells whether a new version of the `system.certificates` object actually changes one of the
+certificates handed out by the last [getCertificates](#getcertificates) call. Unrelated certificates being
+added, changed or removed are ignored, so that editing some other adapter's certificate does
+not restart this one.
+
+Compares the raw (unresolved) values: for a file-backed certificate that is the path, so
+repointing it to a different file counts as a change, while a change of the file content is
+left to the file watcher.
+
+#### Parameters
+
+##### obj
+
+[`OtherObject`](../interfaces/OtherObject.md) \| `null` \| `undefined`
+
+the new `system.certificates` object, or null/undefined if it was deleted
+
+#### Returns
+
+`boolean`
+
+***
+
+### stopWatching()
+
+> **stopWatching**(): `void`
+
+Defined in: [adapter/src/lib/adapter/managers/CertificateManager.ts:61](https://github.com/ioBroker/ioBroker.js-controller/blob/da1005b6bc059f298a1976c82df5fc4c6fcd7c65/packages/adapter/src/lib/adapter/managers/CertificateManager.ts#L61)
+
+Forgets the certificates handed out by the last [getCertificates](#getcertificates) call, so a subsequent
+change of `system.certificates` is no longer treated as relevant by [hasRelevantChange](#hasrelevantchange).
+Used when the adapter stops watching its certificates.
+
+#### Returns
+
+`void`
