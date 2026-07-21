@@ -1648,9 +1648,55 @@ export class Install {
 
         await this._deleteAdapterObjects(knownObjectIDs);
         await this._deleteAdapterStates(knownStateIDs);
+        await this._freeUsedResources(adapter, instance);
         if (this.params.custom) {
             // delete instance from custom
             await this._removeCustomFromObjects([`${adapter}.${instance}`]);
+        }
+    }
+
+    /**
+     * Free all exclusive resources (serial ports, TCP/UDP ports, ...) the given instance(s) had registered.
+     *
+     * This is needed because an instance can be deleted via the CLI while the js-controller is not running, so
+     * the controller cannot clean up its `system.host.<host>.usedResources.<type>` registry itself. The resources
+     * of all matching instances are removed from every host's registry states.
+     *
+     * @param adapter adapter name, e.g. "mqtt"
+     * @param instance instance number; if undefined, all instances of the adapter are freed
+     */
+    private async _freeUsedResources(adapter: string, instance?: number): Promise<void> {
+        const matches = (namespace: string): boolean =>
+            instance !== undefined ? namespace === `${adapter}.${instance}` : namespace.startsWith(`${adapter}.`);
+
+        let keys: string[] | null | undefined;
+        try {
+            keys = await this.states.getKeys('system.host.*.usedResources.*');
+        } catch {
+            return;
+        }
+        if (!keys?.length) {
+            return;
+        }
+
+        for (const id of keys) {
+            try {
+                const state = await this.states.getState(id);
+                if (!state || typeof state.val !== 'string' || !state.val) {
+                    continue;
+                }
+                const parsed: unknown = JSON.parse(state.val);
+                if (!Array.isArray(parsed)) {
+                    continue;
+                }
+                const original = parsed as { instance: string }[];
+                const filtered = original.filter(entry => !matches(entry.instance));
+                if (filtered.length !== original.length) {
+                    await this.states.setStateAsync(id, { val: JSON.stringify(filtered), ack: true });
+                }
+            } catch {
+                // ignore malformed content
+            }
         }
     }
 

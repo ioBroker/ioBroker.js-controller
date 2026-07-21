@@ -842,6 +842,12 @@ declare global {
                 | 'weather';
             /** If `true`, the `npm` package must be installed with the `--unsafe-perm` flag */
             unsafePerm?: true;
+            /**
+             * If `true`, the adapter registers the exclusive resources it occupies (serial ports, TCP/UDP ports, ...)
+             * itself via `adapter.registerUsedResource(...)`. If not set, js-controller maintains the registry for
+             * this adapter automatically based on the instance's `native.port`.
+             */
+            usedResources?: boolean;
             /** The available version in the ioBroker repo. */
             version: string;
             /** Definition of the vis-2 widgets */

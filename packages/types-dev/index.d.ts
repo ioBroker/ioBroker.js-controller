@@ -79,7 +79,101 @@ declare global {
             | 'CONTROLLER_UI_UPGRADE'
             | 'ADAPTER_WEBSERVER_UPGRADE'
             | 'CONTROLLER_CMD_EXEC_FILES'
-            | 'CONTROLLER_FEATURE_REQUEST';
+            | 'CONTROLLER_FEATURE_REQUEST'
+            | 'CONTROLLER_USED_RESOURCES';
+
+        // #region Used resources
+        // ---------------------------------------------------------------------------------------------------
+        // Exclusive resources occupied by adapter instances (serial ports, TCP/UDP ports, USB devices, ...).
+        // These are the resources that cannot be used by more than one instance at the same time.
+        // Each resource type has its own strictly typed payload; extend `UsedResourceDataMap` to add a new one.
+        // ---------------------------------------------------------------------------------------------------
+
+        /** A serial port occupied by an instance */
+        interface SerialPortResourceData {
+            /** System path or name of the serial port, e.g. "/dev/ttyUSB0" or "COM3" */
+            port: string;
+            /** Baud rate the port is opened with, if known */
+            baudRate?: number;
+        }
+
+        /** A TCP port occupied by an instance */
+        interface TcpPortResourceData {
+            /** TCP port number */
+            port: number;
+            /** Address the socket is bound to. Default "0.0.0.0" (all interfaces) */
+            bind?: string;
+            /** address family */
+            family?: 4 | 6;
+        }
+
+        /** A UDP port occupied by an instance */
+        interface UdpPortResourceData {
+            /** UDP port number */
+            port: number;
+            /** Address the socket is bound to. Default "0.0.0.0" (all interfaces) */
+            bind?: string;
+            /** address family */
+            family?: 4 | 6;
+        }
+
+        /** A USB device occupied by an instance */
+        interface UsbResourceData {
+            /** System path of the USB device, e.g. "/dev/bus/usb/001/004" or "\\\\.\\COM3" */
+            path: string;
+            /** USB vendor id (hex string), e.g. "10c4" */
+            vendorId?: string;
+            /** USB product id (hex string), e.g. "ea60" */
+            productId?: string;
+        }
+
+        /** A Bluetooth / HCI adapter occupied by an instance */
+        interface BluetoothResourceData {
+            /** HCI device name or index, e.g. "hci0" */
+            hci: string;
+        }
+
+        /** A GPIO pin occupied by an instance */
+        interface GpioResourceData {
+            /** GPIO pin number (BCM numbering) */
+            pin: number;
+        }
+
+        /**
+         * Maps every known resource type to its strictly typed payload.
+         * To introduce a new resource type, add its `RESOURCE_TYPE: RESOURCE_TYPE_Data` entry here
+         * (this map is intentionally open for module augmentation by adapters that own custom resources).
+         */
+        interface UsedResourceDataMap {
+            serialPort: SerialPortResourceData;
+            tcpPort: TcpPortResourceData;
+            udpPort: UdpPortResourceData;
+            usb: UsbResourceData;
+            bluetooth: BluetoothResourceData;
+            gpio: GpioResourceData;
+        }
+
+        /** Kind of an exclusive resource that can be occupied by only one instance at a time */
+        type UsedResourceType = keyof UsedResourceDataMap;
+
+        /** The type-specific payload for a given resource type (without bookkeeping fields) */
+        type UsedResourceData<T extends UsedResourceType = UsedResourceType> = UsedResourceDataMap[T];
+
+        /**
+         * A registered resource as stored on the host: the typed payload enriched with the discriminating
+         * `type` and the ownership/bookkeeping fields (`instance`, `ts`).
+         */
+        type RegisteredResource<T extends UsedResourceType = UsedResourceType> = {
+            [K in T]: { type: K } & UsedResourceDataMap[K] & {
+                    /** Instance that occupies the resource, e.g. "mqtt.0" */
+                    instance: string;
+                    /** Timestamp (ms) when the resource was registered */
+                    ts: number;
+                    /** If true, thie instance is running and use this resource. If false, the instance is not running, but could use this resource, when started */
+                    isBlocked: boolean;
+                };
+        }[T];
+        // #endregion
 
         type StateValue = string | number | boolean | null;
 

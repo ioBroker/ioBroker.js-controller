@@ -54,6 +54,7 @@ import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
 import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
+import { UsedResourcesRegistry } from '@/lib/usedResources.js';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
 // eslint-disable-next-line unicorn/prefer-module
@@ -219,6 +220,11 @@ let compactGroupController = false;
 let compactGroup: null | number = null;
 const compactProcs: Record<string, CompactProcess> = {};
 const scheduledInstances: Record<string, any> = {};
+/**
+ * In-memory registry of the exclusive resources (serial ports, TCP/UDP ports, USB devices, ...) currently used
+ * by the instances running on this host. Mirrored into `system.host.<name>.usedResources.<type>`.
+ */
+const usedResources = new UsedResourcesRegistry();
 /** If less than this disk space free in %, generate a warning */
 let diskWarningLevel = DEFAULT_DISK_WARNING_LEVEL;
 
@@ -727,6 +733,7 @@ async function initializeController(): Promise<void> {
             await checkHost();
             await startMultihost(config);
             await setMeta();
+            await loadUsedResources();
             started = true;
             await getInstances();
         }
@@ -826,6 +833,14 @@ function createObjects(onConnect: () => void): void {
 
                         // instance removed -> remove all notifications
                         await notificationHandler.clearNotifications(null, null, id);
+                        // instance removed -> free all exclusive resources (serial ports, TCP/UDP ports, ...) it held
+                        await persistUsedResourceTypes(
+                            usedResources.removeInstance(
+                                id.startsWith(`${SYSTEM_ADAPTER_PREFIX}`)
+                                    ? id.substring(SYSTEM_ADAPTER_PREFIX.length)
+                                    : id,
+                            ),
+                        );
                         proc.config.common.enabled = false;
                         // @ts-expect-error check if we can handle it differently
                         proc.config.common.host = null;
@@ -2066,6 +2081,134 @@ async function uploadAdapter(task: UploadTask): Promise<void> {
 }
 
 /**
+ * Persist the used resources of a given type into `system.host.<name>.usedResources.<type>`, creating the
+ * corresponding object on demand. The state holds the JSON-serialized array of registered resources.
+ *
+ * @param type the resource type to persist
+ */
+async function persistUsedResources(type: ioBroker.UsedResourceType): Promise<void> {
+    const id = `${hostObjectPrefix}.usedResources.${type}`;
+    const resources = usedResources.get(type);
+
+    try {
+        await objects!.extendObject(id, {
+            type: 'state',
+            common: {
+                name: `Used resources: ${type}`,
+                type: 'array',
+                role: 'json',
+                read: true,
+                write: false,
+            },
+            native: {},
+        });
+        await states!.setState(id, { val: JSON.stringify(resources), ack: true, from: hostObjectPrefix });
+    } catch (e) {
+        logger.warn(`${hostLogPrefix} Cannot persist used resources of type "${type}": ${e.message}`);
+    }
+}
+
+/**
+ * Persist all given resource types (as reported changed by a registry mutation).
+ *
+ * @param types the resource types to persist
+ */
+async function persistUsedResourceTypes(types: ioBroker.UsedResourceType[]): Promise<void> {
+    for (const type of types) {
+        await persistUsedResources(type);
+    }
+}
+
+/**
+ * Load the used resources persisted under `system.host.<name>.usedResources.*` back into the registry.
+ * Called once on controller start so that registrations survive a controller restart.
+ *
+ * On load an assessment is done (see {@link UsedResourcesRegistry.assess}):
+ * - all `isBlocked` flags are reset to `false`, because at controller start no instance is running yet
+ *   (running instances re-register and thereby re-block their resources on their next start);
+ * - resources of instances that no longer exist (e.g. deleted via CLI while the controller was down) are removed.
+ */
+async function loadUsedResources(): Promise<void> {
+    if (!states || !objects) {
+        return;
+    }
+    try {
+        const keys = (await states.getKeys(`${hostObjectPrefix}.usedResources.*`)) || [];
+        if (!keys.length) {
+            return;
+        }
+
+        // collect the instances (namespaces, e.g. "mqtt.0") that currently exist
+        const existingInstances = new Set<string>();
+        const instanceView = await objects.getObjectViewAsync('system', 'instance', {
+            startkey: SYSTEM_ADAPTER_PREFIX,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`,
+        });
+        for (const row of instanceView.rows) {
+            if (row.value?._id) {
+                existingInstances.add(row.value._id.substring(SYSTEM_ADAPTER_PREFIX.length));
+            }
+        }
+
+        const values = (await states.getStates(keys)) || [];
+        for (let i = 0; i < keys.length; i++) {
+            const state = values[i];
+            if (!state || typeof state.val !== 'string' || !state.val) {
+                continue;
+            }
+            const type = keys[i].split('.').pop() as ioBroker.UsedResourceType;
+            try {
+                const parsed: unknown = JSON.parse(state.val);
+                if (Array.isArray(parsed)) {
+                    usedResources.setType(type, parsed as ioBroker.RegisteredResource[]);
+                }
+            } catch {
+                // ignore malformed content
+            }
+        }
+
+        // reset blocking flags and drop resources of no longer existing instances, persisting what changed
+        await persistUsedResourceTypes(usedResources.assess(existingInstances));
+    } catch (e) {
+        logger.warn(`${hostLogPrefix} Cannot load used resources: ${e.message}`);
+    }
+}
+
+/**
+ * For adapters that do not manage their used resources themselves (`common.usedResources` not set), let the
+ * controller register the instance's configured TCP port (`native.port`) in the used-resources registry, so the
+ * port shows up as occupied even though the adapter never calls `registerUsedResource` itself.
+ *
+ * @param id the instance id, e.g. "system.adapter.mqtt.0"
+ * @param instance the instance object
+ */
+function autoRegisterUsedResources(id: string, instance: ioBroker.InstanceObject): void {
+    if (instance.common.usedResources) {
+        // the adapter registers its resources itself
+        return;
+    }
+
+    const port = instance.native?.port;
+    const portNumber =
+        typeof port === 'number' ? port : typeof port === 'string' && port.trim() !== '' ? Number(port) : Number.NaN;
+    if (Number.isNaN(portNumber)) {
+        return;
+    }
+
+    const data: ioBroker.TcpPortResourceData = { port: portNumber };
+    // if the instance also binds to a specific interface, register it together with the port
+    const bind = instance.native?.bind;
+    if (typeof bind === 'string' && bind.trim() !== '') {
+        data.bind = bind;
+    }
+
+    const namespace = id.startsWith(SYSTEM_ADAPTER_PREFIX) ? id.substring(SYSTEM_ADAPTER_PREFIX.length) : id;
+    persistUsedResourceTypes(usedResources.register('tcpPort', data, namespace)).catch(e =>
+        logger.warn(`${hostLogPrefix} Cannot auto-register used resource of ${id}: ${e.message}`),
+    );
+}
+
+/**
  * Process message to controller, like execute some script
  *
  * @param msg The message to process
@@ -3165,6 +3308,43 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             }
             break;
 
+        case 'registerUsedResource':
+            try {
+                await persistUsedResourceTypes(
+                    usedResources.register(
+                        msg.message.type,
+                        msg.message.data,
+                        msg.message.instance,
+                        msg.message.doNotDeleteAlreadyUsed,
+                    ),
+                );
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
+                }
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot register used resource: ${e.message}`);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
+            }
+            break;
+
+        case 'freeUsedResource':
+            try {
+                await persistUsedResourceTypes(
+                    usedResources.free(msg.message.type, msg.message.data, msg.message.instance),
+                );
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
+                }
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot free used resource: ${e.message}`);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
+            }
+            break;
+
         // read licenses from iobroker.net
         case 'updateLicenses': {
             try {
@@ -3966,6 +4146,16 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                     states!
                         .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
                         .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));
+
+                    // the instance is no longer running: keep its resource registrations but mark them as not
+                    // actively blocked, so the user still sees which resources it would occupy when started again
+                    const instanceNamespace = id.startsWith(`${SYSTEM_ADAPTER_PREFIX}`)
+                        ? id.substring(SYSTEM_ADAPTER_PREFIX.length)
+                        : id;
+                    persistUsedResourceTypes(usedResources.setInstanceBlocked(instanceNamespace, false)).catch(e =>
+                        logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`),
+                    );
+
                     if (signal) {
                         logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                     } else if (code === null) {
@@ -4636,6 +4826,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`,
                             );
                         }
+
+                        // let the controller track the instance's port if the adapter does not do it itself
+                        autoRegisterUsedResources(id, instance);
                     }
                 };
 
@@ -6035,6 +6228,9 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
     await states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
 
     const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
+
+    // the instance is no longer running: keep its resource registrations but mark them as not actively blocked
+    await persistUsedResourceTypes(usedResources.setInstanceBlocked(adapterInstance, false));
 
     const state = await states!.getState(`${adapterInstance}.info.connection`);
 

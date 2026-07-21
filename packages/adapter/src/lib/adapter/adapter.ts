@@ -9096,6 +9096,76 @@ export class AdapterClass extends EventEmitter {
         return this.#async.registerNotification(scope, category, message, options);
     }
 
+    /**
+     * Register an exclusive resource (serial port, TCP/UDP port, USB device, ...) as used by this instance.
+     *
+     * Exclusive resources are the ones that cannot be occupied by more than one instance at the same time.
+     * The information is forwarded to the host this instance runs on and stored under
+     * `system.host.<hostname>.usedResources.<type>`, so the user gets an overview of the occupied resources
+     * and can pick a free one when configuring a new instance.
+     *
+     * By default the host first drops all resources this instance had registered before, because the user may
+     * have changed the settings before the (re)start and the old registrations could be invalid. To register
+     * more than one resource for this instance, pass `doNotDeleteAlreadyUsed = true` on every call except the first.
+     *
+     * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
+     * @param data the strictly typed payload describing the resource, e.g. `{ port: '/dev/ttyUSB0' }`
+     * @param doNotDeleteAlreadyUsed if true, keep the resources this instance already registered instead of replacing them
+     */
+    async registerUsedResource<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data: ioBroker.UsedResourceData<T>,
+        doNotDeleteAlreadyUsed?: boolean,
+    ): Promise<void> {
+        return this.#async.registerUsedResource(type, data, doNotDeleteAlreadyUsed);
+    }
+
+    /**
+     * Free a previously registered exclusive resource of this instance.
+     *
+     * If `data` is omitted, all registered resources of the given `type` for this instance are freed.
+     * The change is forwarded to the host this instance runs on and reflected in
+     * `system.host.<hostname>.usedResources.<type>`.
+     *
+     * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
+     * @param data the strictly typed payload of the resource to free; if omitted, all resources of `type` are freed
+     */
+    async freeUsedResource<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data?: ioBroker.UsedResourceData<T>,
+    ): Promise<void> {
+        return this.#async.freeUsedResource(type, data);
+    }
+
+    /**
+     * Query the exclusive resources currently registered as used on the host this instance runs on.
+     *
+     * Reading is done directly from the state's DB (`system.host.<hostname>.usedResources.<type>`), which the
+     * host keeps up to date. Only `registerUsedResource`/`freeUsedResource` go through the host to keep the
+     * registry consistent. Returns the resources of all instances on this host, so the user (or an admin UI)
+     * can present an overview of the occupied resources. Optionally filtered by resource `type`.
+     *
+     * @param type optional resource type to filter for, e.g. "serialPort"; if omitted, all types are returned
+     * @returns the list of registered resources (across all instances of this host)
+     */
+    async getUsedResources<T extends ioBroker.UsedResourceType>(type: T): Promise<ioBroker.RegisteredResource<T>[]> {
+        return this.#async.getUsedResources(type);
+    }
+
+    /**
+     * Query the exclusive resources currently registered as used on the host this instance runs on.
+     *
+     * Reading is done directly from the state's DB (`system.host.<hostname>.usedResources.<type>`), which the
+     * host keeps up to date. Only `registerUsedResource`/`freeUsedResource` go through the host to keep the
+     * registry consistent. Returns the resources of all instances on this host, so the user (or an admin UI)
+     * can present an overview of the occupied resources. Optionally filtered by resource `type`.
+     *
+     * @returns the list of registered resources (across all instances of this host)
+     */
+    async getAllUsedResources(): Promise<ioBroker.RegisteredResource[]> {
+        return this.#async.getAllUsedResources();
+    }
+
     // external signatures
     /**
      * Writes value into states DB.
