@@ -8,7 +8,7 @@
 
 > **FindObjectCallback** = (`err?`, `id?`, `name?`) => `void`
 
-Defined in: [types-dev/index.d.ts:482](https://github.com/ioBroker/ioBroker.js-controller/blob/d3842b2ac919375043ba1c8bcfb637022c2bb575/packages/types-dev/index.d.ts#L482)
+Defined in: [types-dev/index.d.ts:482](https://github.com/ioBroker/ioBroker.js-controller/blob/da1005b6bc059f298a1976c82df5fc4c6fcd7c65/packages/types-dev/index.d.ts#L482)
 
 ## Parameters
 

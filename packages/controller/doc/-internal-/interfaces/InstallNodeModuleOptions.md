@@ -6,7 +6,7 @@
 
 # Interface: InstallNodeModuleOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:878](https://github.com/ioBroker/ioBroker.js-controller/blob/d3842b2ac919375043ba1c8bcfb637022c2bb575/packages/adapter/src/lib/_Types.ts#L878)
+Defined in: [adapter/src/lib/\_Types.ts:878](https://github.com/ioBroker/ioBroker.js-controller/blob/da1005b6bc059f298a1976c82df5fc4c6fcd7c65/packages/adapter/src/lib/_Types.ts#L878)
 
 Options for installing a node module
 
@@ -20,6 +20,6 @@ Options for installing a node module
 
 > **version**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:880](https://github.com/ioBroker/ioBroker.js-controller/blob/d3842b2ac919375043ba1c8bcfb637022c2bb575/packages/adapter/src/lib/_Types.ts#L880)
+Defined in: [adapter/src/lib/\_Types.ts:880](https://github.com/ioBroker/ioBroker.js-controller/blob/da1005b6bc059f298a1976c82df5fc4c6fcd7c65/packages/adapter/src/lib/_Types.ts#L880)
 
 Version of the node module
