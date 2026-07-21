@@ -19,7 +19,7 @@
         "promisify-child-process": "^5.0.1",
         "readline-sync": "^1.4.10",
         "semver": "^7.8.5",
-        "tar": "^7.5.16",
+        "tar": "^7.5.20",
         "yargs": "^18.0.0"
     },
     "keywords": [
