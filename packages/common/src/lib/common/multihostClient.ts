@@ -24,7 +24,7 @@ const MULTICAST_ADDR = '239.255.255.250';
  */
 export interface ReceivedMessage {
     /** Command name, e.g. 'browse' */
-    cmd: 'browse' | 'auth';
+    cmd: 'browse' | 'auth' | 'join' | 'decline' | 'identify';
     /** Unique message identifier */
     id: number;
     /** Result string returned by server: 'ok', 'not authenticated', etc. */
@@ -38,6 +38,8 @@ export interface ReceivedMessage {
     info?: string;
     /** Whether responder is a slave */
     slave?: boolean;
+    /** The responder belongs to no system yet and can be attached */
+    unclaimed?: boolean;
     /** Authentication token (when required) */
     auth?: string;
     /** Salt used for password hashing during authentication */
@@ -311,5 +313,58 @@ export class MHClient {
                 }
             },
         );
+    }
+
+    /**
+     * Send a write command to a host that is not part of this system yet.
+     *
+     * `browse` asks and the other host answers. These commands go the other way: the master tells a
+     * freshly installed host what to do. That host is not connected to any states database, so this
+     * socket is the only way to reach it.
+     *
+     * Sent as unicast - the multicast address is only needed for finding hosts.
+     *
+     * @param ip - Address of the target host
+     * @param cmd - `join` to attach it, `decline` to be ignored by it, `identify` to make it log
+     * @param payload - additional fields of the command
+     * @param payload.masterUuid - UUID of this master, used by `join` and `decline`
+     * @param payload.password - multihost password, used by `join`
+     * @param payload.revoke - `decline` only: take the rejection back
+     * @param timeout - Milliseconds to wait for the answer
+     * @returns the answer of the host
+     */
+    sendCommand(
+        ip: string,
+        cmd: 'join' | 'decline' | 'identify',
+        payload: { masterUuid?: string; password?: string; revoke?: boolean } = {},
+        timeout = 2_000,
+    ): Promise<ReceivedMessage> {
+        return new Promise((resolve, reject) => {
+            let answered = false;
+            const requestId = ++this.id;
+
+            this.startServer(
+                false,
+                timeout,
+                () => {
+                    const text = JSON.stringify({ cmd, id: requestId, ...payload });
+                    this.server!.send(text, 0, text.length, PORT, ip);
+                },
+                msg => {
+                    if (msg.cmd !== cmd || msg.id !== requestId) {
+                        // not ours - keep listening
+                        return false;
+                    }
+                    answered = true;
+                    resolve(msg);
+                    return true;
+                },
+                err => {
+                    if (!answered) {
+                        reject(err || new Error(`No answer from ${ip} for command "${cmd}"`));
+                    }
+                },
+            );
+        });
     }
 }

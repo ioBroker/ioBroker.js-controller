@@ -270,12 +270,92 @@ function getConfig(): ioBroker.IoBrokerJson | never {
 }
 
 /**
+ * Attach this host to a master: fetch its database configuration and store it locally.
+ *
+ * Used from two directions - the `multihostConnect` message (Admin of *this* host) and the `join`
+ * command of the multihost server (Admin of the *master*, over UDP 50005). The caller restarts the
+ * controller afterwards.
+ *
+ * The previous `iobroker.json` is kept as `iobroker.json.bak`. Without a screen and without SSH a
+ * host that cannot reach its master after the restart would otherwise be unrecoverable.
+ *
+ * @param ip Address of the master
+ * @param password Multihost password, empty when the master runs unsecured
+ */
+async function joinMaster(ip: string, password: string): Promise<{ result: boolean; error?: string }> {
+    logger.info(`${hostLogPrefix} Multihost connect requested to "${ip}"`);
+
+    return new Promise(resolve => {
+        const mhClient = new MHClient();
+        mhClient.connect(ip, password, async (err, oObjects, oStates, ipHost) => {
+            if (err) {
+                resolve({ result: false, error: err.message });
+                return;
+            }
+            if (!oObjects || !oStates) {
+                resolve({ result: false, error: 'No configuration received from remote host' });
+                return;
+            }
+            try {
+                const configFile = tools.getConfigFileName();
+                const config: ioBroker.IoBrokerJson = fs.readJsonSync(configFile);
+                config.objects = oObjects;
+                config.states = oStates;
+
+                const hasLocalObjectsServer = await isLocalObjectsDbServer(
+                    config.objects.type,
+                    config.objects.host,
+                    true,
+                );
+                const hasLocalStatesServer = await isLocalStatesDbServer(config.states.type, config.states.host, true);
+
+                if (hasLocalObjectsServer || hasLocalStatesServer) {
+                    resolve({
+                        result: false,
+                        error: `The remote host points back to a local database (${tools.getLocalAddress()}). This host cannot join it.`,
+                    });
+                    return;
+                }
+
+                // If the remote delivers a "listen all" address (0.0.0.0 / ::), use its actual IP instead.
+                const replaceListenAll = (host: string | string[]): string | string[] =>
+                    Array.isArray(host)
+                        ? host.map(h => (tools.isListenAllAddress(h) ? (ipHost ?? '') : h))
+                        : tools.isListenAllAddress(host)
+                          ? (ipHost ?? '')
+                          : host;
+                config.objects.host = replaceListenAll(config.objects.host);
+                config.states.host = replaceListenAll(config.states.host);
+
+                try {
+                    fs.copyFileSync(configFile, `${configFile}.bak`);
+                } catch (e) {
+                    logger.warn(`${hostLogPrefix} Cannot back up ${configFile}: ${e.message}`);
+                }
+
+                fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+                logger.info(`${hostLogPrefix} Multihost connect to "${ip}" succeeded. Restarting controller...`);
+                resolve({ result: true });
+            } catch (e) {
+                resolve({ result: false, error: `Cannot store new configuration: ${e.message}` });
+            }
+        });
+    });
+}
+
+/**
  * Starts the multihost discovery server
  *
  * @param _config Configuration from iobroker.json
  * @param secret MultiHost communication password
+ * @param options Pairing behaviour of the server
+ * @param options.pairingOnly Only listen for pairing commands, do not answer `browse`
  */
-function _startMultihost(_config: ioBroker.IoBrokerJson, secret: string | false): void {
+function _startMultihost(
+    _config: ioBroker.IoBrokerJson,
+    secret: string | false,
+    options?: { pairingOnly?: boolean },
+): void {
     const cpus = os.cpus();
     mhService = new MHServer(
         hostname,
@@ -290,6 +370,17 @@ function _startMultihost(_config: ioBroker.IoBrokerJson, secret: string | false)
             ostype: os.type(),
         },
         secret,
+        {
+            pairingOnly: options?.pairingOnly,
+            onJoin: async (masterIp: string, password: string) => {
+                const result = await joinMaster(masterIp, password);
+                if (result.result) {
+                    await wait(1_000);
+                    await restart(() => !isStopping && stop(false));
+                }
+                return result;
+            },
+        },
     );
 }
 
@@ -400,15 +491,34 @@ async function startMultihost(__config?: ioBroker.IoBrokerJson): Promise<boolean
         }
 
         return true;
-    } else if (mhService) {
+    }
+
+    if (mhService) {
         try {
             mhService.close();
             mhService = null;
         } catch (e) {
             logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e.message}`);
         }
-        return false;
     }
+
+    // Multihost is switched off, but a host that does not belong to any system yet has to stay
+    // reachable: without a states database connection the `join` command over UDP 50005 is the only
+    // way for a master to attach it. `browse` is refused in this mode, so nothing is disclosed.
+    //
+    // Switched off with `multihostService.pairing: false` in iobroker.json. Then this host cannot be
+    // attached over the network at all and only `iobroker multihost connect` on the host itself
+    // remains - which needs a shell on it.
+    if (
+        _config.multihostService?.pairing !== false &&
+        (await isLocalObjectsDbServer(_config.objects.type, _config.objects.host))
+    ) {
+        _startMultihost(_config, false, { pairingOnly: true });
+        logger.debug(`${hostLogPrefix} Multi-host pairing listener started (host does not belong to a system yet)`);
+        return true;
+    }
+
+    return false;
 }
 
 /**
@@ -2954,6 +3064,70 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
         }
 
+        case 'multihostBrowse': {
+            // Master side: search the network for hosts. Sent by the Admin to fill the list of
+            // hosts that can be attached. Hosts that belong to no system yet answer with
+            // `unclaimed: true`, see MHServer in pairing mode.
+            try {
+                const mhClient = new MHClient();
+                const list = await mhClient.browse(msg.message?.timeout || 2_000, false);
+                if (msg.callback) {
+                    sendTo(msg.from, msg.command, { result: true, hosts: list }, msg.callback);
+                }
+            } catch (e) {
+                if (msg.callback) {
+                    sendTo(msg.from, msg.command, { result: false, error: e.message }, msg.callback);
+                }
+            }
+            break;
+        }
+
+        case 'multihostPair': {
+            // Master side: tell a host that does not belong to this system yet what to do.
+            // `join` attaches it, `decline` makes it ignore us, `identify` makes it log its name.
+            const { ip, cmd, password, revoke } = msg.message || {};
+
+            if (!ip || !cmd) {
+                if (msg.callback) {
+                    sendTo(msg.from, msg.command, { result: false, error: 'ip and cmd are required' }, msg.callback);
+                }
+                break;
+            }
+
+            // The target host stores the decline per master, so it has to know who we are.
+            // `system.meta.uuid` is the installation id and stays stable across renames.
+            let masterUuid = '';
+            try {
+                const uuidObj = await objects!.getObjectAsync('system.meta.uuid');
+                masterUuid = (uuidObj?.native?.uuid as string) || '';
+            } catch {
+                // without it only `join` works - a decline could not be assigned to us
+            }
+
+            try {
+                const mhClient = new MHClient();
+                const answer = await mhClient.sendCommand(ip, cmd, {
+                    masterUuid,
+                    password: password || '',
+                    revoke,
+                });
+                logger.info(`${hostLogPrefix} Multihost ${cmd} to ${ip}: ${answer.result}`);
+                if (msg.callback) {
+                    sendTo(
+                        msg.from,
+                        msg.command,
+                        { result: answer.result === 'ok', answer: answer.result },
+                        msg.callback,
+                    );
+                }
+            } catch (e) {
+                if (msg.callback) {
+                    sendTo(msg.from, msg.command, { result: false, error: e.message }, msg.callback);
+                }
+            }
+            break;
+        }
+
         case 'multihostConnect': {
             // Triggered by the Admin GUI after a host was discovered via the mDNS plugin.
             // Performs the existing multihost handshake (browse => auth => browse) against the
@@ -2969,70 +3143,13 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 break;
             }
 
-            logger.info(`${hostLogPrefix} Multihost connect requested to "${ip}"`);
-
-            const result = await new Promise<{ result: boolean; error?: string; restarting?: boolean }>(resolve => {
-                const mhClient = new MHClient();
-                mhClient.connect(ip, password, async (err, oObjects, oStates, ipHost) => {
-                    if (err) {
-                        resolve({ result: false, error: err.message });
-                        return;
-                    }
-                    if (!oObjects || !oStates) {
-                        resolve({ result: false, error: 'No configuration received from remote host' });
-                        return;
-                    }
-                    try {
-                        const configFile = tools.getConfigFileName();
-                        const config: ioBroker.IoBrokerJson = fs.readJsonSync(configFile);
-                        config.objects = oObjects;
-                        config.states = oStates;
-
-                        const hasLocalObjectsServer = await isLocalObjectsDbServer(
-                            config.objects.type,
-                            config.objects.host,
-                            true,
-                        );
-                        const hasLocalStatesServer = await isLocalStatesDbServer(
-                            config.states.type,
-                            config.states.host,
-                            true,
-                        );
-
-                        if (hasLocalObjectsServer || hasLocalStatesServer) {
-                            resolve({
-                                result: false,
-                                error: `The remote host points back to a local database (${tools.getLocalAddress()}). This host cannot join it.`,
-                            });
-                            return;
-                        }
-
-                        // If the remote delivers a "listen all" address (0.0.0.0 / ::), use its actual IP instead.
-                        const replaceListenAll = (host: string | string[]): string | string[] =>
-                            Array.isArray(host)
-                                ? host.map(h => (tools.isListenAllAddress(h) ? (ipHost ?? '') : h))
-                                : tools.isListenAllAddress(host)
-                                  ? (ipHost ?? '')
-                                  : host;
-                        config.objects.host = replaceListenAll(config.objects.host);
-                        config.states.host = replaceListenAll(config.states.host);
-
-                        fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
-                        logger.info(
-                            `${hostLogPrefix} Multihost connect to "${ip}" succeeded. Restarting controller...`,
-                        );
-                        resolve({ result: true, restarting: true });
-                    } catch (e) {
-                        resolve({ result: false, error: `Cannot store new configuration: ${e.message}` });
-                    }
-                });
-            });
+            const result = await joinMaster(ip, password);
 
             if (msg.callback) {
                 sendTo(msg.from, msg.command, result, msg.callback);
             }
 
-            if (result.restarting) {
+            if (result.result) {
                 // give the response time to be delivered before restarting
                 await wait(1_000);
                 await restart(() => !isStopping && stop(false));
