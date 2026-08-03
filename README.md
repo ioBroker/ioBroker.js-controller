@@ -94,6 +94,7 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 - [Objects warn limit](#objects-warn-limit)
 - [Controlling and monitoring of adapter processes](#controlling-and-monitoring-of-adapter-processes)
 - [Multihost](#multihost)
+- [Host discovery](#host-discovery)
 - [TIERS: Start instances in an ordered manner](#tiers-start-instances-in-an-ordered-manner)
 - [Custom Node.js process arguments](#custom-nodejs-process-arguments)
 - [IPv6 DNS resolution support](#ipv6-dns-resolution-support)
@@ -815,6 +816,37 @@ All other hosts are configured to connect to this master host.
 
 For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?page_id=3068&lang=de
 
+### Host discovery
+**Feature status:** New in 7.3.0
+
+Attaching a new host used to require a shell on that host. On a ready-made image, in a container or
+on a headless device that is exactly what is missing, so hosts now find each other on the network.
+
+Every host announces itself via mDNS/DNS-SD as `_iobroker._tcp` on port 50005 — the port the
+multihost service already listens on, so a master that finds the announcement can talk to that host
+right away. The TXT record carries the installation id (`uuid`), the host name, the controller
+version and two flags: `unclaimed` and `master`.
+
+A host counts as **unclaimed** while it uses a local objects database and no second host has joined
+it. Installed adapters are deliberately not part of that check — a ready-made image usually ships
+with admin and a backup adapter already set up, and that is still a host nobody has claimed.
+
+A host that can attach others also listens and keeps the result in
+`system.host.<hostname>.discoveredHosts` as JSON, so the Admin can subscribe to it. The list is
+refreshed every 60 seconds and hosts the user declined are filtered out.
+
+mDNS does not cross a Docker bridge or a subnet border. The multihost UDP protocol on port 50005
+still answers a `browse` in those setups, so `multihostBrowse` merges both sources.
+
+The mDNS part is provided by the **optional** dependency `bonjour-service`. It binds UDP 5353, which
+does not work on every system — notably not on some Windows setups. When the package is missing or
+cannot be started, the controller writes one info line and carries on without it: hosts are then
+only found over the multihost UDP protocol, and `discoveredHosts` stays empty.
+
+Announcing can be switched off together with the pairing listener via
+`"multihostService": { "pairing": false }` in `iobroker.json`. Then a host can only be attached from
+a shell on the host itself.
+
 ### TIERS: Start instances in an ordered manner
 **Feature status:** Technology preview (since 3.3.0)
 
@@ -1173,6 +1205,69 @@ With such a setup, ioBroker will connect to one of these sentinel processes to g
 
 #### writeBaseSettings
 ... TODO
+
+#### multihostBrowse
+Returns the ioBroker hosts on the local network. Merges the hosts which announced themselves via
+mDNS with an active `browse` over the multihost UDP protocol, because neither reaches every network
+on its own. Hosts the user declined are filtered out.
+
+```js5
+// message
+{ timeout: 2000 }           // optional, how long the UDP browse waits, default 2000 ms
+// answer
+{
+  result: true,
+  hosts: [
+    {
+      uuid: 'a1b2...',      // installation id, needed to decline this host
+      hostname: 'iobroker',
+      ip: '192.168.1.42',
+      port: 50005,
+      unclaimed: true,      // belongs to no system yet and can be attached
+      master: false,        // runs a multihost master
+      version: '7.3.0',
+      source: 'mdns',       // 'mdns' or 'udp'
+    },
+  ],
+}
+```
+
+#### multihostPair
+Acts on a host found by `multihostBrowse`. Sent to the master, which then reaches the other host over
+UDP port 50005.
+
+```js5
+// message
+{
+  ip: '192.168.1.42',       // required
+  cmd: 'join',              // required: 'join' | 'decline' | 'identify'
+  uuid: 'a1b2...',          // required for 'decline'
+  password: '',             // 'join' only, when the master runs secured
+  revoke: false,            // 'decline' only, take the rejection back
+}
+// answer
+{ result: true, answer: 'ok' }
+```
+
+* `join` — the host fetches the database configuration of this master, stores it and restarts. It
+  refuses when it already belongs to a system.
+* `decline` — the host is hidden from the discovery list of this system. The decision is stored on
+  the master, so it also holds while the other host is switched off. The other host is notified as
+  well and then ignores this master; if it cannot be reached, it stays hidden anyway.
+* `identify` — the host writes its own name into its log, which helps to tell two freshly installed
+  devices apart.
+
+#### multihostConnect
+Attaches **this** host to a master. The counterpart to `multihostPair` with `join`, for the case
+where the user sits in the Admin of the new host rather than in the Admin of the master. The
+controller restarts after a successful connect.
+
+```js5
+// message
+{ ip: '192.168.1.10', password: '' }
+// answer
+{ result: true }
+```
 
 ### Adapter Development
 **Feature status:** Stable

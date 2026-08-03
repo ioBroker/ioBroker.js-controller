@@ -10,6 +10,7 @@ import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'node:util';
 import { MHServer } from '@/lib/multihostServer.js';
+import { HostDiscovery, type DiscoveredHost } from '@/lib/hostDiscovery.js';
 import {
     tools,
     EXIT_CODES,
@@ -215,6 +216,9 @@ let inputCount = 0;
 let outputCount = 0;
 let eventLoopLags: number[] = [];
 let mhService: any = null; // multihost service
+let hostDiscovery: HostDiscovery | null = null; // mDNS announcement and discovery
+/** Installation id of this host, published in the mDNS announcement */
+let ownUuid = '';
 const uptimeStart = Date.now();
 let compactGroupController = false;
 let compactGroup: null | number = null;
@@ -266,6 +270,205 @@ function getConfig(): ioBroker.IoBrokerJson | never {
             _config.system = {};
         }
         return _config;
+    }
+}
+
+/** Holds the hosts a user rejected. System-wide, so every Admin of the system sees the same list */
+const DISCOVERY_META_ID = 'system.meta.discovery';
+
+/**
+ * Whether this host may still be attached to another one.
+ *
+ * A remote database means the host already belongs to a system. A local database alone is not
+ * enough to call it free: a master runs on a local database too. What disqualifies it is a second
+ * host in the same system - then somebody already joined it and taking it over would cut that host
+ * off from its data.
+ *
+ * Adapter instances are deliberately not looked at. A ready-made image usually ships with admin and
+ * a backup adapter already installed, and that is still a host nobody has claimed.
+ */
+async function isHostUnclaimed(): Promise<boolean> {
+    if (!(await isLocalObjectsDbServer(config.objects.type, config.objects.host))) {
+        return false;
+    }
+
+    if (!objects) {
+        return false;
+    }
+
+    try {
+        const view = await objects.getObjectViewAsync('system', 'host');
+        const otherHosts = (view?.rows || []).filter(row => row.id !== hostObjectPrefix);
+
+        return otherHosts.length === 0;
+    } catch (e) {
+        logger.warn(`${hostLogPrefix} Cannot determine if this host is unclaimed: ${e.message}`);
+        // better to look claimed than to let somebody take over a system we could not read
+        return false;
+    }
+}
+
+/**
+ * Installation ids of the hosts the user rejected in the Admin.
+ *
+ * Stored on the master, keyed by the UUID the remote host announces. Keeping it here rather than on
+ * the remote host means the decision also holds while that host is switched off - the moment it
+ * comes back it is simply not offered again.
+ */
+async function getDeclinedHosts(): Promise<string[]> {
+    try {
+        const obj = await objects!.getObjectAsync(DISCOVERY_META_ID);
+        const declined = obj?.native?.declined;
+
+        return Array.isArray(declined) ? declined : [];
+    } catch (e) {
+        logger.warn(`${hostLogPrefix} Cannot read declined hosts: ${e.message}`);
+        return [];
+    }
+}
+
+/**
+ * Add a host to the ignore list, or take it off again.
+ *
+ * @param uuid Installation id the remote host announced
+ * @param declined `true` hides it from the discovery list, `false` shows it again
+ */
+async function setHostDeclined(uuid: string, declined: boolean): Promise<void> {
+    const list = new Set(await getDeclinedHosts());
+
+    if (declined) {
+        list.add(uuid);
+    } else {
+        list.delete(uuid);
+    }
+
+    await objects!.setObjectAsync(DISCOVERY_META_ID, {
+        type: 'meta',
+        common: {
+            name: 'Discovered hosts',
+            type: 'meta.user',
+        },
+        native: {
+            declined: [...list],
+        },
+    });
+}
+
+/**
+ * Write the currently discovered hosts into `<host>.discoveredHosts`, so the Admin can subscribe to
+ * them instead of polling the network itself.
+ *
+ * @param hosts What the discovery currently knows
+ */
+async function publishDiscoveredHosts(hosts: DiscoveredHost[]): Promise<void> {
+    if (!states) {
+        return;
+    }
+
+    const declined = await getDeclinedHosts();
+    const visible = hosts.filter(host => !host.uuid || !declined.includes(host.uuid));
+
+    outputCount++;
+    await states.setState(`${hostObjectPrefix}.discoveredHosts`, {
+        val: JSON.stringify(visible),
+        ack: true,
+        from: hostObjectPrefix,
+    });
+}
+
+/**
+ * Publish what this host currently is, or correct an earlier announcement.
+ *
+ * Called on start and on every refresh tick - `unclaimed` changes the moment another host joins.
+ */
+async function updateHostAnnouncement(): Promise<void> {
+    if (!hostDiscovery) {
+        return;
+    }
+
+    if (!ownUuid) {
+        try {
+            const uuidObj = await objects!.getObjectAsync('system.meta.uuid');
+            ownUuid = (uuidObj?.native?.uuid as string) || '';
+        } catch {
+            // announce without it, the host is still findable by name
+        }
+    }
+
+    await hostDiscovery.announce({
+        uuid: ownUuid,
+        unclaimed: await isHostUnclaimed(),
+        master: !!config.multihostService?.enabled,
+    });
+}
+
+/**
+ * Start announcing this host via mDNS and - if this host can attach others - listen for the
+ * announcements of the other hosts.
+ *
+ * mDNS does not cross a Docker bridge or a subnet border. The multihost UDP socket on port 50005
+ * still answers a `browse` in those setups, which is why both ways stay in place.
+ */
+async function startHostDiscovery(): Promise<void> {
+    if (hostDiscovery || compactGroupController) {
+        return;
+    }
+
+    hostDiscovery = new HostDiscovery({
+        hostname,
+        logger,
+        logPrefix: hostLogPrefix,
+        version,
+        onChange: hosts =>
+            publishDiscoveredHosts(hosts).catch(e =>
+                logger.warn(`${hostLogPrefix} Cannot publish discovered hosts: ${e.message}`),
+            ),
+        onRefresh: () =>
+            updateHostAnnouncement().catch(e =>
+                logger.warn(`${hostLogPrefix} Cannot update host announcement: ${e.message}`),
+            ),
+    });
+
+    await updateHostAnnouncement();
+
+    // Only a host with its own database can take others over, so only it has to listen
+    if (await isLocalObjectsDbServer(config.objects.type, config.objects.host)) {
+        await hostDiscovery.startDiscovery();
+        await publishDiscoveredHosts([]);
+    }
+
+    if (!hostDiscovery.isAvailable()) {
+        // nothing to clean up, but do not keep an object around which will never do anything
+        hostDiscovery = null;
+        return;
+    }
+
+    if (!ownUuid) {
+        void waitForUuid().catch(e => logger.warn(`${hostLogPrefix} Cannot announce the host UUID: ${e.message}`));
+    }
+}
+
+/**
+ * Pick up the installation id as soon as it exists and correct the announcement.
+ *
+ * `setMeta` creates the UUID inside a database callback which it does not await, so on a fresh
+ * installation it is usually not there yet when the discovery starts. Announcing without it would
+ * leave a master unable to tell two hosts apart or to remember a rejected one, and waiting for the
+ * next refresh tick would keep that state for a minute.
+ */
+async function waitForUuid(): Promise<void> {
+    for (let attempt = 0; attempt < 15; attempt++) {
+        await wait(2_000);
+
+        if (ownUuid || isStopping || !hostDiscovery) {
+            return;
+        }
+
+        await updateHostAnnouncement();
+    }
+
+    if (!ownUuid) {
+        logger.warn(`${hostLogPrefix} Host announced without a UUID, "system.meta.uuid" does not exist`);
     }
 }
 
@@ -372,6 +575,8 @@ function _startMultihost(
         secret,
         {
             pairingOnly: options?.pairingOnly,
+            isUnclaimed: isHostUnclaimed,
+            getUuid: () => ownUuid,
             onJoin: async (masterIp: string, password: string) => {
                 const result = await joinMaster(masterIp, password);
                 if (result.result) {
@@ -838,6 +1043,8 @@ async function initializeController(): Promise<void> {
             await checkHost();
             await startMultihost(config);
             await setMeta();
+            // after setMeta, because the UUID which is announced is created there
+            await startHostDiscovery();
             started = true;
             await getInstances();
         }
@@ -3065,14 +3272,37 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         }
 
         case 'multihostBrowse': {
-            // Master side: search the network for hosts. Sent by the Admin to fill the list of
-            // hosts that can be attached. Hosts that belong to no system yet answer with
-            // `unclaimed: true`, see MHServer in pairing mode.
+            // Master side: which hosts are out there? Sent by the Admin to fill the list of hosts
+            // that can be attached. Hosts that belong to no system yet report `unclaimed: true`.
+            //
+            // Two sources, because neither covers every network on its own: the hosts which
+            // announced themselves via mDNS, plus an active UDP browse for the setups where
+            // multicast DNS does not get through - a Docker bridge, for example.
             try {
+                const declined = await getDeclinedHosts();
+                const hosts: Record<string, any>[] = [];
+                const seen = new Set<string>();
+
+                for (const host of hostDiscovery?.getHosts() || []) {
+                    if (host.uuid && declined.includes(host.uuid)) {
+                        continue;
+                    }
+                    seen.add(host.ip);
+                    hosts.push({ ...host, source: 'mdns' });
+                }
+
                 const mhClient = new MHClient();
                 const list = await mhClient.browse(msg.message?.timeout || 2_000, false);
+
+                for (const entry of list) {
+                    if ((entry.uuid && declined.includes(entry.uuid)) || (entry.ip && seen.has(entry.ip))) {
+                        continue;
+                    }
+                    hosts.push({ ...entry, source: 'udp' });
+                }
+
                 if (msg.callback) {
-                    sendTo(msg.from, msg.command, { result: true, hosts: list }, msg.callback);
+                    sendTo(msg.from, msg.command, { result: true, hosts }, msg.callback);
                 }
             } catch (e) {
                 if (msg.callback) {
@@ -3084,14 +3314,82 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'multihostPair': {
             // Master side: tell a host that does not belong to this system yet what to do.
-            // `join` attaches it, `decline` makes it ignore us, `identify` makes it log its name.
-            const { ip, cmd, password, revoke } = msg.message || {};
+            // `join` attaches it, `decline` hides it, `identify` makes it log its name.
+            const { ip, cmd, password, revoke, uuid } = msg.message || {};
 
             if (!ip || !cmd) {
                 if (msg.callback) {
                     sendTo(msg.from, msg.command, { result: false, error: 'ip and cmd are required' }, msg.callback);
                 }
                 break;
+            }
+
+            // "No" is decided here and stored here. Telling the other host is only the second step:
+            // it may be switched off, and the user still expects it to stay out of the list.
+            if (cmd === 'decline') {
+                if (!uuid) {
+                    if (msg.callback) {
+                        sendTo(
+                            msg.from,
+                            msg.command,
+                            { result: false, error: 'uuid is required to decline a host' },
+                            msg.callback,
+                        );
+                    }
+                    break;
+                }
+
+                try {
+                    await setHostDeclined(uuid, !revoke);
+                    await publishDiscoveredHosts(hostDiscovery?.getHosts() || []);
+                    logger.info(`${hostLogPrefix} Host ${uuid} (${ip}) ${revoke ? 'accepted again' : 'declined'}`);
+                } catch (e) {
+                    if (msg.callback) {
+                        sendTo(msg.from, msg.command, { result: false, error: e.message }, msg.callback);
+                    }
+                    break;
+                }
+            }
+
+            // A `join` makes the other host fetch the database configuration *from us*. If this host
+            // is not a multihost master, there is nothing to fetch and the other side would fail
+            // with an unhelpful "invalid configuration" a few seconds later. Check it here, where
+            // the Admin can still show the user what is missing.
+            if (cmd === 'join') {
+                const diskConfig = getConfig();
+
+                if (!diskConfig.multihostService?.enabled) {
+                    if (msg.callback) {
+                        sendTo(
+                            msg.from,
+                            msg.command,
+                            {
+                                result: false,
+                                error: 'This host is not a multihost master. Enable the multihost service before attaching other hosts.',
+                            },
+                            msg.callback,
+                        );
+                    }
+                    break;
+                }
+
+                if (
+                    (await isLocalObjectsDbServer(diskConfig.objects.type, diskConfig.objects.host, true)) ||
+                    (await isLocalStatesDbServer(diskConfig.states.type, diskConfig.states.host, true))
+                ) {
+                    if (msg.callback) {
+                        sendTo(
+                            msg.from,
+                            msg.command,
+                            {
+                                result: false,
+                                error: 'The databases of this host only listen locally, so another host cannot reach them. Bind them to 0.0.0.0 first.',
+                            },
+                            msg.callback,
+                        );
+                    }
+                    break;
+                }
             }
 
             // The target host stores the decline per master, so it has to know who we are.
@@ -3121,6 +3419,17 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     );
                 }
             } catch (e) {
+                // For a decline this is not fatal - the host is already hidden locally
+                if (cmd === 'decline') {
+                    logger.info(
+                        `${hostLogPrefix} Host ${ip} did not confirm the decline (${e.message}), but it stays hidden`,
+                    );
+                    if (msg.callback) {
+                        sendTo(msg.from, msg.command, { result: true, answer: 'not reachable' }, msg.callback);
+                    }
+                    break;
+                }
+
                 if (msg.callback) {
                     sendTo(msg.from, msg.command, { result: false, error: e.message }, msg.callback);
                 }
@@ -5607,6 +5916,12 @@ function stop(force?: boolean, callback?: () => void): void {
     if (mhService) {
         mhService.close();
         mhService = null;
+    }
+
+    if (hostDiscovery) {
+        const discovery = hostDiscovery;
+        hostDiscovery = null;
+        discovery.close().catch(e => logger.warn(`${hostLogPrefix} Cannot stop the host discovery: ${e.message}`));
     }
 
     if (primaryHostInterval) {

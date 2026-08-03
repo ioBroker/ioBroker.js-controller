@@ -62,9 +62,13 @@ interface BrowseCommand extends BaseCommand {
     salt?: string;
     /** The host belongs to no system yet and can be attached */
     unclaimed?: boolean;
+    /** Installation id of the answering host, used as the key of the ignore list of a master */
+    uuid?: string;
 }
 
-const PORT = 50005;
+/** UDP port of the multihost service. Also the port the mDNS announcement points at */
+export const MULTIHOST_PORT = 50005;
+const PORT = MULTIHOST_PORT;
 const MULTICAST_ADDR = '239.255.255.250';
 /** Masters the user rejected. Stored next to iobroker.json so it survives a restart */
 const DECLINED_FILE = 'declined-masters.json';
@@ -81,6 +85,14 @@ export interface MHServerOptions {
     pairingOnly?: boolean;
     /** Performs the actual join. Returns an error text when it failed */
     onJoin?: (masterIp: string, password: string) => Promise<{ result: boolean; error?: string }>;
+    /**
+     * Whether this host may still be taken over. Injected because the answer needs the objects
+     * database, which this class has no access to. Without it only the configuration is checked,
+     * which cannot tell a fresh installation from a master that already has slaves.
+     */
+    isUnclaimed?: () => Promise<boolean>;
+    /** Installation id of this host, published in the answer so a master can identify it */
+    getUuid?: () => string;
 }
 
 /**
@@ -190,11 +202,21 @@ export class MHServer {
     }
 
     /**
-     * A host counts as unclaimed as long as its databases are local. This is checked here rather
-     * than trusting what the host announced - joining discards the local database, and on an
-     * already configured host that would be data loss.
+     * Whether this host may still be taken over.
+     *
+     * Checked here rather than trusting what the sender claims - joining discards the local database
+     * configuration, and on a host that already runs a system that would cut it off from its data.
+     *
+     * The controller supplies the real check via {@link MHServerOptions.isUnclaimed}, which also
+     * looks at the other hosts of the system. The fallback only sees the configuration and therefore
+     * considers every host with a local database free, which is why it is not used when the
+     * controller provides something better.
      */
     private async isUnclaimed(): Promise<boolean> {
+        if (this.options.isUnclaimed) {
+            return this.options.isUnclaimed();
+        }
+
         return isLocalObjectsDbServer(this.config.objects.type, this.config.objects.host);
     }
 
@@ -335,7 +357,8 @@ export class MHServer {
                             result: 'ok',
                             hostname: this.hostname,
                             info: this.info,
-                            unclaimed: true,
+                            unclaimed: await this.isUnclaimed(),
+                            uuid: this.options.getUuid?.() || undefined,
                         },
                         rinfo,
                     );

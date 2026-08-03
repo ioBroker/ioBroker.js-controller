@@ -34,12 +34,14 @@ export interface ReceivedMessage {
     ip?: string;
     /** Optional hostname of responder */
     hostname?: string;
-    /** Informational text */
-    info?: string;
+    /** Static information about the responder: cpus, memory, architecture, ... */
+    info?: string | Record<string, unknown>;
     /** Whether responder is a slave */
     slave?: boolean;
     /** The responder belongs to no system yet and can be attached */
     unclaimed?: boolean;
+    /** Installation id of the responder, used as the key of the ignore list of a master */
+    uuid?: string;
     /** Authentication token (when required) */
     auth?: string;
     /** Salt used for password hashing during authentication */
@@ -205,7 +207,8 @@ export class MHClient {
                                 auth: msg.auth,
                             });
                         } else if (msg.result === 'ok') {
-                            result.push(msg);
+                            // the answer carries no address - the only place it is known is the packet itself
+                            result.push({ ...msg, ip: msg.ip || rinfo.address });
                         } else {
                             console.log(`Multihost discovery client: Unknown answer: ${JSON.stringify(msg)}`);
                         }
