@@ -1,4 +1,4 @@
-import type { DbConnectCallback } from '../_Types.js';
+import type { CleanDatabaseHandler, DbConnectCallback, RestartController } from '../_Types.js';
 
 /** Context provided to every CLI command */
 export interface CLICommandContext {
@@ -63,6 +63,24 @@ export interface CLICommandParams {
 }
 
 export type CLICommandOptions = CLICommandContext & CLICommandParams;
+
+/** Everything a `processCommandXxx` handler needs from the {@link processCommand} dispatcher */
+export interface ProcessCommandOptions {
+    /** the matched command (may be an alias, e.g. 'u' for 'upload') */
+    command: string | number;
+    /** positional arguments following the command */
+    args: string[];
+    /** parsed CLI flags */
+    params: Record<string, any>;
+    /** finish the command with the given exit code */
+    callback: (exitCode?: number) => void;
+    /** merged command context + params (contains dbConnect, showHelp, callback) */
+    commandOptions: CLICommandOptions;
+    /** clean the objects/states databases (defined in setup.ts) */
+    cleanDatabase: CleanDatabaseHandler;
+    /** restart the controller (defined in setup.ts) */
+    restartController: RestartController;
+}
 
 /** The base class for any CLI command */
 export class CLICommand<TCommandOptions extends CLICommandOptions = CLICommandOptions> {

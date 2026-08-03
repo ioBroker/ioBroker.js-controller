@@ -9,9 +9,10 @@ import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { Upload } from './setupUpload.js';
 import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } from '../_Types.js';
-import { dbConnectAsync, resetDbConnect } from './dbConnection.js';
+import { dbConnect, dbConnectAsync, exitApplicationSave, resetDbConnect } from './dbConnection.js';
 import { IoBrokerError } from './customError.js';
 import { CLIProcess } from '@/lib/cli/cliProcess.js';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
 
 /** Options for the backup/restore command */
 export interface CLIBackupRestoreOptions {
@@ -1385,4 +1386,98 @@ export class BackupRestore {
             }
         }
     }
+}
+
+/**
+ * Processes the `restore` command
+ *
+ * @param options the command options
+ */
+export function processCommandRestore(options: ProcessCommandOptions): void {
+    const { args, params, callback, cleanDatabase, restartController } = options;
+
+    dbConnect(params, async ({ isOffline, objects, states }) => {
+        if (!isOffline) {
+            console.error(`Stop ${tools.appName} first!`);
+            return void callback(EXIT_CODES.CONTROLLER_RUNNING);
+        }
+
+        const backup = new BackupRestore({
+            states,
+            objects,
+            cleanDatabase,
+            restartController,
+            processExit: callback,
+        });
+
+        const { exitCode } = await backup.restoreBackup({
+            name: args[0],
+            force: !!params.force,
+            dontDeleteAdapters: false,
+        });
+
+        if (exitCode === EXIT_CODES.NO_ERROR) {
+            console.log('System successfully restored!');
+        }
+        return void callback(exitCode);
+    });
+}
+
+/**
+ * Processes the `backup` command
+ *
+ * @param options the command options
+ */
+export function processCommandBackup(options: ProcessCommandOptions): void {
+    const { args, params, callback, cleanDatabase, restartController } = options;
+    const name = args[0];
+
+    dbConnect(params, async ({ states, objects }) => {
+        const backup = new BackupRestore({
+            states,
+            objects,
+            cleanDatabase,
+            restartController,
+            processExit: callback,
+        });
+
+        try {
+            const filePath = await backup.createBackup(name);
+            console.log(`Backup created: ${filePath}`);
+            console.log('This backup can only be restored with js-controller version 7.0 or higher');
+            return void callback(EXIT_CODES.NO_ERROR);
+        } catch (e) {
+            console.log(`Cannot create backup: ${e.message}`);
+            return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
+        }
+    });
+}
+
+/**
+ * Processes the `validate` command
+ *
+ * @param options the command options
+ */
+export function processCommandValidate(options: ProcessCommandOptions): void {
+    const { args, params, callback, cleanDatabase, restartController } = options;
+    const name = args[0];
+
+    dbConnect(params, async ({ objects, states }) => {
+        const backup = new BackupRestore({
+            states,
+            objects,
+            cleanDatabase,
+            restartController,
+            processExit: callback,
+        });
+
+        try {
+            await backup.validateBackup(name);
+            console.log('Backup OK');
+            return void exitApplicationSave(0);
+        } catch (e) {
+            console.log(`Backup check failed: ${e.message}`);
+            return void exitApplicationSave(e instanceof IoBrokerError ? e.code : 1);
+        }
+    });
 }

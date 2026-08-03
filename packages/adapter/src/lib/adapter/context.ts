@@ -17,6 +17,8 @@ export interface AdapterContext {
     readonly objects: ObjectsInRedisClient | null | undefined;
     /** Current adapter common config */
     readonly common: ioBroker.InstanceCommon | undefined;
+    /** Current adapter instance config (native) */
+    readonly config: ioBroker.AdapterConfig;
     /** Current host name (may be undefined before init) */
     readonly host: string | undefined;
     /** Current adapter namespace, e.g. `"adapter.0"` */

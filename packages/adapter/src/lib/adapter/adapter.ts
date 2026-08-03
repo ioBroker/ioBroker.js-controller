@@ -76,7 +76,6 @@ import type {
     GetEncryptedConfigCallback,
     GetUserGroupsOptions,
     InstallNodeModuleOptions,
-    InternalAdapterConfig,
     InternalAddChannelToEnumOptions,
     InternalAddStateToEnumOptions,
     InternalCalculatePermissionsOptions,
@@ -94,7 +93,6 @@ import type {
     InternalDestroySessionOptions,
     InternalFormatDateOptions,
     InternalGetAdapterObjectsOptions,
-    InternalGetCertificatesOptions,
     InternalGetChannelsOfOptions,
     InternalGetDevicesOptions,
     InternalGetEncryptedConfigOptions,
@@ -134,6 +132,7 @@ import type {
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { AsyncAdapter } from '@/lib/adapter/asyncAdapter.js';
+import { CERTIFICATES_OBJECT_ID } from '@/lib/adapter/managers/CertificateManager.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
 import { SYSTEM_ADAPTER_PREFIX, DEFAULT_OBJECTS_WARN_LIMIT } from '@iobroker/js-controller-common-db/constants';
 import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
@@ -1014,6 +1013,11 @@ export class AdapterClass extends EventEmitter {
     /** Shared runtime context handed to managers */
     #context!: AdapterContext;
     #async!: AsyncAdapter;
+    readonly #certWatchers = new Map<string, fs.FSWatcher>();
+    /** True once `system.certificates` is subscribed, i.e. certificates have been requested */
+    #certObjectSubscribed = false;
+    /** True once a certificate change scheduled a restart, so concurrent changes schedule only one */
+    #certRestartScheduled = false;
 
     /**
      * @param options Adapter options, or the adapter name as a string
@@ -1204,6 +1208,9 @@ export class AdapterClass extends EventEmitter {
             get common() {
                 return self.common;
             },
+            get config() {
+                return self.config;
+            },
         };
 
         this.#async = new AsyncAdapter(this.#context);
@@ -1233,11 +1240,6 @@ export class AdapterClass extends EventEmitter {
          * Promise-version of `Adapter.calculatePermissions`
          */
         this.calculatePermissionsAsync = tools.promisifyNoError(this.calculatePermissions, this);
-
-        /**
-         * Promise-version of `Adapter.getCertificates`
-         */
-        this.getCertificatesAsync = tools.promisify(this.getCertificates, this);
 
         /**
          * Promise-version of `Adapter.setObject`
@@ -2757,6 +2759,8 @@ export class AdapterClass extends EventEmitter {
 
                 this.#async.clearPending();
 
+                await this.stopWatchingCertificates();
+
                 if (this.#states && updateAliveState) {
                     this.outputCount++;
                     try {
@@ -2834,31 +2838,117 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Reads the file certificate from a given path and adds a file watcher to restart adapter on cert changes
-     * if a cert is passed it is returned as it is
+     * Installs a restart-on-change watcher for each file-backed certificate path, deduped by path.
+     * A change schedules a graceful restart so the adapter reloads the new certificate.
      *
-     * @param cert cert or path to cert
+     * @param paths file-backed certificate paths returned by the certificate manager
      */
-    private _readFileCertificate(cert: string): string {
-        if (typeof cert === 'string') {
+    #watchCertFiles(paths: string[]): void {
+        for (const certFile of paths) {
+            if (this.#certWatchers.has(certFile)) {
+                continue;
+            }
             try {
-                // if length < 1024 it's no valid cert, so we assume a path to a valid certificate
-                if (cert.length < 1024 && fs.existsSync(cert)) {
-                    const certFile = cert;
-                    cert = fs.readFileSync(certFile, 'utf8');
-                    // start watcher of this file
-                    fs.watch(certFile, (eventType, filename) => {
-                        this._logger.warn(
-                            `${this.namespaceLog} New certificate "${filename}" detected. Restart adapter`,
-                        );
-                        setTimeout(() => this._stop({ isPause: false, isScheduled: true }), 2_000);
-                    });
-                }
-            } catch (e) {
-                this._logger.error(`${this.namespaceLog} Could not read certificate from file ${cert}: ${e.message}`);
+                const watcher = fs.watch(certFile, (_eventType, filename) => {
+                    this.#scheduleCertificateRestart(`New certificate "${filename}" detected`);
+                });
+                this.#certWatchers.set(certFile, watcher);
+            } catch (e: any) {
+                this._logger.error(`${this.namespaceLog} Cannot watch certificate file ${certFile}: ${e.message}`);
             }
         }
-        return cert;
+    }
+
+    /**
+     * Schedules a graceful restart, so the adapter reloads its certificates. Called by both the
+     * file watchers and the `system.certificates` subscription; the first caller wins, so a change
+     * seen through both channels restarts the adapter only once.
+     *
+     * @param reason human-readable cause, logged as a warning
+     */
+    #scheduleCertificateRestart(reason: string): void {
+        if (this.#certRestartScheduled) {
+            return;
+        }
+        this.#certRestartScheduled = true;
+        this._logger.warn(`${this.namespaceLog} ${reason}. Restart adapter`);
+        setTimeout(() => this._stop({ isPause: false, isScheduled: true }), 2_000);
+    }
+
+    /**
+     * Subscribes to the `system.certificates` object, so inline (text) certificates are watched the
+     * same way file-backed ones are watched on disk. Subscribing on the system level channel keeps
+     * these events out of the adapter's own `objectChange` handler.
+     *
+     * Called after certificates have been requested, so only adapters actually using certificates
+     * pay for the subscription.
+     */
+    async #subscribeCertObject(): Promise<void> {
+        if (this.#certObjectSubscribed || !this.#objects) {
+            return;
+        }
+        // set before awaiting, so concurrent getCertificates calls subscribe only once
+        this.#certObjectSubscribed = true;
+        try {
+            await this.#objects.subscribeAsync(CERTIFICATES_OBJECT_ID);
+            // stopWatchingCertificates() may have run while we were awaiting; it cleared the flag but could
+            // not unsubscribe a subscription that did not exist yet, so undo it now to avoid a leak.
+            if (!this.#certObjectSubscribed && this.#objects) {
+                await this.#objects.unsubscribeAsync(CERTIFICATES_OBJECT_ID);
+            }
+        } catch (e: any) {
+            this.#certObjectSubscribed = false;
+            this._logger.error(
+                `${this.namespaceLog} Cannot watch certificate object ${CERTIFICATES_OBJECT_ID}: ${e.message}`,
+            );
+        }
+    }
+
+    /**
+     * Tears down the certificate watching installed by {@link getCertificatesAsync}: closes the file
+     * watchers, unsubscribes from `system.certificates`, and forgets the certificates handed out by the
+     * last call, so a later change no longer schedules a restart. Called on adapter stop.
+     */
+    private async stopWatchingCertificates(): Promise<void> {
+        for (const watcher of this.#certWatchers.values()) {
+            watcher.close();
+        }
+        this.#certWatchers.clear();
+        this.#certRestartScheduled = false;
+        this.#async.stopWatchingCertificates();
+
+        if (this.#certObjectSubscribed && this.#objects) {
+            this.#certObjectSubscribed = false;
+            try {
+                await this.#objects.unsubscribeAsync(CERTIFICATES_OBJECT_ID);
+            } catch {
+                // ignore, e.g. when the objects DB is already gone
+            }
+        }
+    }
+
+    /**
+     * Loads SSL certificates by name and installs restart-on-change watchers: file watchers for
+     * file-backed certificate values, and a subscription to `system.certificates` covering inline
+     * ones and repointed paths.
+     *
+     * @param publicName public certificate name (defaults to `config.certPublic`)
+     * @param privateName private key name (defaults to `config.certPrivate`)
+     * @param chainedName chained certificate name (defaults to `config.certChained`)
+     */
+    async getCertificatesAsync(
+        publicName?: unknown,
+        privateName?: unknown,
+        chainedName?: unknown,
+    ): Promise<GetCertificatesPromiseReturnType> {
+        const { certs, useLetsEncrypt, certFilePaths } = await this.#async.getCertificates(
+            publicName,
+            privateName,
+            chainedName,
+        );
+        this.#watchCertFiles(certFilePaths);
+        await this.#subscribeCertObject();
+        return [certs, useLetsEncrypt];
     }
 
     // public signature
@@ -2915,96 +3005,21 @@ export class AdapterClass extends EventEmitter {
             chainedName = undefined;
         }
 
-        const config = this.config as InternalAdapterConfig;
-
-        publicName = publicName || config.certPublic;
-        privateName = privateName || config.certPrivate;
-        chainedName = chainedName || config.certChained;
-
-        if (publicName !== undefined) {
-            Validator.assertString(publicName, 'publicName');
-        }
-
-        if (privateName !== undefined) {
-            Validator.assertString(privateName, 'privateName');
-        }
-
-        if (chainedName !== undefined) {
-            Validator.assertString(chainedName, 'chainedName');
-        }
-
         Validator.assertOptionalCallback(callback, 'callback');
+        const cb = callback as GetCertificatesCallback | undefined;
 
-        return this._getCertificates({ publicName, privateName, chainedName, callback });
-    }
-
-    private async _getCertificates(
-        options: InternalGetCertificatesOptions,
-    ): Promise<[cert: ioBroker.Certificates, useLetsEncryptCert?: boolean] | void> {
-        const { publicName, chainedName, privateName, callback } = options;
-        let obj: ioBroker.OtherObject | undefined | null;
-
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} getCertificates not processed because Objects database not connected`,
+        if (typeof cb === 'function') {
+            return this.getCertificatesAsync(publicName, privateName, chainedName).then(
+                ([certs, useLetsEncrypt]) => {
+                    cb(null, certs, useLetsEncrypt);
+                },
+                (err: Error) => {
+                    cb(err);
+                },
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        try {
-            // Load certificates
-            obj = await this.#objects.getObject('system.certificates');
-        } catch {
-            // ignore
-        }
-
-        if (
-            !obj ||
-            !obj.native.certificates ||
-            !publicName ||
-            !privateName ||
-            !obj.native.certificates[publicName] ||
-            !obj.native.certificates[privateName] ||
-            (chainedName && !obj.native.certificates[chainedName])
-        ) {
-            this._logger.error(
-                `${this.namespaceLog} Cannot configure secure web server, because no certificates found: ${publicName}, ${privateName}, ${chainedName}`,
-            );
-            if (publicName === 'defaultPublic' || privateName === 'defaultPrivate') {
-                this._logger.info(
-                    `${this.namespaceLog} Default certificates seem to be configured but missing. You can execute "iobroker cert create" in your shell to create these.`,
-                );
-            }
-
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_NOT_FOUND);
-        }
-        let ca: string | undefined;
-        if (chainedName) {
-            const chained = this._readFileCertificate(obj.native.certificates[chainedName]).split(
-                '-----END CERTIFICATE-----\r\n',
-            );
-            // it is still a file name, and the file maybe does not exist, but we can omit this error
-            if (chained.join('').length >= 512) {
-                const caArr = [];
-                for (const cert of chained) {
-                    if (cert.replace(/(\r\n|\r|\n)/g, '').trim()) {
-                        caArr.push(`${cert}-----END CERTIFICATE-----\r\n`);
-                    }
-                }
-                ca = caArr.join('');
-            }
-        }
-
-        return tools.maybeCallbackWithError(
-            callback,
-            null,
-            {
-                key: this._readFileCertificate(obj.native.certificates[privateName]),
-                cert: this._readFileCertificate(obj.native.certificates[publicName]),
-                ca,
-            },
-            obj.native.letsEncrypt,
-        );
+        return this.getCertificatesAsync(publicName, privateName, chainedName);
     }
 
     /**
@@ -8868,9 +8883,10 @@ export class AdapterClass extends EventEmitter {
         const cb = callback as ioBroker.MessageCallback | undefined;
 
         if (typeof cb === 'function') {
-            this.sendToAsync(instanceName, command, message, options)
-                .then((reply: any) => cb(reply))
-                .catch((err: Error) => cb(err));
+            this.sendToAsync(instanceName, command, message, options).then(
+                (reply: any) => cb(reply),
+                (err: Error) => cb(err),
+            );
             return;
         }
 
@@ -9008,9 +9024,10 @@ export class AdapterClass extends EventEmitter {
 
         // A broadcast (hostName === null) yields many replies, so the callback is ignored — matching legacy behavior.
         if (typeof cb === 'function' && hostName !== null) {
-            this.sendToHostAsync(hostName, command, message)
-                .then((reply: any) => cb(reply))
-                .catch((err: Error) => cb(err));
+            this.sendToHostAsync(hostName, command, message).then(
+                (reply: any) => cb(reply),
+                (err: Error) => cb(err),
+            );
             return;
         }
 
@@ -13022,6 +13039,14 @@ export class AdapterClass extends EventEmitter {
                     this._stop().catch(e =>
                         this._logger.error(`${this.namespaceLog} Cannot stop adapter: ${e.message}`),
                     );
+                    return;
+                }
+
+                // a certificate we are using has been changed => restart to reload it
+                if (id === CERTIFICATES_OBJECT_ID) {
+                    if (this.#async.hasRelevantCertificateChange(obj as ioBroker.OtherObject | null)) {
+                        this.#scheduleCertificateRestart('Changed certificate detected');
+                    }
                     return;
                 }
 

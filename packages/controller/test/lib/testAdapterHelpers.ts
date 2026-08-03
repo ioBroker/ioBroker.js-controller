@@ -100,6 +100,12 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         // has to work without chained certificate
         const certs = await context.adapter.getCertificatesAsync('defaultPublic', 'defaultPrivate');
         assert.ok(certs);
+
+        // getCertificatesAsync starts watching the default certificates and restarts the adapter when they
+        // change. A later console test runs `iobroker setup`, which regenerates them, so stop watching here
+        // to keep that unrelated test from restarting the shared adapter and breaking the rest of the suite.
+        // @ts-expect-error private teardown, only needed to isolate this shared-adapter test
+        await context.adapter.stopWatchingCertificates();
     });
 
     it(`${context.name} ${context.adapterShortName} adapter: get the user id`, async () => {

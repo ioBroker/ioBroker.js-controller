@@ -13,6 +13,7 @@ function makeContext(over: Partial<AdapterContext> = {}): AdapterContext {
         states: null,
         objects: null,
         common: undefined,
+        config: {} as ioBroker.AdapterConfig,
         host: 'localhost',
         ...over,
     };

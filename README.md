@@ -21,6 +21,8 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 - [License](#license)
 
 ## Compatibility
+* js-controller 8.x (Nicole) works with Node.js 22.x, 24.x and probably 26.x
+* js-controller 7.2 (Milla) works with Node.js 18.x, 20.x, 22.x and 24.x
 * js-controller 7.x (Lucy) works with Node.js 18.x, 20.x, 22.x and probably 24.x
 * js-controller 6.x (Kiera) works with Node.js 18.x, 20.x, 22.x
 * js-controller 5.x works with Node.js 16.x, 18.x, 20.x

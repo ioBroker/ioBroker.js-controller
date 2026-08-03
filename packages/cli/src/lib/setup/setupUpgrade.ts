@@ -12,6 +12,9 @@ import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis'
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { ProcessExitCallback } from '@/lib/_Types.js';
 import { IoBrokerError } from '@/lib/setup/customError.js';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { dbConnect } from '@/lib/setup/dbConnection.js';
+import * as CLITools from '@/lib/cli/cliTools.js';
 
 const debug = Debug('iobroker:cli');
 
@@ -730,4 +733,71 @@ export class Upgrade {
             });
         }
     }
+}
+
+/**
+ * @param options The process-command options (args, params, callback, etc.)
+ */
+export function processCommandUpgrade(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+
+    let adapter: string | null = CLITools.normalizeAdapterName(args[0]);
+
+    if (adapter === 'all') {
+        adapter = null;
+    }
+
+    dbConnect(params, async ({ objects, states }) => {
+        const upgrade = new Upgrade({
+            objects,
+            states,
+            params,
+            processExit: callback,
+        });
+
+        if (adapter) {
+            try {
+                if (adapter.split('@')[0] === 'self') {
+                    const hostAlive = await states.getStateAsync(`system.host.${tools.getHostName()}.alive`);
+                    const version = adapter.split('@')[1];
+
+                    await upgrade.upgradeController({
+                        forceDowngrade: (params.force as boolean) || (params.f as boolean),
+                        controllerRunning: !!hostAlive?.val,
+                        version,
+                    });
+                } else {
+                    await upgrade.upgradeAdapter(
+                        '',
+                        adapter,
+                        (params.force as boolean) || (params.f as boolean),
+                        (params.y as boolean) || (params.yes as boolean),
+                        false,
+                    );
+                }
+                return void callback();
+            } catch (err) {
+                console.error(`Cannot upgrade: ${err.message}`);
+                return void callback(EXIT_CODES.INVALID_REPO);
+            }
+        } else {
+            // upgrade all
+            try {
+                const links = await getRepository({ objects });
+                if (!links) {
+                    return void callback(EXIT_CODES.INVALID_REPO);
+                }
+                await upgrade.upgradeAdapterHelper(
+                    links,
+                    Object.keys(links).sort(),
+                    false,
+                    (params.y as boolean) || (params.yes as boolean),
+                );
+                return void callback();
+            } catch (e) {
+                console.error(`Cannot upgrade: ${e.message}`);
+                return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.INVALID_REPO);
+            }
+        }
+    });
 }

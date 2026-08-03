@@ -4,6 +4,8 @@ import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '../_Types.js';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { dbConnect } from '@/lib/setup/dbConnection.js';
 
 /** Options for the vis debug helper */
 export interface CLIVisDebugOptions {
@@ -221,4 +223,25 @@ FALLBACK:
 
         this.processExit(EXIT_CODES.NO_ERROR);
     }
+}
+
+/**
+ * @param options The command options
+ */
+export function processCommandVisDebug(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+
+    let widgetset = args[0];
+    if (widgetset?.startsWith('vis-')) {
+        widgetset = widgetset.substring(4);
+    }
+
+    dbConnect(params, ({ objects }) => {
+        const visDebug = new VisDebug({
+            objects,
+            processExit: callback,
+        });
+
+        visDebug.enableDebug(widgetset).catch(e => console.error(`Cannot enable debug: ${e.message}`));
+    });
 }
