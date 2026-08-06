@@ -5,7 +5,7 @@ import crypto from 'node:crypto';
 import { createInterface } from 'node:readline';
 import { PassThrough } from 'node:stream';
 import zlib from 'node:zlib';
-import { exec, type ExecOptions } from 'node:child_process';
+import { exec, execFile, type ExecOptions } from 'node:child_process';
 import { URLSearchParams } from 'node:url';
 import events from 'node:events';
 import { setDefaultResultOrder } from 'node:dns';
@@ -2986,6 +2986,38 @@ export function execAsync(
     });
 }
 
+export function execFileAsync(
+    file: string,
+    args: readonly string[],
+    execOptions?: ExecOptions,
+): Promise<{
+    stdout?: string;
+    stderr?: string;
+}> {
+    const defaultOptions = {
+        // we do not want to show the node.js window on Windows
+        windowsHide: true,
+        // And we want to capture stdout/stderr
+        encoding: 'utf8',
+    };
+
+    return new Promise<{
+        stdout: string;
+        stderr: string;
+    }>((resolve, reject) => {
+        execFile(file, [...args], { ...defaultOptions, ...execOptions }, (error, stdout, stderr) => {
+            if (error) {
+                reject(stderr ? new Error(stderr.toString()) : error);
+            } else {
+                resolve({
+                    stderr: stderr?.toString(),
+                    stdout: stdout?.toString(),
+                });
+            }
+        });
+    });
+}
+
 /**
  * Takes input from one stream and writes it to another as soon as a complete line was read.
  *
@@ -4004,7 +4036,13 @@ export function isProcessRunning(pid: number): boolean {
 export async function isForeignProcess(pid: number): Promise<boolean> {
     try {
         if (os.platform() === 'win32') {
-            const { stdout } = await execAsync(`tasklist /FI "PID eq ${pid}" /NH /FO CSV`);
+            const { stdout } = await execFileAsync('tasklist', [
+                '/FI',
+                `PID eq ${pid}`,
+                '/NH',
+                '/FO',
+                'CSV',
+            ]);
             // Without a match tasklist prints an INFO line instead of a CSV row
             const image = (stdout || '').trim().split(',')[0]?.replace(/"/g, '').toLowerCase() || '';
 
@@ -4015,7 +4053,7 @@ export async function isForeignProcess(pid: number): Promise<boolean> {
             return !image.startsWith('node');
         }
 
-        const { stdout } = await execAsync(`ps -p ${pid} -o comm=`);
+        const { stdout } = await execFileAsync('ps', ['-p', String(pid), '-o', 'comm=']);
         // The controller renames itself to "<appName>.js-controller", and comm is truncated
         const command = (stdout || '').trim().toLowerCase();
 
