@@ -100,7 +100,7 @@ export class HostStatusReporter {
             const stats = await pidUsage(process.pid);
 
             // controller.s might be stopped, but this is still running
-            if (states && states.setState && stats) {
+            if (states.setState && stats) {
                 this.controller.logWriteErrors(
                     [
                         states.setState(`${id}.cpu`, {
