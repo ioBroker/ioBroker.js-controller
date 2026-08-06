@@ -1006,11 +1006,12 @@ e.g. for Linux:
 https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04
 
 ##### Configure Redis
-###### make sure Locale is set correctly
-ioBroker requires the "Locale" for the redis-server process to be set to "LANG=C" instead of other locales in order to get correct sorted results when Objects are stored in Redis.
+###### Locale of the redis-server process
+Since js-controller 7.2.3 the locale of the redis-server process no longer matters. Nothing needs to be configured.
 
-On Linux, ideally set the LC_ALL environment variable for the redis-server process correctly.
-For more information to see if changes are needed and how to do them see https://forum.iobroker.net/topic/52976/wichtiger-hinweis-f%C3%BCr-redis-installationen (German right now).
+Earlier versions required it to be `LANG=C`, because Redis calls `setlocale(LC_COLLATE, "")` on startup and its Lua engine then compared object keys with `strcoll()`. Under a UTF-8 collation the key range check in the view scripts stopped holding, and **every** object view (`getObjectView`, `getAdapterObjects`, `getForeignObjects`, ...) silently returned nothing — while the objects themselves were stored correctly and reading a single object by its id kept working. The view scripts now compare keys byte by byte, which gives the same result on every host and is a little faster than before.
+
+If you are still on an older version and see empty views, adapters that find no objects, or an empty admin object tree while the data is clearly in Redis, set `LC_ALL=C` for the redis-server process (see https://forum.iobroker.net/topic/52976/wichtiger-hinweis-f%C3%BCr-redis-installationen, German) or upgrade.
 
 ###### Allow Network access
 Ideally, the Redis server should be installed on the same host as the js-controller process because as soon as Redis is configured to be used, the ioBroker installation will not work without it.

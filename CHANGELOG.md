@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Fixed all Redis object views returning nothing when the Redis server was started with a UTF-8 collation
 * (@krobipd) Fixed a failed adapter install/update being reported as success on npm >= 10.6.0
 * (@krobipd) Fixed the automatic ENOTEMPTY recovery not removing the blocking npm temp directory on npm >= 10.6.0
 
