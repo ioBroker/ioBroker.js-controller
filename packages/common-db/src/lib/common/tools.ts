@@ -2986,6 +2986,15 @@ export function execAsync(
     });
 }
 
+/**
+ * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
+ * In error, the promise rejects with the exit code or signal, as well as stdout and stderr.
+ *
+ * @param file The command to execute
+ * @param args The arguments to pass to the command
+ * @param execOptions The options for child_process.execFile
+ * @returns child process promise
+ */
 export function execFileAsync(
     file: string,
     args: readonly string[],
@@ -4036,13 +4045,7 @@ export function isProcessRunning(pid: number): boolean {
 export async function isForeignProcess(pid: number): Promise<boolean> {
     try {
         if (os.platform() === 'win32') {
-            const { stdout } = await execFileAsync('tasklist', [
-                '/FI',
-                `PID eq ${pid}`,
-                '/NH',
-                '/FO',
-                'CSV',
-            ]);
+            const { stdout } = await execFileAsync('tasklist', ['/FI', `PID eq ${pid}`, '/NH', '/FO', 'CSV']);
             // Without a match tasklist prints an INFO line instead of a CSV row
             const image = (stdout || '').trim().split(',')[0]?.replace(/"/g, '').toLowerCase() || '';
 

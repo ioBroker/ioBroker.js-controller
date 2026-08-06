@@ -255,6 +255,21 @@ export class CLIProcess extends CLICommand {
             return;
         }
 
+        // Stopping the controller is fine, shooting at whoever inherited its pid after a reboot
+        // is not - so a pid which provably belongs to a different program is only cleaned up
+        if (tools.isProcessRunning(pid) && (await tools.isForeignProcess(pid))) {
+            console.log(`Not stopping pid ${pid}, it belongs to a different program`);
+
+            try {
+                await fs.unlink(tools.getPidsFileName());
+            } catch (e) {
+                if (e.code !== 'ENOENT') {
+                    console.error(`Could not remove ${tools.getPidsFileName()}: ${e.message}`);
+                }
+            }
+            return;
+        }
+
         await tryKill(pid);
 
         // On non-Windows OSes start a KILLALL script
