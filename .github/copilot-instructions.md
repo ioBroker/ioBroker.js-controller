@@ -61,7 +61,7 @@ npm run test             # Run tests
 - Tests are in TypeScript and run with ts-node
 - Integration tests start a controller instance
 - Ensure Redis is installed for database tests
-- All tests must pass on Node.js 22.x and 24.x on Windows/Linux/macOS
+- All tests must pass on Node.js 22.x, 24.x and 26.x on Windows/Linux/macOS
 
 ### Building
 - Use `lerna` to manage package dependencies and build order
