@@ -12275,8 +12275,10 @@ export class AdapterClass extends EventEmitter {
             //   timestamp: 864000000  // ms since epoch
             // }
             pidUsage(process.pid, (err, stats) => {
-                // sometimes adapter is stopped, but this is still running
-                if (!err && this && this.#states && this.#states.setState && stats) {
+                // sometimes adapter is stopped, but this callback is still running: once
+                // terminating, the states DB connection may already be closing — skip the write to
+                // avoid a "Connection is closed" warning (setState does a read-before-write).
+                if (!err && this && this.#states && this.#states.setState && stats && !this.terminated) {
                     this.#states
                         .setState(`${id}.cpu`, {
                             ack: true,
