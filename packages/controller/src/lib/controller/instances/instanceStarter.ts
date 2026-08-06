@@ -96,7 +96,7 @@ export class InstanceStarter {
 
         proc.restartExpected = false;
 
-        if (wakeUp) {
+        if (wakeUp && mode !== 'extension') {
             mode = 'daemon';
         }
 
