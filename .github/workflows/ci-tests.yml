@@ -108,6 +108,34 @@ jobs:
       - name: Execute Standard Tests
         run: npm test
 
+      # TEMPORARY diagnostics - remove before merging.
+      # The `Tests REDIS test adapter` suite stores its objects in the real Redis
+      # (redisNamespace `test`). On macOS every view query comes back empty while
+      # direct GETs still work, which points at the `test.s.object.type.*` sets the
+      # views scan. Runs on Linux too so we get a green reference to diff against.
+      - name: Redis diagnostics (temporary)
+        if: ${{ always() && (matrix.os == 'macos-latest' || matrix.os == 'ubuntu-latest') }}
+        continue-on-error: true
+        run: |
+          echo "===== redis server ====="
+          redis-cli info server | grep -E "redis_version|os|arch|multiplexing" || true
+          echo "===== dbsize ====="
+          redis-cli dbsize || true
+          echo "===== keys matching test.* (first 60) ====="
+          redis-cli --scan --pattern 'test.*' | sort | head -60 || true
+          echo "===== key count by prefix ====="
+          echo -n "test.o.* : "; redis-cli --scan --pattern 'test.o.*' | wc -l
+          echo -n "test.s.* : "; redis-cli --scan --pattern 'test.s.*' | wc -l
+          echo "===== the type sets the views scan ====="
+          for k in $(redis-cli --scan --pattern 'test.s.*' | sort); do
+            echo "--- $k  type=$(redis-cli type "$k")  card=$(redis-cli scard "$k")  encoding=$(redis-cli object encoding "$k")"
+            redis-cli smembers "$k" | head -5
+          done
+          echo "===== design doc present? ====="
+          redis-cli exists 'test.o._design/system' || true
+          echo "===== the object the failing assert looks for ====="
+          redis-cli get 'test.o.test.0.myTestObject' || true
+
       - name: Execute Jsonl Tests
         run: npm run test-jsonl
 
