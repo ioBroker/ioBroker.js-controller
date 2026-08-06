@@ -90,8 +90,6 @@ export async function handleStateChange(
             }
         }
     } else if (instances.subscribe[id]) {
-        const state = stateOrMessage as ioBroker.State;
-
         for (const sub of instances.subscribe[id]) {
             // wake up adapter
             if (instances.procs[sub]) {

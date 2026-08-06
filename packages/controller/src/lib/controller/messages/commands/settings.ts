@@ -12,7 +12,9 @@ const readBaseSettings: HostCommandHandler = (controller, msg) => {
     const { logger, hostLogPrefix, uptimeStart, messages } = controller;
 
     if (!msg.callback || !msg.from) {
-        logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback"(${!!msg.callback}) or "from"(${!!msg.from}) is null`);
+        logger.error(
+            `${hostLogPrefix} Invalid request ${msg.command}. "callback"(${!!msg.callback}) or "from"(${!!msg.from}) is null`,
+        );
         return;
     }
 
