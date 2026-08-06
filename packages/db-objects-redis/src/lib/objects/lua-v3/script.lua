@@ -7,16 +7,8 @@ cursor = result[1]
 local keys = result[2]
 local argStart = KEYS[1] .. KEYS[2]
 local argEnd = KEYS[1] .. KEYS[3]
--- Lua compares strings with strcoll(), and Redis picks up LC_COLLATE from the
--- environment it was started in (it calls setlocale(LC_COLLATE, "") on startup).
--- Under a UTF-8 collation "key < argEnd" stops holding for our ranges, because
--- argEnd ends in the U+9999 sentinel - the view then silently returns nothing,
--- while the objects are stored correctly and direct GETs keep working. Compare
--- bytes instead, which gives the same result whatever locale the server has.
--- When argEnd starts with argStart - the usual "everything below this prefix"
--- range - a key can only be in range if it starts with argStart, so the prefix
--- is checked with a single raw == and only the remainder is walked. That path
--- is measurably faster than the strcoll comparison it replaces.
+-- Compare bytes: Lua's < uses strcoll(), so it depends on the locale the Redis
+-- server was started with, and argEnd ends in the U+9999 sentinel.
 local sLen = #argStart
 local endHasPrefix = argEnd:sub(1, sLen) == argStart
 local function byteLess(a, b, from)
