@@ -3990,26 +3990,42 @@ export function isProcessRunning(pid: number): boolean {
 }
 
 /**
- * Check if the pids file is a leftover of a previous boot
+ * Check if a pid is proven to belong to a program which is not the controller
  *
- * A controller which is running right now must have written its pids file after the machine
- * came up, so a file which is older than the last boot cannot belong to a running controller.
- * This catches the case where the operating system handed the recorded pid to an unrelated
- * process after the reboot, which a pure liveness check cannot distinguish.
+ * After a reboot the operating system may hand a recorded pid to an unrelated program, which
+ * Windows in particular does readily, so a live pid alone does not prove the controller is
+ * running. This only reports a foreign program when it could actually be identified as one:
+ * whenever the process cannot be inspected, the answer is "no", because acting on a wrong guess
+ * would start a second controller and both would then fail with EADDRINUSE.
  *
- * @returns true if the pids file was written before the system booted
+ * @param pid process id to inspect
+ * @returns true only if the process was identified as a different program
  */
-export async function isPidsFileFromPreviousBoot(): Promise<boolean> {
-    // Be generous: a clock adjustment must not make us believe a running controller is gone,
-    // because that would start a second one on the same host
-    const CLOCK_TOLERANCE_MS = 60_000;
-
+export async function isForeignProcess(pid: number): Promise<boolean> {
     try {
-        const stat = await fs.stat(getPidsFileName());
-        const bootTime = Date.now() - os.uptime() * 1_000;
+        if (os.platform() === 'win32') {
+            const { stdout } = await execAsync(`tasklist /FI "PID eq ${pid}" /NH /FO CSV`);
+            // Without a match tasklist prints an INFO line instead of a CSV row
+            const image = (stdout || '').trim().split(',')[0]?.replace(/"/g, '').toLowerCase() || '';
 
-        return stat.mtimeMs < bootTime - CLOCK_TOLERANCE_MS;
+            if (!image || image.startsWith('info:')) {
+                return false;
+            }
+
+            return !image.startsWith('node');
+        }
+
+        const { stdout } = await execAsync(`ps -p ${pid} -o comm=`);
+        // The controller renames itself to "<appName>.js-controller", and comm is truncated
+        const command = (stdout || '').trim().toLowerCase();
+
+        if (!command) {
+            return false;
+        }
+
+        return !command.includes('node') && !command.includes(appName.toLowerCase());
     } catch {
+        // Could not inspect the process - assume it is the controller
         return false;
     }
 }

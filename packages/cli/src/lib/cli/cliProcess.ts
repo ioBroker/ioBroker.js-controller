@@ -452,10 +452,12 @@ async function getStalePidsFileReason(pid: number): Promise<string | undefined> 
         return `process ${pid} is not running any more`;
     }
 
-    // The pid is in use, but a controller which is running now cannot have written its pids file
-    // before this boot - so the operating system handed that pid to an unrelated process
-    if (await tools.isPidsFileFromPreviousBoot()) {
-        return `it was written before the last system boot, pid ${pid} now belongs to a different process`;
+    // The pid is in use, but that alone proves nothing: after a reboot the operating system may
+    // have handed it to an unrelated program. Only a positive identification counts here - if the
+    // process cannot be inspected we leave it alone, because starting a second controller makes
+    // both of them fail with EADDRINUSE.
+    if (await tools.isForeignProcess(pid)) {
+        return `pid ${pid} belongs to a different program, not to a controller`;
     }
 
     return undefined;
