@@ -95,7 +95,7 @@ export async function handleStateChange(
         for (const sub of instances.subscribe[id]) {
             // wake up adapter
             if (instances.procs[sub]) {
-                console.log(`Wake up ${id} ${JSON.stringify(state)}`);
+                logger.debug(`${hostLogPrefix} Wake up ${sub} because of state change on ${id}`);
                 instances
                     .startInstance(sub, true)
                     .catch(e => logger.error(`${hostLogPrefix} Cannot start instance ${sub}: ${e.message}`));
