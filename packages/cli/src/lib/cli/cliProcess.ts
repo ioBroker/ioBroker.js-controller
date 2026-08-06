@@ -212,12 +212,15 @@ export class CLIProcess extends CLICommand {
             // one deletes the file on its way through stop.
             console.log(`Ignoring left over ${tools.getPidsFileName()}: ${staleReason}`);
 
+            const pidsFileName = tools.getPidsFileName();
             try {
-                await fs.unlink(tools.getPidsFileName());
+                await fs.unlink(pidsFileName);
             } catch (e) {
-                console.error(`Could not remove ${tools.getPidsFileName()}: ${e.message}`);
-                console.error(`Please delete the file manually and run "${tools.appName} start" again.`);
-                return;
+                if (e.code !== 'ENOENT') {
+                    console.error(`Could not remove ${pidsFileName}: ${e.message}`);
+                    console.error(`Please delete the file manually and run "${tools.appName} start" again.`);
+                    return;
+                }
             }
         }
 
