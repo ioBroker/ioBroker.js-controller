@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { FORBIDDEN_CHARS, execAsync } from '@iobroker/js-controller-common-db/tools';
+import { FORBIDDEN_CHARS, execAsync, isProcessRunning } from '@iobroker/js-controller-common-db/tools';
 
 describe('test tools.js helpers', () => {
     it('FORBIDDEN_CHARS', () => {
@@ -19,5 +19,18 @@ describe('test tools.js helpers', () => {
     it('execAsync', async () => {
         const res = await execAsync('echo test');
         assert.strictEqual((res.stdout as string).trim(), 'test');
+    });
+
+    it('isProcessRunning', () => {
+        // our own process is definitely running
+        assert.strictEqual(isProcessRunning(process.pid), true);
+
+        // pid 0 addresses the process group instead of a single process, so it must not be
+        // mistaken for a running controller
+        assert.strictEqual(isProcessRunning(0), false);
+
+        // a pid above the highest one the system can hand out cannot belong to a process,
+        // this is what a pids.txt left over by a power loss looks like
+        assert.strictEqual(isProcessRunning(0x7fffffff), false);
     });
 });

@@ -3966,4 +3966,52 @@ export async function getControllerPid(): Promise<number | undefined> {
     return pids.pop();
 }
 
+/**
+ * Check if a process with the given id currently exists
+ *
+ * @param pid process id to check
+ * @returns true if a process with this id is running
+ */
+export function isProcessRunning(pid: number): boolean {
+    // 0 and negative values address process groups instead of a single process and would not
+    // throw below, so a corrupt pids file must not slip through here
+    if (!Number.isInteger(pid) || pid <= 0) {
+        return false;
+    }
+
+    try {
+        // Signal 0 sends nothing, it only performs the existence and permission check
+        process.kill(pid, 0);
+        return true;
+    } catch (e) {
+        // EPERM means the process does exist, it just belongs to another user
+        return e.code === 'EPERM';
+    }
+}
+
+/**
+ * Check if the pids file is a leftover of a previous boot
+ *
+ * A controller which is running right now must have written its pids file after the machine
+ * came up, so a file which is older than the last boot cannot belong to a running controller.
+ * This catches the case where the operating system handed the recorded pid to an unrelated
+ * process after the reboot, which a pure liveness check cannot distinguish.
+ *
+ * @returns true if the pids file was written before the system booted
+ */
+export async function isPidsFileFromPreviousBoot(): Promise<boolean> {
+    // Be generous: a clock adjustment must not make us believe a running controller is gone,
+    // because that would start a second one on the same host
+    const CLOCK_TOLERANCE_MS = 60_000;
+
+    try {
+        const stat = await fs.stat(getPidsFileName());
+        const bootTime = Date.now() - os.uptime() * 1_000;
+
+        return stat.mtimeMs < bootTime - CLOCK_TOLERANCE_MS;
+    } catch {
+        return false;
+    }
+}
+
 export * from '@/lib/common/maybeCallback.js';

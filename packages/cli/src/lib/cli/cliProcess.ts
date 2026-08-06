@@ -200,8 +200,25 @@ export class CLIProcess extends CLICommand {
         }
 
         if (pid) {
-            console.log(`Controller is already running with pid ${pid}`);
-            return;
+            const staleReason = await getStalePidsFileReason(pid);
+
+            if (!staleReason) {
+                console.log(`Controller is already running with pid ${pid}`);
+                return;
+            }
+
+            // The pids file survived an unclean shutdown, e.g. a power loss. Without removing it
+            // here every "start" would keep refusing and only "restart" would work, because that
+            // one deletes the file on its way through stop.
+            console.log(`Ignoring left over ${tools.getPidsFileName()}: ${staleReason}`);
+
+            try {
+                await fs.unlink(tools.getPidsFileName());
+            } catch (e) {
+                console.error(`Could not remove ${tools.getPidsFileName()}: ${e.message}`);
+                console.error(`Please delete the file manually and run "${tools.appName} start" again.`);
+                return;
+            }
         }
 
         const args = [path.join(rootDir, 'controller.js')];
@@ -419,6 +436,26 @@ async function setInstanceEnabled(
     } else {
         CLI.success.adapterStopped(instanceName);
     }
+}
+
+/**
+ * Determine whether the pids file is a leftover instead of belonging to a running controller
+ *
+ * @param pid the controller pid recorded in the pids file
+ * @returns a human readable reason if the file is stale, else undefined
+ */
+async function getStalePidsFileReason(pid: number): Promise<string | undefined> {
+    if (!tools.isProcessRunning(pid)) {
+        return `process ${pid} is not running any more`;
+    }
+
+    // The pid is in use, but a controller which is running now cannot have written its pids file
+    // before this boot - so the operating system handed that pid to an unrelated process
+    if (await tools.isPidsFileFromPreviousBoot()) {
+        return `it was written before the last system boot, pid ${pid} now belongs to a different process`;
+    }
+
+    return undefined;
 }
 
 /**
