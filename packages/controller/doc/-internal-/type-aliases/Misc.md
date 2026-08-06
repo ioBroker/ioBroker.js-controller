@@ -8,4 +8,4 @@
 
 > **Misc** = `` `system.host.${string}.${string}` `` \| `` `0_userdata.0.${string}` ``
 
-Defined in: [types-dev/objects.d.ts:70](https://github.com/ioBroker/ioBroker.js-controller/blob/d3842b2ac919375043ba1c8bcfb637022c2bb575/packages/types-dev/objects.d.ts#L70)
+Defined in: [types-dev/objects.d.ts:70](https://github.com/ioBroker/ioBroker.js-controller/blob/da1005b6bc059f298a1976c82df5fc4c6fcd7c65/packages/types-dev/objects.d.ts#L70)
