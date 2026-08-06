@@ -118,7 +118,6 @@ export class InstanceManager {
                 }
 
                 logger.debug(`${hostLogPrefix} check instance "${instance._id}" for host "${instance.common.host}"`);
-                console.log(`${hostLogPrefix} check instance "${instance._id}" for host "${instance.common.host}"`);
 
                 if (
                     (await this.checkAndAddInstance(instance, _ipArr)) &&
