@@ -135,6 +135,10 @@ jobs:
           redis-cli exists 'test.o._design/system' || true
           echo "===== the object the failing assert looks for ====="
           redis-cli get 'test.o.test.0.myTestObject' || true
+          echo "===== is it a member of the set the state view scans? ====="
+          redis-cli sismember 'test.s.object.type.state' 'test.o.test.0.myTestObject' || true
+          echo "===== full members of test.s.object.type.state ====="
+          redis-cli smembers 'test.s.object.type.state' | sort || true
 
       - name: Execute Jsonl Tests
         run: npm run test-jsonl

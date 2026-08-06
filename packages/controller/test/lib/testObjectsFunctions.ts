@@ -78,7 +78,12 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     it(`${testName}Read all objects of adapter`, function (done) {
         context.adapter.getAdapterObjects(objects => {
             assert.ok(objects);
-            assert.ok(objects[`${context.adapterShortName}.0.${gid}`]);
+            // TEMP diagnostics - remove before merging
+            const _keys = Object.keys(objects);
+            assert.ok(
+                objects[`${context.adapterShortName}.0.${gid}`],
+                `getAdapterObjects returned ${_keys.length} objects but not ${context.adapterShortName}.0.${gid}; got: ${_keys.slice(0, 80).join(' ')}`,
+            );
             assert.strictEqual(objects[`${context.adapterShortName}.0.${gid}`].type, 'state');
             done();
         });
