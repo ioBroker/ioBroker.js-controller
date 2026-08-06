@@ -47,7 +47,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
-        node: [22, 24]
+        node: [22, 24, 26]
 
     steps:
       - uses: actions/checkout@v7
@@ -66,7 +66,29 @@ jobs:
           brew update
           # temporary ignore brew problems
           brew install redis
-          brew services start redis
+          # `brew services start` only registers a launchd job and returns before the server
+          # listens - and on the runner it reports success while nothing ever comes up, which
+          # showed up much later as ECONNREFUSED 127.0.0.1:6379 in the tests. Start the server
+          # directly, with the built-in defaults instead of the Homebrew config, and wait for it.
+          #
+          # LC_ALL=C is required: Redis calls setlocale(LC_COLLATE, "") on startup, so the Lua
+          # scripting engine inherits the collation of whatever environment started the server.
+          # Our object views filter with `key >= argStart and key < argEnd` where argEnd ends in
+          # U+9999, and Lua compares strings via strcoll(). Under the runner's en_US.UTF-8 that
+          # comparison stops holding, every key falls out of the range and all views return
+          # empty - while direct GETs keep working. On Linux Redis runs as a systemd service
+          # with no LANG, which is why only macOS was affected.
+          LC_ALL=C redis-server --daemonize yes --logfile "$RUNNER_TEMP/redis.log"
+          for _ in $(seq 1 30); do
+            if redis-cli ping 2>/dev/null | grep -q PONG; then
+              echo "Redis is up"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Redis did not answer PING within 30s"
+          cat "$RUNNER_TEMP/redis.log" || true
+          exit 1
 
       - name: Prepare installation (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
