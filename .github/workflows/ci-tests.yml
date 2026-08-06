@@ -139,6 +139,15 @@ jobs:
           redis-cli sismember 'test.s.object.type.state' 'test.o.test.0.myTestObject' || true
           echo "===== full members of test.s.object.type.state ====="
           redis-cli smembers 'test.s.object.type.state' | sort || true
+          echo "===== locale of this shell ====="
+          locale || true
+          echo "===== Lua string compare (the range check every view does) ====="
+          echo -n "  'test.o.test.0.myTestObject' < 'test.o.test.0.<U+9999>'  -> "
+          redis-cli eval "if 'test.o.test.0.myTestObject' < 'test.o.test.0.香' then return 'LT (views work)' else return 'GE (views return nothing)' end" 0 || true
+          echo -n "  plain ascii control 'a' < 'b'  -> "
+          redis-cli eval "if 'a' < 'b' then return 'LT' else return 'GE' end" 0 || true
+          echo "===== replay the view range filter by hand ====="
+          redis-cli eval "local r=redis.call('SSCAN', KEYS[1], '0', 'MATCH', KEYS[2]..'*', 'COUNT', 1000); local n=0; for _,k in ipairs(r[2]) do if k >= KEYS[3] and k < KEYS[4] then n=n+1 end end; return {'scanned='..tostring(#r[2]), 'matched='..tostring(n), 'cursor='..tostring(r[1])}" 4 test.s.object.type.state test.o. test.o.test.0. "test.o.test.0.香" || true
 
       - name: Execute Jsonl Tests
         run: npm run test-jsonl

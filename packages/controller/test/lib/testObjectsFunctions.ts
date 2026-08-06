@@ -76,13 +76,26 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
     // getAdapterObjects
     it(`${testName}Read all objects of adapter`, function (done) {
-        context.adapter.getAdapterObjects(objects => {
+        context.adapter.getAdapterObjects(async objects => {
             assert.ok(objects);
-            // TEMP diagnostics - remove before merging
+            // TEMP diagnostics - remove before merging.
+            // _getAdapterObjects swallows every view error in an empty catch, so call the
+            // view directly here to find out what it actually does on macOS.
             const _keys = Object.keys(objects);
+            let _diag: string;
+            try {
+                const _view = await context.objects.getObjectViewAsync('system', 'state', {
+                    startkey: `${context.adapterShortName}.0.`,
+                    endkey: `${context.adapterShortName}.0.香`,
+                    include_docs: true,
+                } as any);
+                _diag = `direct view -> rows=${_view?.rows ? _view.rows.length : JSON.stringify(_view)}`;
+            } catch (e: any) {
+                _diag = `direct view THREW: ${e?.name}: ${e?.message} | stack: ${String(e?.stack).slice(0, 500)}`;
+            }
             assert.ok(
                 objects[`${context.adapterShortName}.0.${gid}`],
-                `getAdapterObjects returned ${_keys.length} objects but not ${context.adapterShortName}.0.${gid}; got: ${_keys.slice(0, 80).join(' ')}`,
+                `getAdapterObjects returned ${_keys.length} objects but not ${context.adapterShortName}.0.${gid}; got: ${_keys.slice(0, 80).join(' ')} ;; ${_diag}`,
             );
             assert.strictEqual(objects[`${context.adapterShortName}.0.${gid}`].type, 'state');
             done();
