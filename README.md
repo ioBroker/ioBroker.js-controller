@@ -1269,6 +1269,7 @@ The following features can be checked using this method:
 * **CONTROLLER_LICENSE_MANAGER**: js-controller can read licenses from iobroker.net (since js-controller 4.0)
 * **DEL_INSTANCE_CUSTOM**: indicates that controller is able to delete all custom attributes of an adapter and instance if it is deleted via `--custom` flag (since js-controller 4.0)
 * **CONTROLLER_CMD_EXEC_FILES**: the `cmdExec` host message supports sending files together with the command via the `files` property (since js-controller 7.2)
+* **CONTROLLER_GET_LOGS_LOG_LEVEL**: the `getLogs` host message accepts an object `{ lines, logLevel }` instead of just the number of lines, so the host returns only entries of the requested severity and more severe ones (since js-controller 7.2.3)
 
 To check if certain adapter methods itself are existing, please simply check for their existence like
 

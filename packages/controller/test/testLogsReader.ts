@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import os from 'node:os';
 import path from 'node:path';
 import fs from 'fs-extra';
+import { getSupportedFeatures } from '@iobroker/js-controller-common';
 import { parseGetLogsMessage, readLogTail } from '../src/lib/logsReader.js';
 
 /** A log file as it is written on disk: the level is wrapped in color codes, entries can span lines */
@@ -26,6 +27,12 @@ describe('test logsReader', () => {
 
     after(async () => {
         await fs.remove(path.dirname(logFile));
+    });
+
+    it('announces the feature so requesters can detect an older host', () => {
+        // an older js-controller does not know the flag and answers "false" to checkFeatureSupported,
+        // which is how admin can tell that it has to stay with the plain number of lines
+        assert.ok(getSupportedFeatures().includes('CONTROLLER_GET_LOGS_LOG_LEVEL'));
     });
 
     it('parseGetLogsMessage stays backward compatible', () => {
