@@ -71,9 +71,7 @@ const getRepository: HostCommandHandler = async (controller, msg) => {
             msg.message = msg.message.repo;
         }
 
-        // @ts-expect-error todo it can be undefined handle the case
-        let active = msg.message || systemConfig.common.activeRepo;
-
+        let active = msg.message ?? systemConfig?.common?.activeRepo ?? [];
         if (!Array.isArray(active)) {
             active = [active];
         }
