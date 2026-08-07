@@ -11794,13 +11794,11 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (aliasPattern) {
-            // if pattern known, remove it and unsubscribe every target it pulled in
             this.#alias.deletePattern(aliasPattern);
             promises.push(this.#alias.removeTargetsForPattern(aliasPattern));
         }
 
         await Promise.all(promises);
-        // if no alias subscribed any longer, remove the alias.* object subscription
         await this.#alias.maybeDropAliasObjectSubscription();
         return tools.maybeCallback(callback);
     }
