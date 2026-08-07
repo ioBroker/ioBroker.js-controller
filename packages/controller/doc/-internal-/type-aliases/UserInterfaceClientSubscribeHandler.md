@@ -8,7 +8,7 @@
 
 > **UserInterfaceClientSubscribeHandler** = (`subscribeInfo`) => [`UserInterfaceClientSubscribeReturnType`](../interfaces/UserInterfaceClientSubscribeReturnType.md) \| `Promise`\<[`UserInterfaceClientSubscribeReturnType`](../interfaces/UserInterfaceClientSubscribeReturnType.md)\>
 
-Defined in: [adapter/src/lib/\_Types.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/da1005b6bc059f298a1976c82df5fc4c6fcd7c65/packages/adapter/src/lib/_Types.ts#L156)
+Defined in: [adapter/src/lib/\_Types.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/e528bb4382035c90837f1909f28abae31a2cd84c/packages/adapter/src/lib/_Types.ts#L156)
 
 ## Parameters
 
