@@ -6,7 +6,7 @@
 
 # Abstract Class: AdapterContextBase
 
-Defined in: [adapter/src/lib/adapter/managers/AdapterContextBase.ts:16](https://github.com/ioBroker/ioBroker.js-controller/blob/da1005b6bc059f298a1976c82df5fc4c6fcd7c65/packages/adapter/src/lib/adapter/managers/AdapterContextBase.ts#L16)
+Defined in: [adapter/src/lib/adapter/managers/AdapterContextBase.ts:16](https://github.com/ioBroker/ioBroker.js-controller/blob/e528bb4382035c90837f1909f28abae31a2cd84c/packages/adapter/src/lib/adapter/managers/AdapterContextBase.ts#L16)
 
 Base class for adapter managers that read from the shared [AdapterContext](../interfaces/AdapterContext.md).
 
@@ -28,7 +28,7 @@ Getters are `protected` because `#` privates are not visible to subclasses.
 
 > **new AdapterContextBase**(`ctx`): `AdapterContextBase`
 
-Defined in: [adapter/src/lib/adapter/managers/AdapterContextBase.ts:22](https://github.com/ioBroker/ioBroker.js-controller/blob/da1005b6bc059f298a1976c82df5fc4c6fcd7c65/packages/adapter/src/lib/adapter/managers/AdapterContextBase.ts#L22)
+Defined in: [adapter/src/lib/adapter/managers/AdapterContextBase.ts:22](https://github.com/ioBroker/ioBroker.js-controller/blob/e528bb4382035c90837f1909f28abae31a2cd84c/packages/adapter/src/lib/adapter/managers/AdapterContextBase.ts#L22)
 
 #### Parameters
 
