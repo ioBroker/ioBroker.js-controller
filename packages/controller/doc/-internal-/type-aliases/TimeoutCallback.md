@@ -8,7 +8,7 @@
 
 > **TimeoutCallback** = (...`args`) => `void`
 
-Defined in: [adapter/src/lib/\_Types.ts:481](https://github.com/ioBroker/ioBroker.js-controller/blob/e528bb4382035c90837f1909f28abae31a2cd84c/packages/adapter/src/lib/_Types.ts#L481)
+Defined in: [adapter/src/lib/\_Types.ts:481](https://github.com/ioBroker/ioBroker.js-controller/blob/bfc2bfaa4efb008311edf5c4865b09099b6e059d/packages/adapter/src/lib/_Types.ts#L481)
 
 ## Parameters
 
