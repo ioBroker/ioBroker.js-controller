@@ -196,21 +196,19 @@ export class AliasManager extends AdapterContextBase {
     }
 
     /** Subscribe the `alias.*` object range once (idempotent). */
-    ensureAliasObjectSubscription(): Promise<void> {
+    ensureAliasObjectSubscription(): void {
         if (!this.#aliasObjectsSubscribed) {
             this.#aliasObjectsSubscribed = true;
             this.objects.subscribe(`${ALIAS_STARTS_WITH}*`);
         }
-        return Promise.resolve();
     }
 
     /** Drop the `alias.*` object subscription when no aliases remain. */
-    maybeDropAliasObjectSubscription(): Promise<void> {
+    maybeDropAliasObjectSubscription(): void {
         if (!this.#aliases.size && this.#aliasObjectsSubscribed) {
             this.#aliasObjectsSubscribed = false;
             this.objects.unsubscribe(`${ALIAS_STARTS_WITH}*`);
         }
-        return Promise.resolve();
     }
 
     /**

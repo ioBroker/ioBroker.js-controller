@@ -150,17 +150,17 @@ describe('AliasManager patterns + object subscription', () => {
         assert.equal(mgr.hasPattern('alias.0.*'), false);
     });
 
-    it('subscribes the alias.* object once and drops it when empty', async () => {
+    it('subscribes the alias.* object once and drops it when empty', () => {
         const subscribe = sinon.stub().resolves();
         const unsubscribe = sinon.stub().resolves();
         const mgr = new AliasManager(
             makeContext({ objects: { subscribe, unsubscribe } as any, states: {} as any }),
             validateId,
         );
-        await mgr.ensureAliasObjectSubscription();
-        await mgr.ensureAliasObjectSubscription();
+        mgr.ensureAliasObjectSubscription();
+        mgr.ensureAliasObjectSubscription();
         assert.equal(subscribe.calledOnce, true);
-        await mgr.maybeDropAliasObjectSubscription();
+        mgr.maybeDropAliasObjectSubscription();
         assert.equal(unsubscribe.calledOnceWith('alias.*'), true);
     });
 });

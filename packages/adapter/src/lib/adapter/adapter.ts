@@ -11556,7 +11556,7 @@ export class AdapterClass extends EventEmitter {
             const promises = [];
 
             if (aliasesIds.length) {
-                await this.#alias.ensureAliasObjectSubscription();
+                this.#alias.ensureAliasObjectSubscription();
 
                 const aliasObjs = await this._getObjectsByArray(aliasesIds, options);
 
@@ -11581,7 +11581,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallback(callback);
         } else if (pattern.includes('*')) {
             if (pattern === '*' || pattern.startsWith(ALIAS_STARTS_WITH)) {
-                await this.#alias.ensureAliasObjectSubscription();
+                this.#alias.ensureAliasObjectSubscription();
 
                 // read all aliases
                 try {
@@ -11630,7 +11630,7 @@ export class AdapterClass extends EventEmitter {
                 return callback ? this.#states.subscribeUser(pattern, callback) : this.#states.subscribeUser(pattern);
             }
         } else if (pattern.startsWith(ALIAS_STARTS_WITH)) {
-            await this.#alias.ensureAliasObjectSubscription();
+            this.#alias.ensureAliasObjectSubscription();
 
             // just read one alias Object
             try {
@@ -11799,7 +11799,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         await Promise.all(promises);
-        await this.#alias.maybeDropAliasObjectSubscription();
+        this.#alias.maybeDropAliasObjectSubscription();
         return tools.maybeCallback(callback);
     }
 
