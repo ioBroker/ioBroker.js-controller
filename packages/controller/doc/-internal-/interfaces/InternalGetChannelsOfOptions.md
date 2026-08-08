@@ -6,7 +6,7 @@
 
 # Interface: InternalGetChannelsOfOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:540](https://github.com/ioBroker/ioBroker.js-controller/blob/e528bb4382035c90837f1909f28abae31a2cd84c/packages/adapter/src/lib/_Types.ts#L540)
+Defined in: [adapter/src/lib/\_Types.ts:540](https://github.com/ioBroker/ioBroker.js-controller/blob/bfc2bfaa4efb008311edf5c4865b09099b6e059d/packages/adapter/src/lib/_Types.ts#L540)
 
 Options for reading the channels of a device
 
@@ -16,7 +16,7 @@ Options for reading the channels of a device
 
 > `optional` **callback?**: [`GetObjectsCallback3`](../type-aliases/GetObjectsCallback3.md)\<[`ChannelObject`](ChannelObject.md)\>
 
-Defined in: [adapter/src/lib/\_Types.ts:544](https://github.com/ioBroker/ioBroker.js-controller/blob/e528bb4382035c90837f1909f28abae31a2cd84c/packages/adapter/src/lib/_Types.ts#L544)
+Defined in: [adapter/src/lib/\_Types.ts:544](https://github.com/ioBroker/ioBroker.js-controller/blob/bfc2bfaa4efb008311edf5c4865b09099b6e059d/packages/adapter/src/lib/_Types.ts#L544)
 
 Called with the channels
 
@@ -26,7 +26,7 @@ Called with the channels
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:546](https://github.com/ioBroker/ioBroker.js-controller/blob/e528bb4382035c90837f1909f28abae31a2cd84c/packages/adapter/src/lib/_Types.ts#L546)
+Defined in: [adapter/src/lib/\_Types.ts:546](https://github.com/ioBroker/ioBroker.js-controller/blob/bfc2bfaa4efb008311edf5c4865b09099b6e059d/packages/adapter/src/lib/_Types.ts#L546)
 
 Optional settings including the user context
 
@@ -36,6 +36,6 @@ Optional settings including the user context
 
 > `optional` **parentDevice?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:542](https://github.com/ioBroker/ioBroker.js-controller/blob/e528bb4382035c90837f1909f28abae31a2cd84c/packages/adapter/src/lib/_Types.ts#L542)
+Defined in: [adapter/src/lib/\_Types.ts:542](https://github.com/ioBroker/ioBroker.js-controller/blob/bfc2bfaa4efb008311edf5c4865b09099b6e059d/packages/adapter/src/lib/_Types.ts#L542)
 
 The parent device to read the channels of

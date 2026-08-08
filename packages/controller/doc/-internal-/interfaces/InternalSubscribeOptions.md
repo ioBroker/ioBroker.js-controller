@@ -6,7 +6,7 @@
 
 # Interface: InternalSubscribeOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:652](https://github.com/ioBroker/ioBroker.js-controller/blob/e528bb4382035c90837f1909f28abae31a2cd84c/packages/adapter/src/lib/_Types.ts#L652)
+Defined in: [adapter/src/lib/\_Types.ts:652](https://github.com/ioBroker/ioBroker.js-controller/blob/bfc2bfaa4efb008311edf5c4865b09099b6e059d/packages/adapter/src/lib/_Types.ts#L652)
 
 Options for subscribing to states or objects
 
@@ -16,7 +16,7 @@ Options for subscribing to states or objects
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:658](https://github.com/ioBroker/ioBroker.js-controller/blob/e528bb4382035c90837f1909f28abae31a2cd84c/packages/adapter/src/lib/_Types.ts#L658)
+Defined in: [adapter/src/lib/\_Types.ts:658](https://github.com/ioBroker/ioBroker.js-controller/blob/bfc2bfaa4efb008311edf5c4865b09099b6e059d/packages/adapter/src/lib/_Types.ts#L658)
 
 Called once the subscription is registered
 
@@ -26,7 +26,7 @@ Called once the subscription is registered
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:656](https://github.com/ioBroker/ioBroker.js-controller/blob/e528bb4382035c90837f1909f28abae31a2cd84c/packages/adapter/src/lib/_Types.ts#L656)
+Defined in: [adapter/src/lib/\_Types.ts:656](https://github.com/ioBroker/ioBroker.js-controller/blob/bfc2bfaa4efb008311edf5c4865b09099b6e059d/packages/adapter/src/lib/_Types.ts#L656)
 
 Optional settings including the user context
 
@@ -36,6 +36,6 @@ Optional settings including the user context
 
 > **pattern**: [`Pattern`](../type-aliases/Pattern.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:654](https://github.com/ioBroker/ioBroker.js-controller/blob/e528bb4382035c90837f1909f28abae31a2cd84c/packages/adapter/src/lib/_Types.ts#L654)
+Defined in: [adapter/src/lib/\_Types.ts:654](https://github.com/ioBroker/ioBroker.js-controller/blob/bfc2bfaa4efb008311edf5c4865b09099b6e059d/packages/adapter/src/lib/_Types.ts#L654)
 
 The pattern to subscribe to
