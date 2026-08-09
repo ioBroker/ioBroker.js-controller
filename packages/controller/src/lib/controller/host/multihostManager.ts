@@ -35,8 +35,8 @@ export class MultihostManager {
     readonly #isCompactGroupController: boolean;
 
     /** The running multihost discovery server */
-    #mhService: any = null;
-    /** Timer which stops a temporarily activated multihost discovery server */
+    #mhService: MHServer | null = null;
+    /** Timer that stops a temporarily activated multihost discovery server */
     #mhTimer: NodeJS.Timeout | null = null;
 
     /**

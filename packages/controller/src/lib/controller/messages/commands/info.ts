@@ -13,6 +13,7 @@ import type { DiagInfoCollector } from '@/lib/controller/host/diagInfoCollector.
 import type { InstanceManager } from '@/lib/controller/instances/instanceManager.js';
 import type { MessageBus } from '@/lib/controller/messages/messageBus.js';
 import type { HostCommand, HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+import type { IoPackageFile } from '@iobroker/plugin-base';
 
 /** Everything the host commands for information about this host and its adapters need */
 export interface InfoCommandsDeps {
@@ -33,7 +34,7 @@ export interface InfoCommandsDeps {
     /** Name of this host */
     hostname: string;
     /** The raw content of the io-package.json of the js-controller */
-    ioPackage: any;
+    ioPackage: IoPackageFile;
     /** The version of the js-controller */
     version: string;
     /** Directory of the js-controller */
@@ -72,7 +73,7 @@ const getInstalled: HostCommand<InfoCommandsDeps> = async (deps, msg) => {
         for (const row of doc.rows) {
             // If desired a local version, do not ask it, just answer
             if (row.id === hostObjectPrefix) {
-                const ioPackCommon = deepClone(ioPackage.common);
+                const ioPackCommon: HostInformation = deepClone(ioPackage.common) as unknown as HostInformation;
 
                 ioPackCommon.host = hostname;
                 ioPackCommon.runningVersion = version;
@@ -131,7 +132,7 @@ const getVersion: HostCommand<InfoCommandsDeps> = (deps, msg) => {
         return;
     }
 
-    const ioPackCommon: HostInformation = deepClone(ioPackage.common);
+    const ioPackCommon: HostInformation = deepClone(ioPackage.common) as unknown as HostInformation;
     ioPackCommon.host = hostname;
     ioPackCommon.runningVersion = version;
     messages.sendTo(msg.from, msg.command, ioPackCommon, msg.callback);

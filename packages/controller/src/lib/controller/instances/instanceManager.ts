@@ -22,6 +22,7 @@ import type {
     StopTimeoutObject,
     UploadTask,
 } from '@/lib/controller/types.js';
+import type { IoPackageFile } from '@iobroker/plugin-base';
 
 /** Pause between the start of two instances */
 const DEFAULT_INSTANCE_START_INTERVAL = 2_000;
@@ -45,7 +46,7 @@ export interface InstanceManagerOptions {
     /** Name of this host */
     hostname: string;
     /** The raw content of the io-package.json of the js-controller */
-    ioPackage: any;
+    ioPackage: IoPackageFile;
     /** If this controller runs as a daemon in the background */
     isDaemon: boolean;
     /** If this controller is a compact group controller */

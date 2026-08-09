@@ -14,7 +14,7 @@ import {
     tools,
 } from '@iobroker/js-controller-common';
 import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
-import { PluginHandler, type PluginHandlerSettings } from '@iobroker/plugin-base';
+import { PluginHandler, type PluginHandlerSettings, type IoPackageFile } from '@iobroker/plugin-base';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload } from '@iobroker/js-controller-cli';
@@ -63,7 +63,7 @@ export interface ControllerOptions {
 export class Controller {
     // -------------------------------------------------------------------------------------------- static information
     /** The raw content of the io-package.json of the js-controller */
-    readonly #ioPackage: any;
+    readonly #ioPackage: IoPackageFile;
     /** The version of the js-controller */
     readonly #version: string;
     /** The configuration of this host (iobroker.json) */
@@ -84,7 +84,7 @@ export class Controller {
     readonly #uptimeStart = Date.now();
 
     // ------------------------------------------------------------------------------------------------ runtime state
-    /** The lifecycle state which the managers observe */
+    /** The lifecycle state that the managers observe */
     readonly #state = new ControllerState();
     /** The counters of the received and written states */
     readonly #statistics = new Statistics();
@@ -142,21 +142,21 @@ export class Controller {
     #ObjectsClass!: typeof ObjectsClient;
     /** The constructor of the states database client */
     #StatesClass!: typeof StatesClient;
-    /** Uploads adapters, will be used only once by upload of adapter */
+    /** Uploads adapters will be used only once by upload of adapter */
     #upload?: InstanceType<typeof Upload>;
     /** Maximum time we wait for the instances to stop */
     #stopTimeout = 10_000;
     /** Number of uncaught exceptions since the start */
     #uncaughtExceptionCount = 0;
-    /** Timer which restarts the controller if the databases are not reachable */
+    /** Timer that restarts the controller if the databases are not reachable */
     #connectTimeout: NodeJS.Timeout | null = null;
-    /** Timer which restarts the controller after a lost connection */
+    /** Timer that restarts the controller after a lost connection */
     #restartTimeout: NodeJS.Timeout | null = null;
-    /** Timer which detects a lost connection to the objects database */
+    /** Timer that detects a lost connection to the objects database */
     #objectsDisconnectTimeout: NodeJS.Timeout | null = null;
-    /** Timer which detects a lost connection to the states database */
+    /** Timer that detects a lost connection to the states database */
     #statesDisconnectTimeout: NodeJS.Timeout | null = null;
-    /** Timer which renews the primary host lock */
+    /** Timer that renews the primary host lock */
     #primaryHostInterval: NodeJS.Timeout | null = null;
 
     /**
@@ -1153,14 +1153,16 @@ export class Controller {
             scope: 'controller',
             namespace: this.#hostObjectPrefix,
             logNamespace: this.#hostLogPrefix,
-            log: this.#logger as any,
+            log: this.#logger as ioBroker.Logger,
             iobrokerConfig: this.#config,
             parentPackage: packageJson!,
             controllerVersion: this.#version,
         };
 
         this.#pluginHandler = new PluginHandler(pluginSettings);
-        this.#pluginHandler.addPlugins(this.#ioPackage.common.plugins, this.#controllerDir); // Plugins from io-package have priority over ...
+        if (this.#ioPackage.common.plugins) {
+            this.#pluginHandler.addPlugins(this.#ioPackage.common.plugins, this.#controllerDir); // Plugins from io-package have priority over ...
+        }
 
         try {
             this.#pluginHandler.addPlugins(this.#config.plugins, this.#controllerDir); // ... plugins from iobroker.json

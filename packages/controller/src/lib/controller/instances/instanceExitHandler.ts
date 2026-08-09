@@ -188,9 +188,10 @@ export function createInstanceExitHandler(
                         proc.rebuildArgs ? `of ${proc.rebuildArgs.module} ` : ''
                     }and will be restarted afterwards.`,
                 );
-                const msg: Record<string, any> = {
+                const msg: ioBroker.SendableMessage = {
                     command: 'rebuildAdapter',
                     message: { id: instance._id },
+                    from: hostObjectPrefix,
                 };
 
                 // if rebuild args are given, send them
@@ -199,7 +200,7 @@ export function createInstanceExitHandler(
                     delete proc.rebuildArgs;
                 }
 
-                options.requestRebuild(msg as ioBroker.SendableMessage);
+                options.requestRebuild(msg);
             } else {
                 logger.info(
                     `${hostLogPrefix} Rebuild for adapter ${id} not successful in 3 tries. Adapter will not be restarted again. Please execute "npm install --production" in adapter directory manually.`,

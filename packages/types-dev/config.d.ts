@@ -9,7 +9,7 @@ interface DatabaseBackupOptions {
     /** By default, backup every 2 hours. Time is in minutes. To disable backup set the value to 0 */
     period: number;
     '// period': string;
-    /** Absolute path to back-up directory or empty to back-up in data directory */
+    /** Absolute path to the back-up directory or empty to back-up in data directory */
     path: string;
     '// path': string;
 }

@@ -12,6 +12,7 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import type { HostMetaManager } from '@/lib/controller/host/hostMetaManager.js';
 import type { ControllerLogger, DiagInfoType } from '@/lib/controller/types.js';
+import { TaskObject } from '@/lib/objects.js';
 
 /** Everything the diagnostics collector needs to do its work */
 export interface DiagInfoCollectorOptions {
@@ -292,7 +293,7 @@ export class DiagInfoCollector {
                     diag[visAdapter] = total;
                 }
 
-                await hostMeta.extendObjects(tasks);
+                await hostMeta.extendObjects(tasks as TaskObject[]);
             } catch (e) {
                 logger.error(`${hostLogPrefix} cannot call visUtils: ${e.message}`);
             }

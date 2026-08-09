@@ -1,7 +1,7 @@
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
 import { getDiskWarningLevel } from '@/lib/utils.js';
-import type { PluginHandler } from '@iobroker/plugin-base';
+import type { IoPackageFile, PluginHandler } from '@iobroker/plugin-base';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import type { InstanceManager } from '@/lib/controller/instances/instanceManager.js';
@@ -28,7 +28,7 @@ export interface StateChangeRouterDeps {
     /** Directory of the js-controller, needed to instantiate a plugin */
     controllerDir: string;
     /** The raw content of the io-package.json of the js-controller */
-    ioPackage: any;
+    ioPackage: IoPackageFile;
     /** If this controller is a compact group controller, those ignore the host messages */
     isCompactGroupController: boolean;
     /** Wakes up the instances which subscribed to a state */

@@ -8,7 +8,7 @@ import {
     SYSTEM_HOST_PREFIX,
 } from '@iobroker/js-controller-common-db/constants';
 import { getHostObject } from '@iobroker/js-controller-common-db/tools';
-import { getHostObjects } from '@/lib/objects.js';
+import { getHostObjects, type TaskObject } from '@/lib/objects.js';
 import { COMPACT_GROUP_OBJECT_PREFIX, VENDOR_BOOTSTRAP_FILE, VENDOR_FILE } from '@/lib/controller/constants.js';
 import type { NotificationHandler } from '@iobroker/js-controller-common';
 import type { PluginHandler } from '@iobroker/plugin-base';
@@ -151,18 +151,18 @@ export class HostMetaManager {
      *
      * @param tasks The objects to extend, each optionally carrying a state to set
      */
-    async extendObjects(tasks: Record<string, any>[]): Promise<void> {
+    async extendObjects(tasks: TaskObject[]): Promise<void> {
         for (const task of tasks) {
-            const state = task.state;
+            const state: ioBroker.SettableState | undefined = task.state;
             if (state !== undefined) {
                 delete task.state;
             }
 
             try {
-                await this.#objects.extendObject(task._id, task);
+                await this.#objects.extendObject((task as ioBroker.Object)._id, task);
                 // if extend throws, we don't want to set corresponding state
                 if (state) {
-                    await this.#states.setState(task._id, state);
+                    await this.#states.setState((task as ioBroker.Object)._id, state);
                 }
             } catch {
                 // ignore
