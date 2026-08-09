@@ -10,9 +10,13 @@ export type FixId = (id: string, isPattern?: boolean) => string;
 
 type SubOptions = { user?: ioBroker.ObjectIDs.User } | null | undefined;
 
-/** Reads state-typed objects matching a pattern, ACL-filtered by the caller's user context. */
+/** Reads the objects matching a pattern, used to discover alias objects during state subscription. */
 export interface ObjectAccess {
-    /** State-typed objects matching pattern, read-ACL-filtered by options.user, keyed by id. */
+    /**
+     * Objects matching `pattern`, keyed by id. Bound to the legacy `getForeignObjects(pattern, null, null, options)`
+     * call, whose `null` type/enums args clobber `options` — so no type filter and no user-ACL are applied;
+     * only `alias.*` ids in the result are consumed. Kept as-is for behavior parity.
+     */
     getForeignStateObjects(
         pattern: string,
         options?: { user?: ioBroker.ObjectIDs.User } | null,
