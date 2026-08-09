@@ -132,6 +132,7 @@ import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMes
 import { AsyncAdapter } from '@/lib/adapter/asyncAdapter.js';
 import { CERTIFICATES_OBJECT_ID } from '@/lib/adapter/managers/CertificateManager.js';
 import { AliasManager } from '@/lib/adapter/managers/AliasManager.js';
+import { SubscriptionManager } from '@/lib/adapter/managers/SubscriptionManager.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
 import { SYSTEM_ADAPTER_PREFIX, DEFAULT_OBJECTS_WARN_LIMIT } from '@iobroker/js-controller-common-db/constants';
 import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
@@ -1016,6 +1017,15 @@ export class AdapterClass extends EventEmitter {
     get #alias(): AliasManager {
         return (this.#aliasInstance ??= new AliasManager(this.#context, (id, allowSystem, options) =>
             this._utils.validateId(id, allowSystem, options),
+        ));
+    }
+
+    #subscriptionsInstance?: SubscriptionManager;
+
+    /** Lazily-constructed object/file subscription manager. */
+    get #subscriptions(): SubscriptionManager {
+        return (this.#subscriptionsInstance ??= new SubscriptionManager(this.#context, (id, isPattern) =>
+            this._utils.fixId(id, isPattern),
         ));
     }
 
@@ -5713,19 +5723,13 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} subscribeObjects not processed because Objects database not connected`,
+        const cb = callback as ioBroker.ErrorCallback | undefined;
+        this.#subscriptions
+            .subscribeObjects(pattern, options as { user?: ioBroker.ObjectIDs.User } | null | undefined)
+            .then(
+                () => cb?.(),
+                (err: Error) => cb?.(err),
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        if (pattern === '*') {
-            this.#objects.subscribeUser(`${this.namespace}.*`, options, callback);
-        } else {
-            const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
-            this.#objects.subscribeUser(fixedPattern, options, callback);
-        }
     }
 
     /**
@@ -5772,19 +5776,13 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} unsubscribeObjects not processed because Objects database not connected`,
+        const cb = callback as ioBroker.ErrorCallback | undefined;
+        this.#subscriptions
+            .unsubscribeObjects(pattern, options as { user?: ioBroker.ObjectIDs.User } | null | undefined)
+            .then(
+                () => cb?.(),
+                (err: Error) => cb?.(err),
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        if (pattern === '*') {
-            this.#objects.unsubscribeUser(`${this.namespace}.*`, options, callback);
-        } else {
-            const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
-            this.#objects.unsubscribeUser(fixedPattern, options, callback);
-        }
     }
 
     // external signatures
@@ -5832,14 +5830,13 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} subscribeForeignObjects not processed because Objects database not connected`,
+        const cb = callback as ioBroker.ErrorCallback | undefined;
+        this.#subscriptions
+            .subscribeForeignObjects(pattern, options as { user?: ioBroker.ObjectIDs.User } | null | undefined)
+            .then(
+                () => cb?.(),
+                (err: Error) => cb?.(err),
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        this.#objects.subscribeUser(pattern, options, callback);
     }
 
     // external signatures
@@ -5890,14 +5887,13 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} unsubscribeForeignObjects not processed because Objects database not connected`,
+        const cb = callback as ioBroker.ErrorCallback | undefined;
+        this.#subscriptions
+            .unsubscribeForeignObjects(pattern, options as { user?: ioBroker.ObjectIDs.User } | null | undefined)
+            .then(
+                () => cb?.(),
+                (err: Error) => cb?.(err),
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        this.#objects.unsubscribeUser(pattern, options, callback);
     }
 
     // external signatures
@@ -5918,21 +5914,17 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      */
     subscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown): Promise<void> {
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} subscribeForeignFiles not processed because Objects database not connected`,
-            );
-
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
         Validator.assertString(id, 'id');
         Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
             Validator.assertObject(options, 'options');
         }
 
-        return this.#objects.subscribeUserFile(id, pattern, options);
+        return this.#subscriptions.subscribeForeignFiles(
+            id,
+            pattern,
+            options as { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        );
     }
 
     // external signatures
@@ -5956,13 +5948,6 @@ export class AdapterClass extends EventEmitter {
         if (!pattern) {
             pattern = '*';
         }
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} unsubscribeForeignFiles not processed because Objects database not connected`,
-            );
-
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-        }
 
         Validator.assertString(id, 'id');
         Validator.assertPattern(pattern, 'pattern');
@@ -5970,7 +5955,11 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        return this.#objects.unsubscribeUserFile(id, pattern, options);
+        return this.#subscriptions.unsubscribeForeignFiles(
+            id,
+            pattern,
+            options as { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        );
     }
 
     // external signatures
