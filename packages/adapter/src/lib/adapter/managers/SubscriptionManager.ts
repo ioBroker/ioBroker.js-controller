@@ -332,6 +332,10 @@ export class SubscriptionManager extends AdapterContextBase {
      * @param options optional user context
      */
     async unsubscribeForeignStates(pattern: Pattern, options?: SubOptions): Promise<void> {
+        // An empty pattern means "all" — matches the legacy public method, and applies per element
+        // on the array-recursion path below.
+        pattern = pattern || '*';
+
         // Force the up-front connection check (states getter throws ERROR_DB_CLOSED).
         void this.states;
 

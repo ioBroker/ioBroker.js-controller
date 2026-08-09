@@ -427,6 +427,21 @@ describe('SubscriptionManager state subs', () => {
         assert.equal(states.unsubscribeUser.called, false);
     });
 
+    it('unsubscribeForeignStates treats an empty pattern as "*" (legacy default)', async () => {
+        const states = statesStub();
+        const { mgr } = build({ states });
+        await mgr.unsubscribeForeignStates('');
+        assert.equal(states.unsubscribeUser.calledWith('*'), true);
+    });
+
+    it('unsubscribeForeignStates defaults each empty array element to "*"', async () => {
+        const states = statesStub();
+        const { mgr } = build({ states });
+        await mgr.unsubscribeForeignStates(['', 'foo.0.x']);
+        assert.equal(states.unsubscribeUser.calledWith('*'), true);
+        assert.equal(states.unsubscribeUser.calledWith('foo.0.x'), true);
+    });
+
     it('autoSubscribeOn is a no-op (preserved dead guard)', async () => {
         const objects = {
             getObjectViewAsync: sinon.stub().resolves({ rows: [] }),
