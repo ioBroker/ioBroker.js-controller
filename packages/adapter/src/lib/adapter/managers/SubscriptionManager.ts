@@ -201,6 +201,11 @@ export class SubscriptionManager extends AdapterContextBase {
                     subs = {};
                 }
 
+                // never index subs with a prototype-polluting key
+                if (pattern === '__proto__' || pattern === 'constructor' || pattern === 'prototype') {
+                    continue;
+                }
+
                 if (!tools.isObject(subs[pattern])) {
                     subs[pattern] = {};
                 }
@@ -361,6 +366,11 @@ export class SubscriptionManager extends AdapterContextBase {
                         subs = JSON.parse(state.val as any);
                     } catch {
                         this.logger.error(`${this.namespaceLog} Cannot parse subscribes for "${autoSub}.subscribes"`);
+                        continue;
+                    }
+
+                    // never index subs with a prototype-polluting key
+                    if (pattern === '__proto__' || pattern === 'constructor' || pattern === 'prototype') {
                         continue;
                     }
 

@@ -403,6 +403,16 @@ describe('SubscriptionManager state subs', () => {
         assert.equal(countOutput.called, false);
     });
 
+    it('does not pollute Object.prototype for a "__proto__" pattern', async () => {
+        const states = statesStub();
+        const { mgr } = build({ states });
+        mgr.addSubscribableInstance('pushover.0');
+        await mgr.subscribeForeignStates('__proto__');
+        await mgr.unsubscribeForeignStates('__proto__');
+        assert.equal(({} as any)['test.0'], undefined);
+        assert.equal((Object.prototype as any)['test.0'], undefined);
+    });
+
     it('unsubscribeForeignStates decrements+deletes the auto-subscribe counter and calls countOutput', async () => {
         const states = statesStub();
         states.getState.resolves({ val: JSON.stringify({ 'pushover.0.x': { 'test.0': 1 } }) });
