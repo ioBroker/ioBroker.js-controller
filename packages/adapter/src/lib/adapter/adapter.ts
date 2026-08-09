@@ -1024,8 +1024,15 @@ export class AdapterClass extends EventEmitter {
 
     /** Lazily-constructed object/file subscription manager. */
     get #subscriptions(): SubscriptionManager {
-        return (this.#subscriptionsInstance ??= new SubscriptionManager(this.#context, (id, isPattern) =>
-            this._utils.fixId(id, isPattern),
+        return (this.#subscriptionsInstance ??= new SubscriptionManager(
+            this.#context,
+            (id, isPattern) => this._utils.fixId(id, isPattern),
+            this.#alias,
+            {
+                getForeignStateObjects: (pattern, options) =>
+                    // @ts-expect-error adjust types
+                    this.getForeignObjectsAsync(pattern, null, null, options),
+            },
         ));
     }
 
@@ -1205,6 +1212,9 @@ export class AdapterClass extends EventEmitter {
         this.#context = {
             logger: this._logger,
             uiMessagingController: this.uiMessagingController,
+            countOutput: () => {
+                self.outputCount++;
+            },
             get namespace() {
                 return self.namespace;
             },

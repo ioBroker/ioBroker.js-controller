@@ -83,4 +83,9 @@ export abstract class AdapterContextBase {
     protected get uiMessagingController(): AdapterContext['uiMessagingController'] {
         return this.#ctx.uiMessagingController;
     }
+
+    /** Increment the adapter's outbound-write counter. */
+    protected countOutput(): void {
+        this.#ctx.countOutput();
+    }
 }
