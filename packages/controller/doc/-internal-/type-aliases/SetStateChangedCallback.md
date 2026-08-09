@@ -8,7 +8,7 @@
 
 > **SetStateChangedCallback** = (`err?`, `id?`, `notChanged?`) => `void`
 
-Defined in: [types-dev/index.d.ts:518](https://github.com/ioBroker/ioBroker.js-controller/blob/e528bb4382035c90837f1909f28abae31a2cd84c/packages/types-dev/index.d.ts#L518)
+Defined in: [types-dev/index.d.ts:518](https://github.com/ioBroker/ioBroker.js-controller/blob/bfc2bfaa4efb008311edf5c4865b09099b6e059d/packages/types-dev/index.d.ts#L518)
 
 ## Parameters
 
