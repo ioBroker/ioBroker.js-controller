@@ -11,7 +11,7 @@ import { isAdapterEsmModule } from '@iobroker/js-controller-common-db/tools';
 import { cleanErrors, determineRebuildArgsFromLog } from '@/lib/controller/helpers.js';
 import { checkVersions } from '@/lib/controller/dependencyChecker.js';
 import { createInstanceExitHandler } from '@/lib/controller/instances/instanceExitHandler.js';
-import type { Controller } from '@/lib/controller/controller.js';
+import { ControllerContextBase } from '@/lib/controller/contextBase.js';
 import type { Process } from '@/lib/controller/types.js';
 
 // eslint-disable-next-line unicorn/prefer-module
@@ -49,12 +49,7 @@ const MAX_STORED_ERRORS = 300;
 /**
  * Performs all checks which are needed to start an instance and finally starts its process
  */
-export class InstanceStarter {
-    /**
-     * @param controller The controller this instance starter belongs to
-     */
-    constructor(private readonly controller: Controller) {}
-
+export class InstanceStarter extends ControllerContextBase {
     /**
      * Start given instance
      *
@@ -62,21 +57,15 @@ export class InstanceStarter {
      * @param wakeUp Whether the instance is being started because of a wake-up (scheduled or message) event
      */
     async startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): Promise<void> {
-        const {
-            objects,
-            logger,
-            hostLogPrefix,
-            hostname,
-            ioPackage,
-            notificationHandler,
-            blocklistManager,
-            instances,
-        } = this.controller;
+        const { logger, hostLogPrefix, hostname, ioPackage, instances } = this;
         const { procs } = instances;
 
-        if (this.controller.isStopping || !this.controller.connected || !objects) {
+        if (this.isStopping || !this.connected || !this.isObjectsConnected) {
             return;
         }
+
+        // available from here on, because the controller is connected
+        const { objects, notificationHandler, blocklistManager } = this;
 
         const proc = procs[id];
 
@@ -166,7 +155,7 @@ export class InstanceStarter {
 
             if (ioPack.common.version !== instance.common.version) {
                 logger.warn(`${hostLogPrefix} Detected missing upload of adapter "${name}" - starting upload now.`);
-                await this.controller.uploadAdapter({ adapter: name });
+                await this.uploadAdapter({ adapter: name });
                 return;
             }
         } catch (e) {
@@ -247,7 +236,7 @@ export class InstanceStarter {
             }
         }
 
-        await this.checkAvailableMemory();
+        await this.#checkAvailableMemory();
 
         proc.startedInCompactMode = false;
         proc.startedAsCompactGroup = false;
@@ -264,7 +253,7 @@ export class InstanceStarter {
         switch (mode) {
             case 'once':
             case 'daemon':
-                await this.startDaemon({
+                await this.#startDaemon({
                     id,
                     instance,
                     name,
@@ -275,7 +264,7 @@ export class InstanceStarter {
                     execArgv,
                     adapterDir,
                     adapterMainFile: adapterMainFile!,
-                    exitHandler: createInstanceExitHandler(this.controller, { id, instance, mode, wakeUp }),
+                    exitHandler: createInstanceExitHandler(this.context, { id, instance, mode, wakeUp }),
                 });
                 break;
 
@@ -303,8 +292,8 @@ export class InstanceStarter {
     /**
      * Check how much memory is left and log a warning or error if it is critical
      */
-    private async checkAvailableMemory(): Promise<void> {
-        const { config, logger, hostLogPrefix, hostname, notificationHandler } = this.controller;
+    async #checkAvailableMemory(): Promise<void> {
+        const { config, logger, hostLogPrefix, hostname, notificationHandler } = this;
 
         let availableMemMB;
 
@@ -361,10 +350,9 @@ export class InstanceStarter {
      *
      * @param ctx Everything which is needed to start the process of the instance
      */
-    private async startDaemon(ctx: DaemonLaunchContext): Promise<void> {
+    async #startDaemon(ctx: DaemonLaunchContext): Promise<void> {
         const { id, instance, name, instanceNo, wakeUp } = ctx;
-        const { states, config, logger, hostLogPrefix, hostObjectPrefix, instances, isCompactGroupController } =
-            this.controller;
+        const { states, config, logger, hostLogPrefix, hostObjectPrefix, instances, isCompactGroupController } = this;
         const proc = instances.procs[id];
 
         if (proc?.process) {
@@ -405,14 +393,14 @@ export class InstanceStarter {
                 (!isCompactGroupController && instance.common.compactGroup === 0) ||
                 (isCompactGroupController && instance.common.compactGroup !== 0)
             ) {
-                await this.startInCompactMode(ctx);
+                await this.#startInCompactMode(ctx);
             } else {
                 instances.compactGroups.startInstanceInGroup(id, instance, proc);
             }
         } else {
             try {
                 // set to 0 to stop any pot. already running instances, especially broken compactModes
-                await states!.setState(`${id}.sigKill`, {
+                await states.setState(`${id}.sigKill`, {
                     val: 0,
                     ack: false,
                     from: hostObjectPrefix,
@@ -422,7 +410,7 @@ export class InstanceStarter {
             }
         }
 
-        this.handleAdapterProcessStart(ctx);
+        this.#handleAdapterProcessStart(ctx);
     }
 
     /**
@@ -430,13 +418,13 @@ export class InstanceStarter {
      *
      * @param ctx Everything which is needed to start the instance
      */
-    private async startInCompactMode(ctx: DaemonLaunchContext): Promise<void> {
+    async #startInCompactMode(ctx: DaemonLaunchContext): Promise<void> {
         const { id, instance, name, adapterMainFile, exitHandler } = ctx;
-        const { states, logger, hostLogPrefix, hostObjectPrefix, instances } = this.controller;
+        const { states, logger, hostLogPrefix, hostObjectPrefix, instances } = this;
 
         try {
             // set to 0 to stop any pot. already running instances, especially broken compactModes
-            await states!.setState(`${id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix });
+            await states.setState(`${id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix });
         } catch {
             // ignore
         }
@@ -483,7 +471,7 @@ export class InstanceStarter {
                 }
 
                 // if started, let it end itself
-                await states!.setState(`${id}.sigKill`, {
+                await states.setState(`${id}.sigKill`, {
                     val: -1,
                     ack: false,
                     from: hostObjectPrefix,
@@ -495,7 +483,7 @@ export class InstanceStarter {
 
         if (proc.process && !proc.process.kill) {
             proc.process.kill = () => {
-                states!
+                states
                     .setState(`${id}.sigKill`, {
                         val: -1,
                         ack: false,
@@ -513,9 +501,9 @@ export class InstanceStarter {
      *
      * @param ctx Everything which is needed to start the instance
      */
-    private handleAdapterProcessStart(ctx: DaemonLaunchContext): void {
+    #handleAdapterProcessStart(ctx: DaemonLaunchContext): void {
         const { id, instance, mode, wakeUp, args, execArgv, adapterDir, adapterMainFile, exitHandler } = ctx;
-        const { states, logger, hostLogPrefix, hostObjectPrefix, instances } = this.controller;
+        const { states, logger, hostLogPrefix, hostObjectPrefix, instances } = this;
 
         const proc: Process = instances.procs[id];
 
@@ -539,7 +527,7 @@ export class InstanceStarter {
         }
 
         if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
-            states!
+            states
                 .setState(`${id}.sigKill`, {
                     val: proc.process.pid,
                     ack: true,

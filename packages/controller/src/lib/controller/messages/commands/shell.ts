@@ -9,11 +9,11 @@ import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHa
 /**
  * Execute a shell command if this is allowed by the configuration
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const shell: HostCommandHandler = (controller, msg) => {
-    const { config, logger, hostLogPrefix } = controller;
+const shell: HostCommandHandler = (ctx, msg) => {
+    const { config, logger, hostLogPrefix } = ctx;
 
     if (config.system?.allowShellCommands) {
         logger.info(`${hostLogPrefix} ${tools.appName} execute shell command: ${msg.message}`);
@@ -37,11 +37,11 @@ const shell: HostCommandHandler = (controller, msg) => {
 /**
  * Execute an `iobroker` CLI command in an own process and stream the output back to the requester
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const cmdExec: HostCommandHandler = (controller, msg) => {
-    const { logger, hostLogPrefix, messages } = controller;
+const cmdExec: HostCommandHandler = (ctx, msg) => {
+    const { logger, hostLogPrefix, messages } = ctx;
 
     const mainFile = path.join(tools.getControllerDir(), `${tools.appName.toLowerCase()}.js`);
     const args = [...getDefaultNodeArgs(mainFile), mainFile];

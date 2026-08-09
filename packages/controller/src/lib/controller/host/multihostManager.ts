@@ -4,7 +4,7 @@ import { isLocalObjectsDbServer, isLocalStatesDbServer, tools } from '@iobroker/
 import { SYSTEM_CONFIG_ID } from '@iobroker/js-controller-common-db/constants';
 import { MHServer } from '@/lib/multihostServer.js';
 import { getConfig } from '@/lib/controller/config.js';
-import type { Controller } from '@/lib/controller/controller.js';
+import { ControllerContextBase } from '@/lib/controller/contextBase.js';
 
 /** Stop the temporarily activated multihost discovery server after this time */
 const TEMPORARY_MULTIHOST_LIFETIME = 15 * 60_000;
@@ -12,16 +12,11 @@ const TEMPORARY_MULTIHOST_LIFETIME = 15 * 60_000;
 /**
  * Starts and stops the multihost discovery server of this host
  */
-export class MultihostManager {
+export class MultihostManager extends ControllerContextBase {
     /** The running multihost discovery server */
-    private mhService: any = null;
+    #mhService: any = null;
     /** Timer which stops a temporarily activated multihost discovery server */
-    private mhTimer: NodeJS.Timeout | null = null;
-
-    /**
-     * @param controller The controller this multihost manager belongs to
-     */
-    constructor(private readonly controller: Controller) {}
+    #mhTimer: NodeJS.Timeout | null = null;
 
     /**
      * Starts the multihost discovery server
@@ -29,12 +24,12 @@ export class MultihostManager {
      * @param config Configuration from iobroker.json
      * @param secret MultiHost communication password
      */
-    private startServer(config: ioBroker.IoBrokerJson, secret: string | false): void {
+    #startServer(config: ioBroker.IoBrokerJson, secret: string | false): void {
         const cpus = os.cpus();
 
-        this.mhService = new MHServer(
-            this.controller.hostname,
-            this.controller.logger,
+        this.#mhService = new MHServer(
+            this.hostname,
+            this.logger,
             config,
             {
                 node: process.version,
@@ -54,24 +49,24 @@ export class MultihostManager {
      * @param __config - the iobroker config object
      */
     async startMultihost(__config?: ioBroker.IoBrokerJson): Promise<boolean | void> {
-        const { objects, logger, hostLogPrefix, isCompactGroupController } = this.controller;
+        const { logger, hostLogPrefix, isCompactGroupController } = this;
 
         if (isCompactGroupController) {
             return;
         }
 
-        if (this.mhTimer) {
-            clearTimeout(this.mhTimer);
-            this.mhTimer = null;
+        if (this.#mhTimer) {
+            clearTimeout(this.#mhTimer);
+            this.#mhTimer = null;
         }
 
         const _config = __config || getConfig();
 
         if (!_config.multihostService?.enabled) {
-            if (this.mhService) {
+            if (this.#mhService) {
                 try {
-                    this.mhService.close();
-                    this.mhService = null;
+                    this.#mhService.close();
+                    this.#mhService = null;
                 } catch (e) {
                     logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e.message}`);
                 }
@@ -80,10 +75,10 @@ export class MultihostManager {
             return;
         }
 
-        if (this.mhService) {
+        if (this.#mhService) {
             try {
-                this.mhService.close(() => {
-                    this.mhService = null;
+                this.#mhService.close(() => {
+                    this.#mhService = null;
                     setImmediate(() => this.startMultihost(_config));
                 });
                 return;
@@ -112,7 +107,7 @@ export class MultihostManager {
                 let obj: ioBroker.SystemConfigObject | null | undefined;
                 let errText;
                 try {
-                    obj = await objects!.getObject(SYSTEM_CONFIG_ID);
+                    obj = await this.objects.getObject(SYSTEM_CONFIG_ID);
                 } catch (e) {
                     // will log error below
                     errText = e.message;
@@ -122,12 +117,12 @@ export class MultihostManager {
                     if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
                         // if old encryption was used, we need to decrypt in old fashion
                         const secret = await tools.decryptPhrase(obj.native.secret, _config.multihostService.password);
-                        this.startServer(_config, secret || false);
+                        this.#startServer(_config, secret || false);
                     } else {
                         try {
                             // it can throw in edge cases #1474, we need further investigation
                             const secret = tools.decrypt(obj.native.secret, _config.multihostService.password);
-                            this.startServer(_config, secret);
+                            this.#startServer(_config, secret);
                         } catch (e) {
                             logger.error(
                                 `${hostLogPrefix} Cannot decrypt password for multihost discovery server: ${e.message}`,
@@ -145,15 +140,15 @@ export class MultihostManager {
                 );
             }
         } else {
-            this.startServer(_config, false);
+            this.#startServer(_config, false);
         }
 
         if (!_config.multihostService.persist) {
-            this.mhTimer = setTimeout(async () => {
-                if (this.mhService) {
+            this.#mhTimer = setTimeout(async () => {
+                if (this.#mhService) {
                     try {
-                        this.mhService.close();
-                        this.mhService = null;
+                        this.#mhService.close();
+                        this.#mhService = null;
                         logger.info(
                             `${hostLogPrefix} Multihost discovery server stopped after 15 minutes, because only temporarily activated`,
                         );
@@ -165,7 +160,7 @@ export class MultihostManager {
                         logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e.message}`);
                     }
                 }
-                this.mhTimer = null;
+                this.#mhTimer = null;
             }, TEMPORARY_MULTIHOST_LIFETIME);
         }
 
@@ -176,9 +171,9 @@ export class MultihostManager {
      * Stop the multihost discovery server if it is running
      */
     close(): void {
-        if (this.mhService) {
-            this.mhService.close();
-            this.mhService = null;
+        if (this.#mhService) {
+            this.#mhService.close();
+            this.#mhService = null;
         }
     }
 }

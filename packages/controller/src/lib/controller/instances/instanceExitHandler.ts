@@ -1,7 +1,7 @@
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import { cleanErrors, getErrorText } from '@/lib/controller/helpers.js';
-import type { Controller } from '@/lib/controller/controller.js';
+import type { ControllerContext } from '@/lib/controller/context.js';
 
 /** Everything the exit handler needs to know about the instance it belongs to */
 export interface InstanceLaunchContext {
@@ -28,11 +28,11 @@ const MAX_REBUILDS = 4;
  * It takes care of the log redirection, the restart of the instance, the crash loop detection
  * and the rebuild of native modules.
  *
- * @param controller The controller the instance belongs to
+ * @param controllerCtx Shared controller context providing live runtime state
  * @param ctx Information about the instance which has been started
  */
 export function createInstanceExitHandler(
-    controller: Controller,
+    controllerCtx: ControllerContext,
     ctx: InstanceLaunchContext,
 ): (code: number, signal: string) => void {
     const { id, instance, mode, wakeUp } = ctx;
@@ -44,8 +44,9 @@ export function createInstanceExitHandler(
      * @param signal The signal which has terminated the process
      */
     const handleExit = async (code: number, signal: string): Promise<void> => {
-        const { states, logger, hostLogPrefix, hostObjectPrefix, hostname, notificationHandler, instances } =
-            controller;
+        // `states` and `notificationHandler` are read inside their branch, they are not needed
+        // on every exit and only exist once the databases are connected
+        const { logger, hostLogPrefix, hostObjectPrefix, hostname, instances } = controllerCtx;
         const { procs, compactProcs, stopTimeouts } = instances;
 
         instances
@@ -69,9 +70,9 @@ export function createInstanceExitHandler(
         const proc = procs[id];
 
         if (proc?.config?.common.logTransporter) {
-            controller.outputCount++;
+            controllerCtx.countOutput();
             console.log(`================================== > LOG REDIRECT ${id} => false [Process stopped]`);
-            states!
+            controllerCtx.states
                 .setState(`${id}.logging`, { val: false, ack: true, from: hostObjectPrefix })
                 .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.logging: ${e.message}`));
         }
@@ -93,7 +94,7 @@ export function createInstanceExitHandler(
                 logger.error(`${hostLogPrefix} instance ${id} terminated abnormally`);
             }
 
-            if (proc?.stopping || controller.isStopping || wakeUp) {
+            if (proc?.stopping || controllerCtx.isStopping || wakeUp) {
                 logger.info(
                     `${hostLogPrefix} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`,
                 );
@@ -108,7 +109,7 @@ export function createInstanceExitHandler(
                     }
                 }
 
-                if (controller.isStopping) {
+                if (controllerCtx.isStopping) {
                     logger.silly(`${hostLogPrefix} Check Stopping ${id}`);
                     for (const proc of Object.values(procs)) {
                         if (proc.process) {
@@ -185,14 +186,14 @@ export function createInstanceExitHandler(
                     delete proc.rebuildArgs;
                 }
 
-                if (!controller.isCompactGroupController) {
+                if (!controllerCtx.isCompactGroupController) {
                     // execute directly
-                    controller.messageHandler
+                    controllerCtx.messageHandler
                         .process(msg as any)
                         .catch(e => logger.error(`${hostLogPrefix} Cannot process message: ${e.message}`));
                 } else {
                     // send to the main controller to make sure only one npm process runs at a time
-                    controller.messages
+                    controllerCtx.messages
                         .sendTo(`${SYSTEM_HOST_PREFIX}${hostname}`, 'rebuildAdapter', msg)
                         .catch(e => logger.error(`${hostLogPrefix} Cannot send rebuildAdapter: ${e.message}`));
                 }
@@ -213,8 +214,8 @@ export function createInstanceExitHandler(
         if (
             code !== EXIT_CODES.ADAPTER_REQUESTED_TERMINATION &&
             !wakeUp &&
-            controller.connected &&
-            !controller.isStopping &&
+            controllerCtx.connected &&
+            !controllerCtx.isStopping &&
             proc?.config?.common.enabled &&
             !proc.config.native.webInstance &&
             mode !== 'once'
@@ -271,7 +272,7 @@ export function createInstanceExitHandler(
             } else {
                 // 3 crashes - do not restart anymore
                 logger.warn(`${hostLogPrefix} Do not restart adapter ${id} because restart loop detected`);
-                await notificationHandler.addMessage({
+                await controllerCtx.notificationHandler.addMessage({
                     scope: 'system',
                     category: 'restartLoop',
                     message: 'Restart loop detected',
@@ -299,7 +300,9 @@ export function createInstanceExitHandler(
 
     return (code: number, signal: string): void => {
         handleExit(code, signal).catch(e =>
-            controller.logger.error(`${controller.hostLogPrefix} Cannot handle exit of instance ${id}: ${e.message}`),
+            controllerCtx.logger.error(
+                `${controllerCtx.hostLogPrefix} Cannot handle exit of instance ${id}: ${e.message}`,
+            ),
         );
     };
 }

@@ -8,11 +8,11 @@ import type { InstallQueueEntry } from '@/lib/controller/types.js';
 /**
  * Upgrade the js-controller itself via the detached upgrade manager
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const upgradeController: HostCommandHandler = async (controller, msg) => {
-    const { logger, hostLogPrefix, systemChecks, messages } = controller;
+const upgradeController: HostCommandHandler = async (ctx, msg) => {
+    const { logger, hostLogPrefix, systemChecks, messages } = ctx;
 
     if (!tools.isControllerUiUpgradeSupported()) {
         if (msg.callback) {
@@ -39,11 +39,11 @@ const upgradeController: HostCommandHandler = async (controller, msg) => {
 /**
  * Upgrade an adapter and provide a web server which informs about the progress
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const upgradeAdapterWithWebserver: HostCommandHandler = async (controller, msg) => {
-    const { objects, states, logger, messages } = controller;
+const upgradeAdapterWithWebserver: HostCommandHandler = async (ctx, msg) => {
+    const { objects, states, logger, messages } = ctx;
     const { version, adapterName, useHttps, port, certPrivateName, certPublicName } = msg.message;
 
     const upgradeManager = new AdapterUpgradeManager({
@@ -51,8 +51,8 @@ const upgradeAdapterWithWebserver: HostCommandHandler = async (controller, msg) 
         adapterName,
         version,
         useHttps,
-        objects: objects!,
-        states: states!,
+        objects: objects,
+        states: states,
         port,
         certPrivateName,
         certPublicName,
@@ -70,28 +70,28 @@ const upgradeAdapterWithWebserver: HostCommandHandler = async (controller, msg) 
 /**
  * Upload the files of an adapter into the files' database
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const upload: HostCommandHandler = async (controller, msg) => {
-    const { logger, hostLogPrefix } = controller;
+const upload: HostCommandHandler = async (ctx, msg) => {
+    const { logger, hostLogPrefix } = ctx;
 
     if (!msg.message) {
         logger.error(`${hostLogPrefix} No adapter name is specified for upload command from  ${msg.from}`);
         return;
     }
 
-    await controller.uploadAdapter({ adapter: msg.message, msg });
+    await ctx.uploadAdapter({ adapter: msg.message, msg });
 };
 
 /**
  * Queue an adapter for a rebuild of its native modules
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const rebuildAdapter: HostCommandHandler = (controller, msg) => {
-    const { logger, hostLogPrefix, instances, messages } = controller;
+const rebuildAdapter: HostCommandHandler = (ctx, msg) => {
+    const { logger, hostLogPrefix, instances, messages } = ctx;
     const { installQueue } = instances;
 
     if (!msg.message.id) {
@@ -129,11 +129,11 @@ const rebuildAdapter: HostCommandHandler = (controller, msg) => {
 /**
  * Read the licenses from iobroker.net
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const updateLicenses: HostCommandHandler = async (controller, msg) => {
-    const { objects, logger, hostLogPrefix, messages } = controller;
+const updateLicenses: HostCommandHandler = async (ctx, msg) => {
+    const { objects, logger, hostLogPrefix, messages } = ctx;
 
     try {
         const licenses = await tools.updateLicenses(
@@ -159,11 +159,11 @@ const updateLicenses: HostCommandHandler = async (controller, msg) => {
 /**
  * Upgrade the given operating system packages
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const upgradeOsPackages: HostCommandHandler = async (controller, msg) => {
-    const { logger, hostLogPrefix, systemChecks, messages } = controller;
+const upgradeOsPackages: HostCommandHandler = async (ctx, msg) => {
+    const { logger, hostLogPrefix, systemChecks, messages } = ctx;
     const { packages, restart: restartRequired } = msg.message;
 
     try {
@@ -183,35 +183,35 @@ const upgradeOsPackages: HostCommandHandler = async (controller, msg) => {
     if (restartRequired) {
         logger.info(`${hostLogPrefix} Restart js-controller because desired after package upgrade`);
         await wait(200);
-        await controller.restartSelf();
+        await ctx.restartSelf();
     }
 };
 
 /**
  * Restart the js-controller
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const restartController: HostCommandHandler = async (controller, msg) => {
-    const { messages } = controller;
+const restartController: HostCommandHandler = async (ctx, msg) => {
+    const { messages } = ctx;
 
     if (msg.callback) {
         messages.sendTo(msg.from, msg.command, '', msg.callback);
     }
     // let the answer be sent
     await wait(200);
-    await controller.restartSelf();
+    await ctx.restartSelf();
 };
 
 /**
  * Forward a message to Sentry if the Sentry plugin is active
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const sendToSentry: HostCommandHandler = (controller, msg) => {
-    const { logger, hostLogPrefix, pluginHandler } = controller;
+const sendToSentry: HostCommandHandler = (ctx, msg) => {
+    const { logger, hostLogPrefix, pluginHandler } = ctx;
 
     const message: string = msg.message.message;
     const level: string = msg.message.level;

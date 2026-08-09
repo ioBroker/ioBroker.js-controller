@@ -4,11 +4,11 @@ import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHa
 /**
  * Read a directory of the files' database as zip file
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const readDirAsZip: HostCommandHandler = async (controller, msg) => {
-    const { objects, logger, hostLogPrefix, messages } = controller;
+const readDirAsZip: HostCommandHandler = async (ctx, msg) => {
+    const { objects, logger, hostLogPrefix, messages } = ctx;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -16,7 +16,7 @@ const readDirAsZip: HostCommandHandler = async (controller, msg) => {
     }
 
     try {
-        const base64 = await zipFiles.readDirAsZip(objects!, msg.message.id, msg.message.name, msg.message.options);
+        const base64 = await zipFiles.readDirAsZip(objects, msg.message.id, msg.message.name, msg.message.options);
 
         if (base64) {
             messages.sendTo(msg.from, msg.command, { error: null, data: base64 }, msg.callback);
@@ -32,15 +32,15 @@ const readDirAsZip: HostCommandHandler = async (controller, msg) => {
 /**
  * Write a zip file into a directory of the files' database
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const writeDirAsZip: HostCommandHandler = async (controller, msg) => {
-    const { objects, logger, hostLogPrefix, messages } = controller;
+const writeDirAsZip: HostCommandHandler = async (ctx, msg) => {
+    const { objects, logger, hostLogPrefix, messages } = ctx;
 
     try {
         await zipFiles.writeDirAsZip(
-            objects!,
+            objects,
             msg.message.id,
             msg.message.name,
             Buffer.from(msg.message.data, 'base64'),
@@ -57,11 +57,11 @@ const writeDirAsZip: HostCommandHandler = async (controller, msg) => {
 /**
  * Read objects of an adapter as zip file
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const readObjectsAsZip: HostCommandHandler = async (controller, msg) => {
-    const { objects, logger, hostLogPrefix, messages } = controller;
+const readObjectsAsZip: HostCommandHandler = async (ctx, msg) => {
+    const { objects, logger, hostLogPrefix, messages } = ctx;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -70,7 +70,7 @@ const readObjectsAsZip: HostCommandHandler = async (controller, msg) => {
 
     let base64: string;
     try {
-        base64 = await zipFiles.readObjectsAsZip(objects!, msg.message.id, msg.message.adapter, msg.message.options);
+        base64 = await zipFiles.readObjectsAsZip(objects, msg.message.id, msg.message.adapter, msg.message.options);
     } catch (e) {
         messages.sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
         return;
@@ -96,7 +96,7 @@ const readObjectsAsZip: HostCommandHandler = async (controller, msg) => {
     }
 
     try {
-        await objects!.writeFileAsync(msg.message.fileStorageNamespace, `zip/${msg.message.link}`, buff);
+        await objects.writeFileAsync(msg.message.fileStorageNamespace, `zip/${msg.message.link}`, buff);
     } catch (e) {
         messages.sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
         return;
@@ -108,17 +108,17 @@ const readObjectsAsZip: HostCommandHandler = async (controller, msg) => {
 /**
  * Write objects of an adapter from a zip file
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const writeObjectsAsZip: HostCommandHandler = async (controller, msg) => {
-    const { objects, logger, hostLogPrefix, messages } = controller;
+const writeObjectsAsZip: HostCommandHandler = async (ctx, msg) => {
+    const { objects, logger, hostLogPrefix, messages } = ctx;
 
     let error: string | undefined;
 
     try {
         await zipFiles.writeObjectsAsZip(
-            objects!,
+            objects,
             msg.message.id,
             msg.message.adapter,
             Buffer.from(msg.message.data || '', 'base64'),

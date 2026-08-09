@@ -3,7 +3,7 @@ import cp from 'node:child_process';
 import * as url from 'node:url';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { cleanErrors, getErrorText } from '@/lib/controller/helpers.js';
-import type { Controller } from '@/lib/controller/controller.js';
+import { ControllerContextBase } from '@/lib/controller/contextBase.js';
 import type { Process } from '@/lib/controller/types.js';
 
 // eslint-disable-next-line unicorn/prefer-module
@@ -12,12 +12,7 @@ const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__fi
 /**
  * Starts and monitors the compact group controllers, which run multiple adapters in one process
  */
-export class CompactGroupManager {
-    /**
-     * @param controller The controller this compact group manager belongs to
-     */
-    constructor(private readonly controller: Controller) {}
-
+export class CompactGroupManager extends ControllerContextBase {
     /**
      * Assign the given instance to its compact group controller and start the group controller if needed
      *
@@ -26,7 +21,7 @@ export class CompactGroupManager {
      * @param proc The process information of the instance
      */
     startInstanceInGroup(id: ioBroker.ObjectIDs.Instance, instance: ioBroker.InstanceObject, proc: Process): void {
-        const { logger, hostLogPrefix, instances } = this.controller;
+        const { logger, hostLogPrefix, instances } = this;
         const { compactProcs } = instances;
 
         const compactGroup = instance.common.compactGroup!;
@@ -91,7 +86,7 @@ export class CompactGroupManager {
 
                 compactProcs[compactGroup].process!.on(
                     'exit',
-                    this.createGroupExitHandler(instance.common.compactGroup!, proc),
+                    this.#createGroupExitHandler(instance.common.compactGroup!, proc),
                 );
             }
         }
@@ -111,19 +106,19 @@ export class CompactGroupManager {
      *
      * @param instanceIds The instances to mark as stopped
      */
-    private async markCompactInstancesAsStopped(instanceIds: ioBroker.ObjectIDs.Instance[]): Promise<void> {
-        const { states, hostObjectPrefix, instances } = this.controller;
+    async #markCompactInstancesAsStopped(instanceIds: ioBroker.ObjectIDs.Instance[]): Promise<void> {
+        const { states, hostObjectPrefix, instances } = this;
 
         for (const id of instanceIds) {
-            this.controller.outputCount += 2;
-            this.controller.logWriteErrors(
+            this.countOutput(2);
+            this.logWriteErrors(
                 [
-                    states!.setState(`${id}.alive`, {
+                    states.setState(`${id}.alive`, {
                         val: false,
                         ack: true,
                         from: hostObjectPrefix,
                     }),
-                    states!.setState(`${id}.connected`, {
+                    states.setState(`${id}.connected`, {
                         val: false,
                         ack: true,
                         from: hostObjectPrefix,
@@ -136,7 +131,7 @@ export class CompactGroupManager {
 
             const proc = instances.procs[id];
 
-            if (proc?.stopping || this.controller.isStopping) {
+            if (proc?.stopping || this.isStopping) {
                 if (proc?.stopping !== undefined) {
                     delete proc.stopping;
                 }
@@ -154,9 +149,9 @@ export class CompactGroupManager {
      * @param currentCompactGroup The compact group the exited controller was responsible for
      * @param proc The process information of the instance which has started this group controller
      */
-    private createGroupExitHandler(currentCompactGroup: number, proc: Process): (code: number, signal: string) => void {
+    #createGroupExitHandler(currentCompactGroup: number, proc: Process): (code: number, signal: string) => void {
         const handleGroupExit = async (code: number, signal: string): Promise<void> => {
-            const { logger, hostLogPrefix, instances } = this.controller;
+            const { logger, hostLogPrefix, instances } = this;
             const { procs, compactProcs } = instances;
 
             if (signal) {
@@ -181,7 +176,7 @@ export class CompactGroupManager {
             const killedInstances: ioBroker.ObjectIDs.Instance[] = [];
             compactProcs[currentCompactGroup].instances.forEach(el => killedInstances.push(el));
 
-            await this.markCompactInstancesAsStopped(killedInstances);
+            await this.#markCompactInstancesAsStopped(killedInstances);
 
             // show stored errors
             cleanErrors({
@@ -192,7 +187,7 @@ export class CompactGroupManager {
                 logPrefix: hostLogPrefix,
             });
 
-            if (this.controller.isStopping) {
+            if (this.isStopping) {
                 logger.silly(`${hostLogPrefix} Check after group exit ${currentCompactGroup}`);
                 for (const proc of Object.values(procs)) {
                     if (proc.process) {
@@ -214,7 +209,7 @@ export class CompactGroupManager {
             }
 
             // Restart group controller because still instances assigned to him, done via startInstance
-            if (this.controller.connected && compactProcs[currentCompactGroup].instances.length) {
+            if (this.connected && compactProcs[currentCompactGroup].instances.length) {
                 logger.info(`${hostLogPrefix} Restart compact group controller ${currentCompactGroup}`);
                 logger.debug(
                     `${hostLogPrefix} Instances: ${JSON.stringify(compactProcs[currentCompactGroup].instances)}`,
@@ -247,8 +242,8 @@ export class CompactGroupManager {
 
         return (code: number, signal: string): void => {
             handleGroupExit(code, signal).catch(e =>
-                this.controller.logger.error(
-                    `${this.controller.hostLogPrefix} Cannot handle exit of compact group ${currentCompactGroup}: ${e.message}`,
+                this.logger.error(
+                    `${this.hostLogPrefix} Cannot handle exit of compact group ${currentCompactGroup}: ${e.message}`,
                 ),
             );
         };

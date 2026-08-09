@@ -1,6 +1,6 @@
 import path from 'node:path';
 import fs from 'fs-extra';
-import { open, stat } from 'node:fs/promises';
+import { open } from 'node:fs/promises';
 import { setTimeout as wait } from 'node:timers/promises';
 import { tools } from '@iobroker/js-controller-common';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
@@ -38,11 +38,11 @@ function getLogDirectory(transportConfig: Record<string, any>, controllerDir: st
 /**
  * Read the last lines of the current log file
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const getLogs: HostCommandHandler = async (controller, msg) => {
-    const { logger, hostLogPrefix, controllerDir, messages } = controller;
+const getLogs: HostCommandHandler = async (ctx, msg) => {
+    const { logger, hostLogPrefix, controllerDir, messages } = ctx;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -50,53 +50,56 @@ const getLogs: HostCommandHandler = async (controller, msg) => {
     }
 
     const requestedLines = msg.message || 200;
-    // @ts-expect-error types not know this one
-    let logFileName = logger.getFileName();
+    const logFileNames = [
+        // @ts-expect-error types not know this one
+        logger.getFileName() as string,
+        `${controllerDir}/../../log/${tools.appName}.log`,
+    ];
 
-    if (!fs.existsSync(logFileName)) {
-        logFileName = `${controllerDir}/../../log/${tools.appName}.log`;
+    let lines: string[] | undefined;
+    let size = 0;
+
+    // do not check the existence upfront, the file can be rotated away in between - just try to open it
+    for (const logFileName of logFileNames) {
+        try {
+            const file = await open(logFileName, 'r');
+
+            try {
+                size = (await file.stat()).size;
+                // read only the last ~150 characters per requested line
+                const start = size > 150 * requestedLines ? size - 150 * requestedLines : 0;
+                const buffer = Buffer.alloc(size - start);
+                const { bytesRead } = await file.read(buffer, 0, buffer.length, start);
+                let text = buffer.subarray(0, bytesRead).toString();
+
+                if (start) {
+                    // drop the first line, it can be incomplete because we did not start reading at 0
+                    text = text.substring(text.indexOf('\n') + 1);
+                }
+
+                lines = text.split('\n');
+                lines.push(size.toString()); // place as last line the current size of log
+            } finally {
+                await file.close();
+            }
+
+            break;
+        } catch {
+            // try the next location, or answer with the size only if this was the last one
+        }
     }
 
-    if (!fs.existsSync(logFileName)) {
-        messages.sendTo(msg.from, msg.command, [0], msg.callback);
-        return;
-    }
-
-    const stats = await stat(logFileName);
-    // read only the last ~150 characters per requested line
-    const start = stats.size > 150 * requestedLines ? stats.size - 150 * requestedLines : 0;
-
-    let text: string;
-    const file = await open(logFileName, 'r');
-
-    try {
-        const buffer = Buffer.alloc(stats.size - start);
-        const { bytesRead } = await file.read(buffer, 0, buffer.length, start);
-        text = buffer.subarray(0, bytesRead).toString();
-    } catch {
-        messages.sendTo(msg.from, msg.command, [stats.size], msg.callback);
-        return;
-    } finally {
-        await file.close();
-    }
-
-    const lines = text.split('\n');
-    if (start) {
-        lines.shift(); // remove first line of the file as it could be not full if starts not from 0
-    }
-    lines.push(stats.size.toString()); // place as last line the current size of log
-
-    messages.sendTo(msg.from, msg.command, lines, msg.callback);
+    messages.sendTo(msg.from, msg.command, lines ?? [size], msg.callback);
 };
 
 /**
  * Read one specific log file from disk
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const getLogFile: HostCommandHandler = (controller, msg) => {
-    const { logger, hostLogPrefix, controllerDir, messages } = controller;
+const getLogFile: HostCommandHandler = (ctx, msg) => {
+    const { logger, hostLogPrefix, controllerDir, messages } = ctx;
 
     if (!msg.callback || !msg.from || !msg.message) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -135,11 +138,11 @@ const getLogFile: HostCommandHandler = (controller, msg) => {
 /**
  * List all log files of all configured file transports
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const getLogFiles: HostCommandHandler = (controller, msg) => {
-    const { logger, hostLogPrefix, controllerDir, hostname, messages } = controller;
+const getLogFiles: HostCommandHandler = (ctx, msg) => {
+    const { logger, hostLogPrefix, controllerDir, hostname, messages } = ctx;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -190,19 +193,28 @@ const getLogFiles: HostCommandHandler = (controller, msg) => {
 /**
  * Truncate all known log files
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const delLogs: HostCommandHandler = (controller, msg) => {
-    const { logger, controllerDir, messages } = controller;
+const delLogs: HostCommandHandler = (ctx, msg) => {
+    const { logger, controllerDir, messages } = ctx;
 
     // @ts-expect-error types not know this one
-    const logFile = logger.getFileName(); //controllerDir + '/log/' + tools.appName + '.log';
-    fs.existsSync(`${controllerDir}/log/${tools.appName}.log`) &&
-        fs.writeFileSync(`${controllerDir}/log/${tools.appName}.log`, '');
-    fs.existsSync(`${controllerDir}/../../log/${tools.appName}.log`) &&
-        fs.writeFileSync(`${controllerDir}/../../log/${tools.appName}.log`, '');
-    fs.existsSync(logFile) && fs.writeFileSync(logFile, '');
+    const logFile: string = logger.getFileName(); //controllerDir + '/log/' + tools.appName + '.log';
+
+    // truncate whichever of these exist, a missing file simply throws and is ignored
+    for (const file of [
+        `${controllerDir}/log/${tools.appName}.log`,
+        `${controllerDir}/../../log/${tools.appName}.log`,
+        logFile,
+    ]) {
+        try {
+            // truncate instead of writing, so a non-existing log file is not created
+            fs.truncateSync(file, 0);
+        } catch {
+            // the file does not exist or cannot be written, nothing to truncate
+        }
+    }
 
     msg.callback && msg.from && messages.sendTo(msg.from, msg.command, null, msg.callback);
 };
@@ -210,10 +222,10 @@ const delLogs: HostCommandHandler = (controller, msg) => {
 /**
  * Print the state of the log redirection of all instances into the log
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  */
-const checkLogging: HostCommandHandler = async controller => {
-    const { states, logger, hostLogPrefix, hostObjectPrefix, logList, instances } = controller;
+const checkLogging: HostCommandHandler = async ctx => {
+    const { states, logger, hostLogPrefix, hostObjectPrefix, logList, instances } = ctx;
 
     // TODO: temporary enough to remove now?
     // this is temporary function to check the logging functionality
@@ -226,18 +238,18 @@ const checkLogging: HostCommandHandler = async controller => {
     // Get a list of all active adapters and send them a message with command checkLogging
     for (const _id of Object.keys(instances.procs)) {
         if (instances.procs[_id].process) {
-            controller.outputCount++;
-            states!
+            ctx.countOutput();
+            states
                 .setState(`${_id}.checkLogging`, { val: true, ack: false, from: hostObjectPrefix })
                 .catch(e => logger.error(`${hostLogPrefix} Cannot set checkLogging state: ${e.message}`));
         }
     }
 
     // Read the current state of all log subscribers
-    const keys = await states!.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
+    const keys = await states.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
 
     if (keys?.length) {
-        const objs = await states!.getStates(keys);
+        const objs = await states.getStates(keys);
 
         if (objs) {
             for (let i = 0; i < keys.length; i++) {

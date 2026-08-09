@@ -2,7 +2,7 @@ import os from 'node:os';
 import { isDeepStrictEqual } from 'node:util';
 import { tools } from '@iobroker/js-controller-common';
 import { SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
-import type { Controller } from '@/lib/controller/controller.js';
+import { ControllerContextBase } from '@/lib/controller/contextBase.js';
 
 /** Interval to detect the IPs at the start of the controller, because of DHCP */
 const INITIAL_IP_CHECK_INTERVAL = 30_000;
@@ -16,44 +16,39 @@ const MAX_IP_DETECTION_TRIES = 10;
 /**
  * Keeps the IP addresses of the host object up to date
  */
-export class IpManager {
+export class IpManager extends ControllerContextBase {
     /** How often we have tried to detect an IPv4 address */
-    private detectIpsCount = 0;
+    #detectIpsCount = 0;
     /** Timer for the cyclic update of the IPs */
-    private updateIPsTimer: NodeJS.Timeout | null = null;
-
-    /**
-     * @param controller The controller this IP manager belongs to
-     */
-    constructor(private readonly controller: Controller) {}
+    #updateIPsTimer: NodeJS.Timeout | null = null;
 
     /**
      * Starts cyclic update of IP interfaces.
      * At start every 30 seconds and after 5 minutes, every hour.
      * Because DHCP could change the IPs.
      */
-    private startUpdateIPs(): void {
-        if (this.updateIPsTimer) {
+    #startUpdateIPs(): void {
+        if (this.#updateIPsTimer) {
             return;
         }
 
-        this.updateIPsTimer = setInterval(() => {
-            if (Date.now() - this.controller.uptimeStart > INITIAL_IP_CHECK_DURATION) {
+        this.#updateIPsTimer = setInterval(() => {
+            if (Date.now() - this.uptimeStart > INITIAL_IP_CHECK_DURATION) {
                 // 5 minutes at start check every 30 seconds because of DHCP
-                clearInterval(this.updateIPsTimer!);
+                clearInterval(this.#updateIPsTimer!);
 
                 // update IPs every hour
-                this.updateIPsTimer = setInterval(() => this.updateIPs(), IP_CHECK_INTERVAL);
+                this.#updateIPsTimer = setInterval(() => this.#updateIPs(), IP_CHECK_INTERVAL);
             }
-            this.updateIPs();
+            this.#updateIPs();
         }, INITIAL_IP_CHECK_INTERVAL);
     }
 
     /**
      * Determine and store the current IPs, log a potential error
      */
-    private updateIPs(): void {
-        const { logger, hostLogPrefix } = this.controller;
+    #updateIPs(): void {
+        const { logger, hostLogPrefix } = this;
 
         this.setIPs().catch(e => logger.error(`${hostLogPrefix} Cannot update IP addresses: ${e.message}`));
     }
@@ -66,9 +61,9 @@ export class IpManager {
      * @param ipList The list of IP addresses to store; if omitted, the current addresses are determined
      */
     async setIPs(ipList?: string[]): Promise<void> {
-        const { objects, logger, hostLogPrefix, hostObjectPrefix, hostname } = this.controller;
+        const { logger, hostLogPrefix, hostObjectPrefix, hostname } = this;
 
-        if (this.controller.isStopping) {
+        if (this.isStopping) {
             return;
         }
 
@@ -85,9 +80,9 @@ export class IpManager {
         }
 
         // IPv4 address still not found, try again in 30 seconds
-        if (!found && this.detectIpsCount < MAX_IP_DETECTION_TRIES) {
-            this.detectIpsCount++;
-            setTimeout(() => this.updateIPs(), INITIAL_IP_CHECK_INTERVAL);
+        if (!found && this.#detectIpsCount < MAX_IP_DETECTION_TRIES) {
+            this.#detectIpsCount++;
+            setTimeout(() => this.#updateIPs(), INITIAL_IP_CHECK_INTERVAL);
             return;
         }
 
@@ -99,7 +94,7 @@ export class IpManager {
         // IPv4 found => write to object
         let oldObj: ioBroker.HostObject | null | undefined;
         try {
-            oldObj = await objects!.getObject(`${SYSTEM_HOST_PREFIX}${hostname}`);
+            oldObj = await this.objects.getObject(`${SYSTEM_HOST_PREFIX}${hostname}`);
         } catch (e) {
             logger.error(`${hostLogPrefix} Cannot read host object: ${e.message}`);
         }
@@ -118,23 +113,23 @@ export class IpManager {
             oldObj.ts = Date.now();
 
             try {
-                await objects!.setObject(oldObj._id, oldObj);
+                await this.objects.setObject(oldObj._id, oldObj);
             } catch (e) {
                 logger.error(`${hostLogPrefix} Cannot write host object: ${e.message}`);
             }
         }
 
         // update IP list periodically
-        this.startUpdateIPs();
+        this.#startUpdateIPs();
     }
 
     /**
      * Stop the cyclic update of the IPs
      */
     close(): void {
-        if (this.updateIPsTimer) {
-            clearInterval(this.updateIPsTimer);
-            this.updateIPsTimer = null;
+        if (this.#updateIPsTimer) {
+            clearInterval(this.#updateIPsTimer);
+            this.#updateIPsTimer = null;
         }
     }
 }

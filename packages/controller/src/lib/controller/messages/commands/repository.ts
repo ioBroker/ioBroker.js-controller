@@ -10,11 +10,11 @@ const DIAG_SEND_INTERVAL = 30_000;
  *
  * Because updating a repository can take a while, all requesters are collected and answered at once.
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const getRepository: HostCommandHandler = async (controller, msg) => {
-    const { objects, logger, hostLogPrefix, diag, systemChecks, messages } = controller;
+const getRepository: HostCommandHandler = async (ctx, msg) => {
+    const { objects, logger, hostLogPrefix, diag, systemChecks, messages } = ctx;
 
     if (!msg.callback || !msg.from) {
         logger.error(
@@ -23,8 +23,8 @@ const getRepository: HostCommandHandler = async (controller, msg) => {
         return;
     }
 
-    controller.requestedRepoUpdates.push({ from: msg.from, callback: msg.callback });
-    if (controller.requestedRepoUpdates.length > 1) {
+    ctx.requestedRepoUpdates.push({ from: msg.from, callback: msg.callback });
+    if (ctx.requestedRepoUpdates.length > 1) {
         // someone has requested repo previous to us
         logger.debug(`${hostLogPrefix} Repository update already running, registered instance "${msg.from}"`);
         return;
@@ -32,7 +32,7 @@ const getRepository: HostCommandHandler = async (controller, msg) => {
 
     let systemConfig: ioBroker.SystemConfigObject | null | undefined;
     try {
-        systemConfig = await objects!.getObject(SYSTEM_CONFIG_ID);
+        systemConfig = await objects.getObject(SYSTEM_CONFIG_ID);
     } catch {
         // ignore
     }
@@ -41,9 +41,9 @@ const getRepository: HostCommandHandler = async (controller, msg) => {
     if (
         systemConfig?.common?.diag &&
         systemConfig.common.licenseConfirmed &&
-        (!controller.lastDiagSend || Date.now() - controller.lastDiagSend > DIAG_SEND_INTERVAL) // prevent sending of diagnostics by multiple admin instances
+        // prevent sending of diagnostics by multiple admin instances
+        diag.tryStartDiagSend(DIAG_SEND_INTERVAL)
     ) {
-        controller.lastDiagSend = Date.now();
         try {
             const obj = await diag.collectDiagInfo(systemConfig.common.diag);
             // if the user selected 'none', we will have null here and do not want to send it
@@ -60,7 +60,7 @@ const getRepository: HostCommandHandler = async (controller, msg) => {
 
     const globalRepo = {};
 
-    const systemRepos = await objects!.getObjectAsync(SYSTEM_REPOSITORIES_ID);
+    const systemRepos = await objects.getObjectAsync(SYSTEM_REPOSITORIES_ID);
     let changed = false;
 
     // Check if repositories exist
@@ -140,18 +140,18 @@ const getRepository: HostCommandHandler = async (controller, msg) => {
             try {
                 // update timestamp so adapters like admin know when it was written the last time
                 systemRepos.ts = Date.now();
-                await objects!.setObject(SYSTEM_REPOSITORIES_ID, systemRepos);
+                await objects.setObject(SYSTEM_REPOSITORIES_ID, systemRepos);
             } catch (e) {
                 logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
             }
         }
     }
 
-    for (const requester of controller.requestedRepoUpdates) {
+    for (const requester of ctx.requestedRepoUpdates) {
         messages.sendTo(requester.from, msg.command, globalRepo, requester.callback);
     }
 
-    controller.requestedRepoUpdates = [];
+    ctx.requestedRepoUpdates.length = 0;
 
     try {
         await systemChecks.checkAvailableDockerUpdate();

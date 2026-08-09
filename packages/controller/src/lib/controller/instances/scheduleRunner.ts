@@ -5,7 +5,7 @@ import { CronExpressionParser } from 'cron-parser';
 import { EXIT_CODES, isInstalledFromNpm, tools } from '@iobroker/js-controller-common';
 import { getCronExpression } from '@/lib/utils.js';
 import { getErrorText } from '@/lib/controller/helpers.js';
-import type { Controller } from '@/lib/controller/controller.js';
+import { ControllerContextBase } from '@/lib/controller/contextBase.js';
 import type { Process, ScheduledInstanceEntry } from '@/lib/controller/types.js';
 
 /** Everything which is needed to schedule an instance */
@@ -31,12 +31,7 @@ export interface ScheduleInstanceContext {
 /**
  * Starts instances of type `schedule` at their configured time
  */
-export class ScheduleRunner {
-    /**
-     * @param controller The controller this schedule runner belongs to
-     */
-    constructor(private readonly controller: Controller) {}
-
+export class ScheduleRunner extends ControllerContextBase {
     /**
      * Register the cron job of an instance of type `schedule`
      *
@@ -44,8 +39,7 @@ export class ScheduleRunner {
      */
     scheduleInstance(ctx: ScheduleInstanceContext): void {
         const { id, instance, proc, adapterMainFile, adapterDir, args, execArgv, wakeUp } = ctx;
-        const { states, logger, hostLogPrefix, hostObjectPrefix, instances, isCompactGroupController } =
-            this.controller;
+        const { states, logger, hostLogPrefix, hostObjectPrefix, instances, isCompactGroupController } = this;
 
         if (isCompactGroupController) {
             logger.debug(`${hostLogPrefix} ${instance._id} schedule is not started by compact group controller`);
@@ -130,8 +124,8 @@ export class ScheduleRunner {
 
             const proc = instances.procs[id];
 
-            this.controller.outputCount++;
-            states!
+            this.countOutput();
+            states
                 .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
                 .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));
             if (signal) {
@@ -166,7 +160,7 @@ export class ScheduleRunner {
      * Start all queued instances of type `schedule` one after another
      */
     async startScheduledInstance(): Promise<void> {
-        const { config, logger, hostLogPrefix, instances } = this.controller;
+        const { config, logger, hostLogPrefix, instances } = this;
         const { scheduledInstances } = instances;
 
         let idsToStart = Object.keys(scheduledInstances);
@@ -176,7 +170,7 @@ export class ScheduleRunner {
             let skipped: boolean;
 
             try {
-                skipped = await this.startSingleScheduledInstance(id, scheduledInstances[id]);
+                skipped = await this.#startSingleScheduledInstance(id, scheduledInstances[id]);
             } catch (e) {
                 logger.error(`${hostLogPrefix} Cannot start scheduled instance ${id}: ${e.message}`);
                 skipped = true;
@@ -198,8 +192,8 @@ export class ScheduleRunner {
      * @param entry The information which has been queued by the cron job
      * @returns true if the instance has not been started, so the next one does not need to wait
      */
-    private async startSingleScheduledInstance(id: string, entry: ScheduledInstanceEntry): Promise<boolean> {
-        const { states, logger, hostLogPrefix, hostObjectPrefix, instances } = this.controller;
+    async #startSingleScheduledInstance(id: string, entry: ScheduledInstanceEntry): Promise<boolean> {
+        const { states, logger, hostLogPrefix, hostObjectPrefix, instances } = this;
         const { procs } = instances;
         const { adapterDir, fileNameFull, wakeUp } = entry;
 
@@ -230,7 +224,7 @@ export class ScheduleRunner {
         }
 
         // reset sigKill to 0 if it was set to another value from "once run"
-        await states!.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix });
+        await states.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix });
 
         const args = [
             '--instance',
@@ -265,8 +259,8 @@ export class ScheduleRunner {
             );
 
             proc.process.on('exit', (code, signal) => {
-                this.controller.outputCount++;
-                states!
+                this.countOutput();
+                states
                     .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
                     .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));
                 if (signal) {

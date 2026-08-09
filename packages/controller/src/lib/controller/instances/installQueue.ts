@@ -2,7 +2,7 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import { getDefaultNodeArgs } from '@iobroker/js-controller-common-db/tools';
-import type { Controller } from '@/lib/controller/controller.js';
+import { ControllerContextBase } from '@/lib/controller/contextBase.js';
 import type { InstallQueueEntry } from '@/lib/controller/types.js';
 
 /** How often the installation of an adapter is retried before it is given up */
@@ -11,14 +11,9 @@ const MAX_DOWNLOAD_RETRIES = 4;
 /**
  * Installs and rebuilds adapters one after another, because npm cannot run in parallel
  */
-export class InstallQueue {
+export class InstallQueue extends ControllerContextBase {
     /** All adapters which are waiting for an installation or rebuild */
-    private queue: InstallQueueEntry[] = [];
-
-    /**
-     * @param controller The controller this install queue belongs to
-     */
-    constructor(private readonly controller: Controller) {}
+    #queue: InstallQueueEntry[] = [];
 
     /**
      * Check if the given instance is already queued for installation or rebuild
@@ -26,7 +21,7 @@ export class InstallQueue {
      * @param id The instance id to look for
      */
     has(id: string): boolean {
-        return this.queue.some(entry => entry.id === id);
+        return this.#queue.some(entry => entry.id === id);
     }
 
     /**
@@ -35,7 +30,7 @@ export class InstallQueue {
      * @param id The instance id to look for
      */
     find(id: string): InstallQueueEntry | undefined {
-        return this.queue.find(entry => entry.id === id);
+        return this.#queue.find(entry => entry.id === id);
     }
 
     /**
@@ -44,26 +39,27 @@ export class InstallQueue {
      * @param entry The adapter which needs to be installed or rebuilt
      */
     push(entry: InstallQueueEntry): void {
-        this.queue.push(entry);
+        this.#queue.push(entry);
 
         // start install queue if not started
-        if (this.queue.length === 1) {
-            this.processQueue();
+        if (this.#queue.length === 1) {
+            this.#processQueue();
         }
     }
 
     /**
      * Install or rebuild the first adapter of the queue
      */
-    private processQueue(): void {
-        const { states, objects, logger, hostLogPrefix, hostObjectPrefix, instances, isCompactGroupController } =
-            this.controller;
+    #processQueue(): void {
+        // the database clients are only read inside `finishTask`, a queue entry which never gets that far
+        // must not require a connection
+        const { logger, hostLogPrefix, hostObjectPrefix, instances, isCompactGroupController } = this;
 
-        if (!this.queue.length) {
+        if (!this.#queue.length) {
             return;
         }
 
-        const task = this.queue[0];
+        const task = this.#queue[0];
         if (task.inProgress) {
             return;
         }
@@ -79,8 +75,8 @@ export class InstallQueue {
                 `${hostLogPrefix} adapter ${name} is not installed, installation will be handled by main controller ... waiting `,
             );
             setImmediate(() => {
-                this.queue.shift();
-                this.processQueue();
+                this.#queue.shift();
+                this.#processQueue();
             });
             return;
         }
@@ -99,8 +95,8 @@ export class InstallQueue {
                 );
             }
             setTimeout(() => {
-                this.queue.shift();
-                this.processQueue();
+                this.#queue.shift();
+                this.#processQueue();
             }, 500);
             return;
         }
@@ -184,7 +180,7 @@ export class InstallQueue {
                 logger.info(
                     `${hostLogPrefix} startInstance ${task.id}: instance is disabled but should be started, re-enabling it`,
                 );
-                states!
+                this.states
                     .setState(`${task.id}.alive`, {
                         val: true,
                         ack: false,
@@ -193,7 +189,7 @@ export class InstallQueue {
                     .catch(e => logger.error(`${hostLogPrefix} Cannot set ${task.id}.alive: ${e.message}`));
             } else if (task.rebuild) {
                 // on rebuild, we send a restart signal via object change to also reach compact group processes
-                objects!
+                this.objects
                     .extendObject(task.id, {})
                     .catch(e => logger.error(`${hostLogPrefix} Cannot rebuild ${task.id}: ${e.message}`));
             } else {
@@ -224,21 +220,21 @@ export class InstallQueue {
                 if (exitCode === EXIT_CODES.CANNOT_INSTALL_NPM_PACKET) {
                     task.inProgress = false;
                     // Move task to the end of the queue to try again (up to 3 times)
-                    this.queue.shift();
-                    this.queue.push(task);
+                    this.#queue.shift();
+                    this.#queue.push(task);
                 } else if (task.rebuild) {
                     // This was a rebuild - find all tasks that required a rebuild and "finish" them (including the current one)
                     // Since we rebuild globally now, they should all be done too.
-                    const rebuildTasks = this.queue.filter(t => t.rebuild);
+                    const rebuildTasks = this.#queue.filter(t => t.rebuild);
                     // Remove all rebuild tasks from the queue
-                    this.queue = this.queue.filter(t => !t.rebuild);
+                    this.#queue = this.#queue.filter(t => !t.rebuild);
                     rebuildTasks.forEach(t => finishTask(t));
                 } else {
-                    this.queue.shift();
+                    this.#queue.shift();
                     finishTask(task);
                 }
 
-                setTimeout(() => this.processQueue(), 1_000);
+                setTimeout(() => this.#processQueue(), 1_000);
             });
             child.on('error', err => {
                 logger.error(
@@ -247,8 +243,8 @@ export class InstallQueue {
                     }`,
                 );
                 setTimeout(() => {
-                    this.queue.shift();
-                    this.processQueue();
+                    this.#queue.shift();
+                    this.#processQueue();
                 }, 1_000);
             });
         } catch (err) {
@@ -256,8 +252,8 @@ export class InstallQueue {
                 `${hostLogPrefix} Cannot execute "${tools.getControllerDir()}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${err}`,
             );
             setTimeout(() => {
-                this.queue.shift();
-                this.processQueue();
+                this.#queue.shift();
+                this.#processQueue();
             }, 1_000);
         }
     }

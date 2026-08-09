@@ -80,6 +80,7 @@
         "prettier": "eslint . --fix",
         "test": "mocha packages/controller/test/*.ts --exit",
         "test-jsonl": "mocha packages/controller/test/jsonl/*.ts --exit",
+    "test-controller": "npm run test-unit --workspace=iobroker.js-controller",
         "test-redis-socket": "mocha packages/controller/test/redis-socket/*.ts --exit",
         "test-redis-sentinel": "mocha packages/controller/test/redis-sentinel/*.ts --exit",
         "test-types-check": "tsc --project packages/controller/tsconfig.check.json",

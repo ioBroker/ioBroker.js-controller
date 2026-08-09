@@ -7,7 +7,8 @@ import { InstallQueue } from '@/lib/controller/instances/installQueue.js';
 import { InstanceStarter } from '@/lib/controller/instances/instanceStarter.js';
 import { CompactGroupManager } from '@/lib/controller/instances/compactGroupManager.js';
 import { ScheduleRunner } from '@/lib/controller/instances/scheduleRunner.js';
-import type { Controller } from '@/lib/controller/controller.js';
+import { ControllerContextBase } from '@/lib/controller/contextBase.js';
+import type { ControllerContext } from '@/lib/controller/context.js';
 import type { CompactProcess, Process, ScheduledInstanceEntry, StopTimeoutObject } from '@/lib/controller/types.js';
 
 /** Pause between the start of two instances */
@@ -18,7 +19,7 @@ const WAIT_FOR_INSTANCES_INTERVAL = 200;
 /**
  * Knows all instances which are handled by this host and takes care of starting and stopping them
  */
-export class InstanceManager {
+export class InstanceManager extends ControllerContextBase {
     /** All instances which are handled by this controller */
     readonly procs: Record<string, Process> = {};
     /** All compact group controllers of this host */
@@ -35,23 +36,24 @@ export class InstanceManager {
     /** Installs and rebuilds adapters */
     readonly installQueue: InstallQueue;
     /** Starts the processes of the instances */
-    private readonly starter: InstanceStarter;
+    readonly #starter: InstanceStarter;
     /** Manages the compact group controllers */
     readonly compactGroups: CompactGroupManager;
     /** Starts the instances of type `schedule` */
     readonly scheduler: ScheduleRunner;
 
     /** Timer which delays the writing of the pids file */
-    private storeTimer: NodeJS.Timeout | null = null;
+    #storeTimer: NodeJS.Timeout | null = null;
 
     /**
-     * @param controller The controller this instance manager belongs to
+     * @param ctx Shared controller context providing live runtime state
      */
-    constructor(private readonly controller: Controller) {
-        this.installQueue = new InstallQueue(controller);
-        this.starter = new InstanceStarter(controller);
-        this.compactGroups = new CompactGroupManager(controller);
-        this.scheduler = new ScheduleRunner(controller);
+    constructor(ctx: ControllerContext) {
+        super(ctx);
+        this.installQueue = new InstallQueue(ctx);
+        this.#starter = new InstanceStarter(ctx);
+        this.compactGroups = new CompactGroupManager(ctx);
+        this.scheduler = new ScheduleRunner(ctx);
     }
 
     /**
@@ -61,18 +63,14 @@ export class InstanceManager {
      * @param wakeUp Whether the instance is being started because of a wake-up (scheduled or message) event
      */
     async startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): Promise<void> {
-        return this.starter.startInstance(id, wakeUp);
+        return this.#starter.startInstance(id, wakeUp);
     }
 
     /**
      * Collect all instances on this host and start them
      */
     async getInstances(): Promise<void> {
-        const { objects, logger, hostLogPrefix, hostname, isCompactGroupController } = this.controller;
-
-        if (!objects) {
-            throw new Error('Objects database not connected');
-        }
+        const { objects, logger, hostLogPrefix, hostname, isCompactGroupController } = this;
 
         const instances = await getInstancesOrderedByStartPrio(objects, logger, hostLogPrefix);
 
@@ -144,8 +142,8 @@ export class InstanceManager {
      * @param instance Object of the instance
      * @returns true if instance needs to be handled by this host else false
      */
-    private instanceRelevantForThisController(instance: ioBroker.InstanceObject): boolean {
-        const { config, compactGroup, isCompactGroupController } = this.controller;
+    #instanceRelevantForThisController(instance: ioBroker.InstanceObject): boolean {
+        const { config, compactGroup, isCompactGroupController } = this;
 
         // Normalize Compact group configuration
         if (config.system.compact && instance.common.compact) {
@@ -176,7 +174,7 @@ export class InstanceManager {
      * @returns true if instance needs to be handled by this host (true) or not
      */
     async checkAndAddInstance(instance: ioBroker.InstanceObject, ipArr: string[]): Promise<boolean> {
-        const { objects, config, logger, hostLogPrefix, hostname, isCompactGroupController } = this.controller;
+        const { config, logger, hostLogPrefix, hostname, isCompactGroupController } = this;
 
         if (!ipArr.includes(instance.common.host) && instance.common.host && instance.common.host !== hostname) {
             return false;
@@ -191,14 +189,14 @@ export class InstanceManager {
             instance.common.host = hostname;
 
             try {
-                await objects!.setObject(instance._id, instance);
+                await this.objects.setObject(instance._id, instance);
                 logger.info(`${hostLogPrefix} Set hostname ${hostname} for ${instance._id}`);
             } catch (e) {
                 logger.error(`${hostLogPrefix} Cannot update hostname for ${instance._id}: ${e.message}`);
             }
         }
 
-        if (!this.instanceRelevantForThisController(instance)) {
+        if (!this.#instanceRelevantForThisController(instance)) {
             return false;
         }
 
@@ -225,7 +223,7 @@ export class InstanceManager {
      * Start all enabled instances of this host, the admin instances first
      */
     initInstances(): void {
-        const { config, logger, hostLogPrefix } = this.controller;
+        const { config, logger, hostLogPrefix } = this;
 
         let seconds = 0;
         const interval = (config.system && config.system.instanceStartInterval) || DEFAULT_INSTANCE_START_INTERVAL;
@@ -305,14 +303,14 @@ export class InstanceManager {
      * Store process IDS to make possible kill them all by restart
      */
     storePids(): void {
-        const { logger, hostLogPrefix } = this.controller;
+        const { logger, hostLogPrefix } = this;
 
-        if (this.storeTimer) {
+        if (this.#storeTimer) {
             return;
         }
 
-        this.storeTimer = setTimeout(() => {
-            this.storeTimer = null;
+        this.#storeTimer = setTimeout(() => {
+            this.#storeTimer = null;
             const pids = [];
             for (const id of Object.keys(this.procs)) {
                 const proc = this.procs[id];
@@ -344,8 +342,8 @@ export class InstanceManager {
      * Stop the timer which writes the pids file
      */
     clearStoreTimer(): void {
-        if (this.storeTimer) {
-            clearTimeout(this.storeTimer);
+        if (this.#storeTimer) {
+            clearTimeout(this.#storeTimer);
         }
     }
 
@@ -355,19 +353,19 @@ export class InstanceManager {
      * @param id id of the instance
      */
     async setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promise<void> {
-        const { states, hostObjectPrefix } = this.controller;
+        const { states, hostObjectPrefix } = this;
 
-        this.controller.outputCount += 2;
-        await states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-        await states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
+        this.countOutput(2);
+        await states.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+        await states.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
 
         const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
 
-        const state = await states!.getState(`${adapterInstance}.info.connection`);
+        const state = await states.getState(`${adapterInstance}.info.connection`);
 
         if (state?.val === true) {
-            this.controller.outputCount++;
-            await states!.setState(adapterInstance, { val: false, ack: true, from: hostObjectPrefix });
+            this.countOutput();
+            await states.setState(adapterInstance, { val: false, ack: true, from: hostObjectPrefix });
         }
     }
 
@@ -377,11 +375,11 @@ export class InstanceManager {
      * @param instance instance id without `system.adapter.` prefix
      * @param autoInstance instance id
      */
-    private async cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.Instance): Promise<void> {
-        const { states, logger, hostLogPrefix } = this.controller;
+    async #cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.Instance): Promise<void> {
+        const { states, logger, hostLogPrefix } = this;
 
-        this.controller.inputCount++;
-        const state = await states!.getState(`${autoInstance}.subscribes`);
+        this.countInput();
+        const state = await states.getState(`${autoInstance}.subscribes`);
 
         if (!state || !state.val) {
             return;
@@ -413,8 +411,8 @@ export class InstanceManager {
         }
 
         if (modified) {
-            this.controller.outputCount++;
-            await states!.setState(`${autoInstance}.subscribes`, subs);
+            this.countOutput();
+            await states.setState(`${autoInstance}.subscribes`, subs);
         }
     }
 
@@ -424,11 +422,10 @@ export class InstanceManager {
      * @param instanceID The full instance id (e.g. "system.adapter.admin.0")
      */
     async cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance): Promise<void> {
-        const { objects } = this.controller;
         const instance = instanceID.substring(15); // get name.0
 
         // read all instances
-        const res = await objects!.getObjectViewAsync('system', 'instance', {
+        const res = await this.objects.getObjectViewAsync('system', 'instance', {
             startkey: SYSTEM_ADAPTER_PREFIX,
             endkey: `${SYSTEM_ADAPTER_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
         });
@@ -437,7 +434,7 @@ export class InstanceManager {
             res.rows
                 // remove this instance from autoSubscribe
                 .filter(row => row.value?.common.subscribable)
-                .map(row => this.cleanAutoSubscribe(instance, row.id)),
+                .map(row => this.#cleanAutoSubscribe(instance, row.id)),
         );
     }
 
@@ -448,7 +445,7 @@ export class InstanceManager {
      * @param force if forced we will kill the pid
      */
     async stopInstance(id: string, force: boolean): Promise<void> {
-        const { states, logger, hostLogPrefix, hostObjectPrefix, isCompactGroupController } = this.controller;
+        const { states, logger, hostLogPrefix, hostObjectPrefix, isCompactGroupController } = this;
         const proc = this.procs[id];
 
         if (!proc) {
@@ -491,9 +488,9 @@ export class InstanceManager {
 
                         // Unsubscribe
                         if (proc.subscribe.startsWith('messagebox.')) {
-                            await states!.unsubscribeMessage(proc.subscribe.substring('messagebox.'.length));
+                            await states.unsubscribeMessage(proc.subscribe.substring('messagebox.'.length));
                         } else {
-                            await states!.unsubscribe(proc.subscribe);
+                            await states.unsubscribe(proc.subscribe);
                         }
                     }
                 }
@@ -512,8 +509,7 @@ export class InstanceManager {
             case 'daemon':
                 if (!proc.process) {
                     if (proc.config?.common.enabled && !proc.startedAsCompactGroup) {
-                        !this.controller.isStopping &&
-                            logger.warn(`${hostLogPrefix} stopInstance ${instance._id} not running`);
+                        !this.isStopping && logger.warn(`${hostLogPrefix} stopInstance ${instance._id} not running`);
                     }
                     return;
                 }
@@ -535,7 +531,7 @@ export class InstanceManager {
                      */
                     const requestSelfStop = async (): Promise<void> => {
                         // Send to adapter signal "stopInstance" because on some systems SIGTERM does not work
-                        const result = await this.controller.messages.sendToAndWait(instance._id, 'stopInstance', null);
+                        const result = await this.messages.sendToAndWait(instance._id, 'stopInstance', null);
 
                         const stopTimeout = this.stopTimeouts[id];
                         if (stopTimeout?.timeout) {
@@ -606,7 +602,7 @@ export class InstanceManager {
                     let err;
                     try {
                         // if started, let it end itself as first try
-                        await states!.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix });
+                        await states.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix });
                     } catch (e) {
                         err = e;
                     }
@@ -661,8 +657,7 @@ export class InstanceManager {
 
             case 'schedule':
                 if (!proc.schedule) {
-                    !this.controller.isStopping &&
-                        logger.debug(`${hostLogPrefix} stopInstance ${instance._id} not scheduled`);
+                    !this.isStopping && logger.debug(`${hostLogPrefix} stopInstance ${instance._id} not scheduled`);
                 } else {
                     proc.schedule.cancel();
                     delete proc.schedule;
@@ -685,12 +680,13 @@ export class InstanceManager {
      * @returns true if the instances had to be terminated forcefully
      */
     async stopInstances(forceStop: boolean, stopTimeout: number): Promise<boolean> {
-        const { logger, hostLogPrefix, isDaemon } = this.controller;
+        const { logger, hostLogPrefix, isDaemon } = this;
         let elapsed = 0;
 
         try {
-            this.controller.isStopping = this.controller.isStopping || Date.now(); // Sometimes a process receives SIGTERM twice
-            elapsed = Date.now() - this.controller.isStopping;
+            // sometimes a process receives SIGTERM twice, the timestamp of the first request is kept
+            this.markStopping();
+            elapsed = Date.now() - this.isStopping!;
             logger.debug(
                 `${hostLogPrefix} stop isStopping=${elapsed} isDaemon=${isDaemon} allInstancesStopped=${this.allInstancesStopped}`,
             );
@@ -743,11 +739,14 @@ export class InstanceManager {
      * @param _obj The changed object or null if it has been deleted
      */
     async handleObjectChange(_id: string, _obj: ioBroker.AnyObject | null | undefined): Promise<void> {
-        const { logger, hostLogPrefix, notificationHandler, compactGroup, isCompactGroupController } = this.controller;
+        const { logger, hostLogPrefix, compactGroup, isCompactGroupController } = this;
 
-        if (!this.controller.started || !_id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) {
+        if (!this.started || !_id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) {
             return;
         }
+
+        // only available once the databases are connected, which the `started` check above guarantees
+        const { notificationHandler } = this;
 
         const obj = _obj as ioBroker.InstanceObject | null;
         const id = _id as ioBroker.ObjectIDs.Instance;
@@ -761,7 +760,7 @@ export class InstanceManager {
                 // if adapter deleted
                 if (!obj) {
                     // deleted: also remove from an instance list of compactGroup
-                    this.removeFromCompactGroup(id, proc);
+                    this.#removeFromCompactGroup(id, proc);
 
                     // instance removed -> remove all notifications
                     await notificationHandler.clearNotifications(null, null, id);
@@ -817,7 +816,7 @@ export class InstanceManager {
                         }
                     } else {
                         // moved: also remove from an instance list of compactGroup
-                        this.removeFromCompactGroup(id, proc);
+                        this.#removeFromCompactGroup(id, proc);
 
                         if (proc.restartTimer) {
                             clearTimeout(proc.restartTimer);
@@ -847,7 +846,7 @@ export class InstanceManager {
                         }
                     } else {
                         // moved: also remove from an instance list of compactGroup
-                        this.removeFromCompactGroup(id, proc);
+                        this.#removeFromCompactGroup(id, proc);
 
                         if (proc.restartTimer) {
                             clearTimeout(proc.restartTimer);
@@ -890,8 +889,8 @@ export class InstanceManager {
      * @param id The id of the instance
      * @param proc The process information of the instance
      */
-    private removeFromCompactGroup(id: ioBroker.ObjectIDs.Instance, proc: Process): void {
-        const { isCompactGroupController } = this.controller;
+    #removeFromCompactGroup(id: ioBroker.ObjectIDs.Instance, proc: Process): void {
+        const { isCompactGroupController } = this;
 
         if (
             !isCompactGroupController &&

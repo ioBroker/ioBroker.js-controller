@@ -3,11 +3,11 @@ import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHa
 /**
  * Register a new notification at the notification handler of this host
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const addNotification: HostCommandHandler = async (controller, msg) => {
-    const { notificationHandler, messages } = controller;
+const addNotification: HostCommandHandler = async (ctx, msg) => {
+    const { notificationHandler, messages } = ctx;
 
     await notificationHandler.addMessage({
         scope: msg.message.scope,
@@ -25,11 +25,11 @@ const addNotification: HostCommandHandler = async (controller, msg) => {
 /**
  * Clear notifications of the given scope, category and instance
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const clearNotifications: HostCommandHandler = async (controller, msg) => {
-    const { notificationHandler, messages } = controller;
+const clearNotifications: HostCommandHandler = async (ctx, msg) => {
+    const { notificationHandler, messages } = ctx;
 
     await notificationHandler.clearNotifications(msg.message.scope, msg.message.category, msg.message.instance);
 
@@ -41,11 +41,11 @@ const clearNotifications: HostCommandHandler = async (controller, msg) => {
 /**
  * Answer with all notifications of the given scope, category and instance
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const getNotifications: HostCommandHandler = (controller, msg) => {
-    const { notificationHandler, messages } = controller;
+const getNotifications: HostCommandHandler = (ctx, msg) => {
+    const { notificationHandler, messages } = ctx;
 
     if (!msg.callback || !msg.from) {
         return;

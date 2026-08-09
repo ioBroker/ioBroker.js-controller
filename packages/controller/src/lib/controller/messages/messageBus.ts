@@ -1,7 +1,7 @@
 import { inspect } from 'node:util';
 import { setTimeout as wait } from 'node:timers/promises';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
-import type { Controller } from '@/lib/controller/controller.js';
+import { ControllerContextBase } from '@/lib/controller/contextBase.js';
 import type { HostInformation, SendResponseToOptions } from '@/lib/controller/types.js';
 
 /** How long a callback of a sent message is stored before it is considered as lost */
@@ -12,24 +12,19 @@ const ANSWER_TIMEOUT = 5_000;
 /**
  * Sends messages to other hosts and adapter instances and keeps track of the pending callbacks
  */
-export class MessageBus {
+export class MessageBus extends ControllerContextBase {
     /** Id of the next message which expects an answer */
-    private callbackId = 1;
+    #callbackId = 1;
     /** All callbacks of messages which are waiting for an answer */
-    private readonly callbacks: Record<string, { time: number; cb: (message: ioBroker.MessagePayload) => void }> = {};
-
-    /**
-     * @param controller The controller this message bus belongs to
-     */
-    constructor(private readonly controller: Controller) {}
+    readonly #callbacks: Record<string, { time: number; cb: (message: ioBroker.MessagePayload) => void }> = {};
 
     /**
      * Subscribe on the message queue of this host
      */
     initMessageQueue(): void {
-        const { states, logger, hostLogPrefix, hostObjectPrefix } = this.controller;
+        const { logger, hostLogPrefix, hostObjectPrefix } = this;
 
-        states!
+        this.states
             .subscribeMessage(hostObjectPrefix)
             .catch(e => logger.error(`${hostLogPrefix} Cannot subscribe to host messages: ${e.message}`));
     }
@@ -71,9 +66,9 @@ export class MessageBus {
         message: ioBroker.MessagePayload,
         callback?: ioBroker.ErrorCallback | ioBroker.MessageCallbackInfo,
     ): Promise<void> {
-        const { states, logger, hostLogPrefix, hostObjectPrefix } = this.controller;
+        const { logger, hostLogPrefix, hostObjectPrefix } = this;
 
-        if (!states) {
+        if (!this.isStatesConnected) {
             return;
         }
 
@@ -92,15 +87,15 @@ export class MessageBus {
             if (typeof callback === 'function') {
                 obj.callback = {
                     message: message,
-                    id: this.callbackId++,
+                    id: this.#callbackId++,
                     ack: false,
                     time: Date.now(),
                 };
-                if (this.callbackId > 0xffffffff) {
-                    this.callbackId = 1;
+                if (this.#callbackId > 0xffffffff) {
+                    this.#callbackId = 1;
                 }
 
-                this.callbacks[`_${obj.callback.id}`] = { cb: callback, time: Date.now() };
+                this.#callbacks[`_${obj.callback.id}`] = { cb: callback, time: Date.now() };
             } else {
                 obj.callback = callback;
                 obj.callback.ack = true;
@@ -108,7 +103,7 @@ export class MessageBus {
         }
 
         try {
-            await states.pushMessage(objName, obj);
+            await this.states.pushMessage(objName, obj);
         } catch (e) {
             // do not stringify the object, we had the issue with the invalid string length on serialization
             logger.error(
@@ -118,7 +113,7 @@ export class MessageBus {
                 if (typeof callback === 'function') {
                     callback(e);
                 }
-                delete this.callbacks[`_${obj.callback.id}`];
+                delete this.#callbacks[`_${obj.callback.id}`];
             }
         }
     }
@@ -141,18 +136,18 @@ export class MessageBus {
      * @returns true if the message has been consumed as an answer to a former request
      */
     handleResponse(msg: ioBroker.Message): boolean {
-        if (!msg.callback || !msg.callback.ack || !msg.callback.id || !this.callbacks[`_${msg.callback.id}`]) {
+        if (!msg.callback || !msg.callback.ack || !msg.callback.id || !this.#callbacks[`_${msg.callback.id}`]) {
             return false;
         }
 
-        this.callbacks[`_${msg.callback.id}`].cb(msg.message);
-        delete this.callbacks[`_${msg.callback.id}`];
+        this.#callbacks[`_${msg.callback.id}`].cb(msg.message);
+        delete this.#callbacks[`_${msg.callback.id}`];
 
         // delete too old callbacks IDs
         const now = Date.now();
-        for (const id of Object.keys(this.callbacks)) {
-            if (now - this.callbacks[id].time > CALLBACK_LIFETIME) {
-                delete this.callbacks[id];
+        for (const id of Object.keys(this.#callbacks)) {
+            if (now - this.#callbacks[id].time > CALLBACK_LIFETIME) {
+                delete this.#callbacks[id];
             }
         }
 
@@ -178,9 +173,9 @@ export class MessageBus {
      * @param hostId host to get the version information from
      */
     async getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<HostInformation | null> {
-        const { states, logger, hostLogPrefix } = this.controller;
+        const { logger, hostLogPrefix } = this;
 
-        const state = await states!.getState(`${hostId}.alive`);
+        const state = await this.states.getState(`${hostId}.alive`);
 
         if (!state?.val) {
             logger.warn(`${hostLogPrefix} "${hostId}" is offline`);

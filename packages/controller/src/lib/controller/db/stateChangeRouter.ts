@@ -1,40 +1,31 @@
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
 import { getDiskWarningLevel } from '@/lib/utils.js';
-import type { Controller } from '@/lib/controller/controller.js';
+import type { ControllerContext } from '@/lib/controller/context.js';
 
 /**
  * React on a state change which this host is subscribed to
  *
- * @param controller The controller which has received the state change
+ * @param ctx The context of the controller which has received the state change
  * @param id The id of the changed state
  * @param stateOrMessage The new state or the received message
  */
 export async function handleStateChange(
-    controller: Controller,
+    ctx: ControllerContext,
     id: string,
     stateOrMessage: ioBroker.State | ioBroker.Message | null | undefined,
 ): Promise<void> {
-    const {
-        states,
-        objects,
-        config,
-        logger,
-        hostLogPrefix,
-        hostObjectPrefix,
-        controllerDir,
-        ioPackage,
-        pluginHandler,
-        instances,
-        isCompactGroupController,
-    } = controller;
+    // only what every branch needs, the rest is read where it is used
+    const { config, logger, hostLogPrefix, hostObjectPrefix } = ctx;
 
-    if (!states || !objects) {
+    if (!ctx.isStatesConnected || !ctx.isObjectsConnected) {
         logger.error(`${hostLogPrefix} Could not handle state change of "${id}", because not connected`);
         return;
     }
 
-    controller.inputCount++;
+    const { states, objects, isCompactGroupController } = ctx;
+
+    ctx.countInput();
     if (!id) {
         logger.error(`${hostLogPrefix} change event with no ID: ${JSON.stringify(stateOrMessage)}`);
         return;
@@ -43,18 +34,14 @@ export async function handleStateChange(
     // If some log transporter activated or deactivated
     if (id.startsWith(SYSTEM_ADAPTER_PREFIX) && id.endsWith('.logging')) {
         const state = stateOrMessage as ioBroker.State;
-        controller.logRedirect(
-            state ? (state.val as boolean) : false,
-            id.substring(0, id.length - '.logging'.length),
-            id,
-        );
+        ctx.logRedirect(state ? (state.val as boolean) : false, id.substring(0, id.length - '.logging'.length), id);
     } else if (!isCompactGroupController && id === `messagebox.${hostObjectPrefix}`) {
         // If this is messagebox, only the main controller is handling the host messages
         const obj = stateOrMessage as ioBroker.Message;
         if (obj) {
             // If callback stored for this request
-            if (!controller.messages.handleResponse(obj)) {
-                controller.messageHandler
+            if (!ctx.messages.handleResponse(obj)) {
+                ctx.messageHandler
                     .process(obj)
                     .catch(e => logger.error(`${hostLogPrefix} Cannot process message: ${e.message}`));
             }
@@ -89,7 +76,9 @@ export async function handleStateChange(
                 }
             }
         }
-    } else if (instances.subscribe[id]) {
+    } else if (ctx.instances.subscribe[id]) {
+        const { instances } = ctx;
+
         for (const sub of instances.subscribe[id]) {
             // wake up adapter
             if (instances.procs[sub]) {
@@ -141,6 +130,8 @@ export async function handleStateChange(
             nameEndIndex = undefined;
         }
         const pluginName = id.substring(pluginStatesIndex, nameEndIndex);
+        const { pluginHandler, controllerDir, ioPackage } = ctx;
+
         if (!pluginHandler.pluginExists(pluginName)) {
             return;
         }
@@ -171,7 +162,7 @@ export async function handleStateChange(
         !stateOrMessage.ack
     ) {
         const warningLevel = getDiskWarningLevel(stateOrMessage);
-        controller.diskWarningLevel = warningLevel;
+        ctx.status.setDiskWarningLevel(warningLevel);
         await states.setState(id, { val: warningLevel, ack: true });
     }
 }

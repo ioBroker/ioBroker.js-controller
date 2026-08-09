@@ -5,11 +5,11 @@ import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHa
 /**
  * Read the iobroker.json of this host
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const readBaseSettings: HostCommandHandler = (controller, msg) => {
-    const { logger, hostLogPrefix, uptimeStart, messages } = controller;
+const readBaseSettings: HostCommandHandler = (ctx, msg) => {
+    const { logger, hostLogPrefix, uptimeStart, messages } = ctx;
 
     if (!msg.callback || !msg.from) {
         logger.error(
@@ -41,11 +41,11 @@ const readBaseSettings: HostCommandHandler = (controller, msg) => {
 /**
  * Write the iobroker.json of this host
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const writeBaseSettings: HostCommandHandler = (controller, msg) => {
-    const { logger, hostLogPrefix, messages } = controller;
+const writeBaseSettings: HostCommandHandler = (ctx, msg) => {
+    const { logger, hostLogPrefix, messages } = ctx;
 
     if (!msg.message) {
         const error = `No data found on writeBaseSettings from "${msg.from}"`;
@@ -104,11 +104,11 @@ const writeBaseSettings: HostCommandHandler = (controller, msg) => {
 /**
  * Start or stop the multihost discovery server according to the current configuration
  *
- * @param controller The controller which has received the message
+ * @param ctx The context of the controller which has received the message
  * @param msg The received message
  */
-const updateMultihost: HostCommandHandler = (controller, msg) => {
-    const { multihost, messages } = controller;
+const updateMultihost: HostCommandHandler = (ctx, msg) => {
+    const { multihost, messages } = ctx;
 
     const result = multihost.startMultihost();
 

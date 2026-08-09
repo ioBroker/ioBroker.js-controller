@@ -10,17 +10,12 @@ import {
 import { getHostObject } from '@iobroker/js-controller-common-db/tools';
 import { getHostObjects } from '@/lib/objects.js';
 import { COMPACT_GROUP_OBJECT_PREFIX, VENDOR_BOOTSTRAP_FILE, VENDOR_FILE } from '@/lib/controller/constants.js';
-import type { Controller } from '@/lib/controller/controller.js';
+import { ControllerContextBase } from '@/lib/controller/contextBase.js';
 
 /**
  * Creates and maintains the host object and all states which belong to this host
  */
-export class HostMetaManager {
-    /**
-     * @param controller The controller this host meta manager belongs to
-     */
-    constructor(private readonly controller: Controller) {}
-
+export class HostMetaManager extends ControllerContextBase {
     /**
      * Reassign the given instance objects from one host to another
      *
@@ -28,12 +23,12 @@ export class HostMetaManager {
      * @param oldHostname The hostname the instances currently belong to
      * @param newHostname The hostname the instances should be moved to
      */
-    private async changeHost(
+    async #changeHost(
         objs: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[],
         oldHostname: string,
         newHostname: string,
     ): Promise<void> {
-        const { objects, logger, hostLogPrefix } = this.controller;
+        const { logger, hostLogPrefix } = this;
 
         for (const row of objs) {
             if (row?.value?.common.host === oldHostname) {
@@ -48,7 +43,7 @@ export class HostMetaManager {
                 obj.ts = Date.now();
 
                 try {
-                    await objects!.setObject(obj._id, obj);
+                    await this.objects.setObject(obj._id, obj);
                 } catch (e) {
                     logger.error(`Error changing host of ${obj._id}: ${e.message}`);
                 }
@@ -62,17 +57,17 @@ export class HostMetaManager {
      * @param objs The objects to delete
      */
     async delObjects(objs: ioBroker.GetObjectViewItem<ioBroker.AnyObject>[]): Promise<void> {
-        const { objects, states, logger, hostLogPrefix } = this.controller;
+        const { logger, hostLogPrefix } = this;
 
         for (const row of objs) {
             if (row?.id) {
                 logger.info(`${hostLogPrefix} Delete state "${row.id}"`);
                 try {
                     if (row.value && row.value.type === 'state') {
-                        await states!.delState(row.id);
-                        await objects!.delObject(row.id);
+                        await this.states.delState(row.id);
+                        await this.objects.delObject(row.id);
                     } else {
-                        await objects!.delObject(row.id);
+                        await this.objects.delObject(row.id);
                     }
                 } catch {
                     // ignore
@@ -87,8 +82,6 @@ export class HostMetaManager {
      * @param tasks The objects to extend, each optionally carrying a state to set
      */
     async extendObjects(tasks: Record<string, any>[]): Promise<void> {
-        const { objects, states } = this.controller;
-
         for (const task of tasks) {
             const state = task.state;
             if (state !== undefined) {
@@ -96,10 +89,10 @@ export class HostMetaManager {
             }
 
             try {
-                await objects!.extendObject(task._id, task);
+                await this.objects.extendObject(task._id, task);
                 // if extend throws, we don't want to set corresponding state
                 if (state) {
-                    await states!.setState(task._id, state);
+                    await this.states.setState(task._id, state);
                 }
             } catch {
                 // ignore
@@ -116,9 +109,9 @@ export class HostMetaManager {
      * <p>
      */
     async checkHost(): Promise<void> {
-        const { objects, logger, hostLogPrefix, hostname, isCompactGroupController } = this.controller;
+        const { logger, hostLogPrefix, hostname, isCompactGroupController } = this;
 
-        const objectData = objects!.getStatus();
+        const objectData = this.objects.getStatus();
         // only file master host controller needs to check/fix the host assignments from the instances
         // for redis it is currently not possible to detect a single host system with a changed hostname for sure!
         if (isCompactGroupController || !objectData.server) {
@@ -128,7 +121,7 @@ export class HostMetaManager {
         let hostDoc;
 
         try {
-            hostDoc = await objects!.getObjectViewAsync('system', 'host', {
+            hostDoc = await this.objects.getObjectViewAsync('system', 'host', {
                 startkey: SYSTEM_HOST_PREFIX,
                 endkey: `${SYSTEM_HOST_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
             });
@@ -144,7 +137,7 @@ export class HostMetaManager {
 
             try {
                 // find out all instances and rewrite it to actual hostname
-                instanceDoc = await objects!.getObjectViewAsync('system', 'instance', {
+                instanceDoc = await this.objects.getObjectViewAsync('system', 'instance', {
                     startkey: SYSTEM_ADAPTER_PREFIX,
                     endkey: `${SYSTEM_ADAPTER_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
                 });
@@ -160,19 +153,19 @@ export class HostMetaManager {
                 return;
             }
             // reassign all instances
-            await this.changeHost(instanceDoc.rows, oldHostname, hostname);
+            await this.#changeHost(instanceDoc.rows, oldHostname, hostname);
             logger.info(`${hostLogPrefix} Delete host ${oldId}`);
 
             try {
                 // delete host object
-                await objects!.delObjectAsync(oldId);
+                await this.objects.delObjectAsync(oldId);
             } catch {
                 // ignore
             }
 
             try {
                 // delete all hosts states
-                const newHostDoc = await objects!.getObjectViewAsync('system', 'state', {
+                const newHostDoc = await this.objects.getObjectViewAsync('system', 'state', {
                     startkey: `${SYSTEM_HOST_PREFIX}${oldHostname}.`,
                     endkey: `${SYSTEM_HOST_PREFIX}${oldHostname}.${HIGHEST_UNICODE_SYMBOL}`,
                     include_docs: true,
@@ -191,7 +184,6 @@ export class HostMetaManager {
      */
     async setMeta(): Promise<void> {
         const {
-            objects,
             config,
             logger,
             hostObjectPrefix,
@@ -202,11 +194,11 @@ export class HostMetaManager {
             pluginHandler,
             notificationHandler,
             ips,
-        } = this.controller;
+        } = this;
 
         const id = hostObjectPrefix;
 
-        const oldObj = await objects!.getObject(id);
+        const oldObj = await this.objects.getObject(id);
         let newObj: ioBroker.HostObject | ioBroker.FolderObject;
 
         if (isCompactGroupController) {
@@ -241,7 +233,7 @@ export class HostMetaManager {
             newObj.ts = Date.now();
             try {
                 // @ts-expect-error TODO: for compact controller we are setting a folder object to a system.host.XY id
-                await objects!.setObject(id, newObj);
+                await this.objects.setObject(id, newObj);
                 await ips.setIPs(newObj.common.address);
             } catch (e) {
                 logger.error(`${hostLogPrefix} Cannot write host object: ${e.message}`);
@@ -264,7 +256,7 @@ export class HostMetaManager {
         let doc: { rows: ioBroker.GetObjectViewItem<ioBroker.StateObject>[] } | undefined;
 
         try {
-            doc = await objects!.getObjectViewAsync('system', 'state', {
+            doc = await this.objects.getObjectViewAsync('system', 'state', {
                 startkey: `${hostObjectPrefix}.`,
                 endkey: `${hostObjectPrefix}.${HIGHEST_UNICODE_SYMBOL}`,
                 include_docs: true,
@@ -313,17 +305,17 @@ export class HostMetaManager {
 
         // create UUID if not exist
         if (!isCompactGroupController) {
-            await this.createUuidAndApplyVendor();
+            await this.#createUuidAndApplyVendor();
         }
     }
 
     /**
      * Create the UUID of this installation if it does not exist yet and apply a potential vendor file
      */
-    private async createUuidAndApplyVendor(): Promise<void> {
-        const { objects, logger, hostLogPrefix } = this.controller;
+    async #createUuidAndApplyVendor(): Promise<void> {
+        const { logger, hostLogPrefix } = this;
 
-        const uuid = await tools.createUuid(objects);
+        const uuid = await tools.createUuid(this.objects);
         if (uuid) {
             logger?.info(`${hostLogPrefix} Created UUID: ${uuid}`);
         }
@@ -343,7 +335,7 @@ export class HostMetaManager {
 
             if (startScript.password) {
                 const { Vendor } = await import('@iobroker/js-controller-cli');
-                const vendor = new Vendor({ objects: objects! });
+                const vendor = new Vendor({ objects: this.objects });
 
                 logger?.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
                 try {
@@ -383,7 +375,7 @@ export class HostMetaManager {
             // terminate ioBroker to restart the controller as UUID probably changed
             logger.info(`${hostLogPrefix} Restart js-controller because vendor information updated`);
             await wait(200);
-            await this.controller.restartSelf();
+            await this.restartSelf();
         }
     }
 }

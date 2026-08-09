@@ -8,29 +8,44 @@ import {
     SYSTEM_HOST_PREFIX,
 } from '@iobroker/js-controller-common-db/constants';
 import { VIS_ADAPTERS } from '@/lib/controller/constants.js';
-import type { Controller } from '@/lib/controller/controller.js';
+import { ControllerContextBase } from '@/lib/controller/contextBase.js';
 import type { DiagInfoType } from '@/lib/controller/types.js';
 
 /**
  * Collects the information which is sent to the ioBroker statistics server
  */
-export class DiagInfoCollector {
+export class DiagInfoCollector extends ControllerContextBase {
+    /** Timestamp of the last sent diagnostics */
+    #lastDiagSend: null | number = null;
+
     /**
-     * @param controller The controller this diagnostics collector belongs to
+     * Check if the diagnostics may be sent now and if so remember that they are being sent
+     *
+     * This prevents multiple admin instances from sending the diagnostics at the same time.
+     *
+     * @param minInterval Minimum time in ms which has to pass between two sends
+     * @returns true if the caller is allowed to send the diagnostics now
      */
-    constructor(private readonly controller: Controller) {}
+    tryStartDiagSend(minInterval: number): boolean {
+        if (this.#lastDiagSend !== null && Date.now() - this.#lastDiagSend <= minInterval) {
+            return false;
+        }
+
+        this.#lastDiagSend = Date.now();
+        return true;
+    }
 
     /**
      * Returns number of instances and how many of them are compact instances if compact mode is enabled
      */
-    private async getNumberOfInstances(): Promise<
+    async #getNumberOfInstances(): Promise<
         { noCompactInstances: null; noInstances: null } | { noCompactInstances: number; noInstances: number }
     > {
-        const { objects, states, config } = this.controller;
+        const { config } = this;
 
         try {
             let noCompactInstances = 0;
-            const instancesView = await objects!.getObjectViewAsync('system', 'instance', {
+            const instancesView = await this.objects.getObjectViewAsync('system', 'instance', {
                 startkey: SYSTEM_ADAPTER_PREFIX,
                 endkey: `${SYSTEM_ADAPTER_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
             });
@@ -39,7 +54,7 @@ export class DiagInfoCollector {
 
             if (config.system.compact) {
                 for (const row of instancesView.rows) {
-                    const state = await states!.getStateAsync(`${row.id}.compactMode`);
+                    const state = await this.states.getStateAsync(`${row.id}.compactMode`);
                     if (state?.val) {
                         noCompactInstances++;
                     }
@@ -58,17 +73,17 @@ export class DiagInfoCollector {
      * @param type - type of required information
      */
     async collectDiagInfo(type: DiagInfoType): Promise<void | Record<string, any> | null> {
-        const { objects, config, logger, hostLogPrefix, hostMeta } = this.controller;
-
         if (type !== 'extended' && type !== 'normal' && type !== 'no-city') {
             return null;
         }
+
+        const { config, logger, hostLogPrefix, hostMeta } = this;
 
         let systemConfig;
         let err;
 
         try {
-            systemConfig = await objects!.getObject(SYSTEM_CONFIG_ID);
+            systemConfig = await this.objects.getObject(SYSTEM_CONFIG_ID);
         } catch (e) {
             err = e;
         }
@@ -83,7 +98,7 @@ export class DiagInfoCollector {
 
         let obj;
         try {
-            obj = await objects!.getObjectAsync('system.meta.uuid');
+            obj = await this.objects.getObjectAsync('system.meta.uuid');
         } catch {
             // ignore obj is undefined
         }
@@ -97,7 +112,7 @@ export class DiagInfoCollector {
         err = null;
 
         try {
-            doc = await objects!.getObjectViewAsync('system', 'host', {
+            doc = await this.objects.getObjectViewAsync('system', 'host', {
                 startkey: SYSTEM_HOST_PREFIX,
                 endkey: `${SYSTEM_HOST_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
             });
@@ -105,7 +120,7 @@ export class DiagInfoCollector {
             err = e;
         }
 
-        const { noCompactInstances, noInstances } = await this.getNumberOfInstances();
+        const { noCompactInstances, noInstances } = await this.#getNumberOfInstances();
 
         // we need to show city and country at the beginning, so include it now and delete it later if not allowed.
         const diag: Record<string, any> = {
@@ -174,7 +189,7 @@ export class DiagInfoCollector {
         err = null;
 
         try {
-            doc = await objects!.getObjectViewAsync('system', 'adapter', {
+            doc = await this.objects.getObjectViewAsync('system', 'adapter', {
                 startkey: SYSTEM_ADAPTER_PREFIX,
                 endkey: `${SYSTEM_ADAPTER_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
             });
@@ -204,7 +219,7 @@ export class DiagInfoCollector {
             const { calcProjects } = await import('@/lib/vis/states.js');
 
             try {
-                const points = await calcProjects({ objects: objects!, instance: 0, visAdapter });
+                const points = await calcProjects({ objects: this.objects, instance: 0, visAdapter });
                 let total = null;
                 const tasks = [];
 
