@@ -6,7 +6,12 @@ import { tools } from '@iobroker/js-controller-common';
 import { SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import { PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
-import { ControllerContextBase } from '@/lib/controller/contextBase.js';
+import type { NotificationHandler } from '@iobroker/js-controller-common';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
+import type { BlocklistManager } from '@/lib/blocklistManager.js';
+import type { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
+import type { ControllerLogger } from '@/lib/controller/types.js';
 
 // eslint-disable-next-line unicorn/prefer-module
 const require = createRequire(import.meta.url || `file://${__filename}`);
@@ -16,20 +21,70 @@ const REBOOT_REQUIRED_PATH = '/var/run/reboot-required';
 /** This file contains a list of packages which require the reboot, separated by newline */
 const REBOOT_REQUIRED_PACKAGES_PATH = '/var/run/reboot-required.pkgs';
 
+/** Everything the system checks need to do their work */
+export interface SystemChecksOptions {
+    /** The connected objects database client */
+    objects: ObjectsClient;
+    /** The connected states database client */
+    states: StatesClient;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** The id of the host object of this controller */
+    hostObjectPrefix: ioBroker.ObjectIDs.Host;
+    /** Name of this host, used as the instance of the created notifications */
+    hostname: string;
+    /** Handles the notifications of this host */
+    notificationHandler: NotificationHandler;
+    /** Upgrades adapters automatically */
+    autoUpgradeManager: AdapterAutoUpgradeManager;
+    /** Checks adapters against the block list */
+    blocklistManager: BlocklistManager;
+}
+
 /**
  * Checks the system this host runs on for available updates and other problems and creates notifications for them
  */
-export class SystemChecks extends ControllerContextBase {
+export class SystemChecks {
+    readonly #objects: ObjectsClient;
+    readonly #states: StatesClient;
+    readonly #logger: ControllerLogger;
+    readonly #hostLogPrefix: string;
+    readonly #hostObjectPrefix: ioBroker.ObjectIDs.Host;
+    readonly #hostname: string;
+    readonly #notificationHandler: NotificationHandler;
+    readonly #autoUpgradeManager: AdapterAutoUpgradeManager;
+    readonly #blocklistManager: BlocklistManager;
+
     /** If a system reboot is required */
     #isRebootRequired = false;
+
+    /**
+     * @param options Everything the system checks need to do their work
+     */
+    constructor(options: SystemChecksOptions) {
+        this.#objects = options.objects;
+        this.#states = options.states;
+        this.#logger = options.logger;
+        this.#hostLogPrefix = options.hostLogPrefix;
+        this.#hostObjectPrefix = options.hostObjectPrefix;
+        this.#hostname = options.hostname;
+        this.#notificationHandler = options.notificationHandler;
+        this.#autoUpgradeManager = options.autoUpgradeManager;
+        this.#blocklistManager = options.blocklistManager;
+    }
 
     /**
      * Check if the current redis Locale is supported, else register notification
      */
     async checkSystemLocaleSupported(): Promise<void> {
-        const { notificationHandler, hostname } = this;
+        const { notificationHandler, hostname } = {
+            notificationHandler: this.#notificationHandler,
+            hostname: this.#hostname,
+        };
 
-        const isSupported = await this.objects.isSystemLocaleSupported();
+        const isSupported = await this.#objects.isSystemLocaleSupported();
 
         if (!isSupported) {
             await notificationHandler.addMessage({
@@ -47,15 +102,16 @@ export class SystemChecks extends ControllerContextBase {
      * Check if a new Docker Image version is available
      */
     async checkAvailableDockerUpdate(): Promise<void> {
-        const { notificationHandler, hostObjectPrefix, hostname } = this;
+        const notificationHandler = this.#notificationHandler;
+        const hostObjectPrefix = this.#hostObjectPrefix;
+        const hostname = this.#hostname;
+        const states = this.#states;
 
         const dockerInfo = tools.getDockerInformation();
 
-        if (!dockerInfo.isOfficial || !this.isStatesConnected) {
+        if (!dockerInfo.isOfficial) {
             return;
         }
-
-        const states = this.states;
 
         const { isNew, lastUpdated, version } = await tools.getNewestDockerImageVersion();
 
@@ -83,13 +139,14 @@ export class SystemChecks extends ControllerContextBase {
      * Check for updatable OS packages and register them as notification
      */
     async listUpdatableOsPackages(): Promise<void> {
-        const { notificationHandler, hostObjectPrefix, hostname } = this;
+        const notificationHandler = this.#notificationHandler;
+        const hostObjectPrefix = this.#hostObjectPrefix;
+        const hostname = this.#hostname;
+        const states = this.#states;
 
-        if (tools.isDocker() || !this.isStatesConnected) {
+        if (tools.isDocker()) {
             return;
         }
-
-        const states = this.states;
 
         const packManager = new PacketManager();
         await packManager.ready();
@@ -186,7 +243,10 @@ export class SystemChecks extends ControllerContextBase {
      * Checks if a system reboot is required and generates a notification if this is the case
      */
     async checkRebootRequired(): Promise<void> {
-        const { logger, hostLogPrefix, notificationHandler, hostname } = this;
+        const logger = this.#logger;
+        const hostLogPrefix = this.#hostLogPrefix;
+        const notificationHandler = this.#notificationHandler;
+        const hostname = this.#hostname;
 
         if (process.platform !== 'linux' || this.#isRebootRequired) {
             return;
@@ -221,7 +281,11 @@ export class SystemChecks extends ControllerContextBase {
      * Upgrade all upgradeable adapters with respect to their auto upgrade policy
      */
     async autoUpgradeAdapters(): Promise<void> {
-        const { logger, hostLogPrefix, notificationHandler, autoUpgradeManager, hostname } = this;
+        const logger = this.#logger;
+        const hostLogPrefix = this.#hostLogPrefix;
+        const notificationHandler = this.#notificationHandler;
+        const autoUpgradeManager = this.#autoUpgradeManager;
+        const hostname = this.#hostname;
 
         try {
             if (!(await autoUpgradeManager.isAutoUpgradeEnabled())) {
@@ -263,7 +327,11 @@ export class SystemChecks extends ControllerContextBase {
      * Disables all blocklisted instances which are currently enabled and generates notifications
      */
     async disableBlocklistedInstances(): Promise<void> {
-        const { logger, hostLogPrefix, notificationHandler, blocklistManager, hostname } = this;
+        const logger = this.#logger;
+        const hostLogPrefix = this.#hostLogPrefix;
+        const notificationHandler = this.#notificationHandler;
+        const blocklistManager = this.#blocklistManager;
+        const hostname = this.#hostname;
 
         let newlyDisabledInstances: ioBroker.InstanceObject[];
 

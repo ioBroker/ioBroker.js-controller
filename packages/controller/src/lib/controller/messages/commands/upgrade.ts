@@ -2,17 +2,47 @@ import { setTimeout as wait } from 'node:timers/promises';
 import { tools } from '@iobroker/js-controller-common';
 import type SentryPlugin from '@iobroker/plugin-sentry';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
-import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
-import type { InstallQueueEntry } from '@/lib/controller/types.js';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
+import type { ControllerLogger, UploadTask, InstallQueueEntry } from '@/lib/controller/types.js';
+import type { InstanceManager } from '@/lib/controller/instances/instanceManager.js';
+import type { MessageBus } from '@/lib/controller/messages/messageBus.js';
+import type { PluginHandler } from '@iobroker/plugin-base';
+import type { SystemChecks } from '@/lib/controller/host/systemChecks.js';
+import type { HostCommand, HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+
+/** Everything the host commands for upgrades, rebuilds and restarts need */
+export interface UpgradeCommandsDeps {
+    /** The connected objects database client */
+    objects: ObjectsClient;
+    /** The connected states database client */
+    states: StatesClient;
+    /** Sends the answers back to the requester */
+    messages: MessageBus;
+    /** Takes care of all instances of this host */
+    instances: InstanceManager;
+    /** Checks the system for available updates and problems */
+    systemChecks: SystemChecks;
+    /** Handles the plugins of this host */
+    pluginHandler: InstanceType<typeof PluginHandler>;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** Uploads an adapter on request */
+    uploadAdapter: (task: UploadTask) => Promise<void>;
+    /** Restarts the whole js-controller process */
+    restartSelf: () => Promise<void>;
+}
 
 /**
  * Upgrade the js-controller itself via the detached upgrade manager
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const upgradeController: HostCommandHandler = async (ctx, msg) => {
-    const { logger, hostLogPrefix, systemChecks, messages } = ctx;
+const upgradeController: HostCommand<UpgradeCommandsDeps> = async (deps, msg) => {
+    const { logger, hostLogPrefix, systemChecks, messages } = deps;
 
     if (!tools.isControllerUiUpgradeSupported()) {
         if (msg.callback) {
@@ -39,11 +69,11 @@ const upgradeController: HostCommandHandler = async (ctx, msg) => {
 /**
  * Upgrade an adapter and provide a web server which informs about the progress
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const upgradeAdapterWithWebserver: HostCommandHandler = async (ctx, msg) => {
-    const { objects, states, logger, messages } = ctx;
+const upgradeAdapterWithWebserver: HostCommand<UpgradeCommandsDeps> = async (deps, msg) => {
+    const { objects, states, logger, messages } = deps;
     const { version, adapterName, useHttps, port, certPrivateName, certPublicName } = msg.message;
 
     const upgradeManager = new AdapterUpgradeManager({
@@ -70,28 +100,28 @@ const upgradeAdapterWithWebserver: HostCommandHandler = async (ctx, msg) => {
 /**
  * Upload the files of an adapter into the files' database
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const upload: HostCommandHandler = async (ctx, msg) => {
-    const { logger, hostLogPrefix } = ctx;
+const upload: HostCommand<UpgradeCommandsDeps> = async (deps, msg) => {
+    const { logger, hostLogPrefix } = deps;
 
     if (!msg.message) {
         logger.error(`${hostLogPrefix} No adapter name is specified for upload command from  ${msg.from}`);
         return;
     }
 
-    await ctx.uploadAdapter({ adapter: msg.message, msg });
+    await deps.uploadAdapter({ adapter: msg.message, msg });
 };
 
 /**
  * Queue an adapter for a rebuild of its native modules
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const rebuildAdapter: HostCommandHandler = (ctx, msg) => {
-    const { logger, hostLogPrefix, instances, messages } = ctx;
+const rebuildAdapter: HostCommand<UpgradeCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, instances, messages } = deps;
     const { installQueue } = instances;
 
     if (!msg.message.id) {
@@ -129,11 +159,11 @@ const rebuildAdapter: HostCommandHandler = (ctx, msg) => {
 /**
  * Read the licenses from iobroker.net
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const updateLicenses: HostCommandHandler = async (ctx, msg) => {
-    const { objects, logger, hostLogPrefix, messages } = ctx;
+const updateLicenses: HostCommand<UpgradeCommandsDeps> = async (deps, msg) => {
+    const { objects, logger, hostLogPrefix, messages } = deps;
 
     try {
         const licenses = await tools.updateLicenses(
@@ -159,11 +189,11 @@ const updateLicenses: HostCommandHandler = async (ctx, msg) => {
 /**
  * Upgrade the given operating system packages
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const upgradeOsPackages: HostCommandHandler = async (ctx, msg) => {
-    const { logger, hostLogPrefix, systemChecks, messages } = ctx;
+const upgradeOsPackages: HostCommand<UpgradeCommandsDeps> = async (deps, msg) => {
+    const { logger, hostLogPrefix, systemChecks, messages } = deps;
     const { packages, restart: restartRequired } = msg.message;
 
     try {
@@ -183,35 +213,35 @@ const upgradeOsPackages: HostCommandHandler = async (ctx, msg) => {
     if (restartRequired) {
         logger.info(`${hostLogPrefix} Restart js-controller because desired after package upgrade`);
         await wait(200);
-        await ctx.restartSelf();
+        await deps.restartSelf();
     }
 };
 
 /**
  * Restart the js-controller
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const restartController: HostCommandHandler = async (ctx, msg) => {
-    const { messages } = ctx;
+const restartController: HostCommand<UpgradeCommandsDeps> = async (deps, msg) => {
+    const { messages } = deps;
 
     if (msg.callback) {
         messages.sendTo(msg.from, msg.command, '', msg.callback);
     }
     // let the answer be sent
     await wait(200);
-    await ctx.restartSelf();
+    await deps.restartSelf();
 };
 
 /**
  * Forward a message to Sentry if the Sentry plugin is active
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const sendToSentry: HostCommandHandler = (ctx, msg) => {
-    const { logger, hostLogPrefix, pluginHandler } = ctx;
+const sendToSentry: HostCommand<UpgradeCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, pluginHandler } = deps;
 
     const message: string = msg.message.message;
     const level: string = msg.message.level;
@@ -236,14 +266,20 @@ const sendToSentry: HostCommandHandler = (ctx, msg) => {
     });
 };
 
-/** All commands which install, upgrade or restart something */
-export const upgradeCommands: Record<string, HostCommandHandler> = {
-    upgradeController,
-    upgradeAdapterWithWebserver,
-    upload,
-    rebuildAdapter,
-    updateLicenses,
-    upgradeOsPackages,
-    restartController,
-    sendToSentry,
-};
+/**
+ * Create the host commands for upgrades, rebuilds and restarts
+ *
+ * @param deps Everything these commands need
+ */
+export function createUpgradeCommands(deps: UpgradeCommandsDeps): Record<string, HostCommandHandler> {
+    return {
+        upgradeController: msg => upgradeController(deps, msg),
+        upgradeAdapterWithWebserver: msg => upgradeAdapterWithWebserver(deps, msg),
+        upload: msg => upload(deps, msg),
+        rebuildAdapter: msg => rebuildAdapter(deps, msg),
+        updateLicenses: msg => updateLicenses(deps, msg),
+        upgradeOsPackages: msg => upgradeOsPackages(deps, msg),
+        restartController: msg => restartController(deps, msg),
+        sendToSentry: msg => sendToSentry(deps, msg),
+    };
+}

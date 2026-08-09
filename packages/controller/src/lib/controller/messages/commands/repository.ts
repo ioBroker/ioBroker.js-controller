@@ -1,6 +1,29 @@
 import { tools } from '@iobroker/js-controller-common';
 import { SYSTEM_CONFIG_ID, SYSTEM_REPOSITORIES_ID } from '@iobroker/js-controller-common-db/constants';
-import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { ControllerLogger, RepoRequester } from '@/lib/controller/types.js';
+import type { DiagInfoCollector } from '@/lib/controller/host/diagInfoCollector.js';
+import type { MessageBus } from '@/lib/controller/messages/messageBus.js';
+import type { SystemChecks } from '@/lib/controller/host/systemChecks.js';
+import type { HostCommand, HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+
+/** Everything the host commands for the adapter repositories need */
+export interface RepositoryCommandsDeps {
+    /** The connected objects database client */
+    objects: ObjectsClient;
+    /** Sends the answers back to the requester */
+    messages: MessageBus;
+    /** Collects the diagnostics information */
+    diag: DiagInfoCollector;
+    /** Checks the system for available updates and problems */
+    systemChecks: SystemChecks;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** All instances which have requested a repository update, answered together once it is done */
+    requestedRepoUpdates: RepoRequester[];
+}
 
 /** Do not send the diagnostics more often than this, e.g. if multiple admin instances request the repository */
 const DIAG_SEND_INTERVAL = 30_000;
@@ -10,11 +33,11 @@ const DIAG_SEND_INTERVAL = 30_000;
  *
  * Because updating a repository can take a while, all requesters are collected and answered at once.
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getRepository: HostCommandHandler = async (ctx, msg) => {
-    const { objects, logger, hostLogPrefix, diag, systemChecks, messages } = ctx;
+const getRepository: HostCommand<RepositoryCommandsDeps> = async (deps, msg) => {
+    const { objects, logger, hostLogPrefix, diag, systemChecks, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(
@@ -23,8 +46,8 @@ const getRepository: HostCommandHandler = async (ctx, msg) => {
         return;
     }
 
-    ctx.requestedRepoUpdates.push({ from: msg.from, callback: msg.callback });
-    if (ctx.requestedRepoUpdates.length > 1) {
+    deps.requestedRepoUpdates.push({ from: msg.from, callback: msg.callback });
+    if (deps.requestedRepoUpdates.length > 1) {
         // someone has requested repo previous to us
         logger.debug(`${hostLogPrefix} Repository update already running, registered instance "${msg.from}"`);
         return;
@@ -147,11 +170,11 @@ const getRepository: HostCommandHandler = async (ctx, msg) => {
         }
     }
 
-    for (const requester of ctx.requestedRepoUpdates) {
+    for (const requester of deps.requestedRepoUpdates) {
         messages.sendTo(requester.from, msg.command, globalRepo, requester.callback);
     }
 
-    ctx.requestedRepoUpdates.length = 0;
+    deps.requestedRepoUpdates.length = 0;
 
     try {
         await systemChecks.checkAvailableDockerUpdate();
@@ -173,7 +196,13 @@ const getRepository: HostCommandHandler = async (ctx, msg) => {
     }
 };
 
-/** All commands which deal with the adapter repositories */
-export const repositoryCommands: Record<string, HostCommandHandler> = {
-    getRepository,
-};
+/**
+ * Create the host commands for the adapter repositories
+ *
+ * @param deps Everything these commands need
+ */
+export function createRepositoryCommands(deps: RepositoryCommandsDeps): Record<string, HostCommandHandler> {
+    return {
+        getRepository: msg => getRepository(deps, msg),
+    };
+}

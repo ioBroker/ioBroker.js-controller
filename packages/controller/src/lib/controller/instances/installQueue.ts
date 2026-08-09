@@ -2,18 +2,36 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import { getDefaultNodeArgs } from '@iobroker/js-controller-common-db/tools';
-import { ControllerContextBase } from '@/lib/controller/contextBase.js';
+import type { InstanceManager, InstanceManagerOptions } from '@/lib/controller/instances/instanceManager.js';
 import type { InstallQueueEntry } from '@/lib/controller/types.js';
 
 /** How often the installation of an adapter is retried before it is given up */
 const MAX_DOWNLOAD_RETRIES = 4;
 
+/** Everything the install queue needs to do its work */
+export type InstallQueueOptions = Pick<
+    InstanceManagerOptions,
+    'objects' | 'states' | 'logger' | 'hostLogPrefix' | 'hostObjectPrefix' | 'isCompactGroupController'
+> & {
+    /** The instances of this host, the queue starts them once they are installed */
+    instances: InstanceManager;
+};
+
 /**
  * Installs and rebuilds adapters one after another, because npm cannot run in parallel
  */
-export class InstallQueue extends ControllerContextBase {
+export class InstallQueue {
+    readonly #options: InstallQueueOptions;
+
     /** All adapters which are waiting for an installation or rebuild */
     #queue: InstallQueueEntry[] = [];
+
+    /**
+     * @param options Everything the install queue needs to do its work
+     */
+    constructor(options: InstallQueueOptions) {
+        this.#options = options;
+    }
 
     /**
      * Check if the given instance is already queued for installation or rebuild
@@ -51,9 +69,7 @@ export class InstallQueue extends ControllerContextBase {
      * Install or rebuild the first adapter of the queue
      */
     #processQueue(): void {
-        // the database clients are only read inside `finishTask`, a queue entry which never gets that far
-        // must not require a connection
-        const { logger, hostLogPrefix, hostObjectPrefix, instances, isCompactGroupController } = this;
+        const { logger, hostLogPrefix, hostObjectPrefix, instances, isCompactGroupController } = this.#options;
 
         if (!this.#queue.length) {
             return;
@@ -180,7 +196,7 @@ export class InstallQueue extends ControllerContextBase {
                 logger.info(
                     `${hostLogPrefix} startInstance ${task.id}: instance is disabled but should be started, re-enabling it`,
                 );
-                this.states
+                this.#options.states
                     .setState(`${task.id}.alive`, {
                         val: true,
                         ack: false,
@@ -189,7 +205,7 @@ export class InstallQueue extends ControllerContextBase {
                     .catch(e => logger.error(`${hostLogPrefix} Cannot set ${task.id}.alive: ${e.message}`));
             } else if (task.rebuild) {
                 // on rebuild, we send a restart signal via object change to also reach compact group processes
-                this.objects
+                this.#options.objects
                     .extendObject(task.id, {})
                     .catch(e => logger.error(`${hostLogPrefix} Cannot rebuild ${task.id}: ${e.message}`));
             } else {

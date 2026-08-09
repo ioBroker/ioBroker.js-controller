@@ -1,15 +1,66 @@
 import os from 'node:os';
 import fs from 'fs-extra';
 import pidUsage from 'pidusage';
-import { tools } from '@iobroker/js-controller-common';
+import { tools, type NotificationHandler } from '@iobroker/js-controller-common';
 import type { GetDiskInfoResponse } from '@iobroker/js-controller-common-db/tools';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { DEFAULT_DISK_WARNING_LEVEL } from '@/lib/utils.js';
-import { ControllerContextBase } from '@/lib/controller/contextBase.js';
+import type { InstanceManager } from '@/lib/controller/instances/instanceManager.js';
+import type { ControllerState } from '@/lib/controller/state.js';
+import type { Statistics } from '@/lib/controller/statistics.js';
+import type { ControllerLogger } from '@/lib/controller/types.js';
+
+/** Everything the status reporter needs to do its work */
+export interface HostStatusReporterOptions {
+    /** The connected states database client */
+    states: StatesClient;
+    /** The configuration of this host (iobroker.json) */
+    config: ioBroker.IoBrokerJson;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** The id of the host object of this controller, all reported states live below it */
+    hostObjectPrefix: ioBroker.ObjectIDs.Host;
+    /** Name of this host, used as the instance of the disk space notification */
+    hostname: string;
+    /** If this controller is a compact group controller */
+    isCompactGroupController: boolean;
+    /** The compact group this controller is responsible for */
+    compactGroup: number | null;
+    /** Creates the notification about a full disk */
+    notificationHandler: NotificationHandler;
+    /** Provides the number of running instances */
+    instances: InstanceManager;
+    /** The counters which are reported and reset on every run */
+    statistics: Statistics;
+    /** Lifecycle state, an empty compact group controller stops itself */
+    state: ControllerState;
+    /** Run fire-and-forget database writes in parallel and log any that reject */
+    logWriteErrors: (writes: Promise<unknown>[], errorText: string) => void;
+    /** Stops the controller, used by an empty compact group controller */
+    stopController: (force?: boolean, exitProcess?: boolean) => Promise<void>;
+}
 
 /**
  * Cyclically reports the status of this host, like cpu and memory usage, into the states database
  */
-export class HostStatusReporter extends ControllerContextBase {
+export class HostStatusReporter {
+    readonly #states: StatesClient;
+    readonly #config: ioBroker.IoBrokerJson;
+    readonly #logger: ControllerLogger;
+    readonly #hostLogPrefix: string;
+    readonly #hostObjectPrefix: ioBroker.ObjectIDs.Host;
+    readonly #hostname: string;
+    readonly #isCompactGroupController: boolean;
+    readonly #compactGroup: number | null;
+    readonly #notificationHandler: NotificationHandler;
+    readonly #instances: InstanceManager;
+    readonly #statistics: Statistics;
+    readonly #state: ControllerState;
+    readonly #logWriteErrors: (writes: Promise<unknown>[], errorText: string) => void;
+    readonly #stopController: (force?: boolean, exitProcess?: boolean) => Promise<void>;
+
     /** Timer for the cyclic status report */
     #reportInterval: NodeJS.Timeout | null = null;
     /** Timestamp of the last disk size check */
@@ -18,6 +69,26 @@ export class HostStatusReporter extends ControllerContextBase {
     #eventLoopLags: number[] = [];
     /** If less than this disk space free in %, generate a warning */
     #diskWarningLevel = DEFAULT_DISK_WARNING_LEVEL;
+
+    /**
+     * @param options Everything the status reporter needs to do its work
+     */
+    constructor(options: HostStatusReporterOptions) {
+        this.#states = options.states;
+        this.#config = options.config;
+        this.#logger = options.logger;
+        this.#hostLogPrefix = options.hostLogPrefix;
+        this.#hostObjectPrefix = options.hostObjectPrefix;
+        this.#hostname = options.hostname;
+        this.#isCompactGroupController = options.isCompactGroupController;
+        this.#compactGroup = options.compactGroup;
+        this.#notificationHandler = options.notificationHandler;
+        this.#instances = options.instances;
+        this.#statistics = options.statistics;
+        this.#state = options.state;
+        this.#logWriteErrors = options.logWriteErrors;
+        this.#stopController = options.stopController;
+    }
 
     /**
      * Configure at which amount of free disk space in % a warning notification is created
@@ -32,16 +103,22 @@ export class HostStatusReporter extends ControllerContextBase {
      * Start the cyclic reporting of the host status
      */
     startAliveInterval(): void {
-        const { config, logger, hostLogPrefix, hostObjectPrefix, isCompactGroupController } = this;
+        const config = this.#config;
+        const logger = this.#logger;
+        const hostLogPrefix = this.#hostLogPrefix;
+        const hostObjectPrefix = this.#hostObjectPrefix;
+
+        // this is called again after every reconnect, do not leave the previous interval behind
+        this.close();
 
         config.system = config.system || {};
         config.system.statisticsInterval = Math.round(config.system.statisticsInterval) || 15_000;
         config.system.checkDiskInterval =
             config.system.checkDiskInterval !== 0 ? Math.round(config.system.checkDiskInterval) || 300_000 : 0;
 
-        if (!isCompactGroupController) {
+        if (!this.#isCompactGroupController) {
             // Provide info to see for each host if compact is enabled or not and be able to use in Admin or such
-            this.states
+            this.#states
                 .setState(`${hostObjectPrefix}.compactModeEnabled`, {
                     ack: true,
                     from: hostObjectPrefix,
@@ -63,17 +140,14 @@ export class HostStatusReporter extends ControllerContextBase {
      * Write the current status of this host into the states database
      */
     async reportStatus(): Promise<void> {
-        // note: `notificationHandler` is deliberately not destructured here, it only exists once the
-        // databases are connected, while the first status report already runs before that
-        const { config, logger, hostLogPrefix, hostObjectPrefix, hostname, instances, isCompactGroupController } = this;
+        const states = this.#states;
+        const config = this.#config;
+        const logger = this.#logger;
+        const hostLogPrefix = this.#hostLogPrefix;
+        const instances = this.#instances;
+        const id = this.#hostObjectPrefix;
 
-        if (!this.isStatesConnected) {
-            return;
-        }
-
-        const states = this.states;
-        const id = hostObjectPrefix;
-        this.countOutput(10);
+        this.#statistics.countOutput(10);
 
         states
             .setState(`${id}.alive`, {
@@ -100,7 +174,7 @@ export class HostStatusReporter extends ControllerContextBase {
             const stats = await pidUsage(process.pid);
 
             if (stats) {
-                this.logWriteErrors(
+                this.#logWriteErrors(
                     [
                         states.setState(`${id}.cpu`, {
                             ack: true,
@@ -111,7 +185,7 @@ export class HostStatusReporter extends ControllerContextBase {
                     ],
                     'Cannot update process status states',
                 );
-                this.countOutput(2);
+                this.#statistics.countOutput(2);
             }
         } catch (e) {
             logger.error(`${hostLogPrefix} Cannot read pidUsage data : ${e.message}`);
@@ -119,7 +193,7 @@ export class HostStatusReporter extends ControllerContextBase {
 
         try {
             const mem = process.memoryUsage();
-            this.logWriteErrors(
+            this.#logWriteErrors(
                 [
                     states.setState(`${id}.memRss`, {
                         val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100,
@@ -144,7 +218,7 @@ export class HostStatusReporter extends ControllerContextBase {
         }
 
         // provide machine infos
-        this.logWriteErrors(
+        this.#logWriteErrors(
             [
                 states.setState(`${id}.load`, { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id }),
                 states.setState(`${id}.uptime`, { val: Math.round(process.uptime()), ack: true, from: id }),
@@ -174,7 +248,7 @@ export class HostStatusReporter extends ControllerContextBase {
                             from: id,
                         })
                         .catch(e => logger.error(`${hostLogPrefix} Cannot update memAvailable state: ${e.message}`));
-                    this.countOutput();
+                    this.#statistics.countOutput();
                 }
             } catch (e) {
                 logger.error(`${hostLogPrefix} Cannot read /proc/meminfo: ${e.message}`);
@@ -202,15 +276,15 @@ export class HostStatusReporter extends ControllerContextBase {
                     const isDiskWarningActive = percentageFree < this.#diskWarningLevel;
 
                     if (isDiskWarningActive) {
-                        await this.notificationHandler.addMessage({
+                        await this.#notificationHandler.addMessage({
                             scope: 'system',
                             category: 'diskSpaceIssues',
                             message: `Your system has only ${percentageFree.toFixed(2)} % of disk space left.`,
-                            instance: `system.host.${hostname}`,
+                            instance: `system.host.${this.#hostname}`,
                         });
                     }
 
-                    this.logWriteErrors(
+                    this.#logWriteErrors(
                         [
                             states.setState(`${id}.diskSize`, { val: diskSize, ack: true, from: id }),
                             states.setState(`${id}.diskFree`, { val: diskFree, ack: true, from: id }),
@@ -218,7 +292,7 @@ export class HostStatusReporter extends ControllerContextBase {
                         'Cannot update disk status states',
                     );
 
-                    this.countOutput(2);
+                    this.#statistics.countOutput(2);
                 }
             } catch (e) {
                 logger.error(`${hostLogPrefix} Cannot read disk information: ${e.message}`);
@@ -226,10 +300,10 @@ export class HostStatusReporter extends ControllerContextBase {
         }
 
         // some statistics
-        this.logWriteErrors(
+        this.#logWriteErrors(
             [
-                states.setState(`${id}.inputCount`, { val: this.inputCount, ack: true, from: id }),
-                states.setState(`${id}.outputCount`, { val: this.outputCount, ack: true, from: id }),
+                states.setState(`${id}.inputCount`, { val: this.#statistics.inputCount, ack: true, from: id }),
+                states.setState(`${id}.outputCount`, { val: this.#statistics.outputCount, ack: true, from: id }),
             ],
             'Cannot update statistics states',
         );
@@ -263,7 +337,7 @@ export class HostStatusReporter extends ControllerContextBase {
             }
         });
 
-        this.logWriteErrors(
+        this.#logWriteErrors(
             [
                 states.setState(`${id}.instancesAsProcess`, { val: realProcesses, ack: true, from: id }),
                 states.setState(`${id}.instancesAsCompact`, { val: compactProcesses, ack: true, from: id }),
@@ -271,19 +345,19 @@ export class HostStatusReporter extends ControllerContextBase {
             'Cannot update instance count states',
         );
 
-        this.resetCounters();
+        this.#statistics.reset();
 
         if (
-            !this.isStopping &&
-            isCompactGroupController &&
-            this.started &&
+            !this.#state.isStopping &&
+            this.#isCompactGroupController &&
+            this.#state.started &&
             compactProcesses === 0 &&
             realProcesses === 0
         ) {
             logger.info(
-                `${hostLogPrefix} Compact group controller ${this.compactGroup} does not own any processes, stop`,
+                `${hostLogPrefix} Compact group controller ${this.#compactGroup} does not own any processes, stop`,
             );
-            await this.stopController(false);
+            await this.#stopController(false);
         }
     }
 

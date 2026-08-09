@@ -1,32 +1,57 @@
 import { inspect } from 'node:util';
 import { setTimeout as wait } from 'node:timers/promises';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
-import { ControllerContextBase } from '@/lib/controller/contextBase.js';
-import type { HostInformation, SendResponseToOptions } from '@/lib/controller/types.js';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
+import type { ControllerLogger, HostInformation, SendResponseToOptions } from '@/lib/controller/types.js';
 
 /** How long a callback of a sent message is stored before it is considered as lost */
 const CALLBACK_LIFETIME = 3_600_000;
 /** How long we wait for the answer of another host */
 const ANSWER_TIMEOUT = 5_000;
 
+/** Everything the message bus needs to do its work */
+export interface MessageBusOptions {
+    /** The connected states database client */
+    states: StatesClient;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** The id of the host object of this controller, used as sender of every message */
+    hostObjectPrefix: ioBroker.ObjectIDs.Host;
+}
+
 /**
  * Sends messages to other hosts and adapter instances and keeps track of the pending callbacks
  */
-export class MessageBus extends ControllerContextBase {
+export class MessageBus {
+    readonly #states: StatesClient;
+    readonly #logger: ControllerLogger;
+    readonly #hostLogPrefix: string;
+    readonly #hostObjectPrefix: ioBroker.ObjectIDs.Host;
+
     /** Id of the next message which expects an answer */
     #callbackId = 1;
     /** All callbacks of messages which are waiting for an answer */
     readonly #callbacks: Record<string, { time: number; cb: (message: ioBroker.MessagePayload) => void }> = {};
 
     /**
+     * @param options Everything the message bus needs to do its work
+     */
+    constructor(options: MessageBusOptions) {
+        this.#states = options.states;
+        this.#logger = options.logger;
+        this.#hostLogPrefix = options.hostLogPrefix;
+        this.#hostObjectPrefix = options.hostObjectPrefix;
+    }
+
+    /**
      * Subscribe on the message queue of this host
      */
     initMessageQueue(): void {
-        const { logger, hostLogPrefix, hostObjectPrefix } = this;
-
-        this.states
-            .subscribeMessage(hostObjectPrefix)
-            .catch(e => logger.error(`${hostLogPrefix} Cannot subscribe to host messages: ${e.message}`));
+        this.#states
+            .subscribeMessage(this.#hostObjectPrefix)
+            .catch(e => this.#logger.error(`${this.#hostLogPrefix} Cannot subscribe to host messages: ${e.message}`));
     }
 
     /**
@@ -66,18 +91,12 @@ export class MessageBus extends ControllerContextBase {
         message: ioBroker.MessagePayload,
         callback?: ioBroker.ErrorCallback | ioBroker.MessageCallbackInfo,
     ): Promise<void> {
-        const { logger, hostLogPrefix, hostObjectPrefix } = this;
-
-        if (!this.isStatesConnected) {
-            return;
-        }
-
         if (message === undefined) {
             message = command;
             command = 'send';
         }
 
-        const obj: ioBroker.SendableMessage = { command, message, from: hostObjectPrefix };
+        const obj: ioBroker.SendableMessage = { command, message, from: this.#hostObjectPrefix };
 
         if (!objName.startsWith(SYSTEM_ADAPTER_PREFIX) && !objName.startsWith('system.host.')) {
             objName = `${SYSTEM_ADAPTER_PREFIX}${objName}`;
@@ -103,11 +122,11 @@ export class MessageBus extends ControllerContextBase {
         }
 
         try {
-            await this.states.pushMessage(objName, obj);
+            await this.#states.pushMessage(objName, obj);
         } catch (e) {
             // do not stringify the object, we had the issue with the invalid string length on serialization
-            logger.error(
-                `${hostLogPrefix} [sendTo] Could not push message "${inspect(obj)}" to "${objName}": ${e.message}`,
+            this.#logger.error(
+                `${this.#hostLogPrefix} [sendTo] Could not push message "${inspect(obj)}" to "${objName}": ${e.message}`,
             );
             if (obj.callback && obj.callback.id) {
                 if (typeof callback === 'function') {
@@ -173,12 +192,10 @@ export class MessageBus extends ControllerContextBase {
      * @param hostId host to get the version information from
      */
     async getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<HostInformation | null> {
-        const { logger, hostLogPrefix } = this;
-
-        const state = await this.states.getState(`${hostId}.alive`);
+        const state = await this.#states.getState(`${hostId}.alive`);
 
         if (!state?.val) {
-            logger.warn(`${hostLogPrefix} "${hostId}" is offline`);
+            this.#logger.warn(`${this.#hostLogPrefix} "${hostId}" is offline`);
             return null;
         }
 
@@ -189,7 +206,7 @@ export class MessageBus extends ControllerContextBase {
         ]);
 
         if (!ioPack) {
-            logger.warn(`${hostLogPrefix} too delayed answer for ${hostId}`);
+            this.#logger.warn(`${this.#hostLogPrefix} too delayed answer for ${hostId}`);
             return null;
         }
 

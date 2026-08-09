@@ -1,31 +1,67 @@
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
 import { getDiskWarningLevel } from '@/lib/utils.js';
-import type { ControllerContext } from '@/lib/controller/context.js';
+import type { PluginHandler } from '@iobroker/plugin-base';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
+import type { InstanceManager } from '@/lib/controller/instances/instanceManager.js';
+import type { MessageBus } from '@/lib/controller/messages/messageBus.js';
+import type { HostMessageHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+import type { HostStatusReporter } from '@/lib/controller/host/hostStatusReporter.js';
+import type { Statistics } from '@/lib/controller/statistics.js';
+import type { ControllerLogger } from '@/lib/controller/types.js';
+
+/** Everything the state change routing needs to do its work */
+export interface StateChangeRouterDeps {
+    /** The connected objects database client */
+    objects: ObjectsClient;
+    /** The connected states database client */
+    states: StatesClient;
+    /** The configuration of this host (iobroker.json) */
+    config: ioBroker.IoBrokerJson;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** The id of the host object of this controller */
+    hostObjectPrefix: ioBroker.ObjectIDs.Host;
+    /** Directory of the js-controller, needed to instantiate a plugin */
+    controllerDir: string;
+    /** The raw content of the io-package.json of the js-controller */
+    ioPackage: any;
+    /** If this controller is a compact group controller, those ignore the host messages */
+    isCompactGroupController: boolean;
+    /** Wakes up the instances which subscribed to a state */
+    instances: InstanceManager;
+    /** Recognizes the answers to messages this host has sent */
+    messages: MessageBus;
+    /** Processes the messages which are sent to this host */
+    messageHandler: HostMessageHandler;
+    /** Receives a changed disk warning level */
+    status: HostStatusReporter;
+    /** Enables and disables the plugins of this host */
+    pluginHandler: InstanceType<typeof PluginHandler>;
+    /** The counters of the received states */
+    statistics: Statistics;
+    /** Subscribes or unsubscribes a logger instance for redirected log messages */
+    logRedirect: (isActive: boolean, id: string, reason: string) => void;
+}
 
 /**
  * React on a state change which this host is subscribed to
  *
- * @param ctx The context of the controller which has received the state change
+ * @param deps Everything the state change routing needs
  * @param id The id of the changed state
  * @param stateOrMessage The new state or the received message
  */
 export async function handleStateChange(
-    ctx: ControllerContext,
+    deps: StateChangeRouterDeps,
     id: string,
     stateOrMessage: ioBroker.State | ioBroker.Message | null | undefined,
 ): Promise<void> {
-    // only what every branch needs, the rest is read where it is used
-    const { config, logger, hostLogPrefix, hostObjectPrefix } = ctx;
+    const { states, objects, config, logger, hostLogPrefix, hostObjectPrefix, isCompactGroupController } = deps;
 
-    if (!ctx.isStatesConnected || !ctx.isObjectsConnected) {
-        logger.error(`${hostLogPrefix} Could not handle state change of "${id}", because not connected`);
-        return;
-    }
-
-    const { states, objects, isCompactGroupController } = ctx;
-
-    ctx.countInput();
+    deps.statistics.countInput();
     if (!id) {
         logger.error(`${hostLogPrefix} change event with no ID: ${JSON.stringify(stateOrMessage)}`);
         return;
@@ -34,14 +70,14 @@ export async function handleStateChange(
     // If some log transporter activated or deactivated
     if (id.startsWith(SYSTEM_ADAPTER_PREFIX) && id.endsWith('.logging')) {
         const state = stateOrMessage as ioBroker.State;
-        ctx.logRedirect(state ? (state.val as boolean) : false, id.substring(0, id.length - '.logging'.length), id);
+        deps.logRedirect(state ? (state.val as boolean) : false, id.substring(0, id.length - '.logging'.length), id);
     } else if (!isCompactGroupController && id === `messagebox.${hostObjectPrefix}`) {
         // If this is messagebox, only the main controller is handling the host messages
         const obj = stateOrMessage as ioBroker.Message;
         if (obj) {
             // If callback stored for this request
-            if (!ctx.messages.handleResponse(obj)) {
-                ctx.messageHandler
+            if (!deps.messages.handleResponse(obj)) {
+                deps.messageHandler
                     .process(obj)
                     .catch(e => logger.error(`${hostLogPrefix} Cannot process message: ${e.message}`));
             }
@@ -76,8 +112,8 @@ export async function handleStateChange(
                 }
             }
         }
-    } else if (ctx.instances.subscribe[id]) {
-        const { instances } = ctx;
+    } else if (deps.instances.subscribe[id]) {
+        const { instances } = deps;
 
         for (const sub of instances.subscribe[id]) {
             // wake up adapter
@@ -130,7 +166,7 @@ export async function handleStateChange(
             nameEndIndex = undefined;
         }
         const pluginName = id.substring(pluginStatesIndex, nameEndIndex);
-        const { pluginHandler, controllerDir, ioPackage } = ctx;
+        const { pluginHandler, controllerDir, ioPackage } = deps;
 
         if (!pluginHandler.pluginExists(pluginName)) {
             return;
@@ -162,7 +198,7 @@ export async function handleStateChange(
         !stateOrMessage.ack
     ) {
         const warningLevel = getDiskWarningLevel(stateOrMessage);
-        ctx.status.setDiskWarningLevel(warningLevel);
+        deps.status.setDiskWarningLevel(warningLevel);
         await states.setState(id, { val: warningLevel, ack: true });
     }
 }

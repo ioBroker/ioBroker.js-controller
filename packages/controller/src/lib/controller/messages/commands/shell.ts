@@ -4,16 +4,30 @@ import fs from 'fs-extra';
 import { exec, spawn } from 'node:child_process';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import { getDefaultNodeArgs } from '@iobroker/js-controller-common-db/tools';
-import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+import type { ControllerLogger } from '@/lib/controller/types.js';
+import type { MessageBus } from '@/lib/controller/messages/messageBus.js';
+import type { HostCommand, HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+
+/** Everything the host commands for executing shell and CLI commands need */
+export interface ShellCommandsDeps {
+    /** The configuration of this host (iobroker.json) */
+    config: ioBroker.IoBrokerJson;
+    /** Sends the answers back to the requester */
+    messages: MessageBus;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+}
 
 /**
  * Execute a shell command if this is allowed by the configuration
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const shell: HostCommandHandler = (ctx, msg) => {
-    const { config, logger, hostLogPrefix } = ctx;
+const shell: HostCommand<ShellCommandsDeps> = (deps, msg) => {
+    const { config, logger, hostLogPrefix } = deps;
 
     if (config.system?.allowShellCommands) {
         logger.info(`${hostLogPrefix} ${tools.appName} execute shell command: ${msg.message}`);
@@ -37,11 +51,11 @@ const shell: HostCommandHandler = (ctx, msg) => {
 /**
  * Execute an `iobroker` CLI command in an own process and stream the output back to the requester
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const cmdExec: HostCommandHandler = (ctx, msg) => {
-    const { logger, hostLogPrefix, messages } = ctx;
+const cmdExec: HostCommand<ShellCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, messages } = deps;
 
     const mainFile = path.join(tools.getControllerDir(), `${tools.appName.toLowerCase()}.js`);
     const args = [...getDefaultNodeArgs(mainFile), mainFile];
@@ -190,8 +204,14 @@ const cmdExec: HostCommandHandler = (ctx, msg) => {
     }
 };
 
-/** All commands which execute something on the host system */
-export const shellCommands: Record<string, HostCommandHandler> = {
-    shell,
-    cmdExec,
-};
+/**
+ * Create the host commands for executing shell and CLI commands
+ *
+ * @param deps Everything these commands need
+ */
+export function createShellCommands(deps: ShellCommandsDeps): Record<string, HostCommandHandler> {
+    return {
+        shell: msg => shell(deps, msg),
+        cmdExec: msg => cmdExec(deps, msg),
+    };
+}

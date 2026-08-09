@@ -1,14 +1,29 @@
 import { zipFiles } from '@iobroker/js-controller-common';
-import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { ControllerLogger } from '@/lib/controller/types.js';
+import type { MessageBus } from '@/lib/controller/messages/messageBus.js';
+import type { HostCommand, HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+
+/** Everything the host commands for zip based file and object transfers need */
+export interface FileCommandsDeps {
+    /** The connected objects database client */
+    objects: ObjectsClient;
+    /** Sends the answers back to the requester */
+    messages: MessageBus;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+}
 
 /**
  * Read a directory of the files' database as zip file
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const readDirAsZip: HostCommandHandler = async (ctx, msg) => {
-    const { objects, logger, hostLogPrefix, messages } = ctx;
+const readDirAsZip: HostCommand<FileCommandsDeps> = async (deps, msg) => {
+    const { objects, logger, hostLogPrefix, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -32,11 +47,11 @@ const readDirAsZip: HostCommandHandler = async (ctx, msg) => {
 /**
  * Write a zip file into a directory of the files' database
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const writeDirAsZip: HostCommandHandler = async (ctx, msg) => {
-    const { objects, logger, hostLogPrefix, messages } = ctx;
+const writeDirAsZip: HostCommand<FileCommandsDeps> = async (deps, msg) => {
+    const { objects, logger, hostLogPrefix, messages } = deps;
 
     try {
         await zipFiles.writeDirAsZip(
@@ -57,11 +72,11 @@ const writeDirAsZip: HostCommandHandler = async (ctx, msg) => {
 /**
  * Read objects of an adapter as zip file
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const readObjectsAsZip: HostCommandHandler = async (ctx, msg) => {
-    const { objects, logger, hostLogPrefix, messages } = ctx;
+const readObjectsAsZip: HostCommand<FileCommandsDeps> = async (deps, msg) => {
+    const { objects, logger, hostLogPrefix, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -108,11 +123,11 @@ const readObjectsAsZip: HostCommandHandler = async (ctx, msg) => {
 /**
  * Write objects of an adapter from a zip file
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const writeObjectsAsZip: HostCommandHandler = async (ctx, msg) => {
-    const { objects, logger, hostLogPrefix, messages } = ctx;
+const writeObjectsAsZip: HostCommand<FileCommandsDeps> = async (deps, msg) => {
+    const { objects, logger, hostLogPrefix, messages } = deps;
 
     let error: string | undefined;
 
@@ -134,10 +149,16 @@ const writeObjectsAsZip: HostCommandHandler = async (ctx, msg) => {
     }
 };
 
-/** All commands which read or write zip files */
-export const fileCommands: Record<string, HostCommandHandler> = {
-    readDirAsZip,
-    writeDirAsZip,
-    readObjectsAsZip,
-    writeObjectsAsZip,
-};
+/**
+ * Create the host commands for zip based file and object transfers
+ *
+ * @param deps Everything these commands need
+ */
+export function createFileCommands(deps: FileCommandsDeps): Record<string, HostCommandHandler> {
+    return {
+        readDirAsZip: msg => readDirAsZip(deps, msg),
+        writeDirAsZip: msg => writeDirAsZip(deps, msg),
+        readObjectsAsZip: msg => readObjectsAsZip(deps, msg),
+        writeObjectsAsZip: msg => writeObjectsAsZip(deps, msg),
+    };
+}

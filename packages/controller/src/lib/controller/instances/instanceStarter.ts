@@ -11,8 +11,31 @@ import { isAdapterEsmModule } from '@iobroker/js-controller-common-db/tools';
 import { cleanErrors, determineRebuildArgsFromLog } from '@/lib/controller/helpers.js';
 import { checkVersions } from '@/lib/controller/dependencyChecker.js';
 import { createInstanceExitHandler } from '@/lib/controller/instances/instanceExitHandler.js';
-import { ControllerContextBase } from '@/lib/controller/contextBase.js';
+import type { InstanceManager, InstanceManagerOptions } from '@/lib/controller/instances/instanceManager.js';
 import type { Process } from '@/lib/controller/types.js';
+
+/** Everything the instance starter needs to do its work */
+export type InstanceStarterOptions = Pick<
+    InstanceManagerOptions,
+    | 'objects'
+    | 'states'
+    | 'config'
+    | 'logger'
+    | 'hostLogPrefix'
+    | 'hostObjectPrefix'
+    | 'hostname'
+    | 'ioPackage'
+    | 'isCompactGroupController'
+    | 'notificationHandler'
+    | 'blocklistManager'
+    | 'statistics'
+    | 'state'
+    | 'uploadAdapter'
+    | 'requestRebuild'
+> & {
+    /** The instances of this host */
+    instances: InstanceManager;
+};
 
 // eslint-disable-next-line unicorn/prefer-module
 const require = createRequire(import.meta.url || `file://${__filename}`);
@@ -49,7 +72,16 @@ const MAX_STORED_ERRORS = 300;
 /**
  * Performs all checks which are needed to start an instance and finally starts its process
  */
-export class InstanceStarter extends ControllerContextBase {
+export class InstanceStarter {
+    readonly #options: InstanceStarterOptions;
+
+    /**
+     * @param options Everything the instance starter needs to do its work
+     */
+    constructor(options: InstanceStarterOptions) {
+        this.#options = options;
+    }
+
     /**
      * Start given instance
      *
@@ -57,15 +89,13 @@ export class InstanceStarter extends ControllerContextBase {
      * @param wakeUp Whether the instance is being started because of a wake-up (scheduled or message) event
      */
     async startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): Promise<void> {
-        const { logger, hostLogPrefix, hostname, ioPackage, instances } = this;
+        const { logger, hostLogPrefix, hostname, ioPackage, instances, state } = this.#options;
+        const { objects, notificationHandler, blocklistManager } = this.#options;
         const { procs } = instances;
 
-        if (this.isStopping || !this.connected || !this.isObjectsConnected) {
+        if (state.isStopping || !state.connected) {
             return;
         }
-
-        // available from here on, because the controller is connected
-        const { objects, notificationHandler, blocklistManager } = this;
 
         const proc = procs[id];
 
@@ -155,7 +185,7 @@ export class InstanceStarter extends ControllerContextBase {
 
             if (ioPack.common.version !== instance.common.version) {
                 logger.warn(`${hostLogPrefix} Detected missing upload of adapter "${name}" - starting upload now.`);
-                await this.uploadAdapter({ adapter: name });
+                await this.#options.uploadAdapter({ adapter: name });
                 return;
             }
         } catch (e) {
@@ -264,7 +294,7 @@ export class InstanceStarter extends ControllerContextBase {
                     execArgv,
                     adapterDir,
                     adapterMainFile: adapterMainFile!,
-                    exitHandler: createInstanceExitHandler(this.context, { id, instance, mode, wakeUp }),
+                    exitHandler: createInstanceExitHandler(this.#options, { id, instance, mode, wakeUp }),
                 });
                 break;
 
@@ -293,7 +323,7 @@ export class InstanceStarter extends ControllerContextBase {
      * Check how much memory is left and log a warning or error if it is critical
      */
     async #checkAvailableMemory(): Promise<void> {
-        const { config, logger, hostLogPrefix, hostname, notificationHandler } = this;
+        const { config, logger, hostLogPrefix, hostname, notificationHandler } = this.#options;
 
         let availableMemMB;
 
@@ -352,7 +382,8 @@ export class InstanceStarter extends ControllerContextBase {
      */
     async #startDaemon(ctx: DaemonLaunchContext): Promise<void> {
         const { id, instance, name, instanceNo, wakeUp } = ctx;
-        const { states, config, logger, hostLogPrefix, hostObjectPrefix, instances, isCompactGroupController } = this;
+        const { states, config, logger, hostLogPrefix, hostObjectPrefix, instances, isCompactGroupController } =
+            this.#options;
         const proc = instances.procs[id];
 
         if (proc?.process) {
@@ -420,7 +451,7 @@ export class InstanceStarter extends ControllerContextBase {
      */
     async #startInCompactMode(ctx: DaemonLaunchContext): Promise<void> {
         const { id, instance, name, adapterMainFile, exitHandler } = ctx;
-        const { states, logger, hostLogPrefix, hostObjectPrefix, instances } = this;
+        const { states, logger, hostLogPrefix, hostObjectPrefix, instances } = this.#options;
 
         try {
             // set to 0 to stop any pot. already running instances, especially broken compactModes
@@ -503,7 +534,7 @@ export class InstanceStarter extends ControllerContextBase {
      */
     #handleAdapterProcessStart(ctx: DaemonLaunchContext): void {
         const { id, instance, mode, wakeUp, args, execArgv, adapterDir, adapterMainFile, exitHandler } = ctx;
-        const { states, logger, hostLogPrefix, hostObjectPrefix, instances } = this;
+        const { states, logger, hostLogPrefix, hostObjectPrefix, instances } = this.#options;
 
         const proc: Process = instances.procs[id];
 

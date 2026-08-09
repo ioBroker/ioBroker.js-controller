@@ -8,15 +8,52 @@ import {
     SYSTEM_HOST_PREFIX,
 } from '@iobroker/js-controller-common-db/constants';
 import { VIS_ADAPTERS } from '@/lib/controller/constants.js';
-import { ControllerContextBase } from '@/lib/controller/contextBase.js';
-import type { DiagInfoType } from '@/lib/controller/types.js';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
+import type { HostMetaManager } from '@/lib/controller/host/hostMetaManager.js';
+import type { ControllerLogger, DiagInfoType } from '@/lib/controller/types.js';
+
+/** Everything the diagnostics collector needs to do its work */
+export interface DiagInfoCollectorOptions {
+    /** The connected objects database client */
+    objects: ObjectsClient;
+    /** The connected states database client */
+    states: StatesClient;
+    /** The configuration of this host (iobroker.json) */
+    config: ioBroker.IoBrokerJson;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** Used to store the collected vis data point counts */
+    hostMeta: HostMetaManager;
+}
 
 /**
  * Collects the information which is sent to the ioBroker statistics server
  */
-export class DiagInfoCollector extends ControllerContextBase {
+export class DiagInfoCollector {
+    readonly #objects: ObjectsClient;
+    readonly #states: StatesClient;
+    readonly #config: ioBroker.IoBrokerJson;
+    readonly #logger: ControllerLogger;
+    readonly #hostLogPrefix: string;
+    readonly #hostMeta: HostMetaManager;
+
     /** Timestamp of the last sent diagnostics */
     #lastDiagSend: null | number = null;
+
+    /**
+     * @param options Everything the diagnostics collector needs to do its work
+     */
+    constructor(options: DiagInfoCollectorOptions) {
+        this.#objects = options.objects;
+        this.#states = options.states;
+        this.#config = options.config;
+        this.#logger = options.logger;
+        this.#hostLogPrefix = options.hostLogPrefix;
+        this.#hostMeta = options.hostMeta;
+    }
 
     /**
      * Check if the diagnostics may be sent now and if so remember that they are being sent
@@ -41,11 +78,11 @@ export class DiagInfoCollector extends ControllerContextBase {
     async #getNumberOfInstances(): Promise<
         { noCompactInstances: null; noInstances: null } | { noCompactInstances: number; noInstances: number }
     > {
-        const { config } = this;
+        const config = this.#config;
 
         try {
             let noCompactInstances = 0;
-            const instancesView = await this.objects.getObjectViewAsync('system', 'instance', {
+            const instancesView = await this.#objects.getObjectViewAsync('system', 'instance', {
                 startkey: SYSTEM_ADAPTER_PREFIX,
                 endkey: `${SYSTEM_ADAPTER_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
             });
@@ -54,7 +91,7 @@ export class DiagInfoCollector extends ControllerContextBase {
 
             if (config.system.compact) {
                 for (const row of instancesView.rows) {
-                    const state = await this.states.getStateAsync(`${row.id}.compactMode`);
+                    const state = await this.#states.getStateAsync(`${row.id}.compactMode`);
                     if (state?.val) {
                         noCompactInstances++;
                     }
@@ -77,13 +114,16 @@ export class DiagInfoCollector extends ControllerContextBase {
             return null;
         }
 
-        const { config, logger, hostLogPrefix, hostMeta } = this;
+        const config = this.#config;
+        const logger = this.#logger;
+        const hostLogPrefix = this.#hostLogPrefix;
+        const hostMeta = this.#hostMeta;
 
         let systemConfig;
         let err;
 
         try {
-            systemConfig = await this.objects.getObject(SYSTEM_CONFIG_ID);
+            systemConfig = await this.#objects.getObject(SYSTEM_CONFIG_ID);
         } catch (e) {
             err = e;
         }
@@ -98,7 +138,7 @@ export class DiagInfoCollector extends ControllerContextBase {
 
         let obj;
         try {
-            obj = await this.objects.getObjectAsync('system.meta.uuid');
+            obj = await this.#objects.getObjectAsync('system.meta.uuid');
         } catch {
             // ignore obj is undefined
         }
@@ -112,7 +152,7 @@ export class DiagInfoCollector extends ControllerContextBase {
         err = null;
 
         try {
-            doc = await this.objects.getObjectViewAsync('system', 'host', {
+            doc = await this.#objects.getObjectViewAsync('system', 'host', {
                 startkey: SYSTEM_HOST_PREFIX,
                 endkey: `${SYSTEM_HOST_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
             });
@@ -189,7 +229,7 @@ export class DiagInfoCollector extends ControllerContextBase {
         err = null;
 
         try {
-            doc = await this.objects.getObjectViewAsync('system', 'adapter', {
+            doc = await this.#objects.getObjectViewAsync('system', 'adapter', {
                 startkey: SYSTEM_ADAPTER_PREFIX,
                 endkey: `${SYSTEM_ADAPTER_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
             });
@@ -219,7 +259,7 @@ export class DiagInfoCollector extends ControllerContextBase {
             const { calcProjects } = await import('@/lib/vis/states.js');
 
             try {
-                const points = await calcProjects({ objects: this.objects, instance: 0, visAdapter });
+                const points = await calcProjects({ objects: this.#objects, instance: 0, visAdapter });
                 let total = null;
                 const tasks = [];
 

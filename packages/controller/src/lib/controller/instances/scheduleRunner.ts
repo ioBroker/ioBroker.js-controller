@@ -5,8 +5,17 @@ import { CronExpressionParser } from 'cron-parser';
 import { EXIT_CODES, isInstalledFromNpm, tools } from '@iobroker/js-controller-common';
 import { getCronExpression } from '@/lib/utils.js';
 import { getErrorText } from '@/lib/controller/helpers.js';
-import { ControllerContextBase } from '@/lib/controller/contextBase.js';
+import type { InstanceManager, InstanceManagerOptions } from '@/lib/controller/instances/instanceManager.js';
 import type { Process, ScheduledInstanceEntry } from '@/lib/controller/types.js';
+
+/** Everything the schedule runner needs to do its work */
+export type ScheduleRunnerOptions = Pick<
+    InstanceManagerOptions,
+    'states' | 'config' | 'logger' | 'hostLogPrefix' | 'hostObjectPrefix' | 'isCompactGroupController' | 'statistics'
+> & {
+    /** The instances of this host, scheduled starts are registered on them */
+    instances: InstanceManager;
+};
 
 /** Everything which is needed to schedule an instance */
 export interface ScheduleInstanceContext {
@@ -31,7 +40,16 @@ export interface ScheduleInstanceContext {
 /**
  * Starts instances of type `schedule` at their configured time
  */
-export class ScheduleRunner extends ControllerContextBase {
+export class ScheduleRunner {
+    readonly #options: ScheduleRunnerOptions;
+
+    /**
+     * @param options Everything the schedule runner needs to do its work
+     */
+    constructor(options: ScheduleRunnerOptions) {
+        this.#options = options;
+    }
+
     /**
      * Register the cron job of an instance of type `schedule`
      *
@@ -39,7 +57,8 @@ export class ScheduleRunner extends ControllerContextBase {
      */
     scheduleInstance(ctx: ScheduleInstanceContext): void {
         const { id, instance, proc, adapterMainFile, adapterDir, args, execArgv, wakeUp } = ctx;
-        const { states, logger, hostLogPrefix, hostObjectPrefix, instances, isCompactGroupController } = this;
+        const { states, logger, hostLogPrefix, hostObjectPrefix, instances, isCompactGroupController, statistics } =
+            this.#options;
 
         if (isCompactGroupController) {
             logger.debug(`${hostLogPrefix} ${instance._id} schedule is not started by compact group controller`);
@@ -124,7 +143,7 @@ export class ScheduleRunner extends ControllerContextBase {
 
             const proc = instances.procs[id];
 
-            this.countOutput();
+            statistics.countOutput();
             states
                 .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
                 .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));
@@ -160,7 +179,7 @@ export class ScheduleRunner extends ControllerContextBase {
      * Start all queued instances of type `schedule` one after another
      */
     async startScheduledInstance(): Promise<void> {
-        const { config, logger, hostLogPrefix, instances } = this;
+        const { config, logger, hostLogPrefix, instances } = this.#options;
         const { scheduledInstances } = instances;
 
         let idsToStart = Object.keys(scheduledInstances);
@@ -193,7 +212,7 @@ export class ScheduleRunner extends ControllerContextBase {
      * @returns true if the instance has not been started, so the next one does not need to wait
      */
     async #startSingleScheduledInstance(id: string, entry: ScheduledInstanceEntry): Promise<boolean> {
-        const { states, logger, hostLogPrefix, hostObjectPrefix, instances } = this;
+        const { states, logger, hostLogPrefix, hostObjectPrefix, instances, statistics } = this.#options;
         const { procs } = instances;
         const { adapterDir, fileNameFull, wakeUp } = entry;
 
@@ -259,7 +278,7 @@ export class ScheduleRunner extends ControllerContextBase {
             );
 
             proc.process.on('exit', (code, signal) => {
-                this.countOutput();
+                statistics.countOutput();
                 states
                     .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
                     .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));

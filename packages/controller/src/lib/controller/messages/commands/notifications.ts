@@ -1,13 +1,23 @@
-import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+import type { MessageBus } from '@/lib/controller/messages/messageBus.js';
+import type { NotificationHandler } from '@iobroker/js-controller-common';
+import type { HostCommand, HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+
+/** Everything the host commands for the notifications of this host need */
+export interface NotificationCommandsDeps {
+    /** Handles the notifications of this host */
+    notificationHandler: NotificationHandler;
+    /** Sends the answers back to the requester */
+    messages: MessageBus;
+}
 
 /**
  * Register a new notification at the notification handler of this host
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const addNotification: HostCommandHandler = async (ctx, msg) => {
-    const { notificationHandler, messages } = ctx;
+const addNotification: HostCommand<NotificationCommandsDeps> = async (deps, msg) => {
+    const { notificationHandler, messages } = deps;
 
     await notificationHandler.addMessage({
         scope: msg.message.scope,
@@ -25,11 +35,11 @@ const addNotification: HostCommandHandler = async (ctx, msg) => {
 /**
  * Clear notifications of the given scope, category and instance
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const clearNotifications: HostCommandHandler = async (ctx, msg) => {
-    const { notificationHandler, messages } = ctx;
+const clearNotifications: HostCommand<NotificationCommandsDeps> = async (deps, msg) => {
+    const { notificationHandler, messages } = deps;
 
     await notificationHandler.clearNotifications(msg.message.scope, msg.message.category, msg.message.instance);
 
@@ -41,11 +51,11 @@ const clearNotifications: HostCommandHandler = async (ctx, msg) => {
 /**
  * Answer with all notifications of the given scope, category and instance
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getNotifications: HostCommandHandler = (ctx, msg) => {
-    const { notificationHandler, messages } = ctx;
+const getNotifications: HostCommand<NotificationCommandsDeps> = (deps, msg) => {
+    const { notificationHandler, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         return;
@@ -60,9 +70,15 @@ const getNotifications: HostCommandHandler = (ctx, msg) => {
     messages.sendTo(msg.from, msg.command, { result: notificationsObj }, msg.callback);
 };
 
-/** All commands which deal with the notifications of this host */
-export const notificationCommands: Record<string, HostCommandHandler> = {
-    addNotification,
-    clearNotifications,
-    getNotifications,
-};
+/**
+ * Create the host commands for the notifications of this host
+ *
+ * @param deps Everything these commands need
+ */
+export function createNotificationCommands(deps: NotificationCommandsDeps): Record<string, HostCommandHandler> {
+    return {
+        addNotification: msg => addNotification(deps, msg),
+        clearNotifications: msg => clearNotifications(deps, msg),
+        getNotifications: msg => getNotifications(deps, msg),
+    };
+}

@@ -1,8 +1,7 @@
 import assert from 'node:assert/strict';
 import sinon from 'sinon';
-import { tools } from '@iobroker/js-controller-common';
 import { MessageBus } from '@/lib/controller/messages/messageBus.js';
-import { createTestContext } from '@/lib/controller/context.test-utils.js';
+import { silentLogger, testIdentity } from '@/lib/controller/testing.test-utils.js';
 
 /**
  * Let the fire-and-forget part of `sendTo` run
@@ -16,26 +15,19 @@ async function flush(): Promise<void> {
 describe('MessageBus.initMessageQueue', () => {
     it('subscribes to the messagebox of this host', () => {
         const subscribeMessage = sinon.stub().resolves();
-        const bus = new MessageBus(createTestContext({ states: { subscribeMessage } }));
+        const bus = new MessageBus({ states: { subscribeMessage } as any, ...testIdentity() });
 
         bus.initMessageQueue();
 
         assert.equal(subscribeMessage.calledOnce, true);
         assert.equal(subscribeMessage.firstCall.args[0], 'system.host.testhost');
     });
-
-    it('throws ERROR_DB_CLOSED when the states database is not connected', () => {
-        // this is the contract of the context: code which does not guard gets a clear error
-        const bus = new MessageBus(createTestContext());
-
-        assert.throws(() => bus.initMessageQueue(), new RegExp(tools.ERRORS.ERROR_DB_CLOSED));
-    });
 });
 
 describe('MessageBus.sendTo', () => {
     it('prefixes a bare adapter name with "system.adapter."', async () => {
         const pushMessage = sinon.stub().resolves();
-        const bus = new MessageBus(createTestContext({ states: { pushMessage } }));
+        const bus = new MessageBus({ states: { pushMessage } as any, ...testIdentity() });
 
         await bus.sendTo('hm-rpc.0', 'someCommand', { a: 1 });
 
@@ -48,23 +40,16 @@ describe('MessageBus.sendTo', () => {
 
     it('leaves an already qualified host id untouched', async () => {
         const pushMessage = sinon.stub().resolves();
-        const bus = new MessageBus(createTestContext({ states: { pushMessage } }));
+        const bus = new MessageBus({ states: { pushMessage } as any, ...testIdentity() });
 
         await bus.sendTo('system.host.other', 'getVersion', null);
 
         assert.equal(pushMessage.firstCall.args[0], 'system.host.other');
     });
 
-    it('does nothing while the states database is not connected', async () => {
-        // no `states` passed - the context getter would throw, sendTo has to bail out before that
-        const bus = new MessageBus(createTestContext());
-
-        await assert.doesNotReject(() => bus.sendTo('hm-rpc.0', 'someCommand', {}));
-    });
-
     it('attaches a generated callback header for a function callback', async () => {
         const pushMessage = sinon.stub().resolves();
-        const bus = new MessageBus(createTestContext({ states: { pushMessage } }));
+        const bus = new MessageBus({ states: { pushMessage } as any, ...testIdentity() });
 
         bus.sendTo('hm-rpc.0', 'someCommand', { a: 1 }, () => {});
         await flush();
@@ -76,7 +61,7 @@ describe('MessageBus.sendTo', () => {
 
     it('passes a legacy MessageCallbackInfo through as an acknowledged header', async () => {
         const pushMessage = sinon.stub().resolves();
-        const bus = new MessageBus(createTestContext({ states: { pushMessage } }));
+        const bus = new MessageBus({ states: { pushMessage } as any, ...testIdentity() });
         const callback: ioBroker.MessageCallbackInfo = { message: {}, id: 42, ack: false, time: Date.now() };
 
         bus.sendTo('hm-rpc.0', 'someCommand', {}, callback);
@@ -90,8 +75,8 @@ describe('MessageBus.sendTo', () => {
     it('reports a push error to the callback and drops the pending entry', async () => {
         const pushMessage = sinon.stub().rejects(new Error('push failed'));
         const error = sinon.stub();
-        const logger = { silly() {}, debug() {}, info() {}, warn() {}, error } as any;
-        const bus = new MessageBus(createTestContext({ states: { pushMessage }, logger }));
+        const logger = silentLogger({ error });
+        const bus = new MessageBus({ states: { pushMessage } as any, ...testIdentity({ logger }) });
         const callback = sinon.stub();
 
         bus.sendTo('hm-rpc.0', 'someCommand', {}, callback);
@@ -108,7 +93,7 @@ describe('MessageBus.sendTo', () => {
 describe('MessageBus.handleResponse', () => {
     it('resolves the pending callback of a sent message', async () => {
         const pushMessage = sinon.stub().resolves();
-        const bus = new MessageBus(createTestContext({ states: { pushMessage } }));
+        const bus = new MessageBus({ states: { pushMessage } as any, ...testIdentity() });
         const callback = sinon.stub();
 
         bus.sendTo('hm-rpc.0', 'someCommand', {}, callback);
@@ -127,7 +112,7 @@ describe('MessageBus.handleResponse', () => {
     });
 
     it('ignores a message which is not an answer to one of our requests', () => {
-        const bus = new MessageBus(createTestContext());
+        const bus = new MessageBus({ states: {} as any, ...testIdentity() });
 
         assert.equal(bus.handleResponse({ command: 'x', message: {} } as any), false);
         assert.equal(bus.handleResponse({ callback: { ack: true, id: 999 } } as any), false);
@@ -137,7 +122,7 @@ describe('MessageBus.handleResponse', () => {
 
     it('consumes the callback, so a repeated answer is ignored', async () => {
         const pushMessage = sinon.stub().resolves();
-        const bus = new MessageBus(createTestContext({ states: { pushMessage } }));
+        const bus = new MessageBus({ states: { pushMessage } as any, ...testIdentity() });
         const callback = sinon.stub();
 
         bus.sendTo('hm-rpc.0', 'someCommand', {}, callback);
@@ -154,7 +139,7 @@ describe('MessageBus.handleResponse', () => {
 describe('MessageBus.sendToAndWait', () => {
     it('resolves with the payload of the answer', async () => {
         const pushMessage = sinon.stub().resolves();
-        const bus = new MessageBus(createTestContext({ states: { pushMessage } }));
+        const bus = new MessageBus({ states: { pushMessage } as any, ...testIdentity() });
 
         const pending = bus.sendToAndWait('hm-rpc.0', 'someCommand', {});
         // let sendTo push the message before we answer it
@@ -171,8 +156,8 @@ describe('MessageBus.getVersionFromHost', () => {
     it('returns null when the other host is not alive', async () => {
         const getState = sinon.stub().resolves({ val: false });
         const warn = sinon.stub();
-        const logger = { silly() {}, debug() {}, info() {}, warn, error() {} } as any;
-        const bus = new MessageBus(createTestContext({ states: { getState }, logger }));
+        const logger = silentLogger({ warn });
+        const bus = new MessageBus({ states: { getState } as any, ...testIdentity({ logger }) });
 
         assert.equal(await bus.getVersionFromHost('system.host.other'), null);
         assert.equal(getState.firstCall.args[0], 'system.host.other.alive');
@@ -182,7 +167,7 @@ describe('MessageBus.getVersionFromHost', () => {
     it('returns the io-package information the other host answered with', async () => {
         const getState = sinon.stub().resolves({ val: true });
         const pushMessage = sinon.stub().resolves();
-        const bus = new MessageBus(createTestContext({ states: { getState, pushMessage } }));
+        const bus = new MessageBus({ states: { getState, pushMessage } as any, ...testIdentity() });
 
         const pending = bus.getVersionFromHost('system.host.other');
         await flush();
@@ -197,7 +182,7 @@ describe('MessageBus.getVersionFromHost', () => {
 describe('MessageBus.sendResponseTo', () => {
     it('answers only when the received message carries a callback and a sender', async () => {
         const pushMessage = sinon.stub().resolves();
-        const bus = new MessageBus(createTestContext({ states: { pushMessage } }));
+        const bus = new MessageBus({ states: { pushMessage } as any, ...testIdentity() });
 
         // a message without `from` cannot be answered, even though it is not representable in the type
         bus.sendResponseTo({

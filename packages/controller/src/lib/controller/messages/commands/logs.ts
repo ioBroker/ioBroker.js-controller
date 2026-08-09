@@ -5,8 +5,36 @@ import { setTimeout as wait } from 'node:timers/promises';
 import { tools } from '@iobroker/js-controller-common';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import { getConfig } from '@/lib/controller/config.js';
-import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
-import type { GetLogFilesResult } from '@/lib/controller/types.js';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
+import type { ControllerLogger, GetLogFilesResult } from '@/lib/controller/types.js';
+import type { InstanceManager } from '@/lib/controller/instances/instanceManager.js';
+import type { MessageBus } from '@/lib/controller/messages/messageBus.js';
+import type { Statistics } from '@/lib/controller/statistics.js';
+import type { HostCommand, HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+
+/** Everything the host commands for the log files of this host need */
+export interface LogCommandsDeps {
+    /** The connected states database client */
+    states: StatesClient;
+    /** Sends the answers back to the requester */
+    messages: MessageBus;
+    /** Takes care of all instances of this host */
+    instances: InstanceManager;
+    /** The counters of the received and written states */
+    statistics: Statistics;
+    /** All instances which have subscribed to the log messages of this host */
+    logList: string[];
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** The id of the host object of this controller */
+    hostObjectPrefix: ioBroker.ObjectIDs.Host;
+    /** Name of this host */
+    hostname: string;
+    /** Directory of the js-controller */
+    controllerDir: string;
+}
 
 /**
  * Determine the directory of a configured file transport
@@ -38,11 +66,11 @@ function getLogDirectory(transportConfig: Record<string, any>, controllerDir: st
 /**
  * Read the last lines of the current log file
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getLogs: HostCommandHandler = async (ctx, msg) => {
-    const { logger, hostLogPrefix, controllerDir, messages } = ctx;
+const getLogs: HostCommand<LogCommandsDeps> = async (deps, msg) => {
+    const { logger, hostLogPrefix, controllerDir, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -95,11 +123,11 @@ const getLogs: HostCommandHandler = async (ctx, msg) => {
 /**
  * Read one specific log file from disk
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getLogFile: HostCommandHandler = (ctx, msg) => {
-    const { logger, hostLogPrefix, controllerDir, messages } = ctx;
+const getLogFile: HostCommand<LogCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, controllerDir, messages } = deps;
 
     if (!msg.callback || !msg.from || !msg.message) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -138,11 +166,11 @@ const getLogFile: HostCommandHandler = (ctx, msg) => {
 /**
  * List all log files of all configured file transports
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getLogFiles: HostCommandHandler = (ctx, msg) => {
-    const { logger, hostLogPrefix, controllerDir, hostname, messages } = ctx;
+const getLogFiles: HostCommand<LogCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, controllerDir, hostname, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -193,11 +221,11 @@ const getLogFiles: HostCommandHandler = (ctx, msg) => {
 /**
  * Truncate all known log files
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const delLogs: HostCommandHandler = (ctx, msg) => {
-    const { logger, controllerDir, messages } = ctx;
+const delLogs: HostCommand<LogCommandsDeps> = (deps, msg) => {
+    const { logger, controllerDir, messages } = deps;
 
     // @ts-expect-error types not know this one
     const logFile: string = logger.getFileName(); //controllerDir + '/log/' + tools.appName + '.log';
@@ -222,10 +250,10 @@ const delLogs: HostCommandHandler = (ctx, msg) => {
 /**
  * Print the state of the log redirection of all instances into the log
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  */
-const checkLogging: HostCommandHandler = async ctx => {
-    const { states, logger, hostLogPrefix, hostObjectPrefix, logList, instances } = ctx;
+const checkLogging: HostCommand<LogCommandsDeps> = async deps => {
+    const { states, logger, hostLogPrefix, hostObjectPrefix, logList, instances } = deps;
 
     // TODO: temporary enough to remove now?
     // this is temporary function to check the logging functionality
@@ -238,7 +266,7 @@ const checkLogging: HostCommandHandler = async ctx => {
     // Get a list of all active adapters and send them a message with command checkLogging
     for (const _id of Object.keys(instances.procs)) {
         if (instances.procs[_id].process) {
-            ctx.countOutput();
+            deps.statistics.countOutput();
             states
                 .setState(`${_id}.checkLogging`, { val: true, ack: false, from: hostObjectPrefix })
                 .catch(e => logger.error(`${hostLogPrefix} Cannot set checkLogging state: ${e.message}`));
@@ -275,11 +303,17 @@ const checkLogging: HostCommandHandler = async ctx => {
     }
 };
 
-/** All commands which deal with the log files of this host */
-export const logCommands: Record<string, HostCommandHandler> = {
-    getLogs,
-    getLogFile,
-    getLogFiles,
-    delLogs,
-    checkLogging,
-};
+/**
+ * Create the host commands for the log files of this host
+ *
+ * @param deps Everything these commands need
+ */
+export function createLogCommands(deps: LogCommandsDeps): Record<string, HostCommandHandler> {
+    return {
+        getLogs: msg => getLogs(deps, msg),
+        getLogFile: msg => getLogFile(deps, msg),
+        getLogFiles: msg => getLogFiles(deps, msg),
+        delLogs: msg => delLogs(deps, msg),
+        checkLogging: msg => checkLogging(deps, msg),
+    };
+}

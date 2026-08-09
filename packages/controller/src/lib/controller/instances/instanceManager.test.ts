@@ -2,7 +2,14 @@ import assert from 'node:assert/strict';
 import sinon from 'sinon';
 import fs from 'fs-extra';
 import { InstanceManager } from '@/lib/controller/instances/instanceManager.js';
-import { createTestContext, type TestContextOverrides } from '@/lib/controller/context.test-utils.js';
+import type { InstanceManagerOptions } from '@/lib/controller/instances/instanceManager.js';
+import {
+    silentLogger,
+    testConfig,
+    testIdentity,
+    testState,
+    testStatistics,
+} from '@/lib/controller/testing.test-utils.js';
 
 /**
  * Build an instance object as it is stored in the objects database
@@ -24,17 +31,35 @@ function instanceObject(over: Record<string, any> = {}): ioBroker.InstanceObject
 }
 
 /**
- * Create a manager together with the context it runs on
+ * Create a manager together with the options it runs on
  *
- * @param over Parts of the context this test wants to control
+ * @param over The parts this test wants to control
  */
-function createManager(over: TestContextOverrides = {}): {
+function createManager(over: Partial<InstanceManagerOptions> = {}): {
     manager: InstanceManager;
-    ctx: ReturnType<typeof createTestContext>;
+    options: InstanceManagerOptions;
 } {
-    const ctx = createTestContext(over);
+    const options: InstanceManagerOptions = {
+        objects: {} as any,
+        states: {} as any,
+        config: testConfig(),
+        ioPackage: { common: { name: 'js-controller', version: '7.0.0' } },
+        isDaemon: false,
+        isCompactGroupController: false,
+        compactGroup: null,
+        notificationHandler: {} as any,
+        blocklistManager: {} as any,
+        messages: {} as any,
+        statistics: testStatistics(),
+        state: testState(),
+        logWriteErrors: () => {},
+        uploadAdapter: async () => {},
+        requestRebuild: () => {},
+        ...testIdentity(),
+        ...over,
+    };
 
-    return { manager: new InstanceManager(ctx), ctx };
+    return { manager: new InstanceManager(options), options };
 }
 
 describe('InstanceManager.checkAndAddInstance', () => {
@@ -70,7 +95,7 @@ describe('InstanceManager.checkAndAddInstance', () => {
 
     it('claims an instance without a host and writes the host name back', async () => {
         const setObject = sinon.stub().resolves();
-        const { manager } = createManager({ objects: { setObject } });
+        const { manager } = createManager({ objects: { setObject } as any });
         const instance = instanceObject({ common: { host: '' } });
 
         const added = await manager.checkAndAddInstance(instance, []);
@@ -84,8 +109,8 @@ describe('InstanceManager.checkAndAddInstance', () => {
     it('still claims the instance when the host name could not be written', async () => {
         const setObject = sinon.stub().rejects(new Error('db down'));
         const error = sinon.stub();
-        const logger = { silly() {}, debug() {}, info() {}, warn() {}, error } as any;
-        const { manager } = createManager({ objects: { setObject }, logger });
+        const logger = silentLogger({ error });
+        const { manager } = createManager({ objects: { setObject } as any, logger });
 
         const added = await manager.checkAndAddInstance(instanceObject({ common: { host: '' } }), []);
 
@@ -198,48 +223,48 @@ describe('InstanceManager.setInstanceOfflineStates', () => {
     it('resets alive and connected and counts both writes', async () => {
         const setState = sinon.stub().resolves();
         const getState = sinon.stub().resolves(null);
-        const { manager, ctx } = createManager({ states: { setState, getState } });
+        const { manager, options } = createManager({ states: { setState, getState } as any });
 
         await manager.setInstanceOfflineStates('system.adapter.hm-rpc.0');
 
         assert.equal(setState.callCount, 2);
         assert.equal(setState.firstCall.args[0], 'system.adapter.hm-rpc.0.alive');
         assert.equal(setState.secondCall.args[0], 'system.adapter.hm-rpc.0.connected');
-        assert.equal(ctx.outputCount, 2);
+        assert.equal(options.statistics.outputCount, 2);
     });
 
     it('also resets the connection state of the adapter when it was connected', async () => {
         const setState = sinon.stub().resolves();
         const getState = sinon.stub().resolves({ val: true });
-        const { manager, ctx } = createManager({ states: { setState, getState } });
+        const { manager, options } = createManager({ states: { setState, getState } as any });
 
         await manager.setInstanceOfflineStates('system.adapter.hm-rpc.0');
 
         assert.equal(getState.firstCall.args[0], 'hm-rpc.0.info.connection');
         assert.equal(setState.callCount, 3);
         assert.equal(setState.thirdCall.args[0], 'hm-rpc.0');
-        assert.equal(ctx.outputCount, 3);
+        assert.equal(options.statistics.outputCount, 3);
     });
 });
 
 describe('InstanceManager.stopInstances', () => {
     it('marks the controller as stopping', async () => {
-        const { manager, ctx } = createManager();
+        const { manager, options } = createManager();
 
-        assert.equal(ctx.isStopping, null);
+        assert.equal(options.state.isStopping, null);
         await manager.stopInstances(false, 10_000);
 
-        assert.equal(typeof ctx.isStopping, 'number');
+        assert.equal(typeof options.state.isStopping, 'number');
     });
 
     it('keeps the timestamp of the first stop request', async () => {
-        const { manager, ctx } = createManager();
+        const { manager, options } = createManager();
 
         await manager.stopInstances(false, 10_000);
-        const first = ctx.isStopping;
+        const first = options.state.isStopping;
         await manager.stopInstances(false, 10_000);
 
-        assert.equal(ctx.isStopping, first);
+        assert.equal(options.state.isStopping, first);
     });
 
     it('reports a forced shutdown when the stop timeout has already passed', async () => {
@@ -308,7 +333,7 @@ describe('InstanceManager.storePids', () => {
 
 describe('InstanceManager.handleObjectChange', () => {
     it('ignores changes before the instances have been started', async () => {
-        const { manager } = createManager({ started: false });
+        const { manager } = createManager({ state: testState({ started: false }) });
 
         await manager.handleObjectChange('system.adapter.hm-rpc.0', instanceObject());
 

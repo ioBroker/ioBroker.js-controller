@@ -7,19 +7,51 @@ import deepClone from 'deep-clone';
 import { getSupportedFeatures, tools, type SupportedFeature } from '@iobroker/js-controller-common';
 import { HIGHEST_UNICODE_SYMBOL, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import type { HostInfo } from '@iobroker/js-controller-common-db/tools';
-import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
-import type { HostInformation } from '@/lib/controller/types.js';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { ControllerLogger, HostInformation } from '@/lib/controller/types.js';
+import type { DiagInfoCollector } from '@/lib/controller/host/diagInfoCollector.js';
+import type { InstanceManager } from '@/lib/controller/instances/instanceManager.js';
+import type { MessageBus } from '@/lib/controller/messages/messageBus.js';
+import type { HostCommand, HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+
+/** Everything the host commands for information about this host and its adapters need */
+export interface InfoCommandsDeps {
+    /** The connected objects database client */
+    objects: ObjectsClient;
+    /** Sends the answers back to the requester */
+    messages: MessageBus;
+    /** Collects the diagnostics information */
+    diag: DiagInfoCollector;
+    /** Takes care of all instances of this host */
+    instances: InstanceManager;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** The id of the host object of this controller */
+    hostObjectPrefix: ioBroker.ObjectIDs.Host;
+    /** Name of this host */
+    hostname: string;
+    /** The raw content of the io-package.json of the js-controller */
+    ioPackage: any;
+    /** The version of the js-controller */
+    version: string;
+    /** Directory of the js-controller */
+    controllerDir: string;
+    /** Timestamp of the start of this controller */
+    uptimeStart: number;
+}
 
 const execAsync = promisify(exec);
 
 /**
  * Collect the installed adapters of all hosts
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getInstalled: HostCommandHandler = async (ctx, msg) => {
-    const { objects, logger, hostLogPrefix, hostObjectPrefix, hostname, ioPackage, version, messages } = ctx;
+const getInstalled: HostCommand<InfoCommandsDeps> = async (deps, msg) => {
+    const { objects, logger, hostLogPrefix, hostObjectPrefix, hostname, ioPackage, version, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -60,11 +92,11 @@ const getInstalled: HostCommandHandler = async (ctx, msg) => {
 /**
  * Read the io-package.json of a locally installed adapter
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getInstalledAdapter: HostCommandHandler = (ctx, msg) => {
-    const { logger, hostLogPrefix, messages } = ctx;
+const getInstalledAdapter: HostCommand<InfoCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, messages } = deps;
 
     if (!msg.callback || !msg.from || !msg.message) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -88,11 +120,11 @@ const getInstalledAdapter: HostCommandHandler = (ctx, msg) => {
 /**
  * Answer with the version information of this host
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getVersion: HostCommandHandler = (ctx, msg) => {
-    const { logger, hostLogPrefix, hostname, ioPackage, version, messages } = ctx;
+const getVersion: HostCommand<InfoCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, hostname, ioPackage, version, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -108,11 +140,11 @@ const getVersion: HostCommandHandler = (ctx, msg) => {
 /**
  * Collect the diagnostics information of this installation
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getDiagData: HostCommandHandler = async (ctx, msg) => {
-    const { logger, hostLogPrefix, diag, messages } = ctx;
+const getDiagData: HostCommand<InfoCommandsDeps> = async (deps, msg) => {
+    const { logger, hostLogPrefix, diag, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -135,11 +167,11 @@ const getDiagData: HostCommandHandler = async (ctx, msg) => {
 /**
  * Answer with the location of the js-controller on disk
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getLocationOnDisk: HostCommandHandler = (ctx, msg) => {
-    const { logger, hostLogPrefix, controllerDir, messages } = ctx;
+const getLocationOnDisk: HostCommand<InfoCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, controllerDir, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -152,11 +184,11 @@ const getLocationOnDisk: HostCommandHandler = (ctx, msg) => {
 /**
  * List the content of `/dev` on linux systems
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getDevList: HostCommandHandler = async (ctx, msg) => {
-    const { logger, hostLogPrefix, messages } = ctx;
+const getDevList: HostCommand<InfoCommandsDeps> = async (deps, msg) => {
+    const { logger, hostLogPrefix, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -198,11 +230,11 @@ const getDevList: HostCommandHandler = async (ctx, msg) => {
 /**
  * Collect detailed information about this host
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getHostInfo: HostCommandHandler = async (ctx, msg) => {
-    const { objects, logger, hostLogPrefix, controllerDir, uptimeStart, instances, messages } = ctx;
+const getHostInfo: HostCommand<InfoCommandsDeps> = async (deps, msg) => {
+    const { objects, logger, hostLogPrefix, controllerDir, uptimeStart, instances, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -248,11 +280,11 @@ const getHostInfo: HostCommandHandler = async (ctx, msg) => {
 /**
  * Same as `getHostInfo`, but faster because it delivers less information
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getHostInfoShort: HostCommandHandler = (ctx, msg) => {
-    const { logger, hostLogPrefix, controllerDir, messages } = ctx;
+const getHostInfoShort: HostCommand<InfoCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, controllerDir, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -294,11 +326,11 @@ const getHostInfoShort: HostCommandHandler = (ctx, msg) => {
 /**
  * Answer with all network interfaces of this host
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const getInterfaces: HostCommandHandler = (ctx, msg) => {
-    const { logger, hostLogPrefix, messages } = ctx;
+const getInterfaces: HostCommand<InfoCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -311,11 +343,11 @@ const getInterfaces: HostCommandHandler = (ctx, msg) => {
 /**
  * Check if a specific feature is supported by this js-controller
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const checkFeatureSupported: HostCommandHandler = (ctx, msg) => {
-    const { messages } = ctx;
+const checkFeatureSupported: HostCommand<InfoCommandsDeps> = (deps, msg) => {
+    const { messages } = deps;
     const feature: unknown = msg.message;
 
     if (!msg.callback || !msg.from) {
@@ -330,16 +362,22 @@ const checkFeatureSupported: HostCommandHandler = (ctx, msg) => {
     }
 };
 
-/** All commands which deliver information about this host */
-export const infoCommands: Record<string, HostCommandHandler> = {
-    getInstalled,
-    getInstalledAdapter,
-    getVersion,
-    getDiagData,
-    getLocationOnDisk,
-    getDevList,
-    getHostInfo,
-    getHostInfoShort,
-    getInterfaces,
-    checkFeatureSupported,
-};
+/**
+ * Create the host commands for information about this host and its adapters
+ *
+ * @param deps Everything these commands need
+ */
+export function createInfoCommands(deps: InfoCommandsDeps): Record<string, HostCommandHandler> {
+    return {
+        getInstalled: msg => getInstalled(deps, msg),
+        getInstalledAdapter: msg => getInstalledAdapter(deps, msg),
+        getVersion: msg => getVersion(deps, msg),
+        getDiagData: msg => getDiagData(deps, msg),
+        getLocationOnDisk: msg => getLocationOnDisk(deps, msg),
+        getDevList: msg => getDevList(deps, msg),
+        getHostInfo: msg => getHostInfo(deps, msg),
+        getHostInfoShort: msg => getHostInfoShort(deps, msg),
+        getInterfaces: msg => getInterfaces(deps, msg),
+        checkFeatureSupported: msg => checkFeatureSupported(deps, msg),
+    };
+}

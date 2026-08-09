@@ -4,19 +4,51 @@ import { isLocalObjectsDbServer, isLocalStatesDbServer, tools } from '@iobroker/
 import { SYSTEM_CONFIG_ID } from '@iobroker/js-controller-common-db/constants';
 import { MHServer } from '@/lib/multihostServer.js';
 import { getConfig } from '@/lib/controller/config.js';
-import { ControllerContextBase } from '@/lib/controller/contextBase.js';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { ControllerLogger } from '@/lib/controller/types.js';
 
 /** Stop the temporarily activated multihost discovery server after this time */
 const TEMPORARY_MULTIHOST_LIFETIME = 15 * 60_000;
 
+/** Everything the multihost manager needs to do its work */
+export interface MultihostManagerOptions {
+    /** The connected objects database client, used to read the encryption secret */
+    objects: ObjectsClient;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** Name of this host, announced by the discovery server */
+    hostname: string;
+    /** If this controller is a compact group controller, those never run a discovery server */
+    isCompactGroupController: boolean;
+}
+
 /**
  * Starts and stops the multihost discovery server of this host
  */
-export class MultihostManager extends ControllerContextBase {
+export class MultihostManager {
+    readonly #objects: ObjectsClient;
+    readonly #logger: ControllerLogger;
+    readonly #hostLogPrefix: string;
+    readonly #hostname: string;
+    readonly #isCompactGroupController: boolean;
+
     /** The running multihost discovery server */
     #mhService: any = null;
     /** Timer which stops a temporarily activated multihost discovery server */
     #mhTimer: NodeJS.Timeout | null = null;
+
+    /**
+     * @param options Everything the multihost manager needs to do its work
+     */
+    constructor(options: MultihostManagerOptions) {
+        this.#objects = options.objects;
+        this.#logger = options.logger;
+        this.#hostLogPrefix = options.hostLogPrefix;
+        this.#hostname = options.hostname;
+        this.#isCompactGroupController = options.isCompactGroupController;
+    }
 
     /**
      * Starts the multihost discovery server
@@ -28,8 +60,8 @@ export class MultihostManager extends ControllerContextBase {
         const cpus = os.cpus();
 
         this.#mhService = new MHServer(
-            this.hostname,
-            this.logger,
+            this.#hostname,
+            this.#logger,
             config,
             {
                 node: process.version,
@@ -49,7 +81,9 @@ export class MultihostManager extends ControllerContextBase {
      * @param __config - the iobroker config object
      */
     async startMultihost(__config?: ioBroker.IoBrokerJson): Promise<boolean | void> {
-        const { logger, hostLogPrefix, isCompactGroupController } = this;
+        const logger = this.#logger;
+        const hostLogPrefix = this.#hostLogPrefix;
+        const isCompactGroupController = this.#isCompactGroupController;
 
         if (isCompactGroupController) {
             return;
@@ -107,7 +141,7 @@ export class MultihostManager extends ControllerContextBase {
                 let obj: ioBroker.SystemConfigObject | null | undefined;
                 let errText;
                 try {
-                    obj = await this.objects.getObject(SYSTEM_CONFIG_ID);
+                    obj = await this.#objects.getObject(SYSTEM_CONFIG_ID);
                 } catch (e) {
                     // will log error below
                     errText = e.message;

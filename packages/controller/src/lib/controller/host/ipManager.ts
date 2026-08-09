@@ -2,7 +2,9 @@ import os from 'node:os';
 import { isDeepStrictEqual } from 'node:util';
 import { tools } from '@iobroker/js-controller-common';
 import { SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
-import { ControllerContextBase } from '@/lib/controller/contextBase.js';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { ControllerState } from '@/lib/controller/state.js';
+import type { ControllerLogger } from '@/lib/controller/types.js';
 
 /** Interval to detect the IPs at the start of the controller, because of DHCP */
 const INITIAL_IP_CHECK_INTERVAL = 30_000;
@@ -13,14 +15,53 @@ const INITIAL_IP_CHECK_DURATION = 5 * 60_000;
 /** How often we try to detect an IPv4 address before giving up */
 const MAX_IP_DETECTION_TRIES = 10;
 
+/** Everything the IP manager needs to do its work */
+export interface IpManagerOptions {
+    /** The connected objects database client */
+    objects: ObjectsClient;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** The id of the host object of this controller */
+    hostObjectPrefix: ioBroker.ObjectIDs.Host;
+    /** Name of this host */
+    hostname: string;
+    /** Timestamp of the start of this controller, the check interval depends on it */
+    uptimeStart: number;
+    /** Lifecycle state, the IPs are not written during a shutdown */
+    state: ControllerState;
+}
+
 /**
  * Keeps the IP addresses of the host object up to date
  */
-export class IpManager extends ControllerContextBase {
+export class IpManager {
+    readonly #objects: ObjectsClient;
+    readonly #logger: ControllerLogger;
+    readonly #hostLogPrefix: string;
+    readonly #hostObjectPrefix: ioBroker.ObjectIDs.Host;
+    readonly #hostname: string;
+    readonly #uptimeStart: number;
+    readonly #state: ControllerState;
+
     /** How often we have tried to detect an IPv4 address */
     #detectIpsCount = 0;
     /** Timer for the cyclic update of the IPs */
     #updateIPsTimer: NodeJS.Timeout | null = null;
+
+    /**
+     * @param options Everything the IP manager needs to do its work
+     */
+    constructor(options: IpManagerOptions) {
+        this.#objects = options.objects;
+        this.#logger = options.logger;
+        this.#hostLogPrefix = options.hostLogPrefix;
+        this.#hostObjectPrefix = options.hostObjectPrefix;
+        this.#hostname = options.hostname;
+        this.#uptimeStart = options.uptimeStart;
+        this.#state = options.state;
+    }
 
     /**
      * Starts cyclic update of IP interfaces.
@@ -33,7 +74,7 @@ export class IpManager extends ControllerContextBase {
         }
 
         this.#updateIPsTimer = setInterval(() => {
-            if (Date.now() - this.uptimeStart > INITIAL_IP_CHECK_DURATION) {
+            if (Date.now() - this.#uptimeStart > INITIAL_IP_CHECK_DURATION) {
                 // 5 minutes at start check every 30 seconds because of DHCP
                 clearInterval(this.#updateIPsTimer!);
 
@@ -48,9 +89,7 @@ export class IpManager extends ControllerContextBase {
      * Determine and store the current IPs, log a potential error
      */
     #updateIPs(): void {
-        const { logger, hostLogPrefix } = this;
-
-        this.setIPs().catch(e => logger.error(`${hostLogPrefix} Cannot update IP addresses: ${e.message}`));
+        this.setIPs().catch(e => this.#logger.error(`${this.#hostLogPrefix} Cannot update IP addresses: ${e.message}`));
     }
 
     /**
@@ -61,9 +100,7 @@ export class IpManager extends ControllerContextBase {
      * @param ipList The list of IP addresses to store; if omitted, the current addresses are determined
      */
     async setIPs(ipList?: string[]): Promise<void> {
-        const { logger, hostLogPrefix, hostObjectPrefix, hostname } = this;
-
-        if (this.isStopping) {
+        if (this.#state.isStopping) {
             return;
         }
 
@@ -87,16 +124,16 @@ export class IpManager extends ControllerContextBase {
         }
 
         if (!found) {
-            logger.info(`${hostLogPrefix} No IPv4 address found after 5 minutes.`);
+            this.#logger.info(`${this.#hostLogPrefix} No IPv4 address found after 5 minutes.`);
             return;
         }
 
         // IPv4 found => write to object
         let oldObj: ioBroker.HostObject | null | undefined;
         try {
-            oldObj = await this.objects.getObject(`${SYSTEM_HOST_PREFIX}${hostname}`);
+            oldObj = await this.#objects.getObject(`${SYSTEM_HOST_PREFIX}${this.#hostname}`);
         } catch (e) {
-            logger.error(`${hostLogPrefix} Cannot read host object: ${e.message}`);
+            this.#logger.error(`${this.#hostLogPrefix} Cannot read host object: ${e.message}`);
         }
 
         const networkInterfaces = os.networkInterfaces();
@@ -109,13 +146,13 @@ export class IpManager extends ControllerContextBase {
         ) {
             oldObj.common.address = _ipList;
             oldObj.native.hardware.networkInterfaces = networkInterfaces;
-            oldObj.from = hostObjectPrefix;
+            oldObj.from = this.#hostObjectPrefix;
             oldObj.ts = Date.now();
 
             try {
-                await this.objects.setObject(oldObj._id, oldObj);
+                await this.#objects.setObject(oldObj._id, oldObj);
             } catch (e) {
-                logger.error(`${hostLogPrefix} Cannot write host object: ${e.message}`);
+                this.#logger.error(`${this.#hostLogPrefix} Cannot write host object: ${e.message}`);
             }
         }
 

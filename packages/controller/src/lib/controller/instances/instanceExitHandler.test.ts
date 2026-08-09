@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import sinon from 'sinon';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { createInstanceExitHandler } from '@/lib/controller/instances/instanceExitHandler.js';
-import { createTestContext, type TestContextOverrides } from '@/lib/controller/context.test-utils.js';
+import type { InstanceExitHandlerOptions } from '@/lib/controller/instances/instanceExitHandler.js';
+import { testIdentity, testState, testStatistics } from '@/lib/controller/testing.test-utils.js';
 import type { Process } from '@/lib/controller/types.js';
 
 const INSTANCE_ID = 'system.adapter.hm-rpc.0' as ioBroker.ObjectIDs.Instance;
@@ -40,6 +41,24 @@ function fakeInstances(procs: Record<string, Partial<Process>> = {}): any {
 }
 
 /**
+ * Build the options of an exit handler
+ *
+ * @param over The parts this test wants to control
+ */
+function exitOptions(over: Partial<InstanceExitHandlerOptions> = {}): InstanceExitHandlerOptions {
+    return {
+        states: {} as any,
+        notificationHandler: {} as any,
+        statistics: testStatistics(),
+        state: testState(),
+        requestRebuild: () => {},
+        instances: fakeInstances(),
+        ...testIdentity(),
+        ...over,
+    };
+}
+
+/**
  * Run the exit handler and wait until its asynchronous body has settled
  *
  * The handler itself is a synchronous fire-and-forget callback for `process.on('exit')`.
@@ -53,7 +72,7 @@ function fakeInstances(procs: Record<string, Partial<Process>> = {}): any {
  * @param options.signal The signal which terminated the instance process
  */
 async function runExit(options: {
-    ctx?: TestContextOverrides;
+    ctx?: Partial<InstanceExitHandlerOptions>;
     instances: any;
     mode?: string;
     wakeUp?: boolean;
@@ -61,8 +80,12 @@ async function runExit(options: {
     signal?: string | null;
 }): Promise<void> {
     const { instances, mode = 'daemon', wakeUp = false, code, signal = null } = options;
-    const ctx = createTestContext({ instances, ...options.ctx });
-    const handler = createInstanceExitHandler(ctx, { id: INSTANCE_ID, instance: instanceObject(), mode, wakeUp });
+    const handler = createInstanceExitHandler(exitOptions({ instances, ...options.ctx }), {
+        id: INSTANCE_ID,
+        instance: instanceObject(),
+        mode,
+        wakeUp,
+    });
 
     handler(code, signal as string);
 
@@ -102,8 +125,14 @@ describe('createInstanceExitHandler cleanup', () => {
         instance.common.logTransporter = true;
         const setState = sinon.stub().resolves();
         const instances = fakeInstances({ [INSTANCE_ID]: { config: instance } });
-        const ctx = createTestContext({ instances, states: { setState } });
-        const handler = createInstanceExitHandler(ctx, { id: INSTANCE_ID, instance, mode: 'daemon', wakeUp: false });
+        const statistics = testStatistics();
+        const options = exitOptions({ instances, states: { setState } as any, statistics });
+        const handler = createInstanceExitHandler(options, {
+            id: INSTANCE_ID,
+            instance,
+            mode: 'daemon',
+            wakeUp: false,
+        });
 
         handler(0, null as unknown as string);
         for (let i = 0; i < 5; i++) {
@@ -113,7 +142,7 @@ describe('createInstanceExitHandler cleanup', () => {
         assert.equal(setState.calledOnce, true);
         assert.equal(setState.firstCall.args[0], `${INSTANCE_ID}.logging`);
         assert.equal(setState.firstCall.args[1].val, false);
-        assert.equal(ctx.outputCount, 1);
+        assert.equal(statistics.outputCount, 1);
     });
 });
 
@@ -167,7 +196,7 @@ describe('createInstanceExitHandler restart behaviour', () => {
     it('reports that all instances are stopped once the last one exited', async () => {
         const instances = fakeInstances({ [INSTANCE_ID]: { config: instanceObject(), stopping: true } });
 
-        await runExit({ instances, ctx: { isStopping: Date.now() }, code: 0 });
+        await runExit({ instances, ctx: { state: testState({ stopping: true }) }, code: 0 });
 
         assert.equal(instances.allInstancesStopped, true);
     });
@@ -217,41 +246,39 @@ describe('createInstanceExitHandler crash loop detection', () => {
 });
 
 describe('createInstanceExitHandler rebuild requests', () => {
-    it('asks this host to rebuild the adapter', async () => {
-        const process = sinon.stub().resolves();
+    it('requests the rebuild of the adapter', async () => {
+        const requestRebuild = sinon.stub();
         const instances = fakeInstances({ [INSTANCE_ID]: { config: instanceObject(), needsRebuild: true } });
 
-        await runExit({ instances, ctx: { messageHandler: { process } as any }, code: 0 });
+        await runExit({ instances, ctx: { requestRebuild }, code: 0 });
 
-        assert.equal(process.calledOnce, true);
-        assert.equal(process.firstCall.args[0].command, 'rebuildAdapter');
-        assert.equal(process.firstCall.args[0].message.id, INSTANCE_ID);
+        assert.equal(requestRebuild.calledOnce, true);
+        assert.equal(requestRebuild.firstCall.args[0].command, 'rebuildAdapter');
+        assert.equal(requestRebuild.firstCall.args[0].message.id, INSTANCE_ID);
         // no restart, the rebuild takes care of that
         assert.equal(instances.procs[INSTANCE_ID].restartTimer, undefined);
     });
 
-    it('forwards the rebuild to the main controller when running as compact group', async () => {
-        const sendTo = sinon.stub().resolves();
-        const instances = fakeInstances({ [INSTANCE_ID]: { config: instanceObject(), needsRebuild: true } });
-
-        await runExit({
-            instances,
-            ctx: { isCompactGroupController: true, messages: { sendTo } as any },
-            code: 0,
+    it('passes the collected rebuild arguments along', async () => {
+        const requestRebuild = sinon.stub();
+        const rebuildArgs = { module: 'serialport', path: '/opt', version: '1.0.0' };
+        const instances = fakeInstances({
+            [INSTANCE_ID]: { config: instanceObject(), needsRebuild: true, rebuildArgs },
         });
 
-        assert.equal(sendTo.calledOnce, true);
-        assert.deepEqual(sendTo.firstCall.args.slice(0, 2), ['system.host.testhost', 'rebuildAdapter']);
+        await runExit({ instances, ctx: { requestRebuild }, code: 0 });
+
+        assert.deepEqual(requestRebuild.firstCall.args[0].message.rebuildArgs, rebuildArgs);
     });
 
     it('gives up after too many rebuild attempts', async () => {
-        const process = sinon.stub().resolves();
+        const requestRebuild = sinon.stub();
         const instances = fakeInstances({
             [INSTANCE_ID]: { config: instanceObject(), needsRebuild: true, rebuildCounter: 3 },
         });
 
-        await runExit({ instances, ctx: { messageHandler: { process } as any }, code: 0 });
+        await runExit({ instances, ctx: { requestRebuild }, code: 0 });
 
-        assert.equal(process.called, false);
+        assert.equal(requestRebuild.called, false);
     });
 });

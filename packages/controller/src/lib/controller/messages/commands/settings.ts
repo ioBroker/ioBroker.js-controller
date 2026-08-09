@@ -1,15 +1,32 @@
 import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
-import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+import type { ControllerLogger } from '@/lib/controller/types.js';
+import type { MessageBus } from '@/lib/controller/messages/messageBus.js';
+import type { MultihostManager } from '@/lib/controller/host/multihostManager.js';
+import type { HostCommand, HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+
+/** Everything the host commands for the iobroker.json of this host need */
+export interface SettingsCommandsDeps {
+    /** Sends the answers back to the requester */
+    messages: MessageBus;
+    /** Starts and stops the multihost discovery server */
+    multihost: MultihostManager;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** Timestamp of the start of this controller */
+    uptimeStart: number;
+}
 
 /**
  * Read the iobroker.json of this host
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const readBaseSettings: HostCommandHandler = (ctx, msg) => {
-    const { logger, hostLogPrefix, uptimeStart, messages } = ctx;
+const readBaseSettings: HostCommand<SettingsCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, uptimeStart, messages } = deps;
 
     if (!msg.callback || !msg.from) {
         logger.error(
@@ -41,11 +58,11 @@ const readBaseSettings: HostCommandHandler = (ctx, msg) => {
 /**
  * Write the iobroker.json of this host
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const writeBaseSettings: HostCommandHandler = (ctx, msg) => {
-    const { logger, hostLogPrefix, messages } = ctx;
+const writeBaseSettings: HostCommand<SettingsCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, messages } = deps;
 
     if (!msg.message) {
         const error = `No data found on writeBaseSettings from "${msg.from}"`;
@@ -104,11 +121,11 @@ const writeBaseSettings: HostCommandHandler = (ctx, msg) => {
 /**
  * Start or stop the multihost discovery server according to the current configuration
  *
- * @param ctx The context of the controller which has received the message
+ * @param deps What this group of commands needs
  * @param msg The received message
  */
-const updateMultihost: HostCommandHandler = (ctx, msg) => {
-    const { multihost, messages } = ctx;
+const updateMultihost: HostCommand<SettingsCommandsDeps> = (deps, msg) => {
+    const { multihost, messages } = deps;
 
     const result = multihost.startMultihost();
 
@@ -117,9 +134,15 @@ const updateMultihost: HostCommandHandler = (ctx, msg) => {
     }
 };
 
-/** All commands which read or write the base settings of this host */
-export const settingsCommands: Record<string, HostCommandHandler> = {
-    readBaseSettings,
-    writeBaseSettings,
-    updateMultihost,
-};
+/**
+ * Create the host commands for the iobroker.json of this host
+ *
+ * @param deps Everything these commands need
+ */
+export function createSettingsCommands(deps: SettingsCommandsDeps): Record<string, HostCommandHandler> {
+    return {
+        readBaseSettings: msg => readBaseSettings(deps, msg),
+        writeBaseSettings: msg => writeBaseSettings(deps, msg),
+        updateMultihost: msg => updateMultihost(deps, msg),
+    };
+}

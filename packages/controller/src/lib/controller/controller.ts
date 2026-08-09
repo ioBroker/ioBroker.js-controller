@@ -29,17 +29,19 @@ import {
     PRIMARY_HOST_LOCK_TIME,
     VENDOR_BOOTSTRAP_FILE,
 } from '@/lib/controller/constants.js';
-import { handleStateChange } from '@/lib/controller/db/stateChangeRouter.js';
-import { InstanceManager } from '@/lib/controller/instances/instanceManager.js';
+import { ControllerState } from '@/lib/controller/state.js';
+import { Statistics } from '@/lib/controller/statistics.js';
+import { handleStateChange, type StateChangeRouterDeps } from '@/lib/controller/db/stateChangeRouter.js';
+import { InstanceManager, type InstanceManagerOptions } from '@/lib/controller/instances/instanceManager.js';
 import { MessageBus } from '@/lib/controller/messages/messageBus.js';
 import { HostMessageHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+import type { HostCommandGroupDeps } from '@/lib/controller/messages/commands/index.js';
 import { DiagInfoCollector } from '@/lib/controller/host/diagInfoCollector.js';
 import { HostMetaManager } from '@/lib/controller/host/hostMetaManager.js';
 import { HostStatusReporter } from '@/lib/controller/host/hostStatusReporter.js';
 import { IpManager } from '@/lib/controller/host/ipManager.js';
 import { MultihostManager } from '@/lib/controller/host/multihostManager.js';
 import { SystemChecks } from '@/lib/controller/host/systemChecks.js';
-import type { ControllerContext } from '@/lib/controller/context.js';
 import type { ControllerLogger, RepoRequester, UploadTask } from '@/lib/controller/types.js';
 
 /** Options to create a controller */
@@ -54,8 +56,9 @@ export interface ControllerOptions {
  * It connects to both databases, starts and monitors all instances of this host, answers the messages
  * which are sent to this host and keeps the information about this host up to date.
  *
- * Everything the managers need is handed to them as a {@link ControllerContext}, this class itself
- * only exposes its lifecycle: {@link Controller.init} and {@link Controller.stop}.
+ * Its managers are created once both databases are connected, each of them gets exactly the
+ * components it needs handed into its constructor. This class itself only exposes its lifecycle:
+ * {@link Controller.init} and {@link Controller.stop}.
  */
 export class Controller {
     // -------------------------------------------------------------------------------------------- static information
@@ -81,6 +84,10 @@ export class Controller {
     readonly #uptimeStart = Date.now();
 
     // ------------------------------------------------------------------------------------------------ runtime state
+    /** The lifecycle state which the managers observe */
+    readonly #state = new ControllerState();
+    /** The counters of the received and written states */
+    readonly #statistics = new Statistics();
     /** The logger of this controller */
     #logger!: ControllerLogger;
     /** The objects database client */
@@ -89,18 +96,8 @@ export class Controller {
     #states: StatesClient | null = null;
     /** If this controller runs as a daemon in the background */
     #isDaemon = false;
-    /** If both databases are connected, null as long as there was no connection at all */
-    #connected: null | boolean = null;
-    /** If the instances of this host have been started */
-    #started = false;
-    /** Timestamp of the stop request, null if the controller is not stopping */
-    #isStopping: null | number = null;
     /** If this host is the primary host of the installation */
     #isPrimary = false;
-    /** Number of state changes since the last status report */
-    #inputCount = 0;
-    /** Number of state writes since the last status report */
-    #outputCount = 0;
     /** All instances which have subscribed to the log messages of this host */
     readonly #logList: string[] = [];
     /** All instances which have requested a repository update */
@@ -109,26 +106,28 @@ export class Controller {
     readonly #controllerVersions: Record<string, string> = {};
 
     // ---------------------------------------------------------------------------------------------------- managers
-    /** The context which is handed to all managers */
-    readonly #context: ControllerContext;
+    /** If the managers have been created, they only exist once both databases are connected */
+    #managersCreated = false;
     /** Takes care of all instances of this host */
-    readonly #instances: InstanceManager;
+    #instances?: InstanceManager;
     /** Sends messages to other hosts and instances */
-    readonly #messages: MessageBus;
+    #messages?: MessageBus;
     /** Answers the messages which are sent to this host */
-    readonly #messageHandler: HostMessageHandler;
+    #messageHandler?: HostMessageHandler;
     /** Reports the status of this host */
-    readonly #status: HostStatusReporter;
+    #status?: HostStatusReporter;
     /** Creates and maintains the host object and its states */
-    readonly #hostMeta: HostMetaManager;
+    #hostMeta?: HostMetaManager;
     /** Keeps the IPs of the host object up to date */
-    readonly #ips: IpManager;
+    #ips?: IpManager;
     /** Collects the diagnostics information */
-    readonly #diag: DiagInfoCollector;
+    #diag?: DiagInfoCollector;
     /** Checks the system for available updates and problems */
-    readonly #systemChecks: SystemChecks;
+    #systemChecks?: SystemChecks;
     /** Starts and stops the multihost discovery server */
-    readonly #multihost: MultihostManager;
+    #multihost?: MultihostManager;
+    /** What the routing of an incoming state change is called with */
+    #stateChangeDeps?: StateChangeRouterDeps;
     /** Handles the plugins of this host */
     #pluginHandler?: InstanceType<typeof PluginHandler>;
     /** Handles the notifications of this host */
@@ -185,159 +184,259 @@ export class Controller {
 
         this.#hostObjectPrefix = hostObjectPrefix;
         this.#hostLogPrefix = hostLogPrefix;
-
-        this.#context = this.#buildContext();
-
-        this.#messages = new MessageBus(this.#context);
-        this.#messageHandler = new HostMessageHandler(this.#context);
-        this.#instances = new InstanceManager(this.#context);
-        this.#status = new HostStatusReporter(this.#context);
-        this.#hostMeta = new HostMetaManager(this.#context);
-        this.#ips = new IpManager(this.#context);
-        this.#diag = new DiagInfoCollector(this.#context);
-        this.#systemChecks = new SystemChecks(this.#context);
-        this.#multihost = new MultihostManager(this.#context);
     }
 
     /**
-     * Build the live view of this controller which is handed to all managers
+     * Create the services which need a database connection
      *
-     * All mutable members are exposed as getters, so the managers always see the current value.
+     * Called once, as soon as both databases are connected and before the managers are created.
      */
-    #buildContext(): ControllerContext {
-        const self = this;
+    #createDatabaseServices(): void {
+        const objects = this.#objects!;
+        const states = this.#states!;
 
-        return {
-            // static information
-            ioPackage: this.#ioPackage,
-            version: this.#version,
-            config: this.#config,
-            hostname: this.#hostname,
-            controllerDir: this.#controllerDir,
-            hostObjectPrefix: this.#hostObjectPrefix,
+        this.#notificationHandler = new NotificationHandler({
+            states,
+            objects,
+            log: this.#logger,
+            logPrefix: this.#hostLogPrefix,
+            host: this.#hostname,
+        });
+
+        this.#autoUpgradeManager = new AdapterAutoUpgradeManager({
+            objects,
+            states,
+            logger: this.#logger,
+            logPrefix: this.#hostLogPrefix,
+        });
+
+        this.#blocklistManager = new BlocklistManager({ objects });
+    }
+
+    /**
+     * Create all managers of this controller and hand each of them the components it needs
+     *
+     * This can only happen once both databases are connected, because the managers work with the
+     * connected clients instead of looking them up on every access. The database clients survive a
+     * reconnect, so the managers are created exactly once.
+     */
+    #createManagers(): void {
+        const objects = this.#objects!;
+        const states = this.#states!;
+        const notificationHandler = this.#notificationHandler!;
+
+        /** What every manager needs to identify itself and to write log messages */
+        const identity = {
+            logger: this.#logger,
             hostLogPrefix: this.#hostLogPrefix,
+            hostObjectPrefix: this.#hostObjectPrefix,
+            hostname: this.#hostname,
+        };
+
+        this.#messages = new MessageBus({ states, ...identity });
+
+        this.#ips = new IpManager({
+            objects,
+            uptimeStart: this.#uptimeStart,
+            state: this.#state,
+            ...identity,
+        });
+
+        this.#hostMeta = new HostMetaManager({
+            objects,
+            states,
+            config: this.#config,
+            compactGroup: this.#compactGroup,
+            isCompactGroupController: this.#isCompactGroupController,
+            pluginHandler: this.#pluginHandler!,
+            notificationHandler,
+            ips: this.#ips,
+            restartSelf: () => this.#restartSelf(),
+            ...identity,
+        });
+
+        this.#diag = new DiagInfoCollector({
+            objects,
+            states,
+            config: this.#config,
+            logger: this.#logger,
+            hostLogPrefix: this.#hostLogPrefix,
+            hostMeta: this.#hostMeta,
+        });
+
+        this.#systemChecks = new SystemChecks({
+            objects,
+            states,
+            notificationHandler,
+            autoUpgradeManager: this.#autoUpgradeManager!,
+            blocklistManager: this.#blocklistManager!,
+            ...identity,
+        });
+
+        this.#multihost = new MultihostManager({
+            objects,
+            isCompactGroupController: this.#isCompactGroupController,
+            logger: this.#logger,
+            hostLogPrefix: this.#hostLogPrefix,
+            hostname: this.#hostname,
+        });
+
+        const instanceOptions: InstanceManagerOptions = {
+            objects,
+            states,
+            config: this.#config,
+            ioPackage: this.#ioPackage,
+            isDaemon: this.#isDaemon,
             isCompactGroupController: this.#isCompactGroupController,
             compactGroup: this.#compactGroup,
-            uptimeStart: this.#uptimeStart,
-            logList: this.#logList,
-            requestedRepoUpdates: this.#requestedRepoUpdates,
-
-            // runtime state
-            get logger() {
-                return self.#logger;
-            },
-            get objects() {
-                if (!self.#objects) {
-                    throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-                }
-                return self.#objects;
-            },
-            get states() {
-                if (!self.#states) {
-                    throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-                }
-                return self.#states;
-            },
-            get isObjectsConnected() {
-                return !!self.#objects;
-            },
-            get isStatesConnected() {
-                return !!self.#states;
-            },
-            get isDaemon() {
-                return self.#isDaemon;
-            },
-            get connected() {
-                return self.#connected;
-            },
-            get started() {
-                return self.#started;
-            },
-            get isStopping() {
-                return self.#isStopping;
-            },
-            get inputCount() {
-                return self.#inputCount;
-            },
-            get outputCount() {
-                return self.#outputCount;
-            },
-
-            // managers
-            get instances() {
-                return self.#instances;
-            },
-            get messages() {
-                return self.#messages;
-            },
-            get messageHandler() {
-                return self.#messageHandler;
-            },
-            get status() {
-                return self.#status;
-            },
-            get hostMeta() {
-                return self.#hostMeta;
-            },
-            get ips() {
-                return self.#ips;
-            },
-            get diag() {
-                return self.#diag;
-            },
-            get systemChecks() {
-                return self.#systemChecks;
-            },
-            get multihost() {
-                return self.#multihost;
-            },
-            get pluginHandler() {
-                if (!self.#pluginHandler) {
-                    throw new Error('The plugins have not been initialized yet');
-                }
-                return self.#pluginHandler;
-            },
-            get notificationHandler() {
-                if (!self.#notificationHandler) {
-                    throw new Error('The notification handler has not been initialized yet');
-                }
-                return self.#notificationHandler;
-            },
-            get blocklistManager() {
-                if (!self.#blocklistManager) {
-                    throw new Error('The blocklist manager has not been initialized yet');
-                }
-                return self.#blocklistManager;
-            },
-            get autoUpgradeManager() {
-                if (!self.#autoUpgradeManager) {
-                    throw new Error('The auto upgrade manager has not been initialized yet');
-                }
-                return self.#autoUpgradeManager;
-            },
-
-            // actions
-            countInput: (inc = 1) => {
-                this.#inputCount += inc;
-            },
-            countOutput: (inc = 1) => {
-                this.#outputCount += inc;
-            },
-            resetCounters: () => {
-                this.#inputCount = 0;
-                this.#outputCount = 0;
-            },
-            markStopping: () => {
-                // sometimes a process receives SIGTERM twice, keep the timestamp of the first request
-                this.#isStopping = this.#isStopping || Date.now();
-            },
-            logWriteErrors: (writes, errorText) =>
-                logWriteErrors({ writes, errorText, logger: this.#logger, logPrefix: this.#hostLogPrefix }),
-            logRedirect: (isActive, id, reason) => this.#logRedirect(isActive, id, reason),
+            notificationHandler,
+            blocklistManager: this.#blocklistManager!,
+            messages: this.#messages,
+            statistics: this.#statistics,
+            state: this.#state,
+            logWriteErrors: (writes, errorText) => this.#logWriteErrors(writes, errorText),
             uploadAdapter: task => this.#uploadAdapter(task),
-            restartSelf: () => this.#restartSelf(),
-            stop: (force, exitProcess) => this.stop(force, exitProcess),
+            requestRebuild: msg => this.#requestRebuild(msg),
+            ...identity,
         };
+
+        this.#instances = new InstanceManager(instanceOptions);
+
+        this.#status = new HostStatusReporter({
+            states,
+            config: this.#config,
+            isCompactGroupController: this.#isCompactGroupController,
+            compactGroup: this.#compactGroup,
+            notificationHandler,
+            instances: this.#instances,
+            statistics: this.#statistics,
+            state: this.#state,
+            logWriteErrors: (writes, errorText) => this.#logWriteErrors(writes, errorText),
+            stopController: (force, exitProcess) => this.stop(force, exitProcess),
+            ...identity,
+        });
+
+        const { logger, hostLogPrefix, hostObjectPrefix, hostname } = identity;
+        const messages = this.#messages;
+        const instances = this.#instances;
+
+        // every group of host commands gets its own bundle, so it is visible here what each may touch
+        const commandDeps: HostCommandGroupDeps = {
+            files: { objects, messages, logger, hostLogPrefix },
+            info: {
+                objects,
+                messages,
+                instances,
+                diag: this.#diag,
+                ioPackage: this.#ioPackage,
+                version: this.#version,
+                controllerDir: this.#controllerDir,
+                uptimeStart: this.#uptimeStart,
+                logger,
+                hostLogPrefix,
+                hostObjectPrefix,
+                hostname,
+            },
+            logs: {
+                states,
+                messages,
+                instances,
+                statistics: this.#statistics,
+                logList: this.#logList,
+                controllerDir: this.#controllerDir,
+                logger,
+                hostLogPrefix,
+                hostObjectPrefix,
+                hostname,
+            },
+            notifications: { notificationHandler, messages },
+            repository: {
+                objects,
+                messages,
+                diag: this.#diag,
+                systemChecks: this.#systemChecks,
+                requestedRepoUpdates: this.#requestedRepoUpdates,
+                logger,
+                hostLogPrefix,
+            },
+            settings: {
+                messages,
+                multihost: this.#multihost,
+                uptimeStart: this.#uptimeStart,
+                logger,
+                hostLogPrefix,
+            },
+            shell: { config: this.#config, messages, logger, hostLogPrefix },
+            upgrade: {
+                objects,
+                states,
+                messages,
+                instances,
+                systemChecks: this.#systemChecks,
+                pluginHandler: this.#pluginHandler!,
+                uploadAdapter: task => this.#uploadAdapter(task),
+                restartSelf: () => this.#restartSelf(),
+                logger,
+                hostLogPrefix,
+            },
+        };
+
+        this.#messageHandler = new HostMessageHandler({
+            logger: this.#logger,
+            hostLogPrefix: this.#hostLogPrefix,
+            state: this.#state,
+            commandDeps,
+        });
+
+        this.#stateChangeDeps = {
+            objects,
+            states,
+            config: this.#config,
+            controllerDir: this.#controllerDir,
+            ioPackage: this.#ioPackage,
+            isCompactGroupController: this.#isCompactGroupController,
+            instances: this.#instances,
+            messages: this.#messages,
+            messageHandler: this.#messageHandler,
+            status: this.#status,
+            pluginHandler: this.#pluginHandler!,
+            statistics: this.#statistics,
+            logRedirect: (isActive, id, reason) => this.#logRedirect(isActive, id, reason),
+            ...identity,
+        };
+
+        this.#managersCreated = true;
+    }
+
+    /**
+     * Run fire-and-forget database writes in parallel and log any that reject
+     *
+     * @param writes The pending write operations, kept running concurrently
+     * @param errorText Context prepended to the error log if a write rejects
+     */
+    #logWriteErrors(writes: Promise<unknown>[], errorText: string): void {
+        logWriteErrors({ writes, errorText, logger: this.#logger, logPrefix: this.#hostLogPrefix });
+    }
+
+    /**
+     * Have the native modules of an adapter rebuilt
+     *
+     * A compact group controller cannot do it itself, because only one npm process may run at a time.
+     *
+     * @param msg The `rebuildAdapter` message describing what has to be rebuilt
+     */
+    #requestRebuild(msg: ioBroker.SendableMessage): void {
+        if (!this.#isCompactGroupController) {
+            this.#messageHandler
+                ?.process(msg)
+                .catch(e => this.#logger.error(`${this.#hostLogPrefix} Cannot process message: ${e.message}`));
+            return;
+        }
+
+        // send to the main controller to make sure only one npm process runs at a time
+        this.#messages
+            ?.sendTo(`${SYSTEM_HOST_PREFIX}${this.#hostname}`, 'rebuildAdapter', msg as ioBroker.MessagePayload)
+            .catch(e => this.#logger.error(`${this.#hostLogPrefix} Cannot send rebuildAdapter: ${e.message}`));
     }
 
     /**
@@ -395,7 +494,7 @@ export class Controller {
         await this.#upload.uploadAdapter(task.adapter, false, true, '', logger);
         // send response to requester
         if (msg?.callback && msg.from) {
-            this.#messages.sendTo(msg.from, msg.command, { result: 'done' }, msg.callback);
+            this.#messages?.sendTo(msg.from, msg.command, { result: 'done' }, msg.callback);
         }
     }
 
@@ -405,7 +504,7 @@ export class Controller {
     async #restartSelf(): Promise<void> {
         await restart(false);
 
-        if (!this.#isStopping) {
+        if (!this.#state.isStopping) {
             await this.stop(false);
         }
     }
@@ -421,15 +520,31 @@ export class Controller {
             connection: this.#config.states,
             logger: this.#logger,
             hostname: this.#hostname,
-            change: async (id, stateOrMessage) => handleStateChange(this.#context, id, stateOrMessage),
+            change: async (id, stateOrMessage) => {
+                if (!this.#stateChangeDeps) {
+                    this.#logger.error(
+                        `${this.#hostLogPrefix} Could not handle state change of "${id}", because not connected`,
+                    );
+                    return;
+                }
+
+                return handleStateChange(this.#stateChangeDeps, id, stateOrMessage);
+            },
             connected: () => {
                 if (this.#statesDisconnectTimeout) {
                     clearTimeout(this.#statesDisconnectTimeout);
                     this.#statesDisconnectTimeout = null;
                 }
 
-                this.#messages.initMessageQueue();
-                this.#status.startAliveInterval();
+                // both databases are up now, so everything can be wired together
+                if (this.#objects && !this.#managersCreated) {
+                    this.#createDatabaseServices();
+                    this.#createManagers();
+                }
+
+                // both have to run on every reconnect too, a lost connection loses the subscription
+                this.#messages?.initMessageQueue();
+                this.#status?.startAliveInterval();
 
                 this.#initializeController().catch(e =>
                     this.#logger.error(`${this.#hostLogPrefix} Cannot initialize controller: ${e.message}`),
@@ -512,9 +627,9 @@ export class Controller {
                 );
                 // give the main controller a bit longer, so that adapter and compact processes can exit before
             },
-            change: async (id, obj) => this.#instances.handleObjectChange(id, obj),
+            change: async (id, obj) => this.#instances?.handleObjectChange(id, obj),
             primaryHostLost: () => {
-                if (!this.#isStopping) {
+                if (!this.#state.isStopping) {
                     this.#isPrimary = false;
                     this.#logger.info('The primary host is no longer active. Checking responsibilities.');
                     this.#checkPrimaryHost().catch(e =>
@@ -529,29 +644,18 @@ export class Controller {
      * Called as soon as one of the databases is connected, initializes everything which needs a database connection
      */
     async #initializeController(): Promise<void> {
-        if (!this.#states || !this.#objects || this.#connected) {
+        if (!this.#states || !this.#objects || this.#state.connected) {
             return;
         }
 
         this.#logger.info(`${this.#hostLogPrefix} connected to Objects and States`);
 
-        // initialize notificationHandler
-        const notificationSettings = {
-            states: this.#states,
-            objects: this.#objects,
-            log: this.#logger,
-            logPrefix: this.#hostLogPrefix,
-            host: this.#hostname,
-        };
-
-        this.#notificationHandler = new NotificationHandler(notificationSettings);
-
         if (this.#ioPackage.notifications) {
             try {
-                await this.#notificationHandler.addConfig(this.#ioPackage.notifications);
+                await this.#notificationHandler!.addConfig(this.#ioPackage.notifications);
                 this.#logger.info(`${this.#hostLogPrefix} added notifications configuration of host`);
                 // load setup of all adapters to class, to remember messages even of non-running hosts
-                await this.#notificationHandler.getSetupOfAllAdaptersFromHost();
+                await this.#notificationHandler!.getSetupOfAllAdaptersFromHost();
             } catch (e) {
                 this.#logger.error(
                     `${this.#hostLogPrefix} Could not add notifications config of this host: ${e.message}`,
@@ -559,19 +663,11 @@ export class Controller {
             }
         }
 
-        this.#autoUpgradeManager = new AdapterAutoUpgradeManager({
-            objects: this.#objects,
-            states: this.#states,
-            logger: this.#logger,
-            logPrefix: this.#hostLogPrefix,
-        });
-        this.#blocklistManager = new BlocklistManager({ objects: this.#objects });
+        await this.#systemChecks!.checkSystemLocaleSupported();
 
-        await this.#systemChecks.checkSystemLocaleSupported();
-
-        if (this.#connected === null) {
-            this.#connected = true;
-            if (!this.#isStopping) {
+        if (this.#state.connected === null) {
+            this.#state.setConnected(true);
+            if (!this.#state.isStopping) {
                 // @ts-expect-error objects and state object version conflicts that are none
                 this.#pluginHandler!.setDatabaseForPlugins(this.#objects, this.#states);
                 await this.#pluginHandler!.initPlugins(this.#ioPackage);
@@ -582,19 +678,19 @@ export class Controller {
                     );
 
                 // Do not start if we're still stopping the instances
-                await this.#hostMeta.checkHost();
-                await this.#multihost.startMultihost(this.#config);
-                await this.#hostMeta.setMeta();
-                this.#started = true;
-                await this.#instances.getInstances();
+                await this.#hostMeta!.checkHost();
+                await this.#multihost!.startMultihost(this.#config);
+                await this.#hostMeta!.setMeta();
+                this.#state.setStarted(true);
+                await this.#instances!.getInstances();
             }
         } else {
-            this.#connected = true;
-            this.#started = true;
+            this.#state.setConnected(true);
+            this.#state.setStarted(true);
 
             // Do not start if we're still stopping the instances
-            if (!this.#isStopping) {
-                await this.#instances.getInstances();
+            if (!this.#state.isStopping) {
+                await this.#instances!.getInstances();
             }
         }
     }
@@ -603,7 +699,7 @@ export class Controller {
      * React on a lost connection to one of the databases
      */
     async #handleDisconnect(): Promise<void> {
-        if (!this.#connected || this.#restartTimeout || this.#isStopping) {
+        if (!this.#state.connected || this.#restartTimeout || this.#state.isStopping) {
             return;
         }
         if (this.#statesDisconnectTimeout) {
@@ -615,7 +711,7 @@ export class Controller {
             this.#objectsDisconnectTimeout = null;
         }
 
-        this.#connected = false;
+        this.#state.setConnected(false);
         this.#logger.warn(`${this.#hostLogPrefix} Slave controller detected disconnection. Stop all instances.`);
 
         if (this.#isCompactGroupController) {
@@ -636,6 +732,12 @@ export class Controller {
      * Restart the controller process via the `_restart` command of the CLI
      */
     async #restartByMessage(): Promise<void> {
+        if (!this.#messageHandler) {
+            // the databases never connected, so there is nothing which could handle the message
+            this.#logger.error(`${this.#hostLogPrefix} Cannot restart, the controller has never been connected`);
+            return;
+        }
+
         try {
             await this.#messageHandler.process({
                 command: 'cmdExec',
@@ -677,28 +779,31 @@ export class Controller {
      *
      * If `exitProcess` is set, pids.txt is deleted and the process is terminated afterwards
      *
+     * The managers are only created once the databases are connected, so a shutdown during the
+     * startup has to cope with them being absent.
+     *
      * @param force kills instances under all circumstances
      * @param exitProcess if the process should be terminated after all instances have been stopped
      */
     async stop(force = false, exitProcess = true): Promise<void> {
-        this.#multihost.close();
+        this.#multihost?.close();
 
         if (this.#primaryHostInterval) {
             clearInterval(this.#primaryHostInterval);
             this.#primaryHostInterval = null;
         }
 
-        this.#ips.close();
-        this.#status.close();
+        this.#ips?.close();
+        this.#status?.close();
 
-        if (this.#isStopping) {
+        if (this.#state.isStopping) {
             return;
         }
 
-        const wasForced = await this.#instances.stopInstances(force, this.#stopTimeout);
+        const wasForced = (await this.#instances?.stopInstances(force, this.#stopTimeout)) ?? false;
 
-        await this.#pluginHandler!.destroyAll();
-        this.#notificationHandler && this.#notificationHandler.storeNotifications();
+        await this.#pluginHandler?.destroyAll();
+        this.#notificationHandler?.storeNotifications();
 
         try {
             // if we are the host, we should now let someone else take over
@@ -728,7 +833,7 @@ export class Controller {
             process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
         }
 
-        this.#outputCount++;
+        this.#statistics.countOutput();
         try {
             await this.#states.setState(`${this.#hostObjectPrefix}.alive`, {
                 val: false,
@@ -745,7 +850,7 @@ export class Controller {
         }
 
         this.#logger.info(`${this.#hostLogPrefix} ${wasForced ? 'force terminating' : 'terminated'}`);
-        if (wasForced) {
+        if (wasForced && this.#instances) {
             for (const i of Object.keys(this.#instances.procs)) {
                 const proc = this.#instances.procs[i];
                 if (proc.process) {
@@ -773,7 +878,7 @@ export class Controller {
 
         try {
             // avoid pids been written after deletion
-            this.#instances.clearStoreTimer();
+            this.#instances?.clearStoreTimer();
             // delete pids.txt
             await fs.unlink(tools.getPidsFileName());
         } catch (e) {
@@ -1084,7 +1189,7 @@ export class Controller {
         }
 
         // Subscribe for all logging objects, all alive states and disk warnings
-        this.#context.logWriteErrors(
+        this.#logWriteErrors(
             [
                 states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`),
                 states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.alive`),
@@ -1095,11 +1200,11 @@ export class Controller {
 
         const diskWarningState = await states.getState(`${this.#hostObjectPrefix}.diskWarning`);
         if (diskWarningState) {
-            this.#status.setDiskWarningLevel(getDiskWarningLevel(diskWarningState));
+            this.#status!.setDiskWarningLevel(getDiskWarningLevel(diskWarningState));
         }
 
         // set current Loglevel and subscribe for changes
-        this.#context.logWriteErrors(
+        this.#logWriteErrors(
             [
                 states.setState(`${this.#hostObjectPrefix}.logLevel`, {
                     val: this.#config.log.level,

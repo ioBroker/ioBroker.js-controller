@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import sinon from 'sinon';
 import { handleStateChange } from '@/lib/controller/db/stateChangeRouter.js';
-import { createTestContext, type TestContextOverrides } from '@/lib/controller/context.test-utils.js';
+import type { StateChangeRouterDeps } from '@/lib/controller/db/stateChangeRouter.js';
+import { silentLogger, testConfig, testIdentity, testStatistics } from '@/lib/controller/testing.test-utils.js';
 
 /**
  * A states client which accepts every write, enough to look "connected"
@@ -29,40 +30,38 @@ function connectedObjects(over: Record<string, any> = {}): Record<string, any> {
  *
  * @param over Parts of the context this test wants to control
  */
-function connectedContext(over: TestContextOverrides = {}): ReturnType<typeof createTestContext> {
-    return createTestContext({
-        states: connectedStates(),
-        objects: connectedObjects(),
+function connectedContext(over: Partial<StateChangeRouterDeps> = {}): StateChangeRouterDeps {
+    return {
+        states: connectedStates() as any,
+        objects: connectedObjects() as any,
+        config: testConfig(),
+        controllerDir: '/opt/iobroker',
+        ioPackage: { common: {} },
+        isCompactGroupController: false,
         instances: { subscribe: {}, procs: {}, startInstance: sinon.stub().resolves() } as any,
+        messages: {} as any,
+        messageHandler: {} as any,
+        status: {} as any,
+        pluginHandler: {} as any,
+        statistics: testStatistics(),
+        logRedirect: () => {},
+        ...testIdentity(),
         ...over,
-    });
+    };
 }
 
 describe('handleStateChange connection handling', () => {
-    it('refuses to work without a database connection', async () => {
-        const error = sinon.stub();
-        const logger = { silly() {}, debug() {}, info() {}, warn() {}, error } as any;
-        const ctx = createTestContext({ logger });
-
-        await handleStateChange(ctx, 'system.adapter.hm-rpc.0.alive', { val: true, ack: true } as ioBroker.State);
-
-        assert.equal(error.calledOnce, true);
-        assert.match(error.firstCall.args[0], /because not connected/);
-        // nothing was counted, we never looked at the change
-        assert.equal(ctx.inputCount, 0);
-    });
-
     it('counts every change it receives', async () => {
         const ctx = connectedContext();
 
         await handleStateChange(ctx, 'some.unhandled.state', { val: 1, ack: true } as ioBroker.State);
 
-        assert.equal(ctx.inputCount, 1);
+        assert.equal(ctx.statistics.inputCount, 1);
     });
 
     it('complains about a change without an id', async () => {
         const error = sinon.stub();
-        const logger = { silly() {}, debug() {}, info() {}, warn() {}, error } as any;
+        const logger = silentLogger({ error });
         const ctx = connectedContext({ logger });
 
         await handleStateChange(ctx, '', { val: 1, ack: true } as ioBroker.State);
@@ -144,7 +143,7 @@ describe('handleStateChange alive state', () => {
     it('enables an instance which was switched on via its alive state', async () => {
         const getObject = sinon.stub().resolves({ _id: 'system.adapter.hm-rpc.0', common: { enabled: false } });
         const setObject = sinon.stub().resolves();
-        const ctx = connectedContext({ objects: connectedObjects({ getObject, setObject }) });
+        const ctx = connectedContext({ objects: connectedObjects({ getObject, setObject }) as any });
 
         await handleStateChange(ctx, aliveId, { val: true, ack: false } as ioBroker.State);
 
@@ -157,7 +156,7 @@ describe('handleStateChange alive state', () => {
     it('ignores an acknowledged alive state, that is just the instance reporting itself', async () => {
         const getObject = sinon.stub().resolves({ _id: 'system.adapter.hm-rpc.0', common: { enabled: false } });
         const setObject = sinon.stub().resolves();
-        const ctx = connectedContext({ objects: connectedObjects({ getObject, setObject }) });
+        const ctx = connectedContext({ objects: connectedObjects({ getObject, setObject }) as any });
 
         await handleStateChange(ctx, aliveId, { val: true, ack: true } as ioBroker.State);
 
@@ -168,7 +167,7 @@ describe('handleStateChange alive state', () => {
     it('does not write the object when the enabled flag already matches', async () => {
         const getObject = sinon.stub().resolves({ _id: 'system.adapter.hm-rpc.0', common: { enabled: true } });
         const setObject = sinon.stub().resolves();
-        const ctx = connectedContext({ objects: connectedObjects({ getObject, setObject }) });
+        const ctx = connectedContext({ objects: connectedObjects({ getObject, setObject }) as any });
 
         await handleStateChange(ctx, aliveId, { val: true, ack: false } as ioBroker.State);
 
@@ -194,7 +193,7 @@ describe('handleStateChange instance wake up', () => {
 
     it('warns when a subscribed instance does not exist anymore', async () => {
         const warn = sinon.stub();
-        const logger = { silly() {}, debug() {}, info() {}, warn, error() {} } as any;
+        const logger = silentLogger({ warn });
         const startInstance = sinon.stub().resolves();
         const instances = {
             subscribe: { 'some.trigger.state': ['system.adapter.gone.0'] },
@@ -215,7 +214,7 @@ describe('handleStateChange log level', () => {
 
     it('applies a new log level and acknowledges it', async () => {
         const setState = sinon.stub().resolves();
-        const ctx = connectedContext({ states: connectedStates({ setState }) });
+        const ctx = connectedContext({ states: connectedStates({ setState }) as any });
 
         await handleStateChange(ctx, logLevelId, { val: 'debug', ack: false } as ioBroker.State);
 
@@ -230,7 +229,7 @@ describe('handleStateChange log level', () => {
 
     it('keeps the current level when an invalid one is requested', async () => {
         const setState = sinon.stub().resolves();
-        const ctx = connectedContext({ states: connectedStates({ setState }) });
+        const ctx = connectedContext({ states: connectedStates({ setState }) as any });
 
         await handleStateChange(ctx, logLevelId, { val: 'verbose', ack: false } as ioBroker.State);
 
@@ -240,7 +239,7 @@ describe('handleStateChange log level', () => {
 
     it('ignores its own acknowledged write', async () => {
         const setState = sinon.stub().resolves();
-        const ctx = connectedContext({ states: connectedStates({ setState }) });
+        const ctx = connectedContext({ states: connectedStates({ setState }) as any });
 
         await handleStateChange(ctx, logLevelId, { val: 'debug', ack: true } as ioBroker.State);
 
@@ -256,7 +255,7 @@ describe('handleStateChange disk warning', () => {
         const setDiskWarningLevel = sinon.stub();
         const setState = sinon.stub().resolves();
         const ctx = connectedContext({
-            states: connectedStates({ setState }),
+            states: connectedStates({ setState }) as any,
             status: { setDiskWarningLevel } as any,
         });
 
