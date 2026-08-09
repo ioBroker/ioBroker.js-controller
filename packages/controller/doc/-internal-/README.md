@@ -13,6 +13,7 @@
 ## Classes
 
 - [AdapterContextBase](classes/AdapterContextBase.md)
+- [AliasManager](classes/AliasManager.md)
 - [AsyncAdapter](classes/AsyncAdapter.md)
 - [CertificateManager](classes/CertificateManager.md)
 - [Log](classes/Log.md)
@@ -347,6 +348,7 @@
 - [UserInterfaceClientUnsubscribeReason](type-aliases/UserInterfaceClientUnsubscribeReason.md)
 - [UserInterfaceUnsubscribeInfo](type-aliases/UserInterfaceUnsubscribeInfo.md)
 - [UserInterfaceUnsubscribeInfoBaseObject](type-aliases/UserInterfaceUnsubscribeInfoBaseObject.md)
+- [ValidateId](type-aliases/ValidateId.md)
 - [WelcomeScreenEntry](type-aliases/WelcomeScreenEntry.md)
 
 ## Variables
