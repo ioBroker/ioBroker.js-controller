@@ -609,7 +609,7 @@ export class Controller {
                 this.#initializeController().catch(e =>
                     this.#logger.error(`${this.#hostLogPrefix} Cannot initialize controller: ${e.message}`),
                 );
-                onConnect && onConnect();
+                onConnect?.();
             },
             disconnected: (/*error*/) => {
                 if (this.#restartTimeout) {
