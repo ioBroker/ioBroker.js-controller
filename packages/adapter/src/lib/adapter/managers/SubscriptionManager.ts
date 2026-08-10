@@ -196,15 +196,9 @@ export class SubscriptionManager extends AdapterContextBase {
                     this.logger.error(`${this.namespaceLog} Cannot parse subscribes for "${autoSubEntry}.subscribes"`);
                 }
 
-                // validate that correct structure read from state.val
-                if (!tools.isObject(subs)) {
-                    subs = {};
-                }
-
-                // never index subs with a prototype-polluting key
-                if (pattern === '__proto__' || pattern === 'constructor' || pattern === 'prototype') {
-                    continue;
-                }
+                // rebuild without a prototype so a "__proto__" key in the persisted value cannot
+                // pollute Object.prototype via the subs[pattern] writes below
+                subs = tools.isObject(subs) ? Object.assign(Object.create(null), subs) : Object.create(null);
 
                 if (!tools.isObject(subs[pattern])) {
                     subs[pattern] = {};
@@ -369,11 +363,6 @@ export class SubscriptionManager extends AdapterContextBase {
                         continue;
                     }
 
-                    // never index subs with a prototype-polluting key
-                    if (pattern === '__proto__' || pattern === 'constructor' || pattern === 'prototype') {
-                        continue;
-                    }
-
                     if (
                         !tools.isObject(subs) ||
                         !tools.isObject(subs[pattern]) ||
@@ -382,6 +371,9 @@ export class SubscriptionManager extends AdapterContextBase {
                         // check subs is a valid object, because it comes from state.val
                         continue;
                     }
+
+                    // rebuild without a prototype so a "__proto__" key cannot pollute Object.prototype
+                    subs = Object.assign(Object.create(null), subs);
 
                     if (typeof subs[pattern][this.namespace] === 'number') {
                         subs[pattern][this.namespace]--;
