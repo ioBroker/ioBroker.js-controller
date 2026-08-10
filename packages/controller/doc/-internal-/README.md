@@ -20,6 +20,7 @@
 - [MessagingManager](classes/MessagingManager.md)
 - [ObjectsInRedisClient](classes/ObjectsInRedisClient.md)
 - [StateRedisClient](classes/StateRedisClient.md)
+- [SubscriptionManager](classes/SubscriptionManager.md)
 - [UserInterfaceMessagingController](classes/UserInterfaceMessagingController.md)
 - [Validator](classes/Validator.md)
 
@@ -246,6 +247,7 @@
 - [ErrorHandler](type-aliases/ErrorHandler.md)
 - [FileChangeHandler](type-aliases/FileChangeHandler.md)
 - [FindObjectCallback](type-aliases/FindObjectCallback.md)
+- [FixId](type-aliases/FixId.md)
 - [GenericAccessFlags](type-aliases/GenericAccessFlags.md)
 - [GenericCallback](type-aliases/GenericCallback.md)
 - [GetCertificatesCallback](type-aliases/GetCertificatesCallback.md)
@@ -335,6 +337,7 @@
 - [StateChangeHandler](type-aliases/StateChangeHandler.md)
 - [StateValue](type-aliases/StateValue.md)
 - [StringOrTranslated](type-aliases/StringOrTranslated.md)
+- [SubOptions](type-aliases/SubOptions.md)
 - [SupportedFeature](type-aliases/SupportedFeature.md)
 - [Timeout](type-aliases/Timeout.md)
 - [TimeoutCallback](type-aliases/TimeoutCallback.md)

@@ -8,4 +8,4 @@
 
 > **Instance** = `` `system.adapter.${string}.${number}` ``
 
-Defined in: [types-dev/objects.d.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/bfc2bfaa4efb008311edf5c4865b09099b6e059d/packages/types-dev/objects.d.ts#L81)
+Defined in: [types-dev/objects.d.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/types-dev/objects.d.ts#L81)
