@@ -3,9 +3,10 @@ import sinon from 'sinon';
 import { handleStateChange } from '@/lib/controller/db/stateChangeRouter.js';
 import type { StateChangeRouterDeps } from '@/lib/controller/db/stateChangeRouter.js';
 import { silentLogger, testConfig, testIdentity, testStatistics } from '@/lib/controller/testing.test-utils.js';
+import type { IoPackageFile } from '@iobroker/plugin-base';
 
 /**
- * A states client which accepts every write, enough to look "connected"
+ * A states client that accepts every write, enough to look "connected"
  *
  * @param over Additional or replacing methods this test needs
  */
@@ -14,7 +15,7 @@ function connectedStates(over: Record<string, any> = {}): Record<string, any> {
 }
 
 /**
- * An objects client which accepts every write, enough to look "connected"
+ * An objects client that accepts every write, enough to look "connected"
  *
  * @param over Additional or replacing methods this test needs
  */
@@ -36,7 +37,7 @@ function connectedContext(over: Partial<StateChangeRouterDeps> = {}): StateChang
         objects: connectedObjects() as any,
         config: testConfig(),
         controllerDir: '/opt/iobroker',
-        ioPackage: { common: {} },
+        ioPackage: { common: {} as ioBroker.AdapterCommon } as IoPackageFile,
         isCompactGroupController: false,
         instances: { subscribe: {}, procs: {}, startInstance: sinon.stub().resolves() } as any,
         messages: {} as any,

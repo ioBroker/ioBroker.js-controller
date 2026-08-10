@@ -10,6 +10,7 @@ import {
     testState,
     testStatistics,
 } from '@/lib/controller/testing.test-utils.js';
+import { IoPackageFile } from '@iobroker/plugin-base';
 
 /**
  * Build an instance object as it is stored in the objects database
@@ -43,7 +44,7 @@ function createManager(over: Partial<InstanceManagerOptions> = {}): {
         objects: {} as any,
         states: {} as any,
         config: testConfig(),
-        ioPackage: { common: { name: 'js-controller', version: '7.0.0' } },
+        ioPackage: { common: { name: 'js-controller', version: '7.0.0' } } as IoPackageFile,
         isDaemon: false,
         isCompactGroupController: false,
         compactGroup: null,
