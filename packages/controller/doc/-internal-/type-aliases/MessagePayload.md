@@ -8,4 +8,4 @@
 
 > **MessagePayload** = `any`
 
-Defined in: [types-dev/index.d.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/bfc2bfaa4efb008311edf5c4865b09099b6e059d/packages/types-dev/index.d.ts#L281)
+Defined in: [types-dev/index.d.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/types-dev/index.d.ts#L281)
