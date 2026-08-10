@@ -10,7 +10,7 @@ import {
     testState,
     testStatistics,
 } from '@/lib/controller/testing.test-utils.js';
-import { IoPackageFile } from '@iobroker/plugin-base';
+import type { IoPackageFile } from '@iobroker/plugin-base';
 
 /**
  * Build an instance object as it is stored in the objects database
