@@ -6,9 +6,9 @@
 
 # Class: SubscriptionManager
 
-Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L11)
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L27)
 
-Owns object- and file-change subscriptions, delegating to the objects DB client.
+Owns object-, file- and state-change subscriptions plus the auto-subscribe bookkeeping.
 
 ## Extends
 
@@ -18,9 +18,9 @@ Owns object- and file-change subscriptions, delegating to the objects DB client.
 
 ### Constructor
 
-> **new SubscriptionManager**(`ctx`, `fixId`): `SubscriptionManager`
+> **new SubscriptionManager**(`ctx`, `fixId`, `aliasManager`, `objectAccess`): `SubscriptionManager`
 
-Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L18)
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:39](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L39)
 
 #### Parameters
 
@@ -36,6 +36,18 @@ Shared adapter context providing live runtime state
 
 Namespace-prefixer bound to the adapter's Validator
 
+##### aliasManager
+
+[`AliasManager`](AliasManager.md)
+
+Alias subscription cache and bookkeeping
+
+##### objectAccess
+
+[`ObjectAccess`](../interfaces/ObjectAccess.md)
+
+Reader for state-typed objects matching a pattern
+
 #### Returns
 
 `SubscriptionManager`
@@ -46,11 +58,69 @@ Namespace-prefixer bound to the adapter's Validator
 
 ## Methods
 
+### addSubscribableInstance()
+
+> **addSubscribableInstance**(`id`): `void`
+
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:119](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L119)
+
+Register an instance as auto-subscribable (its `subscribes` counter is maintained on subscribe/unsubscribe).
+
+#### Parameters
+
+##### id
+
+`string`
+
+instance id, e.g. `pushover.0`
+
+#### Returns
+
+`void`
+
+***
+
+### autoSubscribeOn()
+
+> **autoSubscribeOn**(): `Promise`\<`void`\>
+
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:138](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L138)
+
+Populate the auto-subscribe instance list from the objects DB.
+
+#### Returns
+
+`Promise`\<`void`\>
+
+***
+
+### removeSubscribableInstance()
+
+> **removeSubscribableInstance**(`id`): `void`
+
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:130](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L130)
+
+Stop treating an instance as auto-subscribable.
+
+#### Parameters
+
+##### id
+
+`string`
+
+instance id, e.g. `pushover.0`
+
+#### Returns
+
+`void`
+
+***
+
 ### subscribeForeignFiles()
 
 > **subscribeForeignFiles**(`id`, `pattern`, `options?`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:76](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L76)
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:99](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L99)
 
 Subscribe to file changes in a specific instance.
 
@@ -84,7 +154,7 @@ optional user context
 
 > **subscribeForeignObjects**(`pattern`, `options?`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:55](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L55)
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:78](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L78)
 
 Subscribe to object changes in any instance.
 
@@ -108,11 +178,39 @@ optional user context
 
 ***
 
+### subscribeForeignStates()
+
+> **subscribeForeignStates**(`pattern`, `options?`): `Promise`\<`void`\>
+
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L172)
+
+Subscribe to state changes in any instance, resolving aliases and maintaining auto-subscribe counters.
+
+#### Parameters
+
+##### pattern
+
+[`Pattern`](../type-aliases/Pattern.md)
+
+pattern, `*`, an `alias.*` id, or an array of ids/patterns
+
+##### options?
+
+[`SubOptions`](../type-aliases/SubOptions.md)
+
+optional user context
+
+#### Returns
+
+`Promise`\<`void`\>
+
+***
+
 ### subscribeObjects()
 
 > **subscribeObjects**(`pattern`, `options?`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L30)
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L53)
 
 Subscribe to object changes within this instance's namespace.
 
@@ -141,7 +239,7 @@ optional user context
 
 > **unsubscribeForeignFiles**(`id`, `pattern`, `options?`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L87)
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:110](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L110)
 
 Unsubscribe from file changes in a specific instance.
 
@@ -175,7 +273,7 @@ optional user context
 
 > **unsubscribeForeignObjects**(`pattern`, `options?`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:65](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L65)
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:88](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L88)
 
 Unsubscribe from object changes in any instance.
 
@@ -199,11 +297,39 @@ optional user context
 
 ***
 
+### unsubscribeForeignStates()
+
+> **unsubscribeForeignStates**(`pattern`, `options?`): `Promise`\<`void`\>
+
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:337](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L337)
+
+Unsubscribe from state changes in any instance, mirroring [subscribeForeignStates](#subscribeforeignstates).
+
+#### Parameters
+
+##### pattern
+
+[`Pattern`](../type-aliases/Pattern.md)
+
+pattern, `*`, an `alias.*` id, or an array of ids/patterns
+
+##### options?
+
+[`SubOptions`](../type-aliases/SubOptions.md)
+
+optional user context
+
+#### Returns
+
+`Promise`\<`void`\>
+
+***
+
 ### unsubscribeObjects()
 
 > **unsubscribeObjects**(`pattern`, `options?`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L43)
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:66](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L66)
 
 Unsubscribe from object changes within this instance's namespace.
 
