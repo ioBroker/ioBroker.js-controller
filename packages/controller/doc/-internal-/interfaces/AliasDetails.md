@@ -6,7 +6,7 @@
 
 # Interface: AliasDetails
 
-Defined in: [adapter/src/lib/\_Types.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L241)
+Defined in: [adapter/src/lib/\_Types.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L241)
 
 Details about an alias and its targets
 
@@ -16,7 +16,7 @@ Details about an alias and its targets
 
 > `optional` **source?**: [`AliasDetailsSource`](AliasDetailsSource.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L243)
+Defined in: [adapter/src/lib/\_Types.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L243)
 
 Source definition of the alias
 
@@ -26,6 +26,6 @@ Source definition of the alias
 
 > **targets**: [`AliasTargetEntry`](AliasTargetEntry.md)[]
 
-Defined in: [adapter/src/lib/\_Types.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L245)
+Defined in: [adapter/src/lib/\_Types.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L245)
 
 Target states the alias points to

@@ -6,7 +6,7 @@
 
 # Interface: InternalGetObjectsOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:526](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L526)
+Defined in: [adapter/src/lib/\_Types.ts:526](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L526)
 
 Options for reading multiple objects
 
@@ -16,7 +16,7 @@ Options for reading multiple objects
 
 > `optional` **callback?**: [`GetObjectsCallbackTyped`](../type-aliases/GetObjectsCallbackTyped.md)\<`any`\>
 
-Defined in: [adapter/src/lib/\_Types.ts:536](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L536)
+Defined in: [adapter/src/lib/\_Types.ts:536](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L536)
 
 Called with the matching objects
 
@@ -26,7 +26,7 @@ Called with the matching objects
 
 > `optional` **enums?**: [`EnumList`](../type-aliases/EnumList.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:532](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L532)
+Defined in: [adapter/src/lib/\_Types.ts:532](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L532)
 
 Restrict the result to objects within these enums
 
@@ -36,7 +36,7 @@ Restrict the result to objects within these enums
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:534](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L534)
+Defined in: [adapter/src/lib/\_Types.ts:534](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L534)
 
 Optional settings including the user context
 
@@ -46,7 +46,7 @@ Optional settings including the user context
 
 > **pattern**: [`Pattern`](../type-aliases/Pattern.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:528](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L528)
+Defined in: [adapter/src/lib/\_Types.ts:528](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L528)
 
 The pattern to match object ids against
 
@@ -56,6 +56,6 @@ The pattern to match object ids against
 
 > `optional` **type?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:530](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L530)
+Defined in: [adapter/src/lib/\_Types.ts:530](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L530)
 
 Restrict the result to objects of this type

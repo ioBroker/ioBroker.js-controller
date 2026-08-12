@@ -6,7 +6,7 @@
 
 # Interface: UserInterfaceClientSubscribeReturnType
 
-Defined in: [adapter/src/lib/\_Types.ts:161](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L161)
+Defined in: [adapter/src/lib/\_Types.ts:161](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L161)
 
 Result returned by the adapter when a UI client subscribes
 
@@ -16,7 +16,7 @@ Result returned by the adapter when a UI client subscribes
 
 > **accepted**: `boolean`
 
-Defined in: [adapter/src/lib/\_Types.ts:163](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L163)
+Defined in: [adapter/src/lib/\_Types.ts:163](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L163)
 
 If the adapter has accepted the client subscription
 
@@ -26,7 +26,7 @@ If the adapter has accepted the client subscription
 
 > `optional` **error?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L167)
+Defined in: [adapter/src/lib/\_Types.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L167)
 
 Optional error if not accepted
 
@@ -36,6 +36,6 @@ Optional error if not accepted
 
 > `optional` **heartbeat?**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:165](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L165)
+Defined in: [adapter/src/lib/\_Types.ts:165](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L165)
 
 Optional heartbeat, if set, the client needs to re-subscribe every heartbeat interval

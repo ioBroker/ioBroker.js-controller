@@ -8,6 +8,6 @@
 
 > **StringOrTranslated** = `string` \| [`Translated`](Translated.md)
 
-Defined in: [types-dev/objects.d.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/types-dev/objects.d.ts#L166)
+Defined in: [types-dev/objects.d.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/types-dev/objects.d.ts#L166)
 
 For objects, we require the English language to be present
