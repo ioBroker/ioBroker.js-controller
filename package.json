@@ -62,7 +62,7 @@
         "typedoc": "^0.28.19",
         "typedoc-plugin-markdown": "^4.12.0",
         "typedoc-plugin-missing-exports": "^4.1.3",
-        "typescript": "~6.0.3"
+        "typescript": "~7.0.2"
     },
     "scripts": {
         "clean": "npx --yes rimraf@5 --glob packages/**/build packages/*/*.tsbuildinfo",
