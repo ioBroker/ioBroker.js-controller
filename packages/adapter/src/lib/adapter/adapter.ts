@@ -62,8 +62,6 @@ import {
 import { type PluginHandlerSettings, PluginHandler, type IoPackageFile } from '@iobroker/plugin-base';
 import type {
     AdapterOptions,
-    AliasDetails,
-    AliasTargetEntry,
     AllPropsUnknown,
     CalculatePermissionsCallback,
     CheckGroupCallback,
@@ -116,7 +114,6 @@ import type {
     InternalSetStateChangedOptions,
     InternalSetStateOptions,
     InternalStopParameters,
-    InternalSubscribeOptions,
     InternalUpdateConfigOptions,
     IoPackageInstanceObject,
     MaybePromise,
@@ -133,6 +130,8 @@ import type {
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { AsyncAdapter } from '@/lib/adapter/asyncAdapter.js';
 import { CERTIFICATES_OBJECT_ID } from '@/lib/adapter/managers/CertificateManager.js';
+import { AliasManager } from '@/lib/adapter/managers/AliasManager.js';
+import { SubscriptionManager } from '@/lib/adapter/managers/SubscriptionManager.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
 import { SYSTEM_ADAPTER_PREFIX, DEFAULT_OBJECTS_WARN_LIMIT } from '@iobroker/js-controller-common-db/constants';
 import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
@@ -902,8 +901,6 @@ export class AdapterClass extends EventEmitter {
     private readonly startedInCompactMode: boolean;
     /** List of instances which want our logs */
     private readonly logList = new Set<string>();
-    private readonly aliases = new Map<string, AliasDetails>();
-    private readonly aliasPatterns = new Set<string>();
     private enums: Record<string, ioBroker.EnumObject> = {};
     private eventLoopLags: number[] = [];
     private overwriteLogLevel: boolean = false;
@@ -945,8 +942,6 @@ export class AdapterClass extends EventEmitter {
     private users: Record<ioBroker.ObjectIDs.User, { groups: ioBroker.ObjectIDs.Group[]; acl: any }> = {}; // todo
     /** The cache of user groups */
     private groups: Record<string, Partial<ioBroker.GroupObject>> = {};
-    /** An array of instances, that support auto subscribe */
-    private autoSubscribe: string[] = [];
     private defaultHistory: null | string = null;
     private pluginHandler?: PluginHandler;
     private _reportInterval?: null | NodeJS.Timeout;
@@ -978,7 +973,6 @@ export class AdapterClass extends EventEmitter {
     /** latitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`*/
     latitude?: number;
     private _defaultObjs?: Record<string, Partial<ioBroker.StateCommon>>;
-    private _aliasObjectsSubscribed?: boolean;
     config: ioBroker.AdapterConfig = {};
     host?: string;
     common?: ioBroker.InstanceCommon;
@@ -1014,6 +1008,31 @@ export class AdapterClass extends EventEmitter {
     #context!: AdapterContext;
     #async!: AsyncAdapter;
     readonly #certWatchers = new Map<string, fs.FSWatcher>();
+    #aliasInstance?: AliasManager;
+
+    /** Lazily-constructed alias subscription manager. */
+    get #alias(): AliasManager {
+        return (this.#aliasInstance ??= new AliasManager(this.#context, (id, allowSystem, options) =>
+            this._utils.validateId(id, allowSystem, options),
+        ));
+    }
+
+    #subscriptionsInstance?: SubscriptionManager;
+
+    /** Lazily-constructed object/file/state subscription manager. */
+    get #subscriptions(): SubscriptionManager {
+        return (this.#subscriptionsInstance ??= new SubscriptionManager(
+            this.#context,
+            (id, isPattern) => this._utils.fixId(id, isPattern),
+            this.#alias,
+            {
+                getForeignStateObjects: (pattern, options) =>
+                    // @ts-expect-error adjust types
+                    this.getForeignObjectsAsync(pattern, null, null, options),
+            },
+        ));
+    }
+
     /** True once `system.certificates` is subscribed, i.e. certificates have been requested */
     #certObjectSubscribed = false;
     /** True once a certificate change scheduled a restart, so concurrent changes schedule only one */
@@ -1190,6 +1209,9 @@ export class AdapterClass extends EventEmitter {
         this.#context = {
             logger: this._logger,
             uiMessagingController: this.uiMessagingController,
+            countOutput: () => {
+                self.outputCount++;
+            },
             get namespace() {
                 return self.namespace;
             },
@@ -5708,19 +5730,13 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} subscribeObjects not processed because Objects database not connected`,
+        const cb = callback as ioBroker.ErrorCallback | undefined;
+        this.#subscriptions
+            .subscribeObjects(pattern, options as { user?: ioBroker.ObjectIDs.User } | null | undefined)
+            .then(
+                () => cb?.(),
+                (err: Error) => cb?.(err),
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        if (pattern === '*') {
-            this.#objects.subscribeUser(`${this.namespace}.*`, options, callback);
-        } else {
-            const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
-            this.#objects.subscribeUser(fixedPattern, options, callback);
-        }
     }
 
     /**
@@ -5767,19 +5783,13 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} unsubscribeObjects not processed because Objects database not connected`,
+        const cb = callback as ioBroker.ErrorCallback | undefined;
+        this.#subscriptions
+            .unsubscribeObjects(pattern, options as { user?: ioBroker.ObjectIDs.User } | null | undefined)
+            .then(
+                () => cb?.(),
+                (err: Error) => cb?.(err),
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        if (pattern === '*') {
-            this.#objects.unsubscribeUser(`${this.namespace}.*`, options, callback);
-        } else {
-            const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
-            this.#objects.unsubscribeUser(fixedPattern, options, callback);
-        }
     }
 
     // external signatures
@@ -5827,14 +5837,13 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} subscribeForeignObjects not processed because Objects database not connected`,
+        const cb = callback as ioBroker.ErrorCallback | undefined;
+        this.#subscriptions
+            .subscribeForeignObjects(pattern, options as { user?: ioBroker.ObjectIDs.User } | null | undefined)
+            .then(
+                () => cb?.(),
+                (err: Error) => cb?.(err),
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        this.#objects.subscribeUser(pattern, options, callback);
     }
 
     // external signatures
@@ -5885,14 +5894,13 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} unsubscribeForeignObjects not processed because Objects database not connected`,
+        const cb = callback as ioBroker.ErrorCallback | undefined;
+        this.#subscriptions
+            .unsubscribeForeignObjects(pattern, options as { user?: ioBroker.ObjectIDs.User } | null | undefined)
+            .then(
+                () => cb?.(),
+                (err: Error) => cb?.(err),
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        this.#objects.unsubscribeUser(pattern, options, callback);
     }
 
     // external signatures
@@ -5913,21 +5921,17 @@ export class AdapterClass extends EventEmitter {
      * @param options optional user context
      */
     subscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown): Promise<void> {
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} subscribeForeignFiles not processed because Objects database not connected`,
-            );
-
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
         Validator.assertString(id, 'id');
         Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
             Validator.assertObject(options, 'options');
         }
 
-        return this.#objects.subscribeUserFile(id, pattern, options);
+        return this.#subscriptions.subscribeForeignFiles(
+            id,
+            pattern,
+            options as { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        );
     }
 
     // external signatures
@@ -5951,13 +5955,6 @@ export class AdapterClass extends EventEmitter {
         if (!pattern) {
             pattern = '*';
         }
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} unsubscribeForeignFiles not processed because Objects database not connected`,
-            );
-
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-        }
 
         Validator.assertString(id, 'id');
         Validator.assertPattern(pattern, 'pattern');
@@ -5965,7 +5962,11 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        return this.#objects.unsubscribeUserFile(id, pattern, options);
+        return this.#subscriptions.unsubscribeForeignFiles(
+            id,
+            pattern,
+            options as { user?: ioBroker.ObjectIDs.User } | null | undefined,
+        );
     }
 
     // external signatures
@@ -11483,103 +11484,6 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Add a subscription for a given alias, if it is not a state, it will be ignored
-     *
-     * @param aliasObj the alias object
-     * @param pattern pattern to subscribe for
-     */
-    private async _addAliasSubscribe(aliasObj: ioBroker.AnyObject, pattern: string): Promise<void> {
-        if (aliasObj.type !== 'state') {
-            // no state types do not need to be subscribed
-            return;
-        }
-
-        if (!aliasObj.common?.alias?.id) {
-            // if state and no id given
-            this._logger.warn(`${this.namespaceLog} Alias ${aliasObj._id} has no target 5`);
-            throw new Error(`Alias ${aliasObj._id} has no target`);
-        }
-
-        // id can be string or can have attribute read
-        const sourceId = tools.isObject(aliasObj.common.alias.id)
-            ? aliasObj.common.alias.id.read
-            : aliasObj.common.alias.id;
-
-        // validate here because we use objects/states db directly
-        try {
-            this._utils.validateId(sourceId, true, null);
-        } catch (e) {
-            throw new Error(`Error validating alias id of ${aliasObj._id}: ${e.message}`);
-        }
-
-        const targetEntry = {
-            alias: deepClone(aliasObj.common.alias),
-            id: aliasObj._id,
-            pattern,
-            type: aliasObj.common.type,
-            max: aliasObj.common.max,
-            min: aliasObj.common.min,
-            unit: aliasObj.common.unit,
-        };
-
-        let aliasDetails: AliasDetails;
-
-        if (!this.aliases.has(sourceId)) {
-            aliasDetails = { targets: [] };
-            // add the alias before doing anything async, so if a delete comes in between we can detect it
-            this.aliases.set(sourceId, aliasDetails);
-        } else {
-            aliasDetails = this.aliases.get(sourceId)!;
-        }
-
-        if (!aliasDetails.source) {
-            await this.#states!.subscribe(sourceId);
-            // we ignore permissions on the source object and thus get it as admin user
-            const sourceObj = await this.#objects!.getObject(sourceId, { user: SYSTEM_ADMIN_USER });
-
-            // if we have a common and the alias has not been removed in-between
-            if (sourceObj?.common && this.aliases.has(sourceObj._id)) {
-                aliasDetails.source = {
-                    min: sourceObj.common.min,
-                    max: sourceObj.common.max,
-                    type: sourceObj.common.type,
-                    unit: sourceObj.common.unit,
-                };
-            }
-        }
-
-        // add the alias target after we have ensured that we have the source set
-        aliasDetails.targets.push(targetEntry);
-    }
-
-    /**
-     * Remove an alias subscribe
-     *
-     * @param sourceId id of the source object
-     * @param aliasObjOrIdx the alias target or the index of the targets array
-     */
-    private async _removeAliasSubscribe(sourceId: string, aliasObjOrIdx: number | AliasTargetEntry): Promise<void> {
-        if (!this.aliases.has(sourceId)) {
-            return;
-        }
-
-        const alias = this.aliases.get(sourceId)!;
-
-        // remove from targets array
-        const pos = typeof aliasObjOrIdx === 'number' ? aliasObjOrIdx : alias.targets.indexOf(aliasObjOrIdx);
-
-        if (pos !== -1) {
-            alias.targets.splice(pos, 1);
-
-            // unsubscribe if no more aliases exists
-            if (!alias.targets.length) {
-                this.aliases.delete(sourceId);
-                await this.#states!.unsubscribe(sourceId);
-            }
-        }
-    }
-
-    /**
      * Subscribe for changes on all states of all adapters (and system states), that pass the pattern
      *
      * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
@@ -11633,190 +11537,13 @@ export class AdapterClass extends EventEmitter {
         }
         Validator.assertPattern(pattern, 'pattern');
 
-        return this._subscribeForeignStates({ pattern, options, callback });
-    }
-
-    private async _subscribeForeignStates(_options: InternalSubscribeOptions): Promise<void> {
-        const { pattern, options, callback } = _options;
-
-        // Todo check rights for options
-        await this._autoSubscribeOn();
-
-        if (!this.#states) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} subscribeForeignStates not processed because States database not connected`,
+        const cb = callback as ioBroker.ErrorCallback | undefined;
+        this.#subscriptions
+            .subscribeForeignStates(pattern, options as { user?: ioBroker.ObjectIDs.User } | null | undefined)
+            .then(
+                () => cb?.(),
+                (err: Error) => cb?.(err),
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} subscribeForeignStates not processed because Objects database not connected`,
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        // compare if this pattern for one of auto-subscribe adapters
-        for (const autoSubEntry of this.autoSubscribe) {
-            if (typeof pattern === 'string' && (pattern === '*' || pattern.startsWith(`${autoSubEntry}.`))) {
-                // put this pattern into adapter list
-                let state;
-                try {
-                    state = await this.#states.getState(`system.adapter.${autoSubEntry}.subscribes`);
-                } catch {
-                    // ignore
-                }
-                state = state || { val: '{}' };
-                state.val = state.val || '{}';
-                let subs;
-                try {
-                    subs = JSON.parse(state.val as any);
-                } catch {
-                    this._logger.error(`${this.namespaceLog} Cannot parse subscribes for "${autoSubEntry}.subscribes"`);
-                }
-
-                // validate that correct structure read from state.val
-                if (!tools.isObject(subs)) {
-                    subs = {};
-                }
-
-                if (!tools.isObject(subs[pattern])) {
-                    subs[pattern] = {};
-                }
-
-                if (typeof subs[pattern][this.namespace] !== 'number') {
-                    subs[pattern][this.namespace] = 0;
-                }
-
-                subs[pattern][this.namespace]++;
-                this.outputCount++;
-                await this.#states.setState(`system.adapter.${autoSubEntry}.subscribes`, JSON.stringify(subs));
-            }
-        }
-
-        if (Array.isArray(pattern)) {
-            // get all aliases
-            const aliasesIds = pattern
-                .map(id => (id.startsWith(ALIAS_STARTS_WITH) ? id : null))
-                .filter(id => id) as string[];
-
-            // get all non aliases
-            const nonAliasesIds = pattern
-                .map(id => (!id.startsWith(ALIAS_STARTS_WITH) ? id : null))
-                .filter(id => id) as string[];
-
-            for (const aliasPattern of pattern) {
-                if (
-                    (aliasPattern.startsWith(ALIAS_STARTS_WITH) || aliasPattern.includes('*')) &&
-                    !this.aliasPatterns.has(aliasPattern)
-                ) {
-                    // it's a new alias conform pattern to store
-                    this.aliasPatterns.add(aliasPattern);
-                }
-            }
-
-            const promises = [];
-
-            if (aliasesIds.length) {
-                if (!this._aliasObjectsSubscribed) {
-                    this._aliasObjectsSubscribed = true;
-                    this.#objects.subscribe(`${ALIAS_STARTS_WITH}*`);
-                }
-
-                const aliasObjs = await this._getObjectsByArray(aliasesIds, options);
-
-                for (const aliasObj of aliasObjs) {
-                    if (aliasObj) {
-                        promises.push(this._addAliasSubscribe(aliasObj, aliasObj._id));
-                    }
-                }
-            }
-
-            if (nonAliasesIds.length) {
-                for (const id of nonAliasesIds) {
-                    promises.push(new Promise(resolve => this.#states!.subscribeUser(id, resolve)));
-                }
-            }
-
-            try {
-                await Promise.all(promises);
-            } catch (e) {
-                this._logger.error(`${this.namespaceLog} Error on "subscribeForeignStates": ${e.message}`);
-            }
-            return tools.maybeCallback(callback);
-        } else if (pattern.includes('*')) {
-            if (pattern === '*' || pattern.startsWith(ALIAS_STARTS_WITH)) {
-                if (!this._aliasObjectsSubscribed) {
-                    this._aliasObjectsSubscribed = true;
-                    this.#objects.subscribe(`${ALIAS_STARTS_WITH}*`);
-                }
-
-                // read all aliases
-                try {
-                    // @ts-expect-error adjust types
-                    const objs = await this.getForeignObjectsAsync(pattern, null, null, options);
-                    const promises = [];
-                    if (!this.aliasPatterns.has(pattern)) {
-                        // it's a new pattern to store
-                        this.aliasPatterns.add(pattern);
-                    }
-
-                    for (const id of Object.keys(objs)) {
-                        // If alias
-                        if (id.startsWith(ALIAS_STARTS_WITH)) {
-                            const aliasObj = objs[id];
-                            promises.push(this._addAliasSubscribe(aliasObj, pattern));
-                        }
-                    }
-
-                    try {
-                        await Promise.all(promises);
-                    } catch (e) {
-                        this._logger.error(`${this.namespaceLog} Error on "subscribeForeignStates": ${e.message}`);
-                    }
-
-                    if (!this.#states) {
-                        // if states is no longer existing, we do not need to unsubscribe
-                        this._logger.info(
-                            `${this.namespaceLog} subscribeForeignStates not processed because States database not connected`,
-                        );
-                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                    }
-
-                    if (promises.length && pattern !== '*') {
-                        return tools.maybeCallback(callback);
-                    }
-                    // no alias objects found or pattern *
-                    return callback
-                        ? this.#states.subscribeUser(pattern, callback)
-                        : this.#states.subscribeUser(pattern);
-                } catch (e) {
-                    this._logger.warn(`${this.namespaceLog} Cannot subscribe to ${pattern}: ${e.message}`);
-                    return tools.maybeCallbackWithError(callback, e);
-                }
-            } else {
-                return callback ? this.#states.subscribeUser(pattern, callback) : this.#states.subscribeUser(pattern);
-            }
-        } else if (pattern.startsWith(ALIAS_STARTS_WITH)) {
-            if (!this._aliasObjectsSubscribed) {
-                this._aliasObjectsSubscribed = true;
-                this.#objects.subscribe(`${ALIAS_STARTS_WITH}*`);
-            }
-
-            // just read one alias Object
-            try {
-                const aliasObj = await this.#objects.getObject(pattern, options);
-                if (aliasObj) {
-                    await this._addAliasSubscribe(aliasObj, pattern);
-                    return tools.maybeCallback(callback);
-                }
-                return tools.maybeCallback(callback);
-            } catch (e) {
-                this._logger.warn(`${this.namespaceLog} cannot subscribe on alias "${pattern}": ${e.message}`);
-            }
-        } else {
-            return callback ? this.#states.subscribeUser(pattern, callback) : this.#states.subscribeUser(pattern);
-        }
     }
 
     /**
@@ -11879,111 +11606,13 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        return this._unsubscribeForeignStates({ pattern, options, callback });
-    }
-
-    private async _unsubscribeForeignStates(_options: InternalSubscribeOptions): Promise<void> {
-        const { pattern, callback } = _options;
-
-        if (!this.#states) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} unsubscrubeForeignStates not processed because States database not connected`,
+        const cb = callback as ioBroker.ErrorCallback | undefined;
+        this.#subscriptions
+            .unsubscribeForeignStates(pattern, options as { user?: ioBroker.ObjectIDs.User } | null | undefined)
+            .then(
+                () => cb?.(),
+                (err: Error) => cb?.(err),
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        if (this.autoSubscribe && typeof pattern === 'string') {
-            for (const autoSub of this.autoSubscribe) {
-                if (pattern === '*' || pattern.substring(0, autoSub.length + 1) === `${autoSub}.`) {
-                    // remove this pattern from adapter list
-                    let state;
-                    try {
-                        state = await this.#states.getState(`system.adapter.${autoSub}.subscribes`);
-                    } catch {
-                        // ignore
-                    }
-                    if (!state || !state.val) {
-                        continue;
-                    }
-                    let subs;
-                    try {
-                        subs = JSON.parse(state.val as any);
-                    } catch {
-                        this._logger.error(`${this.namespaceLog} Cannot parse subscribes for "${autoSub}.subscribes"`);
-                        continue;
-                    }
-
-                    if (
-                        !tools.isObject(subs) ||
-                        !tools.isObject(subs[pattern]) ||
-                        subs[pattern][this.namespace] === undefined
-                    ) {
-                        // check subs is a valid object, because it comes from state.val
-                        continue;
-                    }
-
-                    if (typeof subs[pattern][this.namespace] === 'number') {
-                        subs[pattern][this.namespace]--;
-                        if (subs[pattern][this.namespace] <= 0) {
-                            delete subs[pattern][this.namespace];
-                        }
-                    } else {
-                        // corrupted info, we can only delete
-                        delete subs[pattern][this.namespace];
-                    }
-
-                    // if no other subs are there
-                    if (!Object.keys(subs[pattern]).length) {
-                        delete subs[pattern];
-                    }
-                    this.outputCount++;
-                    await this.#states.setState(`system.adapter.${autoSub}.subscribes`, JSON.stringify(subs));
-                }
-            }
-        }
-
-        let aliasPattern;
-        const promises = [];
-
-        if (Array.isArray(pattern)) {
-            // process every entry as single unsubscribe
-            for (const _pattern of pattern) {
-                promises.push(this.unsubscribeForeignStatesAsync(_pattern));
-            }
-        } else if (pattern.includes('*') || pattern.startsWith(ALIAS_STARTS_WITH)) {
-            if (pattern === '*' || pattern.startsWith(ALIAS_STARTS_WITH)) {
-                aliasPattern = pattern; // check all aliases
-                if (pattern === '*') {
-                    promises.push(this.#states.unsubscribeUser(pattern));
-                }
-            } else {
-                promises.push(this.#states.unsubscribeUser(pattern));
-            }
-        } else {
-            promises.push(this.#states.unsubscribeUser(pattern));
-        }
-
-        if (aliasPattern) {
-            // if pattern known, remove it from alias patterns to not subscribe to further matching aliases
-            this.aliasPatterns.delete(aliasPattern);
-
-            for (const [sourceId, alias] of this.aliases) {
-                for (let i = alias.targets.length - 1; i >= 0; i--) {
-                    if (alias.targets[i].pattern === aliasPattern) {
-                        promises.push(this._removeAliasSubscribe(sourceId, i));
-                    }
-                }
-            }
-        }
-
-        await Promise.all(promises);
-        // if no alias subscribed any longer, remove subscription
-        if (!this.aliases.size && this._aliasObjectsSubscribed) {
-            this._aliasObjectsSubscribed = false;
-            this.#objects!.unsubscribe(`${ALIAS_STARTS_WITH}*`);
-        }
-        return tools.maybeCallback(callback);
     }
 
     /**
@@ -12030,11 +11659,16 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        return this._subscribeForeignStates({
-            pattern: Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true),
-            options,
-            callback,
-        });
+        const cb = callback as ioBroker.ErrorCallback | undefined;
+        this.#subscriptions
+            .subscribeForeignStates(
+                Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true),
+                options as { user?: ioBroker.ObjectIDs.User } | null | undefined,
+            )
+            .then(
+                () => cb?.(),
+                (err: Error) => cb?.(err),
+            );
     }
 
     /**
@@ -12083,11 +11717,16 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        return this._unsubscribeForeignStates({
-            pattern: Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true),
-            options,
-            callback,
-        });
+        const cb = callback as ioBroker.ErrorCallback | undefined;
+        this.#subscriptions
+            .unsubscribeForeignStates(
+                Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true),
+                options as { user?: ioBroker.ObjectIDs.User } | null | undefined,
+            )
+            .then(
+                () => cb?.(),
+                (err: Error) => cb?.(err),
+            );
     }
 
     /**
@@ -12135,33 +11774,6 @@ export class AdapterClass extends EventEmitter {
 
         Validator.assertString(name, 'name');
         return this.pluginHandler.getPluginConfig(name);
-    }
-
-    private async _autoSubscribeOn(): Promise<void> {
-        if (!this.autoSubscribe && this.#objects) {
-            try {
-                // collect all
-                const res = await this.#objects.getObjectViewAsync('system', 'instance', {
-                    startkey: 'system.adapter.',
-                    endkey: 'system.adapter.\u9999',
-                });
-
-                this.autoSubscribe = [];
-                for (const row of res.rows) {
-                    if (row.value?.common.subscribable) {
-                        const _id = row.id.substring(15); // cut system.adapter.
-                        if (!this.autoSubscribe.includes(_id)) {
-                            this.autoSubscribe.push(_id);
-                        }
-                    }
-                }
-
-                // because of autoSubscribe
-                await this.#objects.subscribeAsync('system.adapter.*');
-            } catch {
-                // ignore
-            }
-        }
     }
 
     /**
@@ -12936,45 +12548,14 @@ export class AdapterClass extends EventEmitter {
                             }
                         }
                     }
-                } else if (!this._stopInProgress && this.adapterReady && this.aliases.has(id)) {
-                    // If adapter is ready and for this ID exist some alias links
-                    const alias = this.aliases.get(id)!;
-                    /** Prevent multiple publishes if multiple patterns contain this alias id */
-                    const uniqueTargets = new Set<string>();
-
-                    for (const target of alias.targets) {
-                        const targetId = target.id;
-                        if (uniqueTargets.has(targetId)) {
-                            continue;
-                        }
-
-                        uniqueTargets.add(targetId);
-
-                        const source = alias.source;
-
-                        const aState = state
-                            ? tools.formatAliasValue({
-                                  sourceCommon: source,
-                                  targetCommon: target,
-                                  state: deepClone(state),
-                                  logger: this._logger,
-                                  logNamespace: this.namespaceLog,
-                                  sourceId: id,
-                                  targetId,
-                              })
-                            : null;
-
-                        if (aState || !state) {
-                            if (typeof this._options.stateChange === 'function') {
-                                Promise.resolve(this._options.stateChange(targetId, aState)).catch(e =>
-                                    this._logger.error(
-                                        `${this.namespaceLog} Error in stateChange handler: ${e.message}`,
-                                    ),
-                                );
-                            } else {
-                                // emit 'stateChange' event instantly
-                                setImmediate(() => this.emit('stateChange', targetId, aState));
-                            }
+                } else if (!this._stopInProgress && this.adapterReady && this.#alias.hasSource(id)) {
+                    for (const { targetId, state: aState } of this.#alias.resolveSourceChange(id, state)) {
+                        if (typeof this._options.stateChange === 'function') {
+                            Promise.resolve(this._options.stateChange(targetId, aState)).catch(e =>
+                                this._logger.error(`${this.namespaceLog} Error in stateChange handler: ${e.message}`),
+                            );
+                        } else {
+                            setImmediate(() => this.emit('stateChange', targetId, aState));
                         }
                     }
                 }
@@ -13138,73 +12719,7 @@ export class AdapterClass extends EventEmitter {
 
                 // if alias
                 if (id.startsWith(ALIAS_STARTS_WITH)) {
-                    // if `this.aliases` is empty, or no target found, it's a new alias
-                    let isNewAlias = true;
-
-                    for (const [sourceId, alias] of this.aliases) {
-                        const targetAlias = alias.targets.find(entry => entry.id === id);
-
-                        // Find entry for this alias
-                        if (targetAlias) {
-                            isNewAlias = false;
-
-                            // new sourceId or same
-                            if (obj?.common?.alias?.id) {
-                                // check if id.read or id
-                                const newSourceId =
-                                    typeof obj.common.alias.id.read === 'string'
-                                        ? obj.common.alias.id.read
-                                        : obj.common.alias.id;
-
-                                // if linked ID changed
-                                if (newSourceId !== sourceId) {
-                                    await this._removeAliasSubscribe(sourceId, targetAlias);
-                                    try {
-                                        await this._addAliasSubscribe(obj, targetAlias.pattern);
-                                    } catch (e) {
-                                        this._logger.error(
-                                            `${this.namespaceLog} Could not add alias subscription: ${e.message}`,
-                                        );
-                                    }
-                                } else {
-                                    // update attributes
-                                    targetAlias.min = obj.common.min;
-                                    targetAlias.max = obj.common.max;
-                                    targetAlias.type = obj.common.type;
-                                    targetAlias.alias = deepClone(obj.common.alias);
-                                }
-                            } else {
-                                // link was deleted
-                                // remove from targets array
-                                await this._removeAliasSubscribe(sourceId, targetAlias);
-                            }
-                        }
-                    }
-
-                    // it's a new alias, we add it to our subscription
-                    if (isNewAlias && obj) {
-                        for (const aliasPattern of this.aliasPatterns) {
-                            // check if it's in our subs range, if so add it
-                            const testPattern =
-                                aliasPattern.slice(-1) === '*'
-                                    ? new RegExp(tools.pattern2RegEx(aliasPattern))
-                                    : aliasPattern;
-
-                            if (
-                                (typeof testPattern === 'string' && aliasPattern === id) ||
-                                (testPattern instanceof RegExp && testPattern.test(id))
-                            ) {
-                                try {
-                                    await this._addAliasSubscribe(obj, id);
-                                } catch (e) {
-                                    this._logger.warn(
-                                        `${this.namespaceLog} Could not add alias subscription: ${e.message}`,
-                                    );
-                                }
-                                break;
-                            }
-                        }
-                    }
+                    await this.#alias.handleAliasObjectChange(id, obj);
                 }
 
                 // process auto-subscribe adapters
@@ -13212,14 +12727,9 @@ export class AdapterClass extends EventEmitter {
                     if (obj?.common?.subscribable) {
                         const _id = id.substring(15); // 'system.adapter.'.length
                         if (obj.common.enabled) {
-                            if (!this.autoSubscribe.includes(_id)) {
-                                this.autoSubscribe.push(_id);
-                            }
+                            this.#subscriptions.addSubscribableInstance(_id);
                         } else {
-                            const pos = this.autoSubscribe.indexOf(_id);
-                            if (pos !== -1) {
-                                this.autoSubscribe.splice(pos, 1);
-                            }
+                            this.#subscriptions.removeSubscribableInstance(_id);
                         }
                     }
                 }
