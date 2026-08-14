@@ -20,7 +20,7 @@
         "@iobroker/js-controller-cli": "file:../cli",
         "@iobroker/js-controller-common": "file:../common",
         "@iobroker/js-controller-common-db": "file:../common-db",
-        "@iobroker/plugin-base": "~3.0.3",
+        "@iobroker/plugin-base": "~4.0.0",
         "@iobroker/plugin-sentry": "~3.2.0",
         "axios": "^1.18.0",
         "cron-parser": "^5.6.1",
@@ -82,6 +82,7 @@
         "restart": "node iobroker.js restart",
         "release": "release-script",
         "test": "mocha test --exit",
+    "test-unit": "mocha \"src/lib/**/*.test.ts\" --exit",
         "test-jsonl": "mocha test/jsonl/ --exit",
         "test-redis-socket": "mocha test/redis-socket/ --exit",
         "test-redis-sentinel": "mocha test/redis-sentinel/ --exit"

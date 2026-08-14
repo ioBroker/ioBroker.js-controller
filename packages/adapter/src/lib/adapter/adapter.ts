@@ -13215,7 +13215,7 @@ export class AdapterClass extends EventEmitter {
             objs = [];
         }
 
-        if (instanceObj && 'instanceObjects' in instanceObj) {
+        if (instanceObj && 'instanceObjects' in instanceObj && instanceObj.instanceObjects) {
             for (const instObj of instanceObj.instanceObjects) {
                 const obj: IoPackageInstanceObject & { state?: ioBroker.StateValue } = instObj;
 

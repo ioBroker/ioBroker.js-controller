@@ -5624,7 +5624,8 @@ export class ObjectsInRedisClient {
                     if (obj?.common && (!type || ('type' in obj.common && obj.common.type === type))) {
                         let name = obj?.common?.name;
                         if (name && typeof name === 'object') {
-                            name = name[options.language || 'en'] || name.en;
+                            // options can be null if the caller has not provided any
+                            name = name[options?.language || 'en'] || name.en;
                         }
                         if (name === idOrName) {
                             return tools.maybeCallbackWithError(callback, null, obj._id, obj.common.name);

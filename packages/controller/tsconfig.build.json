@@ -45,6 +45,7 @@
   "exclude": [
     "test/**",
     "src/**/*.test.ts",
+    "src/**/*.test-utils.ts",
     "build/**",
     "node_modules/**"
   ]

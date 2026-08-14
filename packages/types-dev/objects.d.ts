@@ -1254,9 +1254,9 @@ declare global {
             /** Register notifications for the built-in notification system */
             notifications?: Notification[];
             /** Objects created for each instance, inside the namespace of this adapter */
-            instanceObjects: (StateObject | DeviceObject | ChannelObject | FolderObject | MetaObject)[];
+            instanceObjects?: (StateObject | DeviceObject | ChannelObject | FolderObject | MetaObject)[];
             /** Objects created for the adapter, anywhere in the global namespace */
-            objects: ioBroker.AnyObject[];
+            objects?: ioBroker.AnyObject[];
         }
 
         interface PartialAdapterObject extends Partial<Omit<AdapterObject, 'common'>> {

@@ -2,104 +2,90 @@ import { tools } from '@iobroker/js-controller-common';
 import JSZip from 'jszip';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 
-function _getAllFilesInDir(
-    objects: ObjectsClient,
-    id: string,
-    name: string,
-    options: any,
-    callback: (errs: null | string[], res: string[]) => void,
-    result?: string[],
-): void {
-    objects.readDir(id, name, options, (err, files) => {
-        result = result || [];
+/**
+ * Collect all files of the given directory and all its subdirectories
+ *
+ * @param objects The objects database client
+ * @param id The object ID owning the files
+ * @param name Path of the directory to read inside the object's file storage
+ * @param options Optional settings passed to the objects client
+ */
+async function _getAllFilesInDir(objects: ObjectsClient, id: string, name: string, options: any): Promise<string[]> {
+    const result: string[] = [];
+    let dirContent: ioBroker.ReadDirResult[] | undefined;
 
-        let count = 0;
-        const errors: string[] = [];
-        if (files) {
-            for (const file of files) {
-                if (file.isDir) {
-                    count++;
-                    _getAllFilesInDir(
-                        objects,
-                        id,
-                        `${name}/${file.file}`,
-                        options,
-                        (errs, _result) => {
-                            errs && errors.push(...errs);
-                            if (!--count) {
-                                callback(errors.length ? errors : null, _result);
-                            }
-                        },
-                        result,
-                    );
-                } else {
-                    result.push(`${name}/${file.file}`);
-                }
-            }
-        }
+    try {
+        dirContent = await objects.readDirAsync(id, name, options);
+    } catch {
+        // a directory which cannot be read does not contribute any files
+        return result;
+    }
 
-        if (!count) {
-            callback(null, result);
+    for (const file of dirContent || []) {
+        if (file.isDir) {
+            result.push(...(await _getAllFilesInDir(objects, id, `${name}/${file.file}`, options)));
+        } else {
+            result.push(`${name}/${file.file}`);
         }
-    });
+    }
+
+    return result;
 }
 
-function _addFile(
-    objects: ObjectsClient,
-    id: string,
-    name: string,
-    options: any,
-    zip: JSZip,
-    callback: (err: Error | null | undefined) => void,
-): void {
-    objects.readFile(id, name, options, (err, data, _mime) => {
-        if (err) {
-            console.log(err);
-            callback(new Error(`Cannot read file "${name}": ${err.message}`));
-        } else {
-            // if handler installed
-            if (options.stringify) {
-                try {
-                    data = options.stringify(name, data, options ? options.settings : null);
-                } catch (e) {
-                    console.error(`Cannot stringify file "${name}": ${e.message}`);
-                    if (!err) {
-                        err = new Error(`Cannot stringify file "${name}": ${e.message}`);
-                    }
-                }
-            }
-            const parts = name.split('/');
-            if (parts.length > 1) {
-                parts.shift();
-                name = parts.join('/');
-            }
+/**
+ * Read one file of the objects database and add it to the zip archive
+ *
+ * @param objects The objects database client
+ * @param id The object ID owning the file
+ * @param name Path of the file inside the object's file storage
+ * @param options Optional settings passed to the objects client
+ * @param zip The archive the file is added to
+ */
+async function _addFile(objects: ObjectsClient, id: string, name: string, options: any, zip: JSZip): Promise<void> {
+    let data: string | Buffer | null;
 
-            zip.file(name, data!);
-            setImmediate(() => callback(err));
+    try {
+        ({ file: data } = await objects.readFile(id, name, options));
+    } catch (e) {
+        throw new Error(`Cannot read file "${name}": ${e.message}`);
+    }
+
+    // if handler installed
+    if (options.stringify) {
+        try {
+            data = options.stringify(name, data, options ? options.settings : null);
+        } catch (e) {
+            throw new Error(`Cannot stringify file "${name}": ${e.message}`);
         }
-    });
+    }
+
+    const parts = name.split('/');
+    if (parts.length > 1) {
+        parts.shift();
+        name = parts.join('/');
+    }
+
+    zip.file(name, data!);
 }
 
 /**
  * Pack all files of a directory into a zip archive
  *
+ * Files which cannot be read are skipped. If no file at all could be packed, but at least one has failed,
+ * the error is thrown.
+ *
  * @param objects The objects database client
  * @param id The object ID owning the files
  * @param name Path of the directory to read inside the object's file storage
- * @param options Optional settings passed to the objects client, or the callback
- * @param callback Called with the base64 encoded zip archive
+ * @param options Optional settings passed to the objects client
+ * @returns The base64 encoded zip archive or undefined if the directory contains no files
  */
 export async function readDirAsZip(
     objects: ObjectsClient,
     id: string,
     name: string,
-    options: any,
-    callback: (err?: Error | null, base64?: string) => void,
-): Promise<void> {
-    if (typeof options === 'function') {
-        callback = options;
-        options = null;
-    }
+    options?: any,
+): Promise<string | undefined> {
     if (name[0] === '/') {
         name = name.substring(1);
     }
@@ -116,29 +102,34 @@ export async function readDirAsZip(
         // OK
     }
 
-    _getAllFilesInDir(objects, id, name, options, (errs, files) => {
-        let count = 0;
-        if (files) {
-            const zip = new JSZip();
-            for (const file of files) {
-                count++;
-                _addFile(objects, id, file, options, zip, async err => {
-                    if (!--count) {
-                        try {
-                            const base64 = await zip.generateAsync({ type: 'base64' });
-                            callback(err, base64);
-                        } catch (e) {
-                            callback(e.message);
-                        }
-                    }
-                });
-            }
-        }
+    const files = await _getAllFilesInDir(objects, id, name, options);
 
-        if (!count) {
-            callback(errs?.length ? new Error(errs.join(', ')) : null);
+    if (!files.length) {
+        return;
+    }
+
+    const zip = new JSZip();
+    const errors: string[] = [];
+    let packedFiles = 0;
+
+    for (const file of files) {
+        try {
+            await _addFile(objects, id, file, options, zip);
+            packedFiles++;
+        } catch (e) {
+            errors.push(e.message);
         }
-    });
+    }
+
+    if (!packedFiles && errors.length) {
+        throw new Error(errors.join(', '));
+    }
+
+    if (errors.length) {
+        console.error(`Some files could not be packed: ${errors.join(', ')}`);
+    }
+
+    return zip.generateAsync({ type: 'base64' });
 }
 
 interface CheckDirOptions {
@@ -361,15 +352,14 @@ async function _writeOneObject(
  * @param adapter The adapter the objects belong to
  * @param data The zip archive as a buffer
  * @param options Optional settings passed to the objects client
- * @param callback Called when the import has finished or failed
+ * @throws {Error} if the archive cannot be read or at least one object cannot be written
  */
 export async function writeObjectsAsZip(
     objects: ObjectsClient,
     rootId: string,
     adapter: string,
     data: Buffer,
-    options: any,
-    callback: (err?: Error | null) => void,
+    options?: any,
 ): Promise<void> {
     options = options || {};
 
@@ -383,25 +373,23 @@ export async function writeObjectsAsZip(
     }
 
     const zip = new JSZip();
-    const error: string[] = [];
+    const errors: string[] = [];
 
-    try {
-        await zip.loadAsync(data);
-        for (const filename of Object.keys(zip.files)) {
-            if (filename[filename.length - 1] === '/') {
-                continue;
-            }
+    await zip.loadAsync(data);
 
-            try {
-                await _writeOneObject(objects, zip, rootId, filename, options);
-            } catch (e) {
-                error.push(e.toString());
-            }
+    for (const filename of Object.keys(zip.files)) {
+        if (filename[filename.length - 1] === '/') {
+            continue;
         }
-    } catch (e) {
-        callback(e.toString());
-        return;
+
+        try {
+            await _writeOneObject(objects, zip, rootId, filename, options);
+        } catch (e) {
+            errors.push(e.toString());
+        }
     }
 
-    callback(error.length ? new Error(error.join(', ')) : null);
+    if (errors.length) {
+        throw new Error(errors.join(', '));
+    }
 }
