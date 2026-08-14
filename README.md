@@ -62,6 +62,7 @@ after that, ioBroker should be running and available in the browser under `http:
 #### Linux
 * run `iobroker start` to start the ioBroker controller in the background
 * watch the logfile `iobroker logs --watch`
+* optionally restrict the output to a severity with `--level`, e.g. `iobroker logs --watch --level warn` shows warnings and errors only. Without it, all levels are shown as before. It combines with the adapter filter, e.g. `iobroker logs iot --level error`
 
 or
 
