@@ -27,7 +27,7 @@
         "debug": "^4.4.3",
         "decache": "^4.6.2",
         "deep-clone": "^3.0.3",
-        "fs-extra": "^11.3.5",
+        "fs-extra": "^11.4.0",
         "jsonwebtoken": "^9.0.3",
         "loadavg-windows": "^1.1.1",
         "node-schedule": "^2.1.1",
