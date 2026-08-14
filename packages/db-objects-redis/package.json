@@ -8,7 +8,7 @@
     "dependencies": {
         "@iobroker/db-base": "file:../db-base",
         "deep-clone": "^3.0.3",
-        "ioredis": "^5.11.1",
+        "ioredis": "^6.0.0",
         "mime-types": "^3.0.2",
         "node.extend": "^2.0.3",
         "semver": "^7.8.5"
