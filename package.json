@@ -52,7 +52,7 @@
         "cpy-cli": "^7.0.0",
         "dts-bundle-generator": "^9.5.1",
         "fs-extra": "^11.3.5",
-        "lerna": "^9.0.7",
+        "lerna": "^10.0.0",
         "mocha": "^11.7.6",
         "semver": "^7.8.5",
         "sinon": "^15.0.0",
