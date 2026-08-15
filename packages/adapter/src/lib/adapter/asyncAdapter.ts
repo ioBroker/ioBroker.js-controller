@@ -283,31 +283,33 @@ export class AsyncAdapter {
      *
      * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
      * @param data payload describing the resource
-     * @param doNotDeleteAlreadyUsed if true, keep the resources this instance already registered instead of replacing them
      */
     async registerUsedResource<T extends ioBroker.UsedResourceType>(
         type: T,
         data: ioBroker.UsedResourceData<T>,
-        doNotDeleteAlreadyUsed?: boolean,
     ): Promise<void> {
         Validator.assertString(type, 'type');
         Validator.assertObject(data, 'data');
-        if (doNotDeleteAlreadyUsed !== undefined) {
-            Validator.assertBoolean(doNotDeleteAlreadyUsed, 'doNotDeleteAlreadyUsed');
-        }
-        return this.#resources.registerUsedResource(type, data, doNotDeleteAlreadyUsed);
+        return this.#resources.registerUsedResource(type, data);
     }
 
     /**
-     * Frees a previously registered exclusive resource of this instance. If `data` is omitted, all
-     * registered resources of the given `type` are freed.
+     * Frees all exclusive resources this instance registered, across all types.
+     */
+    async clearUsedResources(): Promise<void> {
+        return this.#resources.clearUsedResources();
+    }
+
+    /**
+     * Frees previously registered exclusive resources of this instance. `data` is a filter: every field it
+     * names must match. If it is omitted, all registered resources of the given `type` are freed.
      *
      * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
-     * @param data payload of the resource to free; if omitted, all resources of `type` are freed
+     * @param data fields identifying the resources to free; if omitted, all resources of `type` are freed
      */
     async freeUsedResource<T extends ioBroker.UsedResourceType>(
         type: T,
-        data?: ioBroker.UsedResourceData<T>,
+        data?: Partial<ioBroker.UsedResourceData<T>>,
     ): Promise<void> {
         Validator.assertString(type, 'type');
         if (data !== undefined) {
@@ -317,24 +319,24 @@ export class AsyncAdapter {
     }
 
     /**
-     * Reads the exclusive resources of the given `type` registered on this instance's host (across all
-     * instances of that host).
+     * Reads the exclusive resources of the given type registered on this instance's host, across all
+     * instances of that host.
      *
      * @param type resource type to read, e.g. "serialPort"
      */
-    getUsedResources<T extends ioBroker.UsedResourceType>(type: T): Promise<ioBroker.RegisteredResource<T>[]> {
-        if (type !== undefined) {
-            Validator.assertString(type, 'type');
-        }
-        return this.#resources.getUsedResources(type);
-    }
+    getHostUsedResources<T extends ioBroker.UsedResourceType>(type: T): Promise<ioBroker.RegisteredResource<T>[]>;
+    /** Reads the exclusive resources of every type registered on this instance's host. */
+    getHostUsedResources(): Promise<ioBroker.RegisteredResource[]>;
 
     /**
-     * Reads all exclusive resources of every type registered on this instance's host (across all
-     * instances of that host).
+     * @param type resource type to read; if omitted, the resources of every type are read
      */
-    getAllUsedResources(): Promise<ioBroker.RegisteredResource[]> {
-        return this.#resources.getAllUsedResources();
+    getHostUsedResources(type?: ioBroker.UsedResourceType): Promise<ioBroker.RegisteredResource[]> {
+        if (type !== undefined) {
+            Validator.assertString(type, 'type');
+            return this.#resources.getHostUsedResources(type);
+        }
+        return this.#resources.getHostUsedResources();
     }
 
     /**

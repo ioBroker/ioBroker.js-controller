@@ -9105,66 +9105,78 @@ export class AdapterClass extends EventEmitter {
      * `system.host.<hostname>.usedResources.<type>`, so the user gets an overview of the occupied resources
      * and can pick a free one when configuring a new instance.
      *
-     * By default the host first drops all resources this instance had registered before, because the user may
-     * have changed the settings before the (re)start and the old registrations could be invalid. To register
-     * more than one resource for this instance, pass `doNotDeleteAlreadyUsed = true` on every call except the first.
+     * Registering is **additive**: call it once per occupied resource, in any order and from any number of
+     * async init paths. The host drops what this instance registered before whenever the instance starts, so
+     * a stale registration from a previous configuration cannot survive a restart.
      *
      * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
      * @param data the strictly typed payload describing the resource, e.g. `{ port: '/dev/ttyUSB0' }`
-     * @param doNotDeleteAlreadyUsed if true, keep the resources this instance already registered instead of replacing them
      */
     async registerUsedResource<T extends ioBroker.UsedResourceType>(
         type: T,
         data: ioBroker.UsedResourceData<T>,
-        doNotDeleteAlreadyUsed?: boolean,
     ): Promise<void> {
-        return this.#async.registerUsedResource(type, data, doNotDeleteAlreadyUsed);
+        return this.#async.registerUsedResource(type, data);
     }
 
     /**
-     * Free a previously registered exclusive resource of this instance.
+     * Free all exclusive resources this instance registered, across all types.
      *
-     * If `data` is omitted, all registered resources of the given `type` for this instance are freed.
-     * The change is forwarded to the host this instance runs on and reflected in
-     * `system.host.<hostname>.usedResources.<type>`.
+     * This is not needed on start-up (the host already resets the registrations of a starting instance) nor
+     * on shutdown (the host marks them as no longer held). Use it when the instance drops everything it
+     * occupied while it keeps running, e.g. on a reconfiguration.
+     */
+    async clearUsedResources(): Promise<void> {
+        return this.#async.clearUsedResources();
+    }
+
+    /**
+     * Free previously registered exclusive resources of this instance.
+     *
+     * `data` is a **filter, not the exact payload**: every field it names must match, fields it does not name
+     * are ignored. `freeUsedResource('tcpPort', { port: 8080 })` therefore also frees an entry registered as
+     * `{ port: 8080, bind: '0.0.0.0' }`, and if `data` is omitted, all registered resources of the given
+     * `type` for this instance are freed. The change is forwarded to the host this instance runs on and
+     * reflected in `system.host.<hostname>.usedResources.<type>`; a filter that matches nothing is logged by
+     * the host.
      *
      * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
-     * @param data the strictly typed payload of the resource to free; if omitted, all resources of `type` are freed
+     * @param data the fields identifying the resources to free; if omitted, all resources of `type` are freed
      */
     async freeUsedResource<T extends ioBroker.UsedResourceType>(
         type: T,
-        data?: ioBroker.UsedResourceData<T>,
+        data?: Partial<ioBroker.UsedResourceData<T>>,
     ): Promise<void> {
         return this.#async.freeUsedResource(type, data);
     }
 
     /**
-     * Query the exclusive resources currently registered as used on the host this instance runs on.
+     * Query the exclusive resources currently registered as used on the **host** this instance runs on.
+     *
+     * Unlike `registerUsedResource`/`freeUsedResource`/`clearUsedResources`, which only ever touch the
+     * resources of this instance, this returns the resources of **all** instances of this host, so the user
+     * (or an admin UI) can present an overview of what is occupied and pick something free.
      *
      * Reading is done directly from the state's DB (`system.host.<hostname>.usedResources.<type>`), which the
-     * host keeps up to date. Only `registerUsedResource`/`freeUsedResource` go through the host to keep the
-     * registry consistent. Returns the resources of all instances on this host, so the user (or an admin UI)
-     * can present an overview of the occupied resources. Optionally filtered by resource `type`.
+     * host keeps up to date; only the mutating calls go through the host to keep the registry consistent.
      *
-     * @param type optional resource type to filter for, e.g. "serialPort"; if omitted, all types are returned
-     * @returns the list of registered resources (across all instances of this host)
+     * @param type resource type to read, e.g. "serialPort"
+     * @returns the list of registered resources of that type (across all instances of this host)
      */
-    async getUsedResources<T extends ioBroker.UsedResourceType>(type: T): Promise<ioBroker.RegisteredResource<T>[]> {
-        return this.#async.getUsedResources(type);
-    }
+    async getHostUsedResources<T extends ioBroker.UsedResourceType>(type: T): Promise<ioBroker.RegisteredResource<T>[]>;
+    /**
+     * Query the exclusive resources of every type currently registered as used on the host this instance runs on.
+     *
+     * @returns the list of registered resources (across all instances and types of this host)
+     */
+    async getHostUsedResources(): Promise<ioBroker.RegisteredResource[]>;
 
     /**
-     * Query the exclusive resources currently registered as used on the host this instance runs on.
-     *
-     * Reading is done directly from the state's DB (`system.host.<hostname>.usedResources.<type>`), which the
-     * host keeps up to date. Only `registerUsedResource`/`freeUsedResource` go through the host to keep the
-     * registry consistent. Returns the resources of all instances on this host, so the user (or an admin UI)
-     * can present an overview of the occupied resources. Optionally filtered by resource `type`.
-     *
+     * @param type resource type to read; if omitted, the resources of every type are returned
      * @returns the list of registered resources (across all instances of this host)
      */
-    async getAllUsedResources(): Promise<ioBroker.RegisteredResource[]> {
-        return this.#async.getAllUsedResources();
+    async getHostUsedResources(type?: ioBroker.UsedResourceType): Promise<ioBroker.RegisteredResource[]> {
+        return type === undefined ? this.#async.getHostUsedResources() : this.#async.getHostUsedResources(type);
     }
 
     // external signatures

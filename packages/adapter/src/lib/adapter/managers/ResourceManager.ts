@@ -20,14 +20,15 @@ export class ResourceManager extends AdapterContextBase {
     /**
      * Registers an exclusive resource as used by this instance by forwarding it to the host.
      *
+     * Registering is additive - one call per occupied resource, in any order. The host drops what this
+     * instance registered before when it starts, so there is nothing to reset by hand.
+     *
      * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
      * @param data payload describing the resource
-     * @param doNotDeleteAlreadyUsed if true, keep the resources this instance already registered instead of replacing them
      */
     async registerUsedResource<T extends ioBroker.UsedResourceType>(
         type: T,
         data: ioBroker.UsedResourceData<T>,
-        doNotDeleteAlreadyUsed?: boolean,
     ): Promise<void> {
         const obj = {
             command: 'registerUsedResource',
@@ -35,7 +36,6 @@ export class ResourceManager extends AdapterContextBase {
                 type,
                 data,
                 instance: this.namespace,
-                doNotDeleteAlreadyUsed: !!doNotDeleteAlreadyUsed,
             },
             from: `system.adapter.${this.namespace}`,
         };
@@ -44,14 +44,27 @@ export class ResourceManager extends AdapterContextBase {
     }
 
     /**
-     * Frees a previously registered exclusive resource of this instance by forwarding it to the host.
+     * Frees all exclusive resources this instance registered, across all types, by forwarding it to the host.
+     */
+    async clearUsedResources(): Promise<void> {
+        const obj = {
+            command: 'clearUsedResources',
+            message: { instance: this.namespace },
+            from: `system.adapter.${this.namespace}`,
+        };
+
+        await this.states.pushMessage(`system.host.${this.host}`, obj);
+    }
+
+    /**
+     * Frees previously registered exclusive resources of this instance by forwarding it to the host.
      *
      * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
-     * @param data payload of the resource to free; if omitted, all resources of `type` are freed
+     * @param data fields identifying the resources to free; if omitted, all resources of `type` are freed
      */
     async freeUsedResource<T extends ioBroker.UsedResourceType>(
         type: T,
-        data?: ioBroker.UsedResourceData<T>,
+        data?: Partial<ioBroker.UsedResourceData<T>>,
     ): Promise<void> {
         const obj = {
             command: 'freeUsedResource',
@@ -67,32 +80,33 @@ export class ResourceManager extends AdapterContextBase {
     }
 
     /**
-     * Reads the exclusive resources of the given `type` currently registered on this instance's host.
+     * Reads the exclusive resources of the given type currently registered on this instance's host, across
+     * all its instances.
      *
      * @param type resource type to read, e.g. "serialPort"
      * @throws {Error} when the host of this instance is unknown
      */
-    async getUsedResources<T extends ioBroker.UsedResourceType>(type: T): Promise<ioBroker.RegisteredResource<T>[]> {
-        if (!this.host) {
-            throw new Error('getUsedResources: host of this instance is unknown');
-        }
-
-        const state = await this.states.getState(`system.host.${this.host}.${USED_RESOURCES_ID}.${type}`);
-        return ResourceManager.#parseResources<ioBroker.RegisteredResource<T>>(state);
-    }
+    async getHostUsedResources<T extends ioBroker.UsedResourceType>(type: T): Promise<ioBroker.RegisteredResource<T>[]>;
+    /** Reads the exclusive resources of every type currently registered on this instance's host. */
+    async getHostUsedResources(): Promise<ioBroker.RegisteredResource[]>;
 
     /**
-     * Reads all exclusive resources of every type currently registered on this instance's host.
-     *
-     * @throws {Error} when the host of this instance is unknown
+     * @param type resource type to read; if omitted, the resources of every type are read
      */
-    async getAllUsedResources(): Promise<ioBroker.RegisteredResource[]> {
+    async getHostUsedResources(type?: ioBroker.UsedResourceType): Promise<ioBroker.RegisteredResource[]> {
         if (!this.host) {
-            throw new Error('getUsedResources: host of this instance is unknown');
+            throw new Error('getHostUsedResources: host of this instance is unknown');
         }
 
         const states = this.states;
-        const keys = await states.getKeys(`system.host.${this.host}.${USED_RESOURCES_ID}.*`);
+        const prefix = `system.host.${this.host}.${USED_RESOURCES_ID}`;
+
+        if (type !== undefined) {
+            const state = await states.getState(`${prefix}.${type}`);
+            return ResourceManager.#parseResources<ioBroker.RegisteredResource>(state);
+        }
+
+        const keys = await states.getKeys(`${prefix}.*`);
 
         const resources: ioBroker.RegisteredResource[] = [];
         if (keys?.length) {

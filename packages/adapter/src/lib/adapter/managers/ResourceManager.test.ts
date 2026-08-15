@@ -28,7 +28,7 @@ describe('ResourceManager.registerUsedResource', () => {
         );
     });
 
-    it('forwards the resource to the host with the instance and coerced flag', async () => {
+    it('forwards the resource to the host with the instance', async () => {
         const pushMessage = sinon.stub().resolves();
         const mgr = new ResourceManager(makeContext({ states: { pushMessage } as any }));
 
@@ -43,17 +43,41 @@ describe('ResourceManager.registerUsedResource', () => {
             type: 'serialPort',
             data: { port: '/dev/ttyUSB0' },
             instance: 'test.0',
-            doNotDeleteAlreadyUsed: false,
         });
     });
 
-    it('passes doNotDeleteAlreadyUsed through as a boolean', async () => {
+    it('is additive: every call forwards its own resource', async () => {
         const pushMessage = sinon.stub().resolves();
         const mgr = new ResourceManager(makeContext({ states: { pushMessage } as any }));
 
-        await mgr.registerUsedResource('serialPort', { port: '/dev/ttyUSB0' }, true);
+        await mgr.registerUsedResource('serialPort', { port: '/dev/ttyUSB0' });
+        await mgr.registerUsedResource('tcpPort', { port: 1883 });
 
-        assert.equal(pushMessage.firstCall.args[1].message.doNotDeleteAlreadyUsed, true);
+        assert.equal(pushMessage.callCount, 2);
+        assert.deepEqual(
+            pushMessage.getCalls().map(call => call.args[1].message.type),
+            ['serialPort', 'tcpPort'],
+        );
+    });
+});
+
+describe('ResourceManager.clearUsedResources', () => {
+    it('rejects with ERROR_DB_CLOSED when states is not connected', async () => {
+        const mgr = new ResourceManager(makeContext({ states: null }));
+        await assert.rejects(() => mgr.clearUsedResources(), new RegExp(tools.ERRORS.ERROR_DB_CLOSED));
+    });
+
+    it('forwards the request to the host', async () => {
+        const pushMessage = sinon.stub().resolves();
+        const mgr = new ResourceManager(makeContext({ states: { pushMessage } as any }));
+
+        await mgr.clearUsedResources();
+
+        const [target, obj] = pushMessage.firstCall.args;
+        assert.equal(target, 'system.host.localhost');
+        assert.equal(obj.command, 'clearUsedResources');
+        assert.equal(obj.from, 'system.adapter.test.0');
+        assert.deepEqual(obj.message, { instance: 'test.0' });
     });
 });
 
@@ -89,18 +113,21 @@ describe('ResourceManager.freeUsedResource', () => {
     });
 });
 
-describe('ResourceManager.getUsedResources', () => {
+describe('ResourceManager.getHostUsedResources', () => {
     it('throws when the host is unknown', async () => {
         const mgr = new ResourceManager(makeContext({ host: undefined, states: {} as any }));
-        await assert.rejects(() => mgr.getUsedResources('serialPort'), /host of this instance is unknown/);
+        await assert.rejects(() => mgr.getHostUsedResources('serialPort'), /host of this instance is unknown/);
+        await assert.rejects(() => mgr.getHostUsedResources(), /host of this instance is unknown/);
     });
 
     it('reads and parses the resources of the given type from the host state', async () => {
-        const entries = [{ type: 'serialPort', port: '/dev/ttyUSB0', instance: 'test.0', ts: 1, isBlocked: true }];
+        const entries = [
+            { type: 'serialPort', data: { port: '/dev/ttyUSB0' }, instance: 'test.0', ts: 1, isBlocked: true },
+        ];
         const getState = sinon.stub().resolves({ val: JSON.stringify(entries) });
         const mgr = new ResourceManager(makeContext({ states: { getState } as any }));
 
-        const res = await mgr.getUsedResources('serialPort');
+        const res = await mgr.getHostUsedResources('serialPort');
 
         assert.equal(getState.firstCall.args[0], 'system.host.localhost.usedResources.serialPort');
         assert.deepEqual(res, entries);
@@ -114,22 +141,17 @@ describe('ResourceManager.getUsedResources', () => {
         getState.onCall(3).resolves({ val: '{"not":"an array"}' });
         const mgr = new ResourceManager(makeContext({ states: { getState } as any }));
 
-        assert.deepEqual(await mgr.getUsedResources('serialPort'), []);
-        assert.deepEqual(await mgr.getUsedResources('serialPort'), []);
-        assert.deepEqual(await mgr.getUsedResources('serialPort'), []);
-        assert.deepEqual(await mgr.getUsedResources('serialPort'), []);
-    });
-});
-
-describe('ResourceManager.getAllUsedResources', () => {
-    it('throws when the host is unknown', async () => {
-        const mgr = new ResourceManager(makeContext({ host: undefined, states: {} as any }));
-        await assert.rejects(() => mgr.getAllUsedResources(), /host of this instance is unknown/);
+        assert.deepEqual(await mgr.getHostUsedResources('serialPort'), []);
+        assert.deepEqual(await mgr.getHostUsedResources('serialPort'), []);
+        assert.deepEqual(await mgr.getHostUsedResources('serialPort'), []);
+        assert.deepEqual(await mgr.getHostUsedResources('serialPort'), []);
     });
 
-    it('collects and flattens resources across all types of the host', async () => {
-        const serial = [{ type: 'serialPort', port: '/dev/ttyUSB0', instance: 'test.0', ts: 1, isBlocked: true }];
-        const tcp = [{ type: 'tcpPort', port: 8080, instance: 'web.0', ts: 2, isBlocked: false }];
+    it('collects and flattens resources across all types when no type is given', async () => {
+        const serial = [
+            { type: 'serialPort', data: { port: '/dev/ttyUSB0' }, instance: 'test.0', ts: 1, isBlocked: true },
+        ];
+        const tcp = [{ type: 'tcpPort', data: { port: 8080 }, instance: 'web.0', ts: 2, isBlocked: false }];
         const getKeys = sinon
             .stub()
             .resolves([
@@ -139,7 +161,7 @@ describe('ResourceManager.getAllUsedResources', () => {
         const getStates = sinon.stub().resolves([{ val: JSON.stringify(serial) }, { val: JSON.stringify(tcp) }]);
         const mgr = new ResourceManager(makeContext({ states: { getKeys, getStates } as any }));
 
-        const res = await mgr.getAllUsedResources();
+        const res = await mgr.getHostUsedResources();
 
         assert.equal(getKeys.firstCall.args[0], 'system.host.localhost.usedResources.*');
         assert.deepEqual(res, [...serial, ...tcp]);
@@ -150,7 +172,7 @@ describe('ResourceManager.getAllUsedResources', () => {
         const getStates = sinon.stub().resolves([]);
         const mgr = new ResourceManager(makeContext({ states: { getKeys, getStates } as any }));
 
-        assert.deepEqual(await mgr.getAllUsedResources(), []);
+        assert.deepEqual(await mgr.getHostUsedResources(), []);
         assert.equal(getStates.callCount, 0);
     });
 });

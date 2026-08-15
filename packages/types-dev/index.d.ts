@@ -160,18 +160,31 @@ declare global {
         type UsedResourceData<T extends UsedResourceType = UsedResourceType> = UsedResourceDataMap[T];
 
         /**
-         * A registered resource as stored on the host: the typed payload enriched with the discriminating
-         * `type` and the ownership/bookkeeping fields (`instance`, `ts`).
+         * A registered resource as stored on the host: the discriminating `type`, the type-specific payload
+         * in `data` and the ownership/bookkeeping fields (`instance`, `ts`, `isBlocked`).
+         *
+         * The payload is nested on purpose. If it were merged into this object, a payload key could shadow a
+         * bookkeeping field - an entry could then claim a foreign `instance` or a `type` that does not match
+         * the bucket it is stored in, and would be unreachable for all by-instance operations. Nesting makes
+         * that impossible for every current and future payload type.
          */
         type RegisteredResource<T extends UsedResourceType = UsedResourceType> = {
-            [K in T]: { type: K } & UsedResourceDataMap[K] & {
-                    /** Instance that occupies the resource, e.g. "mqtt.0" */
-                    instance: string;
-                    /** Timestamp (ms) when the resource was registered */
-                    ts: number;
-                    /** If true, thie instance is running and use this resource. If false, the instance is not running, but could use this resource, when started */
-                    isBlocked: boolean;
-                };
+            [K in T]: {
+                /** Kind of the occupied resource, e.g. "serialPort" */
+                type: K;
+                /** The type-specific payload describing the resource, e.g. `{ port: '/dev/ttyUSB0' }` */
+                data: UsedResourceDataMap[K];
+                /** Instance that occupies the resource, e.g. "mqtt.0" */
+                instance: string;
+                /** Timestamp (ms) when the resource was registered */
+                ts: number;
+                /**
+                 * If true, the instance is running and uses this resource. If false, the instance is not
+                 * running and would maybe occupy this resource when started - "maybe", because its
+                 * configuration can still change before the next start.
+                 */
+                isBlocked: boolean;
+            };
         }[T];
         // #endregion
 
