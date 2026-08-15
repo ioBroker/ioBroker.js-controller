@@ -6,7 +6,7 @@
 
 # Interface: AliasDetailsSource
 
-Defined in: [adapter/src/lib/\_Types.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L249)
+Defined in: [adapter/src/lib/\_Types.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L249)
 
 Source definition of an alias
 
@@ -16,7 +16,7 @@ Source definition of an alias
 
 > `optional` **max?**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L253)
+Defined in: [adapter/src/lib/\_Types.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L253)
 
 Maximum value of the source
 
@@ -26,7 +26,7 @@ Maximum value of the source
 
 > `optional` **min?**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L251)
+Defined in: [adapter/src/lib/\_Types.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L251)
 
 Minimum value of the source
 
@@ -36,7 +36,7 @@ Minimum value of the source
 
 > `optional` **type?**: [`CommonType`](../type-aliases/CommonType.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L255)
+Defined in: [adapter/src/lib/\_Types.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L255)
 
 Common type of the source
 
@@ -46,6 +46,6 @@ Common type of the source
 
 > `optional` **unit?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:257](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/_Types.ts#L257)
+Defined in: [adapter/src/lib/\_Types.ts:257](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L257)
 
 Unit of the source value

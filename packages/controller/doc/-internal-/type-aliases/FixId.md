@@ -8,7 +8,7 @@
 
 > **FixId** = (`id`, `isPattern?`) => `string`
 
-Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:6](https://github.com/ioBroker/ioBroker.js-controller/blob/1bd08742df68169393d8e7f305058eee3421a1d9/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L6)
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L9)
 
 Prefixes an id or pattern with this adapter's namespace unless already namespaced. Bound to the adapter's Validator.
 
