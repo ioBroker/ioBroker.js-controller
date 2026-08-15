@@ -1724,8 +1724,12 @@ export class Install {
                 if (!Array.isArray(parsed)) {
                     continue;
                 }
-                const original = parsed as { instance: string }[];
-                const filtered = original.filter(entry => !matches(entry.instance));
+                const original = parsed as { instance?: unknown }[];
+                // keep anything that is malformed: it cannot be attributed to the deleted instance, and one
+                // broken entry must not stop the cleanup of the sound ones in the same state
+                const filtered = original.filter(
+                    entry => typeof entry?.instance !== 'string' || !matches(entry.instance),
+                );
                 if (filtered.length !== original.length) {
                     await this.states.setStateAsync(id, { val: JSON.stringify(filtered), ack: true });
                 }

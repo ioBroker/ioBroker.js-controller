@@ -2131,6 +2131,13 @@ async function writeUsedResources(type: ioBroker.UsedResourceType): Promise<void
  * @param type the resource type to persist
  */
 function persistUsedResources(type: ioBroker.UsedResourceType): Promise<void> {
+    if (compactGroupController) {
+        // the registry of a host is owned by its main controller: a compact group controller writes to its own
+        // `system.host.<name>compactGroup<n>` prefix, which nobody reads, and would compete with the real one.
+        // Guarding here covers every caller, including the lifecycle handlers shared with the main controller.
+        return Promise.resolve();
+    }
+
     const pending = pendingUsedResourceWrites.get(type) || Promise.resolve();
     const next = pending.then(() => writeUsedResources(type));
     pendingUsedResourceWrites.set(type, next);

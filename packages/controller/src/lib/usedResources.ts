@@ -166,10 +166,13 @@ export class UsedResourcesRegistry {
     /**
      * Get the registered resources, optionally filtered by type.
      *
+     * The entries are deep copies, so a caller cannot reach into the registry through the nested `data` of a
+     * returned entry.
+     *
      * @param type optional resource type to filter for; if omitted, resources of all types are returned
      */
     get(type?: ioBroker.UsedResourceType): ioBroker.RegisteredResource[] {
-        const clone = (r: ioBroker.RegisteredResource): ioBroker.RegisteredResource => ({ ...r });
+        const clone = (r: ioBroker.RegisteredResource): ioBroker.RegisteredResource => structuredClone(r);
         if (type) {
             return (this.resources.get(type) || []).map(clone);
         }

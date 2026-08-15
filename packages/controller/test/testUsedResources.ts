@@ -398,6 +398,21 @@ describe('lib/usedResources: UsedResourcesRegistry.get', () => {
         assert.strictEqual(reg.get('tcpPort').length, 1);
     });
 
+    it('returns deep copies so the nested payload cannot be mutated either', () => {
+        const reg = newRegistry();
+        reg.register('tcpPort', { port: 1883 }, 'mqtt.0');
+
+        const [entry] = reg.get('tcpPort');
+        (entry.data as ioBroker.TcpPortResourceData).port = 9999;
+        entry.instance = 'evil.0';
+        entry.isBlocked = false;
+
+        const [stored] = reg.get('tcpPort');
+        assert.strictEqual((stored.data as ioBroker.TcpPortResourceData).port, 1883);
+        assert.strictEqual(stored.instance, 'mqtt.0');
+        assert.strictEqual(stored.isBlocked, true);
+    });
+
     it('getTypes lists the types that hold entries', () => {
         const reg = newRegistry();
         reg.register('serialPort', { port: '/dev/ttyUSB0' }, 'mqtt.0');
