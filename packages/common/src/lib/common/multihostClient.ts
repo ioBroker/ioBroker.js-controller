@@ -1,10 +1,14 @@
 /**
- * Multihost discovery client used by the CLI setup utilities.
+ * Multihost discovery client.
  *
  * This module implements a lightweight UDP-based discovery protocol (multicast/broadcast)
  * to find other ioBroker hosts on the local network. It supports an optional
  * password-based handshake and returns the objects/states database configuration
  * necessary for remote setup and connection.
+ *
+ * It is used both by the CLI setup utilities (`iobroker multihost ...`) and by the
+ * controller message handler `multihostConnect`, which lets the Admin GUI trigger a
+ * multihost connection to a host that was discovered via mDNS.
  */
 
 import dgram from 'node:dgram';
@@ -20,7 +24,7 @@ const MULTICAST_ADDR = '239.255.255.250';
  */
 export interface ReceivedMessage {
     /** Command name, e.g. 'browse' */
-    cmd: 'browse' | 'auth';
+    cmd: 'browse' | 'auth' | 'join' | 'decline' | 'identify';
     /** Unique message identifier */
     id: number;
     /** Result string returned by server: 'ok', 'not authenticated', etc. */
@@ -30,10 +34,14 @@ export interface ReceivedMessage {
     ip?: string;
     /** Optional hostname of responder */
     hostname?: string;
-    /** Informational text */
-    info?: string;
+    /** Static information about the responder: cpus, memory, architecture, ... */
+    info?: string | Record<string, unknown>;
     /** Whether responder is a slave */
     slave?: boolean;
+    /** The responder belongs to no system yet and can be attached */
+    unclaimed?: boolean;
+    /** Installation id of the responder, used as the key of the ignore list of a master */
+    uuid?: string;
     /** Authentication token (when required) */
     auth?: string;
     /** Salt used for password hashing during authentication */
@@ -55,8 +63,14 @@ export type BrowseResultEntry = Partial<ReceivedMessage>;
  * - Call `connect(ip, password, callback)` to retrieve configs from a host
  */
 export class MHClient {
-    /** Incremental message id used for request/response correlation */
-    private id: number = 1;
+    /**
+     * Incremental message id used for request/response correlation.
+     *
+     * Seeded randomly rather than from a fixed value: a client is constructed per attempt, so a
+     * counter starting at 1 would make the id of the first request of every connect predictable -
+     * and the id is what an answer is correlated on.
+     */
+    private id: number = crypto.randomInt(1, 0x7fff_ffff);
     private timer: NodeJS.Timeout | null = null;
     private server: dgram.Socket | undefined;
 
@@ -199,7 +213,8 @@ export class MHClient {
                                 auth: msg.auth,
                             });
                         } else if (msg.result === 'ok') {
-                            result.push(msg);
+                            // the answer carries no address - the only place it is known is the packet itself
+                            result.push({ ...msg, ip: msg.ip || rinfo.address });
                         } else {
                             console.log(`Multihost discovery client: Unknown answer: ${JSON.stringify(msg)}`);
                         }
@@ -254,6 +269,12 @@ export class MHClient {
                 this.server!.send(text, 0, text.length, PORT, ip);
             },
             (msg, rinfo) => {
+                // Only the host we asked may answer: the configuration from this reply is written
+                // straight into iobroker.json, so accepting it from any source address would let
+                // anyone who lands a datagram on this socket decide which databases we join.
+                if (rinfo.address !== ip) {
+                    return false;
+                }
                 // we expect only one answer
                 if (msg.cmd === 'browse' && msg.id === this.id) {
                     if (msg.result === 'ok') {
@@ -307,5 +328,58 @@ export class MHClient {
                 }
             },
         );
+    }
+
+    /**
+     * Send a write command to a host that is not part of this system yet.
+     *
+     * `browse` asks and the other host answers. These commands go the other way: the master tells a
+     * freshly installed host what to do. That host is not connected to any states database, so this
+     * socket is the only way to reach it.
+     *
+     * Sent as unicast - the multicast address is only needed for finding hosts.
+     *
+     * @param ip - Address of the target host
+     * @param cmd - `join` to attach it, `decline` to be ignored by it, `identify` to make it log
+     * @param payload - additional fields of the command
+     * @param payload.masterUuid - UUID of this master, used by `join` and `decline`
+     * @param payload.password - multihost password, used by `join`
+     * @param payload.revoke - `decline` only: take the rejection back
+     * @param timeout - Milliseconds to wait for the answer
+     * @returns the answer of the host
+     */
+    sendCommand(
+        ip: string,
+        cmd: 'join' | 'decline' | 'identify',
+        payload: { masterUuid?: string; password?: string; revoke?: boolean } = {},
+        timeout = 2_000,
+    ): Promise<ReceivedMessage> {
+        return new Promise((resolve, reject) => {
+            let answered = false;
+            const requestId = ++this.id;
+
+            this.startServer(
+                false,
+                timeout,
+                () => {
+                    const text = JSON.stringify({ cmd, id: requestId, ...payload });
+                    this.server!.send(text, 0, text.length, PORT, ip);
+                },
+                (msg, rinfo) => {
+                    if (rinfo.address !== ip || msg.cmd !== cmd || msg.id !== requestId) {
+                        // not ours, or not from the host we asked - keep listening
+                        return false;
+                    }
+                    answered = true;
+                    resolve(msg);
+                    return true;
+                },
+                err => {
+                    if (!answered) {
+                        reject(err || new Error(`No answer from ${ip} for command "${cmd}"`));
+                    }
+                },
+            );
+        });
     }
 }

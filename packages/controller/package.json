@@ -37,6 +37,9 @@
         "readline-sync": "^1.4.10",
         "semver": "^7.8.5"
     },
+    "optionalDependencies": {
+        "bonjour-service": "^1.4.4"
+    },
     "homepage": "https://www.iobroker.com",
     "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
     "keywords": [

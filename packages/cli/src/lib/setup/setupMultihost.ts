@@ -4,9 +4,15 @@ import readline from 'node:readline';
 import readlineSync from 'readline-sync';
 import prompt from 'prompt';
 
-import { isLocalObjectsDbServer, isLocalStatesDbServer, tools, EXIT_CODES } from '@iobroker/js-controller-common';
+import {
+    isLocalObjectsDbServer,
+    isLocalStatesDbServer,
+    tools,
+    EXIT_CODES,
+    MHClient,
+    type BrowseResultEntry,
+} from '@iobroker/js-controller-common';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import { MHClient, type BrowseResultEntry } from './multihostClient.js';
 import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
 import { dbConnect } from '@/lib/setup/dbConnection.js';
 
