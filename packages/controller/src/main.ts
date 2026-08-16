@@ -9,7 +9,7 @@ import restart from '@/lib/restart.js';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'node:util';
-import { MHServer } from '@/lib/multihostServer.js';
+import { MHServer, MULTIHOST_PORT } from '@/lib/multihostServer.js';
 import { HostDiscovery, type DiscoveredHost } from '@/lib/hostDiscovery.js';
 import {
     tools,
@@ -219,6 +219,8 @@ let mhService: any = null; // multihost service
 let hostDiscovery: HostDiscovery | null = null; // mDNS announcement and discovery
 /** Installation id of this host, published in the mDNS announcement */
 let ownUuid = '';
+/** Whether a join to a master is currently running - only one may rewrite the configuration */
+let joinInProgress = false;
 const uptimeStart = Date.now();
 let compactGroupController = false;
 let compactGroup: null | number = null;
@@ -366,7 +368,9 @@ async function publishDiscoveredHosts(hosts: DiscoveredHost[]): Promise<void> {
     }
 
     const declined = await getDeclinedHosts();
-    const visible = hosts.filter(host => !host.uuid || !declined.includes(host.uuid));
+    // A host without a uuid cannot be offered: the decline list is keyed by it, so "No" would
+    // silently do nothing and the host would keep coming back with no way for the user to tell why
+    const visible = hosts.filter(host => host.uuid && !declined.includes(host.uuid));
 
     outputCount++;
     await states.setState(`${hostObjectPrefix}.discoveredHosts`, {
@@ -377,22 +381,34 @@ async function publishDiscoveredHosts(hosts: DiscoveredHost[]): Promise<void> {
 }
 
 /**
- * Publish what this host currently is, or correct an earlier announcement.
+ * Read the installation id (`system.meta.uuid`) into {@link ownUuid} once it exists.
  *
- * Called on start and on every refresh tick - `unclaimed` changes the moment another host joins.
+ * Deliberately independent of mDNS: the UDP `browse` answer carries the uuid as well, and that path
+ * works without the optional package. A host that answers without one cannot be told apart from
+ * another, and a master could never remember that the user rejected it.
  */
-async function updateHostAnnouncement(): Promise<void> {
-    if (!hostDiscovery) {
+async function resolveOwnUuid(): Promise<void> {
+    if (ownUuid) {
         return;
     }
 
-    if (!ownUuid) {
-        try {
-            const uuidObj = await objects!.getObjectAsync('system.meta.uuid');
-            ownUuid = (uuidObj?.native?.uuid as string) || '';
-        } catch {
-            // announce without it, the host is still findable by name
-        }
+    try {
+        const uuidObj = await objects!.getObjectAsync('system.meta.uuid');
+        ownUuid = (uuidObj?.native?.uuid as string) || '';
+    } catch {
+        // stays empty and is retried by waitForUuid()
+    }
+}
+
+/**
+ * Publish what this host currently is: its installation id, whether it can still be taken over and
+ * whether it runs a multihost master. No-op when mDNS is unusable.
+ */
+async function updateHostAnnouncement(): Promise<void> {
+    await resolveOwnUuid();
+
+    if (!hostDiscovery) {
+        return;
     }
 
     await hostDiscovery.announce({
@@ -437,14 +453,16 @@ async function startHostDiscovery(): Promise<void> {
         await publishDiscoveredHosts([]);
     }
 
+    // Started before the availability check on purpose: the uuid is needed for the UDP `browse`
+    // answer as well, which works without mDNS. Giving up here would leave this host answering
+    // without one for the rest of the process lifetime.
+    if (!ownUuid) {
+        void waitForUuid().catch(e => logger.warn(`${hostLogPrefix} Cannot resolve the host UUID: ${e.message}`));
+    }
+
     if (!hostDiscovery.isAvailable()) {
         // nothing to clean up, but do not keep an object around which will never do anything
         hostDiscovery = null;
-        return;
-    }
-
-    if (!ownUuid) {
-        void waitForUuid().catch(e => logger.warn(`${hostLogPrefix} Cannot announce the host UUID: ${e.message}`));
     }
 }
 
@@ -460,11 +478,17 @@ async function waitForUuid(): Promise<void> {
     for (let attempt = 0; attempt < 15; attempt++) {
         await wait(2_000);
 
-        if (ownUuid || isStopping || !hostDiscovery) {
+        if (ownUuid || isStopping) {
             return;
         }
 
-        await updateHostAnnouncement();
+        // updateHostAnnouncement() resolves it too, but it is a no-op without mDNS - and the UDP
+        // path needs the uuid just as much
+        await resolveOwnUuid();
+
+        if (ownUuid) {
+            await updateHostAnnouncement();
+        }
     }
 
     if (!ownUuid) {
@@ -482,12 +506,45 @@ async function waitForUuid(): Promise<void> {
  * The previous `iobroker.json` is kept as `iobroker.json.bak`. Without a screen and without SSH a
  * host that cannot reach its master after the restart would otherwise be unrecoverable.
  *
+ * Only one join may run at a time. The `join` command answers before it awaits this, so a second
+ * datagram arriving in that window would otherwise start a second join alongside the first.
+ *
  * @param ip Address of the master
  * @param password Multihost password, empty when the master runs unsecured
  */
 async function joinMaster(ip: string, password: string): Promise<{ result: boolean; error?: string }> {
+    if (joinInProgress) {
+        logger.warn(`${hostLogPrefix} Multihost connect to "${ip}" refused, a join is already running`);
+        return { result: false, error: 'A join is already in progress on this host' };
+    }
+    joinInProgress = true;
+
     logger.info(`${hostLogPrefix} Multihost connect requested to "${ip}"`);
 
+    let result: { result: boolean; error?: string };
+    try {
+        result = await joinMasterInternal(ip, password);
+    } catch (e) {
+        joinInProgress = false;
+        throw e;
+    }
+
+    if (!result.result) {
+        // a failed attempt may be retried; a successful one is followed by a controller restart
+        joinInProgress = false;
+    }
+
+    return result;
+}
+
+/**
+ * Performs the actual handshake with the master and stores its database configuration.
+ * Guarded by {@link joinMaster}, do not call directly.
+ *
+ * @param ip Address of the master
+ * @param password Multihost password, empty when the master runs unsecured
+ */
+async function joinMasterInternal(ip: string, password: string): Promise<{ result: boolean; error?: string }> {
     return new Promise(resolve => {
         const mhClient = new MHClient();
         mhClient.connect(ip, password, async (err, oObjects, oStates, ipHost) => {
@@ -530,8 +587,16 @@ async function joinMaster(ip: string, password: string): Promise<{ result: boole
                 config.objects.host = replaceListenAll(config.objects.host);
                 config.states.host = replaceListenAll(config.states.host);
 
+                // Only the very first join may write the backup. A second one would copy the
+                // already rewritten config over it, and the file that is supposed to hold the way
+                // back would point at the master as well - on a host without a screen or SSH that
+                // is the difference between recoverable and reflashing it.
                 try {
-                    fs.copyFileSync(configFile, `${configFile}.bak`);
+                    if (fs.existsSync(`${configFile}.bak`)) {
+                        logger.info(`${hostLogPrefix} Keeping the existing ${configFile}.bak untouched`);
+                    } else {
+                        fs.copyFileSync(configFile, `${configFile}.bak`);
+                    }
                 } catch (e) {
                     logger.warn(`${hostLogPrefix} Cannot back up ${configFile}: ${e.message}`);
                 }
@@ -552,7 +617,7 @@ async function joinMaster(ip: string, password: string): Promise<{ result: boole
  * @param _config Configuration from iobroker.json
  * @param secret MultiHost communication password
  * @param options Pairing behaviour of the server
- * @param options.pairingOnly Only listen for pairing commands, do not answer `browse`
+ * @param options.pairingOnly Only listen for pairing commands; `browse` is then answered with the hostname, the static info and the uuid, never with the database configuration
  */
 function _startMultihost(
     _config: ioBroker.IoBrokerJson,
@@ -707,13 +772,16 @@ async function startMultihost(__config?: ioBroker.IoBrokerJson): Promise<boolean
         }
     }
 
-    // Multihost is switched off, but a host that does not belong to any system yet has to stay
+    // Multihost is switched off, but a host that does not belong to any system yet can stay
     // reachable: without a states database connection the `join` command over UDP 50005 is the only
-    // way for a master to attach it. `browse` is refused in this mode, so nothing is disclosed.
+    // way for a master to attach it. In this mode `browse` is answered with the hostname, the static
+    // info and the uuid - never with the database configuration.
     //
-    // Switched off with `multihostService.pairing: false` in iobroker.json. Then this host cannot be
-    // attached over the network at all and only `iobroker multihost connect` on the host itself
-    // remains - which needs a shell on it.
+    // On unless `multihostService.pairing: false` is set in iobroker.json. This is what makes the
+    // ready-made image work: burn it, boot it, and an existing system can offer to attach it -
+    // without a shell, a screen or anything to confirm on the new host. The listener stops on its
+    // own as soon as the host belongs to a system; until then it stays reachable, so the user is not
+    // forced to catch a time window.
     if (
         _config.multihostService?.pairing !== false &&
         (await isLocalObjectsDbServer(_config.objects.type, _config.objects.host))
@@ -3284,7 +3352,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 const seen = new Set<string>();
 
                 for (const host of hostDiscovery?.getHosts() || []) {
-                    if (host.uuid && declined.includes(host.uuid)) {
+                    // no uuid means the user could never decline it, so it is not offered
+                    if (!host.uuid || declined.includes(host.uuid)) {
                         continue;
                     }
                     seen.add(host.ip);
@@ -3292,13 +3361,27 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 const mhClient = new MHClient();
-                const list = await mhClient.browse(msg.message?.timeout || 2_000, false);
+                // caller-controlled, and this handler awaits the browse - which resolves only when
+                // the timeout expires, holding the socket for as long as it says
+                const browseTimeout = Math.min(Math.max(Number(msg.message?.timeout) || 2_000, 500), 10_000);
+                const list = await mhClient.browse(browseTimeout, false);
 
                 for (const entry of list) {
-                    if ((entry.uuid && declined.includes(entry.uuid)) || (entry.ip && seen.has(entry.ip))) {
+                    if (!entry.uuid || declined.includes(entry.uuid) || (entry.ip && seen.has(entry.ip))) {
                         continue;
                     }
-                    hosts.push({ ...entry, source: 'udp' });
+                    // Picked explicitly instead of spread: a master that runs unsecured answers a
+                    // `browse` with its `objects`/`states` sections, which carry the database host
+                    // and, for Redis, the credentials. Only what the Admin needs travels on.
+                    hosts.push({
+                        uuid: entry.uuid,
+                        hostname: entry.hostname,
+                        ip: entry.ip,
+                        port: MULTIHOST_PORT,
+                        unclaimed: !!entry.unclaimed,
+                        info: entry.info,
+                        source: 'udp',
+                    });
                 }
 
                 if (msg.callback) {
@@ -3399,7 +3482,25 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 const uuidObj = await objects!.getObjectAsync('system.meta.uuid');
                 masterUuid = (uuidObj?.native?.uuid as string) || '';
             } catch {
-                // without it only `join` works - a decline could not be assigned to us
+                // reported below - every command needs it
+            }
+
+            // The remote host refuses a command without it: a master it cannot identify is one the
+            // user could never decline. Fail here, so the Admin sees why instead of a bare
+            // "No masterUuid" coming back from a host it knows nothing about.
+            if (!masterUuid) {
+                if (msg.callback) {
+                    sendTo(
+                        msg.from,
+                        msg.command,
+                        {
+                            result: false,
+                            error: 'This host has no installation id ("system.meta.uuid") yet, so the other host cannot tell who is asking. Try again in a moment.',
+                        },
+                        msg.callback,
+                    );
+                }
+                break;
             }
 
             try {

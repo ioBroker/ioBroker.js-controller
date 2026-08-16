@@ -32,6 +32,20 @@ const MDNS_MODULE = 'bonjour-service';
 const DEFAULT_REFRESH_INTERVAL = 60_000;
 /** An entry is dropped when it was not seen for this long, in ms */
 const ENTRY_TTL = 5 * 60_000;
+/**
+ * Upper bound for the discovered hosts.
+ *
+ * Anybody on the network can publish `_iobroker._tcp`, and the key of an entry is the instance name
+ * the publisher chose, so without a cap a single device could fill the map - and with it the state
+ * the Admin reads.
+ */
+const MAX_HOSTS = 200;
+/** Longest string accepted from a TXT record. Everything here is a name, a uuid or a version */
+const MAX_TXT_LENGTH = 128;
+/** A uuid has to look like one before it is stored and shown */
+const UUID_PATTERN = /^[0-9a-fA-F-]{16,64}$/;
+/** Announcements are collected for this long before the change is reported, in ms */
+const CHANGE_DEBOUNCE = 2_000;
 
 /**
  * The part of the mDNS library this class uses.
@@ -158,6 +172,9 @@ export class HostDiscovery {
     private ownFqdn = '';
 
     private readonly hosts = new Map<string, DiscoveredHost>();
+
+    /** Pending change notification, so that a busy network cannot drive the state writes */
+    private changeTimer: NodeJS.Timeout | null = null;
 
     /**
      * @param options Names, logger and the callbacks for the discovered hosts
@@ -295,6 +312,14 @@ export class HostDiscovery {
                 },
             });
             this.ownFqdn = this.service.fqdn;
+            // Browsing and announcing start independently, so our own announcement may have been
+            // picked up before this name was known. Drop it now, otherwise the entry sits in the
+            // list until the TTL expires it - and addHost() skips it from here on, so nothing else
+            // would ever correct it.
+            if (this.hosts.delete(this.ownFqdn)) {
+                this.logger.debug(`${this.logPrefix} Host discovery: removed our own announcement from the list`);
+                this.notifyChange();
+            }
             this.ensureRefreshTimer();
 
             this.logger.debug(
@@ -348,6 +373,23 @@ export class HostDiscovery {
     }
 
     /**
+     * Report the current list to the controller, at most once per {@link CHANGE_DEBOUNCE}.
+     *
+     * The consumer writes a state on every call, which fans out to every subscribed Admin. Without
+     * this, the write rate would be whatever anybody on the network chooses to announce.
+     */
+    private notifyChange(): void {
+        if (!this.onChange || this.changeTimer) {
+            return;
+        }
+
+        this.changeTimer = setTimeout(() => {
+            this.changeTimer = null;
+            this.onChange?.(this.getHosts());
+        }, CHANGE_DEBOUNCE);
+    }
+
+    /**
      * Turn an mDNS answer into a host entry.
      *
      * Answers without a usable IPv4 address or without our TXT layout are dropped - they belong to
@@ -362,9 +404,20 @@ export class HostDiscovery {
         }
 
         const txt = service.txt || {};
+
+        // Anything on the network may publish this service type, so an answer has to look like ours
+        // before it is stored: without these checks a foreign device lands in the list, and from
+        // there in a state the Admin shows.
+        if (txt.proto !== DISCOVERY_PROTOCOL_VERSION) {
+            return;
+        }
+        if (!txt.uuid || !UUID_PATTERN.test(txt.uuid)) {
+            return;
+        }
+
         const hostname = txt.host || service.name;
 
-        if (!hostname) {
+        if (!hostname || hostname.length > MAX_TXT_LENGTH || (txt.v || '').length > MAX_TXT_LENGTH) {
             return;
         }
 
@@ -393,6 +446,26 @@ export class HostDiscovery {
 
         const key = this.getKey(service, host);
         const known = this.hosts.get(key);
+
+        if (!known && this.hosts.size >= MAX_HOSTS) {
+            // Drop whatever was not heard from for the longest time. A real host answers the
+            // re-query every 60 s and therefore stays, while entries somebody announced once age out.
+            let oldestKey: string | undefined;
+            let oldestSeen = Number.POSITIVE_INFINITY;
+            for (const [candidate, entry] of this.hosts) {
+                if (entry.lastSeen < oldestSeen) {
+                    oldestSeen = entry.lastSeen;
+                    oldestKey = candidate;
+                }
+            }
+            if (oldestKey !== undefined) {
+                this.hosts.delete(oldestKey);
+                this.logger.debug(
+                    `${this.logPrefix} Host discovery: more than ${MAX_HOSTS} hosts announced, dropped the oldest entry`,
+                );
+            }
+        }
+
         this.hosts.set(key, host);
 
         if (
@@ -405,7 +478,7 @@ export class HostDiscovery {
             this.logger.debug(
                 `${this.logPrefix} Host discovery: found "${host.hostname}" (${host.ip}), unclaimed: ${host.unclaimed}`,
             );
-            this.onChange?.(this.getHosts());
+            this.notifyChange();
         }
     }
 
@@ -419,7 +492,7 @@ export class HostDiscovery {
         const key = this.getKey(service, { uuid: txt.uuid || '', hostname: txt.host || service.name });
 
         if (this.hosts.delete(key)) {
-            this.onChange?.(this.getHosts());
+            this.notifyChange();
         }
     }
 
@@ -456,7 +529,7 @@ export class HostDiscovery {
         }
 
         if (changed) {
-            this.onChange?.(this.getHosts());
+            this.notifyChange();
         }
     }
 
@@ -482,6 +555,11 @@ export class HostDiscovery {
         if (this.refreshTimer) {
             clearInterval(this.refreshTimer);
             this.refreshTimer = null;
+        }
+
+        if (this.changeTimer) {
+            clearTimeout(this.changeTimer);
+            this.changeTimer = null;
         }
 
         if (this.browser) {

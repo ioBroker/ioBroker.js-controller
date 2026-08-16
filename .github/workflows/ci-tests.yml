@@ -116,6 +116,12 @@ jobs:
       - name: Execute Standard Tests
         run: npm test
 
+      - name: Execute Adapter Unit Tests
+        run: npm run test-adapter
+
+      - name: Execute Multihost Unit Tests
+        run: npm run test-multihost
+
       - name: Execute Jsonl Tests
         run: npm run test-jsonl
 

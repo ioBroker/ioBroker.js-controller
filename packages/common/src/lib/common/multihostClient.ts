@@ -63,8 +63,14 @@ export type BrowseResultEntry = Partial<ReceivedMessage>;
  * - Call `connect(ip, password, callback)` to retrieve configs from a host
  */
 export class MHClient {
-    /** Incremental message id used for request/response correlation */
-    private id: number = 1;
+    /**
+     * Incremental message id used for request/response correlation.
+     *
+     * Seeded randomly rather than from a fixed value: a client is constructed per attempt, so a
+     * counter starting at 1 would make the id of the first request of every connect predictable -
+     * and the id is what an answer is correlated on.
+     */
+    private id: number = crypto.randomInt(1, 0x7fff_ffff);
     private timer: NodeJS.Timeout | null = null;
     private server: dgram.Socket | undefined;
 
@@ -263,6 +269,12 @@ export class MHClient {
                 this.server!.send(text, 0, text.length, PORT, ip);
             },
             (msg, rinfo) => {
+                // Only the host we asked may answer: the configuration from this reply is written
+                // straight into iobroker.json, so accepting it from any source address would let
+                // anyone who lands a datagram on this socket decide which databases we join.
+                if (rinfo.address !== ip) {
+                    return false;
+                }
                 // we expect only one answer
                 if (msg.cmd === 'browse' && msg.id === this.id) {
                     if (msg.result === 'ok') {
@@ -353,9 +365,9 @@ export class MHClient {
                     const text = JSON.stringify({ cmd, id: requestId, ...payload });
                     this.server!.send(text, 0, text.length, PORT, ip);
                 },
-                msg => {
-                    if (msg.cmd !== cmd || msg.id !== requestId) {
-                        // not ours - keep listening
+                (msg, rinfo) => {
+                    if (rinfo.address !== ip || msg.cmd !== cmd || msg.id !== requestId) {
+                        // not ours, or not from the host we asked - keep listening
                         return false;
                     }
                     answered = true;

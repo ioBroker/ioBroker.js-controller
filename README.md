@@ -845,9 +845,19 @@ does not work on every system — notably not on some Windows setups. When the p
 cannot be started, the controller writes one info line and carries on without it: hosts are then
 only found over the multihost UDP protocol, and `discoveredHosts` stays empty.
 
-Announcing can be switched off together with the pairing listener via
-`"multihostService": { "pairing": false }` in `iobroker.json`. Then a host can only be attached from
-a shell on the host itself.
+The **pairing listener** — the UDP 50005 socket that accepts a `join` from a master — is on by
+default, and it is what makes the ready-made image work: burn it, boot it, and an existing system can
+offer to attach it, with nothing to confirm on the new host. The listener stops on its own as soon as
+the host belongs to a system, so it is only ever open on a host nobody has claimed yet.
+
+Switch the pairing path off with `"multihostService": { "pairing": false }` in `iobroker.json`,
+followed by the `updateMultihost` host message — that closes the listener immediately, no controller
+restart needed. Do that once the system is set up and you do not intend to attach it to another one:
+`join` is not authenticated, so while the listener is open, anyone who can reach the host on the
+network can attach it to a system of their choosing.
+
+The mDNS announcement and the discovery are independent of that flag and stay active. They only make
+a host visible; nothing about it can be changed through them.
 
 ### TIERS: Start instances in an ordered manner
 **Feature status:** Technology preview (since 3.3.0)
@@ -1215,7 +1225,7 @@ on its own. Hosts the user declined are filtered out.
 
 ```js5
 // message
-{ timeout: 2000 }           // optional, how long the UDP browse waits, default 2000 ms
+{ timeout: 2000 }           // optional, how long the UDP browse waits, 500..10000 ms, default 2000
 // answer
 {
   result: true,
@@ -1226,13 +1236,19 @@ on its own. Hosts the user declined are filtered out.
       ip: '192.168.1.42',
       port: 50005,
       unclaimed: true,      // belongs to no system yet and can be attached
-      master: false,        // runs a multihost master
-      version: '7.3.0',
+      master: false,        // runs a multihost master (mDNS source only)
+      version: '7.3.0',     // controller version (mDNS source only)
+      info: { /* os, cpus, memory, ... */ },  // static information (UDP source only)
       source: 'mdns',       // 'mdns' or 'udp'
     },
   ],
 }
 ```
+
+Only hosts that report an installation id are listed — the decline list is keyed by it, so a host
+without one could be offered but never rejected. The fields are picked explicitly rather than passed
+through: a `browse` answer of an unsecured master also carries its database configuration, which has
+no business travelling to the caller of this message.
 
 #### multihostPair
 Acts on a host found by `multihostBrowse`. Sent to the master, which then reaches the other host over
@@ -1252,7 +1268,14 @@ UDP port 50005.
 ```
 
 * `join` — the host fetches the database configuration of this master, stores it and restarts. It
-  refuses when it already belongs to a system.
+  refuses when it already belongs to a system, when it runs a multihost service of its own (a master
+  is not a pairing target), when it declined this master before, or when a join is already running on
+  it. The target host must have the pairing listener switched on (see
+  [Host discovery](#host-discovery)); every command also needs this master's installation id
+  (`system.meta.uuid`), because a master the other host cannot identify is one the user could never
+  decline.
+
+  All four commands are rate limited per sender, so an unauthenticated flood cannot keep a host busy.
 * `decline` — the host is hidden from the discovery list of this system. The decision is stored on
   the master, so it also holds while the other host is switched off. The other host is notified as
   well and then ignores this master; if it cannot be reached, it stays hidden anyway.
