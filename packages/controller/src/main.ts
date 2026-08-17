@@ -2139,15 +2139,21 @@ function persistUsedResources(type: ioBroker.UsedResourceType): Promise<void> {
     }
 
     const pending = pendingUsedResourceWrites.get(type) || Promise.resolve();
-    const next = pending.then(() => writeUsedResources(type));
+    // `.catch` before chaining on purpose: a rejected link would otherwise never run the write of the
+    // next one, and the cleanup below would never fire either - so that resource type would silently
+    // stop being persisted for the rest of this controller's life. writeUsedResources() handles its
+    // own errors today, but that invariant lives in another function.
+    const next = pending.catch(() => {}).then(() => writeUsedResources(type));
     pendingUsedResourceWrites.set(type, next);
 
     // forget the chain again once nothing else is queued behind it
-    void next.then(() => {
-        if (pendingUsedResourceWrites.get(type) === next) {
-            pendingUsedResourceWrites.delete(type);
-        }
-    });
+    void next
+        .catch(() => {})
+        .then(() => {
+            if (pendingUsedResourceWrites.get(type) === next) {
+                pendingUsedResourceWrites.delete(type);
+            }
+        });
 
     return next;
 }
@@ -2191,8 +2197,16 @@ async function loadUsedResources(): Promise<void> {
             if (!instance?._id) {
                 continue;
             }
+            // Only instances of this host count: the registry is per host, so an instance that was
+            // moved elsewhere while this controller was down must not keep its entries alive here -
+            // nothing would ever remove them, because no object change follows a move that already
+            // happened.
+            if (instance.common?.host !== hostname) {
+                continue;
+            }
+
             existingInstances.add(instance._id.substring(SYSTEM_ADAPTER_PREFIX.length));
-            if (instance.common?.host === hostname && !instance.common.declareUsedResources) {
+            if (!instance.common.declareUsedResources) {
                 controllerManaged.push(instance);
             }
         }
@@ -2306,6 +2320,33 @@ function seedUsedResourcesOfInstance(instance: ioBroker.InstanceObject): ioBroke
 }
 
 /**
+ * Bring the used-resources registry in line with an instance that is about to run.
+ *
+ * Called from the paths that actually launch a process, not from {@link startInstance} as a whole: a
+ * redundant call for an instance that is already running must not touch the registry, because nothing
+ * would re-register afterwards and the live entries would simply be gone.
+ *
+ * @param id the instance id, e.g. "system.adapter.mqtt.0"
+ * @param instance the instance object
+ */
+async function markInstanceResourcesStarting(id: string, instance: ioBroker.InstanceObject): Promise<void> {
+    if (compactGroupController) {
+        return;
+    }
+
+    const namespace = id.substring(SYSTEM_ADAPTER_PREFIX.length);
+
+    await persistUsedResourceTypes(
+        instance.common.declareUsedResources
+            ? // the adapter declares its resources itself: drop what it declared before this (re)start,
+              // because the settings may have changed in between. What it registers now is additive.
+              usedResources.removeInstance(namespace)
+            : // the resources derived from the configuration are held again as soon as the instance runs
+              usedResources.setInstanceBlocked(namespace, true),
+    );
+}
+
+/**
  * Bring the used-resources registry in line with the current state of an instance object. This is the single
  * place where the configuration of an instance enters the registry:
  *
@@ -2365,6 +2406,18 @@ function getUsedResourceMessageInstance(msg: ioBroker.SendableMessage): string {
     if (claimedInstance !== undefined && claimedInstance !== instance) {
         throw new Error(
             `instance "${instance}" must not modify the used resources of ${JSON.stringify(claimedInstance)}`,
+        );
+    }
+
+    // An instance without the flag is controller-managed: its entries are derived from the instance
+    // object, and the next change to that object replaces whatever it registered here. Accepting the
+    // call would look like it worked and the entry would vanish later for an unrelated reason, so it
+    // is refused with something the adapter developer can act on. The config comes from `procs`, so
+    // this costs no database read.
+    const config = procs[`${SYSTEM_ADAPTER_PREFIX}${instance}` as ioBroker.ObjectIDs.Instance]?.config;
+    if (config && !config.common?.declareUsedResources) {
+        throw new Error(
+            `instance "${instance}" does not declare its used resources - add "common.declareUsedResources": true to its io-package.json`,
         );
     }
 
@@ -4353,16 +4406,11 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                     `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`,
                 );
 
-                // the scheduled run holds the resources of this instance until it exits again - same handling
-                // as a normal start in startInstance()
-                if (!compactGroupController) {
-                    const namespace = id.substring(SYSTEM_ADAPTER_PREFIX.length);
-                    persistUsedResourceTypes(
-                        instance.common.declareUsedResources
-                            ? usedResources.removeInstance(namespace)
-                            : usedResources.setInstanceBlocked(namespace, true),
-                    ).catch(e => logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`));
-                }
+                // the scheduled run holds the resources of this instance until it exits again - same
+                // handling as any other start
+                markInstanceResourcesStarting(id, instance).catch(e =>
+                    logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`),
+                );
 
                 proc.process.on('exit', (code, signal) => {
                     outputCount++;
@@ -4667,19 +4715,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         }
     }
 
-    if (!compactGroupController) {
-        const namespace = id.substring(SYSTEM_ADAPTER_PREFIX.length);
-        if (instance.common.declareUsedResources) {
-            // the adapter declares its resources itself: drop what it declared before this (re)start, because
-            // the settings may have changed in between. Everything it registers from now on is additive.
-            await persistUsedResourceTypes(usedResources.removeInstance(namespace));
-        } else if (mode !== 'schedule') {
-            // the resources derived from the configuration are held again as soon as the instance runs
-            // (for "schedule" this happens per run in startScheduledInstance)
-            await persistUsedResourceTypes(usedResources.setInstanceBlocked(namespace, true));
-        }
-    }
-
     switch (mode) {
         case 'once':
         case 'daemon':
@@ -4688,6 +4723,8 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 if (proc.stopping) {
                     delete proc.stopping;
                 }
+
+                await markInstanceResourcesStarting(id, instance);
 
                 logger.debug(
                     `${hostLogPrefix} startInstance ${name}.${instanceNo} loglevel=${loglevel}, compact=${
@@ -5456,6 +5493,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 }
                 if (proc.process) {
                     storePids();
+                    // this forks an adapter right away, so it needs the same resource handling as any
+                    // other start - the exit handler below unblocks them again
+                    await markInstanceResourcesStarting(id, instance);
                     const isNpm = isInstalledFromNpm({
                         installedFrom: instance.common.installedFrom,
                         adapterName: instance.common.name,
@@ -5473,6 +5513,16 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             states!
                                 .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
                                 .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));
+
+                            // the init run is over: keep the registrations but mark them as no longer held
+                            if (!compactGroupController) {
+                                persistUsedResourceTypes(
+                                    usedResources.setInstanceBlocked(id.substring(SYSTEM_ADAPTER_PREFIX.length), false),
+                                ).catch(e =>
+                                    logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`),
+                                );
+                            }
+
                             if (signal) {
                                 logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                             } else if (code === null) {
