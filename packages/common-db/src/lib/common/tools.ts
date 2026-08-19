@@ -5,7 +5,7 @@ import crypto from 'node:crypto';
 import { createInterface } from 'node:readline';
 import { PassThrough } from 'node:stream';
 import zlib from 'node:zlib';
-import { exec, type ExecOptions } from 'node:child_process';
+import { exec, execFile, type ExecOptions } from 'node:child_process';
 import { URLSearchParams } from 'node:url';
 import events from 'node:events';
 import { setDefaultResultOrder } from 'node:dns';
@@ -2987,6 +2987,47 @@ export function execAsync(
 }
 
 /**
+ * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
+ * In error, the promise rejects with the exit code or signal, as well as stdout and stderr.
+ *
+ * @param file The command to execute
+ * @param args The arguments to pass to the command
+ * @param execOptions The options for child_process.execFile
+ * @returns child process promise
+ */
+export function execFileAsync(
+    file: string,
+    args: readonly string[],
+    execOptions?: ExecOptions,
+): Promise<{
+    stdout?: string;
+    stderr?: string;
+}> {
+    const defaultOptions = {
+        // we do not want to show the node.js window on Windows
+        windowsHide: true,
+        // And we want to capture stdout/stderr
+        encoding: 'utf8',
+    };
+
+    return new Promise<{
+        stdout: string;
+        stderr: string;
+    }>((resolve, reject) => {
+        execFile(file, [...args], { ...defaultOptions, ...execOptions }, (error, stdout, stderr) => {
+            if (error) {
+                reject(stderr ? new Error(stderr.toString()) : error);
+            } else {
+                resolve({
+                    stderr: stderr?.toString(),
+                    stdout: stdout?.toString(),
+                });
+            }
+        });
+    });
+}
+
+/**
  * Takes input from one stream and writes it to another as soon as a complete line was read.
  *
  * @param input The stream to read from
@@ -3964,6 +4005,70 @@ export function isLogLevel(level: string): level is ioBroker.LogLevel {
 export async function getControllerPid(): Promise<number | undefined> {
     const pids = await getPids();
     return pids.pop();
+}
+
+/**
+ * Check if a process with the given id currently exists
+ *
+ * @param pid process id to check
+ * @returns true if a process with this id is running
+ */
+export function isProcessRunning(pid: number): boolean {
+    // 0 and negative values address process groups instead of a single process and would not
+    // throw below, so a corrupt pids file must not slip through here
+    if (!Number.isInteger(pid) || pid <= 0) {
+        return false;
+    }
+
+    try {
+        // Signal 0 sends nothing, it only performs the existence and permission check
+        process.kill(pid, 0);
+        return true;
+    } catch (e) {
+        // EPERM means the process does exist, it just belongs to another user
+        return e.code === 'EPERM';
+    }
+}
+
+/**
+ * Check if a pid is proven to belong to a program which is not the controller
+ *
+ * After a reboot the operating system may hand a recorded pid to an unrelated program, which
+ * Windows in particular does readily, so a live pid alone does not prove the controller is
+ * running. This only reports a foreign program when it could actually be identified as one:
+ * whenever the process cannot be inspected, the answer is "no", because acting on a wrong guess
+ * would start a second controller and both would then fail with EADDRINUSE.
+ *
+ * @param pid process id to inspect
+ * @returns true only if the process was identified as a different program
+ */
+export async function isForeignProcess(pid: number): Promise<boolean> {
+    try {
+        if (os.platform() === 'win32') {
+            const { stdout } = await execFileAsync('tasklist', ['/FI', `PID eq ${pid}`, '/NH', '/FO', 'CSV']);
+            // Without a match tasklist prints an INFO line instead of a CSV row
+            const image = (stdout || '').trim().split(',')[0]?.replace(/"/g, '').toLowerCase() || '';
+
+            if (!image || image.startsWith('info:')) {
+                return false;
+            }
+
+            return !image.startsWith('node');
+        }
+
+        const { stdout } = await execFileAsync('ps', ['-p', String(pid), '-o', 'comm=']);
+        // The controller renames itself to "<appName>.js-controller", and comm is truncated
+        const command = (stdout || '').trim().toLowerCase();
+
+        if (!command) {
+            return false;
+        }
+
+        return !command.includes('node') && !command.includes(appName.toLowerCase());
+    } catch {
+        // Could not inspect the process - assume it is the controller
+        return false;
+    }
 }
 
 export * from '@/lib/common/maybeCallback.js';
