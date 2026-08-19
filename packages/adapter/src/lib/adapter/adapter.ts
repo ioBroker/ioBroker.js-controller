@@ -9097,6 +9097,114 @@ export class AdapterClass extends EventEmitter {
         return this.#async.registerNotification(scope, category, message, options);
     }
 
+    /**
+     * Register an exclusive resource (serial port, TCP/UDP port, USB device, ...) as used by this instance.
+     *
+     * Exclusive resources are the ones that cannot be occupied by more than one instance at the same time.
+     * The information is forwarded to the host this instance runs on and stored under
+     * `system.host.<hostname>.usedResources.<type>`, so the user gets an overview of the occupied resources
+     * and can pick a free one when configuring a new instance.
+     *
+     * Registering is **additive**: call it once per occupied resource, in any order and from any number of
+     * async init paths. The host drops what this instance registered before whenever the instance starts, so
+     * a stale registration from a previous configuration cannot survive a restart.
+     *
+     * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
+     * @param data the strictly typed payload describing the resource, e.g. `{ port: '/dev/ttyUSB0' }`
+     * @throws {Error} when the host refuses the registration - e.g. because `common.declareUsedResources` is missing - or does not answer
+     */
+    async registerUsedResource<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data: ioBroker.UsedResourceData<T>,
+    ): Promise<void> {
+        return this.#async.registerUsedResource(type, data);
+    }
+
+    /**
+     * Ask whether another instance on this host currently holds an exclusive resource, without
+     * registering anything.
+     *
+     * Call this **before** opening the port or the device - afterwards the operating system has
+     * already decided the conflict and this can only improve the error message.
+     *
+     * The answer is a hint, not a permission: the registry knows what adapters declare, so an empty
+     * result does not promise the resource is free.
+     *
+     * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
+     * @param data description of the resource that is about to be used, e.g. `{ port: 1883 }`
+     * @returns the entries of other instances that currently hold it, newest registration first
+     * @throws {Error} when the host refuses the request or does not answer
+     */
+    async checkUsedResource<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data?: Partial<ioBroker.UsedResourceData<T>>,
+    ): Promise<ioBroker.RegisteredResource[]> {
+        return this.#async.checkUsedResource(type, data);
+    }
+
+    /**
+     * Free all exclusive resources this instance registered, across all types.
+     *
+     * This is not needed on start-up (the host already resets the registrations of a starting instance) nor
+     * on shutdown (the host marks them as no longer held). Use it when the instance drops everything it
+     * occupied while it keeps running, e.g. on a reconfiguration.
+     *
+     * @throws {Error} when the host refuses the command or does not answer
+     */
+    async clearUsedResources(): Promise<void> {
+        return this.#async.clearUsedResources();
+    }
+
+    /**
+     * Free previously registered exclusive resources of this instance.
+     *
+     * `data` is a **filter, not the exact payload**: every field it names must match, fields it does not name
+     * are ignored. `freeUsedResource('tcpPort', { port: 8080 })` therefore also frees an entry registered as
+     * `{ port: 8080, bind: '0.0.0.0' }`, and if `data` is omitted, all registered resources of the given
+     * `type` for this instance are freed. The change is forwarded to the host this instance runs on and
+     * reflected in `system.host.<hostname>.usedResources.<type>`; a filter that matches nothing is logged by
+     * the host.
+     *
+     * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
+     * @param data the fields identifying the resources to free; if omitted, all resources of `type` are freed
+     * @throws {Error} when the host refuses the command or does not answer
+     */
+    async freeUsedResource<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data?: Partial<ioBroker.UsedResourceData<T>>,
+    ): Promise<void> {
+        return this.#async.freeUsedResource(type, data);
+    }
+
+    /**
+     * Query the exclusive resources currently registered as used on the **host** this instance runs on.
+     *
+     * Unlike `registerUsedResource`/`freeUsedResource`/`clearUsedResources`, which only ever touch the
+     * resources of this instance, this returns the resources of **all** instances of this host, so the user
+     * (or an admin UI) can present an overview of what is occupied and pick something free.
+     *
+     * Reading is done directly from the state's DB (`system.host.<hostname>.usedResources.<type>`), which the
+     * host keeps up to date; only the mutating calls go through the host to keep the registry consistent.
+     *
+     * @param type resource type to read, e.g. "serialPort"
+     * @returns the list of registered resources of that type (across all instances of this host)
+     */
+    async getHostUsedResources<T extends ioBroker.UsedResourceType>(type: T): Promise<ioBroker.RegisteredResource<T>[]>;
+    /**
+     * Query the exclusive resources of every type currently registered as used on the host this instance runs on.
+     *
+     * @returns the list of registered resources (across all instances and types of this host)
+     */
+    async getHostUsedResources(): Promise<ioBroker.RegisteredResource[]>;
+
+    /**
+     * @param type resource type to read; if omitted, the resources of every type are returned
+     * @returns the list of registered resources (across all instances of this host)
+     */
+    async getHostUsedResources(type?: ioBroker.UsedResourceType): Promise<ioBroker.RegisteredResource[]> {
+        return type === undefined ? this.#async.getHostUsedResources() : this.#async.getHostUsedResources(type);
+    }
+
     // external signatures
     /**
      * Writes value into states DB.

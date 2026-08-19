@@ -1648,9 +1648,94 @@ export class Install {
 
         await this._deleteAdapterObjects(knownObjectIDs);
         await this._deleteAdapterStates(knownStateIDs);
+        await this._freeUsedResources(adapter, instance);
         if (this.params.custom) {
             // delete instance from custom
             await this._removeCustomFromObjects([`${adapter}.${instance}`]);
+        }
+    }
+
+    /**
+     * Free all exclusive resources (serial ports, TCP/UDP ports, ...) the given instance(s) had registered.
+     *
+     * This is needed because an instance can be deleted via the CLI while a js-controller is not running: it
+     * cannot notice that the instance object disappeared, so its `system.host.<host>.usedResources.<type>`
+     * states would keep listing the resources of an instance that no longer exists.
+     *
+     * Hosts that are running are deliberately skipped. Such a host cleans its own registry up when it sees the
+     * instance object being deleted, and it holds the registry in memory: it rewrites the state from that copy
+     * on its next change, which would silently undo a write made here.
+     *
+     * @param adapter adapter name, e.g. "mqtt"
+     * @param instance instance number; if undefined, all instances of the adapter are freed
+     */
+    private async _freeUsedResources(adapter: string, instance?: number): Promise<void> {
+        const matches = (namespace: string): boolean =>
+            instance !== undefined ? namespace === `${adapter}.${instance}` : namespace.startsWith(`${adapter}.`);
+
+        let keys: string[] | null | undefined;
+        try {
+            keys = await this.states.getKeys('system.host.*.usedResources.*');
+        } catch (e) {
+            console.warn(`Cannot read the used resources registry: ${e.message}`);
+            return;
+        }
+        if (!keys?.length) {
+            return;
+        }
+
+        const hostPrefix = 'system.host.';
+        const registryMarker = '.usedResources.';
+        /** whether a host is currently running, queried once per host */
+        const hostIsRunning = new Map<string, boolean>();
+
+        for (const id of keys) {
+            const markerIndex = id.lastIndexOf(registryMarker);
+            if (!id.startsWith(hostPrefix) || markerIndex <= hostPrefix.length) {
+                continue;
+            }
+            const host = id.substring(hostPrefix.length, markerIndex);
+
+            let isRunning = hostIsRunning.get(host);
+            if (isRunning === undefined) {
+                try {
+                    const aliveState = await this.states.getState(`${hostPrefix}${host}.alive`);
+                    isRunning = aliveState?.val === true;
+                } catch (e) {
+                    // if it cannot be determined, assume the host is running: leaving an entry behind is
+                    // harmless (its controller drops it on the next start) while fighting a live controller
+                    // over the same state is not
+                    console.warn(`Cannot check whether host "${host}" is running: ${e.message}`);
+                    isRunning = true;
+                }
+                hostIsRunning.set(host, isRunning);
+            }
+
+            if (isRunning) {
+                continue;
+            }
+
+            try {
+                const state = await this.states.getState(id);
+                if (!state || typeof state.val !== 'string' || !state.val) {
+                    continue;
+                }
+                const parsed: unknown = JSON.parse(state.val);
+                if (!Array.isArray(parsed)) {
+                    continue;
+                }
+                const original = parsed as { instance?: unknown }[];
+                // keep anything that is malformed: it cannot be attributed to the deleted instance, and one
+                // broken entry must not stop the cleanup of the sound ones in the same state
+                const filtered = original.filter(
+                    entry => typeof entry?.instance !== 'string' || !matches(entry.instance),
+                );
+                if (filtered.length !== original.length) {
+                    await this.states.setStateAsync(id, { val: JSON.stringify(filtered), ack: true });
+                }
+            } catch (e) {
+                console.warn(`Cannot free the used resources in "${id}": ${e.message}`);
+            }
         }
     }
 

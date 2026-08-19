@@ -23,6 +23,7 @@ const SUPPORTED_FEATURES_INTERNAL = [
     'ADAPTER_WEBSERVER_UPGRADE', // Controller supports upgrading adapter and provides a webserver (triggered via sendToHost). Since `js-controller` 5.0
     'CONTROLLER_CMD_EXEC_FILES', // cmdExec host message supports sending files together with the command. Since `js-controller` 7.2
     'CONTROLLER_FEATURE_REQUEST', // js-controller supports feature support requests via host messages. Since `js-controller` 7.2
+    'CONTROLLER_USED_RESOURCES', // js-controller maintains a registry of exclusive resources (serial/TCP/UDP ports, ...) used by instances. Since `js-controller` 7.2
 ] as const;
 
 export const SUPPORTED_FEATURES = [...SUPPORTED_FEATURES_INTERNAL];
