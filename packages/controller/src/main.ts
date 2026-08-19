@@ -3558,12 +3558,46 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         case 'registerUsedResource':
             try {
                 const { instance, type, data } = parseUsedResourceMessage(msg, true);
+
+                // asked before the registration, so this instance's own entry is not in the way
+                const conflicts = usedResources.findConflicts(type, data!, instance);
+
                 await persistUsedResourceTypes(usedResources.register(type, data!, instance));
+
+                if (conflicts.length) {
+                    // The registration still stands - the registry records what an adapter says it
+                    // uses, it does not hand out permission. But two instances claiming the same
+                    // resource is worth a line, because the adapter that loses it usually reports
+                    // something unhelpful like EADDRINUSE.
+                    logger.warn(
+                        `${hostLogPrefix} "${instance}" registered a ${type} which ${conflicts
+                            .map(entry => `"${entry.instance}"`)
+                            .join(', ')} already holds: ${JSON.stringify(data)}`,
+                    );
+                }
+
                 if (msg.callback && msg.from) {
-                    sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
+                    sendTo(msg.from, msg.command, { result: 'ok', conflicts }, msg.callback);
                 }
             } catch (e) {
                 logger.warn(`${hostLogPrefix} Cannot register used resource: ${e.message}`);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
+            }
+            break;
+
+        case 'checkUsedResource':
+            // Asks whether anybody else currently holds a resource, without registering anything -
+            // the call an adapter makes *before* it opens the port or the device.
+            try {
+                const { instance, type, data } = parseUsedResourceMessage(msg, false);
+                const conflicts = usedResources.findConflicts(type, data || {}, instance);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: 'ok', conflicts }, msg.callback);
+                }
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot check used resource: ${e.message}`);
                 if (msg.callback && msg.from) {
                     sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
                 }

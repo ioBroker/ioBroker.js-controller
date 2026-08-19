@@ -2,7 +2,33 @@ import assert from 'node:assert/strict';
 import sinon from 'sinon';
 import { tools } from '@iobroker/js-controller-common';
 import { ResourceManager } from './ResourceManager.js';
+import { MessagingManager } from './MessagingManager.js';
 import type { AdapterContext } from '../context.js';
+
+/**
+ * A ResourceManager whose host commands are captured instead of sent.
+ *
+ * @param over Context fields to override
+ * @param reply What the host is made to answer
+ */
+function makeManager(
+    over: Partial<AdapterContext> = {},
+    reply: unknown = { result: 'ok' },
+): { mgr: ResourceManager; sendToHost: sinon.SinonStub } {
+    const sendToHost = sinon.stub().resolves(reply);
+    const mgr = new ResourceManager(makeContext(over), () => ({ sendToHost }) as any);
+    return { mgr, sendToHost };
+}
+
+/**
+ * A ResourceManager on the real messaging manager, so the DB-closed guard is exercised.
+ *
+ * @param over Context fields to override
+ */
+function makeRealManager(over: Partial<AdapterContext> = {}): ResourceManager {
+    const ctx = makeContext(over);
+    return new ResourceManager(ctx, () => new MessagingManager(ctx));
+}
 
 function makeContext(over: Partial<AdapterContext> = {}): AdapterContext {
     return {
@@ -21,41 +47,59 @@ function makeContext(over: Partial<AdapterContext> = {}): AdapterContext {
 
 describe('ResourceManager.registerUsedResource', () => {
     it('rejects with ERROR_DB_CLOSED when states is not connected', async () => {
-        const mgr = new ResourceManager(makeContext({ states: null }));
+        const mgr = makeRealManager({ states: null });
         await assert.rejects(
             () => mgr.registerUsedResource('serialPort', { port: '/dev/ttyUSB0' }),
             new RegExp(tools.ERRORS.ERROR_DB_CLOSED),
         );
     });
 
-    it('forwards the resource to the host with the instance', async () => {
-        const pushMessage = sinon.stub().resolves();
-        const mgr = new ResourceManager(makeContext({ states: { pushMessage } as any }));
+    it('forwards the resource to the host with the instance and waits for the verdict', async () => {
+        const { mgr, sendToHost } = makeManager();
 
         await mgr.registerUsedResource('serialPort', { port: '/dev/ttyUSB0' });
 
-        assert.equal(pushMessage.callCount, 1);
-        const [target, obj] = pushMessage.firstCall.args;
-        assert.equal(target, 'system.host.localhost');
-        assert.equal(obj.command, 'registerUsedResource');
-        assert.equal(obj.from, 'system.adapter.test.0');
-        assert.deepEqual(obj.message, {
+        assert.equal(sendToHost.callCount, 1);
+        const [opts] = sendToHost.firstCall.args;
+        assert.equal(opts.hostName, 'localhost');
+        assert.equal(opts.command, 'registerUsedResource');
+        assert.equal(opts.expectReply, true, 'without a reply a refusal would go unnoticed');
+        assert.ok(opts.options?.timeout, 'without a timeout there is no timer at all');
+        assert.deepEqual(opts.message, {
             type: 'serialPort',
             data: { port: '/dev/ttyUSB0' },
             instance: 'test.0',
         });
     });
 
+    it('rejects when the host refuses the registration', async () => {
+        const { mgr } = makeManager({}, { error: 'instance "test.0" does not declare its used resources' });
+
+        await assert.rejects(
+            () => mgr.registerUsedResource('serialPort', { port: '/dev/ttyUSB0' }),
+            /does not declare its used resources/,
+        );
+    });
+
+    it('rejects when the host of this instance is unknown', async () => {
+        const { mgr, sendToHost } = makeManager({ host: undefined });
+
+        await assert.rejects(
+            () => mgr.registerUsedResource('serialPort', { port: '/dev/ttyUSB0' }),
+            /host of this instance is unknown/,
+        );
+        assert.equal(sendToHost.callCount, 0, 'must not broadcast to every host');
+    });
+
     it('is additive: every call forwards its own resource', async () => {
-        const pushMessage = sinon.stub().resolves();
-        const mgr = new ResourceManager(makeContext({ states: { pushMessage } as any }));
+        const { mgr, sendToHost } = makeManager();
 
         await mgr.registerUsedResource('serialPort', { port: '/dev/ttyUSB0' });
         await mgr.registerUsedResource('tcpPort', { port: 1883 });
 
-        assert.equal(pushMessage.callCount, 2);
+        assert.equal(sendToHost.callCount, 2);
         assert.deepEqual(
-            pushMessage.getCalls().map(call => call.args[1].message.type),
+            sendToHost.getCalls().map(call => call.args[0].message.type),
             ['serialPort', 'tcpPort'],
         );
     });
@@ -63,40 +107,42 @@ describe('ResourceManager.registerUsedResource', () => {
 
 describe('ResourceManager.clearUsedResources', () => {
     it('rejects with ERROR_DB_CLOSED when states is not connected', async () => {
-        const mgr = new ResourceManager(makeContext({ states: null }));
+        const mgr = makeRealManager({ states: null });
         await assert.rejects(() => mgr.clearUsedResources(), new RegExp(tools.ERRORS.ERROR_DB_CLOSED));
     });
 
     it('forwards the request to the host', async () => {
-        const pushMessage = sinon.stub().resolves();
-        const mgr = new ResourceManager(makeContext({ states: { pushMessage } as any }));
+        const { mgr, sendToHost } = makeManager();
 
         await mgr.clearUsedResources();
 
-        const [target, obj] = pushMessage.firstCall.args;
-        assert.equal(target, 'system.host.localhost');
-        assert.equal(obj.command, 'clearUsedResources');
-        assert.equal(obj.from, 'system.adapter.test.0');
-        assert.deepEqual(obj.message, { instance: 'test.0' });
+        const [opts] = sendToHost.firstCall.args;
+        assert.equal(opts.hostName, 'localhost');
+        assert.equal(opts.command, 'clearUsedResources');
+        assert.deepEqual(opts.message, { instance: 'test.0' });
+    });
+
+    it('rejects when the host refuses', async () => {
+        const { mgr } = makeManager({}, { error: 'No valid instance' });
+        await assert.rejects(() => mgr.clearUsedResources(), /No valid instance/);
     });
 });
 
 describe('ResourceManager.freeUsedResource', () => {
     it('rejects with ERROR_DB_CLOSED when states is not connected', async () => {
-        const mgr = new ResourceManager(makeContext({ states: null }));
+        const mgr = makeRealManager({ states: null });
         await assert.rejects(() => mgr.freeUsedResource('serialPort'), new RegExp(tools.ERRORS.ERROR_DB_CLOSED));
     });
 
     it('forwards a specific resource to free to the host', async () => {
-        const pushMessage = sinon.stub().resolves();
-        const mgr = new ResourceManager(makeContext({ states: { pushMessage } as any }));
+        const { mgr, sendToHost } = makeManager();
 
         await mgr.freeUsedResource('serialPort', { port: '/dev/ttyUSB0' });
 
-        const [target, obj] = pushMessage.firstCall.args;
-        assert.equal(target, 'system.host.localhost');
-        assert.equal(obj.command, 'freeUsedResource');
-        assert.deepEqual(obj.message, {
+        const [opts] = sendToHost.firstCall.args;
+        assert.equal(opts.hostName, 'localhost');
+        assert.equal(opts.command, 'freeUsedResource');
+        assert.deepEqual(opts.message, {
             type: 'serialPort',
             data: { port: '/dev/ttyUSB0' },
             instance: 'test.0',
@@ -104,12 +150,40 @@ describe('ResourceManager.freeUsedResource', () => {
     });
 
     it('forwards a free-all request (no data) to the host', async () => {
-        const pushMessage = sinon.stub().resolves();
-        const mgr = new ResourceManager(makeContext({ states: { pushMessage } as any }));
+        const { mgr, sendToHost } = makeManager();
 
         await mgr.freeUsedResource('serialPort');
 
-        assert.equal(pushMessage.firstCall.args[1].message.data, undefined);
+        assert.equal(sendToHost.firstCall.args[0].message.data, undefined);
+    });
+});
+
+describe('ResourceManager.checkUsedResource', () => {
+    it('asks the host without registering anything', async () => {
+        const conflicts = [{ type: 'tcpPort', data: { port: 1883 }, instance: 'mqtt.0', ts: 1, isBlocked: true }];
+        const { mgr, sendToHost } = makeManager({}, { result: 'ok', conflicts });
+
+        const res = await mgr.checkUsedResource('tcpPort', { port: 1883 });
+
+        const [opts] = sendToHost.firstCall.args;
+        assert.equal(opts.command, 'checkUsedResource');
+        assert.deepEqual(opts.message, { type: 'tcpPort', data: { port: 1883 }, instance: 'test.0' });
+        assert.deepEqual(res, conflicts);
+    });
+
+    it('returns an empty list when nobody holds it', async () => {
+        const { mgr } = makeManager({}, { result: 'ok', conflicts: [] });
+        assert.deepEqual(await mgr.checkUsedResource('tcpPort', { port: 1883 }), []);
+    });
+
+    it('tolerates an answer without conflicts', async () => {
+        const { mgr } = makeManager({}, { result: 'ok' });
+        assert.deepEqual(await mgr.checkUsedResource('tcpPort', { port: 1883 }), []);
+    });
+
+    it('rejects when the host refuses', async () => {
+        const { mgr } = makeManager({}, { error: 'invalid resource type' });
+        await assert.rejects(() => mgr.checkUsedResource('tcpPort', { port: 1883 }), /invalid resource type/);
     });
 });
 

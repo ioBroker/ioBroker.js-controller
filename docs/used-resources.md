@@ -69,6 +69,11 @@ freeUsedResource<T extends ioBroker.UsedResourceType>(
 
 clearUsedResources(): Promise<void>;
 
+checkUsedResource<T extends ioBroker.UsedResourceType>(
+    type: T,
+    data?: Partial<ioBroker.UsedResourceData<T>>,
+): Promise<ioBroker.RegisteredResource[]>;
+
 getHostUsedResources<T extends ioBroker.UsedResourceType>(
     type: T,
 ): Promise<ioBroker.RegisteredResource<T>[]>;
@@ -81,6 +86,12 @@ The `type` selects the resource kind; `data` is the **strictly typed** payload f
 The three mutating calls always act on **this instance** — an instance can neither register nor free anything
 in the name of another one. `getHostUsedResources` is the one that reads across the whole **host**, which is
 why it carries `Host` in its name.
+
+The mutating calls wait for the host's verdict and **reject** when it refuses, so a mistake — a misspelled
+type, a payload that is not an object, a missing `common.declareUsedResources` in the `io-package.json` —
+surfaces where the adapter can see it instead of only in the host's log. If the host does not answer within
+five seconds, the call rejects with `Timeout exceeded`; check
+`supportsFeature('CONTROLLER_USED_RESOURCES')` when an older controller may be in play.
 
 ### `registerUsedResource(type, data)`
 
@@ -115,9 +126,9 @@ That the payload is a filter matters in practice: you do not have to repeat opti
 know about — the controller adds `bind` to the resources it derives from `native.bind` itself, and a `free`
 call that had to match it byte for byte would silently free nothing.
 
-A filter that matches nothing is **logged as a warning by the host** (`freed no used resource of type …`).
-The adapter call itself does not wait for the host, so its promise resolves either way — the log is where a
-wrong filter becomes visible.
+A filter that matches nothing is **logged as a warning by the host** (`freed no used resource of type …`)
+but is not an error — freeing something twice is harmless. The call still waits for the host, so a genuine
+refusal (an unknown type, a malformed payload) rejects.
 
 You normally do not need to call this on shutdown — the host handles stop/crash automatically (see
 [Lifecycle](#lifecycle)). Use it when an instance releases a resource while it keeps running.
@@ -127,6 +138,32 @@ You normally do not need to call this on shutdown — the host handles stop/cras
 Frees **all** resources this instance registered, across every type. Needed neither on start-up (the host
 already resets the registrations of a starting instance) nor on shutdown; use it when the instance drops
 everything it occupied while it keeps running, e.g. on a reconfiguration.
+
+### `checkUsedResource(type, data?)`
+
+Asks whether **another** instance on this host currently holds the resource, without registering
+anything. Returns the conflicting entries, newest registration first, or an empty list.
+
+```ts
+const held = await this.checkUsedResource('tcpPort', { port: 1883 });
+if (held.length) {
+    this.log.warn(`Port 1883 is already used by ${held.map(entry => entry.instance).join(', ')}`);
+}
+```
+
+Call it **before** opening the port or the device. Afterwards the operating system has already
+decided the conflict, and all this can add is a better message than `EADDRINUSE`.
+
+The answer is a **hint, not a permission**. The registry knows what adapters declare, so an empty
+list does not promise the resource is free — something outside ioBroker may hold it, and an adapter
+may declare something it never opens. Registering is never refused because of a conflict; the host
+only writes a warning naming both instances. Deciding what to do is the adapter's business.
+
+Only instances that are actually running count: an entry with `isBlocked: false` means "would occupy
+this when started" and must not stand in the way of an instance running now. Two payloads count as
+overlapping when one describes a subset of the other, so `{ port: 1883 }` conflicts with
+`{ port: 1883, bind: '0.0.0.0' }` — two different `bind` addresses on the same port are not reported,
+even though the operating system may still disagree.
 
 ### `getHostUsedResources(type?)`
 
@@ -259,9 +296,10 @@ own type declarations.
 
 | Command                | Message payload             | Answer (only if a callback is passed)     |
 | ---------------------- | --------------------------- | ----------------------------------------- |
-| `registerUsedResource` | `{ type, data, instance }`  | `{ result: 'ok' }`                        |
+| `registerUsedResource` | `{ type, data, instance }`  | `{ result: 'ok', conflicts: [] }`         |
 | `freeUsedResource`     | `{ type, data?, instance }` | `{ result: 'ok', freed: boolean }`        |
 | `clearUsedResources`   | `{ instance }`              | `{ result: 'ok' }`                        |
+| `checkUsedResource`    | `{ type, data?, instance }` | `{ result: 'ok', conflicts: [] }`         |
 
 Every command answers with `{ error }` instead if it was rejected. The adapter API does not pass a callback —
 it sends and returns — so the host also logs what went wrong.

@@ -1,8 +1,11 @@
 import type { AdapterContext } from '@/lib/adapter/context.js';
 import { AdapterContextBase } from '@/lib/adapter/managers/AdapterContextBase.js';
+import type { MessagingManager } from '@/lib/adapter/managers/MessagingManager.js';
 
 /** Sub-id under a host holding the exclusive resources registered as used by its instances. */
 const USED_RESOURCES_ID = 'usedResources';
+/** How long a mutating command waits for the host to answer, in ms */
+const HOST_REPLY_TIMEOUT = 5_000;
 
 /**
  * Owns the adapter's exclusive-resource registry. Register/free requests are forwarded to the host
@@ -10,11 +13,52 @@ const USED_RESOURCES_ID = 'usedResources';
  * go straight to those states.
  */
 export class ResourceManager extends AdapterContextBase {
+    readonly #getMessaging: () => MessagingManager;
+
     /**
      * @param ctx Shared adapter context providing live runtime state
+     * @param getMessaging Returns the adapter's messaging manager. Passed as a getter rather than an
+     *        instance because it is created lazily - and it has to be *the* one, since it owns the map
+     *        the host's reply is matched against.
      */
-    constructor(ctx: AdapterContext) {
+    constructor(ctx: AdapterContext, getMessaging: () => MessagingManager) {
         super(ctx);
+        this.#getMessaging = getMessaging;
+    }
+
+    /**
+     * Send a mutating command to the host this instance runs on and wait for its verdict.
+     *
+     * The host validates every one of these - resource type, payload shape, the sending instance and
+     * whether it declares its resources at all - and answers with `{ error }` when it refuses. Without
+     * waiting for that answer the adapter would get a resolved promise for a call that did nothing,
+     * and the only trace would be a warning in a log the adapter developer does not read.
+     *
+     * @param command the host command, e.g. "registerUsedResource"
+     * @param message the command payload
+     * @returns the host's answer
+     * @throws {Error} when the host is unknown, does not answer in time, or refuses the command
+     */
+    async #sendToHost(command: string, message: Record<string, unknown>): Promise<any> {
+        if (!this.host) {
+            throw new Error(`${command}: host of this instance is unknown`);
+        }
+
+        const answer = await this.#getMessaging().sendToHost({
+            hostName: this.host,
+            command,
+            message,
+            expectReply: true,
+            // without one there is no timer at all, so an older controller which does not know the
+            // command would leave this promise pending forever
+            options: { timeout: HOST_REPLY_TIMEOUT },
+        });
+
+        if (answer?.error) {
+            throw new Error(`${command} was refused by the host: ${answer.error}`);
+        }
+
+        return answer;
     }
 
     /**
@@ -25,35 +69,44 @@ export class ResourceManager extends AdapterContextBase {
      *
      * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
      * @param data payload describing the resource
+     * @throws {Error} when the host refuses the registration or does not answer
      */
     async registerUsedResource<T extends ioBroker.UsedResourceType>(
         type: T,
         data: ioBroker.UsedResourceData<T>,
     ): Promise<void> {
-        const obj = {
-            command: 'registerUsedResource',
-            message: {
-                type,
-                data,
-                instance: this.namespace,
-            },
-            from: `system.adapter.${this.namespace}`,
-        };
+        await this.#sendToHost('registerUsedResource', { type, data, instance: this.namespace });
+    }
 
-        await this.states.pushMessage(`system.host.${this.host}`, obj);
+    /**
+     * Asks the host whether another instance currently holds a resource, without registering anything.
+     *
+     * Meant to be called *before* the port or the device is opened: afterwards the operating system
+     * has already decided the conflict, and all this can add is a better error message.
+     *
+     * The answer is a hint, not a permission. The registry only knows what adapters declare, so an
+     * empty list does not promise the resource is free - something outside ioBroker may hold it.
+     *
+     * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
+     * @param data description of the resource that is about to be used
+     * @returns the entries of other instances that currently hold it, newest first
+     * @throws {Error} when the host refuses the request or does not answer
+     */
+    async checkUsedResource<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data?: Partial<ioBroker.UsedResourceData<T>>,
+    ): Promise<ioBroker.RegisteredResource[]> {
+        const answer = await this.#sendToHost('checkUsedResource', { type, data, instance: this.namespace });
+        return Array.isArray(answer?.conflicts) ? answer.conflicts : [];
     }
 
     /**
      * Frees all exclusive resources this instance registered, across all types, by forwarding it to the host.
+     *
+     * @throws {Error} when the host refuses the command or does not answer
      */
     async clearUsedResources(): Promise<void> {
-        const obj = {
-            command: 'clearUsedResources',
-            message: { instance: this.namespace },
-            from: `system.adapter.${this.namespace}`,
-        };
-
-        await this.states.pushMessage(`system.host.${this.host}`, obj);
+        await this.#sendToHost('clearUsedResources', { instance: this.namespace });
     }
 
     /**
@@ -61,22 +114,13 @@ export class ResourceManager extends AdapterContextBase {
      *
      * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
      * @param data fields identifying the resources to free; if omitted, all resources of `type` are freed
+     * @throws {Error} when the host refuses the command or does not answer
      */
     async freeUsedResource<T extends ioBroker.UsedResourceType>(
         type: T,
         data?: Partial<ioBroker.UsedResourceData<T>>,
     ): Promise<void> {
-        const obj = {
-            command: 'freeUsedResource',
-            message: {
-                type,
-                data,
-                instance: this.namespace,
-            },
-            from: `system.adapter.${this.namespace}`,
-        };
-
-        await this.states.pushMessage(`system.host.${this.host}`, obj);
+        await this.#sendToHost('freeUsedResource', { type, data, instance: this.namespace });
     }
 
     /**

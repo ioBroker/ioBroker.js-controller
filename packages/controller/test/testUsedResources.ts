@@ -317,6 +317,70 @@ describe('lib/usedResources: UsedResourcesRegistry.free', () => {
     });
 });
 
+describe('lib/usedResources: UsedResourcesRegistry.findConflicts', () => {
+    it('reports another instance holding the same resource', () => {
+        const reg = newRegistry();
+        reg.register('tcpPort', { port: 1883 }, 'mqtt.0');
+
+        const conflicts = reg.findConflicts('tcpPort', { port: 1883 }, 'other.0');
+        assert.strictEqual(conflicts.length, 1);
+        assert.strictEqual(conflicts[0].instance, 'mqtt.0');
+    });
+
+    it('never reports the asking instance itself', () => {
+        const reg = newRegistry();
+        reg.register('tcpPort', { port: 1883 }, 'mqtt.0');
+
+        assert.deepStrictEqual(reg.findConflicts('tcpPort', { port: 1883 }, 'mqtt.0'), []);
+    });
+
+    it('ignores an instance that is not running', () => {
+        const reg = newRegistry();
+        reg.register('tcpPort', { port: 1883 }, 'mqtt.0');
+        reg.setInstanceBlocked('mqtt.0', false);
+
+        // "would occupy this when started" must not stand in the way of an instance running now
+        assert.deepStrictEqual(reg.findConflicts('tcpPort', { port: 1883 }, 'other.0'), []);
+    });
+
+    it('overlaps in both directions', () => {
+        const reg = newRegistry();
+        reg.register('tcpPort', { port: 8080, bind: '0.0.0.0' }, 'web.0');
+
+        // asking with less detail than was registered, and the other way round
+        assert.strictEqual(reg.findConflicts('tcpPort', { port: 8080 }, 'other.0').length, 1);
+        assert.strictEqual(
+            reg.findConflicts('tcpPort', { port: 8080, bind: '0.0.0.0', family: 4 }, 'other.0').length,
+            1,
+        );
+    });
+
+    it('does not report a different resource of the same type', () => {
+        const reg = newRegistry();
+        reg.register('tcpPort', { port: 1883 }, 'mqtt.0');
+
+        assert.deepStrictEqual(reg.findConflicts('tcpPort', { port: 9999 }, 'other.0'), []);
+        assert.deepStrictEqual(reg.findConflicts('serialPort', { port: '/dev/ttyUSB0' }, 'other.0'), []);
+    });
+
+    it('returns copies, newest registration first', () => {
+        const clock = { now: 1_000 };
+        const reg = new UsedResourcesRegistry({ now: () => clock.now });
+        reg.register('tcpPort', { port: 1883 }, 'old.0');
+        clock.now = 2_000;
+        reg.register('tcpPort', { port: 1883 }, 'new.0');
+
+        const conflicts = reg.findConflicts('tcpPort', { port: 1883 }, 'asking.0');
+        assert.deepStrictEqual(
+            conflicts.map(entry => entry.instance),
+            ['new.0', 'old.0'],
+        );
+
+        (conflicts[0].data as ioBroker.TcpPortResourceData).port = 1;
+        assert.strictEqual((reg.get('tcpPort')[0].data as ioBroker.TcpPortResourceData).port, 1883);
+    });
+});
+
 describe('lib/usedResources: UsedResourcesRegistry.setInstanceBlocked', () => {
     it('toggles isBlocked across all types of an instance and reports changed types', () => {
         const reg = newRegistry();

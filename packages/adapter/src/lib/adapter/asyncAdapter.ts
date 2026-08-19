@@ -41,7 +41,7 @@ export class AsyncAdapter {
 
     /** Lazily-constructed exclusive-resource manager. */
     get #resources(): ResourceManager {
-        return (this.#resourcesInstance ??= new ResourceManager(this.#ctx));
+        return (this.#resourcesInstance ??= new ResourceManager(this.#ctx, () => this.#messaging));
     }
 
     /**
@@ -283,6 +283,7 @@ export class AsyncAdapter {
      *
      * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
      * @param data payload describing the resource
+     * @throws {Error} when the host refuses the registration or does not answer
      */
     async registerUsedResource<T extends ioBroker.UsedResourceType>(
         type: T,
@@ -294,7 +295,28 @@ export class AsyncAdapter {
     }
 
     /**
+     * Asks the host whether another instance currently holds a resource, without registering it.
+     *
+     * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
+     * @param data description of the resource that is about to be used
+     * @returns the entries of other instances that currently hold it
+     * @throws {Error} when the host refuses the request or does not answer
+     */
+    async checkUsedResource<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data?: Partial<ioBroker.UsedResourceData<T>>,
+    ): Promise<ioBroker.RegisteredResource[]> {
+        Validator.assertString(type, 'type');
+        if (data !== undefined) {
+            Validator.assertObject(data, 'data');
+        }
+        return this.#resources.checkUsedResource(type, data);
+    }
+
+    /**
      * Frees all exclusive resources this instance registered, across all types.
+     *
+     * @throws {Error} when the host refuses the command or does not answer
      */
     async clearUsedResources(): Promise<void> {
         return this.#resources.clearUsedResources();
@@ -306,6 +328,7 @@ export class AsyncAdapter {
      *
      * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
      * @param data fields identifying the resources to free; if omitted, all resources of `type` are freed
+     * @throws {Error} when the host refuses the command or does not answer
      */
     async freeUsedResource<T extends ioBroker.UsedResourceType>(
         type: T,

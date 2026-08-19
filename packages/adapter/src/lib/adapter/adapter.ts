@@ -9111,6 +9111,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
      * @param data the strictly typed payload describing the resource, e.g. `{ port: '/dev/ttyUSB0' }`
+     * @throws {Error} when the host refuses the registration - e.g. because `common.declareUsedResources` is missing - or does not answer
      */
     async registerUsedResource<T extends ioBroker.UsedResourceType>(
         type: T,
@@ -9120,11 +9121,35 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
+     * Ask whether another instance on this host currently holds an exclusive resource, without
+     * registering anything.
+     *
+     * Call this **before** opening the port or the device - afterwards the operating system has
+     * already decided the conflict and this can only improve the error message.
+     *
+     * The answer is a hint, not a permission: the registry knows what adapters declare, so an empty
+     * result does not promise the resource is free.
+     *
+     * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
+     * @param data description of the resource that is about to be used, e.g. `{ port: 1883 }`
+     * @returns the entries of other instances that currently hold it, newest registration first
+     * @throws {Error} when the host refuses the request or does not answer
+     */
+    async checkUsedResource<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data?: Partial<ioBroker.UsedResourceData<T>>,
+    ): Promise<ioBroker.RegisteredResource[]> {
+        return this.#async.checkUsedResource(type, data);
+    }
+
+    /**
      * Free all exclusive resources this instance registered, across all types.
      *
      * This is not needed on start-up (the host already resets the registrations of a starting instance) nor
      * on shutdown (the host marks them as no longer held). Use it when the instance drops everything it
      * occupied while it keeps running, e.g. on a reconfiguration.
+     *
+     * @throws {Error} when the host refuses the command or does not answer
      */
     async clearUsedResources(): Promise<void> {
         return this.#async.clearUsedResources();
@@ -9142,6 +9167,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
      * @param data the fields identifying the resources to free; if omitted, all resources of `type` are freed
+     * @throws {Error} when the host refuses the command or does not answer
      */
     async freeUsedResource<T extends ioBroker.UsedResourceType>(
         type: T,

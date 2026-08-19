@@ -89,7 +89,7 @@ export function getUsedResourceKey(resource: {
  * @param filter the fields that have to match
  */
 export function matchesUsedResourceData(
-    data: ioBroker.UsedResourceData,
+    data: Partial<ioBroker.UsedResourceData>,
     filter: Partial<ioBroker.UsedResourceData> | undefined,
 ): boolean {
     if (!filter) {
@@ -225,6 +225,46 @@ export class UsedResourcesRegistry {
 
         this.setEntries(type, list);
         return [type];
+    }
+
+    /**
+     * Find the resources of *other* instances that overlap with the given description and are
+     * currently held.
+     *
+     * This is a hint, not a verdict. The registry only knows what adapters declare: a port may be
+     * occupied by something outside ioBroker, and an adapter may declare a resource it never opens.
+     * So an empty result does not promise the resource is free - it only says nobody claimed it here.
+     *
+     * Only entries with `isBlocked` are considered, because an entry of a stopped instance means
+     * "would occupy this when started" and must not stand in the way of an instance that runs now.
+     * Two payloads overlap when one describes a subset of the other, so `{ port: 1883 }` conflicts
+     * with `{ port: 1883, bind: '0.0.0.0' }` - but two different `bind` addresses on the same port
+     * are not reported, even though the operating system may still disagree.
+     *
+     * @param type the resource type, e.g. "tcpPort"
+     * @param data the description of the resource that is about to be used
+     * @param instance the instance that asks, e.g. "mqtt.0" - its own entries never conflict
+     * @returns the conflicting entries, newest registration first
+     */
+    findConflicts<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data: Partial<ioBroker.UsedResourceData<T>>,
+        instance: string,
+    ): ioBroker.RegisteredResource[] {
+        const list = this.resources.get(type);
+        if (!list) {
+            return [];
+        }
+
+        return list
+            .filter(
+                entry =>
+                    entry.instance !== instance &&
+                    entry.isBlocked &&
+                    (matchesUsedResourceData(entry.data, data) || matchesUsedResourceData(data, entry.data)),
+            )
+            .map(entry => structuredClone(entry))
+            .sort((a, b) => b.ts - a.ts);
     }
 
     /**
