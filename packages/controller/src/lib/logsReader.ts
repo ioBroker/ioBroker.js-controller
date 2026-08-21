@@ -15,7 +15,14 @@ const ANY_LEVEL_REGEX = getLevelRegExp('silly');
 
 /** Options of a `getLogs` request */
 export interface GetLogsOptions {
-    /** How many lines to read, defaults to 200 */
+    /**
+     * How many lines to read, defaults to 200
+     *
+     * A guide rather than a hard limit: with a `logLevel` the result is trimmed to this many lines,
+     * but never in the middle of a multi-line entry, so a few more can come back when the cut would
+     * land inside a stack trace. Without a `logLevel` this only sizes the read window, as it always
+     * did, and the result can be longer.
+     */
     lines?: number;
     /** If given, only entries of this level and more severe ones are returned */
     logLevel?: ioBroker.LogLevel;
@@ -30,17 +37,25 @@ export interface LogTail {
 }
 
 /**
- * Build a RegExp matching every log line of the given level or a more severe one
+ * Build a RegExp matching every log line which *starts* an entry of the given level or a more severe one
  *
  * A log line looks like `2019-03-02 13:26:54.698  - debug: iot.0 message`, where the level can be
  * wrapped in color codes when colored output is configured.
+ *
+ * Anchored at the timestamp on purpose. Without the anchor a level token anywhere in the line
+ * counts, so a message which quotes one - a parser error, a forwarded log line, a config dump -
+ * matches. Worse, a continuation line of a stack trace which happens to contain one is taken for
+ * the start of a new entry. Continuation lines never carry a timestamp, which is what tells the
+ * two apart.
  *
  * @param level the lowest level to still match
  */
 function getLevelRegExp(level: ioBroker.LogLevel): RegExp {
     const accepted = LOG_LEVELS.slice(LOG_LEVELS.indexOf(level));
+    /** Color codes wrap the level, and are tolerated in front of the timestamp as well */
+    const color = String.raw`(?:\u001B\[\d+m)?`;
 
-    return new RegExp(`\\s-\\s(?:\\u001B\\[\\d+m)?(?:${accepted.join('|')})(?:\\u001B\\[\\d+m)?:`);
+    return new RegExp(String.raw`^${color}\d{4}-\d{2}-\d{2} [\d:.]+\s+-\s${color}(?:${accepted.join('|')})${color}:`);
 }
 
 /**
@@ -123,6 +138,30 @@ async function readChunk(fileName: string, start: number, end: number): Promise<
 }
 
 /**
+ * Trim to the last `wanted` lines without cutting an entry in half
+ *
+ * Slicing on line boundaries would undo what {@link filterByLevel} is for: when the cut lands
+ * inside a multi-line entry, the caller gets orphaned stack frames whose header is gone. So the
+ * window is extended backwards to the header of the entry it starts in, which is bounded by the
+ * length of that one entry.
+ *
+ * @param lines the filtered log lines, oldest first
+ * @param wanted how many lines were asked for
+ */
+function trimToEntries(lines: string[], wanted: number): string[] {
+    if (lines.length <= wanted) {
+        return lines;
+    }
+
+    let start = lines.length - wanted;
+    while (start > 0 && !ANY_LEVEL_REGEX.test(lines[start])) {
+        start--;
+    }
+
+    return lines.slice(start);
+}
+
+/**
  * Read the last lines of a log file
  *
  * Without a `logLevel` this reads a single chunk sized by the number of requested lines, which is
@@ -165,5 +204,5 @@ export async function readLogTail(fileName: string, options: GetLogsOptions): Pr
     }
 
     // the enlarged window can hold more entries than asked for
-    return { lines: lines.slice(-wanted), size };
+    return { lines: trimToEntries(lines, wanted), size };
 }

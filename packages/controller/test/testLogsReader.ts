@@ -89,12 +89,60 @@ describe('test logsReader', () => {
         assert.deepStrictEqual(silly.lines, unfiltered.lines);
     });
 
-    it('returns at most the requested number of lines', async () => {
+    it('trims to the requested number of lines without cutting an entry', async () => {
         const { lines } = await readLogTail(logFile, { lines: 2, logLevel: 'silly' });
 
-        assert.strictEqual(lines.length, 2);
-        // the newest ones
-        assert.ok(lines[1].includes('second info'));
+        // the newest line is always there
+        assert.ok(lines[lines.length - 1].includes('second info'));
+        // the cut would land inside the error entry and its stack trace, so the window is extended
+        // backwards to the header - returning the two `at ...` frames on their own would be useless
+        assert.ok(lines[0].includes('an error'), `result starts mid-entry: ${JSON.stringify(lines)}`);
+        assert.strictEqual(lines.length, 4);
+    });
+
+    it('does not report a level token quoted inside a message', async () => {
+        const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'iob-logs-'));
+        const file = path.join(dir, 'quoted.log');
+        await fs.writeFile(
+            file,
+            [
+                '2026-08-06 10:00:00.001  - [32minfo[39m: host.test parse failed: " - error: boom" in payload',
+                '2026-08-06 10:00:00.002  - [31merror[39m: host.test a real error',
+            ].join('\n'),
+        );
+
+        try {
+            const { lines } = await readLogTail(file, { logLevel: 'error' });
+
+            assert.strictEqual(lines.length, 1, `an info line leaked: ${JSON.stringify(lines)}`);
+            assert.ok(lines[0].includes('a real error'));
+        } finally {
+            await fs.remove(dir);
+        }
+    });
+
+    it('does not take a continuation line for the start of an entry', async () => {
+        const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'iob-logs-'));
+        const file = path.join(dir, 'continuation.log');
+        await fs.writeFile(
+            file,
+            [
+                '2026-08-06 10:00:00.001  - [32minfo[39m: host.test multi',
+                '     payload:  - error: nested',
+                '2026-08-06 10:00:00.002  - [31merror[39m: host.test a real error',
+            ].join('\n'),
+        );
+
+        try {
+            const { lines } = await readLogTail(file, { logLevel: 'error' });
+
+            // the continuation belongs to an info entry - returning it alone, without its header,
+            // would be worse than dropping it
+            assert.strictEqual(lines.length, 1, `a continuation line leaked: ${JSON.stringify(lines)}`);
+            assert.ok(lines[0].includes('a real error'));
+        } finally {
+            await fs.remove(dir);
+        }
     });
 
     it('reports the current file size', async () => {
