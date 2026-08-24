@@ -135,24 +135,6 @@ A successful as well as a failed auto-upgrade will generate a notification in th
 
 The command line interface is described at https://www.iobroker.net/#de/documentation/config/cli.md
 
-#### Progress output
-
-Long-running commands which know how many steps they have — `iobroker upload` is the first one — draw
-a progress bar when they are run in a terminal:
-
-```
-mqtt.admin [██████████████████████████████████░░░░░░░░░░░░░░░░░]  67% (128/190)
-```
-
-The bar overwrites its own line, adapts to the width of the terminal, and falls back to plain
-`name 67% (128/190)` when the window is too narrow for it to say anything.
-
-It is only used when the output actually goes to a terminal. Redirected to a file, piped into
-another command, or run from a service, the output stays exactly as it was — one line per step, the
-form scripts have always parsed. The same applies when the work is triggered through the controller
-instead of the CLI: that output goes into `iobroker.log`, where control characters would only be
-noise.
-
 ### Adapter Upgrade with Webserver
 **Feature status:** New in 5.0.0
 
