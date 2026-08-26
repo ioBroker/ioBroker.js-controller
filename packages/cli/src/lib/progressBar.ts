@@ -88,9 +88,8 @@ export class ProgressBar {
     }
 
     /** Draw the bar as complete and close its line */
-    finish(): void {
-        this.stream.write(`${CR}${this.render(this.total)}${CLEAR_TO_END}
-`);
+finish(): void {
+        this.stream.write(`${CR}${this.render(this.total)}${CLEAR_TO_END}\n`);
         this.open = false;
     }
 
