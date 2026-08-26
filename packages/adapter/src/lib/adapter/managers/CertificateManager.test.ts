@@ -16,6 +16,7 @@ function makeContext(over: Partial<AdapterContext> = {}): AdapterContext {
         common: undefined,
         config: {} as ioBroker.AdapterConfig,
         host: 'localhost',
+        countOutput: () => {},
         ...over,
     };
 }

@@ -29,4 +29,6 @@ export interface AdapterContext {
     readonly logger: Winston.Logger;
     /** Controller for UI messaging */
     readonly uiMessagingController: UserInterfaceMessagingController;
+    /** Increment the adapter's outbound-write counter. */
+    readonly countOutput: () => void;
 }
