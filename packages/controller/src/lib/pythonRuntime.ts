@@ -3,8 +3,8 @@
  *
  * Everything Python-specific lives here so that `main.ts` keeps a single, small
  * branch and the Node start path stays bit-for-bit what it was. An adapter is
- * treated as Python only when its `common.runtime` says so; without that field
- * nothing in this module is ever reached.
+ * treated as Python only when its `common.platform` says so; with the default
+ * `Javascript/Node.js` nothing in this module is ever reached.
  *
  * The division of labour is deliberate: this controller starts, supervises and
  * stops Python adapters exactly the way it does Node adapters -- the stop path
@@ -27,8 +27,8 @@ import fs from 'fs-extra';
 import path from 'node:path';
 import { tools } from '@iobroker/js-controller-common-db';
 
-/** Value of `common.runtime` that marks an adapter as Python. */
-export const PYTHON_RUNTIME = 'python';
+/** Value of `common.platform` that marks an adapter as Python. */
+export const PYTHON_PLATFORM = 'Python';
 
 /** Directory below the data directory that holds one environment per adapter. */
 const ENV_ROOT = 'py';
@@ -77,10 +77,15 @@ export interface PythonEntryPoint {
 /**
  * Check whether an adapter is written in Python
  *
+ * The comparison ignores case on purpose. `platform` is hand-written in every io-package.json and
+ * already carries the wrong case in the wild -- adapters shipping `javascript/Node.js` instead of
+ * `Javascript/Node.js` exist today. Refusing to start an adapter over a lower-case "python" would
+ * be a needlessly sharp edge on a field nobody validates.
+ *
  * @param common the `common` section of the instance or adapter object
  */
-export function isPythonAdapter(common?: { runtime?: string } | null): boolean {
-    return common?.runtime === PYTHON_RUNTIME;
+export function isPythonAdapter(common?: { platform?: string } | null): boolean {
+    return common?.platform?.toLowerCase() === PYTHON_PLATFORM.toLowerCase();
 }
 
 /**
@@ -209,19 +214,17 @@ export function resolvePythonEntry(adapterDir: string, main?: string): PythonEnt
         throw new Error('common.main is not set, cannot determine the Python module');
     }
 
-    const normalized = main.replace(/\\/g, '/');
+    // Matched strictly against the documented layout instead of merely looking for a trailing
+    // "__main__.py". A looser check accepts "python/foo/bar/__main__.py" and derives the module
+    // "bar" from it, which is wrong for a nested package -- `python -m bar` would fail while the
+    // configuration looked plausible. Rejecting it names the problem instead.
+    const match = /^python\/([^/]+)\/__main__\.py$/.exec(main.replace(/\\/g, '/'));
 
-    if (!normalized.endsWith('/__main__.py')) {
-        throw new Error(
-            `common.main must point at a "__main__.py" inside the package directory, got "${main}". ` +
-                'The expected layout is "python/<module>/__main__.py".',
-        );
+    if (!match) {
+        throw new Error(`common.main must follow the layout "python/<module>/__main__.py", got "${main}".`);
     }
 
-    const mainFile = path.join(adapterDir, normalized);
-    const moduleDir = path.dirname(mainFile);
-
-    return { module: path.basename(moduleDir), cwd: path.dirname(moduleDir) };
+    return { module: match[1], cwd: path.join(adapterDir, 'python') };
 }
 
 /** Everything needed to start a Python adapter process */
@@ -255,7 +258,10 @@ export function spawnPythonAdapter(options: SpawnPythonOptions): ChildProcess {
     const { adapterDir, main, interpreter, args, env } = options;
     const entry = resolvePythonEntry(adapterDir, main);
 
-    return spawn(interpreter, ['-m', entry.module, ...args], {
+    // -u disables buffering. Python block-buffers stdout as soon as it is a pipe rather than a
+    // terminal, which is exactly the case here: forwarded output would arrive in 8 KB chunks long
+    // after the fact, and whatever sat in the buffer would be lost if the process is killed.
+    return spawn(interpreter, ['-u', '-m', entry.module, ...args], {
         stdio: ['ignore', 'pipe', 'pipe'],
         windowsHide: true,
         cwd: entry.cwd,

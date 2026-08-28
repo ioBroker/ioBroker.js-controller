@@ -105,7 +105,7 @@ interface Process {
     rebuildArgs?: RebuildArgs;
     startedAsCompactGroup?: boolean;
     engine?: string;
-    /** Interpreter of the virtual environment; only set for adapters with `common.runtime: "python"` */
+    /** Interpreter of the virtual environment; only set for adapters with `common.platform: "Python"` */
     pythonInterpreter?: string;
     lastCleanErrors?: number;
     lastStart?: number;
@@ -4169,6 +4169,12 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
     const isPython = isPythonAdapter(instance.common);
 
+    // procs[id] survives configuration changes, so the interpreter has to be re-derived on every
+    // start rather than left over from a previous one. An adapter switched back from Python to
+    // Node.js would otherwise keep being spawned through the Python path, since that is chosen by
+    // the presence of this field.
+    delete proc.pythonInterpreter;
+
     if (isPython) {
         // Compact mode loads an adapter into an existing Node.js process, which a Python adapter
         // can never be part of. Clearing the flag here rather than trusting io-package.json keeps a
@@ -4607,8 +4613,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     }
 
                     // A Node adapter logs exclusively through the states database and its stdout is
-                    // discarded. Python libraries print tracebacks to stdout, so for those it is
-                    // forwarded -- otherwise the most useful part of a crash would be lost.
+                    // discarded. Python code prints there too -- `print()`, and libraries that log
+                    // to stdout -- so for those it is forwarded. Its counterpart for stderr sits
+                    // further down, in the error handler.
                     if (proc.pythonInterpreter && proc.process?.stdout) {
                         proc.process.stdout.on('data', data => {
                             const text = data?.toString().trimEnd();
@@ -4638,6 +4645,20 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 return;
                             }
                             const text = data.toString();
+
+                            // Python writes tracebacks and the logging module's default output to
+                            // stderr. The buffering below only surfaces on exit, so a non-fatal
+                            // traceback would stay invisible for as long as the adapter keeps
+                            // running -- exactly when it is most useful. The rebuild heuristics
+                            // that follow are about native Node.js modules and cannot match here.
+                            if (proc.pythonInterpreter) {
+                                for (const line of text.split('\n')) {
+                                    if (line.trim()) {
+                                        logger.error(`${hostLogPrefix} ${instance._id} ${line.trimEnd()}`);
+                                    }
+                                }
+                                return;
+                            }
 
                             // show for debug
                             console.error(text);

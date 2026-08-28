@@ -10,15 +10,21 @@ import {
 
 describe('pythonRuntime', () => {
     describe('isPythonAdapter', () => {
-        it('only reacts to the explicit marker', () => {
-            assert.equal(isPythonAdapter({ runtime: 'python' }), true);
-            // Everything without the marker must keep the Node path, including
-            // the shapes that actually occur: no field, empty object, missing
-            // common section entirely.
+        it('recognises the Python platform regardless of case', () => {
+            assert.equal(isPythonAdapter({ platform: 'Python' }), true);
+            // Case is ignored deliberately: platform is hand-written and already
+            // wrong in the wild -- adapters shipping 'javascript/Node.js' exist.
+            assert.equal(isPythonAdapter({ platform: 'python' }), true);
+        });
+
+        it('keeps everything else on the Node path', () => {
+            // The shapes that actually occur: the default, no field at all,
+            // empty object, missing common section.
+            assert.equal(isPythonAdapter({ platform: 'Javascript/Node.js' }), false);
+            assert.equal(isPythonAdapter({ platform: 'javascript/Node.js' }), false);
             assert.equal(isPythonAdapter({}), false);
             assert.equal(isPythonAdapter(undefined), false);
             assert.equal(isPythonAdapter(null), false);
-            assert.equal(isPythonAdapter({ runtime: 'Python' }), false);
         });
     });
 
@@ -63,6 +69,23 @@ describe('pythonRuntime', () => {
             // and its relative imports fail at runtime. Better to refuse early
             // with a message naming the expected layout.
             assert.throws(() => resolvePythonEntry('/adapters/iobroker.foo', 'python/foo/run.py'), /__main__\.py/);
+        });
+
+        it('rejects a nested package, whose module name cannot be derived this way', () => {
+            // The tempting loose check -- "ends with __main__.py" -- accepts this and derives the
+            // module "bar", but `python -m bar` fails for a package reachable as foo.bar. Failing
+            // here names the problem; failing at spawn time does not.
+            assert.throws(
+                () => resolvePythonEntry('/adapters/iobroker.foo', 'python/foo/bar/__main__.py'),
+                /python\/<module>\/__main__\.py/,
+            );
+        });
+
+        it('rejects a package outside the python/ directory', () => {
+            assert.throws(
+                () => resolvePythonEntry('/adapters/iobroker.foo', 'foo/__main__.py'),
+                /python\/<module>\/__main__\.py/,
+            );
         });
 
         it('rejects a missing main', () => {

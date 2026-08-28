@@ -405,20 +405,21 @@ consisting of many sources to prevent noticeably delayed adapter starts.
 ### Adapters written in Python
 **Feature status:** experimental
 
-An adapter can be written in Python instead of Node.js by adding `runtime` to its `io-package.json`
-and pointing `common.main` at the package's `__main__.py`:
+An adapter can be written in Python instead of Node.js by setting `common.platform` in its
+`io-package.json` and pointing `common.main` at the package's `__main__.py`:
 
 ```json
 {
   "common": {
-    "runtime": "python",
+    "platform": "Python",
     "main": "python/myadapter/__main__.py"
   }
 }
 ```
 
-Without the `runtime` field nothing changes, so every existing adapter keeps the Node.js path
-unaltered.
+`platform` has always been the field describing what an adapter is written in; its only value so far
+was `Javascript/Node.js`, which stays the default. Every existing adapter therefore keeps the
+Node.js path unaltered.
 
 Such an adapter is still shipped as an npm package -- `io-package.json`, `admin/jsonConfig.json` and
 a `python/` directory containing `pyproject.toml`. Repository, repo checker, `iobroker add`, admin
