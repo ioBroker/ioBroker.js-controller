@@ -782,6 +782,13 @@ declare global {
             os?: 'linux' | 'darwin' | 'win32' | Array<'linux' | 'darwin' | 'win32'>;
             /** Constant */
             platform: 'Javascript/Node.js';
+            /**
+             * Language the adapter is written in. Absent means Node.js, which is the default and
+             * covers every existing adapter. `python` makes the controller start the adapter from
+             * the virtual environment maintained by the `py-controller` adapter instead of with
+             * Node.js; `common.main` then points at the package's `__main__.py`.
+             */
+            runtime?: 'python';
             /** The keys of common attributes (e.g. `history`) which are not deleted in a `setObject` call even if they are not present. Deletion must be done explicitly by setting them to `null`. */
             preserveSettings?: string | string[];
             /** Url of the ReadMe file */

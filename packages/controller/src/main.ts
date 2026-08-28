@@ -52,6 +52,7 @@ import {
 } from '@iobroker/js-controller-common-db/tools';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
+import { buildPythonEnv, checkPythonEnvironment, isPythonAdapter, spawnPythonAdapter } from '@/lib/pythonRuntime.js';
 import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
 import * as url from 'node:url';
@@ -104,6 +105,8 @@ interface Process {
     rebuildArgs?: RebuildArgs;
     startedAsCompactGroup?: boolean;
     engine?: string;
+    /** Interpreter of the virtual environment; only set for adapters with `common.runtime: "python"` */
+    pythonInterpreter?: string;
     lastCleanErrors?: number;
     lastStart?: number;
     /** Name of the variable that is subscribed automatically */
@@ -4164,10 +4167,38 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
     proc.downloadRetry = 0;
 
-    // read node.js engine requirements
+    const isPython = isPythonAdapter(instance.common);
+
+    if (isPython) {
+        // Compact mode loads an adapter into an existing Node.js process, which a Python adapter
+        // can never be part of. Clearing the flag here rather than trusting io-package.json keeps a
+        // mistakenly published adapter from taking the compact path and failing obscurely.
+        if (instance.common.compact) {
+            instance.common.compact = false;
+            logger.warn(
+                `${hostLogPrefix} Adapter ${name} is marked "compact" but runs on Python, ignoring compact mode`,
+            );
+        }
+
+        // A Python adapter needs its virtual environment before it can be started. Building that
+        // environment is the job of the "py-controller" adapter, so all this side does is refuse to
+        // start and say why -- py-controller watches for exactly this and triggers a restart once
+        // the environment is in place.
+        const env = await checkPythonEnvironment(name);
+
+        if (!env.ready) {
+            logger.error(`${hostLogPrefix} startInstance ${name}.${instanceNo}: ${env.reason}`);
+            return;
+        }
+
+        proc.pythonInterpreter = env.interpreter;
+    }
+
+    // read node.js engine requirements -- not applicable to Python adapters, whose interpreter
+    // version is pinned by the virtual environment rather than by the host's Node.js
     try {
         // read directly from disk and not via require to allow "on the fly" updates of adapters.
-        const packJSON = fs.readJSONSync(path.join(adapterDir, 'package.json'));
+        const packJSON = isPython ? undefined : fs.readJSONSync(path.join(adapterDir, 'package.json'));
         proc.engine = packJSON?.engines?.node;
     } catch {
         logger.error(
@@ -4549,16 +4580,40 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     if (!proc.process) {
                         // We were not able or should not start as compact mode
                         try {
-                            proc.process = cp.fork(adapterMainFile, args, {
-                                execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
-                                stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-                                // @ts-expect-error missing from types, but we already tested it is needed
-                                windowsHide: true,
-                                cwd: adapterDir,
-                            });
+                            if (proc.pythonInterpreter) {
+                                proc.process = spawnPythonAdapter({
+                                    adapterName: name,
+                                    adapterDir,
+                                    main: instance.common.main,
+                                    interpreter: proc.pythonInterpreter,
+                                    args,
+                                    env: buildPythonEnv(config, instanceNo, instance.common.loglevel),
+                                });
+                            } else {
+                                proc.process = cp.fork(adapterMainFile, args, {
+                                    execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
+                                    stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
+                                    // @ts-expect-error missing from types, but we already tested it is needed
+                                    windowsHide: true,
+                                    cwd: adapterDir,
+                                });
+                            }
                         } catch (err) {
                             logger.error(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
                         }
+                    }
+
+                    // A Node adapter logs exclusively through the states database and its stdout is
+                    // discarded. Python libraries print tracebacks to stdout, so for those it is
+                    // forwarded -- otherwise the most useful part of a crash would be lost.
+                    if (proc.pythonInterpreter && proc.process?.stdout) {
+                        proc.process.stdout.on('data', data => {
+                            const text = data?.toString().trimEnd();
+
+                            if (text) {
+                                logger.info(`${hostLogPrefix} ${instance._id} ${text}`);
+                            }
+                        });
                     }
 
                     if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
@@ -5017,14 +5072,25 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             // Start one time adapter by start or if configuration changed
             if (instance.common.allowInit) {
                 try {
-                    // @ts-expect-error if mode !== extension we have ensured it exists
-                    proc.process = cp.fork(adapterMainFile, args, {
+                    if (proc.pythonInterpreter) {
+                        proc.process = spawnPythonAdapter({
+                            adapterName: name,
+                            adapterDir,
+                            main: instance.common.main,
+                            interpreter: proc.pythonInterpreter,
+                            args,
+                            env: buildPythonEnv(config, instanceNo, instance.common.loglevel),
+                        });
+                    } else {
                         // @ts-expect-error if mode !== extension we have ensured it exists
-                        execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
-                        // @ts-expect-error missing from types, but we already tested it is necessary
-                        windowsHide: true,
-                        cwd: adapterDir,
-                    });
+                        proc.process = cp.fork(adapterMainFile, args, {
+                            // @ts-expect-error if mode !== extension we have ensured it exists
+                            execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
+                            // @ts-expect-error missing from types, but we already tested it is necessary
+                            windowsHide: true,
+                            cwd: adapterDir,
+                        });
+                    }
                 } catch (e) {
                     logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${e.message}`);
                 }
