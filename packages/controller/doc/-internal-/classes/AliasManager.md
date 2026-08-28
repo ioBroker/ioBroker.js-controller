@@ -6,7 +6,7 @@
 
 # Class: AliasManager
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L18)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L18)
 
 Owns the alias subscription cache and its bookkeeping: which real (source) states feed which
 `alias.*` targets, the alias subscription patterns, and the single `alias.*` object subscription.
@@ -23,7 +23,7 @@ state-change handler cannot interleave a cache mutation mid-fan-out.
 
 > **new AliasManager**(`ctx`, `validateId`): `AliasManager`
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L28)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L28)
 
 #### Parameters
 
@@ -55,7 +55,7 @@ Bound id validator from the adapter's Validator instance
 
 > **get** **size**(): `number`
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L43)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L43)
 
 Number of tracked source states.
 
@@ -69,7 +69,7 @@ Number of tracked source states.
 
 > **addAliasSubscribe**(`aliasObj`, `pattern`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:222](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L222)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:222](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L222)
 
 Register an alias target for its source state, subscribing the source state (and reading its
 metadata once). Preserves the create-before-await ordering and the post-await existence
@@ -99,7 +99,7 @@ the subscription pattern that pulled it in
 
 > **addPattern**(`pattern`): `void`
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:61](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L61)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:61](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L61)
 
 Track a subscription pattern.
 
@@ -121,7 +121,7 @@ the subscription pattern
 
 > **deletePattern**(`pattern`): `void`
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:70](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L70)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:70](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L70)
 
 Stop tracking a subscription pattern.
 
@@ -143,7 +143,7 @@ the subscription pattern
 
 > **ensureAliasObjectSubscription**(): `void`
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:199](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L199)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:199](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L199)
 
 Subscribe the `alias.*` object range once (idempotent).
 
@@ -157,7 +157,7 @@ Subscribe the `alias.*` object range once (idempotent).
 
 > **handleAliasObjectChange**(`id`, `obj`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L102)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L102)
 
 Reacts to a change of an `alias.*` object: re-points, updates, or removes the target across the
 tracked sources, and picks up a newly-appeared alias that falls into a tracked pattern.
@@ -188,7 +188,7 @@ the new object (null/undefined if deleted)
 
 > **hasPattern**(`pattern`): `boolean`
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:52](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L52)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:52](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L52)
 
 Whether the given subscription pattern is tracked.
 
@@ -210,7 +210,7 @@ the subscription pattern
 
 > **hasSource**(`id`): `boolean`
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L38)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L38)
 
 Whether the given source (real) state id currently feeds any alias.
 
@@ -232,7 +232,7 @@ the real source state id
 
 > **matchesAnyPattern**(`id`): `boolean`
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L79)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L79)
 
 Whether `id` falls into any tracked alias pattern (wildcards via pattern2RegEx).
 
@@ -254,7 +254,7 @@ the id to test against the tracked patterns
 
 > **maybeDropAliasObjectSubscription**(): `void`
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:207](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L207)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:207](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L207)
 
 Drop the `alias.*` object subscription when no aliases remain.
 
@@ -268,7 +268,7 @@ Drop the `alias.*` object subscription when no aliases remain.
 
 > **removeAliasSubscribe**(`sourceId`, `aliasObjOrIdx`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:276](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L276)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:276](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L276)
 
 Remove one alias target from its source; when the source has no targets left, delete the entry
 and unsubscribe the source state.
@@ -297,7 +297,7 @@ the target entry or its index in the targets array
 
 > **removeTargetsForPattern**(`pattern`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:144](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L144)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:144](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L144)
 
 Removes every target subscribed under the given pattern, live-iterating the cache so a removal
 mutating the map mid-loop keeps the original semantics. Awaits each removal.
@@ -320,7 +320,7 @@ the subscription pattern being unsubscribed
 
 > **resolveSourceChange**(`sourceId`, `state`): `object`[]
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L164)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L164)
 
 Synchronously computes the fan-out of a source (real) state change to its alias targets.
 Returns one `{ targetId, state }` per unique target. MUST NOT await — the caller relies on the

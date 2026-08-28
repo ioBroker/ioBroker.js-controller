@@ -6,7 +6,7 @@
 
 # Interface: InternalFormatDateOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:231](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L231)
+Defined in: [adapter/src/lib/\_Types.ts:231](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/_Types.ts#L231)
 
 Internal options for formatting a date
 
@@ -16,7 +16,7 @@ Internal options for formatting a date
 
 > `optional` **\_format?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L237)
+Defined in: [adapter/src/lib/\_Types.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/_Types.ts#L237)
 
 Optional explicit format string
 
@@ -26,7 +26,7 @@ Optional explicit format string
 
 > **dateObj**: `string` \| `number` \| `Date`
 
-Defined in: [adapter/src/lib/\_Types.ts:233](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L233)
+Defined in: [adapter/src/lib/\_Types.ts:233](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/_Types.ts#L233)
 
 The date to format, as Date, timestamp or string
 
@@ -36,6 +36,6 @@ The date to format, as Date, timestamp or string
 
 > **isDuration**: `boolean`
 
-Defined in: [adapter/src/lib/\_Types.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L235)
+Defined in: [adapter/src/lib/\_Types.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/_Types.ts#L235)
 
 Whether the value represents a duration instead of a point in time
