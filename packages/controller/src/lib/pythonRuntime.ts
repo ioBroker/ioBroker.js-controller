@@ -72,7 +72,11 @@ export function isPythonAdapter(common?: { runtime?: string } | null): boolean {
  * @param adapterName name of the adapter without the `iobroker.` prefix
  */
 export function getPythonEnvDir(adapterName: string): string {
-    return path.join(tools.getDefaultDataDir(), ENV_ROOT, adapterName);
+    // getDefaultDataDir() is relative to the controller directory by design, and it has to be made
+    // absolute here. The interpreter path derived from it becomes the executable of a spawn() whose
+    // cwd is the adapter's package directory -- a relative path would be resolved against that and
+    // fail with ENOENT, while every check done from the controller's own cwd would still pass.
+    return path.resolve(tools.getControllerDir(), tools.getDefaultDataDir(), ENV_ROOT, adapterName);
 }
 
 /**

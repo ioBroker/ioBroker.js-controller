@@ -20,6 +20,10 @@ describe('pythonRuntime', () => {
         it('points into the adapter-specific virtual environment', () => {
             const interpreter = getPythonInterpreter('pyexample');
 
+            // Must be absolute. The path becomes the executable of a spawn() whose cwd is the
+            // adapter's package directory, so a relative one resolves against the wrong place and
+            // fails with ENOENT -- while every check made from the controller's cwd still passes.
+            assert.ok(path.isAbsolute(interpreter), `expected an absolute path, got "${interpreter}"`);
             assert.ok(interpreter.includes(path.join('py', 'pyexample', 'venv')));
             // The layout differs between platforms and getting it wrong means the
             // adapter silently never starts.
