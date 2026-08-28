@@ -4194,8 +4194,11 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         proc.pythonInterpreter = env.interpreter;
     }
 
-    // read node.js engine requirements -- not applicable to Python adapters, whose interpreter
-    // version is pinned by the virtual environment rather than by the host's Node.js
+    // read node.js engine requirements -- not applicable to Python adapters. Their equivalent,
+    // "requires-python" in pyproject.toml, is enforced by uv when the virtual environment is
+    // created: it refuses to build one whose interpreter does not satisfy the constraint. Checking
+    // it again here would mean parsing TOML in the core to re-verify something that has already
+    // been decided, and by the component that owns it.
     try {
         // read directly from disk and not via require to allow "on the fly" updates of adapters.
         const packJSON = isPython ? undefined : fs.readJSONSync(path.join(adapterDir, 'package.json'));
