@@ -4184,7 +4184,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         // environment is the job of the "py-controller" adapter, so all this side does is refuse to
         // start and say why -- py-controller watches for exactly this and triggers a restart once
         // the environment is in place.
-        const env = await checkPythonEnvironment(name);
+        const env = await checkPythonEnvironment(name, instance.common.version);
 
         if (!env.ready) {
             logger.error(`${hostLogPrefix} startInstance ${name}.${instanceNo}: ${env.reason}`);

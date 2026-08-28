@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';
 import path from 'node:path';
-import { buildPythonEnv, getPythonInterpreter, isPythonAdapter, resolvePythonEntry } from '../src/lib/pythonRuntime.js';
+import {
+    buildPythonEnv,
+    checkPythonEnvironment,
+    getPythonInterpreter,
+    isPythonAdapter,
+    resolvePythonEntry,
+} from '../src/lib/pythonRuntime.js';
 
 describe('pythonRuntime', () => {
     describe('isPythonAdapter', () => {
@@ -61,6 +67,19 @@ describe('pythonRuntime', () => {
 
         it('rejects a missing main', () => {
             assert.throws(() => resolvePythonEntry('/adapters/iobroker.foo', undefined), /common\.main/);
+        });
+    });
+
+    describe('checkPythonEnvironment', () => {
+        it('reports a missing environment and names what it expected', async () => {
+            const env = await checkPythonEnvironment('adapter-that-does-not-exist', '1.0.0');
+
+            assert.equal(env.ready, false);
+            assert.equal(env.stale, undefined);
+            // The message has to carry the path, otherwise "environment is missing" sends people
+            // looking in the wrong place.
+            assert.match(env.reason!, /is missing/);
+            assert.ok(env.reason!.includes(env.interpreter));
         });
     });
 

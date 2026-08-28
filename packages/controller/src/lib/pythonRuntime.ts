@@ -33,6 +33,25 @@ export const PYTHON_RUNTIME = 'python';
 /** Directory below the data directory that holds one environment per adapter. */
 const ENV_ROOT = 'py';
 
+/**
+ * Name of the file `py-controller` writes next to a virtual environment once it has built it.
+ * It records which adapter version the environment was built for, which is what makes an
+ * environment that has fallen behind its adapter detectable without parsing any Python metadata.
+ */
+const STAMP_FILE = 'environment.json';
+
+/** What `py-controller` records about an environment it has built */
+export interface PythonEnvironmentStamp {
+    /** `common.version` of the adapter the environment was built for */
+    adapterVersion: string;
+    /** Hash over the adapter's `pyproject.toml`, so edits without a version bump are noticed too */
+    dependencyHash?: string;
+    /** When the environment was built, ISO 8601 */
+    builtAt?: string;
+    /** Version of the interpreter in the environment */
+    pythonVersion?: string;
+}
+
 /** Result of checking an adapter's Python environment */
 export interface PythonEnvironment {
     /** Whether the environment is usable and the adapter may be started */
@@ -43,6 +62,8 @@ export interface PythonEnvironment {
     envDir: string;
     /** Why the environment is unusable; only set when `ready` is false */
     reason?: string;
+    /** The environment exists but was built for a different adapter version */
+    stale?: boolean;
 }
 
 /** Module and working directory a Python adapter is started with */
@@ -95,13 +116,22 @@ export function getPythonInterpreter(adapterName: string): string {
 /**
  * Check whether an adapter's Python environment can be used to start it
  *
- * Deliberately only a file system check. Validating the installed packages
- * would mean knowing about `pip`, which is exactly the knowledge this side of
- * the contract does not want.
+ * Deliberately only a file system check plus the stamp `py-controller` leaves behind. Validating
+ * the installed packages would mean knowing about `pip`, which is exactly the knowledge this side
+ * of the contract does not want -- so instead the component that installed them says what it
+ * installed them for, and this side only compares two version strings.
+ *
+ * An environment that is merely out of date is reported as not ready as well. Starting an adapter
+ * against dependencies resolved for an older version of it produces failures far away from their
+ * cause, which is worse than refusing with a clear reason.
  *
  * @param adapterName name of the adapter without the `iobroker.` prefix
+ * @param expectedVersion `common.version` of the installed adapter; omit to skip the staleness check
  */
-export async function checkPythonEnvironment(adapterName: string): Promise<PythonEnvironment> {
+export async function checkPythonEnvironment(
+    adapterName: string,
+    expectedVersion?: string,
+): Promise<PythonEnvironment> {
     const envDir = getPythonEnvDir(adapterName);
     const interpreter = getPythonInterpreter(adapterName);
 
@@ -116,7 +146,51 @@ export async function checkPythonEnvironment(adapterName: string): Promise<Pytho
         };
     }
 
+    if (!expectedVersion) {
+        return { ready: true, interpreter, envDir };
+    }
+
+    const stamp = await readEnvironmentStamp(adapterName);
+
+    if (!stamp) {
+        // Environments built before the stamp existed, or built by hand. Refusing to start those
+        // would break working installations for no gain, so they are accepted and left to
+        // py-controller to bring up to date.
+        return { ready: true, interpreter, envDir };
+    }
+
+    if (stamp.adapterVersion !== expectedVersion) {
+        return {
+            ready: false,
+            interpreter,
+            envDir,
+            stale: true,
+            reason:
+                `Python environment was built for version ${stamp.adapterVersion}, but ` +
+                `${expectedVersion} is installed. The "py-controller" adapter rebuilds it.`,
+        };
+    }
+
     return { ready: true, interpreter, envDir };
+}
+
+/**
+ * Read what `py-controller` recorded about an adapter's environment
+ *
+ * @param adapterName name of the adapter without the `iobroker.` prefix
+ * @returns the stamp, or null when there is none or it cannot be read
+ */
+export async function readEnvironmentStamp(adapterName: string): Promise<PythonEnvironmentStamp | null> {
+    const stampFile = path.join(getPythonEnvDir(adapterName), STAMP_FILE);
+
+    try {
+        const stamp: PythonEnvironmentStamp = await fs.readJSON(stampFile);
+
+        return typeof stamp?.adapterVersion === 'string' ? stamp : null;
+    } catch {
+        // Missing or unreadable is not an error here -- the caller treats it as "unknown".
+        return null;
+    }
 }
 
 /**
