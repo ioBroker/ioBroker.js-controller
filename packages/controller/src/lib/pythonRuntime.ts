@@ -246,11 +246,11 @@ export interface SpawnPythonOptions {
 /**
  * Start a Python adapter
  *
- * Two differences to the Node path are intentional. Standard output is piped
- * rather than discarded: a Node adapter logs exclusively through the states
- * database, but third-party Python libraries print tracebacks to stdout, and
- * those would otherwise be lost. And no IPC channel is set up, because nothing
- * in this controller ever sends a message across it.
+ * Two differences to the Node path are intentional. Both output streams are piped rather than
+ * discarded: a Node adapter logs exclusively through the states database, but Python does not --
+ * `print()` and libraries logging to stdout go one way, while tracebacks and the `logging` module's
+ * default handler go to stderr. And no IPC channel is set up, because nothing in this controller
+ * ever sends a message across it.
  *
  * @param options where and how to start the adapter
  */
@@ -272,9 +272,11 @@ export function spawnPythonAdapter(options: SpawnPythonOptions): ChildProcess {
 /**
  * Build the environment a Python adapter needs to reach the databases
  *
- * The SDK reads these instead of parsing `iobroker.json` itself, which keeps the
- * credentials out of the process list -- unlike command line arguments, the
- * environment of a process is not world-readable.
+ * The SDK reads these instead of parsing `iobroker.json` itself, which keeps the credentials out
+ * of the process list: `ps` and `/proc/<pid>/cmdline` are readable by any user on the machine,
+ * while the environment of a running process is not. That is a narrower claim than "secret" --
+ * root and the owning user can still read it -- but it removes the case where a password is
+ * visible to everyone logged in.
  *
  * @param config the controller configuration
  * @param instance instance number the adapter is started for

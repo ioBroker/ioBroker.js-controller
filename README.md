@@ -428,8 +428,8 @@ updates and backups therefore work unchanged.
 The js-controller starts, supervises and stops these adapters like any other: stopping goes through
 the `sigKill` state, and `alive`, `connected` and `uptime` are written by the adapter itself. What
 differs is that it is started from a virtual environment rather than with Node.js, that compact mode
-is not available, and that its standard output is forwarded to the log, because Python libraries
-print tracebacks there.
+is not available, and that both its output streams are forwarded to the log -- `print()` and
+libraries logging to stdout on one, tracebacks and Python's default logging on the other.
 
 Building that virtual environment is *not* done by the controller. It is the job of the
 [`py-controller`](https://github.com/ioBroker/ioBroker.py-controller) adapter, which creates one per
@@ -441,7 +441,7 @@ of `pip` and `uv` out of the core.
 Adapters are written against the [`iobroker`](https://pypi.org/project/iobroker/) package, which
 provides an API close to `@iobroker/adapter-core`. Database connection settings reach the adapter
 through environment variables rather than command line arguments, so they do not appear in the
-process list.
+process list, which any user on the machine can read.
 
 ### Statistics
 **Feature status:** stable

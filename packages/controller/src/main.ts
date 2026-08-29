@@ -3849,6 +3849,40 @@ function installAdapters(): void {
  * @param now The current timestamp in ms, or null to keep the entries as-is
  * @param doOutput Whether the remaining errors should be written to the log
  */
+/**
+ * Write a chunk of a Python adapter's output to the log, line by line
+ *
+ * A Node adapter logs exclusively through the states database and its output is discarded. Python
+ * does not: `print()` and libraries logging to stdout go one way, tracebacks and the `logging`
+ * module's default handler go to stderr. Both would be lost otherwise, and a traceback is the most
+ * useful thing an adapter ever produces.
+ *
+ * @param data chunk as it arrived from the pipe
+ * @param instanceId instance the output belongs to
+ * @param level severity to log it under
+ */
+function logPythonOutput(data: unknown, instanceId: string, level: 'info' | 'error'): void {
+    for (const line of String(data).split('\n')) {
+        if (line.trim()) {
+            logger[level](`${hostLogPrefix} ${instanceId} ${line.trimEnd()}`);
+        }
+    }
+}
+
+/**
+ * Forward both output streams of a Python adapter to the log
+ *
+ * For the daemon path stderr is handled by the existing error handler instead, which also does the
+ * Node.js rebuild detection; attaching this there as well would log everything twice.
+ *
+ * @param child the started process
+ * @param instanceId instance the output belongs to
+ */
+function forwardPythonOutput(child: cp.ChildProcess, instanceId: string): void {
+    child.stdout?.on('data', data => logPythonOutput(data, instanceId, 'info'));
+    child.stderr?.on('data', data => logPythonOutput(data, instanceId, 'error'));
+}
+
 function cleanErrors(procObj: Process, now: number | null, doOutput?: boolean): void {
     if (!procObj || !procObj.errors || !procObj.errors.length || procObj.startedAsCompactGroup) {
         return;
@@ -3941,12 +3975,24 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                 instance.common.loglevel || 'info',
             ];
             try {
-                proc.process = cp.fork(fileNameFull, args, {
-                    execArgv: tools.getDefaultNodeArgs(fileNameFull),
-                    // @ts-expect-error missing from types, but we already tested it is needed
-                    windowsHide: true,
-                    cwd: adapterDir,
-                });
+                if (proc.pythonInterpreter) {
+                    proc.process = spawnPythonAdapter({
+                        adapterName: instance.common.name,
+                        adapterDir,
+                        main: instance.common.main,
+                        interpreter: proc.pythonInterpreter,
+                        args,
+                        env: buildPythonEnv(config, instance._id.split('.').pop() || '0', instance.common.loglevel),
+                    });
+                    forwardPythonOutput(proc.process, instance._id);
+                } else {
+                    proc.process = cp.fork(fileNameFull, args, {
+                        execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                        // @ts-expect-error missing from types, but we already tested it is needed
+                        windowsHide: true,
+                        cwd: adapterDir,
+                    });
+                }
             } catch (err) {
                 logger.error(`${hostLogPrefix} instance ${id} could not be started: ${err.message}`);
                 delete proc.process;
@@ -4612,18 +4658,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         }
                     }
 
-                    // A Node adapter logs exclusively through the states database and its stdout is
-                    // discarded. Python code prints there too -- `print()`, and libraries that log
-                    // to stdout -- so for those it is forwarded. Its counterpart for stderr sits
-                    // further down, in the error handler.
+                    // stderr is handled below, inside the existing error handler.
                     if (proc.pythonInterpreter && proc.process?.stdout) {
-                        proc.process.stdout.on('data', data => {
-                            const text = data?.toString().trimEnd();
-
-                            if (text) {
-                                logger.info(`${hostLogPrefix} ${instance._id} ${text}`);
-                            }
-                        });
+                        proc.process.stdout.on('data', data => logPythonOutput(data, instance._id, 'info'));
                     }
 
                     if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
@@ -5105,6 +5142,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             args,
                             env: buildPythonEnv(config, instanceNo, instance.common.loglevel),
                         });
+                        forwardPythonOutput(proc.process, instance._id);
                     } else {
                         // @ts-expect-error if mode !== extension we have ensured it exists
                         proc.process = cp.fork(adapterMainFile, args, {
