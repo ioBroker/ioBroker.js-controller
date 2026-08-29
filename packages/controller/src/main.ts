@@ -3365,6 +3365,18 @@ async function getInstances(): Promise<void> {
  * @returns true if instance needs to be handled by this host else false
  */
 function instanceRelevantForThisController(instance: ioBroker.InstanceObject, _ipArr: string[]): boolean {
+    // Compact mode loads an adapter into an existing Node.js process, which a Python adapter can
+    // never be part of. Cleared here, where instances are first considered, rather than at start
+    // time: everything below and in checkAndAddInstance reads the flag to decide compact group
+    // membership, so a mistakenly published adapter would already have been claimed by a group
+    // before the start path ever ran.
+    if (instance.common.compact && isPythonAdapter(instance.common)) {
+        instance.common.compact = false;
+        logger.warn(
+            `${hostLogPrefix} Adapter ${instance.common.name} is marked "compact" but runs on Python, ignoring compact mode`,
+        );
+    }
+
     // Normalize Compact group configuration
     if (config.system.compact && instance.common.compact) {
         if (instance.common.runAsCompactMode === undefined) {
@@ -4261,16 +4273,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
     delete proc.pythonInterpreter;
 
     if (isPython) {
-        // Compact mode loads an adapter into an existing Node.js process, which a Python adapter
-        // can never be part of. Clearing the flag here rather than trusting io-package.json keeps a
-        // mistakenly published adapter from taking the compact path and failing obscurely.
-        if (instance.common.compact) {
-            instance.common.compact = false;
-            logger.warn(
-                `${hostLogPrefix} Adapter ${name} is marked "compact" but runs on Python, ignoring compact mode`,
-            );
-        }
-
         // A Python adapter needs its virtual environment before it can be started. Building that
         // environment is the job of the "py-controller" adapter, so all this side does is refuse to
         // start and say why -- py-controller watches for exactly this and triggers a restart once

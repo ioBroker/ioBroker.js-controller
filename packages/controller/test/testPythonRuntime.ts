@@ -28,6 +28,18 @@ describe('pythonRuntime', () => {
         });
     });
 
+    describe('the compact flag', () => {
+        it('is what decides compact group membership, so Python has to be recognised first', () => {
+            // instanceRelevantForThisController clears common.compact for Python adapters before
+            // anything reads it. That has to happen there rather than at start time: both it and
+            // checkAndAddInstance decide compact group membership from the flag, so an adapter
+            // mistakenly published with compact=true would already have been claimed by a group
+            // before the start path ran. This test pins the detection the clearing depends on.
+            assert.equal(isPythonAdapter({ platform: 'Python' }), true);
+            assert.equal(isPythonAdapter({ platform: 'Javascript/Node.js' }), false);
+        });
+    });
+
     describe('getPythonInterpreter', () => {
         it('points into the adapter-specific virtual environment', () => {
             const interpreter = getPythonInterpreter('pyexample');
