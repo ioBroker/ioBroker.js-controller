@@ -289,6 +289,17 @@ export function buildPythonEnv(
 ): NodeJS.ProcessEnv {
     const env: NodeJS.ProcessEnv = { ...process.env };
 
+    // Everything this function manages is cleared first. The controller's own environment is
+    // inherited on purpose -- an adapter needs PATH and friends -- but if it was started from a
+    // shell that already had IOB_STATES_HOST set, an inherited value would survive wherever the
+    // configuration has none and quietly point the adapter at a different database. The adapter's
+    // environment has to be decided by the configuration alone.
+    for (const key of Object.keys(env)) {
+        if (/^IOB_(STATES|OBJECTS)_/.test(key) || key === 'IOB_INSTANCE' || key === 'IOB_LOGLEVEL') {
+            delete env[key];
+        }
+    }
+
     for (const section of ['states', 'objects'] as const) {
         const part = config[section];
 

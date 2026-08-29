@@ -135,6 +135,33 @@ describe('pythonRuntime', () => {
             assert.equal(env.IOB_LOGLEVEL, undefined);
         });
 
+        it('ignores IOB_ variables inherited from the controller', () => {
+            // If the controller was started from a shell that already had these set, an inherited
+            // value would survive wherever the configuration has none and quietly point the
+            // adapter at a different database. The environment has to come from the config alone.
+            process.env.IOB_STATES_HOST = '10.9.9.9';
+            process.env.IOB_STATES_PASS = 'leaked';
+            process.env.IOB_LOGLEVEL = 'silly';
+
+            try {
+                const sparse = {
+                    states: { type: 'jsonl', host: '127.0.0.1', port: 9000 },
+                } as unknown as ioBroker.IoBrokerJson;
+
+                const env = buildPythonEnv(sparse, 0);
+
+                assert.equal(env.IOB_STATES_HOST, '127.0.0.1');
+                assert.equal(env.IOB_STATES_PASS, undefined);
+                assert.equal(env.IOB_LOGLEVEL, undefined);
+                // Everything else the controller carries is still inherited on purpose.
+                assert.ok(env.PATH !== undefined || process.platform === 'win32');
+            } finally {
+                delete process.env.IOB_STATES_HOST;
+                delete process.env.IOB_STATES_PASS;
+                delete process.env.IOB_LOGLEVEL;
+            }
+        });
+
         it('takes the first entry when the host is configured redundantly', () => {
             const sentinel = {
                 states: { type: 'redis', host: ['10.0.0.1', '10.0.0.2'], port: [26379, 26380] },

@@ -3850,37 +3850,76 @@ function installAdapters(): void {
  * @param doOutput Whether the remaining errors should be written to the log
  */
 /**
- * Write a chunk of a Python adapter's output to the log, line by line
+ * Build a consumer that turns a stream of chunks into whole log lines
  *
  * A Node adapter logs exclusively through the states database and its output is discarded. Python
  * does not: `print()` and libraries logging to stdout go one way, tracebacks and the `logging`
  * module's default handler go to stderr. Both would be lost otherwise, and a traceback is the most
  * useful thing an adapter ever produces.
  *
- * @param data chunk as it arrived from the pipe
+ * Chunks are not lines. A read can end in the middle of one, so the incomplete tail is held back
+ * until the rest arrives -- otherwise a traceback arrives torn across two log entries at exactly
+ * the moment someone is trying to read it.
+ *
  * @param instanceId instance the output belongs to
  * @param level severity to log it under
  */
-function logPythonOutput(data: unknown, instanceId: string, level: 'info' | 'error'): void {
-    for (const line of String(data).split('\n')) {
+function pythonLineLogger(
+    instanceId: string,
+    level: 'info' | 'error',
+): { onData: (data: unknown) => void; flush: () => void } {
+    let pending = '';
+
+    const emit = (line: string): void => {
         if (line.trim()) {
             logger[level](`${hostLogPrefix} ${instanceId} ${line.trimEnd()}`);
         }
-    }
+    };
+
+    return {
+        onData(data: unknown): void {
+            pending += String(data);
+            const lines = pending.split('\n');
+            // The last element is whatever came after the final newline: either empty, or the
+            // start of a line still being written.
+            pending = lines.pop() ?? '';
+
+            for (const line of lines) {
+                emit(line);
+            }
+
+            // An adapter writing without newlines would otherwise grow this without limit.
+            if (pending.length > 8_192) {
+                emit(pending);
+                pending = '';
+            }
+        },
+        flush(): void {
+            emit(pending);
+            pending = '';
+        },
+    };
 }
 
 /**
  * Forward both output streams of a Python adapter to the log
  *
- * For the daemon path stderr is handled by the existing error handler instead, which also does the
- * Node.js rebuild detection; attaching this there as well would log everything twice.
- *
  * @param child the started process
  * @param instanceId instance the output belongs to
  */
 function forwardPythonOutput(child: cp.ChildProcess, instanceId: string): void {
-    child.stdout?.on('data', data => logPythonOutput(data, instanceId, 'info'));
-    child.stderr?.on('data', data => logPythonOutput(data, instanceId, 'error'));
+    const out = pythonLineLogger(instanceId, 'info');
+    const err = pythonLineLogger(instanceId, 'error');
+
+    child.stdout?.on('data', out.onData);
+    child.stderr?.on('data', err.onData);
+
+    // Whatever was still buffered belongs in the log too -- a crash often ends without a trailing
+    // newline, and that last line is the interesting one.
+    child.on('close', () => {
+        out.flush();
+        err.flush();
+    });
 }
 
 function cleanErrors(procObj: Process, now: number | null, doOutput?: boolean): void {
@@ -4658,9 +4697,11 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         }
                     }
 
-                    // stderr is handled below, inside the existing error handler.
-                    if (proc.pythonInterpreter && proc.process?.stdout) {
-                        proc.process.stdout.on('data', data => logPythonOutput(data, instance._id, 'info'));
+                    // Both streams in one place. The error handler further down does Node.js
+                    // rebuild detection on stderr, which cannot match a Python process; letting it
+                    // attach as well would log everything twice and split the handling in two.
+                    if (proc.pythonInterpreter && proc.process) {
+                        forwardPythonOutput(proc.process, instance._id);
                     }
 
                     if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
@@ -4673,8 +4714,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.sigKill: ${e.message}`));
                     }
 
-                    // catch error output
-                    if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process?.stderr) {
+                    // catch error output -- Node only, see above
+                    if (
+                        !proc.pythonInterpreter &&
+                        !proc.startedInCompactMode &&
+                        !proc.startedAsCompactGroup &&
+                        proc.process?.stderr
+                    ) {
                         proc.process.stderr.on('data', data => {
                             const proc = procs[id];
 
