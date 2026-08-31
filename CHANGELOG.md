@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Added an optional `--level` filter to `iobroker logs`, e.g. `iobroker logs --watch --level warn`
 * (@krobipd) Fixed a failed adapter install/update being reported as success on npm >= 10.6.0
 * (@krobipd) Fixed the automatic ENOTEMPTY recovery not removing the blocking npm temp directory on npm >= 10.6.0
 * (@krobipd) Fixed an occasional "Connection is closed" warning logged when a fast schedule/once adapter shuts down
