@@ -402,6 +402,47 @@ Vice versa, the build folder is no longer required and should not be published t
 Technically, the sources are compiled with ESBuild at every startup; hence this feature should not be used on adapters 
 consisting of many sources to prevent noticeably delayed adapter starts.
 
+### Adapters written in Python
+**Feature status:** experimental
+
+An adapter can be written in Python instead of Node.js by setting `common.platform` in its
+`io-package.json` and pointing `common.main` at the package's `__main__.py`:
+
+```json
+{
+  "common": {
+    "platform": "Python",
+    "main": "python/myadapter/__main__.py"
+  }
+}
+```
+
+`platform` has always been the field describing what an adapter is written in; its only value so far
+was `Javascript/Node.js`, which stays the default. Every existing adapter therefore keeps the
+Node.js path unaltered.
+
+Such an adapter is still shipped as an npm package -- `io-package.json`, `admin/jsonConfig.json` and
+a `python/` directory containing `pyproject.toml`. Repository, repo checker, `iobroker add`, admin
+updates and backups therefore work unchanged.
+
+The js-controller starts, supervises and stops these adapters like any other: stopping goes through
+the `sigKill` state, and `alive`, `connected` and `uptime` are written by the adapter itself. What
+differs is that it is started from a virtual environment rather than with Node.js, that compact mode
+is not available, and that both its output streams are forwarded to the log -- `print()` and
+libraries logging to stdout on one, tracebacks and Python's default logging on the other.
+
+Building that virtual environment is *not* done by the controller. It is the job of the
+[`py-controller`](https://github.com/ioBroker/ioBroker.py-controller) adapter, which creates one per
+adapter below `iobroker-data/py/` and records what it built in an `environment.json` next to it. The
+controller starts an instance only when that environment exists and matches the installed adapter
+version; otherwise it logs the reason and leaves the repair to `py-controller`. This keeps knowledge
+of `pip` and `uv` out of the core.
+
+Adapters are written against the [`iobroker`](https://pypi.org/project/iobroker/) package, which
+provides an API close to `@iobroker/adapter-core`. Database connection settings reach the adapter
+through environment variables rather than command line arguments, so they do not appear in the
+process list, which any user on the machine can read.
+
 ### Statistics
 **Feature status:** stable
 
