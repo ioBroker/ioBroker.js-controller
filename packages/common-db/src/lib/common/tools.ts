@@ -2085,6 +2085,26 @@ export function getDefaultDataDir(): string {
 }
 
 /**
+ * Determine where an adapter's Python virtual environment lives
+ *
+ * Lives here rather than in the controller because the CLI needs the same path when it removes an
+ * adapter: the environment is host-local state like node_modules and has to be cleaned up with it.
+ * One environment per adapter rather than per instance -- the isolation exists to keep adapters
+ * from fighting over package versions, which is not a problem two instances of the same adapter
+ * can have.
+ *
+ * The result is absolute on purpose. getDefaultDataDir() is relative to the controller directory
+ * by design, but the interpreter path derived from this becomes the executable of a spawn() whose
+ * cwd is the adapter's package directory -- a relative path would be resolved against that and
+ * fail with ENOENT, while every check done from the controller's own cwd would still pass.
+ *
+ * @param adapterName name of the adapter without the `iobroker.` prefix
+ */
+export function getPythonEnvDir(adapterName: string): string {
+    return path.resolve(getControllerDir(), getDefaultDataDir(), 'py', adapterName);
+}
+
+/**
  * Returns the path of the config file
  */
 export function getConfigFileName(): string {

@@ -52,7 +52,14 @@ import {
 } from '@iobroker/js-controller-common-db/tools';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
-import { buildPythonEnv, checkPythonEnvironment, isPythonAdapter, spawnPythonAdapter } from '@/lib/pythonRuntime.js';
+import {
+    buildPythonEnv,
+    checkPythonEnvironment,
+    forwardPythonOutput,
+    isPythonAdapter,
+    spawnPythonAdapter,
+    unsupportedPythonDbConfig,
+} from '@/lib/pythonRuntime.js';
 import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
 import * as url from 'node:url';
@@ -3861,79 +3868,6 @@ function installAdapters(): void {
  * @param now The current timestamp in ms, or null to keep the entries as-is
  * @param doOutput Whether the remaining errors should be written to the log
  */
-/**
- * Build a consumer that turns a stream of chunks into whole log lines
- *
- * A Node adapter logs exclusively through the states database and its output is discarded. Python
- * does not: `print()` and libraries logging to stdout go one way, tracebacks and the `logging`
- * module's default handler go to stderr. Both would be lost otherwise, and a traceback is the most
- * useful thing an adapter ever produces.
- *
- * Chunks are not lines. A read can end in the middle of one, so the incomplete tail is held back
- * until the rest arrives -- otherwise a traceback arrives torn across two log entries at exactly
- * the moment someone is trying to read it.
- *
- * @param instanceId instance the output belongs to
- * @param level severity to log it under
- */
-function pythonLineLogger(
-    instanceId: string,
-    level: 'info' | 'error',
-): { onData: (data: unknown) => void; flush: () => void } {
-    let pending = '';
-
-    const emit = (line: string): void => {
-        if (line.trim()) {
-            logger[level](`${hostLogPrefix} ${instanceId} ${line.trimEnd()}`);
-        }
-    };
-
-    return {
-        onData(data: unknown): void {
-            pending += String(data);
-            const lines = pending.split('\n');
-            // The last element is whatever came after the final newline: either empty, or the
-            // start of a line still being written.
-            pending = lines.pop() ?? '';
-
-            for (const line of lines) {
-                emit(line);
-            }
-
-            // An adapter writing without newlines would otherwise grow this without limit.
-            if (pending.length > 8_192) {
-                emit(pending);
-                pending = '';
-            }
-        },
-        flush(): void {
-            emit(pending);
-            pending = '';
-        },
-    };
-}
-
-/**
- * Forward both output streams of a Python adapter to the log
- *
- * @param child the started process
- * @param instanceId instance the output belongs to
- */
-function forwardPythonOutput(child: cp.ChildProcess, instanceId: string): void {
-    const out = pythonLineLogger(instanceId, 'info');
-    const err = pythonLineLogger(instanceId, 'error');
-
-    child.stdout?.on('data', out.onData);
-    child.stderr?.on('data', err.onData);
-
-    // Whatever was still buffered belongs in the log too -- a crash often ends without a trailing
-    // newline, and that last line is the interesting one.
-    child.on('close', () => {
-        out.flush();
-        err.flush();
-    });
-}
-
 function cleanErrors(procObj: Process, now: number | null, doOutput?: boolean): void {
     if (!procObj || !procObj.errors || !procObj.errors.length || procObj.startedAsCompactGroup) {
         return;
@@ -4035,7 +3969,9 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                         args,
                         env: buildPythonEnv(config, instance._id.split('.').pop() || '0', instance.common.loglevel),
                     });
-                    forwardPythonOutput(proc.process, instance._id);
+                    forwardPythonOutput(proc.process, (level, line) =>
+                        logger[level](`${hostLogPrefix} ${instance._id} ${line}`),
+                    );
                 } else {
                     proc.process = cp.fork(fileNameFull, args, {
                         execArgv: tools.getDefaultNodeArgs(fileNameFull),
@@ -4273,6 +4209,29 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
     delete proc.pythonInterpreter;
 
     if (isPython) {
+        // Web extensions are loaded into the Node.js process of the hosting web server, which a
+        // Python adapter cannot take part in. Saying so beats the silent fall-through of the mode
+        // switch below -- the instance would simply never appear, with nothing in the log. Not
+        // rejected by the io-package.json schema, because running extensions out of process (over
+        // an internal socket) is a possible later extension of the runtime.
+        if (instance.common.mode === 'extension') {
+            logger.error(
+                `${hostLogPrefix} startInstance ${name}.${instanceNo}: web extensions run inside the ` +
+                    'Node.js process of the hosting web server and are not supported for Python adapters yet',
+            );
+            return;
+        }
+
+        // Refuse configurations the environment variables cannot express (Redis Sentinel). A
+        // Python adapter started anyway would connect to a sentinel as if it were a plain Redis
+        // and fail looking like a network problem.
+        const unsupportedDb = unsupportedPythonDbConfig(config);
+
+        if (unsupportedDb) {
+            logger.error(`${hostLogPrefix} startInstance ${name}.${instanceNo}: ${unsupportedDb}`);
+            return;
+        }
+
         // A Python adapter needs its virtual environment before it can be started. Building that
         // environment is the job of the "py-controller" adapter, so all this side does is refuse to
         // start and say why -- py-controller watches for exactly this and triggers a restart once
@@ -4703,7 +4662,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     // rebuild detection on stderr, which cannot match a Python process; letting it
                     // attach as well would log everything twice and split the handling in two.
                     if (proc.pythonInterpreter && proc.process) {
-                        forwardPythonOutput(proc.process, instance._id);
+                        forwardPythonOutput(proc.process, (level, line) =>
+                            logger[level](`${hostLogPrefix} ${instance._id} ${line}`),
+                        );
                     }
 
                     if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
@@ -5190,7 +5151,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             args,
                             env: buildPythonEnv(config, instanceNo, instance.common.loglevel),
                         });
-                        forwardPythonOutput(proc.process, instance._id);
+                        forwardPythonOutput(proc.process, (level, line) =>
+                            logger[level](`${hostLogPrefix} ${instance._id} ${line}`),
+                        );
                     } else {
                         // @ts-expect-error if mode !== extension we have ensured it exists
                         proc.process = cp.fork(adapterMainFile, args, {

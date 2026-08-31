@@ -1,11 +1,18 @@
 import assert from 'node:assert/strict';
 import path from 'node:path';
+import os from 'node:os';
+import { spawnSync } from 'node:child_process';
+import fs from 'fs-extra';
 import {
     buildPythonEnv,
     checkPythonEnvironment,
+    createLineSplitter,
+    forwardPythonOutput,
     getPythonInterpreter,
     isPythonAdapter,
     resolvePythonEntry,
+    spawnPythonAdapter,
+    unsupportedPythonDbConfig,
 } from '../src/lib/pythonRuntime.js';
 
 describe('pythonRuntime', () => {
@@ -175,6 +182,8 @@ describe('pythonRuntime', () => {
         });
 
         it('takes the first entry when the host is configured redundantly', () => {
+            // Defensive only: startInstance refuses such configurations via
+            // unsupportedPythonDbConfig before this function is ever reached.
             const sentinel = {
                 states: { type: 'redis', host: ['10.0.0.1', '10.0.0.2'], port: [26379, 26380] },
             } as unknown as ioBroker.IoBrokerJson;
@@ -183,6 +192,167 @@ describe('pythonRuntime', () => {
 
             assert.equal(env.IOB_STATES_HOST, '10.0.0.1');
             assert.equal(env.IOB_STATES_PORT, '26379');
+        });
+    });
+
+    describe('unsupportedPythonDbConfig', () => {
+        it('accepts a plain single-host configuration', () => {
+            const config = {
+                states: { type: 'jsonl', host: '127.0.0.1', port: 9000 },
+                objects: { type: 'jsonl', host: '127.0.0.1', port: 9001 },
+            } as unknown as ioBroker.IoBrokerJson;
+
+            assert.equal(unsupportedPythonDbConfig(config), null);
+        });
+
+        it('refuses a Sentinel configuration and names the section', () => {
+            // The host entries of a sentinel setup are sentinels, not databases. Flattened to
+            // host[0] a Python adapter would connect to one of them as if it were a plain Redis
+            // and fail looking like a network problem -- refusing with the reason is the honest
+            // alternative until the topology can be passed through.
+            const config = {
+                states: { type: 'redis', host: ['10.0.0.1', '10.0.0.2'], port: [26379, 26380] },
+                objects: { type: 'jsonl', host: '127.0.0.1', port: 9001 },
+            } as unknown as ioBroker.IoBrokerJson;
+
+            const reason = unsupportedPythonDbConfig(config);
+
+            assert.ok(reason);
+            assert.match(reason, /states/);
+            assert.match(reason, /Sentinel/);
+        });
+    });
+
+    describe('createLineSplitter', () => {
+        it('re-assembles lines torn across chunks', () => {
+            // Chunks are not lines: a read can end in the middle of a traceback line, and the two
+            // halves must come out as one entry, not two.
+            const lines: string[] = [];
+            const splitter = createLineSplitter(line => lines.push(line));
+
+            splitter.onData('Traceback (most re');
+            splitter.onData('cent call last):\n  File "x.py"\n');
+
+            assert.deepEqual(lines, ['Traceback (most recent call last):', '  File "x.py"']);
+        });
+
+        it('drops blank lines and strips Windows line endings', () => {
+            const lines: string[] = [];
+            const splitter = createLineSplitter(line => lines.push(line));
+
+            splitter.onData('first\r\n\r\n   \r\nsecond\r\n');
+
+            assert.deepEqual(lines, ['first', 'second']);
+        });
+
+        it('emits the held-back tail on flush', () => {
+            // A crash often ends without a trailing newline, and that last line is the
+            // interesting one.
+            const lines: string[] = [];
+            const splitter = createLineSplitter(line => lines.push(line));
+
+            splitter.onData('almost done');
+            assert.deepEqual(lines, []);
+
+            splitter.flush();
+            assert.deepEqual(lines, ['almost done']);
+        });
+
+        it('does not buffer without limit when no newline ever arrives', () => {
+            const lines: string[] = [];
+            const splitter = createLineSplitter(line => lines.push(line));
+
+            splitter.onData('x'.repeat(9_000));
+
+            assert.equal(lines.length, 1);
+            assert.equal(lines[0].length, 9_000);
+        });
+    });
+
+    describe('spawning a real Python module', function () {
+        // These tests exercise the actual contract -- module started with -m from the python/
+        // directory, args and environment passed through, both streams forwarded line-wise --
+        // against whatever Python the machine has. Without one they are skipped; the GitHub
+        // runners of all three OSes ship a Python 3.
+        let python: string | null = null;
+        let adapterDir: string;
+
+        for (const candidate of process.platform === 'win32' ? ['python', 'python3'] : ['python3', 'python']) {
+            const probe = spawnSync(candidate, ['--version'], { windowsHide: true, encoding: 'utf8' });
+
+            // The Microsoft Store alias on Windows is an executable named python.exe that only
+            // prints an ad -- it reports a non-zero status here and is correctly not accepted.
+            if (probe.status === 0 && /Python 3/.test(probe.stdout + probe.stderr)) {
+                python = candidate;
+                break;
+            }
+        }
+
+        before(async function () {
+            if (!python) {
+                this.skip();
+            }
+
+            adapterDir = await fs.mkdtemp(path.join(os.tmpdir(), 'iob-python-test-'));
+            await fs.outputFile(
+                path.join(adapterDir, 'python', 'testmod', '__main__.py'),
+                [
+                    'import os, sys',
+                    'print("argv=" + " ".join(sys.argv[1:]))',
+                    'print("cwd=" + os.getcwd())',
+                    'print("inst=" + os.environ.get("IOB_INSTANCE", "missing"))',
+                    'sys.stderr.write("boom\\n")',
+                    // Deliberately no trailing newline: this line only reaches the log if the
+                    // forwarder flushes its buffer when the process exits.
+                    'sys.stderr.write("tail without newline")',
+                ].join('\n'),
+            );
+        });
+
+        after(async () => {
+            if (adapterDir) {
+                await fs.remove(adapterDir);
+            }
+        });
+
+        it('starts the module with -m, hands over args and environment, and forwards both streams', async function () {
+            this.timeout(15_000);
+
+            const config = {
+                states: { type: 'jsonl', host: '127.0.0.1', port: 9000 },
+                objects: { type: 'jsonl', host: '127.0.0.1', port: 9001 },
+            } as unknown as ioBroker.IoBrokerJson;
+
+            const child = spawnPythonAdapter({
+                adapterName: 'testmod',
+                adapterDir,
+                main: 'python/testmod/__main__.py',
+                interpreter: python!,
+                args: ['--instance', '7', '--loglevel', 'debug'],
+                env: buildPythonEnv(config, 7, 'debug'),
+            });
+
+            const logged: { level: string; line: string }[] = [];
+            forwardPythonOutput(child, (level, line) => logged.push({ level, line }));
+
+            const exitCode = await new Promise<number | null>(resolve => child.on('close', resolve));
+
+            assert.equal(exitCode, 0);
+
+            const info = logged.filter(entry => entry.level === 'info').map(entry => entry.line);
+            const error = logged.filter(entry => entry.level === 'error').map(entry => entry.line);
+
+            assert.ok(
+                info.includes('argv=--instance 7 --loglevel debug'),
+                `argv not passed through: ${JSON.stringify(info)}`,
+            );
+            // The working directory decides whether -m finds the package at all.
+            const cwdLine = info.find(line => line.startsWith('cwd='));
+            assert.ok(cwdLine, 'cwd line missing');
+            assert.equal(await fs.realpath(cwdLine.substring(4)), await fs.realpath(path.join(adapterDir, 'python')));
+            assert.ok(info.includes('inst=7'), `IOB_INSTANCE not passed through: ${JSON.stringify(info)}`);
+
+            assert.deepEqual(error, ['boom', 'tail without newline']);
         });
     });
 });

@@ -30,9 +30,6 @@ import { tools } from '@iobroker/js-controller-common-db';
 /** Value of `common.platform` that marks an adapter as Python. */
 export const PYTHON_PLATFORM = 'Python';
 
-/** Directory below the data directory that holds one environment per adapter. */
-const ENV_ROOT = 'py';
-
 /**
  * Name of the file `py-controller` writes next to a virtual environment once it has built it.
  * It records which adapter version the environment was built for, which is what makes an
@@ -89,29 +86,12 @@ export function isPythonAdapter(common?: { platform?: string } | null): boolean 
 }
 
 /**
- * Determine where an adapter's Python environment lives
- *
- * One environment per adapter rather than per instance: the isolation exists to
- * keep adapters from fighting over package versions, which is not a problem two
- * instances of the same adapter can have.
- *
- * @param adapterName name of the adapter without the `iobroker.` prefix
- */
-export function getPythonEnvDir(adapterName: string): string {
-    // getDefaultDataDir() is relative to the controller directory by design, and it has to be made
-    // absolute here. The interpreter path derived from it becomes the executable of a spawn() whose
-    // cwd is the adapter's package directory -- a relative path would be resolved against that and
-    // fail with ENOENT, while every check done from the controller's own cwd would still pass.
-    return path.resolve(tools.getControllerDir(), tools.getDefaultDataDir(), ENV_ROOT, adapterName);
-}
-
-/**
  * Determine the interpreter path inside an adapter's environment
  *
  * @param adapterName name of the adapter without the `iobroker.` prefix
  */
 export function getPythonInterpreter(adapterName: string): string {
-    const venvDir = path.join(getPythonEnvDir(adapterName), 'venv');
+    const venvDir = path.join(tools.getPythonEnvDir(adapterName), 'venv');
 
     return process.platform === 'win32'
         ? path.join(venvDir, 'Scripts', 'python.exe')
@@ -137,7 +117,7 @@ export async function checkPythonEnvironment(
     adapterName: string,
     expectedVersion?: string,
 ): Promise<PythonEnvironment> {
-    const envDir = getPythonEnvDir(adapterName);
+    const envDir = tools.getPythonEnvDir(adapterName);
     const interpreter = getPythonInterpreter(adapterName);
 
     if (!(await fs.pathExists(interpreter))) {
@@ -186,7 +166,7 @@ export async function checkPythonEnvironment(
  * @returns the stamp, or null when there is none or it cannot be read
  */
 export async function readEnvironmentStamp(adapterName: string): Promise<PythonEnvironmentStamp | null> {
-    const stampFile = path.join(getPythonEnvDir(adapterName), STAMP_FILE);
+    const stampFile = path.join(tools.getPythonEnvDir(adapterName), STAMP_FILE);
 
     try {
         const stamp: PythonEnvironmentStamp = await fs.readJSON(stampFile);
@@ -329,4 +309,105 @@ export function buildPythonEnv(
     }
 
     return env;
+}
+
+/**
+ * Check whether the database configuration can be handed to a Python adapter at all
+ *
+ * {@link buildPythonEnv} expresses a connection as one host and one port. A Redis Sentinel setup
+ * (recognisable by `host` being an array) cannot be flattened that way: the entries are sentinels,
+ * not databases, and a client connecting to one of them as if it were a plain Redis fails in a way
+ * that looks like a network problem. Refusing to start with the actual reason is the honest
+ * alternative until the topology can be passed through.
+ *
+ * @param config the controller configuration
+ * @returns a human-readable reason when the configuration cannot be supported, else `null`
+ */
+export function unsupportedPythonDbConfig(config: ioBroker.IoBrokerJson): string | null {
+    for (const section of ['states', 'objects'] as const) {
+        if (Array.isArray(config[section]?.host)) {
+            return (
+                `the ${section} database is configured with multiple hosts (Redis Sentinel), ` +
+                'which cannot be passed to a Python adapter yet'
+            );
+        }
+    }
+
+    return null;
+}
+
+/** Sink that receives whole, non-empty log lines recovered from a Python adapter's output */
+export type PythonLogSink = (level: 'info' | 'error', line: string) => void;
+
+/**
+ * Build a consumer that turns a stream of chunks into whole log lines
+ *
+ * Chunks are not lines. A read can end in the middle of one, so the incomplete tail is held back
+ * until the rest arrives -- otherwise a traceback arrives torn across two log entries at exactly
+ * the moment someone is trying to read it. Empty lines are dropped and trailing whitespace
+ * (including the `\r` of Windows line endings) is removed.
+ *
+ * @param emit called once per recovered line
+ */
+export function createLineSplitter(emit: (line: string) => void): {
+    onData: (data: unknown) => void;
+    flush: () => void;
+} {
+    let pending = '';
+
+    const emitLine = (line: string): void => {
+        if (line.trim()) {
+            emit(line.trimEnd());
+        }
+    };
+
+    return {
+        onData(data: unknown): void {
+            pending += String(data);
+            const lines = pending.split('\n');
+            // The last element is whatever came after the final newline: either empty, or the
+            // start of a line still being written.
+            pending = lines.pop() ?? '';
+
+            for (const line of lines) {
+                emitLine(line);
+            }
+
+            // An adapter writing without newlines would otherwise grow this without limit.
+            if (pending.length > 8_192) {
+                emitLine(pending);
+                pending = '';
+            }
+        },
+        flush(): void {
+            emitLine(pending);
+            pending = '';
+        },
+    };
+}
+
+/**
+ * Forward both output streams of a Python adapter to a log sink
+ *
+ * A Node adapter logs exclusively through the states database and its output is discarded. Python
+ * does not: `print()` and libraries logging to stdout go one way, tracebacks and the `logging`
+ * module's default handler go to stderr. Both would be lost otherwise, and a traceback is the most
+ * useful thing an adapter ever produces.
+ *
+ * @param child the started process
+ * @param log receives every recovered line with its severity
+ */
+export function forwardPythonOutput(child: ChildProcess, log: PythonLogSink): void {
+    const out = createLineSplitter(line => log('info', line));
+    const err = createLineSplitter(line => log('error', line));
+
+    child.stdout?.on('data', out.onData);
+    child.stderr?.on('data', err.onData);
+
+    // Whatever was still buffered belongs in the log too -- a crash often ends without a trailing
+    // newline, and that last line is the interesting one.
+    child.on('close', () => {
+        out.flush();
+        err.flush();
+    });
 }
