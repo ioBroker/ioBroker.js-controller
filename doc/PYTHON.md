@@ -1,6 +1,6 @@
 # Adapters written in Python
 
-Up from js-controller 7.3, an adapter may be written in Python instead of JavaScript. This document
+Up from js-controller 8, an adapter may be written in Python instead of JavaScript. This document
 is the contract between the three parties involved. It describes what the controller does and what
 it expects — everything an SDK or the `py-controller` adapter builds on should be checked against
 this page, not against the controller sources.
