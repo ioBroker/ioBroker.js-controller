@@ -6036,11 +6036,12 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
 
     const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
 
-    const state = await states!.getState(`${adapterInstance}.info.connection`);
+    const connectionStateId = `${adapterInstance}.info.connection`;
+    const state = await states!.getState(connectionStateId);
 
     if (state?.val === true) {
         outputCount++;
-        await states!.setState(adapterInstance, { val: false, ack: true, from: hostObjectPrefix });
+        await states!.setState(connectionStateId, { val: false, ack: true, from: hostObjectPrefix });
     }
 }
 
