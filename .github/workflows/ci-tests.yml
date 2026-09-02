@@ -113,6 +113,9 @@ jobs:
       - name: Execute Type Tests
         run: npm run test-types
 
+      - name: Execute Adapter Tests
+        run: npm run test-adapter
+
       - name: Execute Standard Tests
         run: npm test
 
