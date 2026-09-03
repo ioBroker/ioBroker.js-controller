@@ -6,7 +6,7 @@
 
 # Interface: ObjectAccess
 
-Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:14](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L14)
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:14](https://github.com/ioBroker/ioBroker.js-controller/blob/2e634e3875a421a903d87f899728bd9369523ca6/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L14)
 
 Reads the objects matching a pattern, used to discover alias objects during state subscription.
 
@@ -16,7 +16,7 @@ Reads the objects matching a pattern, used to discover alias objects during stat
 
 > **getForeignStateObjects**(`pattern`, `options?`): `Promise`\<`Record`\<`string`, [`AnyObject`](../type-aliases/AnyObject.md)\>\>
 
-Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:20](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L20)
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:20](https://github.com/ioBroker/ioBroker.js-controller/blob/2e634e3875a421a903d87f899728bd9369523ca6/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L20)
 
 Objects matching `pattern`, keyed by id. Bound to the legacy `getForeignObjects(pattern, null, null, options)`
 call, whose `null` type/enums args clobber `options` — so no type filter and no user-ACL are applied;
