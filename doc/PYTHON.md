@@ -26,7 +26,8 @@ In `io-package.json`:
     "common": {
         "platform": "Python",
         "mode": "daemon",
-        "main": "python/pyexample/__main__.py"
+        "main": "python/pyexample/__main__.py",
+        "dependencies": [{ "py-controller": ">=0.1.0" }]
     }
 }
 ```
@@ -39,6 +40,12 @@ In `io-package.json`:
   module with `python -m <module>` from the adapter's `python/` directory — started by module
   rather than by file path, because a file started directly is not part of a package and its
   relative imports fail. Nested packages (`python/a/b/__main__.py`) are rejected.
+- **`common.dependencies` must list `py-controller`.** Every Python adapter needs it, and it is a
+  hard requirement rather than a convenience: the controller only ever *checks* for an environment,
+  so without py-controller none is ever built and the instance is never started — it just logs
+  `Python environment is missing … Install the "py-controller" adapter`. It belongs in
+  `dependencies` (same host) and not in `globalDependencies` (any host), because the environment is
+  host-local state, exactly like `node_modules`. See [The environment on disk](#the-environment-on-disk).
 - Adapters are still distributed as npm packages (`iobroker.<name>`) and installed the usual way;
   the `python/` directory simply ships inside the package.
 
