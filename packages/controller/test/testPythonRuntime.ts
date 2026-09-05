@@ -123,6 +123,57 @@ describe('pythonRuntime', () => {
             assert.match(env.reason!, /is missing/);
             assert.ok(env.reason!.includes(env.interpreter));
         });
+
+        describe('an environment that is mid-rebuild', () => {
+            // Faked on disk rather than built for real: what is under test is the decision, and a
+            // real rebuild would need uv, a network and thirty seconds.
+            const adapter = 'python-rebuild-fixture';
+            const interpreter = getPythonInterpreter(adapter);
+            const envDir = path.join(interpreter, '..', '..', '..');
+            const stampFile = path.join(envDir, 'environment.json');
+
+            const writeStamp = async (stamp: Record<string, unknown>): Promise<void> => {
+                await fs.ensureDir(path.dirname(interpreter));
+                await fs.writeFile(interpreter, '');
+                await fs.writeJson(stampFile, stamp);
+            };
+
+            afterEach(async () => {
+                await fs.remove(envDir);
+            });
+
+            it('is refused while `building` is set', async () => {
+                // `uv venv --clear` puts the interpreter back in its first moment and fills
+                // site-packages afterwards, so for the seconds in between the environment looks
+                // complete and holds nothing. Starting an adapter there fails on an import of a
+                // package that was present a second earlier -- a symptom that points nowhere.
+                await writeStamp({ adapterVersion: '1.0.0', building: true });
+
+                const env = await checkPythonEnvironment(adapter, '1.0.0');
+
+                assert.equal(env.ready, false, 'the version matches, so only the flag can stop it');
+                assert.equal(env.stale, true);
+                assert.match(env.reason!, /being rebuilt/);
+            });
+
+            it('stays refused after an interrupted build, not just during one', async () => {
+                // The flag is written before the venv is touched and cleared only on success, so a
+                // build that was killed leaves it set. That is the point: an environment nobody
+                // finished is one nothing should start from until it has been rebuilt.
+                await writeStamp({ adapterVersion: '1.0.0', building: true, builtAt: '2020-01-01T00:00:00.000Z' });
+
+                assert.equal((await checkPythonEnvironment(adapter, '1.0.0')).ready, false);
+            });
+
+            it('is accepted once the flag is gone', async () => {
+                await writeStamp({ adapterVersion: '1.0.0' });
+
+                const env = await checkPythonEnvironment(adapter, '1.0.0');
+
+                assert.equal(env.ready, true);
+                assert.equal(env.reason, undefined);
+            });
+        });
     });
 
     describe('buildPythonEnv', () => {

@@ -47,6 +47,20 @@ export interface PythonEnvironmentStamp {
     builtAt?: string;
     /** Version of the interpreter in the environment */
     pythonVersion?: string;
+    /**
+     * Set while py-controller is replacing this environment, cleared when it succeeds.
+     *
+     * A rebuild empties the venv and fills it again. In between, the interpreter is already back
+     * -- `uv venv --clear` recreates it in the first moment -- while `site-packages` is still
+     * empty, and the stamp from the previous build still names the right version. Without this
+     * flag both checks below pass and the adapter is started against an environment that has
+     * nothing in it, which it reports as `ModuleNotFoundError` naming a package that was there a
+     * second ago.
+     *
+     * It stays set if the rebuild is interrupted, which is the honest outcome: an environment
+     * nobody finished building is one nothing should be started from until it is rebuilt.
+     */
+    building?: boolean;
 }
 
 /** Result of checking an adapter's Python environment */
@@ -142,6 +156,18 @@ export async function checkPythonEnvironment(
         // would break working installations for no gain, so they are accepted and left to
         // py-controller to bring up to date.
         return { ready: true, interpreter, envDir };
+    }
+
+    if (stamp.building) {
+        return {
+            ready: false,
+            interpreter,
+            envDir,
+            stale: true,
+            reason:
+                'Python environment is being rebuilt by the "py-controller" adapter. ' +
+                'The instance starts by itself once that has finished.',
+        };
     }
 
     if (stamp.adapterVersion !== expectedVersion) {
