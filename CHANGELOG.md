@@ -9,6 +9,8 @@
 * (@krobipd) Fixed the automatic ENOTEMPTY recovery not removing the blocking npm temp directory on npm >= 10.6.0
 * (@krobipd) Fixed an occasional "Connection is closed" warning logged when a fast schedule/once adapter shuts down
 * (@krobipd) Fixed `info.connection` not being reset when an instance goes offline, which also left a stray state named after the instance namespace
+* (@GermanBluefox) Fixed a command handler throwing in the built-in database servers escaping as an uncaught exception instead of failing that one command
+* (@GermanBluefox) Fixed a PUBLISH with a payload that is not valid JSON costing the client its connection to the built-in databases
 
 ## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling
