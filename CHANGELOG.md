@@ -11,6 +11,7 @@
 * (@krobipd) Fixed `info.connection` not being reset when an instance goes offline, which also left a stray state named after the instance namespace
 * (@GermanBluefox) Fixed a command handler throwing in the built-in database servers escaping as an uncaught exception instead of failing that one command
 * (@GermanBluefox) Fixed a PUBLISH with a payload that is not valid JSON costing the client its connection to the built-in databases
+* (@GermanBluefox) Fixed `findObject` crashing when called without options and the search reached an object whose name is translated
 
 ## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling
