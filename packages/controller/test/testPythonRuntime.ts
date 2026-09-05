@@ -14,6 +14,7 @@ import {
     spawnPythonAdapter,
     unsupportedPythonDbConfig,
 } from '../src/lib/pythonRuntime.js';
+import { getSupportedFeatures } from '@iobroker/js-controller-common';
 
 describe('pythonRuntime', () => {
     describe('isPythonAdapter', () => {
@@ -404,6 +405,35 @@ describe('pythonRuntime', () => {
             assert.ok(info.includes('inst=7'), `IOB_INSTANCE not passed through: ${JSON.stringify(info)}`);
 
             assert.deepEqual(error, ['boom', 'tail without newline']);
+        });
+    });
+
+    describe('the CONTROLLER_PYTHON_ADAPTERS feature flag', () => {
+        // What a UI asks before it offers the platform: admin reaches this through
+        // `socket.checkFeatureSupported`, which the admin adapter answers out of
+        // `adapter.supportsFeature` -- and that is this list.
+        it('is announced, so a UI can ask instead of guessing', () => {
+            assert.ok(
+                getSupportedFeatures().includes('CONTROLLER_PYTHON_ADAPTERS'),
+                'a controller that starts Python adapters has to say so',
+            );
+        });
+
+        it('is announced on every platform', () => {
+            // Unlike CONTROLLER_UI_UPGRADE, this one is not filtered by the host it runs
+            // on: it describes what the controller implements, not what is installed
+            // beside it. A Windows host without Python still understands the platform --
+            // whether an environment exists is py-controller's answer, not this flag's.
+            // The suite runs on all three operating systems, so this asserts it there.
+            assert.ok(getSupportedFeatures().includes('CONTROLLER_PYTHON_ADAPTERS'));
+        });
+
+        it('promises exactly what the start path recognises', () => {
+            // The flag and the platform check are two halves of one statement. Announcing
+            // the feature while the start path no longer recognises the platform would be
+            // a promise nothing keeps, and the failure would surface as an instance that
+            // silently starts on the Node path.
+            assert.equal(isPythonAdapter({ platform: 'Python' }), true);
         });
     });
 });

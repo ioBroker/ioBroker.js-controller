@@ -17,6 +17,39 @@ this page, not against the controller sources.
 - **The Python SDK** (used by the adapter code itself) talks to the states and objects databases
   directly and implements the adapter-side conventions described below.
 
+## Asking whether the controller can do this
+
+The capability is announced as the feature flag **`CONTROLLER_PYTHON_ADAPTERS`**, so an adapter or
+a UI can find out before it offers something that will not work:
+
+```js
+if (adapter.supportsFeature('CONTROLLER_PYTHON_ADAPTERS')) {
+    // this controller understands common.platform "Python"
+}
+```
+
+From a browser — admin and anything else built on `@iobroker/socket-client` — the same question is
+`await socket.checkFeatureSupported('CONTROLLER_PYTHON_ADAPTERS')`, and from another host
+`sendToHost(host, 'checkFeatureSupported', 'CONTROLLER_PYTHON_ADAPTERS')`.
+
+What the flag says is that **this controller implements the Python start path** described here: it
+recognises the platform, checks the environment, spawns the interpreter and supervises the process.
+It is a statement about the controller, in the same sense as every other feature flag, and it is
+deliberately not a statement about the host:
+
+- It does not promise that Python is installed. That is per-host, changes without the controller
+  being restarted, and is answered by py-controller.
+- It does not promise that an environment has been built for a given adapter. That is per-adapter,
+  and py-controller reports it — an instance whose environment is missing is refused with a message
+  saying so.
+- It does not promise that the database configuration allows it. A Redis Sentinel setup cannot be
+  passed to a Python adapter yet (see [How an instance is started](#how-an-instance-is-started)),
+  and such an instance is refused with that reason at start.
+
+So: use the flag to decide whether Python adapters are a thing on this system at all — whether to
+show them in a list, whether to offer the platform in a wizard. Use the objects and states
+py-controller maintains to decide whether a particular instance can run right now.
+
 ## Declaring a Python adapter
 
 In `io-package.json`:
