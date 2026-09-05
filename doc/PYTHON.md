@@ -46,6 +46,24 @@ In `io-package.json`:
   `Python environment is missing … Install the "py-controller" adapter`. It belongs in
   `dependencies` (same host) and not in `globalDependencies` (any host), because the environment is
   host-local state, exactly like `node_modules`. See [The environment on disk](#the-environment-on-disk).
+- **All Python code, and `pyproject.toml` with it, live in the adapter's `python/` directory.** That
+  directory is the Python package: py-controller builds the environment by running its installer
+  with `python/` as the working directory and hashes `python/pyproject.toml` to notice dependency
+  changes. A manifest in the adapter's root is not found, and the environment build fails before it
+  starts. The layout is therefore:
+
+  ```text
+  iobroker.<name>/
+  ├── io-package.json
+  ├── package.json
+  └── python/
+      ├── pyproject.toml       # dependencies and build backend
+      └── <module>/
+          └── __main__.py      # common.main points here
+  ```
+
+  `pyproject.toml` must declare a `[build-system]`. Without one the installer falls back to
+  setuptools' legacy auto-discovery, which decides what the package contains by guessing.
 - Adapters are still distributed as npm packages (`iobroker.<name>`) and installed the usual way;
   the `python/` directory simply ships inside the package.
 
@@ -86,8 +104,8 @@ directory:
 ```
 
 - `adapterVersion` (required) — `common.version` of the adapter the environment was built for.
-- `dependencyHash` (optional) — hash over the adapter's `pyproject.toml`, so dependency edits
-  without a version bump are noticed too.
+- `dependencyHash` (optional) — hash over `python/pyproject.toml`, so dependency edits without a
+  version bump are noticed too.
 - `builtAt`, `pythonVersion` (optional) — informational.
 
 Before starting an instance, the controller checks that the interpreter exists and that
