@@ -27,8 +27,10 @@ import fs from 'fs-extra';
 import path from 'node:path';
 import { tools } from '@iobroker/js-controller-common-db';
 
-/** Value of `common.platform` that marks an adapter as Python. */
-export const PYTHON_PLATFORM = 'Python';
+// Both live in common-db rather than here. `getInstanceIndicatorObjects` needs the same test --
+// to leave out the two states that only mean something on V8 -- and a second spelling of "is this
+// adapter Python" in a second package is exactly the kind of thing that drifts apart.
+export { PYTHON_PLATFORM, isPythonAdapter } from '@iobroker/js-controller-common-db/tools';
 
 /**
  * Name of the file `py-controller` writes next to a virtual environment once it has built it.
@@ -83,20 +85,6 @@ export interface PythonEntryPoint {
     module: string;
     /** Working directory the module is started from */
     cwd: string;
-}
-
-/**
- * Check whether an adapter is written in Python
- *
- * The comparison ignores case on purpose. `platform` is hand-written in every io-package.json and
- * already carries the wrong case in the wild -- adapters shipping `javascript/Node.js` instead of
- * `Javascript/Node.js` exist today. Refusing to start an adapter over a lower-case "python" would
- * be a needlessly sharp edge on a field nobody validates.
- *
- * @param common the `common` section of the instance or adapter object
- */
-export function isPythonAdapter(common?: { platform?: string } | null): boolean {
-    return common?.platform?.toLowerCase() === PYTHON_PLATFORM.toLowerCase();
 }
 
 /**

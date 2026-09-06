@@ -16,6 +16,7 @@ import {
     FORWARDED_PYTHON_RECORD,
 } from '../src/lib/pythonRuntime.js';
 import { getSupportedFeatures } from '@iobroker/js-controller-common';
+import { getInstanceIndicatorObjects } from '@iobroker/js-controller-common-db/tools';
 
 describe('pythonRuntime', () => {
     describe('isPythonAdapter', () => {
@@ -406,6 +407,51 @@ describe('pythonRuntime', () => {
             assert.ok(info.includes('inst=7'), `IOB_INSTANCE not passed through: ${JSON.stringify(info)}`);
 
             assert.deepEqual(error, ['boom', 'tail without newline']);
+        });
+    });
+
+    describe('the states an instance gets when it is created', () => {
+        const objects = (platform: string): string[] =>
+            getInstanceIndicatorObjects('demo.0', { platform } as ioBroker.AdapterCommon).map(obj =>
+                obj._id.replace('system.adapter.demo.0.', ''),
+            );
+
+        it('leaves out the V8 heap states for a Python instance', () => {
+            // Two rows that would sit at (null) for the life of the installation: CPython's
+            // allocator publishes no total, and the one figure that could be measured costs
+            // several times the memory it reports. Empty reads as broken, so they are not created.
+            const python = objects('Python');
+
+            assert.equal(python.includes('memHeapTotal'), false);
+            assert.equal(python.includes('memHeapUsed'), false);
+        });
+
+        it('keeps everything the Python SDK does report', () => {
+            const python = objects('Python');
+
+            for (const name of ['alive', 'connected', 'cpu', 'cputime', 'memRss', 'uptime', 'eventLoopLag']) {
+                assert.ok(python.includes(name), `${name} is missing`);
+            }
+        });
+
+        it('changes nothing for a Node adapter', () => {
+            const node = objects('Javascript/Node.js');
+
+            assert.ok(node.includes('memHeapTotal'));
+            assert.ok(node.includes('memHeapUsed'));
+        });
+
+        it('does not call the lag Node.js when asyncio measured it', () => {
+            const lag = (platform: string): ioBroker.StateCommon =>
+                getInstanceIndicatorObjects('demo.0', { platform } as ioBroker.AdapterCommon).find(obj =>
+                    obj._id.endsWith('.eventLoopLag'),
+                )!.common;
+
+            // `desc` and `name` are declared as translatable; these two are written as plain
+            // strings, which is what the assertion below relies on.
+            assert.match(lag('Python').desc as string, /asyncio/);
+            assert.doesNotMatch(lag('Python').name as string, /Node\.js/);
+            assert.match(lag('Javascript/Node.js').desc as string, /Node\.js/);
         });
     });
 

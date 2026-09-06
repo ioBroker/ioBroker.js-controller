@@ -4233,6 +4233,25 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             return;
         }
 
+        // Both of these end up in `execArgv`, which is handed to Node and not to an interpreter
+        // that would not know what to do with it. Admin offers the memory limit for every instance
+        // and has no way to know it does nothing here, so the log is where a user finds out --
+        // silently ignoring a limit somebody set against an adapter they think is leaking is the
+        // kind of thing that costs an evening.
+        if (instance.common.memoryLimitMB && Math.round(instance.common.memoryLimitMB)) {
+            logger.warn(
+                `${hostLogPrefix} startInstance ${name}.${instanceNo}: the memory limit ` +
+                    `(${Math.round(instance.common.memoryLimitMB)} MB) applies to Node.js adapters only and is ignored here`,
+            );
+        }
+
+        if (Array.isArray(instance.common.nodeProcessParams) && instance.common.nodeProcessParams.length) {
+            logger.warn(
+                `${hostLogPrefix} startInstance ${name}.${instanceNo}: "nodeProcessParams" are Node.js ` +
+                    'arguments and are ignored for a Python adapter',
+            );
+        }
+
         // A Python adapter needs its virtual environment before it can be started. Building that
         // environment is the job of the "py-controller" adapter, so all this side does is refuse to
         // start and say why -- py-controller watches for exactly this and triggers a restart once
