@@ -55,6 +55,7 @@ import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
 import {
     buildPythonEnv,
     checkPythonEnvironment,
+    FORWARDED_PYTHON_RECORD,
     forwardPythonOutput,
     isPythonAdapter,
     spawnPythonAdapter,
@@ -5751,6 +5752,14 @@ export async function init(compactGroupId?: number): Promise<void> {
     // @ts-expect-error types do not seem to be perfect here
     const ts = logger.transports.find(t => t.name === 'NT');
     ts!.on('logged', info => {
+        // A record a Python adapter already pushed itself, captured here from its stdout. It still
+        // belongs in the host's log file, which is why it was logged at all -- but pushing it to
+        // the transporters as well would show every Python line twice in admin, once attributed to
+        // the instance and once to this host.
+        if (typeof info.message === 'string' && FORWARDED_PYTHON_RECORD.test(info.message)) {
+            return;
+        }
+
         info.from = hostLogPrefix;
         for (const log of logList) {
             states!.pushLog(log, info).catch(e => logger.error(`${hostLogPrefix} Cannot push log: ${e.message}`));

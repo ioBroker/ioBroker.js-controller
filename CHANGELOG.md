@@ -13,6 +13,7 @@
 * (@GermanBluefox) Fixed a PUBLISH with a payload that is not valid JSON costing the client its connection to the built-in databases
 * (@GermanBluefox) Fixed `findObject` crashing when called without options and the search reached an object whose name is translated
 * (@GermanBluefox) Fixed a Python instance being started while its environment was being rebuilt, which failed on an import of a package that was there a moment earlier
+* (@GermanBluefox) Fixed every log line of a Python adapter reaching the log transporters twice: the adapter pushes its own records since SDK 0.8.0, and the copy captured from its stdout is now written to the host log only
 
 ## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling

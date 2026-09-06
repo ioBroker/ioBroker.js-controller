@@ -366,6 +366,26 @@ export function unsupportedPythonDbConfig(config: ioBroker.IoBrokerJson): string
 export type PythonLogSink = (level: 'info' | 'error', line: string) => void;
 
 /**
+ * A forwarded line that the adapter has already sent to the log transporters itself.
+ *
+ * Every line a Python adapter writes is captured here and re-logged under the host, which is what
+ * puts it in the host's log file and what surfaces a crash. Since SDK 0.8.0 the adapter *also*
+ * pushes its own records to whoever asked for the log, with the level and timestamp the record
+ * actually had -- the route that lets admin attribute the line to the instance instead of to the
+ * host. Both routes end up in front of the same user, so the host copy of such a record must not
+ * be pushed a second time.
+ *
+ * Recognised by the shape the SDK's formatter writes, inside the prefix this controller adds:
+ *
+ *     host.<name> system.adapter.<ns> 2026-09-06 07:12:03,001 INFO python.0 Adapter started
+ *
+ * Anything that does not match keeps the old behaviour and is pushed under the host: a traceback
+ * frame, a bare `print()`, or the output of a library that logs its own way. Those have no other
+ * route, so the failure mode of this test is a duplicate rather than a line nobody ever sees.
+ */
+export const FORWARDED_PYTHON_RECORD = / system\.adapter\.[^\s]+ \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3} [A-Z]+\s/;
+
+/**
  * Build a consumer that turns a stream of chunks into whole log lines
  *
  * Chunks are not lines. A read can end in the middle of one, so the incomplete tail is held back

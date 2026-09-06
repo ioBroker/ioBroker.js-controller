@@ -13,6 +13,7 @@ import {
     resolvePythonEntry,
     spawnPythonAdapter,
     unsupportedPythonDbConfig,
+    FORWARDED_PYTHON_RECORD,
 } from '../src/lib/pythonRuntime.js';
 import { getSupportedFeatures } from '@iobroker/js-controller-common';
 
@@ -405,6 +406,46 @@ describe('pythonRuntime', () => {
             assert.ok(info.includes('inst=7'), `IOB_INSTANCE not passed through: ${JSON.stringify(info)}`);
 
             assert.deepEqual(error, ['boom', 'tail without newline']);
+        });
+    });
+
+    describe('a forwarded record the adapter already pushed', () => {
+        // Both routes end at the same user. The adapter pushes its own records to whoever asked
+        // for the log, with the level and timestamp they actually had; this controller captures
+        // the same lines from stdout for the host's log file. Without telling the two apart, admin
+        // shows every Python line twice.
+        const forwarded = (line: string): string => `host.testhost system.adapter.python.0 ${line}`;
+
+        it('is recognised by the shape the SDK writes', () => {
+            assert.ok(
+                FORWARDED_PYTHON_RECORD.test(
+                    forwarded('2026-09-06 07:12:03,001 INFO python.0 Adapter python.0 started'),
+                ),
+            );
+            assert.ok(
+                FORWARDED_PYTHON_RECORD.test(forwarded('2026-09-06 07:12:03,001 ERROR python.0 the device refused')),
+            );
+        });
+
+        it('leaves everything the adapter did not push', () => {
+            // These have no other route to a user, so they must keep being pushed under the host.
+            // The failure mode here is a duplicate line; the failure mode of the opposite mistake
+            // is a traceback nobody ever sees.
+            assert.equal(FORWARDED_PYTHON_RECORD.test(forwarded('  File "main.py", line 5')), false);
+            assert.equal(FORWARDED_PYTHON_RECORD.test(forwarded('ValueError: boom')), false);
+            assert.equal(FORWARDED_PYTHON_RECORD.test(forwarded('a bare print()')), false);
+        });
+
+        it('leaves the host lines that mention an instance', () => {
+            // The controller says "system.adapter.x.0" in a great many of its own messages, and
+            // those are the log. Only the record header behind it makes a line the adapter's.
+            assert.equal(FORWARDED_PYTHON_RECORD.test('host.testhost instance system.adapter.python.0 started'), false);
+            assert.equal(
+                FORWARDED_PYTHON_RECORD.test(
+                    'host.testhost stopInstance system.adapter.python.0 (force=false, process=true)',
+                ),
+                false,
+            );
         });
     });
 
