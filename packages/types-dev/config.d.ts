@@ -182,6 +182,15 @@ export interface IoBJson {
         secure: boolean;
         password: string;
         persist: boolean;
+        /**
+         * Whether this host may be attached to a master over UDP 50005 while it does not belong to
+         * any system yet. Defaults to `true`, which is what lets a freshly installed host be
+         * attached from an existing system without a shell on it.
+         *
+         * Only relevant until the host belongs to a system: once it uses a remote database, the
+         * listener is not started anyway. Set it to `false` to switch the whole pairing path off.
+         */
+        pairing?: boolean;
     };
     /** Configuration of the objects database */
     objects: ObjectsDatabaseOptions;
