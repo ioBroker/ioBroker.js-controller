@@ -8,4 +8,4 @@
 
 > **Meta** = `` `${string}.${number}` `` \| \`$\{string\}.$\{"meta" \| "admin"\}\` \| `` `${string}.meta.${string}` `` \| `` `${string}.${number}.meta.${string}` ``
 
-Defined in: [types-dev/objects.d.ts:62](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/types-dev/objects.d.ts#L62)
+Defined in: [types-dev/objects.d.ts:62](https://github.com/ioBroker/ioBroker.js-controller/blob/2e634e3875a421a903d87f899728bd9369523ca6/packages/types-dev/objects.d.ts#L62)

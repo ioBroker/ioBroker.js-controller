@@ -6,7 +6,7 @@
 
 # Interface: ObjectACL
 
-Defined in: [types-dev/objects.d.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/types-dev/objects.d.ts#L25)
+Defined in: [types-dev/objects.d.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/2e634e3875a421a903d87f899728bd9369523ca6/packages/types-dev/objects.d.ts#L25)
 
 Defines access rights for a single object
 
@@ -20,7 +20,7 @@ Defines access rights for a single object
 
 > **object**: `number`
 
-Defined in: [types-dev/objects.d.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/types-dev/objects.d.ts#L31)
+Defined in: [types-dev/objects.d.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/2e634e3875a421a903d87f899728bd9369523ca6/packages/types-dev/objects.d.ts#L31)
 
 Linux-type permissions defining access to this object
 
@@ -30,7 +30,7 @@ Linux-type permissions defining access to this object
 
 > **owner**: `` `system.user.${string}` ``
 
-Defined in: [types-dev/objects.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/types-dev/objects.d.ts#L27)
+Defined in: [types-dev/objects.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/2e634e3875a421a903d87f899728bd9369523ca6/packages/types-dev/objects.d.ts#L27)
 
 Full name of the user who owns this object, e.g. "system.user.admin"
 
@@ -40,6 +40,6 @@ Full name of the user who owns this object, e.g. "system.user.admin"
 
 > **ownerGroup**: `` `system.group.${string}` ``
 
-Defined in: [types-dev/objects.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/f73c97291ecab11b4e7119c158d0ddbf508a91f5/packages/types-dev/objects.d.ts#L29)
+Defined in: [types-dev/objects.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/2e634e3875a421a903d87f899728bd9369523ca6/packages/types-dev/objects.d.ts#L29)
 
 Full name of the group who owns this object, e.g. "system.group.administrator"
