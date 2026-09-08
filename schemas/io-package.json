@@ -48,6 +48,45 @@
         ]
       }
     },
+    "isPythonPlatform": {
+      "properties": {
+        "platform": {
+          "const": "Python"
+        }
+      },
+      "required": [
+        "platform"
+      ]
+    },
+    "disallowCompact": {
+      "properties": {
+        "compact": {
+          "description": "Compact mode loads the adapter into a running Node.js process, which a Python adapter can never be part of. The flag is ignored by the controller, so it must not be set to true.",
+          "const": false
+        }
+      }
+    },
+    "pythonRestrictions": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/disallowCompact"
+        },
+        {
+          "$ref": "#/definitions/disallowNodeProcessParams"
+        },
+        {
+          "required": [
+            "main"
+          ],
+          "properties": {
+            "main": {
+              "description": "For Python adapters the main file must follow the layout \"python/<module>/__main__.py\"; the controller starts the module with \"python -m <module>\"",
+              "pattern": "^python[/\\\\][^/\\\\]+[/\\\\]__main__\\.py$"
+            }
+          }
+        }
+      ]
+    },
     "license": {
       "description": "The license this software is published under.",
       "type": "string",
@@ -787,10 +826,11 @@
           "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
         },
         "platform": {
-          "description": "Platform, normally Javascript/Node.js",
+          "description": "Language the adapter is written in. \"Javascript/Node.js\" is the default; \"Python\" makes the controller start the adapter from the virtual environment maintained by the py-controller adapter",
           "type": "string",
           "enum": [
-            "Javascript/Node.js"
+            "Javascript/Node.js",
+            "Python"
           ]
         },
         "title": {
@@ -1278,7 +1318,7 @@
           ]
         },
         "compact": {
-          "description": "If compact mode supported",
+          "description": "If compact mode supported. Not available for adapters with platform \"Python\"",
           "type": "boolean"
         },
         "dataFolder": {
@@ -1859,6 +1899,14 @@
           },
           "then": {
             "$ref": "#/definitions/disallowNodeProcessParams"
+          }
+        },
+        {
+          "if": {
+            "$ref": "#/definitions/isPythonPlatform"
+          },
+          "then": {
+            "$ref": "#/definitions/pythonRestrictions"
           }
         }
       ]
