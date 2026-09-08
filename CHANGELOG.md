@@ -16,6 +16,7 @@
 * (@GermanBluefox) A Python instance no longer gets the `memHeapTotal` and `memHeapUsed` states, which only exist on V8 and stayed empty, and its `eventLoopLag` is no longer described as a Node.js one
 * (@GermanBluefox) A memory limit or `nodeProcessParams` set on a Python instance is now reported as ignored instead of silently having no effect
 * (@GermanBluefox) Fixed every log line of a Python adapter reaching the log transporters twice: the adapter pushes its own records since SDK 0.8.0, and the copy captured from its stdout is now written to the host log only
+* (@GermanBluefox) A Python adapter can now be started on a Redis Sentinel installation: the sentinels are passed to it instead of a fixed address, and the SDK follows the master across a failover (needs the Python SDK 0.9.0)
 
 ## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling

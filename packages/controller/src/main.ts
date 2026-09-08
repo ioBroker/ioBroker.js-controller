@@ -4223,9 +4223,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             return;
         }
 
-        // Refuse configurations the environment variables cannot express (Redis Sentinel). A
-        // Python adapter started anyway would connect to a sentinel as if it were a plain Redis
-        // and fail looking like a network problem.
+        // Refuse configurations the environment variables cannot express (a unix socket). A
+        // Python adapter started anyway would open a TCP connection to port 0 and fail looking
+        // like a network problem.
         const unsupportedDb = unsupportedPythonDbConfig(config);
 
         if (unsupportedDb) {

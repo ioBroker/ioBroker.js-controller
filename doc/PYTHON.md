@@ -42,9 +42,10 @@ deliberately not a statement about the host:
 - It does not promise that an environment has been built for a given adapter. That is per-adapter,
   and py-controller reports it — an instance whose environment is missing is refused with a message
   saying so.
-- It does not promise that the database configuration allows it. A Redis Sentinel setup cannot be
-  passed to a Python adapter yet (see [How an instance is started](#how-an-instance-is-started)),
-  and such an instance is refused with that reason at start.
+- It does not promise that the database configuration allows it. A database on a unix socket
+  cannot be passed to a Python adapter yet (see
+  [How an instance is started](#how-an-instance-is-started)), and such an instance is refused with
+  that reason at start.
 
 So: use the flag to decide whether Python adapters are a thing on this system at all — whether to
 show them in a list, whether to offer the platform in a wizard. Use the objects and states
@@ -171,6 +172,8 @@ rebuilds it.
 | `IOB_STATES_TYPE` / `IOB_OBJECTS_TYPE` | `redis`, `file` or `jsonl` — for `file`/`jsonl` the controller itself serves the Redis protocol on the given port, so the SDK always speaks the Redis protocol |
 | `IOB_STATES_DB` / `IOB_OBJECTS_DB`     | Redis database number (only when configured)                                                                                                                   |
 | `IOB_STATES_PASS` / `IOB_OBJECTS_PASS` | Redis password (only when one is configured)                                                                                                                   |
+| `IOB_STATES_SENTINELS` / `IOB_OBJECTS_SENTINELS` | `host:port,host:port` — the sentinels, **instead of** `…_HOST` and `…_PORT` (only for a Sentinel setup). An IPv6 literal is bracketed: `[::1]:26379` |
+| `IOB_STATES_SENTINEL_NAME` / `IOB_OBJECTS_SENTINEL_NAME` | Name of the master group, `mymaster` unless configured otherwise                                                                  |
 | `IOB_INSTANCE`                         | Instance number, e.g. `0`                                                                                                                                      |
 | `IOB_LOGLEVEL`                         | Log level for this instance (only when configured)                                                                                                             |
 
@@ -178,9 +181,21 @@ The SDK must read these variables instead of parsing `iobroker.json`. Any `IOB_*
 inherited from the shell the controller was started in are cleared first — the adapter's
 connection is decided by the configuration alone.
 
-**Limitation:** a Redis **Sentinel** setup (multiple hosts) cannot be expressed through these
-variables yet. The controller refuses to start Python adapters on such installations with a clear
-log message rather than letting them connect to a sentinel as if it were a plain Redis.
+**Redis Sentinel.** A redundant installation has no fixed database address, so there is nothing
+to put in `…_HOST` and `…_PORT`: the sentinels are passed instead, and the SDK asks them for the
+master whenever it connects. A failover therefore reaches an adapter as a dropped connection — its
+pumps reopen it and replay their subscriptions, so nothing has to be restarted. Sentinels with
+their own password are not supported on either side; js-controller passes ioredis a `password` and
+no `sentinelPassword`.
+
+This needs the Python SDK **0.9.0**. An environment built with an older one has no idea what these
+two variables mean, finds no `…_PORT`, falls back to reading `iobroker.json` and fails there — so
+on a Sentinel installation such an environment has to be rebuilt once (py-controller,
+"Rebuild environments").
+
+**Limitation:** a database on a **unix socket** (port `0`, host being the socket's path) cannot be
+expressed through these variables yet. The controller refuses to start Python adapters on such
+installations with a clear log message rather than letting them open a TCP connection to port 0.
 
 All `common.mode` values except `extension` behave as for Node.js adapters: `daemon` is kept
 running, `schedule` is started by CRON, `once` runs on start and on configuration changes

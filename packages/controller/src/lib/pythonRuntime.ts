@@ -302,9 +302,33 @@ export function buildPythonEnv(
         }
 
         const prefix = `IOB_${section.toUpperCase()}_`;
-        env[`${prefix}HOST`] = Array.isArray(part.host) ? part.host[0] : part.host;
-        env[`${prefix}PORT`] = String(Array.isArray(part.port) ? part.port[0] : part.port);
         env[`${prefix}TYPE`] = part.type;
+
+        if (Array.isArray(part.host)) {
+            // A list of hosts is how ioBroker records a Redis Sentinel setup -- those entries are
+            // sentinels, not databases, and there is no fixed address to pass at all: the master
+            // is whatever they answer at the moment the adapter connects, and it changes on a
+            // failover. So the list goes across as a list, and the SDK asks them itself.
+            //
+            // No HOST and no PORT alongside it. Either would be an address something eventually
+            // connects to, and connecting to a sentinel as if it were the database fails looking
+            // like a network problem -- which is what this used to be refused for.
+            env[`${prefix}SENTINELS`] = part.host
+                .map((host, index) => {
+                    const port = Array.isArray(part.port) ? part.port[index] : part.port;
+
+                    // Brackets around an IPv6 literal, because its own colons are otherwise
+                    // indistinguishable from the separator before the port.
+                    return `${host.includes(':') ? `[${host}]` : host}:${port}`;
+                })
+                .join(',');
+            // ioredis defaults the master group to "mymaster" when none is configured, and the
+            // SDK has to end up asking for the same one.
+            env[`${prefix}SENTINEL_NAME`] = part.sentinelName || 'mymaster';
+        } else {
+            env[`${prefix}HOST`] = part.host;
+            env[`${prefix}PORT`] = String(Array.isArray(part.port) ? part.port[0] : part.port);
+        }
 
         const options = part.options as { db?: number; auth_pass?: string | null } | undefined;
 
@@ -328,20 +352,28 @@ export function buildPythonEnv(
 /**
  * Check whether the database configuration can be handed to a Python adapter at all
  *
- * {@link buildPythonEnv} expresses a connection as one host and one port. A Redis Sentinel setup
- * (recognisable by `host` being an array) cannot be flattened that way: the entries are sentinels,
- * not databases, and a client connecting to one of them as if it were a plain Redis fails in a way
- * that looks like a network problem. Refusing to start with the actual reason is the honest
- * alternative until the topology can be passed through.
+ * Only one topology is left that {@link buildPythonEnv} cannot express: a unix socket, which
+ * ioBroker configures as a port of 0 and a host that is the socket's path. Passed through as a
+ * host and a port, the adapter would open a TCP connection to port 0 and fail with something
+ * about a refused connection, saying nothing about the cause. Refusing with the actual reason is
+ * the honest alternative until the socket can be passed through.
+ *
+ * Redis Sentinel used to be refused here as well; since js-controller 8.0 the sentinels are
+ * passed to the adapter and the SDK discovers the master through them.
  *
  * @param config the controller configuration
  * @returns a human-readable reason when the configuration cannot be supported, else `null`
  */
 export function unsupportedPythonDbConfig(config: ioBroker.IoBrokerJson): string | null {
     for (const section of ['states', 'objects'] as const) {
-        if (Array.isArray(config[section]?.host)) {
+        const part = config[section];
+
+        // Not for a sentinel setup: there `port` is the sentinels' ports, and a 0 among them
+        // would mean something else entirely -- but ioBroker has no such configuration, because
+        // sentinels are reached over TCP by definition.
+        if (part && !Array.isArray(part.host) && Number(part.port) === 0) {
             return (
-                `the ${section} database is configured with multiple hosts (Redis Sentinel), ` +
+                `the ${section} database is configured on a unix socket (${String(part.host)}), ` +
                 'which cannot be passed to a Python adapter yet'
             );
         }

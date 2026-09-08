@@ -235,17 +235,84 @@ describe('pythonRuntime', () => {
             }
         });
 
-        it('takes the first entry when the host is configured redundantly', () => {
-            // Defensive only: startInstance refuses such configurations via
-            // unsupportedPythonDbConfig before this function is ever reached.
+        it('passes a Sentinel setup through as the list it is', () => {
+            const sentinel = {
+                states: {
+                    type: 'redis',
+                    host: ['10.0.0.1', '10.0.0.2', '10.0.0.3'],
+                    port: [26379, 26380, 26381],
+                    sentinelName: 'iob',
+                    options: { auth_pass: 'pw', db: 1 },
+                },
+            } as unknown as ioBroker.IoBrokerJson;
+
+            const env = buildPythonEnv(sentinel, 0);
+
+            assert.equal(env.IOB_STATES_SENTINELS, '10.0.0.1:26379,10.0.0.2:26380,10.0.0.3:26381');
+            assert.equal(env.IOB_STATES_SENTINEL_NAME, 'iob');
+            assert.equal(env.IOB_STATES_PASS, 'pw');
+            assert.equal(env.IOB_STATES_DB, '1');
+        });
+
+        it('leaves no host and no port beside the sentinels', () => {
+            // Whichever of the two it was given would be an address something eventually
+            // connects to -- and a sentinel answering as if it were the database is exactly the
+            // failure this used to be refused for.
             const sentinel = {
                 states: { type: 'redis', host: ['10.0.0.1', '10.0.0.2'], port: [26379, 26380] },
             } as unknown as ioBroker.IoBrokerJson;
 
             const env = buildPythonEnv(sentinel, 0);
 
-            assert.equal(env.IOB_STATES_HOST, '10.0.0.1');
-            assert.equal(env.IOB_STATES_PORT, '26379');
+            assert.equal(env.IOB_STATES_HOST, undefined);
+            assert.equal(env.IOB_STATES_PORT, undefined);
+        });
+
+        it('shares a single port across every sentinel', () => {
+            // The same reading as the Redis clients: one port applies to all hosts, a list is
+            // taken index for index.
+            const sentinel = {
+                objects: { type: 'redis', host: ['a', 'b'], port: 26379 },
+            } as unknown as ioBroker.IoBrokerJson;
+
+            assert.equal(buildPythonEnv(sentinel, 0).IOB_OBJECTS_SENTINELS, 'a:26379,b:26379');
+        });
+
+        it('brackets an IPv6 sentinel', () => {
+            // Without them the address's own colons cannot be told from the separator before the
+            // port, and the adapter would resolve a host that does not exist.
+            const sentinel = {
+                states: { type: 'redis', host: ['::1', 'fd00::2'], port: [26379, 26380] },
+            } as unknown as ioBroker.IoBrokerJson;
+
+            assert.equal(buildPythonEnv(sentinel, 0).IOB_STATES_SENTINELS, '[::1]:26379,[fd00::2]:26380');
+        });
+
+        it('names the master group ioredis would use when none is configured', () => {
+            // Both sides have to ask for the same group, and the JS clients fall back to this.
+            const sentinel = {
+                states: { type: 'redis', host: ['10.0.0.1'], port: 26379 },
+            } as unknown as ioBroker.IoBrokerJson;
+
+            assert.equal(buildPythonEnv(sentinel, 0).IOB_STATES_SENTINEL_NAME, 'mymaster');
+        });
+
+        it('clears an inherited sentinel list for a plain configuration', () => {
+            // Same reason as for HOST and PORT: a value left over from the controller's own
+            // environment would send the adapter to a different database entirely.
+            process.env.IOB_STATES_SENTINELS = '10.9.9.9:26379';
+            process.env.IOB_STATES_SENTINEL_NAME = 'leaked';
+
+            try {
+                const env = buildPythonEnv(config, 0);
+
+                assert.equal(env.IOB_STATES_SENTINELS, undefined);
+                assert.equal(env.IOB_STATES_SENTINEL_NAME, undefined);
+                assert.equal(env.IOB_STATES_HOST, '127.0.0.1');
+            } finally {
+                delete process.env.IOB_STATES_SENTINELS;
+                delete process.env.IOB_STATES_SENTINEL_NAME;
+            }
         });
     });
 
@@ -259,21 +326,33 @@ describe('pythonRuntime', () => {
             assert.equal(unsupportedPythonDbConfig(config), null);
         });
 
-        it('refuses a Sentinel configuration and names the section', () => {
-            // The host entries of a sentinel setup are sentinels, not databases. Flattened to
-            // host[0] a Python adapter would connect to one of them as if it were a plain Redis
-            // and fail looking like a network problem -- refusing with the reason is the honest
-            // alternative until the topology can be passed through.
+        it('accepts a Sentinel configuration', () => {
+            // Refused until js-controller 8.0, because the environment could express only one
+            // host and one port. It carries the sentinel list now, and the SDK discovers the
+            // master through it.
             const config = {
                 states: { type: 'redis', host: ['10.0.0.1', '10.0.0.2'], port: [26379, 26380] },
                 objects: { type: 'jsonl', host: '127.0.0.1', port: 9001 },
             } as unknown as ioBroker.IoBrokerJson;
 
+            assert.equal(unsupportedPythonDbConfig(config), null);
+        });
+
+        it('refuses a unix socket and names the section', () => {
+            // Port 0 means the host is the path of a socket. Handed over as a host and a port,
+            // the adapter would open a TCP connection to port 0 and report a refused connection,
+            // which says nothing about the cause.
+            const config = {
+                states: { type: 'jsonl', host: '127.0.0.1', port: 9000 },
+                objects: { type: 'redis', host: '/var/run/redis/redis.sock', port: 0 },
+            } as unknown as ioBroker.IoBrokerJson;
+
             const reason = unsupportedPythonDbConfig(config);
 
             assert.ok(reason);
-            assert.match(reason, /states/);
-            assert.match(reason, /Sentinel/);
+            assert.match(reason, /objects/);
+            assert.match(reason, /unix socket/);
+            assert.match(reason, /redis\.sock/);
         });
     });
 
