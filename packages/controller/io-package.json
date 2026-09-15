@@ -944,8 +944,42 @@
             "zh-cn": "系统上文件的访问权限存在问题。运行安装修复程序可以解决这些问题。或者，检查相关的目录和文件。"
           },
           "regex": [
-            "^Exception-Code: EACCESS",
+            "^Exception-Code: EACCES",
             "^Exception-Code: EPERM"
+          ],
+          "limit": 10
+        },
+        {
+          "category": "portConflicts",
+          "name": {
+            "en": "Port already in use",
+            "de": "Port bereits belegt",
+            "ru": "Порт уже занят",
+            "pt": "Porta já em uso",
+            "nl": "Poort al in gebruik",
+            "fr": "Port déjà utilisé",
+            "it": "Porta già in uso",
+            "es": "Puerto ya en uso",
+            "pl": "Port już zajęty",
+            "uk": "Порт уже зайнятий",
+            "zh-cn": "端口已被占用"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "An instance could not start because its port is already in use. The message names the holder of the port — another ioBroker instance or a program outside ioBroker — so you can stop it or change the port in the instance settings.",
+            "de": "Eine Instanz konnte nicht starten, weil ihr Port bereits belegt ist. Die Meldung nennt den Halter des Ports — eine andere ioBroker-Instanz oder ein Programm außerhalb von ioBroker —, damit Sie ihn beenden oder den Port in den Instanzeinstellungen ändern können.",
+            "ru": "Экземпляр не смог запуститься, потому что его порт уже занят. Сообщение называет владельца порта — другой экземпляр ioBroker или программу вне ioBroker, — чтобы вы могли остановить его или изменить порт в настройках экземпляра.",
+            "pt": "Uma instância não conseguiu iniciar porque a sua porta já está em uso. A mensagem indica quem ocupa a porta — outra instância do ioBroker ou um programa fora do ioBroker — para que possa pará-lo ou alterar a porta nas definições da instância.",
+            "nl": "Een instantie kon niet starten omdat de poort al in gebruik is. De melding noemt de houder van de poort — een andere ioBroker-instantie of een programma buiten ioBroker — zodat u die kunt stoppen of de poort in de instantie-instellingen kunt wijzigen.",
+            "fr": "Une instance n'a pas pu démarrer car son port est déjà utilisé. Le message indique qui occupe le port — une autre instance ioBroker ou un programme extérieur à ioBroker — afin que vous puissiez l'arrêter ou changer le port dans les paramètres de l'instance.",
+            "it": "Un'istanza non è riuscita ad avviarsi perché la sua porta è già in uso. Il messaggio indica chi occupa la porta — un'altra istanza ioBroker o un programma esterno a ioBroker — così da poterlo fermare o cambiare la porta nelle impostazioni dell'istanza.",
+            "es": "Una instancia no pudo iniciarse porque su puerto ya está en uso. El mensaje indica quién ocupa el puerto — otra instancia de ioBroker o un programa ajeno a ioBroker — para que pueda detenerlo o cambiar el puerto en la configuración de la instancia.",
+            "pl": "Instancja nie mogła się uruchomić, ponieważ jej port jest już zajęty. Komunikat wskazuje, kto zajmuje port — inna instancja ioBroker lub program spoza ioBroker — aby można było go zatrzymać lub zmienić port w ustawieniach instancji.",
+            "uk": "Екземпляр не зміг запуститися, бо його порт уже зайнятий. Повідомлення називає власника порту — інший екземпляр ioBroker або програму поза ioBroker, — щоб ви могли зупинити його або змінити порт у налаштуваннях екземпляра.",
+            "zh-cn": "某个实例无法启动，因为其端口已被占用。消息会指出占用该端口的进程——另一个 ioBroker 实例或 ioBroker 之外的程序——以便您停止它或在实例设置中更改端口。"
+          },
+          "regex": [
+            "^Exception-Code: EADDRINUSE"
           ],
           "limit": 10
         },

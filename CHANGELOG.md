@@ -9,6 +9,8 @@
 * (@krobipd) Fixed the automatic ENOTEMPTY recovery not removing the blocking npm temp directory on npm >= 10.6.0
 * (@krobipd) Fixed an occasional "Connection is closed" warning logged when a fast schedule/once adapter shuts down
 * (@krobipd) Fixed `info.connection` not being reset when an instance goes offline, which also left a stray state named after the instance namespace
+* (@krobipd) Added the holder of a port to the "address already in use" error: a second log line and the new `portConflicts` notification name the ioBroker instance or the program outside ioBroker that occupies the port, and `getPort` reports which port it skipped and why
+* (@krobipd) Fixed the `EACCES` notification category never matching (the regex looked for `EACCESS`) and a port probe below 1024 without rights now hints at `iobroker fix` instead of silently walking up to port 1024
 
 ## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling
