@@ -2031,9 +2031,16 @@ export class AdapterClass extends EventEmitter {
         try {
             server.listen({ port: options.port, host: options.host }, () => {
                 server.once('close', () => {
-                    // the probe is over — the Windows fallback in _exceptionHandler must not catch a later EADDRINUSE
-                    this.getPortRunning = null;
-                    return tools.maybeCallback(options.callback, options.port);
+                    const done = (port: number): void => {
+                        try {
+                            options.callback?.(port);
+                        } finally {
+                            // the probe is over — the Windows fallback in _exceptionHandler must not catch a
+                            // later EADDRINUSE (cleared after the callback, which may still read the probe)
+                            this.getPortRunning = null;
+                        }
+                    };
+                    return tools.maybeCallback(done, options.port);
                 });
                 server.close();
             });
