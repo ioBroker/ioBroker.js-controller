@@ -12966,26 +12966,27 @@ export class AdapterClass extends EventEmitter {
         }
 
         // initialize the system secret
-        await this.getSystemSecret();
+        const secret = await this.getSystemSecret();
 
         // Decrypt all attributes of encryptedNative
-        const promises = [];
         // @ts-expect-error
         if (Array.isArray(adapterConfig.encryptedNative)) {
             // @ts-expect-error
-            for (const attr of adapterConfig.encryptedNative) {
-                // we can only decrypt strings
-                // @ts-expect-error
-                if (typeof this.config[attr] === 'string') {
-                    promises.push(
-                        this.getEncryptedConfig(attr)
-                            .then(decryptedValue => setObjectAttribute(this.config, attr, decryptedValue))
-                            .catch(e =>
-                                this._logger.error(
-                                    `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`,
-                                ),
-                            ),
-                    );
+            for (const attr of adapterConfig.encryptedNative as string[]) {
+                try {
+                    const value = getObjectAttribute(this.config, attr);
+                    // we can only decrypt strings, a complex name like `devices.password` resolves to an array of them
+                    if (typeof value === 'string') {
+                        setObjectAttribute(this.config, attr, tools.decrypt(secret, value));
+                    } else if (attr.includes('.') && Array.isArray(value)) {
+                        setObjectAttribute(
+                            this.config,
+                            attr,
+                            value.map(item => (typeof item === 'string' ? tools.decrypt(secret, item) : item)),
+                        );
+                    }
+                } catch (e) {
+                    this._logger.error(`${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`);
                 }
             }
         } else {
@@ -12995,9 +12996,6 @@ export class AdapterClass extends EventEmitter {
                 this.SUPPORTED_FEATURES.splice(idx, 1);
             }
         }
-
-        // Wait till all attributes decrypted
-        await Promise.all(promises);
 
         if (!this.#states) {
             // if this.adapterStates was destroyed, we should not continue

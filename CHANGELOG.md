@@ -9,6 +9,7 @@
 * (@krobipd) Fixed the automatic ENOTEMPTY recovery not removing the blocking npm temp directory on npm >= 10.6.0
 * (@krobipd) Fixed an occasional "Connection is closed" warning logged when a fast schedule/once adapter shuts down
 * (@krobipd) Fixed `info.connection` not being reset when an instance goes offline, which also left a stray state named after the instance namespace
+* (@GermanBluefox) Fixed complex attribute names in `encryptedNative` (e.g. `devices.password`) not being decrypted when the adapter starts and documented complex attribute names for `encryptedNative` and `protectedNative`
 
 ## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling
