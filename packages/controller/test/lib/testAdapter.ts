@@ -31,7 +31,7 @@ declare global {
             password: string;
             secondPassword: string;
             complex: { password: string };
-            attrArray: { password?: string; value: string }[];
+            attrArray: { password?: string | null; value: string }[];
             paramString: string;
         }
     }
@@ -256,9 +256,10 @@ export default function testAdapter(options: Record<string, any>): void {
             assert.strictEqual(context.adapter.config.secondPassword, 'ii-€+winning*-³§"');
             // complex attribute names in encryptedNative are decrypted too, also inside arrays
             assert.strictEqual(context.adapter.config.complex.password, 'winning');
+            // an entry that is not a string stays as it is
             assert.deepStrictEqual(
                 context.adapter.config.attrArray.map(item => item.password),
-                ['winning', 'winning'],
+                ['winning', 'winning', null],
             );
             assert.strictEqual(context.adapter.config.attrArray[1].value, 'not encoded 2');
 

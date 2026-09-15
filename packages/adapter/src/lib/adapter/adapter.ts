@@ -33,7 +33,6 @@ import {
     listInstalledNodeModules,
     requestModuleNameByUrl,
     deleteObjectAttribute,
-    setObjectAttribute,
     getObjectAttribute,
 } from '@/lib/adapter/utils.js';
 
@@ -3167,12 +3166,8 @@ export class AdapterClass extends EventEmitter {
 
         if (Array.isArray(value)) {
             const secret = await this.getSystemSecret();
-            const result: string[] = [];
-            for (let i = 0; i < value.length; i++) {
-                if (typeof value[i] === 'string') {
-                    result[i] = tools.decrypt(secret, value[i]);
-                }
-            }
+            // entries that are not a string (e.g. an element without this attribute) are returned as they are
+            const result: string[] = value.map(item => (typeof item === 'string' ? tools.decrypt(secret, item) : item));
             return tools.maybeCallbackWithError(callback, null, result);
         } else if (typeof value === 'string') {
             const secret = await this.getSystemSecret();
@@ -12973,18 +12968,9 @@ export class AdapterClass extends EventEmitter {
         if (Array.isArray(adapterConfig.encryptedNative)) {
             // @ts-expect-error
             for (const attr of adapterConfig.encryptedNative as string[]) {
+                // one attribute at a time, so a value that cannot be decrypted does not stop the others
                 try {
-                    const value = getObjectAttribute(this.config, attr);
-                    // we can only decrypt strings, a complex name like `devices.password` resolves to an array of them
-                    if (typeof value === 'string') {
-                        setObjectAttribute(this.config, attr, tools.decrypt(secret, value));
-                    } else if (attr.includes('.') && Array.isArray(value)) {
-                        setObjectAttribute(
-                            this.config,
-                            attr,
-                            value.map(item => (typeof item === 'string' ? tools.decrypt(secret, item) : item)),
-                        );
-                    }
+                    decryptArray({ obj: this.config as Record<string, any>, secret, keys: [attr] });
                 } catch (e) {
                     this._logger.error(`${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`);
                 }
