@@ -19,6 +19,8 @@
 * (@GermanBluefox) Fixed `getEncryptedConfig` decrypting an attribute of `encryptedNative` a second time, which returned garbage because the adapter start already decrypted it
 * (@krobipd) Fixed an alias read/write function returning a boolean (e.g. "val < 20") being stored unconverted in a state declared as number
 * (@GermanBluefox) Added `common.adminTab.order` and `common.adminTab.icon` to the `io-package.json` schema: admin uses both, but an adapter setting them failed the schema validation
+* (@krobipd) Added the holder of a port to the "address already in use" error: a second log line and the new `portConflicts` notification name the ioBroker instance or the program outside ioBroker that occupies the port, and `getPort` reports which port it skipped and why
+* (@krobipd) Fixed the `EACCES` notification category never matching (the regex looked for `EACCESS`) and a port probe below 1024 without rights now hints at `iobroker fix` instead of silently walking up to port 1024
 
 ## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling

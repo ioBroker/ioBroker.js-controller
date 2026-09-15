@@ -94,6 +94,7 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 - [Notification System](#notification-system)
 - [Disk space warnings](#disk-space-warnings)
 - [Objects warn limit](#objects-warn-limit)
+- [Port conflicts](#port-conflicts)
 - [Controlling and monitoring of adapter processes](#controlling-and-monitoring-of-adapter-processes)
 - [Multihost](#multihost)
 - [TIERS: Start instances in an ordered manner](#tiers-start-instances-in-an-ordered-manner)
@@ -561,6 +562,12 @@ By default, this threshold is 5 % of disk space. Via the state `system.host.<hos
 
 The js-controller will generate a notification of in the scope `system` and the category `numberObjectsLimitExceeded` on warning level, if your number of objects for an adapter instance exceed a specified threshold.
 By default, this is set to `5000` objects. Via the state `system.adapter.<adapter>.<instance>.objectsWarnLimit` you can override this threshold to any positive number.
+
+### Port conflicts
+**Feature status:** New (next release after 7.2.2)
+
+When an instance cannot bind a TCP or UDP port (`EADDRINUSE`), the js-controller looks up who holds it and logs the holder in a second line after the error, e.g. `Port 1883 is already in use by ioBroker instance mqtt.0 (pid 15411) on this host – stop or reconfigure one of the two instances`, or names the program outside ioBroker that holds it. The lookup is read-only and platform specific: `/proc` on Linux (works without any additional binary, also in Docker), `lsof` on macOS, `netstat`/`tasklist` on Windows, `sockstat` on FreeBSD. The objects database adds every instance of the host that is configured for the port (`native.port`, marked when it carries no `native.bind`) and, for a port held by a compact mode process, the instances running inside it. A holder that runs as another user, or whose privileges were raised at start (the js-controller process itself on a host where `iobroker fix` gave Node.js the right to bind privileged ports), cannot be inspected and is reported as such — the sentence never claims more than the operating system shows.
+The error is additionally registered as a notification in the scope `system` and the category `portConflicts` on alert level. `adapter.getPort` logs which port it skipped and why, and a probe of a port below 1024 without the right to bind it hints at `iobroker fix` once instead of walking up to port 1024 in silence.
 
 ### Logging
 #### Log levels

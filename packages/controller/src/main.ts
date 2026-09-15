@@ -24,6 +24,7 @@ import {
     isInstalledFromNpm,
     type SupportedFeature,
     getSupportedFeatures,
+    portOwner,
 } from '@iobroker/js-controller-common';
 import {
     SYSTEM_ADAPTER_PREFIX,
@@ -5908,10 +5909,30 @@ export async function init(compactGroupId?: number): Promise<void> {
         }
         uncaughtExceptionCount++;
         if (typeof err === 'object') {
-            // @ts-expect-error should be correct
-            if (err.errno === 'EADDRINUSE') {
+            // `errno` is a negative number on every supported Node.js — the string lives in `code`
+            const { code, port, address, syscall } = err as NodeJS.ErrnoException & {
+                port?: unknown;
+                address?: unknown;
+            };
+            if (code === 'EADDRINUSE') {
                 logger.error(`${hostLogPrefix} Another instance is running or some application uses port!`);
                 logger.error(`${hostLogPrefix} uncaught exception: ${err.message}`);
+                if (typeof port === 'number' && port) {
+                    // best effort: name the holder if the lookup finishes before the host is down
+                    void portOwner
+                        .resolvePortOwners({
+                            port,
+                            address: typeof address === 'string' ? address : undefined,
+                            protocol: syscall === 'bind' ? 'udp' : 'tcp',
+                        })
+                        .then(owners => {
+                            const text = portOwner.describePortConflict({ port, owners });
+                            if (text) {
+                                logger.error(`${hostLogPrefix} ${text}`);
+                            }
+                        })
+                        .catch(() => undefined);
+                }
             } else {
                 logger.error(`${hostLogPrefix} uncaught exception: ${err.message}`);
                 logger.error(`${hostLogPrefix} ${err.stack}`);
