@@ -961,6 +961,8 @@ declare global {
             }[];
             /** Global saved expert mode for admin */
             expertMode?: boolean;
+            /** The "Did you know ...?" tips of the admin are not shown when it is opened */
+            tipsDisabled?: boolean;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
