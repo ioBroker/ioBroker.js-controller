@@ -660,7 +660,7 @@ declare global {
             /** Settings for custom Admin Tabs */
             adminTab?: {
                 name?: StringOrTranslated;
-                /** Base 64 icon for the tab */
+                /** Icon for the tab: a file name relative to the "admin" folder, a URL or a base64 data URL. If not set, the adapter icon is shown */
                 icon?: string;
                 /** If true, the Tab is not reloaded when the configuration changes */
                 ignoreConfigUpdate?: boolean;
@@ -668,7 +668,7 @@ declare global {
                 link?: string;
                 /** If true, only one instance of this tab will be created for all instances */
                 singleton?: boolean;
-                /** Order number in admin tabs */
+                /** Position in the admin menu: the built-in tabs use 1 to 120, a tab without order gets 200. 0 counts as not set. Once the user has sorted the menu, the stored order wins */
                 order?: number;
                 /**
                  * If the page sends an 'iobLoaded' event:
