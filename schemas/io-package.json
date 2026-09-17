@@ -1219,6 +1219,10 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "icon": {
+              "description": "Icon of the TAB in the admin menu: a file name relative to the \"admin\" folder, a URL or a base64 data URL (\"data:image/...\"). If not set, the adapter icon is shown.",
+              "type": "string"
+            },
             "ignoreConfigUpdate": {
               "description": "Do not update config TAB if configuration changed (to enable configure settings in TAB)",
               "type": "boolean"
@@ -1230,6 +1234,10 @@
             "name": {
               "description": "Name of TAB (multilingual object) in admin",
               "$ref": "#/definitions/multilingual"
+            },
+            "order": {
+              "description": "Position of the TAB in the admin menu. The built-in tabs use 1 to 120, a TAB without order gets 200. 0 counts as not set. Once the user has sorted the menu, the stored order wins.",
+              "type": "number"
             },
             "singleton": {
               "description": "If true, only one TAB for all instances will be shown.",
