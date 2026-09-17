@@ -275,6 +275,13 @@ the JS libraries:
    `calculatePermissions` — resolving the user's groups and checking the requested operation
    against object/state ACLs before performing it.
 
+   Implemented since SDK 0.9.0: every command that reads or writes takes an optional `user`, and
+   `iobroker.permissions` mirrors `calculatePermissions`, `_checkState`, `checkObject` and
+   `checkFile` — including the rule js-controller 7.2.3 had to fix for states, that members of
+   `system.group.administrator` are not restricted by an ACL. A refused operation raises
+   `PermissionDenied`. Without a `user` nothing is checked, which is the same position a Node.js
+   adapter is in when it acts as itself.
+
 None of this makes the process less privileged: like every Node.js adapter, a Python adapter holds
 full database credentials. The ACL layer is about behaving correctly towards the rest of the
 system, not about restricting the adapter itself.
