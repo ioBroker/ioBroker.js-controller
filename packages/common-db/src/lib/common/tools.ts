@@ -4031,40 +4031,91 @@ export function isProcessRunning(pid: number): boolean {
 }
 
 /**
+ * Check if a command line belongs to a js-controller process
+ *
+ * Only the started script counts, not a mere mention of the controller directory, which also shows
+ * up in the command line of the CLI or of tools working on the installation.
+ *
+ * @param commandLine the full command line of the process
+ * @returns true if the command line looks like the controller
+ */
+function isControllerCommandLine(commandLine: string): boolean {
+    const command = commandLine.toLowerCase();
+    return (
+        // On POSIX the title the running controller gives itself replaces the command line
+        command.startsWith(`${appNameLowerCase}.js-controller`) ||
+        // "node <path>/controller.js", as started by the CLI, the service or the installer
+        /(^|[\s"'/\\])controller\.js(["'\s]|$)/.test(command) ||
+        // The entry point started directly
+        /[/\\](iobroker\.js-controller|controller)[/\\]build[/\\](esm|cjs)[/\\]main\.js/.test(command)
+    );
+}
+
+/**
  * Check if a pid is proven to belong to a program which is not the controller
  *
  * After a reboot the operating system may hand a recorded pid to an unrelated program, which
  * Windows in particular does readily, so a live pid alone does not prove the controller is
- * running. This only reports a foreign program when it could actually be identified as one:
- * whenever the process cannot be inspected, the answer is "no", because acting on a wrong guess
- * would start a second controller and both would then fail with EADDRINUSE.
+ * running. Being a Node.js process proves nothing either - Node-RED, zigbee2mqtt or this very CLI
+ * are Node.js processes too - so the command line has to identify the controller. This only
+ * reports a foreign program when it could actually be identified as one: whenever the process
+ * cannot be inspected, the answer is "no", because acting on a wrong guess would start a second
+ * controller and both would then fail with EADDRINUSE.
  *
  * @param pid process id to inspect
  * @returns true only if the process was identified as a different program
  */
 export async function isForeignProcess(pid: number): Promise<boolean> {
+    // Only a plain positive integer may become part of the PowerShell command below
+    if (!Number.isInteger(pid) || pid <= 0) {
+        return false;
+    }
+
+    // The stale pid may even have been handed to the process asking right now
+    if (pid === process.pid) {
+        return true;
+    }
+
     try {
         if (os.platform() === 'win32') {
-            const { stdout } = await execFileAsync('tasklist', ['/FI', `PID eq ${pid}`, '/NH', '/FO', 'CSV']);
-            // Without a match tasklist prints an INFO line instead of a CSV row
-            const image = (stdout || '').trim().split(',')[0]?.replace(/"/g, '').toLowerCase() || '';
-
-            if (!image || image.startsWith('info:')) {
+            // tasklist only knows the image name, which is node.exe for every Node.js program
+            const { stdout } = await execFileAsync(
+                'powershell.exe',
+                [
+                    '-NoProfile',
+                    '-NonInteractive',
+                    '-Command',
+                    `[Console]::OutputEncoding = [Text.Encoding]::UTF8; Get-CimInstance Win32_Process -Filter 'ProcessId=${pid}' | Select-Object Name, CommandLine | ConvertTo-Json -Compress`,
+                ],
+                { timeout: 10_000 },
+            );
+            // No output means the process is gone
+            const output = (stdout || '').trim();
+            if (!output) {
                 return false;
             }
 
-            return !image.startsWith('node');
+            const { Name, CommandLine } = JSON.parse(output) as { Name?: string; CommandLine?: string | null };
+            if (!Name) {
+                return false;
+            }
+            if (!Name.toLowerCase().startsWith('node')) {
+                return true;
+            }
+
+            // Without elevation the command line of another user's process is not readable
+            return CommandLine ? !isControllerCommandLine(CommandLine) : false;
         }
 
-        const { stdout } = await execFileAsync('ps', ['-p', String(pid), '-o', 'comm=']);
-        // The controller renames itself to "<appName>.js-controller", and comm is truncated
-        const command = (stdout || '').trim().toLowerCase();
+        // Unlike comm, args is not truncated and shows the title the controller gives itself
+        const { stdout } = await execFileAsync('ps', ['-p', String(pid), '-o', 'args='], { timeout: 2000 });
+        const commandLine = (stdout || '').trim();
 
-        if (!command) {
+        if (!commandLine) {
             return false;
         }
 
-        return !command.includes('node') && !command.includes(appName.toLowerCase());
+        return !isControllerCommandLine(commandLine);
     } catch {
         // Could not inspect the process - assume it is the controller
         return false;

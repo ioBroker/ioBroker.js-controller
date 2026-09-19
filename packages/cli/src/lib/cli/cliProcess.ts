@@ -46,8 +46,8 @@ export class CLIProcess extends CLICommand {
     async start(args: string[]): Promise<void> {
         const adapterName = normalizeAdapterName(args[0]);
         if (!adapterName) {
-            await this.startJSController();
-            this.options.callback();
+            const running = await this.startJSController();
+            this.options.callback(running ? undefined : EXIT_CODES.UNKNOWN_ERROR);
         } else if (adapterName === 'all') {
             this.setAllAdaptersEnabled(true);
         } else if (/\.\d+$/.test(adapterName)) {
@@ -65,8 +65,8 @@ export class CLIProcess extends CLICommand {
     async restart(args: string[]): Promise<void> {
         const adapterName = normalizeAdapterName(args[0]);
         if (!adapterName) {
-            await this.restartJSController();
-            this.options.callback();
+            const running = await this.restartJSController();
+            this.options.callback(running ? undefined : EXIT_CODES.UNKNOWN_ERROR);
         } else if (/\.\d+$/.test(adapterName)) {
             this.setAdapterInstanceEnabled(adapterName, true, /* restartIfRunning */ true);
         } else {
@@ -177,8 +177,10 @@ export class CLIProcess extends CLICommand {
 
     /**
      * Starts the JS controller
+     *
+     * @returns true if the controller was started or is already running, false if it could not be started
      */
-    async startJSController(): Promise<void> {
+    async startJSController(): Promise<boolean> {
         let memoryLimitMB = 0;
         try {
             const config: ioBroker.IoBrokerJson = fs.readJSONSync(tools.getConfigFileName(), { encoding: 'utf-8' });
@@ -204,7 +206,7 @@ export class CLIProcess extends CLICommand {
 
             if (!staleReason) {
                 console.log(`Controller is already running with pid ${pid}`);
-                return;
+                return true;
             }
 
             // The pids file survived an unclean shutdown, e.g. a power loss. Without removing it
@@ -219,7 +221,7 @@ export class CLIProcess extends CLICommand {
                 if (e.code !== 'ENOENT') {
                     console.error(`Could not remove ${pidsFileName}: ${e.message}`);
                     console.error(`Please delete the file manually and run "${tools.appName} start" again.`);
-                    return;
+                    return false;
                 }
             }
         }
@@ -238,6 +240,7 @@ export class CLIProcess extends CLICommand {
         });
 
         child.unref();
+        return true;
     }
 
     /**
@@ -299,10 +302,14 @@ export class CLIProcess extends CLICommand {
         }
     }
 
-    /** Restarts the JS controller */
-    async restartJSController(): Promise<void> {
+    /**
+     * Restarts the JS controller
+     *
+     * @returns true if the controller is running afterwards, false if it could not be started
+     */
+    async restartJSController(): Promise<boolean> {
         await CLIProcess.stopJSController();
-        await this.startJSController();
+        return this.startJSController();
     }
 
     /**
