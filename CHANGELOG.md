@@ -5,6 +5,8 @@
 -->
 ## __WORK IN PROGRESS__
 * (@GermanBluefox) Added support for adapters written in Python via `common.platform: "Python"` (feature flag `CONTROLLER_PYTHON_ADAPTERS`)
+* (@GermanBluefox) Added `tipsDisabled` to `system.config`, with which the admin remembers that the "Did you know ...?" tips must not be shown at the start
+* (@GermanBluefox) Added a progress bar for "iobroker upload" when it runs in a terminal
 * (@GermanBluefox) Fixed all Redis object views returning nothing when the Redis server was started with a UTF-8 collation
 * (@krobipd) Fixed a failed adapter install/update being reported as success on npm >= 10.6.0
 * (@krobipd) Fixed the automatic ENOTEMPTY recovery not removing the blocking npm temp directory on npm >= 10.6.0
@@ -18,6 +20,8 @@
 * (@GermanBluefox) A memory limit or `nodeProcessParams` set on a Python instance is now reported as ignored instead of silently having no effect
 * (@GermanBluefox) Fixed every log line of a Python adapter reaching the log transporters twice: the adapter pushes its own records since SDK 0.8.0, and the copy captured from its stdout is now written to the host log only
 * (@GermanBluefox) A Python adapter can now be started on a Redis Sentinel installation: the sentinels are passed to it instead of a fixed address, and the SDK follows the master across a failover (needs the Python SDK 0.9.0)
+* (@krobipd) Fixed an alias read/write function returning a boolean (e.g. "val < 20") being stored unconverted in a state declared as number
+* (@GermanBluefox) Added `common.adminTab.order` and `common.adminTab.icon` to the `io-package.json` schema: admin uses both, but an adapter setting them failed the schema validation
 
 ## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling
