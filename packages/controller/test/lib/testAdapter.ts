@@ -30,6 +30,8 @@ declare global {
             username: string;
             password: string;
             secondPassword: string;
+            complex: { password: string };
+            attrArray: { password?: string | null; value: string }[];
             paramString: string;
         }
     }
@@ -252,6 +254,14 @@ export default function testAdapter(options: Record<string, any>): void {
             assert.strictEqual(context.adapter.config.password, 'winning');
             // secondPassword should be decrypted with AES-256 correctly
             assert.strictEqual(context.adapter.config.secondPassword, 'ii-€+winning*-³§"');
+            // complex attribute names in encryptedNative are decrypted too, also inside arrays
+            assert.strictEqual(context.adapter.config.complex.password, 'winning');
+            // an entry that is not a string stays as it is
+            assert.deepStrictEqual(
+                context.adapter.config.attrArray.map(item => item.password),
+                ['winning', 'winning', null],
+            );
+            assert.strictEqual(context.adapter.config.attrArray[1].value, 'not encoded 2');
 
             let count = 0;
 
@@ -289,6 +299,22 @@ export default function testAdapter(options: Record<string, any>): void {
                 assert.ok((state!.val as number) >= 0);
                 setTimeout(() => !--count && done(), 0);
             });
+        });
+
+        it(`${options.name} ${context.adapterShortName} adapter: getEncryptedConfig returns the decrypted value after start`, async function () {
+            // the start decrypts every attribute of encryptedNative in place, so reading one back must not
+            // decrypt it a second time - tools.decrypt falls back to the legacy XOR and would return garbage
+            assert.strictEqual(await context.adapter.getEncryptedConfig('password'), 'winning');
+            assert.strictEqual(
+                await context.adapter.getEncryptedConfig('secondPassword'),
+                'ii-\u20ac+winning*-\u00b3\u00a7"',
+            );
+            assert.strictEqual(await context.adapter.getEncryptedConfig('complex.password'), 'winning');
+            assert.deepStrictEqual(await context.adapter.getEncryptedConfig('attrArray.password'), [
+                'winning',
+                'winning',
+                null,
+            ]);
         });
 
         for (const test of tests) {
