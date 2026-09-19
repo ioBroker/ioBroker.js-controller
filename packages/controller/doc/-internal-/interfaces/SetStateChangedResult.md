@@ -6,7 +6,7 @@
 
 # Interface: SetStateChangedResult
 
-Defined in: [adapter/src/lib/\_Types.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L237)
+Defined in: [adapter/src/lib/\_Types.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L237)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:237](https://github.com/ioBroker/ioBroke
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L239)
+Defined in: [adapter/src/lib/\_Types.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L239)
 
 ***
 
@@ -22,4 +22,4 @@ Defined in: [adapter/src/lib/\_Types.ts:239](https://github.com/ioBroker/ioBroke
 
 > **notChanged**: `boolean`
 
-Defined in: [adapter/src/lib/\_Types.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L238)
+Defined in: [adapter/src/lib/\_Types.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L238)

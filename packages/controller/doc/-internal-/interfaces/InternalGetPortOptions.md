@@ -6,7 +6,7 @@
 
 # Interface: InternalGetPortOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:268](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L268)
+Defined in: [adapter/src/lib/\_Types.ts:268](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L268)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:268](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: (`port`) => `void`
 
-Defined in: [adapter/src/lib/\_Types.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L271)
+Defined in: [adapter/src/lib/\_Types.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L271)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [adapter/src/lib/\_Types.ts:271](https://github.com/ioBroker/ioBroke
 
 > `optional` **host?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:270](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L270)
+Defined in: [adapter/src/lib/\_Types.ts:270](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L270)
 
 ***
 
@@ -40,4 +40,4 @@ Defined in: [adapter/src/lib/\_Types.ts:270](https://github.com/ioBroker/ioBroke
 
 > **port**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L269)
+Defined in: [adapter/src/lib/\_Types.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L269)

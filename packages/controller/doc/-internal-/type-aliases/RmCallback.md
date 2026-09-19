@@ -8,7 +8,7 @@
 
 > **RmCallback** = (`err?`, `entries?`) => `void`
 
-Defined in: [types-dev/index.d.ts:572](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/types-dev/index.d.ts#L572)
+Defined in: [types-dev/index.d.ts:572](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/types-dev/index.d.ts#L572)
 
 ## Parameters
 

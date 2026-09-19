@@ -6,7 +6,7 @@
 
 # Interface: CheckStatesResult
 
-Defined in: [adapter/src/lib/\_Types.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L232)
+Defined in: [adapter/src/lib/\_Types.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L232)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:232](https://github.com/ioBroker/ioBroke
 
 > **ids**: `string`[]
 
-Defined in: [adapter/src/lib/\_Types.ts:234](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L234)
+Defined in: [adapter/src/lib/\_Types.ts:234](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L234)
 
 ***
 
@@ -22,4 +22,4 @@ Defined in: [adapter/src/lib/\_Types.ts:234](https://github.com/ioBroker/ioBroke
 
 > **objs**: [`StateObject`](StateObject.md)[]
 
-Defined in: [adapter/src/lib/\_Types.ts:233](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L233)
+Defined in: [adapter/src/lib/\_Types.ts:233](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L233)

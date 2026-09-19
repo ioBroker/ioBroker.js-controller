@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
+## 7.2.3 (2026-09-19)
 * (@GermanBluefox) Updated `@iobroker/plugin-sentry` to 3.1.4 in the lockfile, which allows running on Node.js 26
 
 ## 7.2.2 (2026-06-16)
