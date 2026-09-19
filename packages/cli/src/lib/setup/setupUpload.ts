@@ -19,6 +19,7 @@ import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
 import { dbConnect } from '@/lib/setup/dbConnection.js';
+import { ProgressBar } from '@/lib/progressBar.js';
 
 const hostname = tools.getHostName();
 
@@ -456,6 +457,12 @@ export class Upload {
 
         await this.states.setState(uploadID, { val: 0, ack: true });
 
+        // A bar only makes sense when the output goes to a terminal which can overwrite its own
+        // line, and when it goes to the console at all - an upload triggered by the controller
+        // writes through a real logger into iobroker.log, where control characters are noise.
+        const progress =
+            files.length && logger === console && ProgressBar.isSupported() ? new ProgressBar(id, files.length) : null;
+
         for (let f = 0; f < files.length; f++) {
             const file = files[f];
             // do not upload '.gitignore' files. Todo: add other exceptions
@@ -475,7 +482,9 @@ export class Upload {
 
             const remainingFiles = files.length - f - 1;
 
-            if (remainingFiles >= 100) {
+            if (progress) {
+                progress.update(f + 1);
+            } else if (remainingFiles >= 100) {
                 (!f || !(remainingFiles % 50)) &&
                     logger.log(`upload [${remainingFiles}] ${id} ${file} ${attName} ${mimeType}`);
             } else if (remainingFiles > 20) {
@@ -502,9 +511,14 @@ export class Upload {
                 const content = await fs.readFile(file);
                 await this.objects.writeFileAsync(id, attName, content, { mimeType: mimeType || undefined });
             } catch (e) {
+                // close the bar's line first, otherwise the message lands inside it and the next
+                // redraw overwrites it
+                progress?.interrupt();
                 console.error(`Error: Cannot upload ${file}: ${e.message}`);
             }
         }
+
+        progress?.finish();
 
         // Set upload progress to 0;
         if (!isAdmin && files.length) {
