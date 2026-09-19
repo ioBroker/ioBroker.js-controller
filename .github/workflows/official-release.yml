@@ -154,7 +154,14 @@ jobs:
           committer: foxriver76 <moritz.heusinger@gmail.com>
           author: foxriver76 <moritz.heusinger@gmail.com>
           signoff: false
-          branch: official-release
+          # Back into the branch the release was started from. Without this, the action falls back
+          # to the repository's default branch, so a release cut from a maintenance branch would
+          # open its pull request against master -- carrying that branch's version number into the
+          # line that is being developed there.
+          base: ${{ github.ref_name }}
+          # Named after that branch too, so two release runs on different lines cannot overwrite
+          # each other's pull request branch.
+          branch: official-release-${{ github.ref_name }}
           delete-branch: true
           title: "[OFFICIAL RELEASE] ${{ steps.version.outputs.result }}"
           body: |
