@@ -8,7 +8,7 @@
 
 > **CheckGroupCallback** = (`result`) => `void`
 
-Defined in: [adapter/src/lib/\_Types.ts:384](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/adapter/src/lib/_Types.ts#L384)
+Defined in: [adapter/src/lib/\_Types.ts:384](https://github.com/ioBroker/ioBroker.js-controller/blob/45e1308b97991aa172e3f71f94494b11cc461548/packages/adapter/src/lib/_Types.ts#L384)
 
 ## Parameters
 
