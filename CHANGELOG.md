@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Fixed the ACL of states restricting members of the administrator group - objects and files already let them through, states only the `admin` user
 * (@GermanBluefox) Added `tipsDisabled` to `system.config`, with which the admin remembers that the "Did you know ...?" tips must not be shown at the start
 * (@GermanBluefox) Added a progress bar for "iobroker upload" when it runs in a terminal
 * (@GermanBluefox) Fixed all Redis object views returning nothing when the Redis server was started with a UTF-8 collation
