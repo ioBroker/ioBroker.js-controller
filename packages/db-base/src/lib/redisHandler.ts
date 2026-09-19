@@ -202,7 +202,20 @@ export class RedisHandler extends EventEmitter {
         }
 
         if (this.listenerCount(command) !== 0) {
-            setImmediate(() => this.emit(command, data, responseId));
+            setImmediate(() => {
+                try {
+                    this.emit(command, data, responseId);
+                } catch (e) {
+                    // A command handler runs inside `setImmediate`, so anything it throws is an
+                    // uncaught exception at the top of the event loop rather than a failed
+                    // command: no reply reaches the client, and the process is at the mercy of
+                    // whatever `uncaughtException` handling it happens to have. Since `data` comes
+                    // off a socket, one client sending something a handler does not expect could
+                    // take the whole database server with it. Answering with an error keeps the
+                    // failure where it belongs -- with the command that caused it.
+                    this.sendError(responseId, e instanceof Error ? e : new Error(String(e)));
+                }
+            });
         } else {
             this.sendError(responseId, new Error(`${command} NOT SUPPORTED`));
         }

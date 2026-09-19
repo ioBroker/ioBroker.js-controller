@@ -2085,6 +2085,26 @@ export function getDefaultDataDir(): string {
 }
 
 /**
+ * Determine where an adapter's Python virtual environment lives
+ *
+ * Lives here rather than in the controller because the CLI needs the same path when it removes an
+ * adapter: the environment is host-local state like node_modules and has to be cleaned up with it.
+ * One environment per adapter rather than per instance -- the isolation exists to keep adapters
+ * from fighting over package versions, which is not a problem two instances of the same adapter
+ * can have.
+ *
+ * The result is absolute on purpose. getDefaultDataDir() is relative to the controller directory
+ * by design, but the interpreter path derived from this becomes the executable of a spawn() whose
+ * cwd is the adapter's package directory -- a relative path would be resolved against that and
+ * fail with ENOENT, while every check done from the controller's own cwd would still pass.
+ *
+ * @param adapterName name of the adapter without the `iobroker.` prefix
+ */
+export function getPythonEnvDir(adapterName: string): string {
+    return path.resolve(getControllerDir(), getDefaultDataDir(), 'py', adapterName);
+}
+
+/**
  * Returns the path of the config file
  */
 export function getConfigFileName(): string {
@@ -3208,8 +3228,33 @@ export function removePreservedProperties(
     }
 }
 
+/** Value of `common.platform` that marks an adapter as Python. */
+export const PYTHON_PLATFORM = 'Python';
+
+/**
+ * Whether an adapter runs on Python rather than on Node.js
+ *
+ * Compared case-insensitively: `common.platform` is hand-written, and wrong casing already exists
+ * in the wild. The JSON schema only accepts the exact spelling, so this is about what is installed
+ * today, not about what a new adapter may declare.
+ *
+ * @param common the adapter's `common` section, or an instance object's
+ */
+export function isPythonAdapter(common?: { platform?: string } | null): boolean {
+    return common?.platform?.toLowerCase() === PYTHON_PLATFORM.toLowerCase();
+}
+
 /**
  * Returns the array of system.adapter.<namespace>.* objects which are created for every instance
+ *
+ * A Python instance gets a slightly shorter list: `memHeapTotal` and `memHeapUsed` are V8's heap,
+ * and CPython has no comparable number to put there -- its allocator publishes no total, and the
+ * one figure that could be measured costs several times the memory it reports. Created anyway they
+ * are two rows in the object tree that stay empty for the life of the installation, which reads as
+ * a broken adapter rather than as a number that does not apply.
+ *
+ * Only for instances created from here on. An installation that already has them keeps them:
+ * deleting objects a user may have put in a chart is not this function's business.
  *
  * @param namespace - adapter namespace + id, e.g., hm-rpc.0
  * @param adapterCommon - adapter object from io-package.json
@@ -3219,8 +3264,9 @@ export function getInstanceIndicatorObjects(
     adapterCommon: ioBroker.AdapterCommon,
 ): ioBroker.StateObject[] {
     const id = `system.adapter.${namespace}`;
+    const isPython = isPythonAdapter(adapterCommon);
 
-    return [
+    const objects: ioBroker.StateObject[] = [
         {
             _id: `${id}.alive`,
             type: 'state',
@@ -3368,8 +3414,8 @@ export function getInstanceIndicatorObjects(
             _id: `${id}.eventLoopLag`,
             type: 'state',
             common: {
-                name: `${namespace} Node.js event loop lag`,
-                desc: 'Node.js event loop lag in ms averaged over 15 seconds',
+                name: `${namespace} ${isPython ? 'event loop lag' : 'Node.js event loop lag'}`,
+                desc: `${isPython ? 'asyncio' : 'Node.js'} event loop lag in ms averaged over 15 seconds`,
                 type: 'number',
                 read: true,
                 write: false,
@@ -3419,6 +3465,14 @@ export function getInstanceIndicatorObjects(
             native: {},
         },
     ];
+
+    if (!isPython) {
+        return objects;
+    }
+
+    const heap = [`${id}.memHeapTotal`, `${id}.memHeapUsed`];
+
+    return objects.filter(obj => !heap.includes(obj._id));
 }
 
 export type InternalLogger = Omit<ioBroker.Logger, 'level'>;

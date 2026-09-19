@@ -5566,7 +5566,8 @@ export class ObjectsInRedisClient {
      *
      * @param idOrName The id or name to search for
      * @param type The expected common type, or null for any
-     * @param options The current request options (may include a language)
+     * @param options The current request options (may include a language); null when the caller
+     * passed none, which is what `findObject` leaves behind for its callback-only overloads
      * @param options.language The language to use when resolving names
      * @param options.user The user on whose behalf the lookup is performed
      * @param userContext The resolved user context to check the rights against
@@ -5575,10 +5576,13 @@ export class ObjectsInRedisClient {
     private _findObject(
         idOrName: string,
         type: ioBroker.CommonType | null,
-        options: {
-            language?: ioBroker.Languages;
-            user?: ioBroker.ObjectIDs.User;
-        },
+        options:
+            | {
+                  language?: ioBroker.Languages;
+                  user?: ioBroker.ObjectIDs.User;
+              }
+            | null
+            | undefined,
         userContext: UserContext,
         callback?: ioBroker.FindObjectCallback,
     ): void {
@@ -5624,7 +5628,12 @@ export class ObjectsInRedisClient {
                     if (obj?.common && (!type || ('type' in obj.common && obj.common.type === type))) {
                         let name = obj?.common?.name;
                         if (name && typeof name === 'object') {
-                            name = name[options.language || 'en'] || name.en;
+                            // `options` is null whenever the caller used an overload without them,
+                            // which is most of them. Reading `.language` off it threw right here,
+                            // and only once the search fell through to matching by name *and* met
+                            // an object whose name is translated -- so it depended on what happened
+                            // to be in the database.
+                            name = name[options?.language || 'en'] || name.en;
                         }
                         if (name === idOrName) {
                             return tools.maybeCallbackWithError(callback, null, obj._id, obj.common.name);
@@ -5733,10 +5742,9 @@ export class ObjectsInRedisClient {
                 return this._findObject(
                     idOrName,
                     type,
-                    options as {
-                        language?: ioBroker.Languages;
-                        user?: ioBroker.ObjectIDs.User;
-                    },
+                    // Not asserted non-null any more: the assertion was what let a null through
+                    // to a `.language` read. The parameter admits null, which is the truth.
+                    options,
                     userContext!,
                     callback,
                 );
