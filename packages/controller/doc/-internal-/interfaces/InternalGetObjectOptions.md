@@ -6,7 +6,7 @@
 
 # Interface: InternalGetObjectOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:372](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L372)
+Defined in: [adapter/src/lib/\_Types.ts:372](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L372)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:372](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: [`GetObjectCallback`](../type-aliases/GetObjectCallback.md)\<`any`\>
 
-Defined in: [adapter/src/lib/\_Types.ts:375](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L375)
+Defined in: [adapter/src/lib/\_Types.ts:375](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L375)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [adapter/src/lib/\_Types.ts:375](https://github.com/ioBroker/ioBroke
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:373](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L373)
+Defined in: [adapter/src/lib/\_Types.ts:373](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L373)
 
 ***
 
@@ -30,4 +30,4 @@ Defined in: [adapter/src/lib/\_Types.ts:373](https://github.com/ioBroker/ioBroke
 
 > **options**: `unknown`
 
-Defined in: [adapter/src/lib/\_Types.ts:374](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L374)
+Defined in: [adapter/src/lib/\_Types.ts:374](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L374)

@@ -6,7 +6,7 @@
 
 # Interface: InternalGetUserIDOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L283)
+Defined in: [adapter/src/lib/\_Types.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L283)
 
 ## Properties
 
@@ -14,4 +14,4 @@ Defined in: [adapter/src/lib/\_Types.ts:283](https://github.com/ioBroker/ioBroke
 
 > **username**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:284](https://github.com/ioBroker/ioBroker.js-controller/blob/66b4b74ab141b1cd367bd9818812430ed9c72430/packages/adapter/src/lib/_Types.ts#L284)
+Defined in: [adapter/src/lib/\_Types.ts:284](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/adapter/src/lib/_Types.ts#L284)
