@@ -8,7 +8,7 @@
 
 > **GetKeysCallback** = (`err?`, `list?`) => `void`
 
-Defined in: [types-dev/index.d.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/types-dev/index.d.ts#L590)
+Defined in: [types-dev/index.d.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/45e1308b97991aa172e3f71f94494b11cc461548/packages/types-dev/index.d.ts#L590)
 
 ## Parameters
 
