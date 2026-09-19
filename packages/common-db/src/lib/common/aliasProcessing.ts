@@ -74,6 +74,10 @@ export function applyAliasConvenienceConversion(options: ApplyAliasConvenienceCo
             return !!state.val;
         } else if (targetCommon.type === 'number' && typeof state.val === 'string') {
             return parseFloat(state.val);
+        } else if (targetCommon.type === 'number' && typeof state.val === 'boolean') {
+            // a read/write function may return a comparison result (e.g. "val < 20") for a
+            // numeric alias — store it as 1/0 instead of leaving a boolean in a number state
+            return state.val ? 1 : 0;
         } else if (targetCommon.type === 'string') {
             return state.val.toString();
         }
