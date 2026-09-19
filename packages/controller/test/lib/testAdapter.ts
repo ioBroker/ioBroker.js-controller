@@ -301,6 +301,22 @@ export default function testAdapter(options: Record<string, any>): void {
             });
         });
 
+        it(`${options.name} ${context.adapterShortName} adapter: getEncryptedConfig returns the decrypted value after start`, async function () {
+            // the start decrypts every attribute of encryptedNative in place, so reading one back must not
+            // decrypt it a second time - tools.decrypt falls back to the legacy XOR and would return garbage
+            assert.strictEqual(await context.adapter.getEncryptedConfig('password'), 'winning');
+            assert.strictEqual(
+                await context.adapter.getEncryptedConfig('secondPassword'),
+                'ii-\u20ac+winning*-\u00b3\u00a7"',
+            );
+            assert.strictEqual(await context.adapter.getEncryptedConfig('complex.password'), 'winning');
+            assert.deepStrictEqual(await context.adapter.getEncryptedConfig('attrArray.password'), [
+                'winning',
+                'winning',
+                null,
+            ]);
+        });
+
         for (const test of tests) {
             test(it, context);
         }
