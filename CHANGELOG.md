@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Added `tipsDisabled` to `system.config`, with which the admin remembers that the "Did you know ...?" tips must not be shown at the start
 * (@GermanBluefox) Added a progress bar for "iobroker upload" when it runs in a terminal
 * (@GermanBluefox) Fixed all Redis object views returning nothing when the Redis server was started with a UTF-8 collation
 * (@krobipd) Fixed a failed adapter install/update being reported as success on npm >= 10.6.0
