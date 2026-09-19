@@ -1,5 +1,5 @@
 import { CLICommand, type CLICommandOptions } from './cliCommand.js';
-import { tools, logger as toolsLogger } from '@iobroker/js-controller-common';
+import { tools, logger as toolsLogger, EXIT_CODES } from '@iobroker/js-controller-common';
 import chokidar from 'chokidar';
 import fs from 'fs-extra';
 import os from 'node:os';
@@ -10,17 +10,41 @@ const require = createRequire(import.meta.url || `file://${__filename}`);
 
 const { getConfigFileName } = tools;
 
+/** Log levels ordered by severity, lowest first */
+const LOG_LEVELS: ioBroker.LogLevel[] = ['silly', 'debug', 'info', 'warn', 'error'];
+
 interface CLILogsOptions {
     /** Whether to show today's full log */
     complete?: boolean;
     /** An optional RegExp to filter by */
     regex?: RegExp;
+    /** An optional RegExp matching the accepted log levels */
+    levelRegex?: RegExp;
 }
+
+/**
+ * Build a RegExp matching every log line of the given level or a more severe one
+ *
+ * A log line looks like `2019-03-02 13:26:54.698  - debug: iot.0 message`, where the level can be
+ * wrapped in color codes when colored output is configured.
+ *
+ * @param level the lowest level to still show
+ */
+function getLevelRegExp(level: ioBroker.LogLevel): RegExp {
+    const accepted = LOG_LEVELS.slice(LOG_LEVELS.indexOf(level));
+
+    return new RegExp(`\\s-\\s(?:\\u001B\\[\\d+m)?(?:${accepted.join('|')})(?:\\u001B\\[\\d+m)?:`);
+}
+
+/** Matches every line which starts a new log entry, i.e. carries a level */
+const ANY_LEVEL_REGEX = getLevelRegExp('silly');
 
 /** Command ioBroker state ... */
 export class CLILogs extends CLICommand {
     private readonly fileSizes = new Map<string, number>();
     private isReady = false;
+    /** Whether the log entry currently being read passed the level filter */
+    private showCurrentEntry = true;
 
     /**
      * @param options The command options including context and parameters
@@ -44,6 +68,18 @@ export class CLILogs extends CLICommand {
             complete: this.options.all,
         };
 
+        // Optional, so calls without a level keep showing everything as before
+        if (params.level !== undefined) {
+            const level = String(params.level).toLowerCase();
+
+            if (!tools.isLogLevel(level)) {
+                console.error(`Unknown log level "${params.level}". Use one of: ${LOG_LEVELS.join(', ')}`);
+                return void this.options.callback(EXIT_CODES.UNKNOWN_ERROR);
+            }
+
+            options.levelRegex = getLevelRegExp(level);
+        }
+
         const config = fs.readJSONSync(require.resolve(getConfigFileName()));
         const logger = toolsLogger(config.log);
         // @ts-expect-error todo adjust logger type
@@ -61,7 +97,7 @@ export class CLILogs extends CLICommand {
                 options.regex = regex;
             }
             lines.forEach(line => {
-                if (regex && !regex.test(line)) {
+                if (!this.matches(line, options)) {
                     return;
                 }
                 console.log(line);
@@ -143,16 +179,44 @@ export class CLILogs extends CLICommand {
             start,
             autoClose: true,
         });
-        if (options.regex) {
+        if (options.regex || options.levelRegex) {
             // Read the input line by line and only include the lines matching the filter
             input
                 .pipe(es.split())
-                .pipe(es.filterSync(line => options.regex!.test(line)))
+                .pipe(es.filterSync((line: string) => this.matches(line, options)))
                 .pipe(es.mapSync((line: string) => line + os.EOL))
                 .pipe(process.stdout);
         } else {
             // just pipe the input through
             tools.pipeLinewise(input, process.stdout);
         }
+    }
+
+    /**
+     * Check a log line against the active filters
+     *
+     * A log entry can span several lines, e.g. a stack trace, and only its first line carries the
+     * level. Those follow-up lines inherit the decision made for the entry they belong to, so
+     * filtering by level does not cut a stack trace in half.
+     *
+     * @param line the log line to check
+     * @param options the active filters
+     */
+    private matches(line: string, options: CLILogsOptions): boolean {
+        if (options.levelRegex) {
+            if (ANY_LEVEL_REGEX.test(line)) {
+                this.showCurrentEntry = options.levelRegex.test(line);
+            }
+
+            if (!this.showCurrentEntry) {
+                return false;
+            }
+        }
+
+        if (options.regex && !options.regex.test(line)) {
+            return false;
+        }
+
+        return true;
     }
 }
