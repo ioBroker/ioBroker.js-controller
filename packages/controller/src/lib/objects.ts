@@ -84,6 +84,25 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             },
             native: {},
         });
+
+        objs.push({
+            _id: `${id}.discoveredHosts`,
+            type: 'state',
+            common: {
+                name: 'Controller - ioBroker hosts found on the network',
+                type: 'string',
+                read: true,
+                write: false,
+                desc: 'JSON list of the hosts which announced themselves via mDNS. Hosts the user declined are not listed',
+                role: 'json',
+                def: '[]',
+            },
+            native: {},
+            state: {
+                val: '[]',
+                ack: true,
+            },
+        });
     }
 
     objs.push({
