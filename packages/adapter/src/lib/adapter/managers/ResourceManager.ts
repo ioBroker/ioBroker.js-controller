@@ -1,3 +1,4 @@
+import { hasRegisteredResourceShape } from '@iobroker/js-controller-common-db/tools';
 import type { AdapterContext } from '@/lib/adapter/context.js';
 import { AdapterContextBase } from '@/lib/adapter/managers/AdapterContextBase.js';
 import type { MessagingManager } from '@/lib/adapter/managers/MessagingManager.js';
@@ -169,12 +170,15 @@ export class ResourceManager extends AdapterContextBase {
      *
      * @param state the state holding the JSON-encoded resource array, if any
      */
-    static #parseResources<R>(state: ioBroker.State | null | undefined): R[] {
+    static #parseResources<R extends ioBroker.RegisteredResource>(state: ioBroker.State | null | undefined): R[] {
         if (state && typeof state.val === 'string' && state.val) {
             try {
                 const parsed: unknown = JSON.parse(state.val);
                 if (Array.isArray(parsed)) {
-                    return parsed as R[];
+                    // The same check the host applies when it reads these states back. They are declared
+                    // read-only, but nothing enforces that, so an entry that is not a resource at all must not
+                    // reach the caller as if it were one.
+                    return parsed.filter(entry => hasRegisteredResourceShape(entry)) as R[];
                 }
             } catch {
                 // ignore malformed content

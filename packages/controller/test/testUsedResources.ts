@@ -285,6 +285,21 @@ describe('lib/usedResources: normalizeUsedResourceData', () => {
         assert.deepStrictEqual(normalize('tcpPort', {}), { error: '"port" is required' });
     });
 
+    it('refuses a payload that carries __proto__', () => {
+        // `JSON.parse('{"__proto__":{"port":1883}}')` produces this as an own key. Copying it onto an
+        // ordinary object sets the prototype instead of a property: the payload would be stored as `{}` -
+        // a wildcard that conflicts with every entry of its type - while the required field still answered
+        // through the prototype chain.
+        const polluted = JSON.parse('{"__proto__":{"port":1883}}') as Record<string, unknown>;
+
+        assert.deepStrictEqual(normalize('tcpPort', polluted), {
+            error: '"__proto__" is not a field name a payload may use',
+        });
+
+        // and the same payload read back from a state, where the key survives as an own property
+        assert.ok(!isRegisteredResource({ type: 'tcpPort', data: polluted, instance: 'a.0', ts: 1, isBlocked: true }));
+    });
+
     it('does not change the payload it was given', () => {
         const data = { port: '1883' };
         normalize('tcpPort', data);

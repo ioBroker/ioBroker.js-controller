@@ -8,22 +8,11 @@
  * that the mutating methods report as changed.
  */
 
-/** A resource type ends up as the last segment of `system.host.<name>.usedResources.<type>`, so it has to be a plain identifier */
-const RESOURCE_TYPE_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
+// Both checks live in common-db: an adapter reading the registry states has to apply the same ones, and a
+// second spelling of "is this an entry of the registry" in a second package is what drifts apart.
+import { hasRegisteredResourceShape, isValidUsedResourceType } from '@iobroker/js-controller-common-db/tools';
 
-/**
- * Check that a value can be used as a resource type.
- *
- * `UsedResourceDataMap` is intentionally open for module augmentation, so unknown type names are accepted as
- * long as they are usable as a state id segment. What this rejects is a missing, non-string or otherwise
- * malformed type, which would create a `system.host.<name>.usedResources.undefined` state that
- * {@link UsedResourcesRegistry} would happily read back as a real resource type on the next controller start.
- *
- * @param type the value to check
- */
-export function isValidUsedResourceType(type: unknown): type is ioBroker.UsedResourceType {
-    return typeof type === 'string' && RESOURCE_TYPE_PATTERN.test(type);
-}
+export { isValidUsedResourceType };
 
 /** Rule for one payload field of a known resource type */
 interface PayloadFieldRule {
@@ -167,6 +156,14 @@ export function validateUsedResourceData(
 ): string | undefined {
     const payload = data as unknown as Record<string, unknown>;
 
+    // A payload that arrived as JSON can carry `__proto__` as an own key. Copying that onto an ordinary object
+    // sets the prototype instead of a property: the required field would then be found through the prototype
+    // chain while the payload itself stays empty, which is the wildcard entry this validation exists to keep
+    // out. No resource is described by such a field, so it is refused by name.
+    if (Object.hasOwn(payload, '__proto__')) {
+        return '"__proto__" is not a field name a payload may use';
+    }
+
     for (const [field, value] of Object.entries(payload)) {
         if (value !== undefined && !isPrimitive(value)) {
             return `"${field}" must be a string, a number or a boolean, got ${JSON.stringify(value)}`;
@@ -182,7 +179,9 @@ export function validateUsedResourceData(
     }
 
     for (const [field, rule] of Object.entries(rules)) {
-        const value = payload[field];
+        // own properties only: a payload from a message can carry `__proto__`, and reading through the
+        // prototype chain would let a required field be satisfied by something that is not in the payload
+        const value = Object.hasOwn(payload, field) ? payload[field] : undefined;
         // an explicitly undefined field counts as not named, like everywhere else in the registry
         if (value === undefined) {
             if (rule.required && !partial) {
@@ -219,6 +218,12 @@ export function normalizeUsedResourceData(
     const rules = getPayloadRules(type);
     const normalized: Record<string, unknown> = {};
     for (const [field, value] of Object.entries(data)) {
+        if (field === '__proto__') {
+            // Refused here rather than below, because the assignment itself is the problem: it would set the
+            // prototype of `normalized` instead of adding a property, and what is left to check is an empty
+            // payload whose required field answers through the prototype chain.
+            return { error: '"__proto__" is not a field name a payload may use' };
+        }
         if (value === undefined) {
             continue;
         }
@@ -404,21 +409,8 @@ function usedResourcesOverlap(
  * @param entry the value to check
  */
 export function isRegisteredResource(entry: unknown): entry is ioBroker.RegisteredResource {
-    if (typeof entry !== 'object' || entry === null) {
-        return false;
-    }
-    const candidate = entry as Partial<ioBroker.RegisteredResource>;
-    return (
-        isValidUsedResourceType(candidate.type) &&
-        typeof candidate.instance === 'string' &&
-        !!candidate.instance &&
-        typeof candidate.ts === 'number' &&
-        typeof candidate.isBlocked === 'boolean' &&
-        typeof candidate.data === 'object' &&
-        candidate.data !== null &&
-        !Array.isArray(candidate.data) &&
-        validateUsedResourceData(candidate.type, candidate.data, false) === undefined
-    );
+    // the shape is what both ends check; the payload rules are the host's own
+    return hasRegisteredResourceShape(entry) && validateUsedResourceData(entry.type, entry.data, false) === undefined;
 }
 
 /**

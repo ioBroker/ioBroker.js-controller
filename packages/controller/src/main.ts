@@ -2423,10 +2423,22 @@ async function syncUsedResourcesOfInstance(
         changed = usedResources.removeInstance(namespace);
     } else {
         const mode = getUsedResourcesMode(obj);
+
         if (mode === 'adapter') {
-            return;
+            if (procs[id]?.process) {
+                // it is running, so its entries are the ones it declared itself - and nothing would register
+                // them again before the next start
+                return;
+            }
+
+            // It is not running, so whatever is left can only be what the controller derived before the flag
+            // was set, e.g. by an adapter update. Nothing else would ever remove it: the entries are dropped
+            // when the instance starts, which may be never.
+            changed = usedResources.removeInstance(namespace);
+        } else {
+            changed =
+                mode === 'controller' ? seedUsedResourcesOfInstance(obj) : usedResources.removeInstance(namespace);
         }
-        changed = mode === 'controller' ? seedUsedResourcesOfInstance(obj) : usedResources.removeInstance(namespace);
     }
 
     await persistUsedResourceTypes(changed);
@@ -2476,9 +2488,32 @@ function getUsedResourceMessageInstance(msg: ioBroker.SendableMessage): string {
  *
  * @param instance the namespace of the instance, e.g. "mqtt.0"
  */
-function assertInstanceDeclaresUsedResources(instance: string): void {
-    const config = procs[`${SYSTEM_ADAPTER_PREFIX}${instance}` as ioBroker.ObjectIDs.Instance]?.config;
-    const mode = config ? getUsedResourcesMode(config) : undefined;
+async function assertInstanceDeclaresUsedResources(instance: string): Promise<void> {
+    const id = `${SYSTEM_ADAPTER_PREFIX}${instance}` as ioBroker.ObjectIDs.Instance;
+    // `procs` is a cache of the instances this host runs, so it answers without a database read - but the flag
+    // lives in the object, and the cache is missing exactly where it matters: an instance of another host
+    // sending here, and one whose object was deleted while its process still runs. Both must not get through.
+    let config = procs[id]?.config;
+
+    if (!config) {
+        try {
+            config = (await objects!.getObject(id)) as ioBroker.InstanceObject;
+        } catch (e) {
+            // a change to the registry is refused when it cannot be justified
+            throw new Error(`cannot read the object of instance "${instance}": ${e.message}`);
+        }
+    }
+
+    if (!config?.common) {
+        throw new Error(`instance "${instance}" does not exist`);
+    }
+
+    if (config.common.host !== hostname) {
+        // the registry belongs to one host, and the instance is supervised by the host it runs on
+        throw new Error(`instance "${instance}" does not run on this host`);
+    }
+
+    const mode = getUsedResourcesMode(config);
 
     if (mode === 'controller') {
         throw new Error(
@@ -2527,7 +2562,7 @@ async function parseUsedResourceMessage(
     const instance = getUsedResourceMessageInstance(msg);
 
     if (command !== 'check') {
-        assertInstanceDeclaresUsedResources(instance);
+        await assertInstanceDeclaresUsedResources(instance);
     }
 
     // the type becomes the last segment of "system.host.<name>.usedResources.<type>", so it must be validated
@@ -3742,7 +3777,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         case 'clearUsedResources':
             try {
                 const instance = getUsedResourceMessageInstance(msg);
-                assertInstanceDeclaresUsedResources(instance);
+                await assertInstanceDeclaresUsedResources(instance);
                 assertUsedResourcesPersisted(await persistUsedResourceTypes(usedResources.removeInstance(instance)));
                 if (msg.callback && msg.from) {
                     sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
