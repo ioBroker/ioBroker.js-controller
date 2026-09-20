@@ -1177,7 +1177,8 @@
       },
       "attrArray": [
         { "password": "G\\\b\u000bY\fS", "value": "not encoded 1" },
-        { "password": "G\\\b\u000bY\fS", "value": "not encoded 2" }
+        { "password": "G\\\b\u000bY\fS", "value": "not encoded 2" },
+        { "password": null, "value": "not encoded 3" }
       ]
     },
     "protectedNative": [

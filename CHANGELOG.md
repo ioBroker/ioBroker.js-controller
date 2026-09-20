@@ -14,6 +14,9 @@
 * (@krobipd) Fixed the automatic ENOTEMPTY recovery not removing the blocking npm temp directory on npm >= 10.6.0
 * (@krobipd) Fixed an occasional "Connection is closed" warning logged when a fast schedule/once adapter shuts down
 * (@krobipd) Fixed `info.connection` not being reset when an instance goes offline, which also left a stray state named after the instance namespace
+* (@GermanBluefox) Fixed complex attribute names (e.g. `devices.password`) and arrays in `encryptedNative` not being decrypted when the adapter starts and documented complex attribute names for `encryptedNative` and `protectedNative`
+* (@GermanBluefox) Fixed `getEncryptedConfig` dropping entries that are not a string when the attribute resolves to an array
+* (@GermanBluefox) Fixed `getEncryptedConfig` decrypting an attribute of `encryptedNative` a second time, which returned garbage because the adapter start already decrypted it
 * (@krobipd) Fixed an alias read/write function returning a boolean (e.g. "val < 20") being stored unconverted in a state declared as number
 * (@GermanBluefox) Added `common.adminTab.order` and `common.adminTab.icon` to the `io-package.json` schema: admin uses both, but an adapter setting them failed the schema validation
 
