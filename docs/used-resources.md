@@ -40,11 +40,11 @@ the registry — or that they do not:
   was set (e.g. derived before an adapter update) are removed as soon as the host sees the changed instance
   object, and at the latest on the next controller start.
 
-| `common.declareUsedResources` | Entries come from                                          | `registerUsedResource(...)` |
-| ----------------------------- | ---------------------------------------------------------- | --------------------------- |
-| not set                       | the controller, derived from `native.port` / `native.bind` | refused                     |
-| `true`                        | the adapter                                                | accepted                    |
-| `false`                       | nobody — the instance has no entries                       | refused                     |
+| `common.declareUsedResources` | Entries come from                                          | Registering, freeing, clearing |
+| ----------------------------- | ---------------------------------------------------------- | ------------------------------ |
+| not set                       | the controller, derived from `native.port` / `native.bind` | refused                        |
+| `true`                        | the adapter                                                | accepted                       |
+| `false`                       | nobody — the instance has no entries                       | refused                        |
 
 Whether the controller supports the registry at all can be checked with
 `adapter.supportsFeature('CONTROLLER_USED_RESOURCES')`.
@@ -101,9 +101,10 @@ The three mutating calls always act on **this instance** — an instance can nei
 in the name of another one. `getHostUsedResources` is the one that reads across the whole **host**, which is
 why it carries `Host` in its name.
 
-The mutating calls wait for the host's verdict and **reject** when it refuses, so a mistake — a misspelled
-type, a payload that is not an object or does not satisfy its type (see [Resource types](#resource-types)), a
-`common.declareUsedResources` in the `io-package.json` that is not `true` — surfaces where the adapter can see it instead of only in the host's log. If the host does not answer within
+All four calls that go to the host wait for its verdict and **reject** when it refuses, so a mistake — a
+misspelled type, a payload that is not an object or does not satisfy its type (see
+[Resource types](#resource-types)), or, for the three mutating ones, a `common.declareUsedResources` in the
+`io-package.json` that is not `true` — surfaces where the adapter can see it instead of only in the host's log. If the host does not answer within
 five seconds, the call rejects with `Timeout exceeded`; check
 `supportsFeature('CONTROLLER_USED_RESOURCES')` when an older controller may be in play.
 
@@ -157,6 +158,10 @@ everything it occupied while it keeps running, e.g. on a reconfiguration.
 
 Asks whether **another** instance on this host currently holds the resource, without registering
 anything. Returns the conflicting entries, newest registration first, or an empty list.
+
+This one works for **every** instance, whatever `common.declareUsedResources` says — also for one whose
+resources the controller derives, or one that opted out. Asking changes nothing, and those are exactly the
+instances that want to know whether a port is free before they open it.
 
 ```ts
 const held = await this.checkUsedResource('tcpPort', { port: 1883 });

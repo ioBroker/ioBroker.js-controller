@@ -2448,25 +2448,38 @@ async function syncUsedResourcesOfInstance(
 function getUsedResourceMessageInstance(msg: ioBroker.SendableMessage): string {
     const from = typeof msg.from === 'string' ? msg.from : '';
     if (!from.startsWith(SYSTEM_ADAPTER_PREFIX) || from.length === SYSTEM_ADAPTER_PREFIX.length) {
-        throw new Error(`used resources can only be modified by an instance, but sender is "${from || 'unknown'}"`);
+        throw new Error(`used resources can only be addressed by an instance, but sender is "${from || 'unknown'}"`);
     }
     const instance = from.substring(SYSTEM_ADAPTER_PREFIX.length);
 
     const claimedInstance: unknown = msg.message?.instance;
     if (claimedInstance !== undefined && claimedInstance !== instance) {
         throw new Error(
-            `instance "${instance}" must not modify the used resources of ${JSON.stringify(claimedInstance)}`,
+            `instance "${instance}" must not act on the used resources of ${JSON.stringify(claimedInstance)}`,
         );
     }
 
-    // An instance without the flag is controller-managed: its entries are derived from the instance
-    // object, and the next change to that object replaces whatever it registered here. One that opted
-    // out has no entries at all, and the next change drops what it registered. Accepting the call would
-    // look like it worked and the entry would vanish later for an unrelated reason, so it is refused
-    // with something the adapter developer can act on. The config comes from `procs`, so this costs no
-    // database read.
+    return instance;
+}
+
+/**
+ * Refuse a change to the registry by an instance which does not declare its resources itself.
+ *
+ * An instance without the flag is controller-managed: its entries are derived from the instance object, and the
+ * next change to that object replaces whatever it registered here. One that opted out has no entries at all, and
+ * the next change drops what it registered. Accepting the call would look like it worked and the entry would
+ * vanish later for an unrelated reason, so it is refused with something the adapter developer can act on.
+ *
+ * Only the mutating commands go through this. Asking whether somebody else holds a resource changes nothing, and
+ * the instances which do not declare their own resources are exactly the ones that want to ask before they open a
+ * port. The config comes from `procs`, so this costs no database read.
+ *
+ * @param instance the namespace of the instance, e.g. "mqtt.0"
+ */
+function assertInstanceDeclaresUsedResources(instance: string): void {
     const config = procs[`${SYSTEM_ADAPTER_PREFIX}${instance}` as ioBroker.ObjectIDs.Instance]?.config;
     const mode = config ? getUsedResourcesMode(config) : undefined;
+
     if (mode === 'controller') {
         throw new Error(
             `instance "${instance}" does not declare its used resources - add "common.declareUsedResources": true to its io-package.json`,
@@ -2477,8 +2490,6 @@ function getUsedResourceMessageInstance(msg: ioBroker.SendableMessage): string {
             `instance "${instance}" opted out of the used resources registry - "common.declareUsedResources" is false in its io-package.json, set it to true to declare used resources`,
         );
     }
-
-    return instance;
 }
 
 /**
@@ -2500,16 +2511,24 @@ function assertUsedResourcesPersisted(persisted: boolean): void {
  * Validate an incoming `registerUsedResource` / `freeUsedResource` / `checkUsedResource` host message and bring
  * its payload into the stored form.
  *
+ * The command decides two things: a registration has to describe the resource completely while a filter may leave
+ * fields out, and only the two commands which change the registry require the instance to declare its resources
+ * itself (see {@link assertInstanceDeclaresUsedResources}).
+ *
  * @param msg the received host message
- * @param isRegistration whether the message registers a resource - then the payload is mandatory and has to
- *   describe the resource completely, for free/check it is only a filter
+ * @param command which of the three commands the message carries
  * @returns the validated instance, resource type and normalized payload
  */
 async function parseUsedResourceMessage(
     msg: ioBroker.SendableMessage,
-    isRegistration: boolean,
+    command: 'register' | 'free' | 'check',
 ): Promise<{ instance: string; type: ioBroker.UsedResourceType; data: ioBroker.UsedResourceData | undefined }> {
+    const isRegistration = command === 'register';
     const instance = getUsedResourceMessageInstance(msg);
+
+    if (command !== 'check') {
+        assertInstanceDeclaresUsedResources(instance);
+    }
 
     // the type becomes the last segment of "system.host.<name>.usedResources.<type>", so it must be validated
     const type: unknown = msg.message?.type;
@@ -3646,7 +3665,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'registerUsedResource':
             try {
-                const { instance, type, data } = await parseUsedResourceMessage(msg, true);
+                const { instance, type, data } = await parseUsedResourceMessage(msg, 'register');
 
                 // asked before the registration, so this instance's own entry is not in the way
                 const conflicts = usedResources.findConflicts(type, data!, instance);
@@ -3682,7 +3701,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             // Asks whether anybody else currently holds a resource, without registering anything -
             // the call an adapter makes *before* it opens the port or the device.
             try {
-                const { instance, type, data } = await parseUsedResourceMessage(msg, false);
+                const { instance, type, data } = await parseUsedResourceMessage(msg, 'check');
                 const conflicts = usedResources.findConflicts(type, data || {}, instance);
                 if (msg.callback && msg.from) {
                     sendTo(msg.from, msg.command, { result: 'ok', conflicts }, msg.callback);
@@ -3697,7 +3716,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'freeUsedResource':
             try {
-                const { instance, type, data } = await parseUsedResourceMessage(msg, false);
+                const { instance, type, data } = await parseUsedResourceMessage(msg, 'free');
                 const changed = usedResources.free(type, data, instance);
                 assertUsedResourcesPersisted(await persistUsedResourceTypes(changed));
 
@@ -3723,6 +3742,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         case 'clearUsedResources':
             try {
                 const instance = getUsedResourceMessageInstance(msg);
+                assertInstanceDeclaresUsedResources(instance);
                 assertUsedResourcesPersisted(await persistUsedResourceTypes(usedResources.removeInstance(instance)));
                 if (msg.callback && msg.from) {
                     sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
