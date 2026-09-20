@@ -243,7 +243,7 @@ describe('InstanceManager.setInstanceOfflineStates', () => {
 
         assert.equal(getState.firstCall.args[0], 'hm-rpc.0.info.connection');
         assert.equal(setState.callCount, 3);
-        assert.equal(setState.thirdCall.args[0], 'hm-rpc.0');
+        assert.equal(setState.thirdCall.args[0], 'hm-rpc.0.info.connection');
         assert.equal(options.statistics.outputCount, 3);
     });
 });
