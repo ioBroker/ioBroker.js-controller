@@ -8,6 +8,6 @@
 
 > **ObjectType** = `"state"` \| `"channel"` \| `"device"` \| `"folder"` \| `"enum"` \| `"adapter"` \| `"config"` \| `"group"` \| `"host"` \| `"instance"` \| `"meta"` \| `"script"` \| `"user"` \| `"chart"` \| `"schedule"` \| `"design"`
 
-Defined in: [types-dev/objects.d.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/45e1308b97991aa172e3f71f94494b11cc461548/packages/types-dev/objects.d.ts#L41)
+Defined in: [types-dev/objects.d.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/objects.d.ts#L41)
 
 Defines the existing object types in ioBroker

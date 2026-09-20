@@ -544,6 +544,7 @@
         "licenseConfirmed": false,
         "defaultHistory": "",
         "expertMode": false,
+        "tipsDisabled": false,
         "defaultLogLevel": "info",
         "activeRepo": [
           "stable"
