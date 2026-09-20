@@ -586,6 +586,41 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         );
     });
 
+    // members of the administrator group are not restricted by the ACL of a state, like for objects and files
+    it(`${testName}Set and get foreign state with acl as member of the administrator group`, async function () {
+        this.timeout(3_000);
+        const fGid = `${context.adapterShortName}3.2.${gid}`;
+
+        await context.adapter.setForeignObjectAsync(fGid, {
+            common: {
+                read: true,
+                write: true,
+                name: 'test1',
+                type: 'number',
+                role: 'level',
+                min: -100,
+                max: 100,
+            },
+            native: {},
+            type: 'state',
+            acl: {
+                object: 0x600,
+                owner: 'system.user.write-only',
+                ownerGroup: 'system.group.writer',
+                state: 0x600,
+            },
+        });
+
+        // system.user.queen is in system.group.administrator, but neither the owner nor in the owner group.
+        // Everybody else has no rights at all on this state, so only the administrator group lets her through.
+        await context.adapter.setForeignStateAsync(fGid, 7, false, { user: 'system.user.queen' });
+
+        const state = await context.adapter.getForeignStateAsync(fGid, { user: 'system.user.queen' });
+        assert.ok(state);
+        assert.strictEqual(state.val, 7);
+        assert.strictEqual(state.ack, false);
+    });
+
     // setForeignState with acl write only
     it(`${testName}Set foreign state with acl write only`, function (done) {
         this.timeout(3_000);
