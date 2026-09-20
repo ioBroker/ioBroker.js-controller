@@ -9111,7 +9111,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
      * @param data the strictly typed payload describing the resource, e.g. `{ port: '/dev/ttyUSB0' }`
-     * @throws {Error} when the host refuses the registration - e.g. because `common.declareUsedResources` is missing - or does not answer
+     * @throws {Error} when the host refuses the registration - e.g. because `common.declareUsedResources` is not `true` - or does not answer
      */
     async registerUsedResource<T extends ioBroker.UsedResourceType>(
         type: T,

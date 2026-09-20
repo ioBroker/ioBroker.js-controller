@@ -8,4 +8,4 @@
 
 > **PaidLicenseType** = `"paid"` \| `"commercial"` \| `"limited"`
 
-Defined in: [types-dev/objects.d.ts:571](https://github.com/ioBroker/ioBroker.js-controller/blob/2ebf28464ebc247e66c1058f25b2ab47f7574935/packages/types-dev/objects.d.ts#L571)
+Defined in: [types-dev/objects.d.ts:571](https://github.com/ioBroker/ioBroker.js-controller/blob/e3925cc64e80556f948f3edd043e48c803e45ddd/packages/types-dev/objects.d.ts#L571)

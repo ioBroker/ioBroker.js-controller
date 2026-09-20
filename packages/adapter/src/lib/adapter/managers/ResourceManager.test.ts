@@ -36,6 +36,7 @@ function makeContext(over: Partial<AdapterContext> = {}): AdapterContext {
         namespaceLog: 'test.0',
         logger: { silly() {}, debug() {}, info() {}, warn() {}, error() {} } as any,
         uiMessagingController: {} as any,
+        countOutput: () => {},
         states: null,
         objects: null,
         common: undefined,
@@ -189,7 +190,7 @@ describe('ResourceManager.checkUsedResource', () => {
 
 describe('ResourceManager.getHostUsedResources', () => {
     it('throws when the host is unknown', async () => {
-        const mgr = new ResourceManager(makeContext({ host: undefined, states: {} as any }));
+        const mgr = makeRealManager({ host: undefined, states: {} as any });
         await assert.rejects(() => mgr.getHostUsedResources('serialPort'), /host of this instance is unknown/);
         await assert.rejects(() => mgr.getHostUsedResources(), /host of this instance is unknown/);
     });
@@ -199,7 +200,7 @@ describe('ResourceManager.getHostUsedResources', () => {
             { type: 'serialPort', data: { port: '/dev/ttyUSB0' }, instance: 'test.0', ts: 1, isBlocked: true },
         ];
         const getState = sinon.stub().resolves({ val: JSON.stringify(entries) });
-        const mgr = new ResourceManager(makeContext({ states: { getState } as any }));
+        const mgr = makeRealManager({ states: { getState } as any });
 
         const res = await mgr.getHostUsedResources('serialPort');
 
@@ -213,7 +214,7 @@ describe('ResourceManager.getHostUsedResources', () => {
         getState.onCall(1).resolves({ val: '' });
         getState.onCall(2).resolves({ val: 'not-json' });
         getState.onCall(3).resolves({ val: '{"not":"an array"}' });
-        const mgr = new ResourceManager(makeContext({ states: { getState } as any }));
+        const mgr = makeRealManager({ states: { getState } as any });
 
         assert.deepEqual(await mgr.getHostUsedResources('serialPort'), []);
         assert.deepEqual(await mgr.getHostUsedResources('serialPort'), []);
@@ -233,7 +234,7 @@ describe('ResourceManager.getHostUsedResources', () => {
                 'system.host.localhost.usedResources.tcpPort',
             ]);
         const getStates = sinon.stub().resolves([{ val: JSON.stringify(serial) }, { val: JSON.stringify(tcp) }]);
-        const mgr = new ResourceManager(makeContext({ states: { getKeys, getStates } as any }));
+        const mgr = makeRealManager({ states: { getKeys, getStates } as any });
 
         const res = await mgr.getHostUsedResources();
 
@@ -244,7 +245,7 @@ describe('ResourceManager.getHostUsedResources', () => {
     it('returns an empty list when the host has no resource states', async () => {
         const getKeys = sinon.stub().resolves([]);
         const getStates = sinon.stub().resolves([]);
-        const mgr = new ResourceManager(makeContext({ states: { getKeys, getStates } as any }));
+        const mgr = makeRealManager({ states: { getKeys, getStates } as any });
 
         assert.deepEqual(await mgr.getHostUsedResources(), []);
         assert.equal(getStates.callCount, 0);

@@ -25,9 +25,369 @@ export function isValidUsedResourceType(type: unknown): type is ioBroker.UsedRes
     return typeof type === 'string' && RESOURCE_TYPE_PATTERN.test(type);
 }
 
+/** Rule for one payload field of a known resource type */
+interface PayloadFieldRule {
+    /** Whether a registration has to name the field */
+    required: boolean;
+    /** What the value has to look like, for the error message */
+    expected: string;
+    /** Check the value of the field */
+    isValid: (value: unknown) => boolean;
+    /** Bring an incoming value into its stored form before it is checked, see {@link normalizeUsedResourceData} */
+    normalize?: (value: unknown) => unknown;
+}
+
+const isString = (value: unknown): boolean => typeof value === 'string';
+const isNonEmptyString = (value: unknown): boolean => typeof value === 'string' && value.trim() !== '';
+
 /**
- * Check that a value has the shape of a registered resource. Used when reading entries back from the
- * persisted state, so that malformed or outdated content cannot enter the registry.
+ * Payload values are flat: they identify a port, a path or a pin, and are compared with `===`.
+ *
+ * @param value the value of a payload field
+ */
+const isPrimitive = (value: unknown): boolean =>
+    typeof value === 'string' || typeof value === 'boolean' || (typeof value === 'number' && Number.isFinite(value));
+
+/**
+ * A number field may arrive as a string of digits, e.g. a port taken from a text field of the configuration.
+ * Only plain digits are converted - `'0x50'` or `'1e3'` stay strings and are refused.
+ *
+ * @param value the incoming value of a number field
+ */
+const digitsToNumber = (value: unknown): unknown =>
+    typeof value === 'string' && /^\s*\d+\s*$/.test(value) ? Number(value) : value;
+
+/** The payload rules shared by `tcpPort` and `udpPort` */
+const NETWORK_PORT_RULES: Record<
+    keyof ioBroker.TcpPortResourceData & keyof ioBroker.UdpPortResourceData,
+    PayloadFieldRule
+> = {
+    port: {
+        required: true,
+        expected: 'an integer between 1 and 65535',
+        isValid: value => Number.isInteger(value) && (value as number) >= 1 && (value as number) <= 65_535,
+        normalize: digitsToNumber,
+    },
+    bind: { required: false, expected: 'a string', isValid: isString },
+    family: {
+        required: false,
+        expected: '4 or 6',
+        isValid: value => value === 4 || value === 6,
+        normalize: digitsToNumber,
+    },
+};
+
+/**
+ * The payload rules of every resource type known to the controller. Typed against `UsedResourceDataMap`, so a
+ * new type or field there does not compile until it has a rule here.
+ */
+const PAYLOAD_RULES: {
+    [T in keyof ioBroker.UsedResourceDataMap]: Record<keyof ioBroker.UsedResourceDataMap[T], PayloadFieldRule>;
+} = {
+    serialPort: {
+        port: { required: true, expected: 'a non-empty string', isValid: isNonEmptyString },
+        baudRate: {
+            required: false,
+            expected: 'a positive integer',
+            isValid: value => Number.isInteger(value) && (value as number) > 0,
+            normalize: digitsToNumber,
+        },
+        device: { required: false, expected: 'a non-empty string', isValid: isNonEmptyString },
+    },
+    tcpPort: NETWORK_PORT_RULES,
+    udpPort: NETWORK_PORT_RULES,
+    usb: {
+        path: { required: true, expected: 'a non-empty string', isValid: isNonEmptyString },
+        vendorId: { required: false, expected: 'a string', isValid: isString },
+        productId: { required: false, expected: 'a string', isValid: isString },
+    },
+    bluetooth: {
+        hci: { required: true, expected: 'a non-empty string', isValid: isNonEmptyString },
+    },
+    gpio: {
+        pin: {
+            required: true,
+            expected: 'an integer >= 0 (the line offset on its chip)',
+            isValid: value => Number.isInteger(value) && (value as number) >= 0,
+            normalize: digitsToNumber,
+        },
+        chip: {
+            required: false,
+            expected: 'a non-empty string',
+            isValid: isNonEmptyString,
+            // "2", 2 and "/dev/gpiochip2" all mean the same chip
+            normalize: value => {
+                const name = typeof value === 'number' ? String(value) : typeof value === 'string' ? value.trim() : '';
+                if (!name) {
+                    return value;
+                }
+                const bare = name.replace(/^\/dev\//, '');
+                return /^\d+$/.test(bare) ? `gpiochip${bare}` : bare;
+            },
+        },
+    },
+};
+
+/**
+ * Get the payload rules of a resource type.
+ *
+ * @param type the resource type
+ * @returns the rules, or undefined for a custom type (module augmentation), of which nothing is known
+ */
+function getPayloadRules(type: ioBroker.UsedResourceType): Record<string, PayloadFieldRule> | undefined {
+    // hasOwn, because a type like "constructor" is a valid identifier as well
+    return Object.hasOwn(PAYLOAD_RULES, type) ? PAYLOAD_RULES[type] : undefined;
+}
+
+/**
+ * Check a payload against the rules of its resource type.
+ *
+ * A registration (`partial` false) has to name every required field. Without them the payload would be a
+ * wildcard: `{}` names no field, so as a filter it matches every entry of its type, and
+ * {@link UsedResourcesRegistry.findConflicts}, which compares in both directions, would report such an entry as
+ * a conflict with every resource of that type on the host. A filter for free/check (`partial` true) may leave
+ * fields out, but the ones it names must have the right type - `{ port: '1883' }` could never match anything.
+ *
+ * Every value has to be a string, a finite number or a boolean - also of fields a type does not know and of a
+ * custom type (module augmentation). Beyond that, fields a type does not know are left alone, and of a custom
+ * type nothing is known, so a registration only has to name at least one field.
+ *
+ * This checks the stored form, so a string of digits in a number field is refused here - see
+ * {@link normalizeUsedResourceData} for incoming payloads.
+ *
+ * @param type the resource type, e.g. "tcpPort"
+ * @param data the payload
+ * @param partial whether the payload is a filter instead of a complete description of the resource
+ * @returns a description of the first problem, or undefined if the payload is valid
+ */
+export function validateUsedResourceData(
+    type: ioBroker.UsedResourceType,
+    data: Partial<ioBroker.UsedResourceData>,
+    partial: boolean,
+): string | undefined {
+    const payload = data as unknown as Record<string, unknown>;
+
+    for (const [field, value] of Object.entries(payload)) {
+        if (value !== undefined && !isPrimitive(value)) {
+            return `"${field}" must be a string, a number or a boolean, got ${JSON.stringify(value)}`;
+        }
+    }
+
+    const rules = getPayloadRules(type);
+    if (!rules) {
+        if (!partial && !Object.values(payload).some(value => value !== undefined)) {
+            return 'the payload must name at least one field';
+        }
+        return undefined;
+    }
+
+    for (const [field, rule] of Object.entries(rules)) {
+        const value = payload[field];
+        // an explicitly undefined field counts as not named, like everywhere else in the registry
+        if (value === undefined) {
+            if (rule.required && !partial) {
+                return `"${field}" is required`;
+            }
+            continue;
+        }
+        if (!rule.isValid(value)) {
+            return `"${field}" must be ${rule.expected}, got ${JSON.stringify(value)}`;
+        }
+    }
+
+    return undefined;
+}
+
+/**
+ * Bring an incoming payload into its stored form and check it (see {@link validateUsedResourceData}).
+ *
+ * A number field of a known type also accepts a string of digits and stores it as a number, so a port taken
+ * from a text field of the configuration still is the same port as one given as a number. Everything is
+ * converted once on the way in, which is what lets {@link matchesUsedResourceData} compare strictly and keeps it
+ * in line with {@link getUsedResourceKey}. Fields set to `undefined` are dropped.
+ *
+ * @param type the resource type, e.g. "tcpPort"
+ * @param data the payload as it arrived
+ * @param partial whether the payload is a filter instead of a complete description of the resource
+ * @returns the normalized copy of the payload, or a description of the first problem
+ */
+export function normalizeUsedResourceData(
+    type: ioBroker.UsedResourceType,
+    data: object,
+    partial: boolean,
+): { data: Partial<ioBroker.UsedResourceData> } | { error: string } {
+    const rules = getPayloadRules(type);
+    const normalized: Record<string, unknown> = {};
+    for (const [field, value] of Object.entries(data)) {
+        if (value === undefined) {
+            continue;
+        }
+        const normalize = rules && Object.hasOwn(rules, field) ? rules[field].normalize : undefined;
+        normalized[field] = normalize ? normalize(value) : value;
+    }
+
+    const error = validateUsedResourceData(type, normalized, partial);
+    return error ? { error } : { data: normalized };
+}
+
+/**
+ * Resolve the name of a serial port to the device it denotes, so that two names of the same port are recognized
+ * as one: `/dev/serial/by-id/...` and `/dev/serial0` are symlinks to a `/dev/ttyUSB0` or `/dev/ttyAMA0`, macOS
+ * has a `/dev/cu.*` and a `/dev/tty.*` node for every port, and Windows neither cares about the case of `COM3`
+ * nor about a `\\.\` in front of it.
+ *
+ * A name that cannot be resolved - the device is unplugged, or the name is no path at all like `tcp://...` - is
+ * returned as it is.
+ *
+ * @param name the name of the serial port, as an adapter opens it
+ * @param platform the platform of the host the port belongs to
+ * @param realpath resolves the symlinks of a path, e.g. `fs.promises.realpath`
+ * @returns the name of the device
+ */
+export async function resolveSerialPortName(
+    name: string,
+    platform: NodeJS.Platform,
+    realpath: (path: string) => Promise<string>,
+): Promise<string> {
+    if (platform === 'win32') {
+        return name.replace(/^\\\\[.?]\\/, '').toUpperCase();
+    }
+    if (!name.startsWith('/')) {
+        return name;
+    }
+
+    let resolved = name;
+    try {
+        resolved = await realpath(name);
+    } catch {
+        // not present right now - then the name is all there is to compare
+    }
+
+    // both nodes of a macOS port lead to the same device
+    return platform === 'darwin' ? resolved.replace(/^\/dev\/cu\./, '/dev/tty.') : resolved;
+}
+
+/**
+ * Put the device a serial port resolves to into its payload - the device is what identifies the port.
+ *
+ * A registration keeps the `port` it was given, because `/dev/serial/by-id/...` tells the user more than
+ * `/dev/ttyUSB0` and survives a replug, and gets the resolved `device` next to it; a `device` sent by the adapter
+ * is replaced. A filter is turned into a filter on `device`, so it finds the port under whatever name it was
+ * registered.
+ *
+ * @param data the normalized payload of a serial port
+ * @param isRegistration whether the payload registers the port or is a filter
+ * @param resolveName resolves the name of a port, see {@link resolveSerialPortName}
+ * @returns the payload with the resolved device
+ */
+export async function withSerialPortDevice(
+    data: Partial<ioBroker.SerialPortResourceData>,
+    isRegistration: boolean,
+    resolveName: (name: string) => Promise<string>,
+): Promise<Partial<ioBroker.SerialPortResourceData>> {
+    const { port, device, ...rest } = data;
+    const name = isRegistration ? port : (port ?? device);
+    if (name === undefined) {
+        return rest;
+    }
+
+    const resolved = await resolveName(name);
+    return isRegistration ? { ...rest, port: name, device: resolved } : { ...rest, device: resolved };
+}
+
+/**
+ * The part of a payload that identifies a resource when looking for conflicts.
+ *
+ * A serial port is identified by its device alone: two names of the same port are the same port, and two
+ * instances opening it with different baud rates still cannot share it. Every other type is compared as a whole.
+ *
+ * @param type the resource type
+ * @param data the payload
+ */
+function getConflictIdentity(
+    type: ioBroker.UsedResourceType,
+    data: Partial<ioBroker.UsedResourceData>,
+): Partial<ioBroker.UsedResourceData> {
+    if (type !== 'serialPort') {
+        return data;
+    }
+    const { device, port } = data as Partial<ioBroker.SerialPortResourceData>;
+    // an entry without a resolved device - registered directly, not through the host - falls back to its name
+    const name = device ?? port;
+    return name === undefined ? {} : { device: name };
+}
+
+/** Addresses a socket binds to when it wants every address of the host */
+const WILDCARD_BIND_ADDRESSES = new Set(['0.0.0.0', '::', '*', '']);
+
+/**
+ * Whether two bind addresses can be held at the same time on one port.
+ *
+ * An address that is not named asks about every address, and a wildcard occupies every address - so
+ * `0.0.0.0:8080` and `127.0.0.1:8080` collide, while `192.168.0.2:8080` and `127.0.0.1:8080` do not.
+ *
+ * @param a the bind address of one payload
+ * @param b the bind address of the other payload
+ */
+function bindAddressesOverlap(a: string | undefined, b: string | undefined): boolean {
+    if (a === undefined || b === undefined) {
+        return true;
+    }
+    return WILDCARD_BIND_ADDRESSES.has(a.trim()) || WILDCARD_BIND_ADDRESSES.has(b.trim()) || a === b;
+}
+
+/**
+ * Whether two `tcpPort` / `udpPort` payloads describe sockets that cannot both exist.
+ *
+ * Plain field equality is not enough here: the operating system hands out a port per address, so the wildcard
+ * addresses have to be taken into account, while two different address families are two different sockets.
+ * Fields neither type knows do not keep the sockets apart - the port is what is occupied.
+ *
+ * @param a one payload
+ * @param b the other payload
+ */
+function networkPortsOverlap(
+    a: Partial<ioBroker.TcpPortResourceData>,
+    b: Partial<ioBroker.TcpPortResourceData>,
+): boolean {
+    // a filter that does not name the port asks about every port of its type
+    if (a.port !== undefined && b.port !== undefined && a.port !== b.port) {
+        return false;
+    }
+    if (a.family !== undefined && b.family !== undefined && a.family !== b.family) {
+        return false;
+    }
+    return bindAddressesOverlap(a.bind, b.bind);
+}
+
+/**
+ * Whether two payloads of the same resource type describe a resource that only one of them can have.
+ *
+ * @param type the resource type
+ * @param a one payload
+ * @param b the other payload
+ */
+function usedResourcesOverlap(
+    type: ioBroker.UsedResourceType,
+    a: Partial<ioBroker.UsedResourceData>,
+    b: Partial<ioBroker.UsedResourceData>,
+): boolean {
+    if (type === 'tcpPort' || type === 'udpPort') {
+        return networkPortsOverlap(
+            a as Partial<ioBroker.TcpPortResourceData>,
+            b as Partial<ioBroker.TcpPortResourceData>,
+        );
+    }
+
+    // everything else overlaps when one payload describes a subset of the other
+    const identityA = getConflictIdentity(type, a);
+    const identityB = getConflictIdentity(type, b);
+    return matchesUsedResourceData(identityA, identityB) || matchesUsedResourceData(identityB, identityA);
+}
+
+/**
+ * Check that a value has the shape of a registered resource with a valid payload. Used when reading entries back
+ * from the persisted state, so that malformed or outdated content cannot enter the registry.
  *
  * @param entry the value to check
  */
@@ -44,7 +404,8 @@ export function isRegisteredResource(entry: unknown): entry is ioBroker.Register
         typeof candidate.isBlocked === 'boolean' &&
         typeof candidate.data === 'object' &&
         candidate.data !== null &&
-        !Array.isArray(candidate.data)
+        !Array.isArray(candidate.data) &&
+        validateUsedResourceData(candidate.type, candidate.data, false) === undefined
     );
 }
 
@@ -81,9 +442,10 @@ export function getUsedResourceKey(resource: {
  * Check whether a registered payload matches a filter: every field the filter names must be equal, fields it
  * does not name are ignored. An omitted or empty filter matches everything.
  *
- * Values are compared serialized, so `80` and `"80"` stay different and structured values are compared by
- * content - the same rules {@link getUsedResourceKey} applies. A field explicitly set to `undefined` counts
- * as not named, because that is also what survives the JSON round-trip through the persisted state.
+ * Values are primitives in their stored form - {@link normalizeUsedResourceData} already turned a port given as
+ * `'80'` into `80` - so they are compared strictly, like {@link getUsedResourceKey} keeps them apart. A field
+ * explicitly set to `undefined` counts as not named, because that is also what survives the JSON round-trip
+ * through the persisted state.
  *
  * @param data the payload of a registered resource
  * @param filter the fields that have to match
@@ -101,12 +463,36 @@ export function matchesUsedResourceData(
         if (value === undefined) {
             continue;
         }
-        if (JSON.stringify(entries[key]) !== JSON.stringify(value)) {
+        if (entries[key] !== value) {
             return false;
         }
     }
 
     return true;
+}
+
+/**
+ * Who keeps the used resources of an instance in the registry:
+ * - `adapter`: the adapter declares them itself via `registerUsedResource(...)`
+ * - `controller`: the controller derives them from `native.port` / `native.bind`
+ * - `none`: the instance has no entries at all
+ */
+export type UsedResourcesMode = 'adapter' | 'controller' | 'none';
+
+/**
+ * Determine who keeps the used resources of an instance in the registry, from its `common.declareUsedResources`.
+ *
+ * Only an explicit `false` opts out - it is meant for an adapter whose `native.port` is not a port it listens on,
+ * e.g. the port of the device it connects to, which the controller would otherwise list as occupied.
+ *
+ * @param instance the instance object
+ */
+export function getUsedResourcesMode(instance: Pick<ioBroker.InstanceObject, 'common'>): UsedResourcesMode {
+    const declare = instance.common?.declareUsedResources;
+    if (declare === true) {
+        return 'adapter';
+    }
+    return declare === false ? 'none' : 'controller';
 }
 
 /** Options for the {@link UsedResourcesRegistry} */
@@ -238,8 +624,9 @@ export class UsedResourcesRegistry {
      * Only entries with `isBlocked` are considered, because an entry of a stopped instance means
      * "would occupy this when started" and must not stand in the way of an instance that runs now.
      * Two payloads overlap when one describes a subset of the other, so `{ port: 1883 }` conflicts
-     * with `{ port: 1883, bind: '0.0.0.0' }` - but two different `bind` addresses on the same port
-     * are not reported, even though the operating system may still disagree.
+     * with `{ port: 1883, bind: '0.0.0.0' }`. Two types are compared by what really cannot be shared
+     * instead: a network port by port, bind address and family (see {@link networkPortsOverlap}), a
+     * serial port by its resolved device (see {@link getConflictIdentity}).
      *
      * @param type the resource type, e.g. "tcpPort"
      * @param data the description of the resource that is about to be used
@@ -258,10 +645,7 @@ export class UsedResourcesRegistry {
 
         return list
             .filter(
-                entry =>
-                    entry.instance !== instance &&
-                    entry.isBlocked &&
-                    (matchesUsedResourceData(entry.data, data) || matchesUsedResourceData(data, entry.data)),
+                entry => entry.instance !== instance && entry.isBlocked && usedResourcesOverlap(type, entry.data, data),
             )
             .map(entry => structuredClone(entry))
             .sort((a, b) => b.ts - a.ts);

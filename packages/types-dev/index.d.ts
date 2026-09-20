@@ -91,10 +91,19 @@ declare global {
 
         /** A serial port occupied by an instance */
         interface SerialPortResourceData {
-            /** System path or name of the serial port, e.g. "/dev/ttyUSB0" or "COM3" */
+            /**
+             * System path or name of the serial port as the adapter opens it, e.g. "/dev/ttyUSB0", a stable
+             * "/dev/serial/by-id/..." link or "COM3"
+             */
             port: string;
             /** Baud rate the port is opened with, if known */
             baudRate?: number;
+            /**
+             * The device `port` resolves to, e.g. "/dev/ttyUSB0" for a "/dev/serial/by-id/..." link or "COM3" for
+             * "\\\\.\\com3". Set by the host on registration and used to recognize the same port under different
+             * names; an adapter does not set it.
+             */
+            device?: string;
         }
 
         /** A TCP port occupied by an instance */
@@ -135,8 +144,18 @@ declare global {
 
         /** A GPIO pin occupied by an instance */
         interface GpioResourceData {
-            /** GPIO pin number (BCM numbering) */
+            /**
+             * Line offset of the pin on its GPIO chip. On the main chip of a Raspberry Pi that is the BCM number, so
+             * GPIO 17 is header pin 11. Convert physical header pins, wiringPi numbers or sysfs numbers (which start
+             * at 512 on newer kernels) before registering, otherwise the same pin is not recognized.
+             */
             pin: number;
+            /**
+             * GPIO chip the pin belongs to, e.g. "gpiochip2" for an I²C port expander. Leave it out for the main chip
+             * of the board; an entry without a chip counts as overlapping with the same pin on any chip, because the
+             * host cannot tell which one was meant.
+             */
+            chip?: string;
         }
 
         /**

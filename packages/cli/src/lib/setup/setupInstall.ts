@@ -1602,6 +1602,9 @@ export class Install {
                 await this._deleteAdapterFiles(adapter, metaFilesToDelete);
                 await this._deleteAdapterObjects(knownObjectIDs);
                 await this._deleteAdapterStates(knownStateIDs);
+                // this path removes the instance objects itself instead of going through deleteInstance,
+                // so the registry entries of every instance of the adapter have to be freed here as well
+                await this._freeUsedResources(adapter);
 
                 if (this.params.custom) {
                     // remove adapter from custom
