@@ -20,7 +20,8 @@
         "enabled": false,
         "secure": true,
         "password":  "",
-        "persist": false
+        "persist": false,
+        "pairing": true
     },
     "objects" : {
         "type": "jsonl",
