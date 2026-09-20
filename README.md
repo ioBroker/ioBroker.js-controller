@@ -1201,6 +1201,42 @@ If an array with field names from native is defined in io-package.json as common
 
 It is best practice adding the field names of encrypted fields to the protectedNative array too to make sure the fields stay protected (even if encrypted). Only let other adapters read your encrypted values if there is a need to (e.g. adapter interoperability)
 
+#### Complex attribute names in encryptedNative and protectedNative
+**Feature status:** Stable, since js-controller 7.0.7
+
+The entries of `encryptedNative` and `protectedNative` are not limited to top-level attributes of `native`. A complex attribute name addresses a nested attribute by joining the path segments with a dot. If a segment points to an array, the rest of the path is applied to every element of that array.
+
+```json5
+// io-package.json
+{
+  "native": {
+    "password": "",
+    "cloud": {
+      "token": ""
+    },
+    "devices": [
+      { "ip": "192.168.1.10", "password": "" },
+      { "ip": "192.168.1.11", "password": "" }
+    ]
+  },
+  "encryptedNative": ["password", "cloud.token", "devices.password"],
+  "protectedNative": ["password", "cloud.token", "devices.password"]
+}
+```
+
+- `cloud.token` addresses `native.cloud.token`
+- `devices.password` addresses `native.devices[i].password` of every element. Elements without this attribute, or with a value that is not a string, are left untouched.
+
+The complex names are respected by:
+- `protectedNative`: the attributes are removed from the instance object when it is read by another adapter, at any depth
+- the adapter start: the attributes are decrypted in `this.config`, e.g. `this.config.cloud.token` and `this.config.devices[0].password` (since js-controller 7.2.3, before only top-level names were decrypted on start)
+- `adapter.updateConfig()`: the attributes are encrypted before the configuration is stored
+- `adapter.getEncryptedConfig()`: `getEncryptedConfig('cloud.token')` returns the decrypted string, `getEncryptedConfig('devices.password')` returns an array with one decrypted value per element
+
+For encryption, a path may run through at most one array.
+
+**Note:** The configuration dialogs of Admin (JSON config and React-based settings) currently encrypt and decrypt only top-level attribute names. A nested value entered there is stored as plain text, and the adapter would then try to decrypt this plain text on start. Only list complex names in `encryptedNative` if these values are stored encrypted, e.g. via `adapter.updateConfig()` or by your own configuration UI.
+
 #### Define Adapter dependencies to other adapters
 **Feature status:** Stable
 
