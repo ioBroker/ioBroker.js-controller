@@ -6645,11 +6645,15 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
     // the instance is no longer running: keep its resource registrations but mark them as not actively blocked
     await persistUsedResourceTypes(usedResources.setInstanceBlocked(adapterInstance, false));
 
-    const state = await states!.getState(`${adapterInstance}.info.connection`);
+    // the instance is no longer running: keep its resource registrations but mark them as not actively blocked
+    await persistUsedResourceTypes(usedResources.setInstanceBlocked(adapterInstance, false));
+
+    const connectionStateId = `${adapterInstance}.info.connection`;
+    const state = await states!.getState(connectionStateId);
 
     if (state?.val === true) {
         outputCount++;
-        await states!.setState(adapterInstance, { val: false, ack: true, from: hostObjectPrefix });
+        await states!.setState(connectionStateId, { val: false, ack: true, from: hostObjectPrefix });
     }
 }
 

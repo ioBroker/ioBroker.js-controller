@@ -9631,6 +9631,10 @@ export class AdapterClass extends EventEmitter {
         options: Partial<GetUserGroupsOptions>,
         command: CheckStateCommand,
     ): boolean {
+        // Members of the administrator group are not restricted by the ACL of a state, the same as for objects and files
+        if (options.groups?.includes(SYSTEM_ADMIN_GROUP)) {
+            return true;
+        }
         const limitToOwnerRights = options.limitToOwnerRights === true;
         if (obj?.acl) {
             obj.acl.state ||= obj.acl.object;

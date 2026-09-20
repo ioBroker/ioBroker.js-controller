@@ -8,7 +8,7 @@
 
 > **StateChangeHandler** = (`id`, `obj`) => `void` \| `Promise`\<`void`\>
 
-Defined in: [types-dev/index.d.ts:563](https://github.com/ioBroker/ioBroker.js-controller/blob/e3925cc64e80556f948f3edd043e48c803e45ddd/packages/types-dev/index.d.ts#L563)
+Defined in: [types-dev/index.d.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/index.d.ts#L437)
 
 ## Parameters
 
