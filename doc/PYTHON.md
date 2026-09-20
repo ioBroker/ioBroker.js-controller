@@ -193,9 +193,10 @@ two variables mean, finds no `…_PORT`, falls back to reading `iobroker.json` a
 on a Sentinel installation such an environment has to be rebuilt once (py-controller,
 "Rebuild environments").
 
-**Limitation:** a database on a **unix socket** (port `0`, host being the socket's path) cannot be
-expressed through these variables yet. The controller refuses to start Python adapters on such
-installations with a clear log message rather than letting them open a TCP connection to port 0.
+**Limitations:** A database on a **unix socket** (port `0`, host being the socket's path) cannot
+be expressed through these variables yet. Redis **TLS** configurations cannot be expressed either,
+because the environment does not carry their CA/key/cert settings. The controller refuses to start
+Python adapters for either configuration and logs the reason.
 
 All `common.mode` values except `extension` behave as for Node.js adapters: `daemon` is kept
 running, `schedule` is started by CRON, `once` runs on start and on configuration changes
