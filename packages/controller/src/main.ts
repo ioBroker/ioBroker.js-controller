@@ -6636,24 +6636,27 @@ async function _getNumberOfInstances(): Promise<
  * @param id id of the instance
  */
 async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promise<void> {
-    outputCount += 2;
-    await states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-    await states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
-
     const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
 
-    // the instance is no longer running: keep its resource registrations but mark them as not actively blocked
-    await persistUsedResourceTypes(usedResources.setInstanceBlocked(adapterInstance, false));
+    try {
+        outputCount += 2;
+        await states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+        await states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
 
-    // the instance is no longer running: keep its resource registrations but mark them as not actively blocked
-    await persistUsedResourceTypes(usedResources.setInstanceBlocked(adapterInstance, false));
+        const connectionStateId = `${adapterInstance}.info.connection`;
+        const state = await states!.getState(connectionStateId);
 
-    const connectionStateId = `${adapterInstance}.info.connection`;
-    const state = await states!.getState(connectionStateId);
-
-    if (state?.val === true) {
-        outputCount++;
-        await states!.setState(connectionStateId, { val: false, ack: true, from: hostObjectPrefix });
+        if (state?.val === true) {
+            outputCount++;
+            await states!.setState(connectionStateId, { val: false, ack: true, from: hostObjectPrefix });
+        }
+    } finally {
+        // The instance is no longer running: keep its resource registrations but mark them as not actively
+        // blocked. In a `finally`, because a status write that does not get through - a crash, an interrupted
+        // database - must not leave the registry claiming that a stopped instance still holds its resources;
+        // nothing would correct that afterwards. Persisting reports a failed write instead of rejecting, so
+        // this cannot swallow the error of the block above either.
+        await persistUsedResourceTypes(usedResources.setInstanceBlocked(adapterInstance, false));
     }
 }
 
