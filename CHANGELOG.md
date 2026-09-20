@@ -5,6 +5,9 @@
 -->
 ## __WORK IN PROGRESS__
 * (@GermanBluefox) Added support for adapters written in Python via `common.platform: "Python"` (feature flag `CONTROLLER_PYTHON_ADAPTERS`)
+* (@GermanBluefox) Node.js 22.19 is now the minimum version - 22.0 to 22.18 are no longer supported
+* (@GermanBluefox) Fixed `start` refusing to run after an unclean shutdown because of a left over `pids.txt`
+* (@GermanBluefox) Fixed the ACL of states restricting members of the administrator group - objects and files already let them through, states only the `admin` user
 * (@GermanBluefox) Added `tipsDisabled` to `system.config`, with which the admin remembers that the "Did you know ...?" tips must not be shown at the start
 * (@GermanBluefox) Added a progress bar for "iobroker upload" when it runs in a terminal
 * (@GermanBluefox) Fixed all Redis object views returning nothing when the Redis server was started with a UTF-8 collation
