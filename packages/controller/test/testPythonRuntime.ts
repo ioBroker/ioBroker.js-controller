@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import os from 'node:os';
-import { spawnSync } from 'node:child_process';
+import { spawnSync, type ChildProcess } from 'node:child_process';
+import { EventEmitter } from 'node:events';
+import { PassThrough } from 'node:stream';
 import fs from 'fs-extra';
 import {
     buildPythonEnv,
@@ -13,7 +15,7 @@ import {
     resolvePythonEntry,
     spawnPythonAdapter,
     unsupportedPythonDbConfig,
-    FORWARDED_PYTHON_RECORD,
+    parsePythonRecord,
 } from '../src/lib/pythonRuntime.js';
 import { getSupportedFeatures } from '@iobroker/js-controller-common';
 import { getInstanceIndicatorObjects } from '@iobroker/js-controller-common-db/tools';
@@ -494,7 +496,7 @@ describe('pythonRuntime', () => {
             });
 
             const logged: { level: string; line: string }[] = [];
-            forwardPythonOutput(child, (level, line) => logged.push({ level, line }));
+            forwardPythonOutput(child, 'python.7', (level, line) => logged.push({ level, line }));
 
             const exitCode = await new Promise<number | null>(resolve => child.on('close', resolve));
 
@@ -562,43 +564,96 @@ describe('pythonRuntime', () => {
         });
     });
 
+    describe('forwarding both streams of a process', () => {
+        /** A process whose two output streams can be written to from the test */
+        const makeChild = (): { child: ChildProcess; stdout: PassThrough; stderr: PassThrough } => {
+            const stdout = new PassThrough();
+            const stderr = new PassThrough();
+            const child = Object.assign(new EventEmitter(), { stdout, stderr }) as unknown as ChildProcess;
+
+            return { child, stdout, stderr };
+        };
+
+        /** The streams deliver on the next turns of the event loop */
+        const settle = (): Promise<void> => new Promise(resolve => setTimeout(resolve, 10));
+
+        it('logs a record with the level it carries, whichever stream it came on', async () => {
+            // Python's `logging` writes every level to stderr by default, so a healthy adapter would
+            // otherwise fill the host log with errors.
+            const { child, stderr } = makeChild();
+            const logged: { level: string; line: string }[] = [];
+            forwardPythonOutput(child, 'python.0', (level, line) => logged.push({ level, line }));
+
+            stderr.write('2026-09-06 07:12:03,001 DEBUG python.0 connecting\n');
+            stderr.write('Traceback (most recent call last):\n');
+            await settle();
+
+            assert.equal(logged[0].level, 'debug', 'the record says what it is');
+            assert.equal(logged[1].level, 'error', 'a line that is no record keeps the stream it came on');
+        });
+
+        it('keeps a character that was split across two chunks', async () => {
+            // Decoding each chunk on its own turns one character into two replacement characters,
+            // which is what an adapter logging anything non-ASCII runs into.
+            const { child, stdout } = makeChild();
+            const logged: string[] = [];
+            forwardPythonOutput(child, 'python.0', (_level, line) => logged.push(line));
+
+            const text = Buffer.from('Grüße\n', 'utf8');
+            stdout.write(text.subarray(0, 3));
+            stdout.write(text.subarray(3));
+            await settle();
+
+            assert.deepEqual(logged, ['Grüße']);
+        });
+    });
+
     describe('a forwarded record the adapter already pushed', () => {
         // Both routes end at the same user. The adapter pushes its own records to whoever asked
         // for the log, with the level and timestamp they actually had; this controller captures
         // the same lines from stdout for the host's log file. Without telling the two apart, admin
         // shows every Python line twice.
-        const forwarded = (line: string): string => `host.testhost system.adapter.python.0 ${line}`;
+        it('is recognised by the shape the SDK writes, and carries its own level', () => {
+            assert.deepEqual(parsePythonRecord('2026-09-06 07:12:03,001 INFO python.0 Adapter started', 'python.0'), {
+                level: 'info',
+                alreadyPushed: true,
+            });
+            assert.deepEqual(
+                parsePythonRecord('2026-09-06 07:12:03,001 ERROR python.0 the device refused', 'python.0'),
+                { level: 'error', alreadyPushed: true },
+            );
+        });
 
-        it('is recognised by the shape the SDK writes', () => {
-            assert.ok(
-                FORWARDED_PYTHON_RECORD.test(
-                    forwarded('2026-09-06 07:12:03,001 INFO python.0 Adapter python.0 started'),
-                ),
-            );
-            assert.ok(
-                FORWARDED_PYTHON_RECORD.test(forwarded('2026-09-06 07:12:03,001 ERROR python.0 the device refused')),
-            );
+        it('maps the levels of Python logging onto the ones the host knows', () => {
+            // `logging` writes every level to stderr by default. Taking the severity from the stream
+            // would turn the DEBUG output of a healthy adapter into a host log full of errors.
+            const level = (name: string): string | undefined =>
+                parsePythonRecord(`2026-09-06 07:12:03,001 ${name} python.0 a line`, 'python.0')?.level;
+
+            assert.equal(level('DEBUG'), 'debug');
+            assert.equal(level('INFO'), 'info');
+            assert.equal(level('WARNING'), 'warn');
+            assert.equal(level('CRITICAL'), 'error');
+            // not a level Python writes, so the line keeps the severity of the stream it came on
+            assert.equal(level('NOTICE'), undefined);
         });
 
         it('leaves everything the adapter did not push', () => {
             // These have no other route to a user, so they must keep being pushed under the host.
             // The failure mode here is a duplicate line; the failure mode of the opposite mistake
             // is a traceback nobody ever sees.
-            assert.equal(FORWARDED_PYTHON_RECORD.test(forwarded('  File "main.py", line 5')), false);
-            assert.equal(FORWARDED_PYTHON_RECORD.test(forwarded('ValueError: boom')), false);
-            assert.equal(FORWARDED_PYTHON_RECORD.test(forwarded('a bare print()')), false);
+            assert.equal(parsePythonRecord('  File "main.py", line 5', 'python.0'), null);
+            assert.equal(parsePythonRecord('ValueError: boom', 'python.0'), null);
+            assert.equal(parsePythonRecord('a bare print()', 'python.0'), null);
         });
 
-        it('leaves the host lines that mention an instance', () => {
-            // The controller says "system.adapter.x.0" in a great many of its own messages, and
-            // those are the log. Only the record header behind it makes a line the adapter's.
-            assert.equal(FORWARDED_PYTHON_RECORD.test('host.testhost instance system.adapter.python.0 started'), false);
-            assert.equal(
-                FORWARDED_PYTHON_RECORD.test(
-                    'host.testhost stopInstance system.adapter.python.0 (force=false, process=true)',
-                ),
-                false,
-            );
+        it('does not take the record of another instance for this instance own', () => {
+            // A Node adapter that forwards the output of a Python subprocess of its own writes exactly
+            // this shape. It never pushed the record, so dropping it would lose the line for good.
+            const record = parsePythonRecord('2026-09-06 07:12:03,001 INFO other.0 hello', 'python.0');
+
+            assert.equal(record?.level, 'info', 'the level is still what the record says');
+            assert.equal(record?.alreadyPushed, false, 'but nobody pushed it under this instance');
         });
     });
 

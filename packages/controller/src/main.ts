@@ -55,9 +55,10 @@ import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
 import {
     buildPythonEnv,
     checkPythonEnvironment,
-    FORWARDED_PYTHON_RECORD,
     forwardPythonOutput,
     isPythonAdapter,
+    PYTHON_ALREADY_PUSHED,
+    type PythonLogLevel,
     spawnPythonAdapter,
     unsupportedPythonDbConfig,
 } from '@/lib/pythonRuntime.js';
@@ -3970,8 +3971,11 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                         args,
                         env: buildPythonEnv(config, instance._id.split('.').pop() || '0', instance.common.loglevel),
                     });
-                    forwardPythonOutput(proc.process, (level, line) =>
-                        logger[level](`${hostLogPrefix} ${instance._id} ${line}`),
+                    forwardPythonOutput(
+                        proc.process,
+                        instance._id.substring(SYSTEM_ADAPTER_PREFIX.length),
+                        (level, line, alreadyPushed) =>
+                            logPythonLine(level, `${hostLogPrefix} ${instance._id} ${line}`, alreadyPushed),
                     );
                 } else {
                     proc.process = cp.fork(fileNameFull, args, {
@@ -4682,8 +4686,11 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     // rebuild detection on stderr, which cannot match a Python process; letting it
                     // attach as well would log everything twice and split the handling in two.
                     if (proc.pythonInterpreter && proc.process) {
-                        forwardPythonOutput(proc.process, (level, line) =>
-                            logger[level](`${hostLogPrefix} ${instance._id} ${line}`),
+                        forwardPythonOutput(
+                            proc.process,
+                            instance._id.substring(SYSTEM_ADAPTER_PREFIX.length),
+                            (level, line, alreadyPushed) =>
+                                logPythonLine(level, `${hostLogPrefix} ${instance._id} ${line}`, alreadyPushed),
                         );
                     }
 
@@ -5171,8 +5178,11 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             args,
                             env: buildPythonEnv(config, instanceNo, instance.common.loglevel),
                         });
-                        forwardPythonOutput(proc.process, (level, line) =>
-                            logger[level](`${hostLogPrefix} ${instance._id} ${line}`),
+                        forwardPythonOutput(
+                            proc.process,
+                            instance._id.substring(SYSTEM_ADAPTER_PREFIX.length),
+                            (level, line, alreadyPushed) =>
+                                logPythonLine(level, `${hostLogPrefix} ${instance._id} ${line}`, alreadyPushed),
                         );
                     } else {
                         // @ts-expect-error if mode !== extension we have ensured it exists
@@ -5771,11 +5781,11 @@ export async function init(compactGroupId?: number): Promise<void> {
     // @ts-expect-error types do not seem to be perfect here
     const ts = logger.transports.find(t => t.name === 'NT');
     ts!.on('logged', info => {
-        // A record a Python adapter already pushed itself, captured here from its stdout. It still
-        // belongs in the host's log file, which is why it was logged at all -- but pushing it to
-        // the transporters as well would show every Python line twice in admin, once attributed to
-        // the instance and once to this host.
-        if (typeof info.message === 'string' && FORWARDED_PYTHON_RECORD.test(info.message)) {
+        // A record a Python adapter already pushed itself, captured here from its stdout and marked by the
+        // forwarder. It still belongs in the host's log file, which is why it was logged at all -- but pushing
+        // it to the transporters as well would show every Python line twice in admin, once attributed to the
+        // instance and once to this host.
+        if ((info as Record<string, unknown>)[PYTHON_ALREADY_PUSHED]) {
             return;
         }
 
@@ -6188,6 +6198,25 @@ async function _getNumberOfInstances(): Promise<
         return { noInstances, noCompactInstances };
     } catch {
         return { noInstances: null, noCompactInstances: null };
+    }
+}
+
+/**
+ * Log a line recovered from the output of a Python adapter
+ *
+ * A record the adapter pushed to the log transporters itself is marked as such, so that the `logged` handler
+ * can leave it out of the push - otherwise admin shows every one of those lines twice, once under the instance
+ * and once under this host. It still goes into the host's log file, which is what the forwarding is for.
+ *
+ * @param level severity the line is logged with
+ * @param message the line, with the prefix of this host already in front of it
+ * @param alreadyPushed whether the adapter pushed this record to the transporters itself
+ */
+function logPythonLine(level: PythonLogLevel, message: string, alreadyPushed: boolean): void {
+    if (alreadyPushed) {
+        logger[level](message, { [PYTHON_ALREADY_PUSHED]: true });
+    } else {
+        logger[level](message);
     }
 }
 

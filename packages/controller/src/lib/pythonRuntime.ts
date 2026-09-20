@@ -402,28 +402,72 @@ export function unsupportedPythonDbConfig(config: ioBroker.IoBrokerJson): string
     return null;
 }
 
-/** Sink that receives whole, non-empty log lines recovered from a Python adapter's output */
-export type PythonLogSink = (level: 'info' | 'error', line: string) => void;
+/** Severity a recovered line is logged with */
+export type PythonLogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 /**
- * A forwarded line that the adapter has already sent to the log transporters itself.
+ * Sink that receives whole, non-empty log lines recovered from a Python adapter's output
  *
- * Every line a Python adapter writes is captured here and re-logged under the host, which is what
- * puts it in the host's log file and what surfaces a crash. Since SDK 0.8.0 the adapter *also*
- * pushes its own records to whoever asked for the log, with the level and timestamp the record
- * actually had -- the route that lets admin attribute the line to the instance instead of to the
- * host. Both routes end up in front of the same user, so the host copy of such a record must not
- * be pushed a second time.
- *
- * Recognised by the shape the SDK's formatter writes, inside the prefix this controller adds:
- *
- *     host.<name> system.adapter.<ns> 2026-09-06 07:12:03,001 INFO python.0 Adapter started
- *
- * Anything that does not match keeps the old behaviour and is pushed under the host: a traceback
- * frame, a bare `print()`, or the output of a library that logs its own way. Those have no other
- * route, so the failure mode of this test is a duplicate rather than a line nobody ever sees.
+ * `alreadyPushed` says that this exact record was sent to the log transporters by the adapter itself, so the
+ * host copy belongs in the log file but must not be pushed a second time.
  */
-export const FORWARDED_PYTHON_RECORD = / system\.adapter\.[^\s]+ \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3} [A-Z]+\s/;
+export type PythonLogSink = (level: PythonLogLevel, line: string, alreadyPushed: boolean) => void;
+
+/**
+ * Property with which a log record is marked as one the adapter pushed to the transporters itself.
+ *
+ * Every line a Python adapter writes is captured here and re-logged under the host, which is what puts it in
+ * the host's log file and what surfaces a crash. Since SDK 0.8.0 the adapter *also* pushes its own records to
+ * whoever asked for the log, with the level and timestamp the record actually had -- the route that lets admin
+ * attribute the line to the instance instead of to the host. Both routes end at the same user, so the host copy
+ * of such a record must not be pushed a second time.
+ *
+ * The mark is set where the line is read, because that is the only place which knows for certain which instance
+ * produced it. Deciding it at the other end of the pipeline, from the text of every record the host logs, costs
+ * a regular expression per log line and cannot tell this apart from a Node adapter that forwards the output of
+ * a Python subprocess of its own.
+ */
+export const PYTHON_ALREADY_PUSHED = 'pythonAlreadyPushed';
+
+/** How the levels of Python's `logging` map onto the ones the host knows */
+const PYTHON_LOG_LEVELS: Record<string, PythonLogLevel> = {
+    DEBUG: 'debug',
+    INFO: 'info',
+    WARNING: 'warn',
+    WARN: 'warn',
+    ERROR: 'error',
+    CRITICAL: 'error',
+    FATAL: 'error',
+};
+
+/** A record as the SDK's formatter writes it: `2026-09-06 07:12:03,001 INFO python.0 Adapter started` */
+const PYTHON_RECORD = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3} ([A-Z]+) (\S+) /;
+
+/**
+ * Read what a line says about itself, if it is a record the Python side formatted
+ *
+ * Two things come out of it. The level, because `logging` writes every level to stderr by default - taking the
+ * severity from the stream would turn a healthy adapter's DEBUG output into a host log full of errors. And
+ * whether the adapter pushed this record itself, which it only did when the record names this very instance:
+ * a line that quotes some other instance is not this instance's second copy.
+ *
+ * @param line one recovered line, without the prefix the host adds
+ * @param namespace the instance the output belongs to, e.g. "python.0"
+ * @returns what the record says, or null when the line is none - a traceback frame, a bare `print()`
+ */
+export function parsePythonRecord(
+    line: string,
+    namespace: string,
+): { level: PythonLogLevel; alreadyPushed: boolean } | null {
+    const match = line.match(PYTHON_RECORD);
+    if (!match) {
+        return null;
+    }
+
+    const level = PYTHON_LOG_LEVELS[match[1]];
+
+    return level ? { level, alreadyPushed: match[2] === namespace } : null;
+}
 
 /**
  * Build a consumer that turns a stream of chunks into whole log lines
@@ -480,12 +524,29 @@ export function createLineSplitter(emit: (line: string) => void): {
  * module's default handler go to stderr. Both would be lost otherwise, and a traceback is the most
  * useful thing an adapter ever produces.
  *
+ * The stream a line arrived on only decides the severity of lines that are no log record: Python's `logging`
+ * sends every level to stderr by default, so a record says itself what it is (see {@link parsePythonRecord}).
+ *
  * @param child the started process
+ * @param namespace the instance the output belongs to, e.g. "python.0"
  * @param log receives every recovered line with its severity
  */
-export function forwardPythonOutput(child: ChildProcess, log: PythonLogSink): void {
-    const out = createLineSplitter(line => log('info', line));
-    const err = createLineSplitter(line => log('error', line));
+export function forwardPythonOutput(child: ChildProcess, namespace: string, log: PythonLogSink): void {
+    // Before the listeners: the streams hand out chunks, and decoding each of them on its own turns a
+    // multibyte character that was split across two reads into two replacement characters.
+    child.stdout?.setEncoding('utf8');
+    child.stderr?.setEncoding('utf8');
+
+    const forward =
+        (streamLevel: PythonLogLevel) =>
+        (line: string): void => {
+            const record = parsePythonRecord(line, namespace);
+
+            log(record?.level ?? streamLevel, line, record?.alreadyPushed ?? false);
+        };
+
+    const out = createLineSplitter(forward('info'));
+    const err = createLineSplitter(forward('error'));
 
     child.stdout?.on('data', out.onData);
     child.stderr?.on('data', err.onData);
