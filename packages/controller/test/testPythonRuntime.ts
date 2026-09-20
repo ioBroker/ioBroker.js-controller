@@ -154,9 +154,19 @@ describe('pythonRuntime', () => {
             const envDir = path.join(interpreter, '..', '..', '..');
             const stampFile = path.join(envDir, 'environment.json');
 
-            const writeStamp = async (stamp: Record<string, unknown>): Promise<void> => {
+            /**
+             * Put a usable interpreter in place. Executable on purpose: the check is `X_OK`, and a file
+             * written here is not executable on POSIX - on Windows the bit does not exist and every file
+             * passes, which is why forgetting it fails only half the matrix.
+             */
+            const writeInterpreter = async (): Promise<void> => {
                 await fs.ensureDir(path.dirname(interpreter));
                 await fs.writeFile(interpreter, '');
+                await fs.chmod(interpreter, 0o755);
+            };
+
+            const writeStamp = async (stamp: Record<string, unknown>): Promise<void> => {
+                await writeInterpreter();
                 await fs.writeJson(stampFile, stamp);
             };
 
@@ -200,8 +210,7 @@ describe('pythonRuntime', () => {
                 // A torn write - the file exists, the JSON ends in the middle. Only a *missing* stamp is the
                 // environment built before stamps existed; one that nobody finished writing is the very case
                 // the `building` flag above guards against, and it has to be treated the same way.
-                await fs.ensureDir(path.dirname(interpreter));
-                await fs.writeFile(interpreter, '');
+                await writeInterpreter();
                 await fs.writeFile(stampFile, '{ "adapterVersion": "1.0.0", "building"');
 
                 const env = await checkPythonEnvironment(adapter, '1.0.0');
@@ -218,10 +227,25 @@ describe('pythonRuntime', () => {
 
             it('still accepts an environment that has no stamp at all', async () => {
                 // built before the stamp existed, or by hand
-                await fs.ensureDir(path.dirname(interpreter));
-                await fs.writeFile(interpreter, '');
+                await writeInterpreter();
 
                 assert.equal((await checkPythonEnvironment(adapter, '1.0.0')).ready, true);
+            });
+
+            it('refuses an interpreter that is there but cannot be executed', async function () {
+                // An environment restored from a backup or copied without its permissions. Windows has
+                // no execute bit, so there is nothing to check there.
+                if (process.platform === 'win32') {
+                    return this.skip();
+                }
+
+                await writeInterpreter();
+                await fs.chmod(interpreter, 0o644);
+
+                const env = await checkPythonEnvironment(adapter, '1.0.0');
+
+                assert.equal(env.ready, false, 'it exists, but spawning it would fail with EACCES');
+                assert.match(env.reason!, /cannot be executed/);
             });
         });
     });
