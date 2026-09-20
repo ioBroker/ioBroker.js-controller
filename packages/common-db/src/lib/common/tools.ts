@@ -2988,7 +2988,11 @@ export function execAsync(
 
 /**
  * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
- * In error, the promise rejects with the exit code or signal, as well as stdout and stderr.
+ *
+ * On error it rejects with the error of `child_process.execFile`, whose `code` (the exit code, or `ENOENT` when
+ * the command does not exist), `killed` and `signal` say what happened - a command killed by the `timeout`
+ * option has to stay distinguishable from one that exited non-zero. Only the message is replaced by the output
+ * on stderr when there is any, because that usually says more than "Command failed".
  *
  * @param file The command to execute
  * @param args The arguments to pass to the command
@@ -3016,7 +3020,13 @@ export function execFileAsync(
     }>((resolve, reject) => {
         execFile(file, [...args], { ...defaultOptions, ...execOptions }, (error, stdout, stderr) => {
             if (error) {
-                reject(stderr ? new Error(stderr.toString()) : error);
+                // the error of execFile is an Error carrying `code`, `killed` and `signal` - what the caller
+                // needs to tell a missing command and a timeout apart from a plain non-zero exit
+                const failure: Error = error;
+                if (stderr) {
+                    failure.message = stderr.toString();
+                }
+                reject(failure);
             } else {
                 resolve({
                     stderr: stderr?.toString(),
@@ -4116,8 +4126,11 @@ export async function isForeignProcess(pid: number): Promise<boolean> {
         }
 
         return !isControllerCommandLine(commandLine);
-    } catch {
-        // Could not inspect the process - assume it is the controller
+    } catch (e) {
+        // Could not inspect the process - assume it is the controller. Say so, because otherwise a machine
+        // where the lookup cannot run at all - no PowerShell, no WMI service, a timeout - keeps answering
+        // "Controller is already running with pid ..." without a hint that nothing was ever checked.
+        console.warn(`Cannot inspect process ${pid}, assuming it belongs to the controller: ${e.message}`);
         return false;
     }
 }

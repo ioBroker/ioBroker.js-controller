@@ -6,6 +6,7 @@ import path from 'node:path';
 import {
     FORBIDDEN_CHARS,
     execAsync,
+    execFileAsync,
     isForeignProcess,
     isProcessRunning,
 } from '@iobroker/js-controller-common-db/tools';
@@ -29,6 +30,32 @@ describe('test tools.js helpers', () => {
         const res = await execAsync('echo test');
         assert.strictEqual((res.stdout as string).trim(), 'test');
     });
+
+    it('execFileAsync', async () => {
+        const res = await execFileAsync(process.execPath, ['-e', 'console.log("test")']);
+        assert.strictEqual((res.stdout as string).trim(), 'test');
+    });
+
+    it('execFileAsync keeps what the failure was', async () => {
+        type Failure = Error & { code?: string | number; killed?: boolean };
+
+        // a caller has to tell a missing command, a timeout and a non-zero exit apart
+        await assert.rejects(
+            () => execFileAsync('iobroker-no-such-command', []),
+            (e: Failure) => e.code === 'ENOENT',
+        );
+
+        await assert.rejects(
+            () => execFileAsync(process.execPath, ['-e', 'setTimeout(() => {}, 30_000)'], { timeout: 500 }),
+            (e: Failure) => e.killed === true,
+        );
+
+        // the output on stderr becomes the message, because it says more than "Command failed"
+        await assert.rejects(
+            () => execFileAsync(process.execPath, ['-e', 'console.error("why it failed"); process.exit(3)']),
+            (e: Failure) => e.code === 3 && e.message.includes('why it failed'),
+        );
+    }).timeout(20_000);
 
     it('isProcessRunning', () => {
         // our own process is definitely running
