@@ -46,8 +46,8 @@ export class CLIProcess extends CLICommand {
     async start(args: string[]): Promise<void> {
         const adapterName = normalizeAdapterName(args[0]);
         if (!adapterName) {
-            await this.startJSController();
-            this.options.callback();
+            const running = await this.startJSController();
+            this.options.callback(running ? undefined : EXIT_CODES.UNKNOWN_ERROR);
         } else if (adapterName === 'all') {
             this.setAllAdaptersEnabled(true);
         } else if (/\.\d+$/.test(adapterName)) {
@@ -65,8 +65,8 @@ export class CLIProcess extends CLICommand {
     async restart(args: string[]): Promise<void> {
         const adapterName = normalizeAdapterName(args[0]);
         if (!adapterName) {
-            await this.restartJSController();
-            this.options.callback();
+            const running = await this.restartJSController();
+            this.options.callback(running ? undefined : EXIT_CODES.UNKNOWN_ERROR);
         } else if (/\.\d+$/.test(adapterName)) {
             this.setAdapterInstanceEnabled(adapterName, true, /* restartIfRunning */ true);
         } else {
@@ -177,8 +177,10 @@ export class CLIProcess extends CLICommand {
 
     /**
      * Starts the JS controller
+     *
+     * @returns true if the controller was started or is already running, false if it could not be started
      */
-    async startJSController(): Promise<void> {
+    async startJSController(): Promise<boolean> {
         let memoryLimitMB = 0;
         try {
             const config: ioBroker.IoBrokerJson = fs.readJSONSync(tools.getConfigFileName(), { encoding: 'utf-8' });
@@ -200,8 +202,28 @@ export class CLIProcess extends CLICommand {
         }
 
         if (pid) {
-            console.log(`Controller is already running with pid ${pid}`);
-            return;
+            const staleReason = await getStalePidsFileReason(pid);
+
+            if (!staleReason) {
+                console.log(`Controller is already running with pid ${pid}`);
+                return true;
+            }
+
+            // The pids file survived an unclean shutdown, e.g. a power loss. Without removing it
+            // here every "start" would keep refusing and only "restart" would work, because that
+            // one deletes the file on its way through stop.
+            console.log(`Ignoring left over ${tools.getPidsFileName()}: ${staleReason}`);
+
+            const pidsFileName = tools.getPidsFileName();
+            try {
+                await fs.unlink(pidsFileName);
+            } catch (e) {
+                if (e.code !== 'ENOENT') {
+                    console.error(`Could not remove ${pidsFileName}: ${e.message}`);
+                    console.error(`Please delete the file manually and run "${tools.appName} start" again.`);
+                    return false;
+                }
+            }
         }
 
         const args = [path.join(rootDir, 'controller.js')];
@@ -218,6 +240,7 @@ export class CLIProcess extends CLICommand {
         });
 
         child.unref();
+        return true;
     }
 
     /**
@@ -232,6 +255,21 @@ export class CLIProcess extends CLICommand {
         }
 
         if (!pid) {
+            return;
+        }
+
+        // Stopping the controller is fine, shooting at whoever inherited its pid after a reboot
+        // is not - so a pid which provably belongs to a different program is only cleaned up
+        if (tools.isProcessRunning(pid) && (await tools.isForeignProcess(pid))) {
+            console.log(`Not stopping pid ${pid}, it belongs to a different program`);
+
+            try {
+                await fs.unlink(tools.getPidsFileName());
+            } catch (e) {
+                if (e.code !== 'ENOENT') {
+                    console.error(`Could not remove ${tools.getPidsFileName()}: ${e.message}`);
+                }
+            }
             return;
         }
 
@@ -264,10 +302,14 @@ export class CLIProcess extends CLICommand {
         }
     }
 
-    /** Restarts the JS controller */
-    async restartJSController(): Promise<void> {
+    /**
+     * Restarts the JS controller
+     *
+     * @returns true if the controller is running afterwards, false if it could not be started
+     */
+    async restartJSController(): Promise<boolean> {
         await CLIProcess.stopJSController();
-        await this.startJSController();
+        return this.startJSController();
     }
 
     /**
@@ -419,6 +461,28 @@ async function setInstanceEnabled(
     } else {
         CLI.success.adapterStopped(instanceName);
     }
+}
+
+/**
+ * Determine whether the pids file is a leftover instead of belonging to a running controller
+ *
+ * @param pid the controller pid recorded in the pids file
+ * @returns a human readable reason if the file is stale, else undefined
+ */
+async function getStalePidsFileReason(pid: number): Promise<string | undefined> {
+    if (!tools.isProcessRunning(pid)) {
+        return `process ${pid} is not running any more`;
+    }
+
+    // The pid is in use, but that alone proves nothing: after a reboot the operating system may
+    // have handed it to an unrelated program. Only a positive identification counts here - if the
+    // process cannot be inspected we leave it alone, because starting a second controller makes
+    // both of them fail with EADDRINUSE.
+    if (await tools.isForeignProcess(pid)) {
+        return `pid ${pid} belongs to a different program, not to a controller`;
+    }
+
+    return undefined;
 }
 
 /**
