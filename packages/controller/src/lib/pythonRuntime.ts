@@ -139,6 +139,21 @@ export async function checkPythonEnvironment(
 
     const stamp = await readEnvironmentStamp(adapterName);
 
+    if (stamp === 'unreadable') {
+        // A stamp that is there but cannot be read is the opposite of a legacy environment: something
+        // wrote it and did not finish. Accepting it would walk straight into the half-built environment
+        // the `building` flag below exists to keep instances out of.
+        return {
+            ready: false,
+            interpreter,
+            envDir,
+            stale: true,
+            reason:
+                `Python environment has an unreadable "${STAMP_FILE}". ` +
+                'The "py-controller" adapter rebuilds the environment and writes it again.',
+        };
+    }
+
     if (!stamp) {
         // Environments built before the stamp existed, or built by hand. Refusing to start those
         // would break working installations for no gain, so they are accepted and left to
@@ -176,19 +191,24 @@ export async function checkPythonEnvironment(
 /**
  * Read what `py-controller` recorded about an adapter's environment
  *
+ * "There is none" and "there is one, but it makes no sense" are two different answers. Only the first is the
+ * backward-compatible case of an environment built before the stamp existed; the second means somebody wrote
+ * the file and did not finish - a torn write, or a `{ building: true }` written before the build knew what it
+ * would produce - and starting against that environment is what the stamp is there to prevent.
+ *
  * @param adapterName name of the adapter without the `iobroker.` prefix
- * @returns the stamp, or null when there is none or it cannot be read
+ * @returns the stamp, `null` when there is none, `'unreadable'` when there is one that cannot be used
  */
-export async function readEnvironmentStamp(adapterName: string): Promise<PythonEnvironmentStamp | null> {
+export async function readEnvironmentStamp(adapterName: string): Promise<PythonEnvironmentStamp | 'unreadable' | null> {
     const stampFile = path.join(tools.getPythonEnvDir(adapterName), STAMP_FILE);
 
     try {
         const stamp: PythonEnvironmentStamp = await fs.readJSON(stampFile);
 
-        return typeof stamp?.adapterVersion === 'string' ? stamp : null;
-    } catch {
-        // Missing or unreadable is not an error here -- the caller treats it as "unknown".
-        return null;
+        return typeof stamp?.adapterVersion === 'string' || stamp?.building === true ? stamp : 'unreadable';
+    } catch (e) {
+        // Only a missing file is the legacy case
+        return e.code === 'ENOENT' ? null : 'unreadable';
     }
 }
 

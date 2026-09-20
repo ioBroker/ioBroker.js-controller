@@ -176,6 +176,34 @@ describe('pythonRuntime', () => {
                 assert.equal(env.ready, true);
                 assert.equal(env.reason, undefined);
             });
+
+            it('is refused when the stamp is there but cannot be read', async () => {
+                // A torn write - the file exists, the JSON ends in the middle. Only a *missing* stamp is the
+                // environment built before stamps existed; one that nobody finished writing is the very case
+                // the `building` flag above guards against, and it has to be treated the same way.
+                await fs.ensureDir(path.dirname(interpreter));
+                await fs.writeFile(interpreter, '');
+                await fs.writeFile(stampFile, '{ "adapterVersion": "1.0.0", "building"');
+
+                const env = await checkPythonEnvironment(adapter, '1.0.0');
+
+                assert.equal(env.ready, false, 'a stamp nobody finished writing must not pass as a legacy one');
+                assert.match(env.reason!, /unreadable/);
+            });
+
+            it('is refused when the stamp says nothing about a version or a build', async () => {
+                await writeStamp({ builtAt: '2020-01-01T00:00:00.000Z' });
+
+                assert.equal((await checkPythonEnvironment(adapter, '1.0.0')).ready, false);
+            });
+
+            it('still accepts an environment that has no stamp at all', async () => {
+                // built before the stamp existed, or by hand
+                await fs.ensureDir(path.dirname(interpreter));
+                await fs.writeFile(interpreter, '');
+
+                assert.equal((await checkPythonEnvironment(adapter, '1.0.0')).ready, true);
+            });
         });
     });
 

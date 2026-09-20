@@ -94,6 +94,24 @@ describe('RedisHandler: a throwing command handler', () => {
         assert.match(socket.text, /-.*nope/, 'the client has to be told the command failed');
     });
 
+    it('keeps the error on one line, whatever the client put in it', async () => {
+        // A RESP error is one line and is written out as it is, while its text carries what the client sent:
+        // the id of a command, or the payload a JSON parser quotes back. A CR or LF in there would end the
+        // frame, and what follows would be read as the answer to another command - the client tears the
+        // connection down, which is the failure answering instead of throwing is supposed to avoid.
+        handler.on('publish', () => {
+            throw new Error('nope\r\n-INJECTED\r\n');
+        });
+
+        socket.emit('data', command('publish', 'log.somewhere', '{not json'));
+        await settle();
+
+        const frames = socket.text.split('\r\n').filter(line => line !== '');
+        assert.equal(frames.length, 1, `one frame only, got ${JSON.stringify(socket.text)}`);
+        assert.match(frames[0], /^-/, 'and it is the error');
+        assert.match(frames[0], /INJECTED/, 'the text is kept, it is only put on one line');
+    });
+
     it('keeps serving the next command', async () => {
         // The point of answering rather than throwing: the connection survives. A client that sent
         // one bad message should not lose the ones after it.

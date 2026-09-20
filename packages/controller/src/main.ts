@@ -3998,7 +3998,7 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                     `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`,
                 );
 
-                proc.process.on('exit', (code, signal) => {
+                handleProcessEnd(id, proc.process, (code, signal) => {
                     outputCount++;
                     states!
                         .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
@@ -4755,7 +4755,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     storePids();
 
                     if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
-                        proc.process.on('exit', exitHandler);
+                        handleProcessEnd(id, proc.process, exitHandler);
                     }
 
                     if (
@@ -5198,7 +5198,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`,
                     );
 
-                    proc.process.on('exit', (code, signal) => {
+                    handleProcessEnd(id, proc.process, (code, signal) => {
                         cleanAutoSubscribes(id, () => {
                             const proc = procs[id];
 
@@ -6189,6 +6189,47 @@ async function _getNumberOfInstances(): Promise<
     } catch {
         return { noInstances: null, noCompactInstances: null };
     }
+}
+
+/**
+ * Run the exit handling of an instance once, whether its process ended or never came up
+ *
+ * `spawn()` reports a program it cannot run - a missing or non-executable Python interpreter, a working
+ * directory that is gone - through the `error` event and not by throwing, and it emits no `exit` afterwards.
+ * Two things follow from that, and both are handled here:
+ *
+ * - without an `error` listener Node rethrows, which ends the whole controller and every adapter on this host;
+ * - without the exit path the instance would keep its `alive` state with no process behind it, and nothing
+ *   would ever restart it.
+ *
+ * `error` and `exit` can both arrive, so the handler runs once.
+ *
+ * @param id the instance id, e.g. "system.adapter.mqtt.0"
+ * @param child the process which was started for it
+ * @param onExit what the caller does when the instance is gone
+ */
+function handleProcessEnd(id: string, child: cp.ChildProcess, onExit: (code: number, signal: string) => void): void {
+    let handled = false;
+    const handleOnce = (code: number, signal: string): void => {
+        if (handled) {
+            return;
+        }
+        handled = true;
+        onExit(code, signal);
+    };
+
+    child.on('error', (e: Error) => {
+        logger.error(`${hostLogPrefix} instance ${id} could not be started: ${e.message}`);
+        handleOnce(EXIT_CODES.UNKNOWN_ERROR, '');
+
+        // nothing is running under this entry, and leaving it behind would refuse every later start
+        const proc = procs[id as ioBroker.ObjectIDs.Instance];
+        if (proc?.process === child) {
+            delete proc.process;
+        }
+    });
+
+    child.on('exit', handleOnce);
 }
 
 /**
