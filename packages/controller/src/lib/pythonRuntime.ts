@@ -460,7 +460,7 @@ const PYTHON_LOG_LEVELS: Record<string, PythonLogLevel> = {
 };
 
 /** A record as the SDK's formatter writes it: `2026-09-06 07:12:03,001 INFO python.0 Adapter started` */
-const PYTHON_RECORD = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3} ([A-Z]+) (\S+) /;
+const PYTHON_RECORD = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3} ([A-Z]+)\s+(\S+) /;
 
 /**
  * Read what a line says about itself, if it is a record the Python side formatted
