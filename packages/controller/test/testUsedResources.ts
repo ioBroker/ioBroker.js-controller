@@ -688,6 +688,19 @@ describe('lib/usedResources: UsedResourcesRegistry.findConflicts', () => {
         assert.strictEqual(reg.findConflicts('tcpPort', { port: 8080 }, 'other.0').length, 1);
     });
 
+    it('sees the same USB device through the metadata around it', () => {
+        const reg = newRegistry();
+        reg.register('usb', { path: '/dev/bus/usb/001/004', vendorId: '10c4' }, 'zwave.0');
+
+        // `vendorId` and `productId` describe the device, they do not make it a second one - and neither
+        // payload is a subset of the other, so comparing them as a whole would report the device as free
+        assert.strictEqual(
+            reg.findConflicts('usb', { path: '/dev/bus/usb/001/004', productId: 'ea60' }, 'other.0').length,
+            1,
+        );
+        assert.deepStrictEqual(reg.findConflicts('usb', { path: '/dev/bus/usb/001/005' }, 'other.0'), []);
+    });
+
     it('keeps the pins of two GPIO chips apart', () => {
         const reg = newRegistry();
         reg.register('gpio', { pin: 17, chip: 'gpiochip2' }, 'expander.0');

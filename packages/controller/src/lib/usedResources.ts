@@ -298,8 +298,12 @@ export async function withSerialPortDevice(
 /**
  * The part of a payload that identifies a resource when looking for conflicts.
  *
- * A serial port is identified by its device alone: two names of the same port are the same port, and two
- * instances opening it with different baud rates still cannot share it. Every other type is compared as a whole.
+ * Some types have fields that describe a resource without making it a different one - the baud rate a serial
+ * port is opened with, the vendor of a USB device. Comparing the payload as a whole would let those hide a
+ * conflict: neither of two entries is a subset of the other, so the same device would be reported as free.
+ *
+ * A serial port is therefore identified by its resolved device alone, a USB device by its path. Everything
+ * else is compared as a whole, which is also what a custom type has to fall back to.
  *
  * @param type the resource type
  * @param data the payload
@@ -308,13 +312,21 @@ function getConflictIdentity(
     type: ioBroker.UsedResourceType,
     data: Partial<ioBroker.UsedResourceData>,
 ): Partial<ioBroker.UsedResourceData> {
-    if (type !== 'serialPort') {
-        return data;
+    if (type === 'serialPort') {
+        const { device, port } = data as Partial<ioBroker.SerialPortResourceData>;
+        // an entry without a resolved device - registered directly, not through the host - falls back to its name
+        const name = device ?? port;
+
+        return name === undefined ? {} : { device: name };
     }
-    const { device, port } = data as Partial<ioBroker.SerialPortResourceData>;
-    // an entry without a resolved device - registered directly, not through the host - falls back to its name
-    const name = device ?? port;
-    return name === undefined ? {} : { device: name };
+
+    if (type === 'usb') {
+        const { path } = data as Partial<ioBroker.UsbResourceData>;
+
+        return path === undefined ? {} : { path };
+    }
+
+    return data;
 }
 
 /** Addresses a socket binds to when it wants every address of the host */

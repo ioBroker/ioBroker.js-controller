@@ -190,6 +190,9 @@ Two payloads count as overlapping when one describes a subset of the other, so `
   asks about every value of it.
 - **`serialPort`** by the device it resolves to, so it is found under any of its names and whatever baud rate
   each instance opens it with (see [Serial ports](#serial-ports)).
+- **`usb`** by its `path`. `vendorId` and `productId` describe the device, they do not make it a second one —
+  comparing the payload as a whole would let two instances claim the same stick and see no conflict, because
+  neither description is a subset of the other.
 
 ### `getHostUsedResources(type?)`
 
@@ -213,7 +216,7 @@ bookkeeping fields:
 | Field       | Type    | Meaning                                                                                                                                   |
 | ----------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `type`      | string  | The resource type, e.g. `"serialPort"`.                                                                                                   |
-| `data`      | object  | The type-specific payload, exactly as passed to `registerUsedResource`, e.g. `{ port: '/dev/ttyUSB0' }`.                                   |
+| `data`      | object  | The type-specific payload in its stored form, e.g. `{ port: '/dev/ttyUSB0' }`. Close to what was passed to `registerUsedResource`, but not byte for byte: a number given as a string of digits is stored as a number, and a serial port carries the `device` the host resolved its name to. |
 | `instance`  | string  | The instance that occupies the resource, e.g. `"mqtt.0"`.                                                                                 |
 | `ts`        | number  | Timestamp (ms) when the resource was registered.                                                                                          |
 | `isBlocked` | boolean | `true`: the instance is running and actively holding the resource. `false`: the instance is not running and would maybe occupy it when started — "maybe", because its configuration can still change before that. |
