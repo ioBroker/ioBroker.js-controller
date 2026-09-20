@@ -4067,6 +4067,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         return;
     }
 
+    // procs[id] survives configuration changes, so the interpreter has to be re-derived on every start rather
+    // than left over from a previous one: an adapter switched back from Python to Node.js would otherwise keep
+    // being spawned through the Python path, since that is chosen by the presence of this field. It happens
+    // before anything below can return early - a pending upload, a blocked version, a failed dependency check -
+    // because `startScheduledInstance` branches on the field alone and would then use a stale one.
+    delete proc.pythonInterpreter;
+
     const instance = proc.config;
     const name = id.split('.')[2];
     let mode = instance.common.mode;
@@ -4206,12 +4213,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
     proc.downloadRetry = 0;
 
     const isPython = isPythonAdapter(instance.common);
-
-    // procs[id] survives configuration changes, so the interpreter has to be re-derived on every
-    // start rather than left over from a previous one. An adapter switched back from Python to
-    // Node.js would otherwise keep being spawned through the Python path, since that is chosen by
-    // the presence of this field.
-    delete proc.pythonInterpreter;
 
     if (isPython) {
         // Web extensions are loaded into the Node.js process of the hosting web server, which a
@@ -4718,20 +4719,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 return;
                             }
                             const text = data.toString();
-
-                            // Python writes tracebacks and the logging module's default output to
-                            // stderr. The buffering below only surfaces on exit, so a non-fatal
-                            // traceback would stay invisible for as long as the adapter keeps
-                            // running -- exactly when it is most useful. The rebuild heuristics
-                            // that follow are about native Node.js modules and cannot match here.
-                            if (proc.pythonInterpreter) {
-                                for (const line of text.split('\n')) {
-                                    if (line.trim()) {
-                                        logger.error(`${hostLogPrefix} ${instance._id} ${line.trimEnd()}`);
-                                    }
-                                }
-                                return;
-                            }
 
                             // show for debug
                             console.error(text);

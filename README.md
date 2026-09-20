@@ -435,8 +435,10 @@ Building that virtual environment is *not* done by the controller. It is the job
 [`py-controller`](https://github.com/ioBroker/ioBroker.py-controller) adapter, which creates one per
 adapter below `iobroker-data/py/` and records what it built in an `environment.json` next to it. The
 controller starts an instance only when that environment exists and matches the installed adapter
-version; otherwise it logs the reason and leaves the repair to `py-controller`. This keeps knowledge
-of `pip` and `uv` out of the core.
+version; otherwise it logs the reason and leaves the repair to `py-controller`. An environment with
+no `environment.json` at all is accepted, because it predates the stamp or was built by hand — one
+whose stamp cannot be read is not, since that is a build nobody finished. This keeps knowledge of
+`pip` and `uv` out of the core.
 
 Adapters are written against the [`iobroker`](https://pypi.org/project/iobroker/) package, which
 provides an API close to `@iobroker/adapter-core`. Database connection settings reach the adapter

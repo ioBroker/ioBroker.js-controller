@@ -37,6 +37,10 @@ describe('pythonRuntime', () => {
             assert.equal(isPythonAdapter({}), false);
             assert.equal(isPythonAdapter(undefined), false);
             assert.equal(isPythonAdapter(null), false);
+            // `io-package.json` is not validated against the schema again once the adapter is
+            // installed, and this runs on every instance start - a published `"platform": 1` must
+            // not throw here.
+            assert.equal(isPythonAdapter({ platform: 1 } as unknown as { platform?: string }), false);
         });
     });
 
@@ -108,6 +112,19 @@ describe('pythonRuntime', () => {
         it('rejects a package outside the python/ directory', () => {
             assert.throws(
                 () => resolvePythonEntry('/adapters/iobroker.foo', 'foo/__main__.py'),
+                /python\/<module>\/__main__\.py/,
+            );
+        });
+
+        it('rejects a segment that navigates instead of naming a module', () => {
+            // These pass every "exactly one segment" test and then become `python -m .` or
+            // `python -m ..`, which fails at start time rather than here.
+            assert.throws(
+                () => resolvePythonEntry('/adapters/iobroker.foo', 'python/./__main__.py'),
+                /python\/<module>\/__main__\.py/,
+            );
+            assert.throws(
+                () => resolvePythonEntry('/adapters/iobroker.foo', 'python/../__main__.py'),
                 /python\/<module>\/__main__\.py/,
             );
         });
@@ -354,6 +371,22 @@ describe('pythonRuntime', () => {
             } as unknown as ioBroker.IoBrokerJson;
 
             assert.equal(unsupportedPythonDbConfig(config), null);
+        });
+
+        it('refuses a database behind TLS', () => {
+            // The environment carries a host and a port and nothing else, so the adapter would talk
+            // plaintext to a TLS server and fail in a way that names neither side.
+            const config = {
+                states: {
+                    type: 'redis',
+                    host: '127.0.0.1',
+                    port: 6379,
+                    options: { tls: { rejectUnauthorized: false } },
+                },
+                objects: { type: 'redis', host: '127.0.0.1', port: 6380 },
+            } as unknown as ioBroker.IoBrokerJson;
+
+            assert.match(unsupportedPythonDbConfig(config)!, /states database is configured with TLS/);
         });
 
         it('accepts a Sentinel configuration', () => {

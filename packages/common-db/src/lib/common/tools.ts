@@ -3241,7 +3241,10 @@ export const PYTHON_PLATFORM = 'Python';
  * @param common the adapter's `common` section, or an instance object's
  */
 export function isPythonAdapter(common?: { platform?: string } | null): boolean {
-    return common?.platform?.toLowerCase() === PYTHON_PLATFORM.toLowerCase();
+    // `?.` guards null and undefined, not a wrong type, and `common.platform` comes from an `io-package.json`
+    // which is not validated against the schema again once the adapter is installed. A published
+    // `"platform": 1` would throw here, on a path every instance start runs through.
+    return typeof common?.platform === 'string' && common.platform.toLowerCase() === PYTHON_PLATFORM.toLowerCase();
 }
 
 /**

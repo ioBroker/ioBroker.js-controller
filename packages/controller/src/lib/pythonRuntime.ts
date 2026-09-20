@@ -122,14 +122,22 @@ export async function checkPythonEnvironment(
     const envDir = tools.getPythonEnvDir(adapterName);
     const interpreter = getPythonInterpreter(adapterName);
 
-    if (!(await fs.pathExists(interpreter))) {
+    try {
+        // Executable, not merely there: an environment restored from a backup or copied without its
+        // permissions has an interpreter that exists and fails the spawn with EACCES. Refusing here says
+        // what is wrong; failing at spawn time says it far away from the cause.
+        await fs.access(interpreter, fs.constants.X_OK);
+    } catch (e) {
         return {
             ready: false,
             interpreter,
             envDir,
             reason:
-                `Python environment is missing (expected "${interpreter}"). ` +
-                'Install the "py-controller" adapter, which creates and maintains it.',
+                e.code === 'ENOENT'
+                    ? `Python environment is missing (expected "${interpreter}"). ` +
+                      'Install the "py-controller" adapter, which creates and maintains it.'
+                    : `Python interpreter "${interpreter}" cannot be executed (${e.code}). ` +
+                      'Check the permissions of the environment, or let the "py-controller" adapter rebuild it.',
         };
     }
 
@@ -232,7 +240,9 @@ export function resolvePythonEntry(adapterDir: string, main?: string): PythonEnt
     // "__main__.py". A looser check accepts "python/foo/bar/__main__.py" and derives the module
     // "bar" from it, which is wrong for a nested package -- `python -m bar` would fail while the
     // configuration looked plausible. Rejecting it names the problem instead.
-    const match = /^python\/([^/]+)\/__main__\.py$/.exec(main.replace(/\\/g, '/'));
+    // `.` and `..` are excluded explicitly: they pass every "one segment" test and then become
+    // `python -m .` or `python -m ..`, which fails at start time instead of here.
+    const match = /^python\/(?!\.\.?\/)([^/]+)\/__main__\.py$/.exec(main.replace(/\\/g, '/'));
 
     if (!match) {
         throw new Error(`common.main must follow the layout "python/<module>/__main__.py", got "${main}".`);
@@ -395,6 +405,15 @@ export function unsupportedPythonDbConfig(config: ioBroker.IoBrokerJson): string
             return (
                 `the ${section} database is configured on a unix socket (${String(part.host)}), ` +
                 'which cannot be passed to a Python adapter yet'
+            );
+        }
+
+        // The environment carries a host and a port and nothing else, so an adapter given a TLS server would
+        // talk plaintext to it and fail in a way that names neither side. Refused for the same reason as the
+        // unix socket above: the configuration is valid, it just cannot be handed over yet.
+        if (part?.options?.tls) {
+            return (
+                `the ${section} database is configured with TLS, ` + 'which cannot be passed to a Python adapter yet'
             );
         }
     }

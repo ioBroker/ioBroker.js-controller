@@ -246,9 +246,11 @@ Exit codes the controller gives meaning to (from `EXIT_CODES` in
 Every other exit code of an enabled daemon also leads to a restart. (`ADAPTER_REQUESTED_REBUILD` =
 13 triggers an `npm rebuild` of native Node.js modules and is meaningless for Python.)
 
-Telemetry (`alive`, `connected`, `memHeapUsed` etc.) is written by the SDK the same way the Node.js
+Telemetry (`alive`, `connected`, `uptime` etc.) is written by the SDK the same way the Node.js
 adapter framework does; process-level CPU/memory monitoring by the controller works on the PID and
-needs nothing from the adapter.
+needs nothing from the adapter. The two states that only mean something on V8 — `memHeapUsed` and
+`memHeapTotal` — are not created for a Python instance at all; `eventLoopLag` is, and says `asyncio`
+rather than Node.js.
 
 ## Messaging (`sendTo`)
 

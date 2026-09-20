@@ -1522,23 +1522,6 @@ export class Install {
                 if (!ioPack.common || !ioPack.common.nondeletable) {
                     await this._npmUninstall(adapterNpm, false);
 
-                    // A Python adapter leaves its virtual environment behind in the data
-                    // directory. It is host-local state like node_modules -- rebuildable, but
-                    // easily a few hundred megabytes -- so it goes when the adapter goes. Removed
-                    // unconditionally instead of checking common.platform: the directory only
-                    // exists for Python adapters, and the io-package.json of a half-removed
-                    // installation may no longer say what created it.
-                    try {
-                        const pythonEnvDir = tools.getPythonEnvDir(adapter);
-
-                        if (await fs.pathExists(pythonEnvDir)) {
-                            await fs.remove(pythonEnvDir);
-                            console.log(`host.${hostname} Python environment "${pythonEnvDir}" deleted`);
-                        }
-                    } catch (e) {
-                        console.error(`Cannot delete the Python environment of ${adapter}: ${e.message}`);
-                    }
-
                     // after uninstalling, we have to restart the defined adapters
                     if (ioPack.common.restartAdapters) {
                         if (!Array.isArray(ioPack.common.restartAdapters)) {
@@ -1597,6 +1580,7 @@ export class Install {
                 // remove adapter from custom
                 await this._removeCustomFromObjects([adapter]);
                 await _uninstallNpm();
+                await this._removePythonEnvironment(adapter);
             } else {
                 // we are not allowed to delete the last instance if another instance depends on us
                 const dependentInstance = await this._hasDependentInstances(adapter);
@@ -1627,12 +1611,40 @@ export class Install {
                 }
 
                 await _uninstallNpm();
+                await this._removePythonEnvironment(adapter);
             }
         } catch (e) {
             console.error(`There was an error uninstalling ${adapter} on ${hostname}: ${e.message}`);
         }
 
         return resultCode;
+    }
+
+    /**
+     * Remove the virtual environment a Python adapter leaves behind in the data directory
+     *
+     * Host-local state like `node_modules` - rebuildable, but easily a few hundred megabytes - so it goes when
+     * the adapter goes. Deliberately not part of the npm uninstall: that one starts by resolving the adapter's
+     * `io-package.json`, so for a half-removed installation, where the package directory is already gone, it
+     * throws before ever getting here - and that is precisely the case which leaves the environment behind with
+     * nothing pointing at it.
+     *
+     * Removed without looking at `common.platform` for the same reason: the directory only exists for Python
+     * adapters, and the `io-package.json` that would say so may no longer be there.
+     *
+     * @param adapter adapter name, e.g. "pyexample"
+     */
+    private async _removePythonEnvironment(adapter: string): Promise<void> {
+        try {
+            const pythonEnvDir = tools.getPythonEnvDir(adapter);
+
+            if (await fs.pathExists(pythonEnvDir)) {
+                await fs.remove(pythonEnvDir);
+                console.log(`host.${hostname} Python environment "${pythonEnvDir}" deleted`);
+            }
+        } catch (e) {
+            console.error(`Cannot delete the Python environment of ${adapter}: ${e.message}`);
+        }
     }
 
     /**
