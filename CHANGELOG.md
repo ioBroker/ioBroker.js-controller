@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Node.js 22.19 is now the minimum version - 22.0 to 22.18 are no longer supported
 * (@GermanBluefox) Fixed `start` refusing to run after an unclean shutdown because of a left over `pids.txt`
 * (@GermanBluefox) Fixed the ACL of states restricting members of the administrator group - objects and files already let them through, states only the `admin` user
 * (@GermanBluefox) Added `tipsDisabled` to `system.config`, with which the admin remembers that the "Did you know ...?" tips must not be shown at the start
