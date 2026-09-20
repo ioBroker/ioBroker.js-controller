@@ -8,7 +8,7 @@
 
 > **SetObjectCallback** = (`err?`, `obj?`) => `void`
 
-Defined in: [types-dev/index.d.ts:453](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/index.d.ts#L453)
+Defined in: [types-dev/index.d.ts:579](https://github.com/ioBroker/ioBroker.js-controller/blob/d07571064cc52d1c5a17e823e5925d743d638713/packages/types-dev/index.d.ts#L579)
 
 ## Parameters
 

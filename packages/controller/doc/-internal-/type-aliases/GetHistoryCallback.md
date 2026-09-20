@@ -8,7 +8,7 @@
 
 > **GetHistoryCallback** = (`err`, `result?`, `step?`, `sessionId?`) => `void`
 
-Defined in: [types-dev/index.d.ts:524](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/index.d.ts#L524)
+Defined in: [types-dev/index.d.ts:650](https://github.com/ioBroker/ioBroker.js-controller/blob/d07571064cc52d1c5a17e823e5925d743d638713/packages/types-dev/index.d.ts#L650)
 
 ## Parameters
 

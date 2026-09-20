@@ -8,6 +8,6 @@
 
 > **UsedResourceType** = keyof [`UsedResourceDataMap`](../interfaces/UsedResourceDataMap.md)
 
-Defined in: [types-dev/index.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/e3925cc64e80556f948f3edd043e48c803e45ddd/packages/types-dev/index.d.ts#L176)
+Defined in: [types-dev/index.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/d07571064cc52d1c5a17e823e5925d743d638713/packages/types-dev/index.d.ts#L176)
 
 Kind of an exclusive resource that can be occupied by only one instance at a time
