@@ -30,6 +30,7 @@ import {
     VENDOR_BOOTSTRAP_FILE,
 } from '@/lib/controller/constants.js';
 import { ControllerState } from '@/lib/controller/state.js';
+import { spawnControllerRestart } from '@/lib/controller/restartProcess.js';
 import { Statistics } from '@/lib/controller/statistics.js';
 import { handleStateChange, type StateChangeRouterDeps } from '@/lib/controller/db/stateChangeRouter.js';
 import { InstanceManager, type InstanceManagerOptions } from '@/lib/controller/instances/instanceManager.js';
@@ -722,7 +723,7 @@ export class Controller {
         await this.stop(true, false);
 
         this.#restartTimeout = setTimeout(async () => {
-            await this.#restartByMessage();
+            await this.#restartViaCli();
             await wait(1_000);
             process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
         }, 10_000);
@@ -730,11 +731,14 @@ export class Controller {
 
     /**
      * Restart the controller process via the `_restart` command of the CLI
+     *
+     * Through the host message bus while it exists, so whoever asked for the restart sees its output. The
+     * message handler is only created once both databases are connected, and a restart is needed in exactly
+     * that case as well - the connect timeout - so without it the CLI is started directly.
      */
-    async #restartByMessage(): Promise<void> {
+    async #restartViaCli(): Promise<void> {
         if (!this.#messageHandler) {
-            // the databases never connected, so there is nothing which could handle the message
-            this.#logger.error(`${this.#hostLogPrefix} Cannot restart, the controller has never been connected`);
+            spawnControllerRestart(this.#logger, this.#hostLogPrefix);
             return;
         }
 
@@ -799,6 +803,12 @@ export class Controller {
         if (this.#state.isStopping) {
             return;
         }
+
+        // Before the optional call below: the instance manager only exists once both databases are connected,
+        // so a shutdown which starts before that would leave the flag unset - and with it the guard above, the
+        // one in the host message handler and the one in the IP manager. A second SIGTERM would then run the
+        // whole shutdown a second time, concurrently.
+        this.#state.markStopping();
 
         const wasForced = (await this.#instances?.stopInstances(force, this.#stopTimeout)) ?? false;
 
@@ -993,7 +1003,7 @@ export class Controller {
             this.#connectTimeout = null;
             this.#logger.error(`${this.#hostLogPrefix} No connection to databases possible, restart`);
             if (!this.#isCompactGroupController) {
-                await this.#restartByMessage();
+                await this.#restartViaCli();
             }
             await wait(this.#isCompactGroupController ? 0 : 1_000);
             process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
@@ -1374,9 +1384,13 @@ export class Controller {
                 // @ts-expect-error todo: can this else clause even happen
                 this.#logger.error(`${this.#hostLogPrefix} ${err.stack}`);
             }
-            await this.stop(false);
+            // `exitProcess` false, because `stop()` would end in `process.exit()` and the restart below would
+            // never be reached - the host would stay down until something outside brings it back
+            await this.stop(false, false);
             // Restart itself
-            await this.#restartByMessage();
+            await this.#restartViaCli();
+            await wait(1_000);
+            process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
         };
 
         /**

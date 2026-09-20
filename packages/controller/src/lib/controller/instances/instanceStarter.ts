@@ -14,6 +14,21 @@ import { createInstanceExitHandler } from '@/lib/controller/instances/instanceEx
 import type { InstanceManager, InstanceManagerOptions } from '@/lib/controller/instances/instanceManager.js';
 import type { Process } from '@/lib/controller/types.js';
 
+/**
+ * Determine in which mode an instance is started.
+ *
+ * Waking an instance up - by schedule or by message - runs it like a daemon, whatever its configured mode is.
+ * An extension is the exception: it is loaded into a web server instance and has no main file of its own, so
+ * starting it as a daemon would fork `undefined`.
+ *
+ * @param mode the configured mode of the instance
+ * @param wakeUp whether the instance is being started because of a wake-up event
+ * @returns the mode the instance is started in
+ */
+export function resolveStartMode(mode: ioBroker.InstanceMode, wakeUp: boolean): ioBroker.InstanceMode {
+    return wakeUp && mode !== 'extension' ? 'daemon' : mode;
+}
+
 /** Everything the instance starter needs to do its work */
 export type InstanceStarterOptions = Pick<
     InstanceManagerOptions,
@@ -115,9 +130,7 @@ export class InstanceStarter {
 
         proc.restartExpected = false;
 
-        if (wakeUp && mode !== 'extension') {
-            mode = 'daemon';
-        }
+        mode = resolveStartMode(mode, wakeUp);
 
         // Check if all required adapters installed and have a valid version
         if (instance.common.dependencies || instance.common.globalDependencies) {

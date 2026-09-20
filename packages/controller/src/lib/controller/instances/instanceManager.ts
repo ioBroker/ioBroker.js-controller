@@ -480,22 +480,41 @@ export class InstanceManager {
     /**
      * Clean all auto subscribes of the given instance
      *
+     * Never rejects. Its callers are the lifecycle handlers of an instance, and everything they do after it -
+     * counting the crash, arming the restart timer, storing the pids - has to happen even when the databases
+     * hiccup. A subscription which stays behind is corrected the next time the subscribing instance writes its
+     * list; a skipped restart would keep the adapter down until the next object change.
+     *
      * @param instanceID The full instance id (e.g. "system.adapter.admin.0")
      */
     async cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance): Promise<void> {
+        const { objects, logger, hostLogPrefix } = this.#options;
         const instance = instanceID.substring(15); // get name.0
 
-        // read all instances
-        const res = await this.#options.objects.getObjectViewAsync('system', 'instance', {
-            startkey: SYSTEM_ADAPTER_PREFIX,
-            endkey: `${SYSTEM_ADAPTER_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
-        });
+        let res;
+        try {
+            // read all instances
+            res = await objects.getObjectViewAsync('system', 'instance', {
+                startkey: SYSTEM_ADAPTER_PREFIX,
+                endkey: `${SYSTEM_ADAPTER_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
+            });
+        } catch (e) {
+            logger.warn(
+                `${hostLogPrefix} Cannot read the instances to clean the subscribes of ${instanceID}: ${e.message}`,
+            );
+            return;
+        }
 
         await Promise.all(
             res.rows
                 // remove this instance from autoSubscribe
                 .filter(row => row.value?.common.subscribable)
-                .map(row => this.#cleanAutoSubscribe(instance, row.id)),
+                .map(row =>
+                    // one instance whose subscribes cannot be read or written must not stop the others either
+                    this.#cleanAutoSubscribe(instance, row.id).catch(e =>
+                        logger.warn(`${hostLogPrefix} Cannot clean the subscribes of ${row.id}: ${e.message}`),
+                    ),
+                ),
         );
     }
 
