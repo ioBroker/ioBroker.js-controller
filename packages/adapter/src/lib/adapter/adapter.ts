@@ -144,6 +144,29 @@ const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__fi
 tools.ensureDNSOrder();
 
 /**
+ * The port-holder lookups this process has started, by port — shared by every adapter instance
+ * living in this process (compact mode), so a single conflict is looked up once, not once per
+ * instance, and a probe walking a busy range does not keep twenty lookups in flight.
+ */
+const portHolderLookupsAt = new Map<number, number>();
+const PORT_HOLDER_LOOKUP_INTERVAL_MS = 60_000;
+
+/**
+ * Whether this process should look up the holder of a port now: at most once per port and minute.
+ *
+ * @param port the port that could not be bound
+ */
+function portHolderLookupDue(port: number): boolean {
+    const now = Date.now();
+    const last = portHolderLookupsAt.get(port);
+    if (last !== undefined && now - last < PORT_HOLDER_LOOKUP_INTERVAL_MS) {
+        return false;
+    }
+    portHolderLookupsAt.set(port, now);
+    return true;
+}
+
+/**
  * Here we define dynamically created methods
  */
 export interface AdapterClass {
@@ -950,6 +973,8 @@ export class AdapterClass extends EventEmitter {
     private getPortRunning: null | InternalGetPortOptions = null;
     /** When the last "no permission to bind" hint was logged by a port probe — one hint per minute, not one per probed port */
     private _portPermissionHintAt = 0;
+    /** When the last holder of an occupied port was looked up by a port probe — one lookup per minute, not one per probed port */
+    private _portHolderHintAt = 0;
     private readonly _namespaceRegExp: RegExp;
     instance?: number;
     // @ts-expect-error decide how to handle it
@@ -2035,9 +2060,13 @@ export class AdapterClass extends EventEmitter {
                         try {
                             options.callback?.(port);
                         } finally {
-                            // the probe is over — the Windows fallback in _exceptionHandler must not catch a
-                            // later EADDRINUSE (cleared after the callback, which may still read the probe)
-                            this.getPortRunning = null;
+                            // this probe is over — the Windows fallback in _exceptionHandler must not catch a
+                            // later EADDRINUSE. Cleared after the callback (which may still read the probe), and
+                            // only if it is still THIS probe: a callback that asks for its next port has already
+                            // started a new probe, and that one keeps its fallback
+                            if (this.getPortRunning === options) {
+                                this.getPortRunning = null;
+                            }
                         }
                     };
                     return tools.maybeCallback(done, options.port);
@@ -2064,8 +2093,14 @@ export class AdapterClass extends EventEmitter {
         const where = `Port ${options.port}${options.host ? ` for host ${options.host}` : ''}`;
         if (err.code === 'EADDRINUSE') {
             this._logger.info(`${this.namespaceLog} ${where} is in use – trying ${options.port + 1}`);
-            // the holder follows in its own line: the lookup must not delay the probe
-            void this._describeBindError(err).then(text => text && this._logger.info(`${this.namespaceLog} ${text}`));
+            // the holder follows in its own line, looked up at most once per minute: the probe retries every
+            // 100 ms, and a walk across a busy range must not keep a lookup (plus two db reads) in flight per port
+            if (Date.now() - this._portHolderHintAt > 60_000) {
+                this._portHolderHintAt = Date.now();
+                this._describeBindError(err)
+                    .then(text => text && this._logger.info(`${this.namespaceLog} ${text}`))
+                    .catch(() => undefined);
+            }
         } else if (err.code === 'EACCES') {
             // a probe below 1024 without rights walks up to 1024 in 100 ms steps — hint once, not 900 times
             if (Date.now() - this._portPermissionHintAt > 60_000) {
@@ -2074,6 +2109,14 @@ export class AdapterClass extends EventEmitter {
                     `${this.namespaceLog} ${where}: ${portOwner.describeBindPermissionError(options.port)} – trying ${options.port + 1}`,
                 );
             }
+        } else if (err.code) {
+            // e.g. EADDRNOTAVAIL from a bind address this host does not have — until now the probe hid
+            // that as well and walked up to 1024 in silence
+            const why =
+                err.code === 'EADDRNOTAVAIL'
+                    ? `${err.code} (this host has no interface with that address – check the bind address in the instance settings)`
+                    : err.code;
+            this._logger.info(`${this.namespaceLog} ${where} cannot be bound: ${why} – trying ${options.port + 1}`);
         }
     }
 
@@ -2124,10 +2167,12 @@ export class AdapterClass extends EventEmitter {
             return;
         }
         let timer: NodeJS.Timeout | undefined;
-        const deadline = new Promise<void>(resolve => {
-            timer = setTimeout(resolve, 1_500);
+        const deadline = new Promise<undefined>(resolve => {
+            timer = setTimeout(() => resolve(undefined), 1_500);
         });
-        const work = (async (): Promise<void> => {
+        // the db work fills a COPY — when the deadline wins, the caller keeps the OS-only context
+        // instead of a sentence built from a half-filled one
+        const work = (async (): Promise<portOwner.PortConflictContext | undefined> => {
             const view = await this.#objects!.getObjectViewAsync('system', 'instance', {
                 startkey: 'system.adapter.',
                 endkey: 'system.adapter.\u9999',
@@ -2140,15 +2185,18 @@ export class AdapterClass extends EventEmitter {
             const values = ids.length ? await this.#states!.getStates(ids) : [];
             const states: Record<string, ioBroker.State | null | undefined> = {};
             ids.forEach((id, i) => (states[id] = values[i]));
-            portOwner.enrichPortOwnersFromDb(context, {
+            const enriched: portOwner.PortConflictContext = { ...context, owners: [...context.owners] };
+            portOwner.enrichPortOwnersFromDb(enriched, {
                 instances,
                 states,
                 compactModeEnabled: !!this._config.system?.compact,
             });
-        })().catch(() => {
-            // the db is not reachable in this error path — the OS part of the sentence still stands
-        });
-        await Promise.race([work, deadline]).finally(() => clearTimeout(timer));
+            return enriched;
+        })().catch(() => undefined); // the db is not reachable in this error path — the OS part of the sentence still stands
+        const enriched = await Promise.race([work, deadline]).finally(() => clearTimeout(timer));
+        if (enriched) {
+            Object.assign(context, enriched);
+        }
     }
 
     /**
@@ -13309,15 +13357,22 @@ export class AdapterClass extends EventEmitter {
         if (err && !this._stopInProgress) {
             const message = err.code ? `Exception-Code: ${err.code}: ${err.message}` : err.message;
             this._logger.error(`${this.namespaceLog} ${message}`);
-            // EADDRINUSE / EACCES: the holder of the port (or the missing right) follows in its own
-            // line and joins the notification — looked up after the error is logged, so a slow lookup
-            // never delays or loses the line that exists today
-            const bindHint = await this._describeBindError(err);
-            if (bindHint) {
-                this._logger.error(`${this.namespaceLog} ${bindHint}`);
+            // EADDRINUSE / EACCES: the holder of the port (or the missing right) follows in its own log
+            // line as soon as the lookup answers — NOT awaited, so notification and shutdown stay as
+            // prompt as before, and a second exception in the meantime finds `_stopInProgress` set.
+            // Once per port and process: in compact mode every instance of the process runs this handler
+            const conflictPort = (err as NodeJS.ErrnoException & { port?: unknown }).port;
+            if (
+                (err.code === 'EADDRINUSE' || err.code === 'EACCES') &&
+                typeof conflictPort === 'number' &&
+                portHolderLookupDue(conflictPort)
+            ) {
+                this._describeBindError(err)
+                    .then(bindHint => bindHint && this._logger.error(`${this.namespaceLog} ${bindHint}`))
+                    .catch(() => undefined);
             }
             try {
-                await this.registerNotification('system', null, bindHint ? `${message} – ${bindHint}` : message);
+                await this.registerNotification('system', null, message);
             } catch {
                 // ignore
             }

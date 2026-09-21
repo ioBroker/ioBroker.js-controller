@@ -14,8 +14,11 @@
  * - Windows: `netstat -ano`, then `tasklist` for the image name.
  * - FreeBSD: `sockstat`.
  *
- * Everything here is best effort: nothing throws, every command is bounded by a timeout, and an
- * empty result means "unknown", never a claim. Every OS access is injectable for tests.
+ * Everything here is best effort: nothing throws, the whole lookup — every command and the
+ * `/proc` walk — stops at one deadline, and an empty result means "unknown", never a claim.
+ * A holder bound to a different address than the failed bind is not reported (two listeners on
+ * `127.0.0.1:1883` and `192.168.1.5:1883` coexist; only a wildcard collides with everything).
+ * Every OS access is injectable for tests.
  */
 
 import { execFile } from 'node:child_process';
@@ -43,6 +46,12 @@ export interface PortHolder {
     command?: string;
     /** Local address the socket is bound to, as the OS shows it */
     localAddress?: string;
+    /**
+     * Linux only, for a socket whose process could not be entered: `true` when the socket belongs to
+     * the same user as this process (the process is not dumpable, e.g. started with raised
+     * privileges), `false` when it belongs to another user. Undefined when the uid is unknown.
+     */
+    sameUser?: boolean;
 }
 
 /** The port is held by the calling process itself */
@@ -101,6 +110,8 @@ export interface ForeignPortOwner {
     uid?: number;
     /** Pid, if the OS tells it without letting us read the process */
     pid?: number;
+    /** Whether the socket belongs to the same user as this process (Linux, when the uid is known) */
+    sameUser?: boolean;
 }
 
 export type PortOwner =
@@ -134,11 +145,22 @@ export interface PortOwnerDeps {
     readlink?: (path: string) => Promise<string>;
     /** Runs a command and resolves with its stdout; rejects on failure or timeout */
     exec?: (file: string, args: string[], timeoutMs: number) => Promise<string>;
-    /** Upper bound for the whole lookup, default 2000 ms */
+    /** Upper bound for the whole lookup — commands and the `/proc` walk included — default 2000 ms */
     timeoutMs?: number;
 }
 
 const DEFAULT_TIMEOUT_MS = 2_000;
+
+/** The resolved dependencies plus the one deadline every step of a lookup measures itself against */
+type ResolvedDeps = Required<Omit<PortOwnerDeps, 'ownUid'>> & {
+    ownUid?: number;
+    /** `Date.now()` value after which no further OS access is started */
+    deadlineAt: number;
+    /** Milliseconds left until the deadline, at least 1 */
+    remainingMs: () => number;
+    /** Whether the deadline has passed */
+    expired: () => boolean;
+};
 
 /**
  * Run a command with a deadline and resolve with its stdout.
@@ -165,7 +187,9 @@ function defaultExec(file: string, args: string[], timeoutMs: number): Promise<s
  *
  * @param deps what the caller overrides
  */
-function withDefaults(deps: PortOwnerDeps): Required<Omit<PortOwnerDeps, 'ownUid'>> & { ownUid?: number } {
+function withDefaults(deps: PortOwnerDeps): ResolvedDeps {
+    const timeoutMs = deps.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+    const deadlineAt = Date.now() + timeoutMs;
     return {
         platform: deps.platform ?? process.platform,
         ownPid: deps.ownPid ?? process.pid,
@@ -174,8 +198,65 @@ function withDefaults(deps: PortOwnerDeps): Required<Omit<PortOwnerDeps, 'ownUid
         readdir: deps.readdir ?? (p => fs.readdir(p)),
         readlink: deps.readlink ?? (p => fs.readlink(p)),
         exec: deps.exec ?? defaultExec,
-        timeoutMs: deps.timeoutMs ?? DEFAULT_TIMEOUT_MS,
+        timeoutMs,
+        deadlineAt,
+        remainingMs: () => Math.max(1, deadlineAt - Date.now()),
+        expired: () => Date.now() >= deadlineAt,
     };
+}
+
+/**
+ * Do two bind addresses collide? A wildcard (`0.0.0.0`, `::`, `*`, empty) collides with every
+ * address; otherwise the addresses must be the same (IPv4-mapped IPv6 counts as its IPv4).
+ * Unknown on either side means "cannot rule it out" — the holder is kept.
+ *
+ * @param a the address of the failed bind
+ * @param b the address the holder is bound to
+ */
+export function bindAddressesCollide(a: string | undefined, b: string | undefined): boolean {
+    if (a === undefined || b === undefined) {
+        return true;
+    }
+    const x = canonicalAddress(a);
+    const y = canonicalAddress(b);
+    const wildcard = (v: string): boolean => v === '' || v === '*' || v === '0.0.0.0' || v === '0:0:0:0:0:0:0:0';
+    return wildcard(x) || wildcard(y) || x === y;
+}
+
+/**
+ * One spelling per address, so that `::1`, `0:0:0:0:0:0:0:1` and `[::1]` compare equal, an
+ * IPv4-mapped `::ffff:10.0.0.1` equals `10.0.0.1`, and a zone id (`fe80::1%eth0`) is ignored.
+ *
+ * @param raw the address as Node.js or the OS spells it
+ */
+export function canonicalAddress(raw: string): string {
+    const v = raw
+        .trim()
+        .toLowerCase()
+        .replace(/^\[|\]$/g, '')
+        .replace(/%.*$/, '');
+    if (!v.includes(':')) {
+        return v; // IPv4, a host name, or `*`
+    }
+    if (v.startsWith('::ffff:') && v.includes('.')) {
+        return v.slice('::ffff:'.length);
+    }
+    // expand `::` to eight groups and drop leading zeros of every group
+    const [head, tail = ''] = v.split('::');
+    const left = head ? head.split(':') : [];
+    const right = tail ? tail.split(':') : [];
+    const missing = v.includes('::') ? 8 - left.length - right.length : 0;
+    if (missing < 0 || left.length + right.length + missing !== 8) {
+        return v; // not an IPv6 literal — compare as written
+    }
+    const groups = [...left, ...Array<string>(missing).fill('0'), ...right].map(g => parseInt(g, 16));
+    if (groups.slice(0, 5).every(g => g === 0) && groups[5] === 0xffff) {
+        // IPv4-mapped in hex groups, as /proc/net/tcp6 spells it: `0:0:0:0:0:ffff:102:304` = 1.2.3.4
+        const hi = groups[6] ?? 0;
+        const lo = groups[7] ?? 0;
+        return `${hi >> 8}.${hi & 0xff}.${lo >> 8}.${lo & 0xff}`;
+    }
+    return groups.map(g => g.toString(16)).join(':');
 }
 
 /**
@@ -253,13 +334,18 @@ export function parseProcNetTable(text: string): ProcNetSocket[] {
             continue;
         }
         const { address, port } = decodeProcNetAddress(localField);
-        rows.push({
+        const row: ProcNetSocket = {
             localAddress: address,
             port,
             state: (state ?? '').toUpperCase(),
             uid: Number(uid),
             inode: Number(inode),
-        });
+        };
+        // a malformed row (a NaN port or inode) would match nothing or fold with every other NaN — skip it
+        if (!Number.isFinite(row.port) || !Number.isFinite(row.inode)) {
+            continue;
+        }
+        rows.push(row);
     }
     return rows;
 }
@@ -280,12 +366,20 @@ export function classifyCommand(command: string): CommandClass {
     if (spawn) {
         return { kind: 'instance', instance: `${spawn[1]}.${spawn[2]}` };
     }
+    // The controller's process title is `iobroker.js-controller[.compactgroupN]` as a token of its own;
+    // without a title (Windows) the command line ends in `.../js-controller/controller.js [N]` or
+    // `.../compactgroupController.js N`. Anchored on purpose: a `tail -f .../iobroker.js-controller/log/...`
+    // mentions the package but is not the controller.
     const group =
-        command.match(/js-controller\.compactgroup(\d+)/i) ?? command.match(/compactgroupController\.js\s+(\d+)/i);
+        command.match(/(?:^|\s)iobroker\.js-controller\.compactgroup(\d+)(?:\s|$)/i) ??
+        command.match(/[\\/]compactgroupController\.js\s+(\d+)(?:\s|$)/i);
     if (group) {
         return { kind: 'compact', group: Number(group[1]) };
     }
-    if (/iobroker\.js-controller|js-controller[\\/]controller\.js/i.test(command)) {
+    if (
+        /(?:^|\s)iobroker\.js-controller(?:\s|$)/i.test(command) ||
+        /iobroker\.js-controller[\\/](?:controller|iobroker)\.js(?:\s|$)/i.test(command)
+    ) {
         return { kind: 'controller' };
     }
     const first = command.trim().split(/\s+/)[0] ?? command.trim();
@@ -296,17 +390,26 @@ export function classifyCommand(command: string): CommandClass {
 /**
  * Linux: socket tables + fd links under /proc.
  *
+ * TCP rows count when they listen (`0A`) or are bound without listening (`07`, TCP_CLOSE) — the
+ * latter holds the port just as much and is what a `bind()` without `listen()` leaves behind. UDP
+ * has no state. Rows bound to an address that cannot collide with the failed bind are skipped.
+ * The walk over `/proc/<pid>/fd` stops at the deadline and returns what it found until then.
+ *
  * @param query the port to look for
  * @param deps OS access
  */
-async function findHoldersLinux(query: PortQuery, deps: ReturnType<typeof withDefaults>): Promise<PortHolder[]> {
+async function findHoldersLinux(query: PortQuery, deps: ResolvedDeps): Promise<PortHolder[]> {
     const protocol = query.protocol ?? 'tcp';
     const tables = protocol === 'tcp' ? ['/proc/net/tcp', '/proc/net/tcp6'] : ['/proc/net/udp', '/proc/net/udp6'];
     const sockets: ProcNetSocket[] = [];
     for (const table of tables) {
         try {
             for (const row of parseProcNetTable(await deps.readFile(table))) {
-                if (row.port === query.port && (protocol === 'udp' || row.state === '0A')) {
+                if (
+                    row.port === query.port &&
+                    (protocol === 'udp' || row.state === '0A' || row.state === '07') &&
+                    bindAddressesCollide(query.address, row.localAddress)
+                ) {
                     sockets.push(row);
                 }
             }
@@ -326,7 +429,10 @@ async function findHoldersLinux(query: PortQuery, deps: ReturnType<typeof withDe
     } catch {
         // /proc unreadable
     }
-    for (const pidName of pids) {
+    scan: for (const pidName of pids) {
+        if (deps.expired()) {
+            break; // the caller was answered already — do not keep the host busy
+        }
         let fds: string[];
         try {
             fds = await deps.readdir(`/proc/${pidName}/fd`);
@@ -334,6 +440,9 @@ async function findHoldersLinux(query: PortQuery, deps: ReturnType<typeof withDe
             continue; // another user's process, or not dumpable — see the uid fallback below
         }
         for (const fd of fds) {
+            if (deps.expired()) {
+                break scan;
+            }
             let target: string;
             try {
                 target = await deps.readlink(`/proc/${pidName}/fd/${fd}`);
@@ -364,11 +473,15 @@ async function findHoldersLinux(query: PortQuery, deps: ReturnType<typeof withDe
             break;
         }
     }
-    // Sockets whose process we could not enter: report the uid the socket table knows
-    for (const socket of wanted.values()) {
-        holders.set(-socket.inode, { uid: socket.uid, localAddress: socket.localAddress });
-    }
-    return [...holders.values()];
+    // Sockets whose process we could not enter (or reach before the deadline): report the uid the
+    // socket table knows, and whether it is our own — a same-user socket we cannot enter belongs to a
+    // process that is not dumpable (raised privileges), not to another user
+    const opaque: PortHolder[] = [...wanted.values()].map(socket => ({
+        uid: socket.uid,
+        localAddress: socket.localAddress,
+        sameUser: deps.ownUid === undefined ? undefined : socket.uid === deps.ownUid,
+    }));
+    return [...holders.values(), ...opaque];
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -376,7 +489,8 @@ async function findHoldersLinux(query: PortQuery, deps: ReturnType<typeof withDe
 // ---------------------------------------------------------------------------------------------
 
 /**
- * Parse `lsof -F pcun` output — one field per line, `p` starts a process block.
+ * Parse `lsof -F pcun` output — one field per line, the tag letter directly followed by the value
+ * (`p15411`, `cnode`, `u1001`, `n*:1883`); `p` starts a process block.
  *
  * @param text the lsof output
  */
@@ -406,20 +520,22 @@ export function parseLsofFields(text: string): PortHolder[] {
  * @param query the port to look for
  * @param deps OS access
  */
-async function findHoldersDarwin(query: PortQuery, deps: ReturnType<typeof withDefaults>): Promise<PortHolder[]> {
+async function findHoldersDarwin(query: PortQuery, deps: ResolvedDeps): Promise<PortHolder[]> {
     const protocol = query.protocol ?? 'tcp';
     const selector = protocol === 'tcp' ? [`-iTCP:${query.port}`, '-sTCP:LISTEN'] : [`-iUDP:${query.port}`];
     let out: string;
     try {
-        out = await deps.exec('lsof', ['-nP', ...selector, '-Fpcun'], deps.timeoutMs);
+        out = await deps.exec('lsof', ['-nP', ...selector, '-Fpcun'], deps.remainingMs());
     } catch {
         return [];
     }
     const holders = parseLsofFields(out);
     for (const holder of holders) {
-        if (holder.pid) {
+        if (holder.pid && !deps.expired()) {
             try {
-                const args = (await deps.exec('ps', ['-o', 'args=', '-p', String(holder.pid)], deps.timeoutMs)).trim();
+                const args = (
+                    await deps.exec('ps', ['-o', 'args=', '-p', String(holder.pid)], deps.remainingMs())
+                ).trim();
                 if (args) {
                     holder.command = args;
                 }
@@ -436,17 +552,21 @@ async function findHoldersDarwin(query: PortQuery, deps: ReturnType<typeof withD
 // ---------------------------------------------------------------------------------------------
 
 /**
- * Parse `netstat -ano -p tcp|udp` output for the given port.
+ * Parse `netstat -ano -p tcp|tcpv6|udp|udpv6` output for the given port.
+ *
+ * A TCP row is a listener when its state column says so — or, because Windows localizes the state
+ * words (German `ABHÖREN`), when its foreign address is the unbound `0.0.0.0:0` / `[::]:0`; an
+ * established or waiting connection always names a real peer. UDP rows have no state column.
  *
  * @param text the netstat output
  * @param port the port to look for
- * @param protocol tcp needs LISTENING, udp has no state column
+ * @param protocol tcp or udp (the `v6` tables use the same row shape)
  */
 export function parseNetstat(text: string, port: number, protocol: PortProtocol): PortHolder[] {
     const holders = new Map<number, PortHolder>();
     for (const line of text.split('\n')) {
         const cols = line.trim().split(/\s+/);
-        const [proto, local = '', , state = ''] = cols;
+        const [proto, local = '', foreign = '', state = ''] = cols;
         if (cols.length < 4 || proto?.toUpperCase() !== protocol.toUpperCase()) {
             continue;
         }
@@ -455,8 +575,11 @@ export function parseNetstat(text: string, port: number, protocol: PortProtocol)
             continue;
         }
         const pid = Number(cols[cols.length - 1]);
-        if (protocol === 'tcp' && !/LISTEN/i.test(state)) {
-            continue;
+        if (protocol === 'tcp') {
+            const listening = /LISTEN/i.test(state) || /:0$/.test(foreign);
+            if (!listening) {
+                continue;
+            }
         }
         if (Number.isFinite(pid) && !holders.has(pid)) {
             holders.set(pid, { pid, localAddress: local.slice(0, local.lastIndexOf(':')) });
@@ -481,28 +604,42 @@ export function parseTasklistImage(text: string): string | undefined {
  * @param query the port to look for
  * @param deps OS access
  */
-async function findHoldersWindows(query: PortQuery, deps: ReturnType<typeof withDefaults>): Promise<PortHolder[]> {
+async function findHoldersWindows(query: PortQuery, deps: ResolvedDeps): Promise<PortHolder[]> {
     const protocol = query.protocol ?? 'tcp';
-    let out: string;
-    try {
-        out = await deps.exec('netstat', ['-ano', '-p', protocol], deps.timeoutMs);
-    } catch {
-        return [];
+    // `-p tcp` lists IPv4 only; the IPv6 listeners (a server bound to `::`) sit in `-p tcpv6`
+    const holders = new Map<number, PortHolder>();
+    for (const table of [protocol, `${protocol}v6`]) {
+        if (deps.expired()) {
+            break;
+        }
+        let out: string;
+        try {
+            out = await deps.exec('netstat', ['-ano', '-p', table], deps.remainingMs());
+        } catch {
+            continue;
+        }
+        for (const holder of parseNetstat(out, query.port, protocol)) {
+            if (holder.pid !== undefined && !holders.has(holder.pid)) {
+                holders.set(holder.pid, holder);
+            }
+        }
     }
-    const holders = parseNetstat(out, query.port, protocol);
-    for (const holder of holders) {
+    for (const holder of holders.values()) {
+        if (deps.expired()) {
+            break;
+        }
         try {
             const list = await deps.exec(
                 'tasklist',
                 ['/FI', `PID eq ${holder.pid}`, '/FO', 'CSV', '/NH'],
-                deps.timeoutMs,
+                deps.remainingMs(),
             );
             holder.command = parseTasklistImage(list);
         } catch {
             // image name stays unknown
         }
     }
-    return holders;
+    return [...holders.values()];
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -540,12 +677,12 @@ export function parseSockstat(text: string, port: number): PortHolder[] {
  * @param query the port to look for
  * @param deps OS access
  */
-async function findHoldersFreeBsd(query: PortQuery, deps: ReturnType<typeof withDefaults>): Promise<PortHolder[]> {
+async function findHoldersFreeBsd(query: PortQuery, deps: ResolvedDeps): Promise<PortHolder[]> {
     try {
         const out = await deps.exec(
             'sockstat',
             ['-l', '-P', query.protocol ?? 'tcp', '-p', String(query.port)],
-            deps.timeoutMs,
+            deps.remainingMs(),
         );
         return parseSockstat(out, query.port);
     } catch {
@@ -583,7 +720,9 @@ export async function findPortHolders(query: PortQuery, deps: PortOwnerDeps = {}
             return [];
     }
     try {
-        return await withTimeout(work, d.timeoutMs, []);
+        const holders = await withTimeout(work, d.remainingMs(), []);
+        // a holder on an address that cannot collide with the failed bind is not the cause
+        return holders.filter(holder => bindAddressesCollide(query.address, holder.localAddress));
     } catch {
         return [];
     }
@@ -599,7 +738,11 @@ export function classifyPortHolders(holders: PortHolder[], ownPid: number): Port
     const owners: PortOwner[] = [];
     for (const holder of holders) {
         if (holder.pid === undefined) {
-            owners.push({ kind: 'foreign', uid: holder.uid });
+            owners.push({
+                kind: 'foreign',
+                uid: holder.uid,
+                ...(holder.sameUser === undefined ? {} : { sameUser: holder.sameUser }),
+            });
             continue;
         }
         if (holder.pid === ownPid) {
@@ -727,7 +870,9 @@ export function enrichmentStateIds(instances: ioBroker.InstanceObject[]): string
  * What the objects and states db add to the OS lookup, applied to the context in place:
  * - the instance behind a pid the OS could not name (Windows shows only `node.exe`, a process
  *   with raised privileges only its pid): the host stores the pid of every instance it spawned in
- *   `<instance>.sigKill` — instances in compact mode carry -1 there and are found via the group below;
+ *   `<instance>.sigKill` — read only for an instance that is alive, because the state outlives the
+ *   instance and the OS hands the pid to the next process; instances in compact mode carry -1
+ *   there and are found via the group below;
  * - every instance of this host configured for the port (`native.port`), with its listen address
  *   (`native.bind`) when it has one — an instance without one may use the port as a client, so it
  *   is marked, not dropped (the admin's own port-conflict check sees only the `bind` carriers);
@@ -747,10 +892,12 @@ export function enrichPortOwnersFromDb(ctx: PortConflictContext, input: DbEnrich
             owner.kind === 'foreign' || (owner.kind === 'process' && /^node(\.exe)?$/i.test(owner.name))
                 ? owner.pid
                 : undefined;
+        // `sigKill` outlives the instance and the OS reuses pids — only a RUNNING instance whose
+        // acknowledged sigKill carries this pid is named; anything else stays what the OS said
         const spawned = pid
             ? instances.find(obj => {
                   const sigKill = states[`${obj._id}.sigKill`];
-                  return !!sigKill?.ack && sigKill.val === pid;
+                  return !!sigKill?.ack && sigKill.val === pid && isAlive(obj);
               })
             : undefined;
         return spawned && pid ? { kind: 'instance', instance: namespaceOf(spawned), pid } : owner;
@@ -838,11 +985,25 @@ export function describePortConflict(ctx: PortConflictContext): string {
                 );
                 break;
             case 'foreign':
-                parts.push(
-                    owner.pid
-                        ? `${where} is already in use by process ${owner.pid}, which cannot be inspected by user${user}${owner.uid !== undefined ? ` (owner uid ${owner.uid})` : ''}`
-                        : `${where} is already in use by a process outside ioBroker (owner not visible to user${user}${owner.uid !== undefined ? `, uid ${owner.uid}` : ''})`,
-                );
+                if (owner.pid) {
+                    parts.push(
+                        `${where} is already in use by process ${owner.pid}, which cannot be inspected by user${user}${owner.uid !== undefined ? ` (owner uid ${owner.uid})` : ''}`,
+                    );
+                } else if (owner.sameUser === true) {
+                    // same uid, yet /proc/<pid>/fd was closed to us: a process that is not dumpable, e.g. Node.js
+                    // running with file capabilities — the js-controller started by systemd looks like that
+                    parts.push(
+                        `${where} is already in use by a process of user${user} that this process may not inspect (not dumpable, e.g. started with raised privileges) – check the js-controller and the instances running inside it`,
+                    );
+                } else if (owner.sameUser === false) {
+                    parts.push(
+                        `${where} is already in use by a process of another user${owner.uid !== undefined ? ` (uid ${owner.uid})` : ''}, which is outside ioBroker – stop that service or choose another port`,
+                    );
+                } else {
+                    parts.push(
+                        `${where} is already in use by a process outside ioBroker (owner not visible to user${user}${owner.uid !== undefined ? `, uid ${owner.uid}` : ''})`,
+                    );
+                }
                 break;
         }
     }
