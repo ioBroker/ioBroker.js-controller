@@ -8,4 +8,4 @@
 
 > **Plugin** = `Record`\<`string`, `any`\>
 
-Defined in: [types-dev/index.d.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/index.d.ts#L316)
+Defined in: [types-dev/index.d.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/e5941ca8a411ecc9840ca4f717aee229e4267c6b/packages/types-dev/index.d.ts#L316)

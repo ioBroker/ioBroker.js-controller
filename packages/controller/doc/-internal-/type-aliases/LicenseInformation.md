@@ -8,4 +8,4 @@
 
 > **LicenseInformation** = [`LicenseInformationFree`](../interfaces/LicenseInformationFree.md) \| [`LicenseInformationWithPayment`](../interfaces/LicenseInformationWithPayment.md)
 
-Defined in: [types-dev/objects.d.ts:597](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/objects.d.ts#L597)
+Defined in: [types-dev/objects.d.ts:597](https://github.com/ioBroker/ioBroker.js-controller/blob/e5941ca8a411ecc9840ca4f717aee229e4267c6b/packages/types-dev/objects.d.ts#L597)
