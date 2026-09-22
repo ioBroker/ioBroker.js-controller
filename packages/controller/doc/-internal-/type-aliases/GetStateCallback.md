@@ -8,7 +8,7 @@
 
 > **GetStateCallback** = (`err?`, `state?`) => `void`
 
-Defined in: [types-dev/index.d.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/2e634e3875a421a903d87f899728bd9369523ca6/packages/types-dev/index.d.ts#L509)
+Defined in: [types-dev/index.d.ts:635](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/types-dev/index.d.ts#L635)
 
 ## Parameters
 

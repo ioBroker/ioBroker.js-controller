@@ -660,7 +660,7 @@ declare global {
             /** Settings for custom Admin Tabs */
             adminTab?: {
                 name?: StringOrTranslated;
-                /** Base 64 icon for the tab */
+                /** Icon for the tab: a file name relative to the "admin" folder, a URL or a base64 data URL. If not set, the adapter icon is shown */
                 icon?: string;
                 /** If true, the Tab is not reloaded when the configuration changes */
                 ignoreConfigUpdate?: boolean;
@@ -668,7 +668,7 @@ declare global {
                 link?: string;
                 /** If true, only one instance of this tab will be created for all instances */
                 singleton?: boolean;
-                /** Order number in admin tabs */
+                /** Position in the admin menu: the built-in tabs use 1 to 120, a tab without order gets 200. 0 counts as not set. Once the user has sorted the menu, the stored order wins */
                 order?: number;
                 /**
                  * If the page sends an 'iobLoaded' event:
@@ -842,6 +842,19 @@ declare global {
                 | 'weather';
             /** If `true`, the `npm` package must be installed with the `--unsafe-perm` flag */
             unsafePerm?: true;
+            /**
+             * If `true`, the adapter declares the exclusive resources it occupies (serial ports, TCP/UDP ports, ...)
+             * itself via `adapter.registerUsedResource(...)`. Set this when the occupied resources are not simply
+             * the configured `native.port`.
+             *
+             * If not set, js-controller maintains the registry for this adapter and derives the entries from the
+             * instance's `native.port` / `native.bind`.
+             *
+             * If `false`, the adapter does not declare any resources and js-controller does not derive any either,
+             * so its instances have no entries in the registry. Use this when `native.port` is not a port the
+             * adapter listens on, e.g. the port of the device it connects to.
+             */
+            declareUsedResources?: boolean;
             /** The available version in the ioBroker repo. */
             version: string;
             /** Definition of the vis-2 widgets */
@@ -961,6 +974,8 @@ declare global {
             }[];
             /** Global saved expert mode for admin */
             expertMode?: boolean;
+            /** The "Did you know ...?" tips of the admin are not shown when it is opened */
+            tipsDisabled?: boolean;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;

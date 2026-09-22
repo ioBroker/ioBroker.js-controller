@@ -1,9 +1,9 @@
 {
     "name": "@iobroker/db-states-jsonl",
     "type": "module",
-    "version": "7.2.3-alpha.18-20260903-2e634e387",
+    "version": "8.0.0-alpha.1-20260921-e5941ca8a",
     "engines": {
-        "node": ">=22.0.0"
+        "node": ">=22.19.0"
     },
     "dependencies": {
         "@alcalzone/jsonl-db": "~4.0.2",
