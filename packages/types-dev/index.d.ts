@@ -79,7 +79,133 @@ declare global {
             | 'CONTROLLER_UI_UPGRADE'
             | 'ADAPTER_WEBSERVER_UPGRADE'
             | 'CONTROLLER_CMD_EXEC_FILES'
-            | 'CONTROLLER_FEATURE_REQUEST';
+            | 'CONTROLLER_FEATURE_REQUEST'
+            | 'CONTROLLER_USED_RESOURCES';
+
+        // #region Used resources
+        // ---------------------------------------------------------------------------------------------------
+        // Exclusive resources occupied by adapter instances (serial ports, TCP/UDP ports, USB devices, ...).
+        // These are the resources that cannot be used by more than one instance at the same time.
+        // Each resource type has its own strictly typed payload; extend `UsedResourceDataMap` to add a new one.
+        // ---------------------------------------------------------------------------------------------------
+
+        /** A serial port occupied by an instance */
+        interface SerialPortResourceData {
+            /**
+             * System path or name of the serial port as the adapter opens it, e.g. "/dev/ttyUSB0", a stable
+             * "/dev/serial/by-id/..." link or "COM3"
+             */
+            port: string;
+            /** Baud rate the port is opened with, if known */
+            baudRate?: number;
+            /**
+             * The device `port` resolves to, e.g. "/dev/ttyUSB0" for a "/dev/serial/by-id/..." link or "COM3" for
+             * "\\\\.\\com3". Set by the host on registration and used to recognize the same port under different
+             * names; an adapter does not set it.
+             */
+            device?: string;
+        }
+
+        /** A TCP port occupied by an instance */
+        interface TcpPortResourceData {
+            /** TCP port number */
+            port: number;
+            /** Address the socket is bound to. Default "0.0.0.0" (all interfaces) */
+            bind?: string;
+            /** address family */
+            family?: 4 | 6;
+        }
+
+        /** A UDP port occupied by an instance */
+        interface UdpPortResourceData {
+            /** UDP port number */
+            port: number;
+            /** Address the socket is bound to. Default "0.0.0.0" (all interfaces) */
+            bind?: string;
+            /** address family */
+            family?: 4 | 6;
+        }
+
+        /** A USB device occupied by an instance */
+        interface UsbResourceData {
+            /** System path of the USB device, e.g. "/dev/bus/usb/001/004" or "\\\\.\\COM3" */
+            path: string;
+            /** USB vendor id (hex string), e.g. "10c4" */
+            vendorId?: string;
+            /** USB product id (hex string), e.g. "ea60" */
+            productId?: string;
+        }
+
+        /** A Bluetooth / HCI adapter occupied by an instance */
+        interface BluetoothResourceData {
+            /** HCI device name or index, e.g. "hci0" */
+            hci: string;
+        }
+
+        /** A GPIO pin occupied by an instance */
+        interface GpioResourceData {
+            /**
+             * Line offset of the pin on its GPIO chip. On the main chip of a Raspberry Pi that is the BCM number, so
+             * GPIO 17 is header pin 11. Convert physical header pins, wiringPi numbers or sysfs numbers (which start
+             * at 512 on newer kernels) before registering, otherwise the same pin is not recognized.
+             */
+            pin: number;
+            /**
+             * GPIO chip the pin belongs to, e.g. "gpiochip2" for an I²C port expander. Leave it out for the main chip
+             * of the board; an entry without a chip counts as overlapping with the same pin on any chip, because the
+             * host cannot tell which one was meant.
+             */
+            chip?: string;
+        }
+
+        /**
+         * Maps every known resource type to its strictly typed payload.
+         * To introduce a new resource type, add its `RESOURCE_TYPE: RESOURCE_TYPE_Data` entry here
+         * (this map is intentionally open for module augmentation by adapters that own custom resources).
+         */
+        interface UsedResourceDataMap {
+            serialPort: SerialPortResourceData;
+            tcpPort: TcpPortResourceData;
+            udpPort: UdpPortResourceData;
+            usb: UsbResourceData;
+            bluetooth: BluetoothResourceData;
+            gpio: GpioResourceData;
+        }
+
+        /** Kind of an exclusive resource that can be occupied by only one instance at a time */
+        type UsedResourceType = keyof UsedResourceDataMap;
+
+        /** The type-specific payload for a given resource type (without bookkeeping fields) */
+        type UsedResourceData<T extends UsedResourceType = UsedResourceType> = UsedResourceDataMap[T];
+
+        /**
+         * A registered resource as stored on the host: the discriminating `type`, the type-specific payload
+         * in `data` and the ownership/bookkeeping fields (`instance`, `ts`, `isBlocked`).
+         *
+         * The payload is nested on purpose. If it were merged into this object, a payload key could shadow a
+         * bookkeeping field - an entry could then claim a foreign `instance` or a `type` that does not match
+         * the bucket it is stored in, and would be unreachable for all by-instance operations. Nesting makes
+         * that impossible for every current and future payload type.
+         */
+        type RegisteredResource<T extends UsedResourceType = UsedResourceType> = {
+            [K in T]: {
+                /** Kind of the occupied resource, e.g. "serialPort" */
+                type: K;
+                /** The type-specific payload describing the resource, e.g. `{ port: '/dev/ttyUSB0' }` */
+                data: UsedResourceDataMap[K];
+                /** Instance that occupies the resource, e.g. "mqtt.0" */
+                instance: string;
+                /** Timestamp (ms) when the resource was registered */
+                ts: number;
+                /**
+                 * If true, the instance is running and uses this resource. If false, the instance is not
+                 * running and would maybe occupy this resource when started - "maybe", because its
+                 * configuration can still change before the next start.
+                 */
+                isBlocked: boolean;
+            };
+        }[T];
+        // #endregion
 
         type StateValue = string | number | boolean | null;
 

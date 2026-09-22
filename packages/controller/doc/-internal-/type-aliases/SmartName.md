@@ -8,4 +8,4 @@
 
 > **SmartName** = `null` \| `false` \| `string` \| [`SmartNameObject`](SmartNameObject.md)
 
-Defined in: [types-dev/objects.d.ts:200](https://github.com/ioBroker/ioBroker.js-controller/blob/e5941ca8a411ecc9840ca4f717aee229e4267c6b/packages/types-dev/objects.d.ts#L200)
+Defined in: [types-dev/objects.d.ts:200](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/types-dev/objects.d.ts#L200)

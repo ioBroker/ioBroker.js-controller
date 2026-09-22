@@ -9,6 +9,7 @@ import type {
 import type { AdapterContext } from '@/lib/adapter/context.js';
 import { CertificateManager } from '@/lib/adapter/managers/CertificateManager.js';
 import { MessagingManager } from '@/lib/adapter/managers/MessagingManager.js';
+import { ResourceManager } from '@/lib/adapter/managers/ResourceManager.js';
 import { Validator } from '@/lib/adapter/validator.js';
 
 /**
@@ -19,6 +20,7 @@ export class AsyncAdapter {
     readonly #ctx: AdapterContext;
     #messagingInstance?: MessagingManager;
     #certificatesInstance?: CertificateManager;
+    #resourcesInstance?: ResourceManager;
 
     /**
      * @param ctx Shared adapter context providing live runtime state
@@ -35,6 +37,11 @@ export class AsyncAdapter {
     /** Lazily-constructed certificate manager. */
     get #certificates(): CertificateManager {
         return (this.#certificatesInstance ??= new CertificateManager(this.#ctx));
+    }
+
+    /** Lazily-constructed exclusive-resource manager. */
+    get #resources(): ResourceManager {
+        return (this.#resourcesInstance ??= new ResourceManager(this.#ctx, () => this.#messaging));
     }
 
     /**
@@ -267,6 +274,92 @@ export class AsyncAdapter {
      */
     stopWatchingCertificates(): void {
         this.#certificatesInstance?.stopWatching();
+    }
+
+    /**
+     * Registers an exclusive resource (serial port, TCP/UDP port, USB device, ...) as used by this
+     * instance. The registration is forwarded to the host, which stores it under
+     * `system.host.<hostname>.usedResources.<type>`.
+     *
+     * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
+     * @param data payload describing the resource
+     * @throws {Error} when the host refuses the registration or does not answer
+     */
+    async registerUsedResource<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data: ioBroker.UsedResourceData<T>,
+    ): Promise<void> {
+        Validator.assertString(type, 'type');
+        Validator.assertObject(data, 'data');
+        return this.#resources.registerUsedResource(type, data);
+    }
+
+    /**
+     * Asks the host whether another instance currently holds a resource, without registering it.
+     *
+     * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
+     * @param data description of the resource that is about to be used
+     * @returns the entries of other instances that currently hold it
+     * @throws {Error} when the host refuses the request or does not answer
+     */
+    async checkUsedResource<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data?: Partial<ioBroker.UsedResourceData<T>>,
+    ): Promise<ioBroker.RegisteredResource[]> {
+        Validator.assertString(type, 'type');
+        if (data !== undefined) {
+            Validator.assertObject(data, 'data');
+        }
+        return this.#resources.checkUsedResource(type, data);
+    }
+
+    /**
+     * Frees all exclusive resources this instance registered, across all types.
+     *
+     * @throws {Error} when the host refuses the command or does not answer
+     */
+    async clearUsedResources(): Promise<void> {
+        return this.#resources.clearUsedResources();
+    }
+
+    /**
+     * Frees previously registered exclusive resources of this instance. `data` is a filter: every field it
+     * names must match. If it is omitted, all registered resources of the given `type` are freed.
+     *
+     * @param type the kind of resource, e.g. "serialPort" or "tcpPort"
+     * @param data fields identifying the resources to free; if omitted, all resources of `type` are freed
+     * @throws {Error} when the host refuses the command or does not answer
+     */
+    async freeUsedResource<T extends ioBroker.UsedResourceType>(
+        type: T,
+        data?: Partial<ioBroker.UsedResourceData<T>>,
+    ): Promise<void> {
+        Validator.assertString(type, 'type');
+        if (data !== undefined) {
+            Validator.assertObject(data, 'data');
+        }
+        return this.#resources.freeUsedResource(type, data);
+    }
+
+    /**
+     * Reads the exclusive resources of the given type registered on this instance's host, across all
+     * instances of that host.
+     *
+     * @param type resource type to read, e.g. "serialPort"
+     */
+    getHostUsedResources<T extends ioBroker.UsedResourceType>(type: T): Promise<ioBroker.RegisteredResource<T>[]>;
+    /** Reads the exclusive resources of every type registered on this instance's host. */
+    getHostUsedResources(): Promise<ioBroker.RegisteredResource[]>;
+
+    /**
+     * @param type resource type to read; if omitted, the resources of every type are read
+     */
+    getHostUsedResources(type?: ioBroker.UsedResourceType): Promise<ioBroker.RegisteredResource[]> {
+        if (type !== undefined) {
+            Validator.assertString(type, 'type');
+            return this.#resources.getHostUsedResources(type);
+        }
+        return this.#resources.getHostUsedResources();
     }
 
     /**

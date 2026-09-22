@@ -6,7 +6,7 @@
 
 # Interface: RepositoryJson
 
-Defined in: [types-dev/objects.d.ts:1137](https://github.com/ioBroker/ioBroker.js-controller/blob/e5941ca8a411ecc9840ca4f717aee229e4267c6b/packages/types-dev/objects.d.ts#L1137)
+Defined in: [types-dev/objects.d.ts:1150](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/types-dev/objects.d.ts#L1150)
 
 ## Indexable
 
@@ -20,6 +20,6 @@ Information about each adapter
 
 > **\_repoInfo**: [`RepoInfo`](RepoInfo.md)
 
-Defined in: [types-dev/objects.d.ts:1139](https://github.com/ioBroker/ioBroker.js-controller/blob/e5941ca8a411ecc9840ca4f717aee229e4267c6b/packages/types-dev/objects.d.ts#L1139)
+Defined in: [types-dev/objects.d.ts:1152](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/types-dev/objects.d.ts#L1152)
 
 Information about the repository: creation time, name, is it stable
