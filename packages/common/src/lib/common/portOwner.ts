@@ -147,6 +147,8 @@ export interface PortOwnerDeps {
     exec?: (file: string, args: string[], timeoutMs: number) => Promise<string>;
     /** Upper bound for the whole lookup — commands and the `/proc` walk included — default 2000 ms */
     timeoutMs?: number;
+    /** Clock the deadline is measured with — defaults to `Date.now`, tests inject their own */
+    now?: () => number;
 }
 
 const DEFAULT_TIMEOUT_MS = 2_000;
@@ -154,7 +156,7 @@ const DEFAULT_TIMEOUT_MS = 2_000;
 /** The resolved dependencies plus the one deadline every step of a lookup measures itself against */
 type ResolvedDeps = Required<Omit<PortOwnerDeps, 'ownUid'>> & {
     ownUid?: number;
-    /** `Date.now()` value after which no further OS access is started */
+    /** `now()` value after which no further OS access is started */
     deadlineAt: number;
     /** Milliseconds left until the deadline, at least 1 */
     remainingMs: () => number;
@@ -189,7 +191,8 @@ function defaultExec(file: string, args: string[], timeoutMs: number): Promise<s
  */
 function withDefaults(deps: PortOwnerDeps): ResolvedDeps {
     const timeoutMs = deps.timeoutMs ?? DEFAULT_TIMEOUT_MS;
-    const deadlineAt = Date.now() + timeoutMs;
+    const now = deps.now ?? Date.now;
+    const deadlineAt = now() + timeoutMs;
     return {
         platform: deps.platform ?? process.platform,
         ownPid: deps.ownPid ?? process.pid,
@@ -199,9 +202,10 @@ function withDefaults(deps: PortOwnerDeps): ResolvedDeps {
         readlink: deps.readlink ?? (p => fs.readlink(p)),
         exec: deps.exec ?? defaultExec,
         timeoutMs,
+        now,
         deadlineAt,
-        remainingMs: () => Math.max(1, deadlineAt - Date.now()),
-        expired: () => Date.now() >= deadlineAt,
+        remainingMs: () => Math.max(1, deadlineAt - now()),
+        expired: () => now() >= deadlineAt,
     };
 }
 
@@ -393,12 +397,16 @@ export function classifyCommand(command: string): CommandClass {
  * TCP rows count when they listen (`0A`) or are bound without listening (`07`, TCP_CLOSE) — the
  * latter holds the port just as much and is what a `bind()` without `listen()` leaves behind. UDP
  * has no state. Rows bound to an address that cannot collide with the failed bind are skipped.
- * The walk over `/proc/<pid>/fd` stops at the deadline and returns what it found until then.
+ * The walk over `/proc/<pid>/fd` stops at the deadline and returns what it found until then — and only
+ * that: a socket whose process the walk never reached is not reported at all, so the caller says
+ * "unknown" instead of guessing "not inspectable" for a process nobody looked at.
  *
  * @param query the port to look for
  * @param deps OS access
+ * @param found the holders found so far — shared with the caller's deadline timer, so that a timer
+ *   answering first hands over what the walk already had instead of an empty list
  */
-async function findHoldersLinux(query: PortQuery, deps: ResolvedDeps): Promise<PortHolder[]> {
+async function findHoldersLinux(query: PortQuery, deps: ResolvedDeps, found: PortHolder[] = []): Promise<PortHolder[]> {
     const protocol = query.protocol ?? 'tcp';
     const tables = protocol === 'tcp' ? ['/proc/net/tcp', '/proc/net/tcp6'] : ['/proc/net/udp', '/proc/net/udp6'];
     const sockets: ProcNetSocket[] = [];
@@ -429,8 +437,10 @@ async function findHoldersLinux(query: PortQuery, deps: ResolvedDeps): Promise<P
     } catch {
         // /proc unreadable
     }
+    let cutShort = false;
     scan: for (const pidName of pids) {
         if (deps.expired()) {
+            cutShort = true;
             break; // the caller was answered already — do not keep the host busy
         }
         let fds: string[];
@@ -441,6 +451,7 @@ async function findHoldersLinux(query: PortQuery, deps: ResolvedDeps): Promise<P
         }
         for (const fd of fds) {
             if (deps.expired()) {
+                cutShort = true;
                 break scan;
             }
             let target: string;
@@ -466,22 +477,30 @@ async function findHoldersLinux(query: PortQuery, deps: ResolvedDeps): Promise<P
                 } catch {
                     command = undefined;
                 }
-                holders.set(pid, { pid, uid: socket.uid, command, localAddress: socket.localAddress });
+                const holder: PortHolder = { pid, uid: socket.uid, command, localAddress: socket.localAddress };
+                holders.set(pid, holder);
+                found.push(holder);
             }
         }
         if (!wanted.size) {
             break;
         }
     }
-    // Sockets whose process we could not enter (or reach before the deadline): report the uid the
-    // socket table knows, and whether it is our own — a same-user socket we cannot enter belongs to a
-    // process that is not dumpable (raised privileges), not to another user
+    if (cutShort) {
+        // The deadline ended the walk: the sockets left in `wanted` were not looked at, and calling them
+        // "not inspectable" would state something the walk never established. The deadline timer of the
+        // caller answers the same way, so a cut walk and an expired timer never disagree.
+        return found;
+    }
+    // Sockets whose process we could not enter although the walk completed: report the uid the socket
+    // table knows, and whether it is our own — a same-user socket we cannot enter belongs to a process
+    // that is not dumpable (raised privileges), not to another user
     const opaque: PortHolder[] = [...wanted.values()].map(socket => ({
         uid: socket.uid,
         localAddress: socket.localAddress,
         sameUser: deps.ownUid === undefined ? undefined : socket.uid === deps.ownUid,
     }));
-    return [...holders.values(), ...opaque];
+    return [...found, ...opaque];
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -702,10 +721,12 @@ async function findHoldersFreeBsd(query: PortQuery, deps: ResolvedDeps): Promise
  */
 export async function findPortHolders(query: PortQuery, deps: PortOwnerDeps = {}): Promise<PortHolder[]> {
     const d = withDefaults(deps);
+    // what the Linux walk has found so far: the deadline timer hands it over when it answers first
+    const found: PortHolder[] = [];
     let work: Promise<PortHolder[]>;
     switch (d.platform) {
         case 'linux':
-            work = findHoldersLinux(query, d);
+            work = findHoldersLinux(query, d, found);
             break;
         case 'darwin':
             work = findHoldersDarwin(query, d);
@@ -720,7 +741,7 @@ export async function findPortHolders(query: PortQuery, deps: PortOwnerDeps = {}
             return [];
     }
     try {
-        const holders = await withTimeout(work, d.remainingMs(), []);
+        const holders = await withTimeout(work, d.remainingMs(), found);
         // a holder on an address that cannot collide with the failed bind is not the cause
         return holders.filter(holder => bindAddressesCollide(query.address, holder.localAddress));
     } catch {

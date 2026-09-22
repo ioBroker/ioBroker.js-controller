@@ -281,54 +281,62 @@ describe('portOwner: who holds a port', () => {
 
         it('stops the walk at the deadline even when every fd directory is closed to us', async () => {
             // the realistic host: hundreds of processes of other users (or not dumpable) — readdir rejects,
-            // the inner fd loop is never entered, only the per-process check can stop the walk
+            // the inner fd loop is never entered, only the per-process check can stop the walk. The deadline is
+            // measured on an injected clock that every fd directory advances by 2 ms: the walk stops after exactly
+            // 20 of them, whatever the wall clock and the timer resolution of the runner do
             const { files, links } = fakeProc();
             const pids = Array.from({ length: 500 }, (_, i) => String(1000 + i));
+            let clock = 1_000;
             let fdReads = 0;
             const foreign: portOwner.PortOwnerDeps = {
                 platform: 'linux',
                 ownPid: 999,
                 ownUid: 1001,
                 timeoutMs: 40,
+                now: () => clock,
                 readFile: path => (path in files ? Promise.resolve(files[path]) : Promise.reject(new Error('ENOENT'))),
                 readdir: path => {
                     if (path === '/proc') {
                         return Promise.resolve([...pids, '100']);
                     }
                     fdReads++;
-                    return new Promise((_, reject) => setTimeout(() => reject(new Error(`EACCES ${path}`)), 2));
+                    clock += 2;
+                    return new Promise((_, reject) => setImmediate(() => reject(new Error(`EACCES ${path}`))));
                 },
                 readlink: path => (path in links ? Promise.resolve(links[path]) : Promise.resolve('/dev/null')),
                 exec: () => Promise.reject(new Error('no commands')),
             };
+            // the socket of port 1883 belongs to our own uid, but the walk never reached its process: the answer says
+            // nothing was found — it does not call the unreached socket "not dumpable", which nobody established
             assert.deepEqual(await findPortHolders({ port: 1883 }, foreign), []);
             const readsWhenAnswered = fdReads;
-            await new Promise(resolve => setTimeout(resolve, 150));
-            assert.ok(readsWhenAnswered < 100, `walked ${readsWhenAnswered} fd directories before the deadline`);
-            assert.ok(
-                fdReads - readsWhenAnswered <= 1,
-                `${fdReads - readsWhenAnswered} fd directories read after the answer`,
-            );
+            await new Promise(resolve => setTimeout(resolve, 20));
+            assert.equal(readsWhenAnswered, 20, 'fd directories read before the deadline');
+            assert.equal(fdReads, readsWhenAnswered, 'fd directories read after the answer');
         });
 
         it('stops the /proc walk at the deadline instead of scanning on after the caller was answered', async () => {
             const { files, links } = fakeProc();
-            // a busy host: the holder sits at the very end of a long process list, every fd directory costs 2 ms
+            // a busy host: the holder sits at the very end of a long process list, every fd directory costs 2 ms of
+            // the injected clock — 20 of them fill the 40 ms budget, ~480 processes and the holder are never visited
             const pids = Array.from({ length: 500 }, (_, i) => String(1000 + i));
+            let clock = 1_000;
             let fdReads = 0;
             const slow: portOwner.PortOwnerDeps = {
                 platform: 'linux',
                 ownPid: 999,
                 ownUid: 1001,
                 timeoutMs: 40,
+                now: () => clock,
                 readFile: path => (path in files ? Promise.resolve(files[path]) : Promise.reject(new Error('ENOENT'))),
                 readdir: path => {
                     if (path === '/proc') {
                         return Promise.resolve([...pids, '100']);
                     }
                     fdReads++;
+                    clock += 2;
                     return new Promise(resolve =>
-                        setTimeout(() => resolve(path === '/proc/100/fd' ? ['20'] : ['0']), 2),
+                        setImmediate(() => resolve(path === '/proc/100/fd' ? ['20'] : ['0'])),
                     );
                 },
                 readlink: path => (path in links ? Promise.resolve(links[path]) : Promise.resolve('/dev/null')),
@@ -336,13 +344,75 @@ describe('portOwner: who holds a port', () => {
             };
             const holders = await findPortHolders({ port: 1883 }, slow);
             const readsWhenAnswered = fdReads;
-            await new Promise(resolve => setTimeout(resolve, 150));
-            // the deadline answered "unknown" (the uid fallback), and the walk did not continue for the remaining ~450 processes
+            await new Promise(resolve => setTimeout(resolve, 20));
+            // the walk stopped itself at the deadline and reported what it had: nothing — no guess for the rest
             assert.deepEqual(holders, []);
-            assert.ok(readsWhenAnswered < 100, `walked ${readsWhenAnswered} fd directories before the deadline`);
-            assert.ok(
-                fdReads - readsWhenAnswered <= 1,
-                `${fdReads - readsWhenAnswered} fd directories read after the answer`,
+            assert.equal(readsWhenAnswered, 20, 'fd directories read before the deadline');
+            assert.equal(fdReads, readsWhenAnswered, 'fd directories read after the answer');
+        });
+
+        it('keeps the holder it found before the deadline cut the rest of the walk', async () => {
+            const { files, links } = fakeProc();
+            // the shared UDP port: hueemu.0 (pid 300) sits first in the process list, fakeroku.0 (pid 301) last
+            const pids = Array.from({ length: 500 }, (_, i) => String(1000 + i));
+            let clock = 1_000;
+            let fdReads = 0;
+            const cut: portOwner.PortOwnerDeps = {
+                platform: 'linux',
+                ownPid: 999,
+                ownUid: 1001,
+                timeoutMs: 40,
+                now: () => clock,
+                readFile: path => (path in files ? Promise.resolve(files[path]) : Promise.reject(new Error('ENOENT'))),
+                readdir: path => {
+                    if (path === '/proc') {
+                        return Promise.resolve(['300', ...pids, '301']);
+                    }
+                    fdReads++;
+                    clock += 2;
+                    return new Promise(resolve =>
+                        setImmediate(() => resolve(path === '/proc/300/fd' ? ['21'] : ['0'])),
+                    );
+                },
+                readlink: path => (path in links ? Promise.resolve(links[path]) : Promise.resolve('/dev/null')),
+                exec: () => Promise.reject(new Error('no commands')),
+            };
+            const holders = await findPortHolders({ port: 1900, protocol: 'udp' }, cut);
+            // the first holder is reported, the second socket was never reached and gets no guess
+            assert.deepEqual(
+                holders.map(h => [h.pid, h.command]),
+                [[300, 'io.hueemu.0']],
+            );
+            assert.equal(fdReads, 20, 'fd directories read before the deadline');
+        });
+
+        it('hands the caller what the walk had found when the deadline timer answers first', async () => {
+            const { files, links } = fakeProc();
+            // the walk finds hueemu.0 at once and then hangs on a process whose fd directory never answers —
+            // only the timer can answer, and it answers with the holder found so far, not with an empty list
+            const stuck: portOwner.PortOwnerDeps = {
+                platform: 'linux',
+                ownPid: 999,
+                ownUid: 1001,
+                timeoutMs: 30,
+                readFile: path => (path in files ? Promise.resolve(files[path]) : Promise.reject(new Error('ENOENT'))),
+                readdir: path => {
+                    if (path === '/proc') {
+                        return Promise.resolve(['300', '1000', '301']);
+                    }
+                    return path === '/proc/300/fd'
+                        ? new Promise(resolve => setImmediate(() => resolve(['21'])))
+                        : new Promise(() => undefined);
+                },
+                readlink: path => (path in links ? Promise.resolve(links[path]) : Promise.resolve('/dev/null')),
+                exec: () => Promise.reject(new Error('no commands')),
+            };
+            const started = Date.now();
+            const holders = await findPortHolders({ port: 1900, protocol: 'udp' }, stuck);
+            assert.ok(Date.now() - started < 500, `answered after ${Date.now() - started} ms`);
+            assert.deepEqual(
+                holders.map(h => [h.pid, h.command]),
+                [[300, 'io.hueemu.0']],
             );
         });
     });
