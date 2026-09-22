@@ -8,7 +8,7 @@
 
 > **Brand**\<`B`\> = `object`
 
-Defined in: [types-dev/utils.d.ts:2](https://github.com/ioBroker/ioBroker.js-controller/blob/d07571064cc52d1c5a17e823e5925d743d638713/packages/types-dev/utils.d.ts#L2)
+Defined in: [types-dev/utils.d.ts:2](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/types-dev/utils.d.ts#L2)
 
 ## Type Parameters
 
@@ -22,4 +22,4 @@ Defined in: [types-dev/utils.d.ts:2](https://github.com/ioBroker/ioBroker.js-con
 
 > **\[\_\_\_brand\]**: `B`
 
-Defined in: [types-dev/utils.d.ts:2](https://github.com/ioBroker/ioBroker.js-controller/blob/d07571064cc52d1c5a17e823e5925d743d638713/packages/types-dev/utils.d.ts#L2)
+Defined in: [types-dev/utils.d.ts:2](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/types-dev/utils.d.ts#L2)

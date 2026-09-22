@@ -8,7 +8,7 @@
 
 > **GetEncryptedConfigCallback** = (`error`, `result?`) => `void`
 
-Defined in: [adapter/src/lib/\_Types.ts:471](https://github.com/ioBroker/ioBroker.js-controller/blob/d07571064cc52d1c5a17e823e5925d743d638713/packages/adapter/src/lib/_Types.ts#L471)
+Defined in: [adapter/src/lib/\_Types.ts:471](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/adapter/src/lib/_Types.ts#L471)
 
 ## Parameters
 
