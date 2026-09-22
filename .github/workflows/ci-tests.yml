@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Use Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
 
@@ -52,7 +52,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
 
@@ -70,15 +70,7 @@ jobs:
           # listens - and on the runner it reports success while nothing ever comes up, which
           # showed up much later as ECONNREFUSED 127.0.0.1:6379 in the tests. Start the server
           # directly, with the built-in defaults instead of the Homebrew config, and wait for it.
-          #
-          # LC_ALL=C is required: Redis calls setlocale(LC_COLLATE, "") on startup, so the Lua
-          # scripting engine inherits the collation of whatever environment started the server.
-          # Our object views filter with `key >= argStart and key < argEnd` where argEnd ends in
-          # U+9999, and Lua compares strings via strcoll(). Under the runner's en_US.UTF-8 that
-          # comparison stops holding, every key falls out of the range and all views return
-          # empty - while direct GETs keep working. On Linux Redis runs as a systemd service
-          # with no LANG, which is why only macOS was affected.
-          LC_ALL=C redis-server --daemonize yes --logfile "$RUNNER_TEMP/redis.log"
+          redis-server --daemonize yes --logfile "$RUNNER_TEMP/redis.log"
           for _ in $(seq 1 30); do
             if redis-cli ping 2>/dev/null | grep -q PONG; then
               echo "Redis is up"
@@ -153,7 +145,7 @@ jobs:
 
       - name: Use Node.js
         if: steps.automerge.outputs.mergeResult == 'merged'
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
 

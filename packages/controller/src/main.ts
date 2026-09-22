@@ -55,6 +55,7 @@ import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
 import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
 import { parseGetLogsMessage, readLogTail } from '@/lib/logsReader.js';
+import { searchLogFiles } from '@/lib/logSearch.js';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
 // eslint-disable-next-line unicorn/prefer-module
@@ -2569,6 +2570,19 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 } else {
                     sendTo(msg.from, msg.command, [0], msg.callback);
                 }
+            } else {
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+            }
+            break;
+
+        case 'searchLogs':
+            if (msg.callback && msg.from) {
+                const { from, command, callback } = msg;
+                // the file the logger writes now tells where the log files are and how they are named
+                // @ts-expect-error types not know this one
+                searchLogFiles(logger.getFileName(), msg.message)
+                    .then(result => sendTo(from, command, result, callback))
+                    .catch(e => sendTo(from, command, { error: e.message }, callback));
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -6023,11 +6037,12 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
 
     const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
 
-    const state = await states!.getState(`${adapterInstance}.info.connection`);
+    const connectionStateId = `${adapterInstance}.info.connection`;
+    const state = await states!.getState(connectionStateId);
 
     if (state?.val === true) {
         outputCount++;
-        await states!.setState(adapterInstance, { val: false, ack: true, from: hostObjectPrefix });
+        await states!.setState(connectionStateId, { val: false, ack: true, from: hostObjectPrefix });
     }
 }
 
