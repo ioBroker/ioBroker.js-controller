@@ -159,6 +159,9 @@ everything it occupied while it keeps running, e.g. on a reconfiguration.
 Asks whether **another** instance on this host currently holds the resource, without registering
 anything. Returns the conflicting entries, newest registration first, or an empty list.
 
+`data` is a filter, the same way as for `freeUsedResource`: if it is omitted (or empty), the question is
+"does another running instance hold **anything** of this type?", and the answer lists every such entry.
+
 This one works for **every** instance, whatever `common.declareUsedResources` says — also for one whose
 resources the controller derives, or one that opted out. Asking changes nothing, and those are exactly the
 instances that want to know whether a port is free before they open it.
