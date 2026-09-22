@@ -8,7 +8,7 @@
 
 > **Callback** = (...`args`) => `void` \| `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/validator.ts:5](https://github.com/ioBroker/ioBroker.js-controller/blob/45e1308b97991aa172e3f71f94494b11cc461548/packages/adapter/src/lib/adapter/validator.ts#L5)
+Defined in: [adapter/src/lib/adapter/validator.ts:5](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/adapter/src/lib/adapter/validator.ts#L5)
 
 ## Parameters
 

@@ -54,6 +54,17 @@ import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
 import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
+import { parseGetLogsMessage, readLogTail } from '@/lib/logsReader.js';
+import { searchLogFiles } from '@/lib/logSearch.js';
+import {
+    getUsedResourcesMode,
+    isRegisteredResource,
+    isValidUsedResourceType,
+    normalizeUsedResourceData,
+    resolveSerialPortName,
+    UsedResourcesRegistry,
+    withSerialPortDevice,
+} from '@/lib/usedResources.js';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
 // eslint-disable-next-line unicorn/prefer-module
@@ -219,6 +230,11 @@ let compactGroupController = false;
 let compactGroup: null | number = null;
 const compactProcs: Record<string, CompactProcess> = {};
 const scheduledInstances: Record<string, any> = {};
+/**
+ * In-memory registry of the exclusive resources (serial ports, TCP/UDP ports, USB devices, ...) currently used
+ * by the instances running on this host. Mirrored into `system.host.<name>.usedResources.<type>`.
+ */
+const usedResources = new UsedResourcesRegistry();
 /** If less than this disk space free in %, generate a warning */
 let diskWarningLevel = DEFAULT_DISK_WARNING_LEVEL;
 
@@ -727,6 +743,7 @@ async function initializeController(): Promise<void> {
             await checkHost();
             await startMultihost(config);
             await setMeta();
+            await loadUsedResources();
             started = true;
             await getInstances();
         }
@@ -806,6 +823,11 @@ function createObjects(onConnect: () => void): void {
 
             try {
                 logger.debug(`${hostLogPrefix} object change ${id} (from: ${obj ? obj.from : null})`);
+
+                // the configuration of an instance defines which resources it occupies, so keep the registry
+                // in line with it - no matter whether the instance is known here, running, or was just deleted
+                await syncUsedResourcesOfInstance(id, obj);
+
                 // known adapter
                 const proc = procs[id];
 
@@ -825,6 +847,7 @@ function createObjects(onConnect: () => void): void {
                         }
 
                         // instance removed -> remove all notifications
+                        // (its used resources were already freed by syncUsedResourcesOfInstance above)
                         await notificationHandler.clearNotifications(null, null, id);
                         proc.config.common.enabled = false;
                         // @ts-expect-error check if we can handle it differently
@@ -2065,6 +2088,518 @@ async function uploadAdapter(task: UploadTask): Promise<void> {
     }
 }
 
+/** Resource types whose state object has already been created in this controller run */
+const createdUsedResourceObjects = new Set<ioBroker.UsedResourceType>();
+/** The write currently in flight per resource type, so that two writes of the same type cannot interleave */
+const pendingUsedResourceWrites = new Map<ioBroker.UsedResourceType, Promise<boolean>>();
+
+/**
+ * Write the current content of a resource type into `system.host.<name>.usedResources.<type>`.
+ *
+ * The object is only created the first time this type is written in this controller run - `extendObject`
+ * costs an objects-DB write plus a change event broadcast to every connected client, which is not worth
+ * paying on every resource change.
+ *
+ * Never rejects, because the callers are partly fire-and-forget: a failed write is logged and reported
+ * through the return value, so the request/response handlers can tell the adapter that its change did not
+ * reach the state.
+ *
+ * @param type the resource type to write
+ * @returns whether the state was written
+ */
+async function writeUsedResources(type: ioBroker.UsedResourceType): Promise<boolean> {
+    const id = `${hostObjectPrefix}.usedResources.${type}`;
+
+    try {
+        if (!createdUsedResourceObjects.has(type)) {
+            await objects!.extendObject(id, {
+                type: 'state',
+                common: {
+                    name: `Used resources: ${type}`,
+                    type: 'array',
+                    role: 'json',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            });
+            createdUsedResourceObjects.add(type);
+        }
+
+        // read the registry only now: everything before this point may have yielded to another write
+        const resources = usedResources.get(type);
+        await states!.setState(id, { val: JSON.stringify(resources), ack: true, from: hostObjectPrefix });
+        return true;
+    } catch (e) {
+        logger.warn(`${hostLogPrefix} Cannot persist used resources of type "${type}": ${e.message}`);
+        return false;
+    }
+}
+
+/**
+ * Persist the used resources of a given type into `system.host.<name>.usedResources.<type>`.
+ *
+ * Writes of the same type are chained: several callers are deliberately fire-and-forget (instance start and
+ * exit handlers), so without the chain two of them could read the registry, interleave over their awaits and
+ * let the older content win - which would then also be what the next controller start reads back.
+ *
+ * @param type the resource type to persist
+ * @returns whether the state was written
+ */
+function persistUsedResources(type: ioBroker.UsedResourceType): Promise<boolean> {
+    if (compactGroupController) {
+        // the registry of a host is owned by its main controller: a compact group controller writes to its own
+        // `system.host.<name>compactGroup<n>` prefix, which nobody reads, and would compete with the real one.
+        // Guarding here covers every caller, including the lifecycle handlers shared with the main controller.
+        return Promise.resolve(true);
+    }
+
+    const pending = pendingUsedResourceWrites.get(type) || Promise.resolve();
+    // `.catch` before chaining on purpose: a rejected link would otherwise never run the write of the
+    // next one, and the cleanup below would never fire either - so that resource type would silently
+    // stop being persisted for the rest of this controller's life. writeUsedResources() handles its
+    // own errors today, but that invariant lives in another function.
+    const next = pending.catch(() => {}).then(() => writeUsedResources(type));
+    pendingUsedResourceWrites.set(type, next);
+
+    // forget the chain again once nothing else is queued behind it
+    void next
+        .catch(() => {})
+        .then(() => {
+            if (pendingUsedResourceWrites.get(type) === next) {
+                pendingUsedResourceWrites.delete(type);
+            }
+        });
+
+    return next;
+}
+
+/**
+ * Persist all given resource types (as reported changed by a registry mutation).
+ *
+ * @param types the resource types to persist
+ * @returns whether every one of them was written
+ */
+async function persistUsedResourceTypes(types: ioBroker.UsedResourceType[]): Promise<boolean> {
+    let persisted = true;
+    for (const type of types) {
+        persisted = (await persistUsedResources(type)) && persisted;
+    }
+    return persisted;
+}
+
+/**
+ * Load the used resources persisted under `system.host.<name>.usedResources.*` back into the registry.
+ * Called once on controller start so that registrations survive a controller restart.
+ *
+ * On load an assessment is done (see {@link UsedResourcesRegistry.assess}):
+ * - all `isBlocked` flags are reset to `false`, because at controller start no instance is running yet
+ *   (running instances re-register and thereby re-block their resources on their next start);
+ * - resources of instances that no longer exist (e.g. deleted via CLI while the controller was down) are removed,
+ *   and so are those of instances which opted out of the registry (`common.declareUsedResources: false`).
+ */
+async function loadUsedResources(): Promise<void> {
+    if (!states || !objects || compactGroupController) {
+        // the registry of a host is owned by its main controller
+        return;
+    }
+    try {
+        // collect the instances (namespaces, e.g. "mqtt.0") of this host that may keep entries, and the ones
+        // whose resources the controller derives from their configuration
+        const trackedInstances = new Set<string>();
+        const controllerManaged: ioBroker.InstanceObject[] = [];
+        const instanceView = await objects.getObjectViewAsync('system', 'instance', {
+            startkey: SYSTEM_ADAPTER_PREFIX,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`,
+        });
+        for (const row of instanceView.rows) {
+            const instance = row.value;
+            if (!instance?._id) {
+                continue;
+            }
+            // Only instances of this host count: the registry is per host, so an instance that was
+            // moved elsewhere while this controller was down must not keep its entries alive here -
+            // nothing would ever remove them, because no object change follows a move that already
+            // happened.
+            if (instance.common?.host !== hostname) {
+                continue;
+            }
+
+            const mode = getUsedResourcesMode(instance);
+            // an instance that opted out must not keep anything, e.g. what was derived before an adapter
+            // update set the flag - so it is treated like one that does not exist anymore
+            if (mode === 'none') {
+                continue;
+            }
+
+            trackedInstances.add(instance._id.substring(SYSTEM_ADAPTER_PREFIX.length));
+            if (mode === 'controller') {
+                controllerManaged.push(instance);
+            }
+        }
+
+        // types whose content changed while loading and must be written back
+        const changedTypes = new Set<ioBroker.UsedResourceType>();
+
+        const keys = (await states.getKeys(`${hostObjectPrefix}.usedResources.*`)) || [];
+        const values = keys.length ? (await states.getStates(keys)) || [] : [];
+        for (let i = 0; i < keys.length; i++) {
+            const state = values[i];
+            if (!state || typeof state.val !== 'string' || !state.val) {
+                continue;
+            }
+            const type = keys[i].split('.').pop();
+            if (!isValidUsedResourceType(type)) {
+                logger.warn(`${hostLogPrefix} Ignoring used resources of invalid type in "${keys[i]}"`);
+                continue;
+            }
+            try {
+                const parsed: unknown = JSON.parse(state.val);
+                if (Array.isArray(parsed)) {
+                    // drop entries that do not have the expected shape, so nothing malformed enters the registry.
+                    // An entry whose own type does not match the state it is stored in would land in this bucket
+                    // while claiming to be something else, which makes conflicts and duplicates inconsistent.
+                    const valid = parsed.filter(entry => isRegisteredResource(entry) && entry.type === type);
+                    if (valid.length !== parsed.length) {
+                        logger.warn(
+                            `${hostLogPrefix} Ignoring ${parsed.length - valid.length} malformed used resource(s) of type "${type}"`,
+                        );
+                        changedTypes.add(type);
+                    }
+                    usedResources.setType(type, valid);
+                }
+            } catch {
+                // ignore malformed content
+            }
+        }
+
+        // reset blocking flags and drop resources of no longer existing or opted-out instances
+        for (const type of usedResources.assess(trackedInstances)) {
+            changedTypes.add(type);
+        }
+
+        // (re)derive the resources of the instances the controller manages itself, so that their configured
+        // ports are listed no matter whether they were ever started
+        for (const instance of controllerManaged) {
+            for (const type of seedUsedResourcesOfInstance(instance)) {
+                changedTypes.add(type);
+            }
+        }
+
+        await persistUsedResourceTypes([...changedTypes]);
+    } catch (e) {
+        logger.warn(`${hostLogPrefix} Cannot load used resources: ${e.message}`);
+    }
+}
+
+/**
+ * Determine the TCP port an instance occupies according to its configuration.
+ *
+ * @param instance the instance object
+ * @returns the resource payload for `native.port` (plus `native.bind` if set), or null if no port is configured
+ */
+function getConfiguredTcpPort(instance: ioBroker.InstanceObject): ioBroker.TcpPortResourceData | null {
+    const port = instance.native?.port;
+    const portNumber =
+        typeof port === 'number' ? port : typeof port === 'string' && port.trim() !== '' ? Number(port) : Number.NaN;
+    // port 0 means "pick a free one at runtime", so it does not occupy anything
+    if (!Number.isInteger(portNumber) || portNumber <= 0 || portNumber > 65_535) {
+        return null;
+    }
+
+    const data: ioBroker.TcpPortResourceData = { port: portNumber };
+    // if the instance also binds to a specific interface, record it together with the port
+    const bind = instance.native?.bind;
+    if (typeof bind === 'string' && bind.trim() !== '') {
+        data.bind = bind;
+    }
+
+    return data;
+}
+
+/**
+ * Derive the used resources of an instance the controller manages itself (`common.declareUsedResources` not set)
+ * from its configuration and replace what was derived for it before.
+ *
+ * Deriving from the object instead of registering on process start is what makes the registry answer the
+ * question it exists for: a port configured for an instance that was never started, or that is currently
+ * stopped, is listed as well - and a changed `native.port` is picked up right away instead of at the next
+ * restart.
+ *
+ * @param instance the instance object
+ * @returns the resource types that changed and should be persisted
+ */
+function seedUsedResourcesOfInstance(instance: ioBroker.InstanceObject): ioBroker.UsedResourceType[] {
+    const namespace = instance._id.substring(SYSTEM_ADAPTER_PREFIX.length);
+    const changed = new Set<ioBroker.UsedResourceType>(usedResources.removeInstance(namespace));
+
+    const data = getConfiguredTcpPort(instance);
+    if (data) {
+        for (const type of usedResources.register('tcpPort', data, namespace)) {
+            changed.add(type);
+        }
+        // register() marks a resource as actively held, which is only true while the instance runs
+        const isRunning = !!procs[instance._id]?.process;
+        for (const type of usedResources.setInstanceBlocked(namespace, isRunning)) {
+            changed.add(type);
+        }
+    }
+
+    return [...changed];
+}
+
+/**
+ * Bring the used-resources registry in line with an instance that is about to run.
+ *
+ * Called from the paths that actually launch a process, not from {@link startInstance} as a whole: a
+ * redundant call for an instance that is already running must not touch the registry, because nothing
+ * would re-register afterwards and the live entries would simply be gone.
+ *
+ * @param id the instance id, e.g. "system.adapter.mqtt.0"
+ * @param instance the instance object
+ */
+async function markInstanceResourcesStarting(id: string, instance: ioBroker.InstanceObject): Promise<void> {
+    if (compactGroupController) {
+        return;
+    }
+
+    const namespace = id.substring(SYSTEM_ADAPTER_PREFIX.length);
+
+    await persistUsedResourceTypes(
+        getUsedResourcesMode(instance) === 'controller'
+            ? // the resources derived from the configuration are held again as soon as the instance runs
+              usedResources.setInstanceBlocked(namespace, true)
+            : // the adapter declares its resources itself: drop what it declared before this (re)start,
+              // because the settings may have changed in between. What it registers now is additive.
+              // An instance that opted out has no entries, so this only catches a leftover.
+              usedResources.removeInstance(namespace),
+    );
+}
+
+/**
+ * Undo what {@link markInstanceResourcesStarting} prepared when the launch did not produce a process.
+ *
+ * Nothing corrects this later: the handler that unblocks the entries again is installed together with the
+ * process, so a failed start would leave the derived resources of the instance listed as actively held. An
+ * instance whose adapter declares its own resources has no entries at this point, which is exactly right -
+ * it is not running and has not declared anything yet.
+ *
+ * @param id the instance id, e.g. "system.adapter.mqtt.0"
+ */
+async function markInstanceResourcesNotStarted(id: string): Promise<void> {
+    if (compactGroupController) {
+        return;
+    }
+
+    await persistUsedResourceTypes(usedResources.setInstanceBlocked(id.substring(SYSTEM_ADAPTER_PREFIX.length), false));
+}
+
+/**
+ * Bring the used-resources registry in line with the current state of an instance object. This is the single
+ * place where the configuration of an instance enters the registry:
+ *
+ * - an instance that was deleted or moved to another host loses all its entries;
+ * - an instance the controller manages itself gets its entries derived from its configuration;
+ * - an adapter-managed instance (`common.declareUsedResources: true`) is left alone - it declares its resources
+ *   itself while it runs, and {@link startInstance} drops the previous declarations when it starts;
+ * - an instance that opted out (`common.declareUsedResources: false`) loses all its entries, e.g. the ones
+ *   derived before an adapter update set the flag.
+ *
+ * @param id the instance id, e.g. "system.adapter.mqtt.0"
+ * @param obj the current instance object, or null if the instance was deleted
+ */
+async function syncUsedResourcesOfInstance(
+    id: ioBroker.ObjectIDs.Instance,
+    obj: ioBroker.InstanceObject | null,
+): Promise<void> {
+    if (compactGroupController) {
+        // the registry of a host is owned by its main controller
+        return;
+    }
+
+    const namespace = id.substring(SYSTEM_ADAPTER_PREFIX.length);
+    let changed: ioBroker.UsedResourceType[];
+
+    if (!obj?.common || obj.common.host !== hostname) {
+        // deleted or moved to another host: this host does not track its resources anymore
+        changed = usedResources.removeInstance(namespace);
+    } else {
+        const mode = getUsedResourcesMode(obj);
+
+        if (mode === 'adapter') {
+            if (procs[id]?.process) {
+                // it is running, so its entries are the ones it declared itself - and nothing would register
+                // them again before the next start
+                return;
+            }
+
+            // It is not running, so whatever is left can only be what the controller derived before the flag
+            // was set, e.g. by an adapter update. Nothing else would ever remove it: the entries are dropped
+            // when the instance starts, which may be never.
+            changed = usedResources.removeInstance(namespace);
+        } else {
+            changed =
+                mode === 'controller' ? seedUsedResourcesOfInstance(obj) : usedResources.removeInstance(namespace);
+        }
+    }
+
+    await persistUsedResourceTypes(changed);
+}
+
+/**
+ * Determine which instance an incoming used-resources host message belongs to.
+ *
+ * The instance is derived from `msg.from` and not taken from the message body: the host message box is
+ * reachable by everything that may `sendToHost`, so trusting `msg.message.instance` would let one instance
+ * register resources in the name of another - or free another one's registrations of a whole type. A body
+ * that claims a different instance is rejected instead of being silently corrected, so a caller that got it
+ * wrong notices. (`from` is written by the sender as well, so this is a plausibility check and not an
+ * authentication of the sender.)
+ *
+ * @param msg the received host message
+ * @returns the namespace of the instance the message belongs to, e.g. "mqtt.0"
+ */
+function getUsedResourceMessageInstance(msg: ioBroker.SendableMessage): string {
+    const from = typeof msg.from === 'string' ? msg.from : '';
+    if (!from.startsWith(SYSTEM_ADAPTER_PREFIX) || from.length === SYSTEM_ADAPTER_PREFIX.length) {
+        throw new Error(`used resources can only be addressed by an instance, but sender is "${from || 'unknown'}"`);
+    }
+    const instance = from.substring(SYSTEM_ADAPTER_PREFIX.length);
+
+    const claimedInstance: unknown = msg.message?.instance;
+    if (claimedInstance !== undefined && claimedInstance !== instance) {
+        throw new Error(
+            `instance "${instance}" must not act on the used resources of ${JSON.stringify(claimedInstance)}`,
+        );
+    }
+
+    return instance;
+}
+
+/**
+ * Refuse a change to the registry by an instance which does not declare its resources itself.
+ *
+ * An instance without the flag is controller-managed: its entries are derived from the instance object, and the
+ * next change to that object replaces whatever it registered here. One that opted out has no entries at all, and
+ * the next change drops what it registered. Accepting the call would look like it worked and the entry would
+ * vanish later for an unrelated reason, so it is refused with something the adapter developer can act on.
+ *
+ * Only the mutating commands go through this. Asking whether somebody else holds a resource changes nothing, and
+ * the instances which do not declare their own resources are exactly the ones that want to ask before they open a
+ * port. The config comes from `procs`, so this costs no database read.
+ *
+ * @param instance the namespace of the instance, e.g. "mqtt.0"
+ */
+async function assertInstanceDeclaresUsedResources(instance: string): Promise<void> {
+    const id = `${SYSTEM_ADAPTER_PREFIX}${instance}` as ioBroker.ObjectIDs.Instance;
+    // `procs` is a cache of the instances this host runs, so it answers without a database read - but the flag
+    // lives in the object, and the cache is missing exactly where it matters: an instance of another host
+    // sending here, and one whose object was deleted while its process still runs. Both must not get through.
+    let config = procs[id]?.config;
+
+    if (!config) {
+        try {
+            config = (await objects!.getObject(id)) as ioBroker.InstanceObject;
+        } catch (e) {
+            // a change to the registry is refused when it cannot be justified
+            throw new Error(`cannot read the object of instance "${instance}": ${e.message}`);
+        }
+    }
+
+    if (!config?.common) {
+        throw new Error(`instance "${instance}" does not exist`);
+    }
+
+    if (config.common.host !== hostname) {
+        // the registry belongs to one host, and the instance is supervised by the host it runs on
+        throw new Error(`instance "${instance}" does not run on this host`);
+    }
+
+    const mode = getUsedResourcesMode(config);
+
+    if (mode === 'controller') {
+        throw new Error(
+            `instance "${instance}" does not declare its used resources - add "common.declareUsedResources": true to its io-package.json`,
+        );
+    }
+    if (mode === 'none') {
+        throw new Error(
+            `instance "${instance}" opted out of the used resources registry - "common.declareUsedResources" is false in its io-package.json, set it to true to declare used resources`,
+        );
+    }
+}
+
+/**
+ * Let a caller that waits for an answer know when its change did not reach the state.
+ *
+ * The registry in memory has the change either way, and the next mutation of that type writes it again. But an
+ * adapter that awaits `registerUsedResource` would otherwise get a resolved promise for something
+ * `getHostUsedResources` cannot see, so the request/response path says what happened instead of only logging it.
+ *
+ * @param persisted what {@link persistUsedResourceTypes} reported
+ */
+function assertUsedResourcesPersisted(persisted: boolean): void {
+    if (!persisted) {
+        throw new Error('the used resources could not be written, see the log of the host');
+    }
+}
+
+/**
+ * Validate an incoming `registerUsedResource` / `freeUsedResource` / `checkUsedResource` host message and bring
+ * its payload into the stored form.
+ *
+ * The command decides two things: a registration has to describe the resource completely while a filter may leave
+ * fields out, and only the two commands which change the registry require the instance to declare its resources
+ * itself (see {@link assertInstanceDeclaresUsedResources}).
+ *
+ * @param msg the received host message
+ * @param command which of the three commands the message carries
+ * @returns the validated instance, resource type and normalized payload
+ */
+async function parseUsedResourceMessage(
+    msg: ioBroker.SendableMessage,
+    command: 'register' | 'free' | 'check',
+): Promise<{ instance: string; type: ioBroker.UsedResourceType; data: ioBroker.UsedResourceData | undefined }> {
+    const isRegistration = command === 'register';
+    const instance = getUsedResourceMessageInstance(msg);
+
+    if (command !== 'check') {
+        await assertInstanceDeclaresUsedResources(instance);
+    }
+
+    // the type becomes the last segment of "system.host.<name>.usedResources.<type>", so it must be validated
+    const type: unknown = msg.message?.type;
+    if (!isValidUsedResourceType(type)) {
+        throw new Error(`invalid resource type ${JSON.stringify(type)}`);
+    }
+
+    const raw: unknown = msg.message?.data;
+    if (raw === undefined) {
+        if (isRegistration) {
+            throw new Error(`missing payload for resource type "${type}"`);
+        }
+        return { instance, type, data: undefined };
+    }
+    if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
+        throw new Error(`invalid payload for resource type "${type}"`);
+    }
+
+    const normalized = normalizeUsedResourceData(type, raw, !isRegistration);
+    if ('error' in normalized) {
+        throw new Error(`invalid payload for resource type "${type}": ${normalized.error}`);
+    }
+
+    let data = normalized.data;
+    if (type === 'serialPort') {
+        // this host is the machine the port belongs to, so only here it can be told which names lead to the same device
+        data = await withSerialPortDevice(data as Partial<ioBroker.SerialPortResourceData>, isRegistration, name =>
+            resolveSerialPortName(name, process.platform, path => fs.realpath(path)),
+        );
+    }
+
+    return { instance, type, data: data as ioBroker.UsedResourceData };
+}
+
 /**
  * Process message to controller, like execute some script
  *
@@ -2548,8 +3083,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'getLogs':
             if (msg.callback && msg.from) {
-                const lines = msg.message || 200;
-                let text = '';
                 // @ts-expect-error types not know this one
                 let logFile_ = logger.getFileName();
 
@@ -2558,30 +3091,31 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 if (fs.existsSync(logFile_)) {
-                    const stats = fs.statSync(logFile_);
-                    const start = stats.size > 150 * lines ? stats.size - 150 * lines : 0;
-
-                    fs.createReadStream(logFile_, {
-                        start,
-                        end: stats.size,
-                    })
-                        .on('data', chunk => (text += chunk.toString()))
-                        .on('end', () => {
-                            // done
-                            const lines = text.split('\n');
-                            if (start) {
-                                lines.shift(); // remove first line of the file as it could be not full if starts not from 0
-                            }
-                            lines.push(stats.size.toString()); // place as last line the current size of log
+                    readLogTail(logFile_, parseGetLogsMessage(msg.message))
+                        .then(({ lines, size }) => {
+                            lines.push(size.toString()); // place as last line the current size of log
                             msg.callback && sendTo(msg.from, msg.command, lines, msg.callback);
                         })
-                        .on('error', () =>
-                            // done
-                            msg.callback ? sendTo(msg.from, msg.command, [stats.size], msg.callback) : undefined,
-                        );
+                        .catch(e => {
+                            logger.warn(`${hostLogPrefix} Cannot read log file ${logFile_}: ${e.message}`);
+                            msg.callback && sendTo(msg.from, msg.command, [0], msg.callback);
+                        });
                 } else {
                     sendTo(msg.from, msg.command, [0], msg.callback);
                 }
+            } else {
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+            }
+            break;
+
+        case 'searchLogs':
+            if (msg.callback && msg.from) {
+                const { from, command, callback } = msg;
+                // the file the logger writes now tells where the log files are and how they are named
+                // @ts-expect-error types not know this one
+                searchLogFiles(logger.getFileName(), msg.message)
+                    .then(result => sendTo(from, command, result, callback))
+                    .catch(e => sendTo(from, command, { error: e.message }, callback));
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -3162,6 +3696,98 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     msg.message.instance,
                 );
                 sendTo(msg.from, msg.command, { result: notificationsObj }, msg.callback);
+            }
+            break;
+
+        case 'registerUsedResource':
+            try {
+                const { instance, type, data } = await parseUsedResourceMessage(msg, 'register');
+
+                // asked before the registration, so this instance's own entry is not in the way
+                const conflicts = usedResources.findConflicts(type, data!, instance);
+
+                assertUsedResourcesPersisted(
+                    await persistUsedResourceTypes(usedResources.register(type, data!, instance)),
+                );
+
+                if (conflicts.length) {
+                    // The registration still stands - the registry records what an adapter says it
+                    // uses, it does not hand out permission. But two instances claiming the same
+                    // resource is worth a line, because the adapter that loses it usually reports
+                    // something unhelpful like EADDRINUSE.
+                    logger.warn(
+                        `${hostLogPrefix} "${instance}" registered a ${type} which ${conflicts
+                            .map(entry => `"${entry.instance}"`)
+                            .join(', ')} already holds: ${JSON.stringify(data)}`,
+                    );
+                }
+
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: 'ok', conflicts }, msg.callback);
+                }
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot register used resource: ${e.message}`);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
+            }
+            break;
+
+        case 'checkUsedResource':
+            // Asks whether anybody else currently holds a resource, without registering anything -
+            // the call an adapter makes *before* it opens the port or the device.
+            try {
+                const { instance, type, data } = await parseUsedResourceMessage(msg, 'check');
+                const conflicts = usedResources.findConflicts(type, data || {}, instance);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: 'ok', conflicts }, msg.callback);
+                }
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot check used resource: ${e.message}`);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
+            }
+            break;
+
+        case 'freeUsedResource':
+            try {
+                const { instance, type, data } = await parseUsedResourceMessage(msg, 'free');
+                const changed = usedResources.free(type, data, instance);
+                assertUsedResourcesPersisted(await persistUsedResourceTypes(changed));
+
+                if (!changed.length) {
+                    // the payload is only a filter, so this is a real mismatch and not a forgotten optional
+                    // field - say so, because the adapter API does not wait for this answer
+                    logger.warn(
+                        `${hostLogPrefix} "${instance}" freed no used resource of type "${type}"${data ? ` matching ${JSON.stringify(data)}` : ''}: nothing like that is registered`,
+                    );
+                }
+
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: 'ok', freed: !!changed.length }, msg.callback);
+                }
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot free used resource: ${e.message}`);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
+            }
+            break;
+
+        case 'clearUsedResources':
+            try {
+                const instance = getUsedResourceMessageInstance(msg);
+                await assertInstanceDeclaresUsedResources(instance);
+                assertUsedResourcesPersisted(await persistUsedResourceTypes(usedResources.removeInstance(instance)));
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
+                }
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot clear used resources: ${e.message}`);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
             }
             break;
 
@@ -3961,11 +4587,27 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                     `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`,
                 );
 
+                // the scheduled run holds the resources of this instance until it exits again - same
+                // handling as any other start
+                markInstanceResourcesStarting(id, instance).catch(e =>
+                    logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`),
+                );
+
                 proc.process.on('exit', (code, signal) => {
                     outputCount++;
                     states!
                         .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
                         .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));
+
+                    // the instance is no longer running: keep its resource registrations but mark them as not
+                    // actively blocked, so the user still sees which resources it would occupy when started again
+                    const instanceNamespace = id.startsWith(`${SYSTEM_ADAPTER_PREFIX}`)
+                        ? id.substring(SYSTEM_ADAPTER_PREFIX.length)
+                        : id;
+                    persistUsedResourceTypes(usedResources.setInstanceBlocked(instanceNamespace, false)).catch(e =>
+                        logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`),
+                    );
+
                     if (signal) {
                         logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                     } else if (code === null) {
@@ -4262,6 +4904,8 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 if (proc.stopping) {
                     delete proc.stopping;
                 }
+
+                await markInstanceResourcesStarting(id, instance);
 
                 logger.debug(
                     `${hostLogPrefix} startInstance ${name}.${instanceNo} loglevel=${loglevel}, compact=${
@@ -4958,6 +5602,11 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     }
                     handleAdapterProcessStart();
                 }
+
+                if (!procs[id]?.process) {
+                    // the launch did not produce a process, so nothing will ever unblock the entries again
+                    await markInstanceResourcesNotStarted(id);
+                }
             } else {
                 if (!wakeUp && proc) {
                     logger.warn(
@@ -5030,6 +5679,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 }
                 if (proc.process) {
                     storePids();
+                    // this forks an adapter right away, so it needs the same resource handling as any
+                    // other start - the exit handler below unblocks them again
+                    await markInstanceResourcesStarting(id, instance);
                     const isNpm = isInstalledFromNpm({
                         installedFrom: instance.common.installedFrom,
                         adapterName: instance.common.name,
@@ -5047,6 +5699,16 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             states!
                                 .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
                                 .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));
+
+                            // the init run is over: keep the registrations but mark them as no longer held
+                            if (!compactGroupController) {
+                                persistUsedResourceTypes(
+                                    usedResources.setInstanceBlocked(id.substring(SYSTEM_ADAPTER_PREFIX.length), false),
+                                ).catch(e =>
+                                    logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`),
+                                );
+                            }
+
                             if (signal) {
                                 logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                             } else if (code === null) {
@@ -6030,18 +6692,27 @@ async function _getNumberOfInstances(): Promise<
  * @param id id of the instance
  */
 async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promise<void> {
-    outputCount += 2;
-    await states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-    await states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
-
     const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
 
-    const connectionStateId = `${adapterInstance}.info.connection`;
-    const state = await states!.getState(connectionStateId);
+    try {
+        outputCount += 2;
+        await states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+        await states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
 
-    if (state?.val === true) {
-        outputCount++;
-        await states!.setState(connectionStateId, { val: false, ack: true, from: hostObjectPrefix });
+        const connectionStateId = `${adapterInstance}.info.connection`;
+        const state = await states!.getState(connectionStateId);
+
+        if (state?.val === true) {
+            outputCount++;
+            await states!.setState(connectionStateId, { val: false, ack: true, from: hostObjectPrefix });
+        }
+    } finally {
+        // The instance is no longer running: keep its resource registrations but mark them as not actively
+        // blocked. In a `finally`, because a status write that does not get through - a crash, an interrupted
+        // database - must not leave the registry claiming that a stopped instance still holds its resources;
+        // nothing would correct that afterwards. Persisting reports a failed write instead of rejecting, so
+        // this cannot swallow the error of the block above either.
+        await persistUsedResourceTypes(usedResources.setInstanceBlocked(adapterInstance, false));
     }
 }
 

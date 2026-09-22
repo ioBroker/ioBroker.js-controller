@@ -8,7 +8,7 @@
 
 > **Branded**\<`T`, `B`\> = `T` & [`Brand`](Brand.md)\<`B`\>
 
-Defined in: [types-dev/utils.d.ts:3](https://github.com/ioBroker/ioBroker.js-controller/blob/45e1308b97991aa172e3f71f94494b11cc461548/packages/types-dev/utils.d.ts#L3)
+Defined in: [types-dev/utils.d.ts:3](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/types-dev/utils.d.ts#L3)
 
 ## Type Parameters
 

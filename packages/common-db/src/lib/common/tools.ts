@@ -5,7 +5,7 @@ import crypto from 'node:crypto';
 import { createInterface } from 'node:readline';
 import { PassThrough } from 'node:stream';
 import zlib from 'node:zlib';
-import { exec, type ExecOptions } from 'node:child_process';
+import { exec, execFile, type ExecOptions } from 'node:child_process';
 import { URLSearchParams } from 'node:url';
 import events from 'node:events';
 import { setDefaultResultOrder } from 'node:dns';
@@ -2987,6 +2987,57 @@ export function execAsync(
 }
 
 /**
+ * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
+ *
+ * On error it rejects with the error of `child_process.execFile`, whose `code` (the exit code, or `ENOENT` when
+ * the command does not exist), `killed` and `signal` say what happened - a command killed by the `timeout`
+ * option has to stay distinguishable from one that exited non-zero. Only the message is replaced by the output
+ * on stderr when there is any, because that usually says more than "Command failed".
+ *
+ * @param file The command to execute
+ * @param args The arguments to pass to the command
+ * @param execOptions The options for child_process.execFile
+ * @returns child process promise
+ */
+export function execFileAsync(
+    file: string,
+    args: readonly string[],
+    execOptions?: ExecOptions,
+): Promise<{
+    stdout?: string;
+    stderr?: string;
+}> {
+    const defaultOptions = {
+        // we do not want to show the node.js window on Windows
+        windowsHide: true,
+        // And we want to capture stdout/stderr
+        encoding: 'utf8',
+    };
+
+    return new Promise<{
+        stdout: string;
+        stderr: string;
+    }>((resolve, reject) => {
+        execFile(file, [...args], { ...defaultOptions, ...execOptions }, (error, stdout, stderr) => {
+            if (error) {
+                // the error of execFile is an Error carrying `code`, `killed` and `signal` - what the caller
+                // needs to tell a missing command and a timeout apart from a plain non-zero exit
+                const failure: Error = error;
+                if (stderr) {
+                    failure.message = stderr.toString();
+                }
+                reject(failure);
+            } else {
+                resolve({
+                    stderr: stderr?.toString(),
+                    stdout: stdout?.toString(),
+                });
+            }
+        });
+    });
+}
+
+/**
  * Takes input from one stream and writes it to another as soon as a complete line was read.
  *
  * @param input The stream to read from
@@ -3964,6 +4015,170 @@ export function isLogLevel(level: string): level is ioBroker.LogLevel {
 export async function getControllerPid(): Promise<number | undefined> {
     const pids = await getPids();
     return pids.pop();
+}
+
+/**
+ * Check if a process with the given id currently exists
+ *
+ * @param pid process id to check
+ * @returns true if a process with this id is running
+ */
+export function isProcessRunning(pid: number): boolean {
+    // 0 and negative values address process groups instead of a single process and would not
+    // throw below, so a corrupt pids file must not slip through here
+    if (!Number.isInteger(pid) || pid <= 0) {
+        return false;
+    }
+
+    try {
+        // Signal 0 sends nothing, it only performs the existence and permission check
+        process.kill(pid, 0);
+        return true;
+    } catch (e) {
+        // EPERM means the process does exist, it just belongs to another user
+        return e.code === 'EPERM';
+    }
+}
+
+/**
+ * Check if a command line belongs to a js-controller process
+ *
+ * Only the started script counts, not a mere mention of the controller directory, which also shows
+ * up in the command line of the CLI or of tools working on the installation.
+ *
+ * @param commandLine the full command line of the process
+ * @returns true if the command line looks like the controller
+ */
+function isControllerCommandLine(commandLine: string): boolean {
+    const command = commandLine.toLowerCase();
+    return (
+        // On POSIX the title the running controller gives itself replaces the command line
+        command.startsWith(`${appNameLowerCase}.js-controller`) ||
+        // "node <path>/controller.js", as started by the CLI, the service or the installer
+        /(^|[\s"'/\\])controller\.js(["'\s]|$)/.test(command) ||
+        // The entry point started directly
+        /[/\\](iobroker\.js-controller|controller)[/\\]build[/\\](esm|cjs)[/\\]main\.js/.test(command)
+    );
+}
+
+/**
+ * Check if a pid is proven to belong to a program which is not the controller
+ *
+ * After a reboot the operating system may hand a recorded pid to an unrelated program, which
+ * Windows in particular does readily, so a live pid alone does not prove the controller is
+ * running. Being a Node.js process proves nothing either - Node-RED, zigbee2mqtt or this very CLI
+ * are Node.js processes too - so the command line has to identify the controller. This only
+ * reports a foreign program when it could actually be identified as one: whenever the process
+ * cannot be inspected, the answer is "no", because acting on a wrong guess would start a second
+ * controller and both would then fail with EADDRINUSE.
+ *
+ * @param pid process id to inspect
+ * @returns true only if the process was identified as a different program
+ */
+export async function isForeignProcess(pid: number): Promise<boolean> {
+    // Only a plain positive integer may become part of the PowerShell command below
+    if (!Number.isInteger(pid) || pid <= 0) {
+        return false;
+    }
+
+    // The stale pid may even have been handed to the process asking right now
+    if (pid === process.pid) {
+        return true;
+    }
+
+    try {
+        if (os.platform() === 'win32') {
+            // tasklist only knows the image name, which is node.exe for every Node.js program
+            const { stdout } = await execFileAsync(
+                'powershell.exe',
+                [
+                    '-NoProfile',
+                    '-NonInteractive',
+                    '-Command',
+                    `[Console]::OutputEncoding = [Text.Encoding]::UTF8; Get-CimInstance Win32_Process -Filter 'ProcessId=${pid}' | Select-Object Name, CommandLine | ConvertTo-Json -Compress`,
+                ],
+                { timeout: 10_000 },
+            );
+            // No output means the process is gone
+            const output = (stdout || '').trim();
+            if (!output) {
+                return false;
+            }
+
+            const { Name, CommandLine } = JSON.parse(output) as { Name?: string; CommandLine?: string | null };
+            if (!Name) {
+                return false;
+            }
+            if (!Name.toLowerCase().startsWith('node')) {
+                return true;
+            }
+
+            // Without elevation the command line of another user's process is not readable
+            return CommandLine ? !isControllerCommandLine(CommandLine) : false;
+        }
+
+        // Unlike comm, args is not truncated and shows the title the controller gives itself
+        const { stdout } = await execFileAsync('ps', ['-p', String(pid), '-o', 'args='], { timeout: 2000 });
+        const commandLine = (stdout || '').trim();
+
+        if (!commandLine) {
+            return false;
+        }
+
+        return !isControllerCommandLine(commandLine);
+    } catch (e) {
+        // Could not inspect the process - assume it is the controller. Say so, because otherwise a machine
+        // where the lookup cannot run at all - no PowerShell, no WMI service, a timeout - keeps answering
+        // "Controller is already running with pid ..." without a hint that nothing was ever checked.
+        console.warn(`Cannot inspect process ${pid}, assuming it belongs to the controller: ${e.message}`);
+        return false;
+    }
+}
+
+/** A resource type ends up as the last segment of `system.host.<name>.usedResources.<type>`, so it has to be a plain identifier */
+const RESOURCE_TYPE_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
+
+/**
+ * Check that a value can be used as a resource type of the used-resources registry.
+ *
+ * `UsedResourceDataMap` is intentionally open for module augmentation, so unknown type names are accepted as
+ * long as they are usable as a state id segment. What this rejects is a missing, non-string or otherwise
+ * malformed type, which would create a `system.host.<name>.usedResources.undefined` state that the host would
+ * read back as a real resource type on its next start.
+ *
+ * @param type the value to check
+ */
+export function isValidUsedResourceType(type: unknown): type is ioBroker.UsedResourceType {
+    return typeof type === 'string' && RESOURCE_TYPE_PATTERN.test(type);
+}
+
+/**
+ * Check that a value has the shape of an entry of the used-resources registry.
+ *
+ * Lives here rather than in the host, because both ends need it: the host when it reads the states back into
+ * its registry, and an adapter when it reads them to show what is occupied. The states are declared read-only,
+ * but nothing stops anything from writing them, so neither side should hand their content on unchecked.
+ *
+ * The host additionally validates the payload against the rules of its resource type, which are its own.
+ *
+ * @param entry the value to check
+ */
+export function hasRegisteredResourceShape(entry: unknown): entry is ioBroker.RegisteredResource {
+    if (typeof entry !== 'object' || entry === null) {
+        return false;
+    }
+    const candidate = entry as Partial<ioBroker.RegisteredResource>;
+
+    return (
+        isValidUsedResourceType(candidate.type) &&
+        typeof candidate.instance === 'string' &&
+        !!candidate.instance &&
+        typeof candidate.ts === 'number' &&
+        typeof candidate.isBlocked === 'boolean' &&
+        typeof candidate.data === 'object' &&
+        candidate.data !== null &&
+        !Array.isArray(candidate.data)
+    );
 }
 
 export * from '@/lib/common/maybeCallback.js';

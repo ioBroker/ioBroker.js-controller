@@ -4,15 +4,23 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) `getLogs` accepts an optional `logLevel` now, so a requester can ask for a minimum severity instead of filtering on its own
+* (@GermanBluefox) Added the host command `searchLogs` (feature `CONTROLLER_SEARCH_LOGS`): it searches the log files of the host - the rotated and gzipped ones too - by time range, level, source and text and returns only the matching entries, so that admin does not have to transfer every log file of another host
+* (@GermanBluefox) Node.js 22.19 is now the minimum version - 22.0 to 22.18 are no longer supported
 * (@GermanBluefox) Added an optional `--level` filter to `iobroker logs`, e.g. `iobroker logs --watch --level warn`
+* (@GermanBluefox) Fixed `start` refusing to run after an unclean shutdown because of a left over `pids.txt`
 * (@GermanBluefox) Fixed the ACL of states restricting members of the administrator group - objects and files already let them through, states only the `admin` user
 * (@GermanBluefox) Added `tipsDisabled` to `system.config`, with which the admin remembers that the "Did you know ...?" tips must not be shown at the start
 * (@GermanBluefox) Added a progress bar for "iobroker upload" when it runs in a terminal
 * (@GermanBluefox) Fixed all Redis object views returning nothing when the Redis server was started with a UTF-8 collation
+* (@GermanBluefox) Added a per-host registry of the exclusive resources (serial, TCP and UDP ports, ...) used by the instances; adapters can declare them themselves with `common.declareUsedResources: true` or opt out with `false`
 * (@krobipd) Fixed a failed adapter install/update being reported as success on npm >= 10.6.0
 * (@krobipd) Fixed the automatic ENOTEMPTY recovery not removing the blocking npm temp directory on npm >= 10.6.0
 * (@krobipd) Fixed an occasional "Connection is closed" warning logged when a fast schedule/once adapter shuts down
 * (@krobipd) Fixed `info.connection` not being reset when an instance goes offline, which also left a stray state named after the instance namespace
+* (@GermanBluefox) Fixed complex attribute names (e.g. `devices.password`) and arrays in `encryptedNative` not being decrypted when the adapter starts and documented complex attribute names for `encryptedNative` and `protectedNative`
+* (@GermanBluefox) Fixed `getEncryptedConfig` dropping entries that are not a string when the attribute resolves to an array
+* (@GermanBluefox) Fixed `getEncryptedConfig` decrypting an attribute of `encryptedNative` a second time, which returned garbage because the adapter start already decrypted it
 * (@krobipd) Fixed an alias read/write function returning a boolean (e.g. "val < 20") being stored unconverted in a state declared as number
 * (@GermanBluefox) Added `common.adminTab.order` and `common.adminTab.icon` to the `io-package.json` schema: admin uses both, but an adapter setting them failed the schema validation
 
