@@ -52,6 +52,12 @@ export interface PortHolder {
      * privileges), `false` when it belongs to another user. Undefined when the uid is unknown.
      */
     sameUser?: boolean;
+    /**
+     * `true` when the deadline ended the lookup before this process could be identified (macOS: `ps`
+     * not run, Windows: `tasklist` not run) — pid and, where the OS listed one, a short name are all
+     * that is known; the process was NOT found to be uninspectable
+     */
+    unresolved?: boolean;
 }
 
 /** The port is held by the calling process itself */
@@ -112,6 +118,10 @@ export interface ForeignPortOwner {
     pid?: number;
     /** Whether the socket belongs to the same user as this process (Linux, when the uid is known) */
     sameUser?: boolean;
+    /** `true` when the deadline ended the lookup before the process behind `pid` was identified */
+    unresolved?: boolean;
+    /** The short command name the OS listed for an unresolved process (macOS `lsof`), if any */
+    name?: string;
 }
 
 export type PortOwner =
@@ -550,17 +560,22 @@ async function findHoldersDarwin(query: PortQuery, deps: ResolvedDeps): Promise<
     }
     const holders = parseLsofFields(out);
     for (const holder of holders) {
-        if (holder.pid && !deps.expired()) {
-            try {
-                const args = (
-                    await deps.exec('ps', ['-o', 'args=', '-p', String(holder.pid)], deps.remainingMs())
-                ).trim();
-                if (args) {
-                    holder.command = args;
-                }
-            } catch {
-                // keep lsof's short command name
+        if (!holder.pid) {
+            continue;
+        }
+        if (deps.expired()) {
+            // lsof named the process, the deadline ended the lookup before `ps` could identify it — the
+            // short name alone would classify a Node.js instance as "not an ioBroker instance"
+            holder.unresolved = true;
+            continue;
+        }
+        try {
+            const args = (await deps.exec('ps', ['-o', 'args=', '-p', String(holder.pid)], deps.remainingMs())).trim();
+            if (args) {
+                holder.command = args;
             }
+        } catch {
+            // keep lsof's short command name
         }
     }
     return holders;
@@ -645,7 +660,9 @@ async function findHoldersWindows(query: PortQuery, deps: ResolvedDeps): Promise
     }
     for (const holder of holders.values()) {
         if (deps.expired()) {
-            break;
+            // netstat named the pid, the deadline ended the lookup before `tasklist` could identify it
+            holder.unresolved = true;
+            continue;
         }
         try {
             const list = await deps.exec(
@@ -768,6 +785,16 @@ export function classifyPortHolders(holders: PortHolder[], ownPid: number): Port
         }
         if (holder.pid === ownPid) {
             owners.push({ kind: 'self', pid: holder.pid });
+            continue;
+        }
+        if (holder.unresolved) {
+            owners.push({
+                kind: 'foreign',
+                pid: holder.pid,
+                ...(holder.uid === undefined ? {} : { uid: holder.uid }),
+                unresolved: true,
+                ...(holder.command ? { name: holder.command } : {}),
+            });
             continue;
         }
         if (!holder.command) {
@@ -1006,7 +1033,13 @@ export function describePortConflict(ctx: PortConflictContext): string {
                 );
                 break;
             case 'foreign':
-                if (owner.pid) {
+                if (owner.unresolved && owner.pid) {
+                    // the OS named the pid, the deadline ended the lookup before the process was identified —
+                    // nothing was established about whether it could be inspected
+                    parts.push(
+                        `${where} is already in use by process ${owner.pid}${owner.name ? ` ("${owner.name}")` : ''} – the lookup reached its deadline before the process was identified`,
+                    );
+                } else if (owner.pid) {
                     parts.push(
                         `${where} is already in use by process ${owner.pid}, which cannot be inspected by user${user}${owner.uid !== undefined ? ` (owner uid ${owner.uid})` : ''}`,
                     );

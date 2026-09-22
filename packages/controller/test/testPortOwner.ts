@@ -417,6 +417,68 @@ describe('portOwner: who holds a port', () => {
         });
     });
 
+    describe('a deadline on macOS and Windows', () => {
+        it('names a process lsof found but ps could not identify in time by its pid, never as uninspectable', async () => {
+            let clock = 1_000;
+            const calls: string[] = [];
+            const deps: portOwner.PortOwnerDeps = {
+                platform: 'darwin',
+                ownPid: 1,
+                timeoutMs: 40,
+                now: () => clock,
+                exec: (file: string) => {
+                    calls.push(file);
+                    if (file === 'lsof') {
+                        clock += 50; // lsof alone used up the budget
+                        return Promise.resolve('p4321\ncnode\nu501\nn*:1883\n');
+                    }
+                    return Promise.resolve('node /opt/iobroker/node_modules/iobroker.mqtt/main.js --instance 0');
+                },
+            };
+            const owners = await resolvePortOwners({ port: 1883 }, deps);
+            assert.deepEqual(calls, ['lsof'], 'ps is not started after the deadline');
+            // the short name "node" is reported as what it is — not classified as a process outside ioBroker
+            assert.deepEqual(owners, [{ kind: 'foreign', pid: 4321, uid: 501, unresolved: true, name: 'node' }]);
+            const text = describePortConflict({ port: 1883, owners });
+            assert.match(
+                text,
+                /process 4321 \("node"\) – the lookup reached its deadline before the process was identified/,
+            );
+            assert.doesNotMatch(text, /cannot be inspected|not an ioBroker instance/);
+        });
+
+        it('names a process netstat found but tasklist could not identify in time by its pid', async () => {
+            let clock = 1_000;
+            const calls: string[] = [];
+            const deps: portOwner.PortOwnerDeps = {
+                platform: 'win32',
+                ownPid: 1,
+                timeoutMs: 40,
+                now: () => clock,
+                exec: (file: string, args: string[]) => {
+                    calls.push(file);
+                    if (file === 'netstat') {
+                        // both tables are read, the deadline passes with the second one
+                        clock += args.includes('tcpv6') ? 30 : 15;
+                        return Promise.resolve(
+                            args.includes('tcpv6')
+                                ? '  Proto  Local Address          Foreign Address        State           PID\r\n'
+                                : '  Proto  Local Address          Foreign Address        State           PID\r\n  TCP    0.0.0.0:8081           0.0.0.0:0              LISTENING       1234\r\n',
+                        );
+                    }
+                    return Promise.resolve('"node.exe","1234","Console","1","85,000 K"\r\n');
+                },
+            };
+            const owners = await resolvePortOwners({ port: 8081 }, deps);
+            assert.deepEqual(calls, ['netstat', 'netstat'], 'tasklist is not started after the deadline');
+            assert.deepEqual(owners, [{ kind: 'foreign', pid: 1234, unresolved: true }]);
+            assert.match(
+                describePortConflict({ port: 8081, owners }),
+                /process 1234 – the lookup reached its deadline before the process was identified/,
+            );
+        });
+    });
+
     describe('command output parsers', () => {
         it('parses lsof -F output into holders — the tag letter is glued to its value', () => {
             const out = 'p15411\ncnode\nu1001\nn*:1883\np812\ncmosquitto\nu108\nn127.0.0.1:1883\n';
