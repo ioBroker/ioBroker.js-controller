@@ -8,26 +8,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createInterface } from 'node:readline';
 import { createGunzip } from 'node:zlib';
-
-type LogLevel = 'silly' | 'debug' | 'info' | 'warn' | 'error';
-
-/** Log levels from the least to the most severe */
-const LOG_LEVELS: LogLevel[] = ['silly', 'debug', 'info', 'warn', 'error'];
+import { isLogLevelAtLeast, parseLogEntryHeader, stripLogColors, tools } from '@iobroker/js-controller-common';
 
 /** More entries are never returned, whatever the request asks for */
 const MAX_ROWS_LIMIT = 5000;
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
-
-const ANSI_ESCAPE = new RegExp(`${String.fromCharCode(27)}\\[[0-?]*[ -/]*[@-~]`, 'g');
-
-/**
- * A line that starts a log entry, without color codes: `2026-09-16 10:11:12.123  - info: admin.0 (1234) text`
- *
- * Groups: 1 date, 2 time, 3 level, 4 everything after the level (source, PID and text), 5 source
- */
-const LOG_LINE =
-    /^(\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?)\s+-\s+(silly|debug|info|warn|error):\s+((\S+).*)$/i;
 
 /** Message of the host command `searchLogs` */
 export interface SearchLogsMessage {
@@ -64,7 +50,7 @@ export interface SearchLogsResult {
 /** A log entry while it is being collected */
 interface Entry {
     ts: number;
-    level: LogLevel;
+    level: ioBroker.LogLevel;
     source: string;
     /** Source, PID and text without color codes, the continuation lines included */
     message: string;
@@ -156,7 +142,9 @@ export async function searchLogFiles(
     const until = now;
     const minTs = until - Math.max(1, Number(message?.hours) || 1) * 60 * 60 * 1000;
     const maxRows = Math.min(Math.max(1, Math.floor(Number(message?.maxRows) || 500)), MAX_ROWS_LIMIT);
-    const minLevel = Math.max(0, LOG_LEVELS.indexOf(message?.level as LogLevel));
+    // an unknown level asks for everything, the way an omitted one does
+    const minLevel: ioBroker.LogLevel =
+        typeof message?.level === 'string' && tools.isLogLevel(message.level) ? message.level : 'silly';
     const source = typeof message?.source === 'string' ? message.source : '';
     const needle = typeof message?.text === 'string' ? message.text.toLowerCase() : '';
 
@@ -198,7 +186,7 @@ export async function searchLogFiles(
                 entry &&
                 entry.ts >= minTs &&
                 entry.ts <= until &&
-                LOG_LEVELS.indexOf(entry.level) >= minLevel &&
+                isLogLevelAtLeast(entry.level, minLevel) &&
                 (!source || entry.source === source) &&
                 (!needle || entry.message.toLowerCase().includes(needle))
             ) {
@@ -212,20 +200,13 @@ export async function searchLogFiles(
         };
 
         const read = await readLines(path.join(logFiles.directory, selected[f].name), line => {
-            const plain = line.replace(ANSI_ESCAPE, '');
-            const match = plain.match(LOG_LINE);
-            if (match) {
+            const header = parseLogEntryHeader(line);
+            if (header) {
                 finish();
-                entry = {
-                    ts: new Date(`${match[1]}T${match[2]}`).getTime(),
-                    level: match[3].toLowerCase() as LogLevel,
-                    source: match[5],
-                    message: match[4],
-                    raw: [line],
-                };
+                entry = { ...header, raw: [line] };
             } else if (entry && line) {
                 // continuation of a multi-line entry, e.g. a stack trace
-                entry.message += `\n${plain}`;
+                entry.message += `\n${stripLogColors(line)}`;
                 entry.raw.push(line);
             }
         });

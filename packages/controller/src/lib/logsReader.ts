@@ -1,17 +1,11 @@
 import fs from 'fs-extra';
-import { tools } from '@iobroker/js-controller-common';
-
-/** Log levels ordered by severity, lowest first */
-const LOG_LEVELS: ioBroker.LogLevel[] = ['silly', 'debug', 'info', 'warn', 'error'];
+import { isLogLevelAtLeast, parseLogEntryHeader, tools } from '@iobroker/js-controller-common';
 
 /** Rough estimate of the size of a log line, used to decide how much of the tail to read */
 const BYTES_PER_LINE = 150;
 
 /** Never read more than this from the end of the log file while looking for matching entries */
 const MAX_READ_BYTES = 20 * 1024 * 1024;
-
-/** Matches every line which starts a new log entry, i.e. carries a level */
-const ANY_LEVEL_REGEX = getLevelRegExp('silly');
 
 /** Options of a `getLogs` request */
 export interface GetLogsOptions {
@@ -34,28 +28,6 @@ export interface LogTail {
     lines: string[];
     /** Current size of the log file in bytes */
     size: number;
-}
-
-/**
- * Build a RegExp matching every log line which *starts* an entry of the given level or a more severe one
- *
- * A log line looks like `2019-03-02 13:26:54.698  - debug: iot.0 message`, where the level can be
- * wrapped in color codes when colored output is configured.
- *
- * Anchored at the timestamp on purpose. Without the anchor a level token anywhere in the line
- * counts, so a message which quotes one - a parser error, a forwarded log line, a config dump -
- * matches. Worse, a continuation line of a stack trace which happens to contain one is taken for
- * the start of a new entry. Continuation lines never carry a timestamp, which is what tells the
- * two apart.
- *
- * @param level the lowest level to still match
- */
-function getLevelRegExp(level: ioBroker.LogLevel): RegExp {
-    const accepted = LOG_LEVELS.slice(LOG_LEVELS.indexOf(level));
-    /** Color codes wrap the level, and are tolerated in front of the timestamp as well */
-    const color = String.raw`(?:\u001B\[\d+m)?`;
-
-    return new RegExp(String.raw`^${color}\d{4}-\d{2}-\d{2} [\d:.]+\s+-\s${color}(?:${accepted.join('|')})${color}:`);
 }
 
 /**
@@ -94,13 +66,13 @@ export function parseGetLogsMessage(message: unknown): GetLogsOptions {
  * @param logLevel the lowest level to keep
  */
 function filterByLevel(lines: string[], logLevel: ioBroker.LogLevel): string[] {
-    const levelRegex = getLevelRegExp(logLevel);
     const result: string[] = [];
     let keepEntry = false;
 
     for (const line of lines) {
-        if (ANY_LEVEL_REGEX.test(line)) {
-            keepEntry = levelRegex.test(line);
+        const header = parseLogEntryHeader(line);
+        if (header) {
+            keepEntry = isLogLevelAtLeast(header.level, logLevel);
         }
 
         if (keepEntry) {
@@ -154,7 +126,7 @@ function trimToEntries(lines: string[], wanted: number): string[] {
     }
 
     let start = lines.length - wanted;
-    while (start > 0 && !ANY_LEVEL_REGEX.test(lines[start])) {
+    while (start > 0 && !parseLogEntryHeader(lines[start])) {
         start--;
     }
 
