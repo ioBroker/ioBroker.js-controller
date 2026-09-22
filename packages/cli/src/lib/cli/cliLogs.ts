@@ -1,5 +1,12 @@
 import { CLICommand, type CLICommandOptions } from './cliCommand.js';
-import { tools, logger as toolsLogger, EXIT_CODES } from '@iobroker/js-controller-common';
+import {
+    tools,
+    logger as toolsLogger,
+    EXIT_CODES,
+    LOG_LEVELS,
+    isLogLevelAtLeast,
+    parseLogEntryHeader,
+} from '@iobroker/js-controller-common';
 import chokidar from 'chokidar';
 import fs from 'fs-extra';
 import os from 'node:os';
@@ -10,34 +17,14 @@ const require = createRequire(import.meta.url || `file://${__filename}`);
 
 const { getConfigFileName } = tools;
 
-/** Log levels ordered by severity, lowest first */
-const LOG_LEVELS: ioBroker.LogLevel[] = ['silly', 'debug', 'info', 'warn', 'error'];
-
 interface CLILogsOptions {
     /** Whether to show today's full log */
     complete?: boolean;
     /** An optional RegExp to filter by */
     regex?: RegExp;
-    /** An optional RegExp matching the accepted log levels */
-    levelRegex?: RegExp;
+    /** The lowest level to still show, if the output is restricted to a severity */
+    minLevel?: ioBroker.LogLevel;
 }
-
-/**
- * Build a RegExp matching every log line of the given level or a more severe one
- *
- * A log line looks like `2019-03-02 13:26:54.698  - debug: iot.0 message`, where the level can be
- * wrapped in color codes when colored output is configured.
- *
- * @param level the lowest level to still show
- */
-function getLevelRegExp(level: ioBroker.LogLevel): RegExp {
-    const accepted = LOG_LEVELS.slice(LOG_LEVELS.indexOf(level));
-
-    return new RegExp(`\\s-\\s(?:\\u001B\\[\\d+m)?(?:${accepted.join('|')})(?:\\u001B\\[\\d+m)?:`);
-}
-
-/** Matches every line which starts a new log entry, i.e. carries a level */
-const ANY_LEVEL_REGEX = getLevelRegExp('silly');
 
 /** Command ioBroker state ... */
 export class CLILogs extends CLICommand {
@@ -77,7 +64,7 @@ export class CLILogs extends CLICommand {
                 return void this.options.callback(EXIT_CODES.UNKNOWN_ERROR);
             }
 
-            options.levelRegex = getLevelRegExp(level);
+            options.minLevel = level;
         }
 
         const config = fs.readJSONSync(require.resolve(getConfigFileName()));
@@ -179,7 +166,7 @@ export class CLILogs extends CLICommand {
             start,
             autoClose: true,
         });
-        if (options.regex || options.levelRegex) {
+        if (options.regex || options.minLevel) {
             // Read the input line by line and only include the lines matching the filter
             input
                 .pipe(es.split())
@@ -197,15 +184,20 @@ export class CLILogs extends CLICommand {
      *
      * A log entry can span several lines, e.g. a stack trace, and only its first line carries the
      * level. Those follow-up lines inherit the decision made for the entry they belong to, so
-     * filtering by level does not cut a stack trace in half.
+     * filtering by level does not cut a stack trace in half. Which lines start an entry is decided
+     * by the shared parser, the same one the host commands `getLogs` and `searchLogs` use: it takes
+     * a level only where the time stamp of an entry is, so a level quoted inside a message does not
+     * count as one.
      *
      * @param line the log line to check
      * @param options the active filters
      */
     private matches(line: string, options: CLILogsOptions): boolean {
-        if (options.levelRegex) {
-            if (ANY_LEVEL_REGEX.test(line)) {
-                this.showCurrentEntry = options.levelRegex.test(line);
+        if (options.minLevel) {
+            const header = parseLogEntryHeader(line);
+
+            if (header) {
+                this.showCurrentEntry = isLogLevelAtLeast(header.level, options.minLevel);
             }
 
             if (!this.showCurrentEntry) {
