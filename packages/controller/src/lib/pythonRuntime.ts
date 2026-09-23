@@ -428,25 +428,13 @@ export type PythonLogLevel = 'debug' | 'info' | 'warn' | 'error';
  * Sink that receives whole, non-empty log lines recovered from a Python adapter's output
  *
  * `alreadyPushed` says that this exact record was sent to the log transporters by the adapter itself, so the
- * host copy belongs in the log file but must not be pushed a second time.
+ * host copy belongs in the log file but must not be pushed a second time. It is decided here, where the line
+ * is read, because this is the only place which knows for certain which instance produced it: deciding it at
+ * the other end of the pipeline, from the text of every record the host logs, costs a regular expression per
+ * log line and cannot tell this apart from a Node.js adapter that forwards the output of a Python subprocess
+ * of its own.
  */
 export type PythonLogSink = (level: PythonLogLevel, line: string, alreadyPushed: boolean) => void;
-
-/**
- * Property with which a log record is marked as one the adapter pushed to the transporters itself.
- *
- * Every line a Python adapter writes is captured here and re-logged under the host, which is what puts it in
- * the host's log file and what surfaces a crash. Since SDK 0.8.0 the adapter *also* pushes its own records to
- * whoever asked for the log, with the level and timestamp the record actually had -- the route that lets admin
- * attribute the line to the instance instead of to the host. Both routes end at the same user, so the host copy
- * of such a record must not be pushed a second time.
- *
- * The mark is set where the line is read, because that is the only place which knows for certain which instance
- * produced it. Deciding it at the other end of the pipeline, from the text of every record the host logs, costs
- * a regular expression per log line and cannot tell this apart from a Node adapter that forwards the output of
- * a Python subprocess of its own.
- */
-export const PYTHON_ALREADY_PUSHED = 'pythonAlreadyPushed';
 
 /** How the levels of Python's `logging` map onto the ones the host knows */
 const PYTHON_LOG_LEVELS: Record<string, PythonLogLevel> = {

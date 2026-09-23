@@ -57,7 +57,6 @@ import {
     checkPythonEnvironment,
     forwardPythonOutput,
     isPythonAdapter,
-    PYTHON_ALREADY_PUSHED,
     type PythonLogLevel,
     spawnPythonAdapter,
     unsupportedPythonDbConfig,
@@ -4586,6 +4585,7 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                 '--loglevel',
                 instance.common.loglevel || 'info',
             ];
+
             try {
                 if (proc.pythonInterpreter) {
                     proc.process = spawnPythonAdapter({
@@ -6433,7 +6433,7 @@ export async function init(compactGroupId?: number): Promise<void> {
         // forwarder. It still belongs in the host's log file, which is why it was logged at all -- but pushing
         // it to the transporters as well would show every Python line twice in admin, once attributed to the
         // instance and once to this host.
-        if ((info as Record<string, unknown>)[PYTHON_ALREADY_PUSHED]) {
+        if (info.alreadyPushed) {
             return;
         }
 
@@ -6862,7 +6862,8 @@ async function _getNumberOfInstances(): Promise<
  */
 function logPythonLine(level: PythonLogLevel, message: string, alreadyPushed: boolean): void {
     if (alreadyPushed) {
-        logger[level](message, { [PYTHON_ALREADY_PUSHED]: true });
+        // travels with the record to the `logged` handler, which does the pushing
+        logger[level](message, { alreadyPushed: true });
     } else {
         logger[level](message);
     }

@@ -394,6 +394,12 @@ declare global {
             ts: number;
             /** actual content */
             message: string;
+            /**
+             * Set when the producer of this record has already pushed it to the log transporters itself, so
+             * that a host which logs the record a second time - e.g. captured from the output of a child
+             * process - does not push it again and show it twice
+             */
+            alreadyPushed?: boolean;
         }
 
         interface Certificates {

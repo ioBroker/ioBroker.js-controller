@@ -17,7 +17,7 @@ import {
     unsupportedPythonDbConfig,
     parsePythonRecord,
 } from '../src/lib/pythonRuntime.js';
-import { getSupportedFeatures } from '@iobroker/js-controller-common';
+import { getSupportedFeatures, logger as createLogger } from '@iobroker/js-controller-common';
 import { getInstanceIndicatorObjects } from '@iobroker/js-controller-common-db/tools';
 
 describe('pythonRuntime', () => {
@@ -702,6 +702,25 @@ describe('pythonRuntime', () => {
             assert.equal(parsePythonRecord('  File "main.py", line 5', 'python.0'), null);
             assert.equal(parsePythonRecord('ValueError: boom', 'python.0'), null);
             assert.equal(parsePythonRecord('a bare print()', 'python.0'), null);
+        });
+
+        it('keeps its mark up to the listener which does the pushing', async () => {
+            // The mark travels with the record as winston metadata, while the notifier transport builds its
+            // own payload for the `logged` event. A field it does not copy never arrives at the handler in
+            // `main.ts`, which is where the push happens - and every Python line would be shown twice after
+            // all, without anything failing on the way.
+            const log = createLogger('info', [], true, '');
+            const notifier = log.transports.find(transport => (transport as { name?: string }).name === 'NT');
+            const pushed: Record<string, unknown>[] = [];
+            notifier!.on('logged', info => pushed.push(info));
+
+            log.info('a line the adapter pushed itself', { alreadyPushed: true });
+            log.info('a line only the host has');
+            await new Promise(resolve => setTimeout(resolve, 10));
+
+            assert.equal(pushed.length, 2);
+            assert.equal(pushed[0].alreadyPushed, true, 'the mark has to survive the transport');
+            assert.equal(pushed[1].alreadyPushed, undefined, 'everything else stays as it was');
         });
 
         it('does not take the record of another instance for this instance own', () => {
