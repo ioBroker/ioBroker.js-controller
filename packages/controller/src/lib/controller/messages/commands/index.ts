@@ -9,6 +9,7 @@ import {
     createRepositoryCommands,
     type RepositoryCommandsDeps,
 } from '@/lib/controller/messages/commands/repository.js';
+import { createResourceCommands, type ResourceCommandsDeps } from '@/lib/controller/messages/commands/resources.js';
 import { createSettingsCommands, type SettingsCommandsDeps } from '@/lib/controller/messages/commands/settings.js';
 import { createShellCommands, type ShellCommandsDeps } from '@/lib/controller/messages/commands/shell.js';
 import { createUpgradeCommands, type UpgradeCommandsDeps } from '@/lib/controller/messages/commands/upgrade.js';
@@ -31,6 +32,8 @@ export interface HostCommandGroupDeps {
     notifications: NotificationCommandsDeps;
     /** What the commands for the adapter repositories need */
     repository: RepositoryCommandsDeps;
+    /** What the commands for the used resources of this host need */
+    resources: ResourceCommandsDeps;
     /** What the commands for the iobroker.json need */
     settings: SettingsCommandsDeps;
     /** What the commands for executing shell and CLI commands need */
@@ -56,6 +59,7 @@ export function createHostCommands(deps: HostCommandGroupDeps): Record<string, H
         ...createSettingsCommands(deps.settings),
         ...createNotificationCommands(deps.notifications),
         ...createRepositoryCommands(deps.repository),
+        ...createResourceCommands(deps.resources),
         ...createUpgradeCommands(deps.upgrade),
     };
 }

@@ -1,9 +1,9 @@
 {
     "name": "@iobroker/js-controller-adapter",
     "type": "module",
-    "version": "8.0.0-alpha.0",
+    "version": "8.0.0-alpha.2-20260923-99da17fcc",
     "engines": {
-        "node": ">=22.0.0"
+        "node": ">=22.19.0"
     },
     "dependencies": {
         "@alcalzone/pak": "^0.12.0",
@@ -40,6 +40,7 @@
         "url": "https://github.com/ioBroker/ioBroker.js-controller"
     },
     "scripts": {
+        "test": "mocha --node-option import=tsx \"src/lib/adapter/managers/**/*.test.ts\" --exit",
         "build": "tsc -b tsconfig.build.json && tsc-alias",
         "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./cert ../build/esm --cwd=src && cpy ./cert ../build/cjs --cwd=src && cpy ./**/*.d.ts ../cjs/ --cwd=build/esm/",
         "build:doc": "typedoc --excludeExternals --excludeProtected --excludePrivate --plugin typedoc-plugin-missing-exports --plugin typedoc-plugin-markdown src/lib/adapter/adapter.ts --out ../controller/doc"

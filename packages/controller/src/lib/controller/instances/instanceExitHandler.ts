@@ -1,4 +1,5 @@
 import { EXIT_CODES } from '@iobroker/js-controller-common';
+import type cp from 'node:child_process';
 import { cleanErrors, getErrorText } from '@/lib/controller/helpers.js';
 import type { InstanceManager, InstanceManagerOptions } from '@/lib/controller/instances/instanceManager.js';
 
@@ -36,6 +37,67 @@ const CRASH_RESET_TIME = 1_000 * 600;
 const MAX_CRASHES = 3;
 /** How often the rebuild of an adapter is tried before it is given up */
 const MAX_REBUILDS = 4;
+
+/**
+ * Run the exit handling of an instance once, whether its process ended or never came up
+ *
+ * `spawn()` reports a program it cannot run - a missing or non-executable Python interpreter, a working
+ * directory that is gone - through the `error` event and not by throwing, and it emits no `exit` afterwards.
+ * Two things follow from that, and both are handled here:
+ *
+ * - without an `error` listener Node rethrows, which ends the whole controller and every adapter on this host;
+ * - without the exit path the instance would keep its `alive` state with no process behind it, and nothing
+ *   would ever restart it.
+ *
+ * A process that is up can report an `error` too - a signal that could not be delivered, a message that could
+ * not be sent - and that one is not an end: the adapter keeps running. Only a process which never came up is
+ * treated as gone, which is what its missing pid says.
+ *
+ * `error` and `exit` can both arrive, so the handler runs once.
+ *
+ * @param options Everything the exit handling needs to do its work
+ * @param id The id of the instance, like `system.adapter.hm-rpc.0`
+ * @param child The process which was started for it
+ * @param onExit What the caller does when the instance is gone
+ */
+export function handleProcessEnd(
+    options: Pick<InstanceExitHandlerOptions, 'logger' | 'hostLogPrefix' | 'instances'>,
+    id: ioBroker.ObjectIDs.Instance,
+    child: cp.ChildProcess,
+    onExit: (code: number, signal: string) => void,
+): void {
+    const { logger, hostLogPrefix, instances } = options;
+    let handled = false;
+
+    const handleOnce = (code: number, signal: string): void => {
+        if (handled) {
+            return;
+        }
+        handled = true;
+        onExit(code, signal);
+    };
+
+    child.on('error', (e: Error) => {
+        // A process that came up keeps running after an error of its own, so ending the instance here would
+        // leave an adapter behind that this host no longer tracks: it would neither stop nor restart it, and
+        // the next start would run a second copy. Its `exit` is still to come and does the ending.
+        if (child.pid !== undefined) {
+            logger.error(`${hostLogPrefix} instance ${id} reported an error: ${e.message}`);
+            return;
+        }
+
+        logger.error(`${hostLogPrefix} instance ${id} could not be started: ${e.message}`);
+        handleOnce(EXIT_CODES.UNKNOWN_ERROR, '');
+
+        // nothing is running under this entry, and leaving it behind would refuse every later start
+        const proc = instances.procs[id];
+        if (proc?.process === child) {
+            delete proc.process;
+        }
+    });
+
+    child.on('exit', handleOnce);
+}
 
 /**
  * Create the handler which is called as soon as the process of an instance has exited

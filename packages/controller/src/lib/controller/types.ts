@@ -84,6 +84,8 @@ export interface Process {
     startedAsCompactGroup?: boolean;
     /** The Node.js version required by the adapter */
     engine?: string;
+    /** Interpreter of the virtual environment; only set for adapters with `common.platform: "Python"` */
+    pythonInterpreter?: string;
     /** Timestamp of the last cleanup of the stored errors */
     lastCleanErrors?: number;
     /** Timestamp of the last start of the instance */

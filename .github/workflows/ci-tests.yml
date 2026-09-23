@@ -108,6 +108,9 @@ jobs:
       - name: Execute Controller Unit Tests
         run: npm run test-controller
 
+      - name: Execute Adapter Tests
+        run: npm run test-adapter
+
       - name: Execute Standard Tests
         run: npm test
 

@@ -10,7 +10,15 @@ import { SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants'
 import { isAdapterEsmModule } from '@iobroker/js-controller-common-db/tools';
 import { cleanErrors, determineRebuildArgsFromLog } from '@/lib/controller/helpers.js';
 import { checkVersions } from '@/lib/controller/dependencyChecker.js';
-import { createInstanceExitHandler } from '@/lib/controller/instances/instanceExitHandler.js';
+import { createInstanceExitHandler, handleProcessEnd } from '@/lib/controller/instances/instanceExitHandler.js';
+import { forwardPythonAdapterOutput } from '@/lib/controller/instances/pythonOutput.js';
+import {
+    buildPythonEnv,
+    checkPythonEnvironment,
+    isPythonAdapter,
+    spawnPythonAdapter,
+    unsupportedPythonDbConfig,
+} from '@/lib/pythonRuntime.js';
 import type { InstanceManager, InstanceManagerOptions } from '@/lib/controller/instances/instanceManager.js';
 import type { Process } from '@/lib/controller/types.js';
 
@@ -104,7 +112,7 @@ export class InstanceStarter {
      * @param wakeUp Whether the instance is being started because of a wake-up (scheduled or message) event
      */
     async startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): Promise<void> {
-        const { logger, hostLogPrefix, hostname, ioPackage, instances, state } = this.#options;
+        const { config, logger, hostLogPrefix, hostname, ioPackage, instances, state } = this.#options;
         const { objects, notificationHandler, blocklistManager } = this.#options;
         const { procs } = instances;
 
@@ -118,6 +126,13 @@ export class InstanceStarter {
             logger.error(`${hostLogPrefix} startInstance ${id}: object not found!`);
             return;
         }
+
+        // procs[id] survives configuration changes, so the interpreter has to be re-derived on every start rather
+        // than left over from a previous one: an adapter switched back from Python to Node.js would otherwise keep
+        // being spawned through the Python path, since that is chosen by the presence of this field. It happens
+        // before anything below can return early - a pending upload, a blocked version, a failed dependency check -
+        // because a scheduled run branches on the field alone and would then use a stale one.
+        delete proc.pythonInterpreter;
 
         const instance = proc.config;
         const name = id.split('.')[2];
@@ -249,10 +264,73 @@ export class InstanceStarter {
 
         proc.downloadRetry = 0;
 
-        // read node.js engine requirements
+        const isPython = isPythonAdapter(instance.common);
+
+        if (isPython) {
+            // Web extensions are loaded into the Node.js process of the hosting web server, which a
+            // Python adapter cannot take part in. Saying so beats the silent fall-through of the mode
+            // switch below -- the instance would simply never appear, with nothing in the log. Not
+            // rejected by the io-package.json schema, because running extensions out of process (over
+            // an internal socket) is a possible later extension of the runtime.
+            if (instance.common.mode === 'extension') {
+                logger.error(
+                    `${hostLogPrefix} startInstance ${name}.${instanceNo}: web extensions run inside the ` +
+                        'Node.js process of the hosting web server and are not supported for Python adapters yet',
+                );
+                return;
+            }
+
+            // Refuse configurations the environment variables cannot express (a unix socket). A
+            // Python adapter started anyway would open a TCP connection to port 0 and fail looking
+            // like a network problem.
+            const unsupportedDb = unsupportedPythonDbConfig(config);
+
+            if (unsupportedDb) {
+                logger.error(`${hostLogPrefix} startInstance ${name}.${instanceNo}: ${unsupportedDb}`);
+                return;
+            }
+
+            // Both of these end up in `execArgv`, which is handed to Node and not to an interpreter
+            // that would not know what to do with it. Admin offers the memory limit for every instance
+            // and has no way to know it does nothing here, so the log is where a user finds out --
+            // silently ignoring a limit somebody set against an adapter they think is leaking is the
+            // kind of thing that costs an evening.
+            if (instance.common.memoryLimitMB && Math.round(instance.common.memoryLimitMB)) {
+                logger.warn(
+                    `${hostLogPrefix} startInstance ${name}.${instanceNo}: the memory limit ` +
+                        `(${Math.round(instance.common.memoryLimitMB)} MB) applies to Node.js adapters only and is ignored here`,
+                );
+            }
+
+            if (Array.isArray(instance.common.nodeProcessParams) && instance.common.nodeProcessParams.length) {
+                logger.warn(
+                    `${hostLogPrefix} startInstance ${name}.${instanceNo}: "nodeProcessParams" are Node.js ` +
+                        'arguments and are ignored for a Python adapter',
+                );
+            }
+
+            // A Python adapter needs its virtual environment before it can be started. Building that
+            // environment is the job of the "py-controller" adapter, so all this side does is refuse to
+            // start and say why -- py-controller watches for exactly this and triggers a restart once
+            // the environment is in place.
+            const env = await checkPythonEnvironment(name, instance.common.version);
+
+            if (!env.ready) {
+                logger.error(`${hostLogPrefix} startInstance ${name}.${instanceNo}: ${env.reason}`);
+                return;
+            }
+
+            proc.pythonInterpreter = env.interpreter;
+        }
+
+        // read node.js engine requirements -- not applicable to Python adapters. Their equivalent,
+        // "requires-python" in pyproject.toml, is enforced by uv when the virtual environment is
+        // created: it refuses to build one whose interpreter does not satisfy the constraint. Checking
+        // it again here would mean parsing TOML in the core to re-verify something that has already
+        // been decided, and by the component that owns it.
         try {
             // read directly from disk and not via require to allow "on the fly" updates of adapters.
-            const packJSON = fs.readJSONSync(path.join(adapterDir, 'package.json'));
+            const packJSON = isPython ? undefined : fs.readJSONSync(path.join(adapterDir, 'package.json'));
             proc.engine = packJSON?.engines?.node;
         } catch {
             logger.error(
@@ -422,6 +500,8 @@ export class InstanceStarter {
             delete proc.stopping;
         }
 
+        await instances.usedResources.markStarting(id, instance);
+
         logger.debug(
             `${hostLogPrefix} startInstance ${name}.${instanceNo} loglevel=${instance.common.loglevel || 'info'}, compact=${
                 instance.common.compact && instance.common.runAsCompactMode
@@ -455,6 +535,11 @@ export class InstanceStarter {
         }
 
         this.#handleAdapterProcessStart(ctx);
+
+        if (!instances.procs[id]?.process) {
+            // the launch did not produce a process, so nothing will ever unblock the entries again
+            await instances.usedResources.markNotStarted(id);
+        }
     }
 
     /**
@@ -546,8 +631,20 @@ export class InstanceStarter {
      * @param ctx Everything which is needed to start the instance
      */
     #handleAdapterProcessStart(ctx: DaemonLaunchContext): void {
-        const { id, instance, mode, wakeUp, args, execArgv, adapterDir, adapterMainFile, exitHandler } = ctx;
-        const { states, logger, hostLogPrefix, hostObjectPrefix, instances } = this.#options;
+        const {
+            id,
+            instance,
+            name,
+            instanceNo,
+            mode,
+            wakeUp,
+            args,
+            execArgv,
+            adapterDir,
+            adapterMainFile,
+            exitHandler,
+        } = ctx;
+        const { config, states, logger, hostLogPrefix, hostObjectPrefix, instances } = this.#options;
 
         const proc: Process = instances.procs[id];
 
@@ -558,16 +655,34 @@ export class InstanceStarter {
         if (!proc.process) {
             // We were not able or should not start as compact mode
             try {
-                proc.process = cp.fork(adapterMainFile, args, {
-                    execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
-                    stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-                    // @ts-expect-error missing from types, but we already tested it is needed
-                    windowsHide: true,
-                    cwd: adapterDir,
-                });
+                if (proc.pythonInterpreter) {
+                    proc.process = spawnPythonAdapter({
+                        adapterName: name,
+                        adapterDir,
+                        main: instance.common.main,
+                        interpreter: proc.pythonInterpreter,
+                        args,
+                        env: buildPythonEnv(config, instanceNo, instance.common.loglevel),
+                    });
+                } else {
+                    proc.process = cp.fork(adapterMainFile, args, {
+                        execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
+                        stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
+                        // @ts-expect-error missing from types, but we already tested it is needed
+                        windowsHide: true,
+                        cwd: adapterDir,
+                    });
+                }
             } catch (err) {
                 logger.error(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
             }
+        }
+
+        // Both streams in one place. The error handler further down does Node.js rebuild detection on
+        // stderr, which cannot match a Python process; letting it attach as well would log everything
+        // twice and split the handling in two.
+        if (proc.pythonInterpreter && proc.process) {
+            forwardPythonAdapterOutput({ logger, hostLogPrefix }, proc.process, id);
         }
 
         if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
@@ -580,8 +695,13 @@ export class InstanceStarter {
                 .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.sigKill: ${e.message}`));
         }
 
-        // catch error output
-        if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process?.stderr) {
+        // catch error output -- Node only, see above
+        if (
+            !proc.pythonInterpreter &&
+            !proc.startedInCompactMode &&
+            !proc.startedAsCompactGroup &&
+            proc.process?.stderr
+        ) {
             proc.process.stderr.on('data', data => {
                 const proc = instances.procs[id];
 
@@ -623,7 +743,7 @@ export class InstanceStarter {
         instances.storePids();
 
         if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
-            proc.process.on('exit', exitHandler);
+            handleProcessEnd(this.#options, id, proc.process, exitHandler);
         }
 
         if (

@@ -360,6 +360,15 @@ export class Controller {
                 logger,
                 hostLogPrefix,
             },
+            resources: {
+                objects,
+                messages,
+                instances,
+                usedResources: instances.usedResources,
+                logger,
+                hostLogPrefix,
+                hostname,
+            },
             settings: {
                 messages,
                 multihost: this.#multihost,
@@ -682,6 +691,7 @@ export class Controller {
                 await this.#hostMeta!.checkHost();
                 await this.#multihost!.startMultihost(this.#config);
                 await this.#hostMeta!.setMeta();
+                await this.#instances!.usedResources.load();
                 this.#state.setStarted(true);
                 await this.#instances!.getInstances();
             }
@@ -952,6 +962,14 @@ export class Controller {
         // @ts-expect-error types do not seem to be perfect here
         const ts = this.#logger.transports.find(t => t.name === 'NT');
         ts!.on('logged', info => {
+            // A record a Python adapter already pushed itself, captured here from its stdout and marked by the
+            // forwarder. It still belongs in the host's log file, which is why it was logged at all -- but
+            // pushing it to the transporters as well would show every Python line twice in admin, once
+            // attributed to the instance and once to this host.
+            if (info.alreadyPushed) {
+                return;
+            }
+
             info.from = this.#hostLogPrefix;
             for (const log of this.#logList) {
                 this.#states!.pushLog(log, info).catch(e =>

@@ -5,6 +5,9 @@ import { CronExpressionParser } from 'cron-parser';
 import { EXIT_CODES, isInstalledFromNpm, tools } from '@iobroker/js-controller-common';
 import { getCronExpression } from '@/lib/utils.js';
 import { getErrorText } from '@/lib/controller/helpers.js';
+import { handleProcessEnd } from '@/lib/controller/instances/instanceExitHandler.js';
+import { forwardPythonAdapterOutput } from '@/lib/controller/instances/pythonOutput.js';
+import { buildPythonEnv, checkPythonEnvironment, spawnPythonAdapter } from '@/lib/pythonRuntime.js';
 import type { InstanceManager, InstanceManagerOptions } from '@/lib/controller/instances/instanceManager.js';
 import type { Process, ScheduledInstanceEntry } from '@/lib/controller/types.js';
 
@@ -57,8 +60,16 @@ export class ScheduleRunner {
      */
     scheduleInstance(ctx: ScheduleInstanceContext): void {
         const { id, instance, proc, adapterMainFile, adapterDir, args, execArgv, wakeUp } = ctx;
-        const { states, logger, hostLogPrefix, hostObjectPrefix, instances, isCompactGroupController, statistics } =
-            this.#options;
+        const {
+            config,
+            states,
+            logger,
+            hostLogPrefix,
+            hostObjectPrefix,
+            instances,
+            isCompactGroupController,
+            statistics,
+        } = this.#options;
 
         if (isCompactGroupController) {
             logger.debug(`${hostLogPrefix} ${instance._id} schedule is not started by compact group controller`);
@@ -108,12 +119,24 @@ export class ScheduleRunner {
         }
 
         try {
-            proc.process = cp.fork(adapterMainFile, args, {
-                execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
-                // @ts-expect-error missing from types, but we already tested it is necessary
-                windowsHide: true,
-                cwd: adapterDir,
-            });
+            if (proc.pythonInterpreter) {
+                proc.process = spawnPythonAdapter({
+                    adapterName: instance.common.name,
+                    adapterDir,
+                    main: instance.common.main,
+                    interpreter: proc.pythonInterpreter,
+                    args,
+                    env: buildPythonEnv(config, instance._id.split('.').pop() || '0', instance.common.loglevel),
+                });
+                forwardPythonAdapterOutput({ logger, hostLogPrefix }, proc.process, id);
+            } else {
+                proc.process = cp.fork(adapterMainFile, args, {
+                    execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
+                    // @ts-expect-error missing from types, but we already tested it is necessary
+                    windowsHide: true,
+                    cwd: adapterDir,
+                });
+            }
         } catch (e) {
             logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${e.message}`);
         }
@@ -123,6 +146,13 @@ export class ScheduleRunner {
         }
 
         instances.storePids();
+
+        // this forks an adapter right away, so it needs the same resource handling as any other start -
+        // the exit handler below unblocks them again
+        void instances.usedResources
+            .markStarting(id, instance)
+            .catch(e => logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`));
+
         const isNpm = isInstalledFromNpm({
             installedFrom: instance.common.installedFrom,
             adapterName: instance.common.name,
@@ -147,6 +177,12 @@ export class ScheduleRunner {
             states
                 .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
                 .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));
+
+            // the init run is over: keep the registrations but mark them as no longer held
+            await instances.usedResources
+                .markStopped(id)
+                .catch(e => logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`));
+
             if (signal) {
                 logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
             } else if (code === null) {
@@ -168,7 +204,7 @@ export class ScheduleRunner {
             instances.storePids();
         };
 
-        proc.process.on('exit', (code, signal) => {
+        handleProcessEnd(this.#options, id, proc.process, (code, signal) => {
             handleExit(code, signal).catch(e =>
                 logger.error(`${hostLogPrefix} Cannot handle exit of instance ${id}: ${e.message}`),
             );
@@ -182,7 +218,7 @@ export class ScheduleRunner {
         const { config, logger, hostLogPrefix, instances } = this.#options;
         const { scheduledInstances } = instances;
 
-        let idsToStart = Object.keys(scheduledInstances);
+        let idsToStart = Object.keys(scheduledInstances) as ioBroker.ObjectIDs.Instance[];
 
         while (idsToStart.length) {
             const id = idsToStart[0];
@@ -200,7 +236,7 @@ export class ScheduleRunner {
             await wait(skipped ? 0 : interval + 2_000);
 
             delete scheduledInstances[id];
-            idsToStart = Object.keys(scheduledInstances);
+            idsToStart = Object.keys(scheduledInstances) as ioBroker.ObjectIDs.Instance[];
         }
     }
 
@@ -211,8 +247,11 @@ export class ScheduleRunner {
      * @param entry The information which has been queued by the cron job
      * @returns true if the instance has not been started, so the next one does not need to wait
      */
-    async #startSingleScheduledInstance(id: string, entry: ScheduledInstanceEntry): Promise<boolean> {
-        const { states, logger, hostLogPrefix, hostObjectPrefix, instances, statistics } = this.#options;
+    async #startSingleScheduledInstance(
+        id: ioBroker.ObjectIDs.Instance,
+        entry: ScheduledInstanceEntry,
+    ): Promise<boolean> {
+        const { config, states, logger, hostLogPrefix, hostObjectPrefix, instances, statistics } = this.#options;
         const { procs } = instances;
         const { adapterDir, fileNameFull, wakeUp } = entry;
 
@@ -252,13 +291,43 @@ export class ScheduleRunner {
             instance.common.loglevel || 'info',
         ];
 
+        if (proc.pythonInterpreter) {
+            // The interpreter was chosen when this instance was set up, and a scheduled run happens whenever
+            // its cron says so - hours later, and possibly while py-controller is rebuilding the environment.
+            // Starting into a half-built virtual environment fails on an import of a package that was there a
+            // moment earlier, so this run is skipped and the next tick tries again. Every other start goes
+            // through `startInstance`, which asks the same question.
+            const env = await checkPythonEnvironment(instance.common.name, instance.common.version);
+
+            if (!env.ready) {
+                logger.warn(
+                    `${hostLogPrefix} scheduled run of ${instance._id} skipped, it will be started at the next scheduled time: ${env.reason}`,
+                );
+                return true;
+            }
+
+            proc.pythonInterpreter = env.interpreter;
+        }
+
         try {
-            proc.process = cp.fork(fileNameFull, args, {
-                execArgv: tools.getDefaultNodeArgs(fileNameFull),
-                // @ts-expect-error missing from types, but we already tested it is needed
-                windowsHide: true,
-                cwd: adapterDir,
-            });
+            if (proc.pythonInterpreter) {
+                proc.process = spawnPythonAdapter({
+                    adapterName: instance.common.name,
+                    adapterDir,
+                    main: instance.common.main,
+                    interpreter: proc.pythonInterpreter,
+                    args,
+                    env: buildPythonEnv(config, instance._id.split('.').pop() || '0', instance.common.loglevel),
+                });
+                forwardPythonAdapterOutput({ logger, hostLogPrefix }, proc.process, id);
+            } else {
+                proc.process = cp.fork(fileNameFull, args, {
+                    execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                    // @ts-expect-error missing from types, but we already tested it is needed
+                    windowsHide: true,
+                    cwd: adapterDir,
+                });
+            }
         } catch (err) {
             logger.error(`${hostLogPrefix} instance ${id} could not be started: ${err.message}`);
             delete proc.process;
@@ -277,11 +346,24 @@ export class ScheduleRunner {
                 `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`,
             );
 
-            proc.process.on('exit', (code, signal) => {
+            // the scheduled run holds the resources of this instance until it exits again - same handling
+            // as any other start
+            await instances.usedResources
+                .markStarting(id, instance)
+                .catch(e => logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`));
+
+            handleProcessEnd(this.#options, id, proc.process, (code, signal) => {
                 statistics.countOutput();
                 states
                     .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
                     .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));
+
+                // the instance is no longer running: keep its resource registrations but mark them as not
+                // actively blocked, so the user still sees which resources it would occupy when started again
+                instances.usedResources
+                    .markStopped(id)
+                    .catch(e => logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`));
+
                 if (signal) {
                     logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                 } else if (code === null) {

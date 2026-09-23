@@ -780,8 +780,13 @@ declare global {
             };
             /** Which OSes this adapter supports */
             os?: 'linux' | 'darwin' | 'win32' | Array<'linux' | 'darwin' | 'win32'>;
-            /** Constant */
-            platform: 'Javascript/Node.js';
+            /**
+             * Language the adapter is written in. `Javascript/Node.js` is the default and covers
+             * every existing adapter. `Python` makes the controller start the adapter from the
+             * virtual environment maintained by the `py-controller` adapter instead of with
+             * Node.js; `common.main` then points at the package's `__main__.py`.
+             */
+            platform: 'Javascript/Node.js' | 'Python';
             /** The keys of common attributes (e.g. `history`) which are not deleted in a `setObject` call even if they are not present. Deletion must be done explicitly by setting them to `null`. */
             preserveSettings?: string | string[];
             /** Url of the ReadMe file */
@@ -842,6 +847,19 @@ declare global {
                 | 'weather';
             /** If `true`, the `npm` package must be installed with the `--unsafe-perm` flag */
             unsafePerm?: true;
+            /**
+             * If `true`, the adapter declares the exclusive resources it occupies (serial ports, TCP/UDP ports, ...)
+             * itself via `adapter.registerUsedResource(...)`. Set this when the occupied resources are not simply
+             * the configured `native.port`.
+             *
+             * If not set, js-controller maintains the registry for this adapter and derives the entries from the
+             * instance's `native.port` / `native.bind`.
+             *
+             * If `false`, the adapter does not declare any resources and js-controller does not derive any either,
+             * so its instances have no entries in the registry. Use this when `native.port` is not a port the
+             * adapter listens on, e.g. the port of the device it connects to.
+             */
+            declareUsedResources?: boolean;
             /** The available version in the ioBroker repo. */
             version: string;
             /** Definition of the vis-2 widgets */

@@ -7,6 +7,8 @@ import { InstallQueue } from '@/lib/controller/instances/installQueue.js';
 import { InstanceStarter } from '@/lib/controller/instances/instanceStarter.js';
 import { CompactGroupManager } from '@/lib/controller/instances/compactGroupManager.js';
 import { ScheduleRunner } from '@/lib/controller/instances/scheduleRunner.js';
+import { UsedResourcesManager } from '@/lib/controller/instances/usedResourcesManager.js';
+import { isPythonAdapter } from '@/lib/pythonRuntime.js';
 import type { NotificationHandler } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
@@ -97,6 +99,8 @@ export class InstanceManager {
     readonly compactGroups: CompactGroupManager;
     /** Starts the instances of type `schedule` */
     readonly scheduler: ScheduleRunner;
+    /** Keeps the registry of the resources the instances of this host occupy */
+    readonly usedResources: UsedResourcesManager;
 
     /** Timer which delays the writing of the pids file */
     #storeTimer: NodeJS.Timeout | null = null;
@@ -113,6 +117,7 @@ export class InstanceManager {
         this.installQueue = new InstallQueue(forChildren);
         this.#starter = new InstanceStarter(forChildren);
         this.compactGroups = new CompactGroupManager(forChildren);
+        this.usedResources = new UsedResourcesManager(forChildren);
         this.scheduler = new ScheduleRunner(forChildren);
     }
 
@@ -203,6 +208,18 @@ export class InstanceManager {
      * @returns true if instance needs to be handled by this host else false
      */
     #instanceRelevantForThisController(instance: ioBroker.InstanceObject): boolean {
+        // Compact mode loads an adapter into an existing Node.js process, which a Python adapter can
+        // never be part of. Cleared here, where instances are first considered, rather than at start
+        // time: everything below and in checkAndAddInstance reads the flag to decide compact group
+        // membership, so a mistakenly published adapter would already have been claimed by a group
+        // before the start path ever ran.
+        if (instance.common.compact && isPythonAdapter(instance.common)) {
+            instance.common.compact = false;
+            this.#options.logger.warn(
+                `${this.#options.hostLogPrefix} Adapter ${instance.common.name} is marked "compact" but runs on Python, ignoring compact mode`,
+            );
+        }
+
         const { config, compactGroup, isCompactGroupController } = this.#options;
 
         // Normalize Compact group configuration
@@ -414,19 +431,27 @@ export class InstanceManager {
      */
     async setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promise<void> {
         const { states, hostObjectPrefix, statistics } = this.#options;
-
-        statistics.countOutput(2);
-        await states.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-        await states.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
-
         const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
 
-        const connectionStateId = `${adapterInstance}.info.connection`;
-        const state = await states.getState(connectionStateId);
+        try {
+            statistics.countOutput(2);
+            await states.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+            await states.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
 
-        if (state?.val === true) {
-            statistics.countOutput();
-            await states.setState(connectionStateId, { val: false, ack: true, from: hostObjectPrefix });
+            const connectionStateId = `${adapterInstance}.info.connection`;
+            const state = await states.getState(connectionStateId);
+
+            if (state?.val === true) {
+                statistics.countOutput();
+                await states.setState(connectionStateId, { val: false, ack: true, from: hostObjectPrefix });
+            }
+        } finally {
+            // The instance is no longer running: keep its resource registrations but mark them as not actively
+            // blocked. In a `finally`, because a status write that does not get through - a crash, an interrupted
+            // database - must not leave the registry claiming that a stopped instance still holds its resources;
+            // nothing would correct that afterwards. Persisting reports a failed write instead of rejecting, so
+            // this cannot swallow the error of the block above either.
+            await this.usedResources.markStopped(adapterInstance);
         }
     }
 
@@ -832,6 +857,11 @@ export class InstanceManager {
 
         try {
             logger.debug(`${hostLogPrefix} object change ${id} (from: ${obj ? obj.from : null})`);
+
+            // the configuration of an instance defines which resources it occupies, so keep the registry
+            // in line with it - no matter whether the instance is known here, running, or was just deleted
+            await this.usedResources.syncInstance(id, obj);
+
             // known adapter
             const proc = this.procs[id];
 
@@ -842,6 +872,7 @@ export class InstanceManager {
                     this.#removeFromCompactGroup(id, proc);
 
                     // instance removed -> remove all notifications
+                    // (its used resources were already freed by usedResources.syncInstance above)
                     await notificationHandler.clearNotifications(null, null, id);
                     proc.config.common.enabled = false;
                     // @ts-expect-error check if we can handle it differently
