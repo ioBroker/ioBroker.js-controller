@@ -4154,7 +4154,11 @@ export async function isForeignProcess(pid: number): Promise<boolean> {
                     '-Command',
                     `[Console]::OutputEncoding = [Text.Encoding]::UTF8; Get-CimInstance Win32_Process -Filter 'ProcessId=${pid}' | Select-Object Name, CommandLine | ConvertTo-Json -Compress`,
                 ],
-                { timeout: 10_000 },
+                // PowerShell needs seconds for its cold start alone, and WMI answers slowly on a
+                // busy machine - exactly the situation this runs in, right after a crash or a
+                // power loss. A timeout is answered with "cannot inspect", which keeps the
+                // controller from starting, so it is better to wait than to give up early.
+                { timeout: 30_000 },
             );
             // No output means the process is gone
             const output = (stdout || '').trim();
@@ -4175,7 +4179,7 @@ export async function isForeignProcess(pid: number): Promise<boolean> {
         }
 
         // Unlike comm, args is not truncated and shows the title the controller gives itself
-        const { stdout } = await execFileAsync('ps', ['-p', String(pid), '-o', 'args='], { timeout: 2000 });
+        const { stdout } = await execFileAsync('ps', ['-p', String(pid), '-o', 'args='], { timeout: 10_000 });
         const commandLine = (stdout || '').trim();
 
         if (!commandLine) {
@@ -4190,6 +4194,52 @@ export async function isForeignProcess(pid: number): Promise<boolean> {
         console.warn(`Cannot inspect process ${pid}, assuming it belongs to the controller: ${e.message}`);
         return false;
     }
+}
+
+/** A resource type ends up as the last segment of `system.host.<name>.usedResources.<type>`, so it has to be a plain identifier */
+const RESOURCE_TYPE_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
+
+/**
+ * Check that a value can be used as a resource type of the used-resources registry.
+ *
+ * `UsedResourceDataMap` is intentionally open for module augmentation, so unknown type names are accepted as
+ * long as they are usable as a state id segment. What this rejects is a missing, non-string or otherwise
+ * malformed type, which would create a `system.host.<name>.usedResources.undefined` state that the host would
+ * read back as a real resource type on its next start.
+ *
+ * @param type the value to check
+ */
+export function isValidUsedResourceType(type: unknown): type is ioBroker.UsedResourceType {
+    return typeof type === 'string' && RESOURCE_TYPE_PATTERN.test(type);
+}
+
+/**
+ * Check that a value has the shape of an entry of the used-resources registry.
+ *
+ * Lives here rather than in the host, because both ends need it: the host when it reads the states back into
+ * its registry, and an adapter when it reads them to show what is occupied. The states are declared read-only,
+ * but nothing stops anything from writing them, so neither side should hand their content on unchecked.
+ *
+ * The host additionally validates the payload against the rules of its resource type, which are its own.
+ *
+ * @param entry the value to check
+ */
+export function hasRegisteredResourceShape(entry: unknown): entry is ioBroker.RegisteredResource {
+    if (typeof entry !== 'object' || entry === null) {
+        return false;
+    }
+    const candidate = entry as Partial<ioBroker.RegisteredResource>;
+
+    return (
+        isValidUsedResourceType(candidate.type) &&
+        typeof candidate.instance === 'string' &&
+        !!candidate.instance &&
+        typeof candidate.ts === 'number' &&
+        typeof candidate.isBlocked === 'boolean' &&
+        typeof candidate.data === 'object' &&
+        candidate.data !== null &&
+        !Array.isArray(candidate.data)
+    );
 }
 
 export * from '@/lib/common/maybeCallback.js';

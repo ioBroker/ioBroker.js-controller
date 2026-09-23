@@ -1356,6 +1356,10 @@
             "assumption"
           ]
         },
+        "declareUsedResources": {
+          "description": "Who lists the exclusive resources (serial ports, TCP/UDP ports, ...) of the instances in the used resources registry. true: the adapter declares them itself via registerUsedResource(). Not set: js-controller derives them from native.port / native.bind. false: nobody, the instances have no entries - use this when native.port is not a port the adapter listens on",
+          "type": "boolean"
+        },
         "dependencies": {
           "description": "Array like [{\"js-controller\": \">=2.0.0\"}] that describes which ioBroker modules are required for this adapter on the same host",
           "type": "array",

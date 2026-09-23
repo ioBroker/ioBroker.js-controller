@@ -8,4 +8,4 @@
 
 > **State** = `` `system.adapter.${string}.${number}.${string}` ``
 
-Defined in: [types-dev/objects.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/objects.d.ts#L77)
+Defined in: [types-dev/objects.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L77)
