@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Added support for adapters written in Python via `common.platform: "Python"` (feature flag `CONTROLLER_PYTHON_ADAPTERS`)
 * (@GermanBluefox) Fixed the controller refusing to start after a crash on a busy Windows machine: the check whether the recorded pid still belongs to the controller gave up after 10 seconds, and a check that cannot be answered counts as "the controller is running"
 * (@GermanBluefox) Node.js 22.19 is now the minimum version - 22.0 to 22.18 are no longer supported
 * (@GermanBluefox) Fixed `start` refusing to run after an unclean shutdown because of a left over `pids.txt`
@@ -16,6 +17,14 @@
 * (@krobipd) Fixed the automatic ENOTEMPTY recovery not removing the blocking npm temp directory on npm >= 10.6.0
 * (@krobipd) Fixed an occasional "Connection is closed" warning logged when a fast schedule/once adapter shuts down
 * (@krobipd) Fixed `info.connection` not being reset when an instance goes offline, which also left a stray state named after the instance namespace
+* (@GermanBluefox) Fixed a command handler throwing in the built-in database servers escaping as an uncaught exception instead of failing that one command
+* (@GermanBluefox) Fixed a PUBLISH with a payload that is not valid JSON costing the client its connection to the built-in databases
+* (@GermanBluefox) Fixed `findObject` crashing when called without options and the search reached an object whose name is translated
+* (@GermanBluefox) Fixed a Python instance being started while its environment was being rebuilt, which failed on an import of a package that was there a moment earlier
+* (@GermanBluefox) A Python instance no longer gets the `memHeapTotal` and `memHeapUsed` states, which only exist on V8 and stayed empty, and its `eventLoopLag` is no longer described as a Node.js one
+* (@GermanBluefox) A memory limit or `nodeProcessParams` set on a Python instance is now reported as ignored instead of silently having no effect
+* (@GermanBluefox) Fixed every log line of a Python adapter reaching the log transporters twice: the adapter pushes its own records since SDK 0.8.0, and the copy captured from its stdout is now written to the host log only
+* (@GermanBluefox) A Python adapter can now be started on a Redis Sentinel installation: the sentinels are passed to it instead of a fixed address, and the SDK follows the master across a failover (needs the Python SDK 0.9.0)
 * (@GermanBluefox) Fixed complex attribute names (e.g. `devices.password`) and arrays in `encryptedNative` not being decrypted when the adapter starts and documented complex attribute names for `encryptedNative` and `protectedNative`
 * (@GermanBluefox) Fixed `getEncryptedConfig` dropping entries that are not a string when the attribute resolves to an array
 * (@GermanBluefox) Fixed `getEncryptedConfig` decrypting an attribute of `encryptedNative` a second time, which returned garbage because the adapter start already decrypted it

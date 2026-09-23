@@ -52,6 +52,15 @@ import {
 } from '@iobroker/js-controller-common-db/tools';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
+import {
+    buildPythonEnv,
+    checkPythonEnvironment,
+    forwardPythonOutput,
+    isPythonAdapter,
+    type PythonLogLevel,
+    spawnPythonAdapter,
+    unsupportedPythonDbConfig,
+} from '@/lib/pythonRuntime.js';
 import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
 import {
@@ -113,6 +122,8 @@ interface Process {
     rebuildArgs?: RebuildArgs;
     startedAsCompactGroup?: boolean;
     engine?: string;
+    /** Interpreter of the virtual environment; only set for adapters with `common.platform: "Python"` */
+    pythonInterpreter?: string;
     lastCleanErrors?: number;
     lastStart?: number;
     /** Name of the variable that is subscribed automatically */
@@ -3987,6 +3998,18 @@ async function getInstances(): Promise<void> {
  * @returns true if instance needs to be handled by this host else false
  */
 function instanceRelevantForThisController(instance: ioBroker.InstanceObject, _ipArr: string[]): boolean {
+    // Compact mode loads an adapter into an existing Node.js process, which a Python adapter can
+    // never be part of. Cleared here, where instances are first considered, rather than at start
+    // time: everything below and in checkAndAddInstance reads the flag to decide compact group
+    // membership, so a mistakenly published adapter would already have been claimed by a group
+    // before the start path ever ran.
+    if (instance.common.compact && isPythonAdapter(instance.common)) {
+        instance.common.compact = false;
+        logger.warn(
+            `${hostLogPrefix} Adapter ${instance.common.name} is marked "compact" but runs on Python, ignoring compact mode`,
+        );
+    }
+
     // Normalize Compact group configuration
     if (config.system.compact && instance.common.compact) {
         if (instance.common.runAsCompactMode === undefined) {
@@ -4562,13 +4585,51 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                 '--loglevel',
                 instance.common.loglevel || 'info',
             ];
+
+            if (proc.pythonInterpreter) {
+                // The interpreter was chosen when this instance was set up, and a scheduled run happens
+                // whenever its cron says so - hours later, and possibly while py-controller is rebuilding the
+                // environment. Starting into a half-built virtual environment fails on an import of a package
+                // that was there a moment earlier, so this run is skipped and the next tick tries again. Every
+                // other start goes through `startInstance`, which asks the same question.
+                const env = await checkPythonEnvironment(instance.common.name, instance.common.version);
+
+                if (!env.ready) {
+                    logger.warn(
+                        `${hostLogPrefix} scheduled run of ${instance._id} skipped, it will be started at the next scheduled time: ${env.reason}`,
+                    );
+                    skipped = true;
+                    processNextScheduledInstance();
+                    return;
+                }
+
+                proc.pythonInterpreter = env.interpreter;
+            }
+
             try {
-                proc.process = cp.fork(fileNameFull, args, {
-                    execArgv: tools.getDefaultNodeArgs(fileNameFull),
-                    // @ts-expect-error missing from types, but we already tested it is needed
-                    windowsHide: true,
-                    cwd: adapterDir,
-                });
+                if (proc.pythonInterpreter) {
+                    proc.process = spawnPythonAdapter({
+                        adapterName: instance.common.name,
+                        adapterDir,
+                        main: instance.common.main,
+                        interpreter: proc.pythonInterpreter,
+                        args,
+                        env: buildPythonEnv(config, instance._id.split('.').pop() || '0', instance.common.loglevel),
+                    });
+                    forwardPythonOutput(
+                        proc.process,
+                        instance._id.substring(SYSTEM_ADAPTER_PREFIX.length),
+                        (level, line, alreadyPushed) =>
+                            logPythonLine(level, `${hostLogPrefix} ${instance._id} ${line}`, alreadyPushed),
+                    );
+                } else {
+                    proc.process = cp.fork(fileNameFull, args, {
+                        execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                        // @ts-expect-error missing from types, but we already tested it is needed
+                        windowsHide: true,
+                        cwd: adapterDir,
+                    });
+                }
             } catch (err) {
                 logger.error(`${hostLogPrefix} instance ${id} could not be started: ${err.message}`);
                 delete proc.process;
@@ -4592,7 +4653,7 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                     logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`),
                 );
 
-                proc.process.on('exit', (code, signal) => {
+                handleProcessEnd(id, proc.process, (code, signal) => {
                     outputCount++;
                     states!
                         .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
@@ -4666,6 +4727,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         logger.error(`${hostLogPrefix} startInstance ${id}: object not found!`);
         return;
     }
+
+    // procs[id] survives configuration changes, so the interpreter has to be re-derived on every start rather
+    // than left over from a previous one: an adapter switched back from Python to Node.js would otherwise keep
+    // being spawned through the Python path, since that is chosen by the presence of this field. It happens
+    // before anything below can return early - a pending upload, a blocked version, a failed dependency check -
+    // because `startScheduledInstance` branches on the field alone and would then use a stale one.
+    delete proc.pythonInterpreter;
 
     const instance = proc.config;
     const name = id.split('.')[2];
@@ -4805,10 +4873,73 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
     proc.downloadRetry = 0;
 
-    // read node.js engine requirements
+    const isPython = isPythonAdapter(instance.common);
+
+    if (isPython) {
+        // Web extensions are loaded into the Node.js process of the hosting web server, which a
+        // Python adapter cannot take part in. Saying so beats the silent fall-through of the mode
+        // switch below -- the instance would simply never appear, with nothing in the log. Not
+        // rejected by the io-package.json schema, because running extensions out of process (over
+        // an internal socket) is a possible later extension of the runtime.
+        if (instance.common.mode === 'extension') {
+            logger.error(
+                `${hostLogPrefix} startInstance ${name}.${instanceNo}: web extensions run inside the ` +
+                    'Node.js process of the hosting web server and are not supported for Python adapters yet',
+            );
+            return;
+        }
+
+        // Refuse configurations the environment variables cannot express (a unix socket). A
+        // Python adapter started anyway would open a TCP connection to port 0 and fail looking
+        // like a network problem.
+        const unsupportedDb = unsupportedPythonDbConfig(config);
+
+        if (unsupportedDb) {
+            logger.error(`${hostLogPrefix} startInstance ${name}.${instanceNo}: ${unsupportedDb}`);
+            return;
+        }
+
+        // Both of these end up in `execArgv`, which is handed to Node and not to an interpreter
+        // that would not know what to do with it. Admin offers the memory limit for every instance
+        // and has no way to know it does nothing here, so the log is where a user finds out --
+        // silently ignoring a limit somebody set against an adapter they think is leaking is the
+        // kind of thing that costs an evening.
+        if (instance.common.memoryLimitMB && Math.round(instance.common.memoryLimitMB)) {
+            logger.warn(
+                `${hostLogPrefix} startInstance ${name}.${instanceNo}: the memory limit ` +
+                    `(${Math.round(instance.common.memoryLimitMB)} MB) applies to Node.js adapters only and is ignored here`,
+            );
+        }
+
+        if (Array.isArray(instance.common.nodeProcessParams) && instance.common.nodeProcessParams.length) {
+            logger.warn(
+                `${hostLogPrefix} startInstance ${name}.${instanceNo}: "nodeProcessParams" are Node.js ` +
+                    'arguments and are ignored for a Python adapter',
+            );
+        }
+
+        // A Python adapter needs its virtual environment before it can be started. Building that
+        // environment is the job of the "py-controller" adapter, so all this side does is refuse to
+        // start and say why -- py-controller watches for exactly this and triggers a restart once
+        // the environment is in place.
+        const env = await checkPythonEnvironment(name, instance.common.version);
+
+        if (!env.ready) {
+            logger.error(`${hostLogPrefix} startInstance ${name}.${instanceNo}: ${env.reason}`);
+            return;
+        }
+
+        proc.pythonInterpreter = env.interpreter;
+    }
+
+    // read node.js engine requirements -- not applicable to Python adapters. Their equivalent,
+    // "requires-python" in pyproject.toml, is enforced by uv when the virtual environment is
+    // created: it refuses to build one whose interpreter does not satisfy the constraint. Checking
+    // it again here would mean parsing TOML in the core to re-verify something that has already
+    // been decided, and by the component that owns it.
     try {
         // read directly from disk and not via require to allow "on the fly" updates of adapters.
-        const packJSON = fs.readJSONSync(path.join(adapterDir, 'package.json'));
+        const packJSON = isPython ? undefined : fs.readJSONSync(path.join(adapterDir, 'package.json'));
         proc.engine = packJSON?.engines?.node;
     } catch {
         logger.error(
@@ -5192,16 +5323,39 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     if (!proc.process) {
                         // We were not able or should not start as compact mode
                         try {
-                            proc.process = cp.fork(adapterMainFile, args, {
-                                execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
-                                stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-                                // @ts-expect-error missing from types, but we already tested it is needed
-                                windowsHide: true,
-                                cwd: adapterDir,
-                            });
+                            if (proc.pythonInterpreter) {
+                                proc.process = spawnPythonAdapter({
+                                    adapterName: name,
+                                    adapterDir,
+                                    main: instance.common.main,
+                                    interpreter: proc.pythonInterpreter,
+                                    args,
+                                    env: buildPythonEnv(config, instanceNo, instance.common.loglevel),
+                                });
+                            } else {
+                                proc.process = cp.fork(adapterMainFile, args, {
+                                    execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
+                                    stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
+                                    // @ts-expect-error missing from types, but we already tested it is needed
+                                    windowsHide: true,
+                                    cwd: adapterDir,
+                                });
+                            }
                         } catch (err) {
                             logger.error(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
                         }
+                    }
+
+                    // Both streams in one place. The error handler further down does Node.js
+                    // rebuild detection on stderr, which cannot match a Python process; letting it
+                    // attach as well would log everything twice and split the handling in two.
+                    if (proc.pythonInterpreter && proc.process) {
+                        forwardPythonOutput(
+                            proc.process,
+                            instance._id.substring(SYSTEM_ADAPTER_PREFIX.length),
+                            (level, line, alreadyPushed) =>
+                                logPythonLine(level, `${hostLogPrefix} ${instance._id} ${line}`, alreadyPushed),
+                        );
                     }
 
                     if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
@@ -5214,8 +5368,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.sigKill: ${e.message}`));
                     }
 
-                    // catch error output
-                    if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process?.stderr) {
+                    // catch error output -- Node only, see above
+                    if (
+                        !proc.pythonInterpreter &&
+                        !proc.startedInCompactMode &&
+                        !proc.startedAsCompactGroup &&
+                        proc.process?.stderr
+                    ) {
                         proc.process.stderr.on('data', data => {
                             const proc = procs[id];
 
@@ -5253,7 +5412,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     storePids();
 
                     if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
-                        proc.process.on('exit', exitHandler);
+                        handleProcessEnd(id, proc.process, exitHandler);
                     }
 
                     if (
@@ -5665,14 +5824,31 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             // Start one time adapter by start or if configuration changed
             if (instance.common.allowInit) {
                 try {
-                    // @ts-expect-error if mode !== extension we have ensured it exists
-                    proc.process = cp.fork(adapterMainFile, args, {
+                    if (proc.pythonInterpreter) {
+                        proc.process = spawnPythonAdapter({
+                            adapterName: name,
+                            adapterDir,
+                            main: instance.common.main,
+                            interpreter: proc.pythonInterpreter,
+                            args,
+                            env: buildPythonEnv(config, instanceNo, instance.common.loglevel),
+                        });
+                        forwardPythonOutput(
+                            proc.process,
+                            instance._id.substring(SYSTEM_ADAPTER_PREFIX.length),
+                            (level, line, alreadyPushed) =>
+                                logPythonLine(level, `${hostLogPrefix} ${instance._id} ${line}`, alreadyPushed),
+                        );
+                    } else {
                         // @ts-expect-error if mode !== extension we have ensured it exists
-                        execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
-                        // @ts-expect-error missing from types, but we already tested it is necessary
-                        windowsHide: true,
-                        cwd: adapterDir,
-                    });
+                        proc.process = cp.fork(adapterMainFile, args, {
+                            // @ts-expect-error if mode !== extension we have ensured it exists
+                            execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
+                            // @ts-expect-error missing from types, but we already tested it is necessary
+                            windowsHide: true,
+                            cwd: adapterDir,
+                        });
+                    }
                 } catch (e) {
                     logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${e.message}`);
                 }
@@ -5690,7 +5866,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`,
                     );
 
-                    proc.process.on('exit', (code, signal) => {
+                    handleProcessEnd(id, proc.process, (code, signal) => {
                         cleanAutoSubscribes(id, () => {
                             const proc = procs[id];
 
@@ -6273,6 +6449,14 @@ export async function init(compactGroupId?: number): Promise<void> {
     // @ts-expect-error types do not seem to be perfect here
     const ts = logger.transports.find(t => t.name === 'NT');
     ts!.on('logged', info => {
+        // A record a Python adapter already pushed itself, captured here from its stdout and marked by the
+        // forwarder. It still belongs in the host's log file, which is why it was logged at all -- but pushing
+        // it to the transporters as well would show every Python line twice in admin, once attributed to the
+        // instance and once to this host.
+        if (info.alreadyPushed) {
+            return;
+        }
+
         info.from = hostLogPrefix;
         for (const log of logList) {
             states!.pushLog(log, info).catch(e => logger.error(`${hostLogPrefix} Cannot push log: ${e.message}`));
@@ -6683,6 +6867,79 @@ async function _getNumberOfInstances(): Promise<
     } catch {
         return { noInstances: null, noCompactInstances: null };
     }
+}
+
+/**
+ * Log a line recovered from the output of a Python adapter
+ *
+ * A record the adapter pushed to the log transporters itself is marked as such, so that the `logged` handler
+ * can leave it out of the push - otherwise admin shows every one of those lines twice, once under the instance
+ * and once under this host. It still goes into the host's log file, which is what the forwarding is for.
+ *
+ * @param level severity the line is logged with
+ * @param message the line, with the prefix of this host already in front of it
+ * @param alreadyPushed whether the adapter pushed this record to the transporters itself
+ */
+function logPythonLine(level: PythonLogLevel, message: string, alreadyPushed: boolean): void {
+    if (alreadyPushed) {
+        // travels with the record to the `logged` handler, which does the pushing
+        logger[level](message, { alreadyPushed: true });
+    } else {
+        logger[level](message);
+    }
+}
+
+/**
+ * Run the exit handling of an instance once, whether its process ended or never came up
+ *
+ * `spawn()` reports a program it cannot run - a missing or non-executable Python interpreter, a working
+ * directory that is gone - through the `error` event and not by throwing, and it emits no `exit` afterwards.
+ * Two things follow from that, and both are handled here:
+ *
+ * - without an `error` listener Node rethrows, which ends the whole controller and every adapter on this host;
+ * - without the exit path the instance would keep its `alive` state with no process behind it, and nothing
+ *   would ever restart it.
+ *
+ * A process that is up can report an `error` too - a signal that could not be delivered, a message that could
+ * not be sent - and that one is not an end: the adapter keeps running. Only a process which never came up is
+ * treated as gone, which is what its missing pid says.
+ *
+ * `error` and `exit` can both arrive, so the handler runs once.
+ *
+ * @param id the instance id, e.g. "system.adapter.mqtt.0"
+ * @param child the process which was started for it
+ * @param onExit what the caller does when the instance is gone
+ */
+function handleProcessEnd(id: string, child: cp.ChildProcess, onExit: (code: number, signal: string) => void): void {
+    let handled = false;
+    const handleOnce = (code: number, signal: string): void => {
+        if (handled) {
+            return;
+        }
+        handled = true;
+        onExit(code, signal);
+    };
+
+    child.on('error', (e: Error) => {
+        // A process that came up keeps running after an error of its own, so ending the instance here would
+        // leave an adapter behind that this host no longer tracks: it would neither stop nor restart it, and
+        // the next start would run a second copy. Its `exit` is still to come and does the ending.
+        if (child.pid !== undefined) {
+            logger.error(`${hostLogPrefix} instance ${id} reported an error: ${e.message}`);
+            return;
+        }
+
+        logger.error(`${hostLogPrefix} instance ${id} could not be started: ${e.message}`);
+        handleOnce(EXIT_CODES.UNKNOWN_ERROR, '');
+
+        // nothing is running under this entry, and leaving it behind would refuse every later start
+        const proc = procs[id as ioBroker.ObjectIDs.Instance];
+        if (proc?.process === child) {
+            delete proc.process;
+        }
+    });
+
+    child.on('exit', handleOnce);
 }
 
 /**
