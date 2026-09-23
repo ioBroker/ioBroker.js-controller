@@ -4097,7 +4097,11 @@ export async function isForeignProcess(pid: number): Promise<boolean> {
                     '-Command',
                     `[Console]::OutputEncoding = [Text.Encoding]::UTF8; Get-CimInstance Win32_Process -Filter 'ProcessId=${pid}' | Select-Object Name, CommandLine | ConvertTo-Json -Compress`,
                 ],
-                { timeout: 10_000 },
+                // PowerShell needs seconds for its cold start alone, and WMI answers slowly on a
+                // busy machine - exactly the situation this runs in, right after a crash or a
+                // power loss. A timeout is answered with "cannot inspect", which keeps the
+                // controller from starting, so it is better to wait than to give up early.
+                { timeout: 30_000 },
             );
             // No output means the process is gone
             const output = (stdout || '').trim();
@@ -4118,7 +4122,7 @@ export async function isForeignProcess(pid: number): Promise<boolean> {
         }
 
         // Unlike comm, args is not truncated and shows the title the controller gives itself
-        const { stdout } = await execFileAsync('ps', ['-p', String(pid), '-o', 'args='], { timeout: 2000 });
+        const { stdout } = await execFileAsync('ps', ['-p', String(pid), '-o', 'args='], { timeout: 10_000 });
         const commandLine = (stdout || '').trim();
 
         if (!commandLine) {

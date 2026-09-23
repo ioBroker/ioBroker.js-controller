@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Fixed the controller refusing to start after a crash on a busy Windows machine: the check whether the recorded pid still belongs to the controller gave up after 10 seconds, and a check that cannot be answered counts as "the controller is running"
 * (@GermanBluefox) Node.js 22.19 is now the minimum version - 22.0 to 22.18 are no longer supported
 * (@GermanBluefox) Fixed `start` refusing to run after an unclean shutdown because of a left over `pids.txt`
 * (@GermanBluefox) Fixed the ACL of states restricting members of the administrator group - objects and files already let them through, states only the `admin` user
