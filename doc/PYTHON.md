@@ -177,9 +177,9 @@ rebuilds it.
 | `IOB_INSTANCE`                         | Instance number, e.g. `0`                                                                                                                                      |
 | `IOB_LOGLEVEL`                         | Log level for this instance (only when configured)                                                                                                             |
 
-The SDK must read these variables instead of parsing `iobroker.json`. Any `IOB_*` variables
-inherited from the shell the controller was started in are cleared first — the adapter's
-connection is decided by the configuration alone.
+The SDK must read these variables instead of parsing `iobroker.json`. The database, instance and
+log-level `IOB_*` variables listed above are cleared from the controller's inherited environment
+before configured values are set, so those settings are decided by the configuration alone.
 
 **Redis Sentinel.** A redundant installation has no fixed database address, so there is nothing
 to put in `…_HOST` and `…_PORT`: the sentinels are passed instead, and the SDK asks them for the
