@@ -4586,6 +4586,26 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                 instance.common.loglevel || 'info',
             ];
 
+            if (proc.pythonInterpreter) {
+                // The interpreter was chosen when this instance was set up, and a scheduled run happens
+                // whenever its cron says so - hours later, and possibly while py-controller is rebuilding the
+                // environment. Starting into a half-built virtual environment fails on an import of a package
+                // that was there a moment earlier, so this run is skipped and the next tick tries again. Every
+                // other start goes through `startInstance`, which asks the same question.
+                const env = await checkPythonEnvironment(instance.common.name, instance.common.version);
+
+                if (!env.ready) {
+                    logger.warn(
+                        `${hostLogPrefix} scheduled run of ${instance._id} skipped, it will be started at the next scheduled time: ${env.reason}`,
+                    );
+                    skipped = true;
+                    processNextScheduledInstance();
+                    return;
+                }
+
+                proc.pythonInterpreter = env.interpreter;
+            }
+
             try {
                 if (proc.pythonInterpreter) {
                     proc.process = spawnPythonAdapter({
