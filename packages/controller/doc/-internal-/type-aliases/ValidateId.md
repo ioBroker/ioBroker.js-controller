@@ -8,7 +8,7 @@
 
 > **ValidateId** = (`id`, `isForeignId`, `options?`) => `void`
 
-Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L10)
+Defined in: [adapter/src/lib/adapter/managers/AliasManager.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/adapter/managers/AliasManager.ts#L10)
 
 Validates a (possibly foreign) id; throws on invalid. Bound to the adapter's Validator.
 

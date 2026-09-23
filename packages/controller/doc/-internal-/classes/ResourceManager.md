@@ -6,7 +6,7 @@
 
 # Class: ResourceManager
 
-Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:16](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L16)
+Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:16](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L16)
 
 Owns the adapter's exclusive-resource registry. Register/free requests are forwarded to the host
 this instance runs on, which keeps `system.host.<hostname>.usedResources.<type>` up to date; reads
@@ -22,7 +22,7 @@ go straight to those states.
 
 > **new ResourceManager**(`ctx`, `getMessaging`): `ResourceManager`
 
-Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L25)
+Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L25)
 
 #### Parameters
 
@@ -54,7 +54,7 @@ Returns the adapter's messaging manager. Passed as a getter rather than an
 
 > **checkUsedResource**\<`T`\>(`type`, `data?`): `Promise`\<[`RegisteredResource`](../type-aliases/RegisteredResource.md)\<keyof [`UsedResourceDataMap`](../interfaces/UsedResourceDataMap.md)\>[]\>
 
-Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:96](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L96)
+Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:96](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L96)
 
 Asks the host whether another instance currently holds a resource, without registering anything.
 
@@ -100,7 +100,7 @@ when the host refuses the request or does not answer
 
 > **clearUsedResources**(): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:109](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L109)
+Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:109](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L109)
 
 Frees all exclusive resources this instance registered, across all types, by forwarding it to the host.
 
@@ -118,7 +118,7 @@ when the host refuses the command or does not answer
 
 > **freeUsedResource**\<`T`\>(`type`, `data?`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L120)
+Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L120)
 
 Frees previously registered exclusive resources of this instance by forwarding it to the host.
 
@@ -164,7 +164,7 @@ resource type to read; if omitted, the resources of every type are read
 
 > **getHostUsedResources**\<`T`\>(`type`): `Promise`\<[`RegisteredResource`](../type-aliases/RegisteredResource.md)\<`T`\>[]\>
 
-Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L134)
+Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L134)
 
 Reads the exclusive resources of the given type currently registered on this instance's host, across
 all its instances.
@@ -195,7 +195,7 @@ when the host of this instance is unknown
 
 > **getHostUsedResources**(): `Promise`\<[`RegisteredResource`](../type-aliases/RegisteredResource.md)\<keyof [`UsedResourceDataMap`](../interfaces/UsedResourceDataMap.md)\>[]\>
 
-Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L136)
+Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L136)
 
 Reads the exclusive resources of every type currently registered on this instance's host.
 
@@ -209,7 +209,7 @@ Reads the exclusive resources of every type currently registered on this instanc
 
 > **registerUsedResource**\<`T`\>(`type`, `data`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:75](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L75)
+Defined in: [adapter/src/lib/adapter/managers/ResourceManager.ts:75](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/adapter/managers/ResourceManager.ts#L75)
 
 Registers an exclusive resource as used by this instance by forwarding it to the host.
 

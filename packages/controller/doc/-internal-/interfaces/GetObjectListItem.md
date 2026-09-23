@@ -6,7 +6,7 @@
 
 # Interface: GetObjectListItem\<T\>
 
-Defined in: [types-dev/index.d.ts:730](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/types-dev/index.d.ts#L730)
+Defined in: [types-dev/index.d.ts:730](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L730)
 
 ## Extends
 
@@ -24,7 +24,7 @@ Defined in: [types-dev/index.d.ts:730](https://github.com/ioBroker/ioBroker.js-c
 
 > **doc**: `T`
 
-Defined in: [types-dev/index.d.ts:734](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/types-dev/index.d.ts#L734)
+Defined in: [types-dev/index.d.ts:734](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L734)
 
 The same as [value](#value)
 
@@ -34,7 +34,7 @@ The same as [value](#value)
 
 > **id**: `T`\[`"_id"`\]
 
-Defined in: [types-dev/index.d.ts:720](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/types-dev/index.d.ts#L720)
+Defined in: [types-dev/index.d.ts:720](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L720)
 
 The ID of this object
 
@@ -48,7 +48,7 @@ The ID of this object
 
 > **value**: `T`
 
-Defined in: [types-dev/index.d.ts:732](https://github.com/ioBroker/ioBroker.js-controller/blob/d3655d6ed748f46a3339f5631e239130a00e0ddd/packages/types-dev/index.d.ts#L732)
+Defined in: [types-dev/index.d.ts:732](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L732)
 
 A copy of the object
 
