@@ -54,6 +54,8 @@ import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
 import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
+import { parseGetLogsMessage, readLogTail } from '@/lib/logsReader.js';
+import { searchLogFiles } from '@/lib/logSearch.js';
 import {
     getUsedResourcesMode,
     isRegisteredResource,
@@ -3081,8 +3083,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'getLogs':
             if (msg.callback && msg.from) {
-                const lines = msg.message || 200;
-                let text = '';
                 // @ts-expect-error types not know this one
                 let logFile_ = logger.getFileName();
 
@@ -3091,30 +3091,31 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 if (fs.existsSync(logFile_)) {
-                    const stats = fs.statSync(logFile_);
-                    const start = stats.size > 150 * lines ? stats.size - 150 * lines : 0;
-
-                    fs.createReadStream(logFile_, {
-                        start,
-                        end: stats.size,
-                    })
-                        .on('data', chunk => (text += chunk.toString()))
-                        .on('end', () => {
-                            // done
-                            const lines = text.split('\n');
-                            if (start) {
-                                lines.shift(); // remove first line of the file as it could be not full if starts not from 0
-                            }
-                            lines.push(stats.size.toString()); // place as last line the current size of log
+                    readLogTail(logFile_, parseGetLogsMessage(msg.message))
+                        .then(({ lines, size }) => {
+                            lines.push(size.toString()); // place as last line the current size of log
                             msg.callback && sendTo(msg.from, msg.command, lines, msg.callback);
                         })
-                        .on('error', () =>
-                            // done
-                            msg.callback ? sendTo(msg.from, msg.command, [stats.size], msg.callback) : undefined,
-                        );
+                        .catch(e => {
+                            logger.warn(`${hostLogPrefix} Cannot read log file ${logFile_}: ${e.message}`);
+                            msg.callback && sendTo(msg.from, msg.command, [0], msg.callback);
+                        });
                 } else {
                     sendTo(msg.from, msg.command, [0], msg.callback);
                 }
+            } else {
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+            }
+            break;
+
+        case 'searchLogs':
+            if (msg.callback && msg.from) {
+                const { from, command, callback } = msg;
+                // the file the logger writes now tells where the log files are and how they are named
+                // @ts-expect-error types not know this one
+                searchLogFiles(logger.getFileName(), msg.message)
+                    .then(result => sendTo(from, command, result, callback))
+                    .catch(e => sendTo(from, command, { error: e.message }, callback));
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }

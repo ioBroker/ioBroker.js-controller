@@ -135,6 +135,10 @@ function initYargs(): ReturnType<typeof yargs> {
                 describe: 'Watch',
                 type: 'boolean',
             },
+            level: {
+                describe: 'Only show this log level and more severe ones (silly, debug, info, warn, error)',
+                type: 'string',
+            },
         })
         .command(['add <adapter> [desiredNumber]', 'a <adapter> [desiredNumber]'], 'Add instance of adapter', {
             enabled: {

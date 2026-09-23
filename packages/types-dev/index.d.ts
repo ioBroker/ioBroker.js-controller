@@ -80,7 +80,9 @@ declare global {
             | 'ADAPTER_WEBSERVER_UPGRADE'
             | 'CONTROLLER_CMD_EXEC_FILES'
             | 'CONTROLLER_FEATURE_REQUEST'
-            | 'CONTROLLER_USED_RESOURCES';
+            | 'CONTROLLER_USED_RESOURCES'
+            | 'CONTROLLER_GET_LOGS_LOG_LEVEL'
+            | 'CONTROLLER_SEARCH_LOGS';
 
         // #region Used resources
         // ---------------------------------------------------------------------------------------------------
