@@ -208,6 +208,8 @@ export class InstanceManager {
      * @returns true if instance needs to be handled by this host else false
      */
     #instanceRelevantForThisController(instance: ioBroker.InstanceObject): boolean {
+        const { config, compactGroup, isCompactGroupController, logger, hostLogPrefix } = this.#options;
+
         // Compact mode loads an adapter into an existing Node.js process, which a Python adapter can
         // never be part of. Cleared here, where instances are first considered, rather than at start
         // time: everything below and in checkAndAddInstance reads the flag to decide compact group
@@ -215,12 +217,10 @@ export class InstanceManager {
         // before the start path ever ran.
         if (instance.common.compact && isPythonAdapter(instance.common)) {
             instance.common.compact = false;
-            this.#options.logger.warn(
-                `${this.#options.hostLogPrefix} Adapter ${instance.common.name} is marked "compact" but runs on Python, ignoring compact mode`,
+            logger.warn(
+                `${hostLogPrefix} Adapter ${instance.common.name} is marked "compact" but runs on Python, ignoring compact mode`,
             );
         }
-
-        const { config, compactGroup, isCompactGroupController } = this.#options;
 
         // Normalize Compact group configuration
         if (config.system.compact && instance.common.compact) {
