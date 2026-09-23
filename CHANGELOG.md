@@ -6,6 +6,7 @@
 ## __WORK IN PROGRESS__
 * (@GermanBluefox) `getLogs` accepts an optional `logLevel` now, so a requester can ask for a minimum severity instead of filtering on its own
 * (@GermanBluefox) Added the host command `searchLogs` (feature `CONTROLLER_SEARCH_LOGS`): it searches the log files of the host - the rotated and gzipped ones too - by time range, level, source and text and returns only the matching entries, so that admin does not have to transfer every log file of another host
+* (@GermanBluefox) Fixed the controller refusing to start after a crash on a busy Windows machine: the check whether the recorded pid still belongs to the controller gave up after 10 seconds, and a check that cannot be answered counts as "the controller is running"
 * (@GermanBluefox) Node.js 22.19 is now the minimum version - 22.0 to 22.18 are no longer supported
 * (@GermanBluefox) Added an optional `--level` filter to `iobroker logs`, e.g. `iobroker logs --watch --level warn`
 * (@GermanBluefox) Fixed `start` refusing to run after an unclean shutdown because of a left over `pids.txt`
