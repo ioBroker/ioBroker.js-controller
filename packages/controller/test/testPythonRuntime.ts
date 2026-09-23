@@ -20,6 +20,34 @@ import {
 import { getSupportedFeatures, logger as createLogger } from '@iobroker/js-controller-common';
 import { getInstanceIndicatorObjects } from '@iobroker/js-controller-common-db/tools';
 
+/**
+ * Run something with these environment variables set and put the previous environment back afterwards
+ *
+ * Deleting the keys instead would take them away from every later suite, and the test process may well have
+ * been started with them - the controller sets exactly these for a Python adapter, so a test run from inside
+ * such an environment inherits them.
+ *
+ * @param vars the variables to set for the duration of the call
+ * @param run what to run with them
+ */
+function withEnv(vars: Record<string, string>, run: () => void): void {
+    const before = Object.keys(vars).map(key => [key, process.env[key]] as const);
+
+    Object.assign(process.env, vars);
+
+    try {
+        run();
+    } finally {
+        for (const [key, value] of before) {
+            if (value === undefined) {
+                delete process.env[key];
+            } else {
+                process.env[key] = value;
+            }
+        }
+    }
+}
+
 describe('pythonRuntime', () => {
     describe('isPythonAdapter', () => {
         it('recognises the Python platform regardless of case', () => {
@@ -283,11 +311,7 @@ describe('pythonRuntime', () => {
             // If the controller was started from a shell that already had these set, an inherited
             // value would survive wherever the configuration has none and quietly point the
             // adapter at a different database. The environment has to come from the config alone.
-            process.env.IOB_STATES_HOST = '10.9.9.9';
-            process.env.IOB_STATES_PASS = 'leaked';
-            process.env.IOB_LOGLEVEL = 'silly';
-
-            try {
+            withEnv({ IOB_STATES_HOST: '10.9.9.9', IOB_STATES_PASS: 'leaked', IOB_LOGLEVEL: 'silly' }, () => {
                 const sparse = {
                     states: { type: 'jsonl', host: '127.0.0.1', port: 9000 },
                 } as unknown as ioBroker.IoBrokerJson;
@@ -299,11 +323,7 @@ describe('pythonRuntime', () => {
                 assert.equal(env.IOB_LOGLEVEL, undefined);
                 // Everything else the controller carries is still inherited on purpose.
                 assert.ok(env.PATH !== undefined || process.platform === 'win32');
-            } finally {
-                delete process.env.IOB_STATES_HOST;
-                delete process.env.IOB_STATES_PASS;
-                delete process.env.IOB_LOGLEVEL;
-            }
+            });
         });
 
         it('passes a Sentinel setup through as the list it is', () => {
@@ -371,19 +391,13 @@ describe('pythonRuntime', () => {
         it('clears an inherited sentinel list for a plain configuration', () => {
             // Same reason as for HOST and PORT: a value left over from the controller's own
             // environment would send the adapter to a different database entirely.
-            process.env.IOB_STATES_SENTINELS = '10.9.9.9:26379';
-            process.env.IOB_STATES_SENTINEL_NAME = 'leaked';
-
-            try {
+            withEnv({ IOB_STATES_SENTINELS: '10.9.9.9:26379', IOB_STATES_SENTINEL_NAME: 'leaked' }, () => {
                 const env = buildPythonEnv(config, 0);
 
                 assert.equal(env.IOB_STATES_SENTINELS, undefined);
                 assert.equal(env.IOB_STATES_SENTINEL_NAME, undefined);
                 assert.equal(env.IOB_STATES_HOST, '127.0.0.1');
-            } finally {
-                delete process.env.IOB_STATES_SENTINELS;
-                delete process.env.IOB_STATES_SENTINEL_NAME;
-            }
+            });
         });
     });
 
