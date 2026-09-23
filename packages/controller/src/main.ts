@@ -6900,6 +6900,10 @@ function logPythonLine(level: PythonLogLevel, message: string, alreadyPushed: bo
  * - without the exit path the instance would keep its `alive` state with no process behind it, and nothing
  *   would ever restart it.
  *
+ * A process that is up can report an `error` too - a signal that could not be delivered, a message that could
+ * not be sent - and that one is not an end: the adapter keeps running. Only a process which never came up is
+ * treated as gone, which is what its missing pid says.
+ *
  * `error` and `exit` can both arrive, so the handler runs once.
  *
  * @param id the instance id, e.g. "system.adapter.mqtt.0"
@@ -6917,6 +6921,14 @@ function handleProcessEnd(id: string, child: cp.ChildProcess, onExit: (code: num
     };
 
     child.on('error', (e: Error) => {
+        // A process that came up keeps running after an error of its own, so ending the instance here would
+        // leave an adapter behind that this host no longer tracks: it would neither stop nor restart it, and
+        // the next start would run a second copy. Its `exit` is still to come and does the ending.
+        if (child.pid !== undefined) {
+            logger.error(`${hostLogPrefix} instance ${id} reported an error: ${e.message}`);
+            return;
+        }
+
         logger.error(`${hostLogPrefix} instance ${id} could not be started: ${e.message}`);
         handleOnce(EXIT_CODES.UNKNOWN_ERROR, '');
 
