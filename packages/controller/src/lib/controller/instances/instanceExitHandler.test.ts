@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import sinon from 'sinon';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
-import { createInstanceExitHandler } from '@/lib/controller/instances/instanceExitHandler.js';
+import { EventEmitter } from 'node:events';
+import { createInstanceExitHandler, handleProcessEnd } from '@/lib/controller/instances/instanceExitHandler.js';
 import type { InstanceExitHandlerOptions } from '@/lib/controller/instances/instanceExitHandler.js';
 import { testIdentity, testState, testStatistics } from '@/lib/controller/testing.test-utils.js';
 import type { Process } from '@/lib/controller/types.js';
@@ -280,5 +281,65 @@ describe('createInstanceExitHandler rebuild requests', () => {
         await runExit({ instances, ctx: { requestRebuild }, code: 0 });
 
         assert.equal(requestRebuild.called, false);
+    });
+});
+
+describe('handleProcessEnd', () => {
+    /**
+     * Build the options the process end handling needs
+     *
+     * @param instances The fake instance manager it works on
+     */
+    function endOptions(instances: any): Parameters<typeof handleProcessEnd>[0] {
+        return { instances, ...testIdentity() };
+    }
+
+    it('ends the instance when the process never came up', () => {
+        // `spawn` reports a program it cannot run through the `error` event and emits no `exit`
+        // afterwards, so this is the only signal that the instance is gone
+        const child = Object.assign(new EventEmitter(), { pid: undefined }) as any;
+        const proc: Partial<Process> = { config: instanceObject(), process: child };
+        const instances = fakeInstances({ [INSTANCE_ID]: proc });
+        const onExit = sinon.stub();
+
+        handleProcessEnd(endOptions(instances), INSTANCE_ID, child, onExit);
+        child.emit('error', new Error('spawn ENOENT'));
+
+        assert.equal(onExit.calledOnce, true);
+        assert.equal(onExit.firstCall.args[0], EXIT_CODES.UNKNOWN_ERROR);
+        // leaving the entry behind would refuse every later start
+        assert.equal(proc.process, undefined);
+    });
+
+    it('keeps an instance whose process is running and only reports the error', () => {
+        // a signal that could not be delivered raises `error` as well, and the adapter keeps running:
+        // ending it here would leave a process behind that this host no longer tracks
+        const child = Object.assign(new EventEmitter(), { pid: 4711 }) as any;
+        const proc: Partial<Process> = { config: instanceObject(), process: child };
+        const instances = fakeInstances({ [INSTANCE_ID]: proc });
+        const onExit = sinon.stub();
+
+        handleProcessEnd(endOptions(instances), INSTANCE_ID, child, onExit);
+        child.emit('error', new Error('kill EPERM'));
+
+        assert.equal(onExit.called, false);
+        assert.equal(proc.process, child);
+
+        // the exit which follows is what ends the instance
+        child.emit('exit', 0, '');
+
+        assert.equal(onExit.calledOnce, true);
+    });
+
+    it('runs the exit handling only once', () => {
+        const child = Object.assign(new EventEmitter(), { pid: undefined }) as any;
+        const instances = fakeInstances({ [INSTANCE_ID]: { config: instanceObject(), process: child } });
+        const onExit = sinon.stub();
+
+        handleProcessEnd(endOptions(instances), INSTANCE_ID, child, onExit);
+        child.emit('error', new Error('spawn ENOENT'));
+        child.emit('exit', 1, '');
+
+        assert.equal(onExit.calledOnce, true);
     });
 });
