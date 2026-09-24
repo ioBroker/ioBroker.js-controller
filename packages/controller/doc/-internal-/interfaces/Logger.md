@@ -6,7 +6,7 @@
 
 # Interface: Logger
 
-Defined in: [types-dev/index.d.ts:368](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L368)
+Defined in: [types-dev/index.d.ts:369](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L369)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/index.d.ts:368](https://github.com/ioBroker/ioBroker.js-c
 
 > **level**: [`LogLevel`](../type-aliases/LogLevel.md)
 
-Defined in: [types-dev/index.d.ts:381](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L381)
+Defined in: [types-dev/index.d.ts:382](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L382)
 
 Verbosity of the log output
 
@@ -24,7 +24,7 @@ Verbosity of the log output
 
 > **debug**(`message`): `void`
 
-Defined in: [types-dev/index.d.ts:372](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L372)
+Defined in: [types-dev/index.d.ts:373](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L373)
 
 log a message with debug level
 
@@ -44,7 +44,7 @@ log a message with debug level
 
 > **error**(`message`): `void`
 
-Defined in: [types-dev/index.d.ts:378](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L378)
+Defined in: [types-dev/index.d.ts:379](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L379)
 
 log a message with error severity
 
@@ -64,7 +64,7 @@ log a message with error severity
 
 > **info**(`message`): `void`
 
-Defined in: [types-dev/index.d.ts:374](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L374)
+Defined in: [types-dev/index.d.ts:375](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L375)
 
 log a message with info level (default output level for all adapters)
 
@@ -84,7 +84,7 @@ log a message with info level (default output level for all adapters)
 
 > **silly**(`message`): `void`
 
-Defined in: [types-dev/index.d.ts:370](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L370)
+Defined in: [types-dev/index.d.ts:371](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L371)
 
 log a message with silly level
 
@@ -104,7 +104,7 @@ log a message with silly level
 
 > **warn**(`message`): `void`
 
-Defined in: [types-dev/index.d.ts:376](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L376)
+Defined in: [types-dev/index.d.ts:377](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L377)
 
 log a message with warning severity
 

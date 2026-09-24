@@ -6,7 +6,7 @@
 
 # Interface: VisWidget
 
-Defined in: [types-dev/objects.d.ts:522](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L522)
+Defined in: [types-dev/objects.d.ts:522](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/objects.d.ts#L522)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/objects.d.ts:522](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **bundlerType?**: `"module"`
 
-Defined in: [types-dev/objects.d.ts:528](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L528)
+Defined in: [types-dev/objects.d.ts:528](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/objects.d.ts#L528)
 
 If the widget was written with TypeScript
 
@@ -24,7 +24,7 @@ If the widget was written with TypeScript
 
 > **components**: `string`[]
 
-Defined in: [types-dev/objects.d.ts:526](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L526)
+Defined in: [types-dev/objects.d.ts:526](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/objects.d.ts#L526)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [types-dev/objects.d.ts:526](https://github.com/ioBroker/ioBroker.js
 
 > **i18n**: `true` \| [`Translated`](../type-aliases/Translated.md) \| `"component"`
 
-Defined in: [types-dev/objects.d.ts:523](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L523)
+Defined in: [types-dev/objects.d.ts:523](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/objects.d.ts#L523)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [types-dev/objects.d.ts:523](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **ignoreInVersions?**: `number`[]
 
-Defined in: [types-dev/objects.d.ts:530](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L530)
+Defined in: [types-dev/objects.d.ts:530](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/objects.d.ts#L530)
 
 The vis widget does not support the listed major versions of vis
 
@@ -50,7 +50,7 @@ The vis widget does not support the listed major versions of vis
 
 > **name**: `string`
 
-Defined in: [types-dev/objects.d.ts:524](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L524)
+Defined in: [types-dev/objects.d.ts:524](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/objects.d.ts#L524)
 
 ***
 
@@ -58,4 +58,4 @@ Defined in: [types-dev/objects.d.ts:524](https://github.com/ioBroker/ioBroker.js
 
 > **url**: `string`
 
-Defined in: [types-dev/objects.d.ts:525](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L525)
+Defined in: [types-dev/objects.d.ts:525](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/objects.d.ts#L525)

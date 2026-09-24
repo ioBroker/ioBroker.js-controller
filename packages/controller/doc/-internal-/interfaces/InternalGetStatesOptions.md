@@ -6,7 +6,7 @@
 
 # Interface: InternalGetStatesOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:731](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/_Types.ts#L731)
+Defined in: [adapter/src/lib/\_Types.ts:731](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/adapter/src/lib/_Types.ts#L731)
 
 Options for reading multiple states
 
@@ -16,7 +16,7 @@ Options for reading multiple states
 
 > **callback**: [`GetStatesCallback`](../type-aliases/GetStatesCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:742](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/_Types.ts#L742)
+Defined in: [adapter/src/lib/\_Types.ts:742](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/adapter/src/lib/_Types.ts#L742)
 
 Called with the matching states
 
@@ -26,7 +26,7 @@ Called with the matching states
 
 > **options**: `object`
 
-Defined in: [adapter/src/lib/\_Types.ts:735](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/_Types.ts#L735)
+Defined in: [adapter/src/lib/\_Types.ts:735](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/adapter/src/lib/_Types.ts#L735)
 
 Optional settings including the user context
 
@@ -52,6 +52,6 @@ Optional settings including the user context
 
 > **pattern**: [`Pattern`](../type-aliases/Pattern.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:733](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/_Types.ts#L733)
+Defined in: [adapter/src/lib/\_Types.ts:733](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/adapter/src/lib/_Types.ts#L733)
 
 The pattern to match state ids against

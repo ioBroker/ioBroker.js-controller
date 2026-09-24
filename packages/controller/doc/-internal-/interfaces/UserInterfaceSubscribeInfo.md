@@ -6,7 +6,7 @@
 
 # Interface: UserInterfaceSubscribeInfo
 
-Defined in: [adapter/src/lib/\_Types.ts:149](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/_Types.ts#L149)
+Defined in: [adapter/src/lib/\_Types.ts:149](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/adapter/src/lib/_Types.ts#L149)
 
 Information about a UI client subscription
 
@@ -16,7 +16,7 @@ Information about a UI client subscription
 
 > **clientId**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:151](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/_Types.ts#L151)
+Defined in: [adapter/src/lib/\_Types.ts:151](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/adapter/src/lib/_Types.ts#L151)
 
 The client id, which can be used to send information to clients
 
@@ -26,6 +26,6 @@ The client id, which can be used to send information to clients
 
 > **message**: [`Message`](Message.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/adapter/src/lib/_Types.ts#L153)
+Defined in: [adapter/src/lib/\_Types.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/adapter/src/lib/_Types.ts#L153)
 
 The message used for subscription

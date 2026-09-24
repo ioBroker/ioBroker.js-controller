@@ -6,7 +6,7 @@
 
 # Interface: PermissionSet
 
-Defined in: [types-dev/index.d.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L283)
+Defined in: [types-dev/index.d.ts:284](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L284)
 
 Defined the complete set of access rights a user has
 
@@ -20,7 +20,7 @@ Defined the complete set of access rights a user has
 
 > **file**: [`ObjectOperationPermissions`](ObjectOperationPermissions.md)
 
-Defined in: [types-dev/index.d.ts:274](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L274)
+Defined in: [types-dev/index.d.ts:275](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L275)
 
 The access rights for files
 
@@ -34,7 +34,7 @@ The access rights for files
 
 > **groups**: `` `system.group.${string}` ``[]
 
-Defined in: [types-dev/index.d.ts:287](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L287)
+Defined in: [types-dev/index.d.ts:288](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L288)
 
 The name of the groups this ACL was merged from
 
@@ -44,7 +44,7 @@ The name of the groups this ACL was merged from
 
 > **object**: [`ObjectOperationPermissions`](ObjectOperationPermissions.md)
 
-Defined in: [types-dev/index.d.ts:276](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L276)
+Defined in: [types-dev/index.d.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L277)
 
 The access rights for objects
 
@@ -58,7 +58,7 @@ The access rights for objects
 
 > **other**: `object`
 
-Defined in: [types-dev/index.d.ts:289](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L289)
+Defined in: [types-dev/index.d.ts:290](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L290)
 
 The access rights for certain commands
 
@@ -80,7 +80,7 @@ The access rights for certain commands
 
 > `optional` **state?**: [`ObjectOperationPermissions`](ObjectOperationPermissions.md)
 
-Defined in: [types-dev/index.d.ts:280](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L280)
+Defined in: [types-dev/index.d.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L281)
 
 The access rights for states
 
@@ -94,7 +94,7 @@ The access rights for states
 
 > **user**: `` `system.user.${string}` ``
 
-Defined in: [types-dev/index.d.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L285)
+Defined in: [types-dev/index.d.ts:286](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L286)
 
 The name of the user this ACL is for
 
@@ -104,7 +104,7 @@ The name of the user this ACL is for
 
 > **users**: [`ObjectOperationPermissions`](ObjectOperationPermissions.md)
 
-Defined in: [types-dev/index.d.ts:278](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L278)
+Defined in: [types-dev/index.d.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/a3df0c4fe763e40516a914de87ed1c9d2fe9f3fc/packages/types-dev/index.d.ts#L279)
 
 The access rights for users/groups
 
