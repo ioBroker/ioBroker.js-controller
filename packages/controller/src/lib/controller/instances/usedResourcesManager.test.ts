@@ -100,8 +100,9 @@ describe('UsedResourcesManager', () => {
         await manager.syncInstance(INSTANCE_ID, instanceObject({}, { port: '1883', bind: '0.0.0.0' }));
 
         const [entry] = manager.registry.get('tcpPort');
-        assert.equal(entry.data.port, 1883, 'a port configured as a string is still a port');
-        assert.equal(entry.data.bind, '0.0.0.0');
+        const data = entry.data as ioBroker.TcpPortResourceData;
+        assert.equal(data.port, 1883, 'a port configured as a string is still a port');
+        assert.equal(data.bind, '0.0.0.0');
         // nothing is running, so the port is listed but not held
         assert.equal(entry.isBlocked, false);
     });
@@ -137,7 +138,7 @@ describe('UsedResourcesManager', () => {
     it('leaves a running instance which declares its resources itself alone', async () => {
         const { manager } = createManager({}, { [INSTANCE_ID]: { process: {} as any } });
 
-        manager.registry.register('serialPort', { name: '/dev/ttyUSB0' }, 'mqtt.0');
+        manager.registry.register('serialPort', { port: '/dev/ttyUSB0' }, 'mqtt.0');
         await manager.syncInstance(INSTANCE_ID, instanceObject({ declareUsedResources: true }));
 
         assert.equal(manager.registry.get('serialPort').length, 1, 'nothing would register them again');
@@ -147,7 +148,7 @@ describe('UsedResourcesManager', () => {
         // the settings may have changed in between, what it registers now is additive
         const { manager } = createManager();
 
-        manager.registry.register('serialPort', { name: '/dev/ttyUSB0' }, 'mqtt.0');
+        manager.registry.register('serialPort', { port: '/dev/ttyUSB0' }, 'mqtt.0');
         await manager.markStarting(INSTANCE_ID, instanceObject({ declareUsedResources: true }));
 
         assert.deepEqual(manager.registry.get('serialPort'), []);
@@ -165,7 +166,7 @@ describe('UsedResourcesManager', () => {
 
         const [entry] = manager.registry.get('tcpPort');
         assert.equal(entry.isBlocked, false, 'the user still sees what it would occupy when started again');
-        assert.equal(entry.data.port, 1883, 'the registration itself is kept');
+        assert.equal((entry.data as ioBroker.TcpPortResourceData).port, 1883, 'the registration itself is kept');
     });
 
     it('accepts the namespace of an instance as well as its id', async () => {
