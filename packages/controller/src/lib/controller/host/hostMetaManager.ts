@@ -1,0 +1,453 @@
+import fs from 'fs-extra';
+import { isDeepStrictEqual } from 'node:util';
+import { setTimeout as wait } from 'node:timers/promises';
+import { tools } from '@iobroker/js-controller-common';
+import {
+    HIGHEST_UNICODE_SYMBOL,
+    SYSTEM_ADAPTER_PREFIX,
+    SYSTEM_HOST_PREFIX,
+} from '@iobroker/js-controller-common-db/constants';
+import { getHostObject } from '@iobroker/js-controller-common-db/tools';
+import { getHostObjects, type TaskObject } from '@/lib/objects.js';
+import { COMPACT_GROUP_OBJECT_PREFIX, VENDOR_BOOTSTRAP_FILE, VENDOR_FILE } from '@/lib/controller/constants.js';
+import type { NotificationHandler } from '@iobroker/js-controller-common';
+import type { PluginHandler } from '@iobroker/plugin-base';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
+import type { IpManager } from '@/lib/controller/host/ipManager.js';
+import type { ControllerLogger } from '@/lib/controller/types.js';
+
+/** Everything the host meta manager needs to do its work */
+export interface HostMetaManagerOptions {
+    /** The connected objects database client */
+    objects: ObjectsClient;
+    /** The connected states database client */
+    states: StatesClient;
+    /** The configuration of this host (iobroker.json) */
+    config: ioBroker.IoBrokerJson;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** The id of the host object of this controller */
+    hostObjectPrefix: ioBroker.ObjectIDs.Host;
+    /** Name of this host */
+    hostname: string;
+    /** The compact group this controller is responsible for */
+    compactGroup: number | null;
+    /** If this controller is a compact group controller */
+    isCompactGroupController: boolean;
+    /** Used to decide which plugin states may still exist */
+    pluginHandler: InstanceType<typeof PluginHandler>;
+    /** Used to decide which notification states may still exist */
+    notificationHandler: NotificationHandler;
+    /** Writes the detected IP addresses into the host object */
+    ips: IpManager;
+    /** Restarts the controller after the vendor information changed the UUID */
+    restartSelf: () => Promise<void>;
+}
+
+/**
+ * Creates and maintains the host object and all states which belong to this host
+ */
+export class HostMetaManager {
+    readonly #objects: ObjectsClient;
+    readonly #states: StatesClient;
+    readonly #config: ioBroker.IoBrokerJson;
+    readonly #logger: ControllerLogger;
+    readonly #hostLogPrefix: string;
+    readonly #hostObjectPrefix: ioBroker.ObjectIDs.Host;
+    readonly #hostname: string;
+    readonly #compactGroup: number | null;
+    readonly #isCompactGroupController: boolean;
+    readonly #pluginHandler: InstanceType<typeof PluginHandler>;
+    readonly #notificationHandler: NotificationHandler;
+    readonly #ips: IpManager;
+    readonly #restartSelf: () => Promise<void>;
+
+    /**
+     * @param options Everything the host meta manager needs to do its work
+     */
+    constructor(options: HostMetaManagerOptions) {
+        this.#objects = options.objects;
+        this.#states = options.states;
+        this.#config = options.config;
+        this.#logger = options.logger;
+        this.#hostLogPrefix = options.hostLogPrefix;
+        this.#hostObjectPrefix = options.hostObjectPrefix;
+        this.#hostname = options.hostname;
+        this.#compactGroup = options.compactGroup;
+        this.#isCompactGroupController = options.isCompactGroupController;
+        this.#pluginHandler = options.pluginHandler;
+        this.#notificationHandler = options.notificationHandler;
+        this.#ips = options.ips;
+        this.#restartSelf = options.restartSelf;
+    }
+
+    /**
+     * Reassign the given instance objects from one host to another
+     *
+     * @param objs The instance objects to reassign
+     * @param oldHostname The hostname the instances currently belong to
+     * @param newHostname The hostname the instances should be moved to
+     */
+    async #changeHost(
+        objs: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[],
+        oldHostname: string,
+        newHostname: string,
+    ): Promise<void> {
+        const logger = this.#logger;
+        const hostLogPrefix = this.#hostLogPrefix;
+
+        for (const row of objs) {
+            if (row?.value?.common.host === oldHostname) {
+                const obj = row.value;
+                obj.common.host = newHostname;
+                logger.info(
+                    `${hostLogPrefix} Reassign instance ${obj._id.substring(
+                        SYSTEM_ADAPTER_PREFIX.length,
+                    )} from ${oldHostname} to ${newHostname}`,
+                );
+                obj.from = `system.host.${tools.getHostName()}`;
+                obj.ts = Date.now();
+
+                try {
+                    await this.#objects.setObject(obj._id, obj);
+                } catch (e) {
+                    logger.error(`Error changing host of ${obj._id}: ${e.message}`);
+                }
+            }
+        }
+    }
+
+    /**
+     * Delete the given objects from the objects database
+     *
+     * @param objs The objects to delete
+     */
+    async delObjects(objs: ioBroker.GetObjectViewItem<ioBroker.AnyObject>[]): Promise<void> {
+        const logger = this.#logger;
+        const hostLogPrefix = this.#hostLogPrefix;
+
+        for (const row of objs) {
+            if (row?.id) {
+                logger.info(`${hostLogPrefix} Delete state "${row.id}"`);
+                try {
+                    if (row.value && row.value.type === 'state') {
+                        await this.#states.delState(row.id);
+                        await this.#objects.delObject(row.id);
+                    } else {
+                        await this.#objects.delObject(row.id);
+                    }
+                } catch {
+                    // ignore
+                }
+            }
+        }
+    }
+
+    /**
+     * Extends objects, optionally you can provide a state at each task (does not throw)
+     *
+     * @param tasks The objects to extend, each optionally carrying a state to set
+     */
+    async extendObjects(tasks: TaskObject[]): Promise<void> {
+        for (const task of tasks) {
+            const state: ioBroker.SettableState | undefined = task.state;
+            if (state !== undefined) {
+                delete task.state;
+            }
+
+            try {
+                await this.#objects.extendObject((task as ioBroker.Object)._id, task);
+                // if extend throws, we don't want to set corresponding state
+                if (state) {
+                    await this.#states.setState((task as ioBroker.Object)._id, state);
+                }
+            } catch {
+                // ignore
+            }
+        }
+    }
+
+    /**
+     * try to check host in objects
+     * <p>
+     * This function tries to find all hosts in the objects and if
+     * only one host found and it is not actual host, change the
+     * host name to new one.
+     * <p>
+     */
+    async checkHost(): Promise<void> {
+        const logger = this.#logger;
+        const hostLogPrefix = this.#hostLogPrefix;
+        const hostname = this.#hostname;
+        const isCompactGroupController = this.#isCompactGroupController;
+
+        const objectData = this.#objects.getStatus();
+        // only file master host controller needs to check/fix the host assignments from the instances
+        // for redis it is currently not possible to detect a single host system with a changed hostname for sure!
+        if (isCompactGroupController || !objectData.server) {
+            return;
+        }
+
+        let hostDoc;
+
+        try {
+            hostDoc = await this.#objects.getObjectViewAsync('system', 'host', {
+                startkey: SYSTEM_HOST_PREFIX,
+                endkey: `${SYSTEM_HOST_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
+            });
+        } catch {
+            // ignore
+        }
+
+        if (hostDoc?.rows.length === 1 && hostDoc?.rows[0].value.common.name !== hostname) {
+            const oldHostname = hostDoc.rows[0].value.common.name;
+            const oldId = hostDoc.rows[0].value._id;
+
+            let instanceDoc;
+
+            try {
+                // find out all instances and rewrite it to actual hostname
+                instanceDoc = await this.#objects.getObjectViewAsync('system', 'instance', {
+                    startkey: SYSTEM_ADAPTER_PREFIX,
+                    endkey: `${SYSTEM_ADAPTER_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
+                });
+            } catch (e) {
+                if (e.message.startsWith('Cannot find ')) {
+                    return;
+                }
+            }
+
+            if (!instanceDoc?.rows || instanceDoc.rows.length === 0) {
+                logger.info(`${hostLogPrefix} no instances found`);
+                // no instances found
+                return;
+            }
+            // reassign all instances
+            await this.#changeHost(instanceDoc.rows, oldHostname, hostname);
+            logger.info(`${hostLogPrefix} Delete host ${oldId}`);
+
+            try {
+                // delete host object
+                await this.#objects.delObjectAsync(oldId);
+            } catch {
+                // ignore
+            }
+
+            try {
+                // delete all hosts states
+                const newHostDoc = await this.#objects.getObjectViewAsync('system', 'state', {
+                    startkey: `${SYSTEM_HOST_PREFIX}${oldHostname}.`,
+                    endkey: `${SYSTEM_HOST_PREFIX}${oldHostname}.${HIGHEST_UNICODE_SYMBOL}`,
+                    include_docs: true,
+                });
+
+                await this.delObjects(newHostDoc.rows);
+                return;
+            } catch {
+                // ignore
+            }
+        }
+    }
+
+    /**
+     * Create the host meta data like host objects and states
+     */
+    async setMeta(): Promise<void> {
+        const config = this.#config;
+        const logger = this.#logger;
+        const hostObjectPrefix = this.#hostObjectPrefix;
+        const hostLogPrefix = this.#hostLogPrefix;
+        const hostname = this.#hostname;
+        const compactGroup = this.#compactGroup;
+        const isCompactGroupController = this.#isCompactGroupController;
+        const pluginHandler = this.#pluginHandler;
+        const notificationHandler = this.#notificationHandler;
+        const ips = this.#ips;
+
+        const id = hostObjectPrefix;
+
+        const oldObj = await this.#objects.getObject(id);
+        let newObj: ioBroker.HostObject | ioBroker.FolderObject;
+
+        if (isCompactGroupController) {
+            newObj = {
+                _id: id,
+                type: 'folder',
+                common: {
+                    name: hostname + COMPACT_GROUP_OBJECT_PREFIX + compactGroup,
+                    cmd: `${process.argv[0]} ${`${process.execArgv.join(' ')} `.replace(
+                        /--inspect-brk=\d+ /,
+                        '',
+                    )}${process.argv.slice(1).join(' ')}`,
+                    hostname: hostname,
+                    address: tools.findIPs(),
+                },
+                native: {},
+            };
+        } else {
+            newObj = getHostObject(oldObj);
+        }
+
+        if (oldObj) {
+            // @ts-expect-error todo: can be removed?
+            delete oldObj.cmd;
+            delete oldObj.from;
+            delete oldObj.ts;
+            delete oldObj.acl;
+        }
+
+        if (!oldObj || !isDeepStrictEqual(newObj, oldObj)) {
+            newObj.from = hostObjectPrefix;
+            newObj.ts = Date.now();
+            try {
+                // @ts-expect-error TODO: for compact controller we are setting a folder object to a system.host.XY id
+                await this.#objects.setObject(id, newObj);
+                await ips.setIPs(newObj.common.address);
+            } catch (e) {
+                logger.error(`${hostLogPrefix} Cannot write host object: ${e.message}`);
+            }
+        } else {
+            await ips.setIPs(newObj.common.address);
+        }
+
+        config.system.checkDiskInterval =
+            config.system.checkDiskInterval !== 0 ? Math.round(config.system.checkDiskInterval) || 300_000 : 0;
+
+        const tasks = getHostObjects({
+            id,
+            hostname,
+            config,
+            isCompactGroupController,
+        });
+
+        // delete obsolete states and create new ones
+        let doc: { rows: ioBroker.GetObjectViewItem<ioBroker.StateObject>[] } | undefined;
+
+        try {
+            doc = await this.#objects.getObjectViewAsync('system', 'state', {
+                startkey: `${hostObjectPrefix}.`,
+                endkey: `${hostObjectPrefix}.${HIGHEST_UNICODE_SYMBOL}`,
+                include_docs: true,
+            });
+        } catch (e) {
+            logger?.error(
+                `${hostLogPrefix} Could not collect ${hostObjectPrefix} states to check for obsolete states: ${e.message}`,
+            );
+        }
+
+        if (doc?.rows) {
+            // identify existing states for deletion, because they are not in the new tasks-list
+            let thisHostStates = doc.rows;
+            if (!isCompactGroupController) {
+                thisHostStates = doc.rows.filter(
+                    out1 => !out1.id.includes(hostObjectPrefix + COMPACT_GROUP_OBJECT_PREFIX),
+                );
+            }
+            const pluginStatesIndex = `${hostObjectPrefix}.plugins.`.length;
+            const notificationStatesIndex = `${hostObjectPrefix}.notifications.`.length;
+            const toDelete = thisHostStates.filter(out1 => {
+                const found = tasks.find(out2 => out1.id === out2._id);
+                if (found === undefined) {
+                    if (out1.id.startsWith(`${hostObjectPrefix}.plugins.`)) {
+                        let nameEndIndex: number | undefined = out1.id.indexOf('.', pluginStatesIndex + 1);
+                        if (nameEndIndex === -1) {
+                            nameEndIndex = undefined;
+                        }
+                        return !pluginHandler.pluginExists(out1.id.substring(pluginStatesIndex, nameEndIndex));
+                    } else if (out1.id.startsWith(`${hostObjectPrefix}.notifications.`)) {
+                        // notification states are allowed to exist if their scope still exists
+                        return !notificationHandler.scopeExists(out1.id.substring(notificationStatesIndex));
+                    }
+                }
+
+                return found === undefined;
+            });
+
+            if (toDelete && toDelete.length > 0) {
+                await this.delObjects(toDelete);
+                logger?.info(`${hostLogPrefix} Some obsolete host states deleted.`);
+            }
+        }
+
+        await this.extendObjects(tasks);
+
+        // create UUID if not exist
+        if (!isCompactGroupController) {
+            await this.#createUuidAndApplyVendor();
+        }
+    }
+
+    /**
+     * Create the UUID of this installation if it does not exist yet and apply a potential vendor file
+     */
+    async #createUuidAndApplyVendor(): Promise<void> {
+        const logger = this.#logger;
+        const hostLogPrefix = this.#hostLogPrefix;
+
+        const uuid = await tools.createUuid(this.#objects);
+        if (uuid) {
+            logger?.info(`${hostLogPrefix} Created UUID: ${uuid}`);
+        }
+
+        if (!fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
+            return;
+        }
+
+        logger?.info(`${hostLogPrefix} Detected vendor file: ${fs.existsSync(VENDOR_BOOTSTRAP_FILE)}`);
+        let restartRequired = false;
+
+        try {
+            const startScript: {
+                password?: string;
+                javascriptPassword?: string;
+            } = fs.readJSONSync(VENDOR_BOOTSTRAP_FILE);
+
+            if (startScript.password) {
+                const { Vendor } = await import('@iobroker/js-controller-cli');
+                const vendor = new Vendor({ objects: this.#objects });
+
+                logger?.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
+                try {
+                    restartRequired = await vendor.checkVendor(
+                        VENDOR_FILE,
+                        startScript.password,
+                        startScript.javascriptPassword,
+                        logger,
+                    );
+                    logger?.info(`${hostLogPrefix} Vendor information synchronised.`);
+                    try {
+                        if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
+                            fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                        }
+                    } catch (e) {
+                        logger?.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                    }
+                } catch (e) {
+                    logger?.error(`${hostLogPrefix} Cannot update vendor information: ${e.message}`);
+                    try {
+                        fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                    } catch (e) {
+                        logger?.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                    }
+                }
+            }
+        } catch (e) {
+            logger?.error(`${hostLogPrefix} Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+            try {
+                fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+            } catch (e) {
+                logger?.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+            }
+        }
+
+        if (restartRequired) {
+            // terminate ioBroker to restart the controller as UUID probably changed
+            logger.info(`${hostLogPrefix} Restart js-controller because vendor information updated`);
+            await wait(200);
+            await this.#restartSelf();
+        }
+    }
+}

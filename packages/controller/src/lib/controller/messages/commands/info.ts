@@ -1,0 +1,384 @@
+import os from 'node:os';
+import path from 'node:path';
+import fs from 'fs-extra';
+import { exec } from 'node:child_process';
+import { promisify } from 'node:util';
+import deepClone from 'deep-clone';
+import { getSupportedFeatures, tools, type SupportedFeature } from '@iobroker/js-controller-common';
+import { HIGHEST_UNICODE_SYMBOL, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
+import type { HostInfo } from '@iobroker/js-controller-common-db/tools';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { ControllerLogger, HostInformation } from '@/lib/controller/types.js';
+import type { DiagInfoCollector } from '@/lib/controller/host/diagInfoCollector.js';
+import type { InstanceManager } from '@/lib/controller/instances/instanceManager.js';
+import type { MessageBus } from '@/lib/controller/messages/messageBus.js';
+import type { HostCommand, HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
+import type { IoPackageFile } from '@iobroker/plugin-base';
+
+/** Everything the host commands for information about this host and its adapters need */
+export interface InfoCommandsDeps {
+    /** The connected objects database client */
+    objects: ObjectsClient;
+    /** Sends the answers back to the requester */
+    messages: MessageBus;
+    /** Collects the diagnostics information */
+    diag: DiagInfoCollector;
+    /** Takes care of all instances of this host */
+    instances: InstanceManager;
+    /** The logger of this controller */
+    logger: ControllerLogger;
+    /** Prefix of all log messages of this controller */
+    hostLogPrefix: string;
+    /** The id of the host object of this controller */
+    hostObjectPrefix: ioBroker.ObjectIDs.Host;
+    /** Name of this host */
+    hostname: string;
+    /** The raw content of the io-package.json of the js-controller */
+    ioPackage: IoPackageFile;
+    /** The version of the js-controller */
+    version: string;
+    /** Directory of the js-controller */
+    controllerDir: string;
+    /** Timestamp of the start of this controller */
+    uptimeStart: number;
+}
+
+const execAsync = promisify(exec);
+
+/**
+ * Collect the installed adapters of all hosts
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const getInstalled: HostCommand<InfoCommandsDeps> = async (deps, msg) => {
+    const { objects, logger, hostLogPrefix, hostObjectPrefix, hostname, ioPackage, version, messages } = deps;
+
+    if (!msg.callback || !msg.from) {
+        logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+        return;
+    }
+
+    // Get a list of all hosts
+    const doc = await objects.getObjectViewAsync('system', 'host', {
+        startkey: SYSTEM_HOST_PREFIX,
+        endkey: `${SYSTEM_HOST_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
+    });
+
+    const installedInfo = tools.getInstalledInfo();
+    const hosts: Record<string, HostInformation> = {};
+
+    if (doc?.rows.length) {
+        // Read installed versions of all hosts
+        for (const row of doc.rows) {
+            // If desired a local version, do not ask it, just answer
+            if (row.id === hostObjectPrefix) {
+                const ioPackCommon: HostInformation = deepClone(ioPackage.common) as unknown as HostInformation;
+
+                ioPackCommon.host = hostname;
+                ioPackCommon.runningVersion = version;
+                hosts[hostname] = ioPackCommon;
+            } else {
+                const ioPack = await messages.getVersionFromHost(row.id);
+                if (ioPack) {
+                    hosts[ioPack.host] = ioPack;
+                }
+            }
+        }
+    }
+
+    messages.sendTo(msg.from, msg.command, { ...installedInfo, hosts }, msg.callback);
+};
+
+/**
+ * Read the io-package.json of a locally installed adapter
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const getInstalledAdapter: HostCommand<InfoCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, messages } = deps;
+
+    if (!msg.callback || !msg.from || !msg.message) {
+        logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+        return;
+    }
+
+    // read adapter file
+    const dir = tools.getAdapterDir(msg.message);
+    let _result = null;
+    if (fs.existsSync(`${dir}/io-package.json`)) {
+        try {
+            _result = fs.readJSONSync(`${dir}/io-package.json`);
+        } catch {
+            logger.error(`${hostLogPrefix} cannot read and parse "${dir}/io-package.json"`);
+        }
+    }
+
+    messages.sendTo(msg.from, msg.command, _result, msg.callback);
+};
+
+/**
+ * Answer with the version information of this host
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const getVersion: HostCommand<InfoCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, hostname, ioPackage, version, messages } = deps;
+
+    if (!msg.callback || !msg.from) {
+        logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+        return;
+    }
+
+    const ioPackCommon: HostInformation = deepClone(ioPackage.common) as unknown as HostInformation;
+    ioPackCommon.host = hostname;
+    ioPackCommon.runningVersion = version;
+    messages.sendTo(msg.from, msg.command, ioPackCommon, msg.callback);
+};
+
+/**
+ * Collect the diagnostics information of this installation
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const getDiagData: HostCommand<InfoCommandsDeps> = async (deps, msg) => {
+    const { logger, hostLogPrefix, diag, messages } = deps;
+
+    if (!msg.callback || !msg.from) {
+        logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+        return;
+    }
+
+    if (!msg.message) {
+        messages.sendTo(msg.from, msg.command, null, msg.callback);
+        return;
+    }
+
+    try {
+        const obj = await diag.collectDiagInfo(msg.message);
+        messages.sendTo(msg.from, msg.command, obj, msg.callback);
+    } catch {
+        messages.sendTo(msg.from, msg.command, null, msg.callback);
+    }
+};
+
+/**
+ * Answer with the location of the js-controller on disk
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const getLocationOnDisk: HostCommand<InfoCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, controllerDir, messages } = deps;
+
+    if (!msg.callback || !msg.from) {
+        logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+        return;
+    }
+
+    messages.sendTo(msg.from, msg.command, { path: controllerDir, platform: os.platform() }, msg.callback);
+};
+
+/**
+ * List the content of `/dev` on linux systems
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const getDevList: HostCommand<InfoCommandsDeps> = async (deps, msg) => {
+    const { logger, hostLogPrefix, messages } = deps;
+
+    if (!msg.callback || !msg.from) {
+        logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+        return;
+    }
+
+    if (os.platform() !== 'linux') {
+        messages.sendTo(msg.from, msg.command, null, msg.callback);
+        return;
+    }
+
+    logger.info(`${hostLogPrefix} ls /dev`);
+
+    let result = '';
+    try {
+        const { stdout, stderr } = await execAsync('ls /dev', { windowsHide: true });
+        result = stdout.toString();
+
+        if (stderr) {
+            logger.error(`${hostLogPrefix} ls ${stderr.toString()}`);
+        }
+    } catch (e) {
+        logger.error(`${hostLogPrefix} ls ${e.message}`);
+    }
+
+    result = result.replace(/(\r\n|\n|\r|\t)/gm, ' ');
+    const parts = result.split(' ');
+    const resList = [];
+    for (let t = 0; t < parts.length; t++) {
+        parts[t] = parts[t].trim();
+        if (parts[t]) {
+            resList.push(parts[t]);
+        }
+    }
+
+    messages.sendTo(msg.from, msg.command, resList, msg.callback);
+};
+
+/**
+ * Collect detailed information about this host
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const getHostInfo: HostCommand<InfoCommandsDeps> = async (deps, msg) => {
+    const { objects, logger, hostLogPrefix, controllerDir, uptimeStart, instances, messages } = deps;
+
+    if (!msg.callback || !msg.from) {
+        logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+        return;
+    }
+
+    // installed adapters
+    // available adapters
+    // node.js --version
+    // npm --version
+    // uptime
+    let hostInfo: HostInfo;
+    try {
+        hostInfo = await tools.getHostInfo(objects);
+    } catch (e) {
+        logger.error(`${hostLogPrefix} cannot get getHostInfo: ${e.message}`);
+        return;
+    }
+
+    // add information about running instances
+    let count = 0;
+    for (const proc of Object.values(instances.procs)) {
+        if (proc.process) {
+            count++;
+        }
+    }
+
+    let location = path.normalize(`${controllerDir}/../`);
+    if (path.basename(location) === 'node_modules') {
+        location = path.normalize(`${controllerDir}/../../`);
+    }
+
+    const enrichedHostInfo = {
+        ...hostInfo,
+        'Active instances': count,
+        location,
+        Uptime: Math.round((Date.now() - uptimeStart) / 1_000),
+    };
+
+    messages.sendTo(msg.from, msg.command, enrichedHostInfo, msg.callback);
+};
+
+/**
+ * Same as `getHostInfo`, but faster because it delivers less information
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const getHostInfoShort: HostCommand<InfoCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, controllerDir, messages } = deps;
+
+    if (!msg.callback || !msg.from) {
+        logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+        return;
+    }
+
+    let location = path.normalize(`${controllerDir}/../`);
+    if (path.basename(location) === 'node_modules') {
+        location = path.normalize(`${controllerDir}/../../`);
+    }
+
+    const cpus = os.cpus();
+    const dateObj = new Date();
+
+    const data: Record<string, any> = {
+        Platform: os.platform(),
+        os: process.platform,
+        Architecture: os.arch(),
+        CPUs: cpus.length,
+        Speed: tools.isObject(cpus[0]) ? cpus[0].speed : undefined,
+        Model: tools.isObject(cpus[0]) ? cpus[0].model : undefined,
+        RAM: os.totalmem(),
+        'System uptime': Math.round(os.uptime()),
+        'Node.js': process.version,
+        location,
+        time: dateObj.getTime(), // give infos to compare the local times
+        timeOffset: dateObj.getTimezoneOffset(),
+    };
+
+    if (data.Platform === 'win32') {
+        data.Platform = 'Windows';
+    } else if (data.Platform === 'darwin') {
+        data.Platform = 'OSX';
+    }
+
+    messages.sendTo(msg.from, msg.command, data, msg.callback);
+};
+
+/**
+ * Answer with all network interfaces of this host
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const getInterfaces: HostCommand<InfoCommandsDeps> = (deps, msg) => {
+    const { logger, hostLogPrefix, messages } = deps;
+
+    if (!msg.callback || !msg.from) {
+        logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+        return;
+    }
+
+    messages.sendTo(msg.from, msg.command, { result: os.networkInterfaces() }, msg.callback);
+};
+
+/**
+ * Check if a specific feature is supported by this js-controller
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const checkFeatureSupported: HostCommand<InfoCommandsDeps> = (deps, msg) => {
+    const { messages } = deps;
+    const feature: unknown = msg.message;
+
+    if (!msg.callback || !msg.from) {
+        return;
+    }
+
+    if (typeof feature === 'string') {
+        const result = getSupportedFeatures().includes(feature as SupportedFeature);
+        messages.sendTo(msg.from, msg.command, { result }, msg.callback);
+    } else {
+        messages.sendTo(msg.from, msg.command, { error: 'Invalid feature type' }, msg.callback);
+    }
+};
+
+/**
+ * Create the host commands for information about this host and its adapters
+ *
+ * @param deps Everything these commands need
+ */
+export function createInfoCommands(deps: InfoCommandsDeps): Record<string, HostCommandHandler> {
+    return {
+        getInstalled: msg => getInstalled(deps, msg),
+        getInstalledAdapter: msg => getInstalledAdapter(deps, msg),
+        getVersion: msg => getVersion(deps, msg),
+        getDiagData: msg => getDiagData(deps, msg),
+        getLocationOnDisk: msg => getLocationOnDisk(deps, msg),
+        getDevList: msg => getDevList(deps, msg),
+        getHostInfo: msg => getHostInfo(deps, msg),
+        getHostInfoShort: msg => getHostInfoShort(deps, msg),
+        getInterfaces: msg => getInterfaces(deps, msg),
+        checkFeatureSupported: msg => checkFeatureSupported(deps, msg),
+    };
+}
