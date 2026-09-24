@@ -22,6 +22,7 @@ import {
     isInstalledFromNpm,
     logger,
     password,
+    portOwner,
     tools,
 } from '@iobroker/js-controller-common';
 import {
@@ -141,6 +142,29 @@ const { FORBIDDEN_CHARS } = tools;
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 tools.ensureDNSOrder();
+
+/**
+ * The port-holder lookups this process has started, by port — shared by every adapter instance
+ * living in this process (compact mode), so a single conflict is looked up once, not once per
+ * instance, and a probe walking a busy range does not keep twenty lookups in flight.
+ */
+const portHolderLookupsAt = new Map<number, number>();
+const PORT_HOLDER_LOOKUP_INTERVAL_MS = 60_000;
+
+/**
+ * Whether this process should look up the holder of a port now: at most once per port and minute.
+ *
+ * @param port the port that could not be bound
+ */
+function portHolderLookupDue(port: number): boolean {
+    const now = Date.now();
+    const last = portHolderLookupsAt.get(port);
+    if (last !== undefined && now - last < PORT_HOLDER_LOOKUP_INTERVAL_MS) {
+        return false;
+    }
+    portHolderLookupsAt.set(port, now);
+    return true;
+}
 
 /**
  * Here we define dynamically created methods
@@ -947,6 +971,10 @@ export class AdapterClass extends EventEmitter {
     private pluginHandler?: PluginHandler;
     private _reportInterval?: null | NodeJS.Timeout;
     private getPortRunning: null | InternalGetPortOptions = null;
+    /** When the last "no permission to bind" hint was logged by a port probe — one hint per minute, not one per probed port */
+    private _portPermissionHintAt = 0;
+    /** When the last holder of an occupied port was looked up by a port probe — one lookup per minute, not one per probed port */
+    private _portHolderHintAt = 0;
     private readonly _namespaceRegExp: RegExp;
     instance?: number;
     // @ts-expect-error decide how to handle it
@@ -2028,15 +2056,146 @@ export class AdapterClass extends EventEmitter {
         try {
             server.listen({ port: options.port, host: options.host }, () => {
                 server.once('close', () => {
-                    return tools.maybeCallback(options.callback, options.port);
+                    const done = (port: number): void => {
+                        try {
+                            options.callback?.(port);
+                        } finally {
+                            // this probe is over — the Windows fallback in _exceptionHandler must not catch a
+                            // later EADDRINUSE. Cleared after the callback (which may still read the probe), and
+                            // only if it is still THIS probe: a callback that asks for its next port has already
+                            // started a new probe, and that one keeps its fallback
+                            if (this.getPortRunning === options) {
+                                this.getPortRunning = null;
+                            }
+                        }
+                    };
+                    return tools.maybeCallback(done, options.port);
                 });
                 server.close();
             });
-            server.on('error', () => {
+            server.on('error', (err: NodeJS.ErrnoException) => {
+                this._reportPortProbeError(err, options);
                 setTimeout(() => this.getPort(options.port + 1, options.host, options.callback), 100);
             });
         } catch {
             setImmediate(() => this.getPort(options.port + 1, options.host, options.callback));
+        }
+    }
+
+    /**
+     * Say why a probed port was skipped — until now the probe walked on silently, so a user whose
+     * adapter ended up on a different port than configured never learned who took the configured one.
+     *
+     * @param err the bind error of the probe
+     * @param options the probed port and host
+     */
+    private _reportPortProbeError(err: NodeJS.ErrnoException, options: InternalGetPortOptions): void {
+        const where = `Port ${options.port}${options.host ? ` for host ${options.host}` : ''}`;
+        if (err.code === 'EADDRINUSE') {
+            this._logger.info(`${this.namespaceLog} ${where} is in use – trying ${options.port + 1}`);
+            // the holder follows in its own line, looked up at most once per minute: the probe retries every
+            // 100 ms, and a walk across a busy range must not keep a lookup (plus two db reads) in flight per port
+            if (Date.now() - this._portHolderHintAt > 60_000) {
+                this._portHolderHintAt = Date.now();
+                this._describeBindError(err)
+                    .then(text => text && this._logger.info(`${this.namespaceLog} ${text}`))
+                    .catch(() => undefined);
+            }
+        } else if (err.code === 'EACCES') {
+            // a probe below 1024 without rights walks up to 1024 in 100 ms steps — hint once, not 900 times
+            if (Date.now() - this._portPermissionHintAt > 60_000) {
+                this._portPermissionHintAt = Date.now();
+                this._logger.warn(
+                    `${this.namespaceLog} ${where}: ${portOwner.describeBindPermissionError(options.port)} – trying ${options.port + 1}`,
+                );
+            }
+        } else if (err.code) {
+            // e.g. EADDRNOTAVAIL from a bind address this host does not have — until now the probe hid
+            // that as well and walked up to 1024 in silence
+            const why =
+                err.code === 'EADDRNOTAVAIL'
+                    ? `${err.code} (this host has no interface with that address – check the bind address in the instance settings)`
+                    : err.code;
+            this._logger.info(`${this.namespaceLog} ${where} cannot be bound: ${why} – trying ${options.port + 1}`);
+        }
+    }
+
+    /**
+     * The sentence that names the holder of a port that could not be bound (`EADDRINUSE`), or the
+     * hint for a bind the operating system refused (`EACCES`). Best effort: the OS lookup runs in the
+     * error path only, is bounded by a timeout and never throws — an empty string means "nothing known".
+     *
+     * @param err the bind error (Node.js sets `port`, `address` and `syscall` on it)
+     */
+    private async _describeBindError(err: NodeJS.ErrnoException): Promise<string> {
+        const { port, address, syscall } = err as NodeJS.ErrnoException & { port?: unknown; address?: unknown };
+        if (typeof port !== 'number' || !port) {
+            return '';
+        }
+        if (err.code === 'EACCES') {
+            return portOwner.describeBindPermissionError(port);
+        }
+        if (err.code !== 'EADDRINUSE') {
+            return '';
+        }
+        const protocol = syscall === 'bind' ? 'udp' : 'tcp';
+        const bindAddress = typeof address === 'string' ? address : undefined;
+        try {
+            const owners = await portOwner.resolvePortOwners({ port, address: bindAddress, protocol });
+            const context: portOwner.PortConflictContext = {
+                port,
+                address: bindAddress,
+                protocol,
+                owners,
+                userName: os.userInfo().username,
+            };
+            await this._enrichPortOwnersFromDb(context);
+            return portOwner.describePortConflict(context);
+        } catch {
+            return '';
+        }
+    }
+
+    /**
+     * What the objects/states db adds to the OS lookup (see `portOwner.enrichPortOwnersFromDb`):
+     * fetched here, judged there. Bounded by a short timeout and never throws.
+     *
+     * @param context the sentence context, extended in place
+     */
+    private async _enrichPortOwnersFromDb(context: portOwner.PortConflictContext): Promise<void> {
+        if (!this.#objects || !this.#states || !this.host) {
+            return;
+        }
+        let timer: NodeJS.Timeout | undefined;
+        const deadline = new Promise<undefined>(resolve => {
+            timer = setTimeout(() => resolve(undefined), 1_500);
+        });
+        // the db work fills a COPY — when the deadline wins, the caller keeps the OS-only context
+        // instead of a sentence built from a half-filled one
+        const work = (async (): Promise<portOwner.PortConflictContext | undefined> => {
+            const view = await this.#objects!.getObjectViewAsync('system', 'instance', {
+                startkey: 'system.adapter.',
+                endkey: 'system.adapter.\u9999',
+            });
+            const instances = portOwner.instancesOnHost(
+                (view?.rows || []).map(row => row.value),
+                this.host!,
+            );
+            const ids = portOwner.enrichmentStateIds(instances);
+            const values = ids.length ? await this.#states!.getStates(ids) : [];
+            const states: Record<string, ioBroker.State | null | undefined> = {};
+            ids.forEach((id, i) => (states[id] = values[i]));
+            const enriched: portOwner.PortConflictContext = { ...context, owners: [...context.owners] };
+            portOwner.enrichPortOwnersFromDb(enriched, {
+                instances,
+                states,
+                compactModeEnabled: !!this._config.system?.compact,
+            });
+            return enriched;
+        })().catch(() => undefined); // the db is not reachable in this error path — the OS part of the sentence still stands
+        const enriched = await Promise.race([work, deadline]).finally(() => clearTimeout(timer));
+        if (enriched) {
+            Object.assign(context, enriched);
         }
     }
 
@@ -13270,8 +13429,15 @@ export class AdapterClass extends EventEmitter {
                 }
             }
 
-            // catch it on Windows
-            if (this.getPortRunning && err?.message === 'listen EADDRINUSE') {
+            // A port probe (getPort) can surface EADDRINUSE as an uncaught exception on Windows —
+            // continue with the next port. Only while a probe is in flight (getPortRunning is
+            // cleared when the probe closes) and only for the probed port, so an EADDRINUSE of the
+            // adapter's own server is never swallowed into a silent port+1 retry.
+            if (
+                this.getPortRunning &&
+                err?.code === 'EADDRINUSE' &&
+                (err as NodeJS.ErrnoException & { port?: unknown }).port === this.getPortRunning.port
+            ) {
                 const { host, port, callback } = this.getPortRunning;
                 this._logger.warn(
                     `${this.namespaceLog} Port ${port}${host ? ` for host ${host}` : ''} is in use. Get next`,
@@ -13299,6 +13465,20 @@ export class AdapterClass extends EventEmitter {
         if (err && !this._stopInProgress) {
             const message = err.code ? `Exception-Code: ${err.code}: ${err.message}` : err.message;
             this._logger.error(`${this.namespaceLog} ${message}`);
+            // EADDRINUSE / EACCES: the holder of the port (or the missing right) follows in its own log
+            // line as soon as the lookup answers — NOT awaited, so notification and shutdown stay as
+            // prompt as before, and a second exception in the meantime finds `_stopInProgress` set.
+            // Once per port and process: in compact mode every instance of the process runs this handler
+            const conflictPort = (err as NodeJS.ErrnoException & { port?: unknown }).port;
+            if (
+                (err.code === 'EADDRINUSE' || err.code === 'EACCES') &&
+                typeof conflictPort === 'number' &&
+                portHolderLookupDue(conflictPort)
+            ) {
+                this._describeBindError(err)
+                    .then(bindHint => bindHint && this._logger.error(`${this.namespaceLog} ${bindHint}`))
+                    .catch(() => undefined);
+            }
             try {
                 await this.registerNotification('system', null, message);
             } catch {

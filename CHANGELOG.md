@@ -30,6 +30,9 @@
 * (@GermanBluefox) Fixed `getEncryptedConfig` decrypting an attribute of `encryptedNative` a second time, which returned garbage because the adapter start already decrypted it
 * (@krobipd) Fixed an alias read/write function returning a boolean (e.g. "val < 20") being stored unconverted in a state declared as number
 * (@GermanBluefox) Added `common.adminTab.order` and `common.adminTab.icon` to the `io-package.json` schema: admin uses both, but an adapter setting them failed the schema validation
+* (@krobipd) Added the holder of a port to the "address already in use" error: a log line names the ioBroker instance or the program outside ioBroker that occupies the port, the error is registered as a `portConflicts` notification, and `getPort` reports which port it skipped and why (the walk to the next free port itself is unchanged)
+* (@krobipd) Fixed the `accessErrors` notification category never matching: its regex looked for `EACCESS`, the code Node.js reports is `EACCES` — hosts with recurring permission errors will see this notification for the first time
+* (@krobipd) A port probe (`getPort`) below 1024 without the right to bind it now hints at `iobroker fix` once instead of silently walking up to port 1024
 
 ## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling

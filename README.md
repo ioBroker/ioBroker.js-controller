@@ -94,6 +94,7 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 - [Notification System](#notification-system)
 - [Disk space warnings](#disk-space-warnings)
 - [Objects warn limit](#objects-warn-limit)
+- [Port conflicts](#port-conflicts)
 - [Controlling and monitoring of adapter processes](#controlling-and-monitoring-of-adapter-processes)
 - [Multihost](#multihost)
 - [TIERS: Start instances in an ordered manner](#tiers-start-instances-in-an-ordered-manner)
@@ -604,6 +605,12 @@ By default, this threshold is 5 % of disk space. Via the state `system.host.<hos
 
 The js-controller will generate a notification of in the scope `system` and the category `numberObjectsLimitExceeded` on warning level, if your number of objects for an adapter instance exceed a specified threshold.
 By default, this is set to `5000` objects. Via the state `system.adapter.<adapter>.<instance>.objectsWarnLimit` you can override this threshold to any positive number.
+
+### Port conflicts
+**Feature status:** New (next release after 7.2.2)
+
+When an instance cannot bind a TCP or UDP port (`EADDRINUSE`), the js-controller looks up who holds it and logs the holder in its own line after the error and its stack, e.g. `Port 1883 is already in use by ioBroker instance mqtt.0 (pid 15411) on this host – stop or reconfigure one of the two instances`, or names the program outside ioBroker that holds it. The lookup is read-only, bounded by one deadline of two seconds (commands and the `/proc` walk included) and platform specific: `/proc` on Linux (works without any additional binary, also in Docker), `lsof` on macOS, `netstat`/`tasklist` on Windows (IPv4 and IPv6 tables, independent of the localized state words), `sockstat` on FreeBSD. Only holders bound to a colliding address are named — a listener on `127.0.0.1` is not blamed for a failed bind on `192.168.1.5`, a wildcard listener collides with everything. In the adapter process the objects database adds every instance of the host that is configured for the port (`native.port`, marked when it carries no `native.bind`), names the running instance behind a pid the operating system could not name, and, for a port held by a compact mode process, lists the instances running inside it; the controller's own handler logs the operating-system part only. A holder that runs as another user, or whose privileges were raised at start (the js-controller process itself on a host where `iobroker fix` gave Node.js the right to bind privileged ports), cannot be inspected and is reported as such — the sentence never claims more than the operating system shows, and a lookup the deadline cuts short reports the holders it found and nothing about the rest – a process it found but could not identify in time is named by its pid, not as uninspectable.
+The error is additionally registered as a notification in the scope `system` and the category `portConflicts` on alert level; the notification carries the error itself, the holder stands in the log. `adapter.getPort` still walks up from the configured port in steps of one, as it always did — but it now logs every port it skipped and why (`EADDRINUSE`, `EACCES`, `EADDRNOTAVAIL`, …), names the holder of an occupied port at most once per minute, and a probe of a port below 1024 without the right to bind it hints at `iobroker fix` once instead of walking up in silence.
 
 ### Logging
 #### Log levels
