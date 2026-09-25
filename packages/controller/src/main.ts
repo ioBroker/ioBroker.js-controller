@@ -2857,6 +2857,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         active = [active];
                     }
 
+                    changed = tools.clearInactiveRepositoryCaches(systemRepos, systemConfig?.common.activeRepo, active);
+
                     for (const repoUrl of active) {
                         const repo = systemRepos.native.repositories[repoUrl];
                         if (repo) {

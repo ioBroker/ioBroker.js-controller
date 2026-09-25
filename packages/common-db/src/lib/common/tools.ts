@@ -1309,6 +1309,39 @@ export async function getRepositoryFile(): Promise<ioBroker.RepositoryJson> {
     throw error;
 }
 
+/**
+ * Release downloaded catalogues that are neither active nor requested by this refresh.
+ * Repository definitions remain available for later reactivation.
+ *
+ * @param repositories Repository configuration object
+ * @param active Active repository names, or undefined when the configuration is unavailable
+ * @param requested Additional repositories requested explicitly
+ * @returns Whether any cached data was removed
+ */
+export function clearInactiveRepositoryCaches(
+    repositories: ioBroker.RepositoryObject,
+    active: string | string[] | undefined,
+    requested: string[] = [],
+): boolean {
+    if (active === undefined) {
+        return false;
+    }
+
+    const retained = new Set([...(Array.isArray(active) ? active : [active]), ...requested]);
+    let changed = false;
+    for (const [name, repository] of Object.entries(repositories.native.repositories)) {
+        if (!retained.has(name) && typeof repository !== 'string') {
+            if (repository.json || repository.hash || repository.time) {
+                repository.json = null;
+                repository.hash = '';
+                delete repository.time;
+                changed = true;
+            }
+        }
+    }
+    return changed;
+}
+
 /** Result of getRepositoryFileAsync */
 export interface RepositoryFile {
     /** The repository JSON content */
