@@ -44,4 +44,24 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         // clean up
         await context.adapter.requireLog!(false);
     });
+
+    it(`${testName}sigKill from another host should not terminate the instance`, async () => {
+        let unloaded = false;
+        context.onAdapterUnload = (callback: () => void) => {
+            unloaded = true;
+            callback();
+        };
+
+        // the controller of another host stops its copy of this instance, e.g. after it has been moved
+        await context.states.setState(`system.adapter.${context.adapter.namespace}.sigKill`, {
+            val: -1,
+            ack: false,
+            from: 'system.host.anotherHost',
+        });
+        // give the adapter time to process the state change
+        await new Promise(resolve => setTimeout(resolve, 500));
+        context.onAdapterUnload = null;
+
+        assert.strictEqual(unloaded, false);
+    });
 }
