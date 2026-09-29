@@ -899,6 +899,8 @@ export class AdapterClass extends EventEmitter {
     private readonly _config: InternalAdapterJsonConfig;
     private readonly _options: AdapterOptions;
     private readonly startedInCompactMode: boolean;
+    /** Name of the host this process runs on, only its controller is allowed to terminate us via sigKill */
+    private readonly localHostname: string;
     /** List of instances which want our logs */
     private readonly logList = new Set<string>();
     private enums: Record<string, ioBroker.EnumObject> = {};
@@ -1080,6 +1082,7 @@ export class AdapterClass extends EventEmitter {
             this._config = this._options.config as ioBroker.IoBrokerJson;
         }
         this.startedInCompactMode = !!this._options.compact;
+        this.localHostname = tools.getHostName();
 
         const parsedArgs = yargs(process.argv.slice(2))
             .options({
@@ -12509,8 +12512,9 @@ export class AdapterClass extends EventEmitter {
                     id === `system.adapter.${this.namespace}.sigKill` &&
                     state &&
                     state.ts > this.statesConnectedTime! &&
-                    state.from &&
-                    state.from.startsWith('system.host.')
+                    // in multihost the sigKill state is shared by all copies of this instance, a controller
+                    // stopping its (possibly stale) copy on another host must not terminate us
+                    state.from === `system.host.${this.localHostname}`
                 ) {
                     const sigKillVal = parseInt(state.val as any);
                     if (!isNaN(sigKillVal)) {
@@ -12958,7 +12962,8 @@ export class AdapterClass extends EventEmitter {
             !this._config.forceIfDisabled &&
             !this._config.isInstall &&
             !this.startedInCompactMode &&
-            killRes?.from?.startsWith('system.host.') &&
+            // a stale value left by the controller of another host (e.g. after a failover) is not meant for us
+            killRes?.from === `system.host.${this.localHostname}` &&
             killRes.ack &&
             !isNaN(killRes.val) &&
             killRes.val !== process.pid
