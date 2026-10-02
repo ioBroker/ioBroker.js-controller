@@ -1005,7 +1005,7 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis
 
 ##### Configure Redis
 ###### Locale of the redis-server process
-Since js-controller 7.2.3 the locale of the redis-server process no longer matters. Nothing needs to be configured.
+Since js-controller 7.2.4 the locale of the redis-server process no longer matters. Nothing needs to be configured.
 
 Earlier versions required it to be `LANG=C`, because Redis calls `setlocale(LC_COLLATE, "")` on startup and its Lua engine then compared object keys with `strcoll()`. Under a UTF-8 collation the key range check in the view scripts stopped holding, and **every** object view (`getObjectView`, `getAdapterObjects`, `getForeignObjects`, ...) silently returned nothing — while the objects themselves were stored correctly and reading a single object by its id kept working. The view scripts now compare keys byte by byte, which gives the same result on every host and is a little faster than before.
 
