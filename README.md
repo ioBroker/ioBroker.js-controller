@@ -1227,7 +1227,7 @@ The entries of `encryptedNative` and `protectedNative` are not limited to top-le
 
 The complex names are respected by:
 - `protectedNative`: the attributes are removed from the instance object when it is read by another adapter, at any depth
-- the adapter start: the attributes are decrypted in `this.config`, e.g. `this.config.cloud.token` and `this.config.devices[0].password` (since js-controller 7.2.3, before only top-level names were decrypted on start)
+- the adapter start: the attributes are decrypted in `this.config`, e.g. `this.config.cloud.token` and `this.config.devices[0].password` (since js-controller 7.2.4, before only top-level names were decrypted on start)
 - `adapter.updateConfig()`: the attributes are encrypted before the configuration is stored
 - `adapter.getEncryptedConfig()`: `getEncryptedConfig('cloud.token')` returns the decrypted string, `getEncryptedConfig('devices.password')` returns an array with one decrypted value per element
 
