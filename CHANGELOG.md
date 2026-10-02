@@ -2,13 +2,26 @@
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
-* (@GermanBluefox) Fixed `getSession` always reporting that there is no session, which logged every user of the web and admin adapters out again right after the login
-* (@GermanBluefox) A states database error while reading a session is no longer swallowed, but reported and logged instead of looking like a logged out user
 -->
 ## __WORK IN PROGRESS__
 * (@GermanBluefox) Fixed all adapters failing to start on Node.js 26 with `Cannot resolve adapter class`: imported the `yargs` factory from the package main entry, because the `yargs/yargs` subpath resolves under the `require` condition to an extensionless CommonJS file that Node.js 26 loads as ESM
 * (@GermanBluefox) Updated `jsonwebtoken` to 9.0.3, so `buffer-equal-constant-time`, which reads the `buffer.SlowBuffer` removed in Node.js 26, is no longer loaded
 * (@GermanBluefox) Added Node.js 26 to the CI test matrix
+* (@GermanBluefox) Fixed `getSession` always reporting that there is no session, which logged every user of the web and admin adapters out again right after the login
+* (@GermanBluefox) A states database error while reading a session is no longer swallowed, but reported and logged instead of looking like a logged out user
+* (@GermanBluefox) Fixed all Redis object views returning nothing when the Redis server was started with a UTF-8 collation
+* (@GermanBluefox) Fixed the ACL of states restricting members of the administrator group - objects and files already let them through, states only the `admin` user
+* (@GermanBluefox) Fixed complex attribute names (e.g. `devices.password`) and arrays in `encryptedNative` not being decrypted when the adapter starts and documented complex attribute names for `encryptedNative` and `protectedNative`
+* (@GermanBluefox) Fixed `getEncryptedConfig` dropping entries that are not a string when the attribute resolves to an array
+* (@GermanBluefox) Fixed `getEncryptedConfig` decrypting an attribute of `encryptedNative` a second time, which returned garbage because the adapter start already decrypted it
+* (@GermanBluefox) Fixed a duplicate `stopTimeout` delay when an adapter is restarted after its object changed
+* (@krobipd) Fixed a failed adapter install/update being reported as success on npm >= 10.6.0
+* (@krobipd) Fixed the automatic ENOTEMPTY recovery not removing the blocking npm temp directory on npm >= 10.6.0
+* (@krobipd) Fixed `info.connection` not being reset when an instance goes offline, which also left a stray state named after the instance namespace
+* (@krobipd) Fixed an alias read/write function returning a boolean (e.g. "val < 20") being stored unconverted in a state declared as number
+* (@GermanBluefox) Added `common.adminTab.order` and `common.adminTab.icon` to the `io-package.json` schema: admin uses both, but an adapter setting them failed the schema validation
+* (@GermanBluefox) Added `tipsDisabled` to `system.config`, with which the admin remembers that the "Did you know ...?" tips must not be shown at the start
+* (@GermanBluefox) Updated `axios` to ^1.18.1 in `common-db`
 
 ## 7.2.3 (2026-09-19)
 * (@GermanBluefox) Updated `@iobroker/plugin-sentry` to 3.1.4 in the lockfile, which allows running on Node.js 26
