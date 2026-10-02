@@ -68,6 +68,9 @@
     "overrides": {
         "@alcalzone/esm2cjs": {
             "yargs": "^17.7.3"
+        },
+        "mocha": {
+            "yargs": "^16.2.2"
         }
     },
     "scripts": {
