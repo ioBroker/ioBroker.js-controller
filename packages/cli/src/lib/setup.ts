@@ -6,7 +6,7 @@ import { isDeepStrictEqual } from 'node:util';
 import Debug from 'debug';
 import { objectsDbHasServer, isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common';
 import path from 'node:path';
-import yargs from 'yargs/yargs';
+import yargsMain, { type Argv } from 'yargs';
 import * as CLITools from '@/lib/cli/cliTools.js';
 import { CLIHost } from '@/lib/cli/cliHost.js';
 import { CLIStates } from '@/lib/cli/cliStates.js';
@@ -38,6 +38,13 @@ import * as events from 'node:events';
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 import { createRequire } from 'node:module';
 import { SYSTEM_CONFIG_ID, SYSTEM_REPOSITORIES_ID } from '@iobroker/js-controller-common-db/constants';
+
+/**
+ * `yargs/yargs` resolves, under the `require` condition, to an extensionless CommonJS file inside a
+ * `"type": "module"` package. Node.js 26 loads that file as ESM, so requiring our CJS build throws
+ * `require is not defined in ES module scope`. The package main entry is the same callable factory.
+ */
+const yargs = yargsMain as unknown as (args?: readonly string[] | string, cwd?: string) => Argv;
 // eslint-disable-next-line unicorn/prefer-module
 const require = createRequire(import.meta.url || `file://${__filename}`);
 

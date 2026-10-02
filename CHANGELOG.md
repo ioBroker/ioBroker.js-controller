@@ -3,6 +3,11 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (@GermanBluefox) Fixed all adapters failing to start on Node.js 26 with `Cannot resolve adapter class`: imported the `yargs` factory from the package main entry, because the `yargs/yargs` subpath resolves under the `require` condition to an extensionless CommonJS file that Node.js 26 loads as ESM
+* (@GermanBluefox) Updated `jsonwebtoken` to 9.0.3, so `buffer-equal-constant-time`, which reads the `buffer.SlowBuffer` removed in Node.js 26, is no longer loaded
+* (@GermanBluefox) Added Node.js 26 to the CI test matrix
+
 ## 7.2.3 (2026-09-19)
 * (@GermanBluefox) Updated `@iobroker/plugin-sentry` to 3.1.4 in the lockfile, which allows running on Node.js 26
 
