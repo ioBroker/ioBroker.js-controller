@@ -2,6 +2,8 @@
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
+* (@GermanBluefox) Fixed `getSession` always reporting that there is no session, which logged every user of the web and admin adapters out again right after the login
+* (@GermanBluefox) A states database error while reading a session is no longer swallowed, but reported and logged instead of looking like a logged out user
 -->
 ## __WORK IN PROGRESS__
 * (@GermanBluefox) Added support for adapters written in Python via `common.platform: "Python"` (feature flag `CONTROLLER_PYTHON_ADAPTERS`)
