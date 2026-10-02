@@ -20,7 +20,7 @@
         "readline-sync": "^1.4.10",
         "semver": "^7.5.2",
         "tar": "^7.5.11",
-        "yargs": "^17.6.2"
+        "yargs": "^17.7.3"
     },
     "keywords": [
         "ioBroker"

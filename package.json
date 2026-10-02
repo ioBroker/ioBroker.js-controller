@@ -65,6 +65,11 @@
         "typedoc-plugin-missing-exports": "^4.1.2",
         "typescript": "~5.9.3"
     },
+    "overrides": {
+        "@alcalzone/esm2cjs": {
+            "yargs": "^17.7.3"
+        }
+    },
     "scripts": {
         "clean": "rimraf packages/*/build packages/*/*.tsbuildinfo",
         "build:doc": "lerna run build:doc",

@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
-* (@GermanBluefox) Fixed all adapters failing to start on Node.js 26 with `Cannot resolve adapter class`: imported the `yargs` factory from the package main entry, because the `yargs/yargs` subpath resolves under the `require` condition to an extensionless CommonJS file that Node.js 26 loads as ESM
+* (@GermanBluefox) Fixed all adapters failing to start on Node.js 26 with `Cannot resolve adapter class`: up to `yargs` 17.7.2 the `yargs/yargs` subpath resolved, under the `require` condition, to an extensionless CommonJS file, which Node.js 26 loads as ESM - `yargs` 17.7.3 points it at `yargs.cjs`
 * (@GermanBluefox) Updated `jsonwebtoken` to 9.0.3, so `buffer-equal-constant-time`, which reads the `buffer.SlowBuffer` removed in Node.js 26, is no longer loaded
 * (@GermanBluefox) Added Node.js 26 to the CI test matrix
 * (@GermanBluefox) Fixed `getSession` always reporting that there is no session, which logged every user of the web and admin adapters out again right after the login

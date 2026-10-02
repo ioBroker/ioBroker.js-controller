@@ -10,7 +10,7 @@ import semver from 'semver';
 import extend from 'node.extend';
 import type Winston from 'winston';
 import type NodeSchedule from 'node-schedule';
-import yargsMain, { type Argv } from 'yargs';
+import yargs from 'yargs/yargs';
 import fs from 'fs-extra';
 import type { CommandResult } from '@alcalzone/pak';
 import * as url from 'node:url';
@@ -138,13 +138,6 @@ import type {
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX, DEFAULT_OBJECTS_WARN_LIMIT } from '@iobroker/js-controller-common-db/constants';
 import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
-
-/**
- * `yargs/yargs` resolves, under the `require` condition, to an extensionless CommonJS file inside a
- * `"type": "module"` package. Node.js 26 loads that file as ESM, so requiring our CJS build throws
- * `require is not defined in ES module scope`. The package main entry is the same callable factory.
- */
-const yargs = yargsMain as unknown as (args?: readonly string[] | string, cwd?: string) => Argv;
 
 const controllerVersion = packJson.version;
 
