@@ -70,7 +70,47 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         });
     });
 
-    // getSession
-    // setSession
-    // destroySession
+    const sid = 'testSession';
+    const sessionData = { cookie: { originalMaxAge: 3_600_000 }, passport: { user: 'admin' } };
+
+    it(`${testName}check setSession and getSession`, function (done) {
+        context.states.setSession(sid, 3600, sessionData, function (err) {
+            assert.ok(!err);
+
+            // The session has to arrive as the SECOND argument. Handing it over as the first
+            // one makes every caller read it as the error and see no session at all.
+            context.states.getSession(sid, function (err, session) {
+                assert.ok(!err);
+                assert.strictEqual(typeof session, 'object');
+                assert.strictEqual(session?.passport.user, 'admin');
+                done();
+            });
+        });
+    });
+
+    it(`${testName}check getSession of the adapter`, function (done) {
+        context.adapter.getSession(sid, function (session) {
+            assert.strictEqual(typeof session, 'object');
+            assert.strictEqual(session?.passport.user, 'admin');
+            done();
+        });
+    });
+
+    it(`${testName}check getSession of an unknown session`, function (done) {
+        context.adapter.getSession('thisSessionDoesNotExist', function (session) {
+            assert.strictEqual(session, null);
+            done();
+        });
+    });
+
+    it(`${testName}check destroySession`, function (done) {
+        context.states.destroySession(sid, function (err) {
+            assert.ok(!err);
+
+            context.adapter.getSession(sid, function (session) {
+                assert.strictEqual(session, null);
+                done();
+            });
+        });
+    });
 }

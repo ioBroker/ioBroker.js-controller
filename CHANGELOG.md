@@ -2,6 +2,8 @@
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
+* (@GermanBluefox) Fixed `getSession` always reporting that there is no session, which logged every user of the web and admin adapters out again right after the login
+* (@GermanBluefox) A states database error while reading a session is no longer swallowed, but reported and logged instead of looking like a logged out user
 -->
 ## __WORK IN PROGRESS__
 * (@GermanBluefox) Fixed all adapters failing to start on Node.js 26 with `Cannot resolve adapter class`: imported the `yargs` factory from the package main entry, because the `yargs/yargs` subpath resolves under the `require` condition to an extensionless CommonJS file that Node.js 26 loads as ESM

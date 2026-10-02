@@ -1422,7 +1422,15 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        this.#states.getSession(options.id, options.callback);
+        this.#states.getSession(options.id, (err, session) => {
+            if (err) {
+                // GetSessionCallback has no error argument, so the caller can only be told
+                // "no session". Without this line a broken states DB looks like a logout.
+                this._logger.error(`${this.namespaceLog} Cannot read session "${options.id}": ${err.message}`);
+            }
+
+            return tools.maybeCallback(options.callback, session || null);
+        });
     }
 
     // overload for docs
