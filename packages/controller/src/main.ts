@@ -24,6 +24,7 @@ import {
     isInstalledFromNpm,
     type SupportedFeature,
     getSupportedFeatures,
+    portOwner,
 } from '@iobroker/js-controller-common';
 import {
     SYSTEM_ADAPTER_PREFIX,
@@ -6728,7 +6729,7 @@ export async function init(compactGroupId?: number): Promise<void> {
         setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), compactGroupController ? 0 : 1_000);
     }, 30_000);
 
-    const exceptionHandler = (err: Error): void => {
+    const exceptionHandler = async (err: Error): Promise<void> => {
         if (compactGroupController) {
             console.error(err.message);
             if (err.stack) {
@@ -6753,10 +6754,39 @@ export async function init(compactGroupId?: number): Promise<void> {
         }
         uncaughtExceptionCount++;
         if (typeof err === 'object') {
-            // @ts-expect-error should be correct
-            if (err.errno === 'EADDRINUSE') {
+            // `errno` is a negative number on every supported Node.js — the string lives in `code`
+            const { code, port, address, syscall } = err as NodeJS.ErrnoException & {
+                port?: unknown;
+                address?: unknown;
+            };
+            if (code === 'EADDRINUSE') {
                 logger.error(`${hostLogPrefix} Another instance is running or some application uses port!`);
                 logger.error(`${hostLogPrefix} uncaught exception: ${err.message}`);
+                if (typeof port === 'number' && port) {
+                    // Name the holder before the host goes down: the lookup is bounded by its own deadline
+                    // (2 s, work included), the process is about to stop and restart anyway — a `void` call
+                    // here raced `stop()` below and mostly lost, so the line never reached the log
+                    const bindAddress = typeof address === 'string' ? address : undefined;
+                    const protocol = syscall === 'bind' ? 'udp' : 'tcp';
+                    try {
+                        const owners = await portOwner.resolvePortOwners({ port, address: bindAddress, protocol });
+                        // no db enrichment here: the controller's own db connection is what may be gone in this
+                        // handler, and the OS part of the sentence stands on its own
+                        const text = portOwner.describePortConflict({
+                            port,
+                            address: bindAddress,
+                            protocol,
+                            owners,
+                            userName: os.userInfo().username,
+                            compactModeEnabled: !!config.system?.compact,
+                        });
+                        if (text) {
+                            logger.error(`${hostLogPrefix} ${text}`);
+                        }
+                    } catch {
+                        // best effort only
+                    }
+                }
             } else {
                 logger.error(`${hostLogPrefix} uncaught exception: ${err.message}`);
                 logger.error(`${hostLogPrefix} ${err.stack}`);
@@ -6784,8 +6814,8 @@ export async function init(compactGroupId?: number): Promise<void> {
         stop(false);
     });
 
-    process.on('uncaughtException', exceptionHandler);
-    process.on('unhandledRejection', exceptionHandler);
+    process.on('uncaughtException', err => exceptionHandler(err).catch(() => undefined));
+    process.on('unhandledRejection', err => exceptionHandler(err as Error).catch(() => undefined));
 }
 
 /**
