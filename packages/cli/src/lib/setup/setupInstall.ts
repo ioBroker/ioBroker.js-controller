@@ -155,8 +155,7 @@ export class Install {
                     ts,
                 };
                 console.log(`host.${hostname} Adapter "${instance._id}" is ${enabled ? 'started' : 'stopped.'}`);
-                // @ts-expect-error should be fixed with #1917
-                await this.objects.extendObjectAsync(instance._id, updatedObj);
+                await this.objects.extendObject(instance._id, updatedObj);
             }
         }
     }

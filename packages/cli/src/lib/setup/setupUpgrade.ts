@@ -326,6 +326,12 @@ export class Upgrade {
             const parts = adapter.split('@');
             adapter = parts[0];
             version = parts[1];
+            if (version === 'latest') {
+                // `latest` is npm's dist tag for "the newest one", not a version. For us the newest one is
+                // what the repository offers, so treat it like no version at all: every semver check below
+                // keeps working, the "is up to date" check applies, and it is not a forced downgrade.
+                version = '';
+            }
         } else {
             version = '';
         }
@@ -759,7 +765,12 @@ export function processCommandUpgrade(options: ProcessCommandOptions): void {
             try {
                 if (adapter.split('@')[0] === 'self') {
                     const hostAlive = await states.getStateAsync(`system.host.${tools.getHostName()}.alive`);
-                    const version = adapter.split('@')[1];
+                    let version: string | undefined = adapter.split('@')[1];
+                    if (version === 'latest') {
+                        // `latest` is npm's dist tag, not a version. upgradeController falls back to the
+                        // repository version when none is given, which is exactly what `latest` asks for.
+                        version = undefined;
+                    }
 
                     await upgrade.upgradeController({
                         forceDowngrade: (params.force as boolean) || (params.f as boolean),
