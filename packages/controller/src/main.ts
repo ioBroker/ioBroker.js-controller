@@ -858,7 +858,7 @@ function createObjects(onConnect: () => void): void {
                                 if (proc.restartTimer) {
                                     clearTimeout(proc.restartTimer);
                                 }
-                                const restartTimeout = (proc.config.common.stopTimeout || 500) + 2_500;
+                                const restartTimeout = 2_500;
                                 proc.restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                             }
                         } else {
@@ -5872,11 +5872,12 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
 
     const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
 
-    const state = await states!.getState(`${adapterInstance}.info.connection`);
+    const connectionStateId = `${adapterInstance}.info.connection`;
+    const state = await states!.getState(connectionStateId);
 
     if (state?.val === true) {
         outputCount++;
-        await states!.setState(adapterInstance, { val: false, ack: true, from: hostObjectPrefix });
+        await states!.setState(connectionStateId, { val: false, ack: true, from: hostObjectPrefix });
     }
 }
 

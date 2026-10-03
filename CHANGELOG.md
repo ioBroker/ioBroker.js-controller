@@ -3,6 +3,14 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (@GermanBluefox) Added support of Node.js 26
+* (@GermanBluefox) Fixed storage of the sessions
+* (@GermanBluefox) Fixed encryption and decryption of arrays
+* (@krobipd) Fixed `info.connection` not being reset when an instance goes offline
+* (@krobipd) Fixed an alias read/write function returning a boolean
+* (@GermanBluefox) Improved typings
+
 ## 7.2.3 (2026-09-19)
 * (@GermanBluefox) Updated `@iobroker/plugin-sentry` to 3.1.4 in the lockfile, which allows running on Node.js 26
 

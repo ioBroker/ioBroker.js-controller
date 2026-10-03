@@ -34,7 +34,6 @@ import {
     listInstalledNodeModules,
     requestModuleNameByUrl,
     deleteObjectAttribute,
-    setObjectAttribute,
     getObjectAttribute,
 } from '@/lib/adapter/utils.js';
 
@@ -690,6 +689,8 @@ export class AdapterClass extends EventEmitter {
     namespace: `${string}.${number}`;
     name: string;
     private _systemSecret?: string;
+    /** Attributes of `encryptedNative`: their values in `this.config` are decrypted on start */
+    private _decryptedNativeAttributes = new Array<string>();
     /** Whether the adapter has already terminated */
     private terminated: boolean = false;
     /** The cache of usernames */
@@ -1414,7 +1415,15 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        this.#states.getSession(options.id, options.callback);
+        this.#states.getSession(options.id, (err, session) => {
+            if (err) {
+                // GetSessionCallback has no error argument, so the caller can only be told
+                // "no session". Without this line a broken states DB looks like a logout.
+                this._logger.error(`${this.namespaceLog} Cannot read session "${options.id}": ${err.message}`);
+            }
+
+            return tools.maybeCallback(options.callback, session || null);
+        });
     }
 
     // overload for docs
@@ -2622,13 +2631,22 @@ export class AdapterClass extends EventEmitter {
         return this.setForeignObjectAsync(configObjId, obj);
     }
 
+    /**
+     * Reads a parameter which is stored encrypted and returns its decrypted value.
+     *
+     * An attribute listed in `encryptedNative` is already decrypted in `this.config` when the adapter
+     * starts, and is returned as it is.
+     *
+     * @param attribute the config attribute to decrypt
+     * @param callback return result
+     */
     async getEncryptedConfig(
         attribute: string,
         callback?: GetEncryptedConfigCallback,
     ): Promise<string | string[] | void>;
 
     /**
-     * Reads the encrypted parameter from config.
+     * Reads a parameter which is stored encrypted and returns its decrypted value.
      *
      * It returns promise if no callback is provided.
      *
@@ -2647,14 +2665,19 @@ export class AdapterClass extends EventEmitter {
 
         const value = getObjectAttribute(this.config, attribute);
 
+        // `encryptedNative` says which attributes are stored encrypted, and the start decrypted exactly
+        // those in place - decrypting again cannot be detected, because a value carries no mark saying so
+        if (
+            (Array.isArray(value) || typeof value === 'string') &&
+            this._decryptedNativeAttributes.includes(attribute)
+        ) {
+            return tools.maybeCallbackWithError(callback, null, value);
+        }
+
         if (Array.isArray(value)) {
             const secret = await this.getSystemSecret();
-            const result: string[] = [];
-            for (let i = 0; i < value.length; i++) {
-                if (typeof value[i] === 'string') {
-                    result[i] = tools.decrypt(secret, value[i]);
-                }
-            }
+            // entries that are not a string (e.g. an element without this attribute) are returned as they are
+            const result: string[] = value.map(item => (typeof item === 'string' ? tools.decrypt(secret, item) : item));
             return tools.maybeCallbackWithError(callback, null, result);
         } else if (typeof value === 'string') {
             const secret = await this.getSystemSecret();
@@ -8163,6 +8186,10 @@ export class AdapterClass extends EventEmitter {
     }
 
     private _checkState(obj: ioBroker.StateObject, options: Record<string, any>, command: CheckStateCommand): boolean {
+        // Members of the administrator group are not restricted by the ACL of a state, the same as for objects and files
+        if (options.groups?.includes(SYSTEM_ADMIN_GROUP)) {
+            return true;
+        }
         const limitToOwnerRights = options.limitToOwnerRights === true;
         if (obj?.acl) {
             obj.acl.state = obj.acl.state || obj.acl.object;
@@ -11666,26 +11693,22 @@ export class AdapterClass extends EventEmitter {
         }
 
         // initialize the system secret
-        await this.getSystemSecret();
+        const secret = await this.getSystemSecret();
 
         // Decrypt all attributes of encryptedNative
-        const promises = [];
         // @ts-expect-error
         if (Array.isArray(adapterConfig.encryptedNative)) {
+            this._decryptedNativeAttributes = new Array<string>();
             // @ts-expect-error
-            for (const attr of adapterConfig.encryptedNative) {
-                // we can only decrypt strings
-                // @ts-expect-error
-                if (typeof this.config[attr] === 'string') {
-                    promises.push(
-                        this.getEncryptedConfig(attr)
-                            .then(decryptedValue => setObjectAttribute(this.config, attr, decryptedValue))
-                            .catch(e =>
-                                this._logger.error(
-                                    `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`,
-                                ),
-                            ),
-                    );
+            for (const attr of adapterConfig.encryptedNative as string[]) {
+                // one attribute at a time, so a value that cannot be decrypted does not stop the others
+                try {
+                    decryptArray({ obj: this.config as Record<string, any>, secret, keys: [attr] });
+                    // only after it worked: a failed decrypt leaves the encrypted value in place, and
+                    // reading it back must decrypt it rather than hand out the cipher text
+                    this._decryptedNativeAttributes.push(attr);
+                } catch (e) {
+                    this._logger.error(`${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`);
                 }
             }
         } else {
@@ -11695,9 +11718,6 @@ export class AdapterClass extends EventEmitter {
                 this.SUPPORTED_FEATURES.splice(idx, 1);
             }
         }
-
-        // Wait till all attributes decrypted
-        await Promise.all(promises);
 
         if (!this.#states) {
             // if this.adapterStates was destroyed, we should not continue
