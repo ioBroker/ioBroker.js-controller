@@ -6,7 +6,7 @@
 
 # Interface: FileACL
 
-Defined in: [types-dev/objects.d.ts:7](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/types-dev/objects.d.ts#L7)
+Defined in: [types-dev/objects.d.ts:7](https://github.com/ioBroker/ioBroker.js-controller/blob/358e450ca3e15f75b0260e31130214f7e9618d91/packages/types-dev/objects.d.ts#L7)
 
 Defines access rights for a single file
 
@@ -20,7 +20,7 @@ Defines access rights for a single file
 
 > **owner**: `string`
 
-Defined in: [types-dev/objects.d.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/types-dev/objects.d.ts#L9)
+Defined in: [types-dev/objects.d.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/358e450ca3e15f75b0260e31130214f7e9618d91/packages/types-dev/objects.d.ts#L9)
 
 Full name of the user who owns this file, e.g. "system.user.admin"
 
@@ -30,7 +30,7 @@ Full name of the user who owns this file, e.g. "system.user.admin"
 
 > **ownerGroup**: `string`
 
-Defined in: [types-dev/objects.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/types-dev/objects.d.ts#L11)
+Defined in: [types-dev/objects.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/358e450ca3e15f75b0260e31130214f7e9618d91/packages/types-dev/objects.d.ts#L11)
 
 Full name of the group who owns this file, e.g. "system.group.administrator"
 
@@ -40,6 +40,6 @@ Full name of the group who owns this file, e.g. "system.group.administrator"
 
 > **permissions**: `number`
 
-Defined in: [types-dev/objects.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/617b2e7b40020b088e9d786fd9a930a250ea708b/packages/types-dev/objects.d.ts#L13)
+Defined in: [types-dev/objects.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/358e450ca3e15f75b0260e31130214f7e9618d91/packages/types-dev/objects.d.ts#L13)
 
 Linux-type permissions defining access to this file

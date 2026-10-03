@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
+## 7.2.4 (2026-10-03)
 * (@GermanBluefox) Added support of Node.js 26
 * (@GermanBluefox) Fixed storage of the sessions
 * (@GermanBluefox) Fixed encryption and decryption of arrays
