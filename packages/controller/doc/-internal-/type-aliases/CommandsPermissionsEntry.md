@@ -8,7 +8,7 @@
 
 > **CommandsPermissionsEntry** = `object`
 
-Defined in: [adapter/src/lib/\_Types.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/f762c04602a1e8ae23acc09fb04a327aa5278c52/packages/adapter/src/lib/_Types.ts#L399)
+Defined in: [adapter/src/lib/\_Types.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L399)
 
 A single command permission requirement
 
@@ -18,7 +18,7 @@ A single command permission requirement
 
 > **operation**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:403](https://github.com/ioBroker/ioBroker.js-controller/blob/f762c04602a1e8ae23acc09fb04a327aa5278c52/packages/adapter/src/lib/_Types.ts#L403)
+Defined in: [adapter/src/lib/\_Types.ts:403](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L403)
 
 The operation requiring the permission
 
@@ -28,6 +28,6 @@ The operation requiring the permission
 
 > **type**: `"object"` \| `"state"` \| `""` \| `"other"` \| `"file"`
 
-Defined in: [adapter/src/lib/\_Types.ts:401](https://github.com/ioBroker/ioBroker.js-controller/blob/f762c04602a1e8ae23acc09fb04a327aa5278c52/packages/adapter/src/lib/_Types.ts#L401)
+Defined in: [adapter/src/lib/\_Types.ts:401](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L401)
 
 The object category the permission applies to
