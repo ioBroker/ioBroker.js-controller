@@ -33,6 +33,14 @@
 * (@krobipd) Fixed an alias read/write function returning a boolean (e.g. "val < 20") being stored unconverted in a state declared as number
 * (@GermanBluefox) Added `common.adminTab.order` and `common.adminTab.icon` to the `io-package.json` schema: admin uses both, but an adapter setting them failed the schema validation
 
+## 7.2.4 (2026-10-03)
+* (@GermanBluefox) Added support of Node.js 26
+* (@GermanBluefox) Fixed storage of the sessions
+* (@GermanBluefox) Fixed encryption and decryption of arrays
+* (@krobipd) Fixed `info.connection` not being reset when an instance goes offline
+* (@krobipd) Fixed an alias read/write function returning a boolean
+* (@GermanBluefox) Improved typings
+
 ## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling
 
