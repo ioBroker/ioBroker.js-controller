@@ -8,4 +8,4 @@
 
 > **User** = `` `system.user.${string}` ``
 
-Defined in: [types-dev/objects.d.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/f762c04602a1e8ae23acc09fb04a327aa5278c52/packages/types-dev/objects.d.ts#L87)
+Defined in: [types-dev/objects.d.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/types-dev/objects.d.ts#L87)
