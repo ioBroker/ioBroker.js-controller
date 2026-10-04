@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { statfs } from 'node:fs/promises';
 import semver from 'semver';
 import os from 'node:os';
 import crypto from 'node:crypto';
@@ -27,7 +28,6 @@ import jwt from 'jsonwebtoken';
 import axios, { type AxiosResponse } from 'axios';
 // @ts-expect-error has no types
 import extend from 'node.extend';
-import type * as DiskUsage from 'diskusage';
 
 import { EXIT_CODES } from '@/lib/common/exitCodes.js';
 import { password } from '@/lib/common/password.js';
@@ -151,7 +151,6 @@ export enum ERRORS {
 
 events.EventEmitter.prototype.setMaxListeners(100);
 let npmVersion: string;
-let diskusage: typeof DiskUsage;
 
 const randomID = Math.round(Math.random() * 10_000_000_000_000); // Used for creation of User-Agent
 const VENDOR_FILE = '/etc/iob-vendor.json';
@@ -1664,57 +1663,30 @@ export interface GetDiskInfoResponse {
  * Read the disk-free space
  */
 export async function getDiskInfo(): Promise<GetDiskInfoResponse | null> {
-    const platform = process.platform;
-    if (diskusage) {
+    // `statfs` is supported on all platforms and requires no external tools, like `wmic`,
+    // which has been removed from current Windows versions. It can query any existing path
+    // on the volume, so no drive letter is parsed and UNC installations work too
+    const diskPaths: string[] = [];
+
+    try {
+        diskPaths.push(getRootDir());
+    } catch {
+        // the controller directory could not be determined, only the fallback below is left
+    }
+
+    // the directory of this module always exists and is located on the same volume
+    diskPaths.push(thisDir);
+
+    for (const diskPath of diskPaths) {
         try {
-            const path = platform === 'win32' ? thisDir.substring(0, 2) : '/';
-            const info = diskusage.checkSync(path);
-            return { 'Disk size': info.total, 'Disk free': info.free };
+            const stats = await statfs(diskPath);
+
+            return {
+                'Disk size': stats.blocks * stats.bsize,
+                'Disk free': stats.bavail * stats.bsize,
+            };
         } catch (e) {
             console.log(e.message);
-        }
-    } else {
-        if (platform === 'win32') {
-            // Caption  FreeSpace     Size
-            // A:
-            // C:       66993807360   214640357376
-            // D:
-            // Y:       116649795584  148368257024
-            // Z:       116649795584  148368257024
-            const disk = thisDir.substring(0, 2).toUpperCase();
-
-            const { stdout } = await execAsync('wmic logicaldisk get size,freespace,caption');
-
-            if (typeof stdout === 'string') {
-                const lines = stdout.split('\n');
-                const line = lines.find(line => {
-                    const parts = line.split(/\s+/);
-                    return parts[0].toUpperCase() === disk;
-                });
-                if (line) {
-                    const parts = line.split(/\s+/);
-                    return {
-                        'Disk size': parseInt(parts[2]),
-                        'Disk free': parseInt(parts[1]),
-                    };
-                }
-            }
-        } else {
-            const { stdout } = await execAsync(`df -k ${getRootDir()}`);
-            //, stderr) {
-            // Filesystem            1K-blocks    Used Available Use% Mounted on
-            // /dev/mapper/vg00-lv01 162544556 9966192 145767152   7% /
-            try {
-                if (typeof stdout === 'string') {
-                    const parts = stdout.split('\n')[1].split(/\s+/);
-                    return {
-                        'Disk size': parseInt(parts[1]) * 1024,
-                        'Disk free': parseInt(parts[3]) * 1024,
-                    };
-                }
-            } catch {
-                // continue regardless of error
-            }
         }
     }
 
@@ -1928,14 +1900,6 @@ function makeid(length: number): string {
  * @param objects db
  */
 export async function getHostInfo(objects: ObjectsRedisClient): Promise<HostInfo> {
-    if (!diskusage) {
-        try {
-            diskusage = require('diskusage');
-        } catch {
-            // ignore
-        }
-    }
-
     const systemConfig: ioBroker.SystemConfigObject = await objects.getObjectAsync('system.config');
     const systemRepos: ioBroker.RepositoryObject = await objects.getObjectAsync('system.repositories');
 
