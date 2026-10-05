@@ -408,6 +408,7 @@ export interface AdapterClass {
         hostName: string,
         command: string,
         message: ioBroker.MessagePayload,
+        options?: SendToOptions,
     ): Promise<ioBroker.Message | undefined>;
 
     /**
@@ -1192,11 +1193,6 @@ export class AdapterClass extends EventEmitter {
          * Promise-version of `Adapter.fileExists`
          */
         this.fileExistsAsync = tools.promisify(this.fileExists, this);
-
-        /**
-         * Promise-version of `Adapter.sendToHost`
-         */
-        this.sendToHostAsync = tools.promisifyNoError(this.sendToHost, this);
 
         /**
          * Promise-version of `Adapter.setState`
@@ -7449,6 +7445,20 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
+    /**
+     * The `user` field of an outbound message, from the `user` of the send options.
+     *
+     * Spread into the envelope, so a send without a user leaves the field out entirely instead of
+     * putting an empty one in: a receiver that checks `obj.user` must be able to tell "nobody named a
+     * user" from "the user is known", and an empty string is neither.
+     *
+     * @param options the send options the caller passed, if any
+     */
+    #userOf(options?: SendToOptions): { user?: ioBroker.ObjectIDs.User } {
+        const user = options?.user;
+        return typeof user === 'string' && user ? { user } : {};
+    }
+
     private async _sendTo(_options: InternalSendToOptions): Promise<void> {
         const { command, message, callback, options } = _options;
         let { instanceName } = _options;
@@ -7457,6 +7467,7 @@ export class AdapterClass extends EventEmitter {
             command,
             message,
             from: `system.adapter.${this.namespace}`,
+            ...this.#userOf(options),
         };
 
         if (!instanceName) {
@@ -7582,6 +7593,7 @@ export class AdapterClass extends EventEmitter {
         command: string,
         message: any,
         callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
+        options?: SendToOptions,
     ): void;
 
     /**
@@ -7600,8 +7612,10 @@ export class AdapterClass extends EventEmitter {
      *              if (!result) adapter.log.error('No response received');
      *            }
      *        ```
+     * @param options optional send options: a `timeout` for the answer, or the `user` this message is
+     * sent on behalf of - the host sees it as `obj.user`
      */
-    sendToHost(hostName: unknown, command: unknown, message: unknown, callback?: unknown): any {
+    sendToHost(hostName: unknown, command: unknown, message: unknown, callback?: unknown, options?: unknown): any {
         if (typeof message === 'undefined') {
             message = command;
             command = 'send';
@@ -7617,18 +7631,52 @@ export class AdapterClass extends EventEmitter {
             Validator.assertOptionalCallback(callback, 'callback');
         }
 
+        if (options !== undefined) {
+            Validator.assertObject(options, 'options');
+        }
+
         return this._sendToHost({
             hostName,
             command,
             message,
+            options: options as SendToOptions | undefined,
             callback: callback as ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
         });
     }
 
+    /**
+     * Async version of sendToHost
+     *
+     * Resolves with whatever the host answered and never rejects - like the promisified version it
+     * replaces, an error reaches the caller as the resolved value.
+     *
+     * @param hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is null, the message will be sent to all hosts.
+     * @param command command name. One of: "cmdExec", "getRepository", "getInstalled", ...
+     * @param message object that will be given as argument for request
+     * @param options optional send options: a `timeout` for the answer, or the `user` the message is sent for
+     */
+    sendToHostAsync(hostName: unknown, command: unknown, message?: unknown, options?: unknown): any {
+        return new Promise(resolve => {
+            // validation takes place inside sendToHost, so skip it here
+            this.sendToHost(
+                hostName as string,
+                command as string,
+                message,
+                resolve as ioBroker.MessageCallback,
+                options as SendToOptions,
+            );
+        });
+    }
+
     private async _sendToHost(_options: InternalSendToHostOptions): Promise<void> {
-        const { command, message, callback } = _options;
+        const { command, message, callback, options } = _options;
         let { hostName } = _options;
-        const obj: Partial<ioBroker.Message> = { command, message, from: `system.adapter.${this.namespace}` };
+        const obj: Partial<ioBroker.Message> = {
+            command,
+            message,
+            from: `system.adapter.${this.namespace}`,
+            ...this.#userOf(options),
+        };
 
         if (!this.#states) {
             // if states is no longer existing, we do not need to unsubscribe

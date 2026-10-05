@@ -79,7 +79,8 @@ declare global {
             | 'CONTROLLER_UI_UPGRADE'
             | 'ADAPTER_WEBSERVER_UPGRADE'
             | 'CONTROLLER_CMD_EXEC_FILES'
-            | 'CONTROLLER_FEATURE_REQUEST';
+            | 'CONTROLLER_FEATURE_REQUEST'
+            | 'ADAPTER_MESSAGE_USER_CONTEXT';
 
         type StateValue = string | number | boolean | null;
 
@@ -293,6 +294,20 @@ declare global {
             message: MessagePayload;
             /** The source of this message */
             from: string;
+            /**
+             * The user this message is sent on behalf of, if the sender named one (`options.user` of
+             * `sendTo`/`sendToHost`). A socket server such as `admin` or `web` puts the authenticated
+             * user of the connection here, so the receiving instance can check what that user may do
+             * instead of acting with its own rights.
+             *
+             * It is only as trustworthy as `from`: every instance can claim any user here, and all of
+             * them run with full database rights anyway. Trust it when `from` is an instance you trust
+             * to have authenticated the user, and never as a substitute for your own permission check.
+             *
+             * Present only from the controller version that reports `ADAPTER_MESSAGE_USER_CONTEXT`;
+             * a message that was sent without a user does not carry the field at all.
+             */
+            user?: ioBroker.ObjectIDs.User;
             /** Callback information. This is set when the source expects a response */
             callback?: MessageCallbackInfo;
         }
