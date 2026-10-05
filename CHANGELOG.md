@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Added the user context to messages: `sendTo`/`sendToHost` write the `user` of their send options into the message, where the receiving instance reads it as `obj.user` (feature flag `ADAPTER_MESSAGE_USER_CONTEXT`). The option was documented but never left the sender, so a message arrived with nothing but `from` on it - an adapter reachable over `sendTo` could not tell one caller from another and had to act with its own rights. A socket server such as `admin` or `web` now names the authenticated user of the connection, exactly as it has always done for objects, states and files. The field is only as trustworthy as `from` and is left out entirely when no user is named, so a receiver can tell "nobody said" from "the user is known". `sendToHost` also takes send options now (a `timeout` or the `user`), like `sendTo`
 * (@GermanBluefox) Fixed `getSession` method
 * (@GermanBluefox) A states database error while reading a session is no longer swallowed, but reported and logged instead of looking like a logged out user
 * (@GermanBluefox) Added support for adapters written in Python via `common.platform: "Python"` (feature flag `CONTROLLER_PYTHON_ADAPTERS`)

@@ -412,3 +412,75 @@ describe('MessagingManager callback registry', () => {
         assert.equal(mgr.resolveCallback({ callback: { ack: true, id: 999 } } as any), false);
     });
 });
+
+describe('MessagingManager user context', () => {
+    it('puts options.user into the message of sendTo', async () => {
+        const pushMessage = sinon.stub().resolves();
+        const mgr = new MessagingManager(makeContext({ states: { pushMessage } as any }));
+
+        await mgr.sendTo({
+            instanceName: 'inst.0',
+            command: 'cmd',
+            message: {},
+            options: { user: 'system.user.someone' },
+        });
+
+        const [, sentObj] = pushMessage.firstCall.args as [string, ioBroker.SendableMessage];
+        assert.equal(sentObj.user, 'system.user.someone');
+    });
+
+    it('puts options.user into the message of sendToHost', async () => {
+        const pushMessage = sinon.stub().resolves();
+        const mgr = new MessagingManager(makeContext({ states: { pushMessage } as any }));
+
+        await mgr.sendToHost({
+            hostName: 'host',
+            command: 'cmd',
+            message: {},
+            options: { user: 'system.user.someone' },
+        });
+
+        const [, sentObj] = pushMessage.firstCall.args as [string, ioBroker.SendableMessage];
+        assert.equal(sentObj.user, 'system.user.someone');
+    });
+
+    it('leaves the field out when no user is named, so a receiver can tell the difference', async () => {
+        const pushMessage = sinon.stub().resolves();
+        const mgr = new MessagingManager(makeContext({ states: { pushMessage } as any }));
+
+        await mgr.sendTo({ instanceName: 'inst.0', command: 'cmd', message: {} });
+        await mgr.sendTo({ instanceName: 'inst.0', command: 'cmd', message: {}, options: { timeout: 1000 } });
+        await mgr.sendTo({ instanceName: 'inst.0', command: 'cmd', message: {}, options: { user: '' } as any });
+
+        for (const call of pushMessage.getCalls()) {
+            const [, sentObj] = call.args as [string, ioBroker.SendableMessage];
+            assert.equal('user' in sentObj, false);
+        }
+    });
+
+    it('keeps the user on a message that waits for a reply', async () => {
+        const pushMessage = sinon.stub().resolves();
+        const subscribeMessage = sinon.stub().resolves();
+        const fakeCommon = {
+            supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
+        } as any;
+        const mgr = new MessagingManager(
+            makeContext({ states: { pushMessage, subscribeMessage } as any, common: fakeCommon }),
+        );
+
+        void mgr.sendTo({
+            instanceName: 'inst.0',
+            command: 'cmd',
+            message: {},
+            expectReply: true,
+            options: { user: 'system.user.someone' },
+        });
+        // let the push happen
+        await new Promise(resolve => setImmediate(resolve));
+
+        const [, sentObj] = pushMessage.firstCall.args as [string, ioBroker.SendableMessage];
+        assert.equal(sentObj.user, 'system.user.someone');
+        assert.ok(sentObj.callback, 'the reply header is still set');
+        mgr.clearPendingCallbacks();
+    });
+});
