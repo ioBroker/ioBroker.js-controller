@@ -473,6 +473,8 @@ export interface InternalAddChannelToEnumOptions {
 export interface SendToOptions {
     /** Method throws or calls error cb, if callback not called in time, works for single targets only */
     timeout?: number;
+    /** The user on whose behalf the message is sent */
+    user?: ioBroker.ObjectIDs.User;
 }
 
 export interface InternalSendToOptions {
@@ -499,6 +501,7 @@ export interface InternalSendToHostOptions {
     command: string;
     message: any;
     callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo;
+    options?: SendToOptions;
 }
 
 export interface InternalGetStateOptions {

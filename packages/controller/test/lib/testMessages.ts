@@ -41,6 +41,88 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             });
         });
     });
+    /**
+     * The user a message is sent on behalf of.
+     *
+     * `sendTo` resolves it out of its send options into the message itself, where the receiving
+     * instance reads it as `obj.user`. A message that names nobody must not carry the field at all:
+     * a receiver has to be able to tell "nobody was named" from "the user is known", and an empty
+     * string is neither.
+     */
+    it(`${testName}sendTo names the user of the send options`, function (done) {
+        context.states.subscribeMessage(gid, function (err) {
+            assert.ok(!err);
+
+            context.onAdapterMessage = function (obj) {
+                assert.strictEqual(obj.command, 'userContext');
+                assert.strictEqual(obj.user, 'system.user.someone');
+                // and the sender is still named, the user does not replace it
+                assert.strictEqual(obj.from, gid);
+                context.states.unsubscribeMessage(gid, () => done());
+                context.onAdapterMessage = null;
+            };
+
+            context.adapter.sendTo(`${context.adapterShortName}.0`, 'userContext', { test: 1 }, undefined, {
+                user: 'system.user.someone',
+            });
+        });
+    });
+
+    it(`${testName}sendTo leaves the user out where the send options name none`, function (done) {
+        context.states.subscribeMessage(gid, function (err) {
+            assert.ok(!err);
+
+            context.onAdapterMessage = function (obj) {
+                assert.strictEqual(obj.command, 'withoutUser');
+                assert.ok(!('user' in obj), `the message carries a user: ${JSON.stringify(obj.user)}`);
+                context.states.unsubscribeMessage(gid, () => done());
+                context.onAdapterMessage = null;
+            };
+
+            // no options at all, and options that name everything but a user
+            context.adapter.sendTo(`${context.adapterShortName}.0`, 'withoutUser', { test: 1 }, undefined, {
+                timeout: 5_000,
+            });
+        });
+    });
+
+    it(`${testName}sendToHost names the user of the send options`, function (done) {
+        const hostMessageId = `system.host.${context.adapter.host}`;
+
+        context.states.subscribeMessage(hostMessageId, function (err) {
+            assert.ok(!err);
+
+            // What the host does with the message does not matter here, only what is in it - so it
+            // is read where it is published, through the states client of the test itself. The id
+            // arrives there as the message box it was published to, not as the id of the host.
+            const publishedAs = `messagebox.${hostMessageId}`;
+
+            context.onControllerStateChanged = (id: string, obj: any): void => {
+                if (id !== publishedAs || obj?.command !== 'userContextHost') {
+                    return;
+                }
+                assert.strictEqual(obj.user, 'system.user.someone');
+                context.onControllerStateChanged = null;
+                context.states.unsubscribeMessage(hostMessageId, () => done());
+            };
+
+            context.adapter.sendToHost(hostMessageId, 'userContextHost', { test: 1 }, undefined, {
+                user: 'system.user.someone',
+            });
+        });
+    });
+
+    it(`${testName}sendToHost with a timeout gives up instead of waiting for ever`, async function () {
+        this.timeout(5_000);
+        // a host that does not know a command never answers, and this one does not even exist
+        await assert.rejects(
+            context.adapter.sendToHostAsync('system.host.thisHostDoesNotExist', 'getVersion', null, {
+                timeout: 500,
+            }),
+            /Timeout exceeded/,
+        );
+    });
+
     it(`${testName}check unsubscribeMessage`, function (done) {
         context.states.unsubscribeMessage(gid, function (err) {
             assert.ok(!err);
