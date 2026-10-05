@@ -79,8 +79,7 @@ declare global {
             | 'CONTROLLER_UI_UPGRADE'
             | 'ADAPTER_WEBSERVER_UPGRADE'
             | 'CONTROLLER_CMD_EXEC_FILES'
-            | 'CONTROLLER_FEATURE_REQUEST'
-            | 'ADAPTER_MESSAGE_USER_CONTEXT';
+            | 'CONTROLLER_FEATURE_REQUEST';
 
         type StateValue = string | number | boolean | null;
 
@@ -304,8 +303,10 @@ declare global {
              * them run with full database rights anyway. Trust it when `from` is an instance you trust
              * to have authenticated the user, and never as a substitute for your own permission check.
              *
-             * Present only from the controller version that reports `ADAPTER_MESSAGE_USER_CONTEXT`;
-             * a message that was sent without a user does not carry the field at all.
+             * Set from js-controller 7.2.5 on; an older one never sets it. A message that was sent
+             * without a user does not carry the field at all, so the absence of the field means
+             * "nobody was named" - for whichever of the two reasons, and in both cases there is
+             * nothing to check against.
              */
             user?: ioBroker.ObjectIDs.User;
             /** Callback information. This is set when the source expects a response */

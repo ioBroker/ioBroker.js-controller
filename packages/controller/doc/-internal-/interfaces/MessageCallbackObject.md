@@ -6,7 +6,7 @@
 
 # Interface: MessageCallbackObject
 
-Defined in: [adapter/src/lib/\_Types.ts:487](https://github.com/ioBroker/ioBroker.js-controller/blob/358e450ca3e15f75b0260e31130214f7e9618d91/packages/adapter/src/lib/_Types.ts#L487)
+Defined in: [adapter/src/lib/\_Types.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/6ced20881612eb358e0a36a3f73613051ebf9143/packages/adapter/src/lib/_Types.ts#L489)
 
 Message Callback used internally
 
@@ -16,7 +16,7 @@ Message Callback used internally
 
 > **cb**: [`MessageCallback`](../type-aliases/MessageCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/358e450ca3e15f75b0260e31130214f7e9618d91/packages/adapter/src/lib/_Types.ts#L489)
+Defined in: [adapter/src/lib/\_Types.ts:491](https://github.com/ioBroker/ioBroker.js-controller/blob/6ced20881612eb358e0a36a3f73613051ebf9143/packages/adapter/src/lib/_Types.ts#L491)
 
 the callback itself
 
@@ -26,7 +26,7 @@ the callback itself
 
 > **time**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:491](https://github.com/ioBroker/ioBroker.js-controller/blob/358e450ca3e15f75b0260e31130214f7e9618d91/packages/adapter/src/lib/_Types.ts#L491)
+Defined in: [adapter/src/lib/\_Types.ts:493](https://github.com/ioBroker/ioBroker.js-controller/blob/6ced20881612eb358e0a36a3f73613051ebf9143/packages/adapter/src/lib/_Types.ts#L493)
 
 The timestamp of the initial message
 
@@ -36,6 +36,6 @@ The timestamp of the initial message
 
 > `optional` **timer?**: `Timeout`
 
-Defined in: [adapter/src/lib/\_Types.ts:493](https://github.com/ioBroker/ioBroker.js-controller/blob/358e450ca3e15f75b0260e31130214f7e9618d91/packages/adapter/src/lib/_Types.ts#L493)
+Defined in: [adapter/src/lib/\_Types.ts:495](https://github.com/ioBroker/ioBroker.js-controller/blob/6ced20881612eb358e0a36a3f73613051ebf9143/packages/adapter/src/lib/_Types.ts#L495)
 
 An optional timer, if a timeout has been specified
