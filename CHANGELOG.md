@@ -4,6 +4,8 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Fixed `Cannot read disk size` on current Windows versions: the disk size is now read via `statfs` instead of the removed `wmic` command
+* (@GermanBluefox) Removed the optional native dependency `diskusage` - it is no longer needed, as `statfs` provides the same information
 * (@GermanBluefox) Fixed `getSession` method
 * (@GermanBluefox) A states database error while reading a session is no longer swallowed, but reported and logged instead of looking like a logged out user
 * (@GermanBluefox) Added support for adapters written in Python via `common.platform: "Python"` (feature flag `CONTROLLER_PYTHON_ADAPTERS`)
