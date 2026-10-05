@@ -33,6 +33,9 @@
 * (@krobipd) Fixed an alias read/write function returning a boolean (e.g. "val < 20") being stored unconverted in a state declared as number
 * (@GermanBluefox) Added `common.adminTab.order` and `common.adminTab.icon` to the `io-package.json` schema: admin uses both, but an adapter setting them failed the schema validation
 
+## 7.2.5 (2026-10-05)
+* (@GermanBluefox) Added the user context to messages: `sendTo`/`sendToHost` write the `user`
+
 ## 7.2.4 (2026-10-03)
 * (@GermanBluefox) Added support of Node.js 26
 * (@GermanBluefox) Fixed storage of the sessions
