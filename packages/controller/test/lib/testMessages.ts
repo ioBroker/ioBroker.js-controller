@@ -92,10 +92,13 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         context.states.subscribeMessage(hostMessageId, function (err) {
             assert.ok(!err);
 
-            // what the host does with the message does not matter here, only what is in it - so it
-            // is read where it is published, through the states client of the test itself
+            // What the host does with the message does not matter here, only what is in it - so it
+            // is read where it is published, through the states client of the test itself. The id
+            // arrives there as the message box it was published to, not as the id of the host.
+            const publishedAs = `messagebox.${hostMessageId}`;
+
             context.onControllerStateChanged = (id: string, obj: any): void => {
-                if (id !== hostMessageId || obj?.command !== 'userContextHost') {
+                if (id !== publishedAs || obj?.command !== 'userContextHost') {
                     return;
                 }
                 assert.strictEqual(obj.user, 'system.user.someone');
