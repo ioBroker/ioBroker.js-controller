@@ -37,7 +37,7 @@ import {
 } from '@/lib/adapter/utils.js';
 
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
-import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import { objectsUtils, type Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 
 // local version is always the same as controller version, since lerna exact: true is used
 import packJson from '@iobroker/js-controller-adapter/package.json' with { type: 'json' };
@@ -118,6 +118,7 @@ import type {
     MaybePromise,
     NotificationOptions,
     Pattern,
+    MayReadOptions,
     SendToOptions,
     SendToUserInterfaceClientOptions,
     SetStateChangedResult,
@@ -9767,6 +9768,74 @@ export class AdapterClass extends EventEmitter {
         }
 
         return true;
+    }
+
+    /**
+     * Whether a user may read something - a state, an object, or a file of an adapter.
+     *
+     * The answer is the one the database would give: the ACL of the thing, its owner, the groups of
+     * the user and the default ACL of the system all go into it, and members of the administrator
+     * group are not restricted by any of it. It is the question a socket server has to ask before it
+     * hands an event to a connection - a subscription says what a client is interested in, never what
+     * it may see - and asking it here keeps a second implementation of the same rules out of the
+     * adapters.
+     *
+     * Two cases are worth knowing, because they follow the database rather than intuition:
+     * a state whose object does not exist may be read by anyone, exactly as `getState` reads it, and
+     * an object that does not exist is not something that can be kept from anybody either.
+     *
+     * Only reading is asked about here. Writing and deleting are checked where they happen - the call
+     * that writes refuses by itself - and can be added to this the same way if something needs to know
+     * beforehand.
+     *
+     * @param options what is to be read, and by whom
+     * @returns whether that user may read it; rejects only where the question itself cannot be
+     * answered, e.g. with the databases gone
+     */
+    async mayRead(options: MayReadOptions): Promise<boolean> {
+        Validator.assertObject<MayReadOptions>(options, 'options');
+        Validator.assertString(options.user, 'options.user');
+        Validator.assertString(options.id, 'options.id');
+
+        const { user, id, type } = options;
+
+        if (type === 'file') {
+            if (!this.#objects) {
+                throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+            }
+            return new Promise((resolve, reject) =>
+                this.#objects!.checkFileRights(
+                    id,
+                    options.fileName ?? null,
+                    { user },
+                    objectsUtils.CONSTS.ACCESS_READ,
+                    error => {
+                        if (!error) {
+                            return resolve(true);
+                        }
+                        const message = typeof error === 'string' ? error : error.message;
+                        if (message === ERROR_PERMISSION) {
+                            return resolve(false);
+                        }
+                        reject(typeof error === 'string' ? new Error(error) : error);
+                    },
+                ),
+            );
+        }
+
+        try {
+            if (type === 'state') {
+                await this._checkStates(id, { user }, 'getState');
+            } else {
+                await this.getForeignObjectAsync(id, { user });
+            }
+            return true;
+        } catch (e) {
+            if (e.message === ERROR_PERMISSION) {
+                return false;
+            }
+            throw e;
+        }
     }
 
     private async _checkStates(
