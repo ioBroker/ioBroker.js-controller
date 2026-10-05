@@ -109,6 +109,17 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         });
     });
 
+    it(`${testName}sendToHost with a timeout gives up instead of waiting for ever`, async function () {
+        this.timeout(5_000);
+        // a host that does not know a command never answers, and this one does not even exist
+        await assert.rejects(
+            context.adapter.sendToHostAsync('system.host.thisHostDoesNotExist', 'getVersion', null, {
+                timeout: 500,
+            }),
+            /Timeout exceeded/,
+        );
+    });
+
     it(`${testName}check unsubscribeMessage`, function (done) {
         context.states.unsubscribeMessage(gid, function (err) {
             assert.ok(!err);

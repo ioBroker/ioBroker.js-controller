@@ -7647,8 +7647,14 @@ export class AdapterClass extends EventEmitter {
     /**
      * Async version of sendToHost
      *
-     * Resolves with whatever the host answered and never rejects - like the promisified version it
-     * replaces, an error reaches the caller as the resolved value.
+     * Resolves with whatever the host answered - like the promisified version it replaces, an error
+     * of the host reaches the caller as the resolved value, and that is left alone: an adapter that
+     * awaits this today must not start seeing rejections.
+     *
+     * It rejects in one case: a `timeout` was asked for in the send options and elapsed, which is
+     * how `sendToAsync` reports the same thing. Whoever passes that option is writing against an
+     * option that did not exist before and can expect it; whoever passes none keeps the old
+     * behaviour, including a host that never answers and a caller that waits for ever.
      *
      * @param hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is null, the message will be sent to all hosts.
      * @param command command name. One of: "cmdExec", "getRepository", "getInstalled", ...
@@ -7656,13 +7662,18 @@ export class AdapterClass extends EventEmitter {
      * @param options optional send options: a `timeout` for the answer, or the `user` the message is sent for
      */
     sendToHostAsync(hostName: unknown, command: unknown, message?: unknown, options?: unknown): any {
-        return new Promise(resolve => {
+        const timeout = (options as SendToOptions | undefined)?.timeout;
+
+        return new Promise((resolve, reject) => {
             // validation takes place inside sendToHost, so skip it here
             this.sendToHost(
                 hostName as string,
                 command as string,
                 message,
-                resolve as ioBroker.MessageCallback,
+                // The answer of a host travels through the states database and is therefore never an
+                // `Error` instance; one can only come from here, and only where a budget was named.
+                ((result: any) =>
+                    timeout && result instanceof Error ? reject(result) : resolve(result)) as ioBroker.MessageCallback,
                 options as SendToOptions,
             );
         });
@@ -7745,7 +7756,29 @@ export class AdapterClass extends EventEmitter {
                         this._callbackId = 1;
                     }
 
-                    this.messageCallbacks.set(obj.callback.id, { cb: callback, time: Date.now() });
+                    const callbackId = obj.callback.id;
+
+                    /*
+                     * A host that does not know a command never answers, and until now there was no
+                     * way to say how long to wait for one: the callback stayed in the registry and the
+                     * caller waited for ever. `sendTo` has had the timeout of the send options for a
+                     * while; now that `sendToHost` takes those options too, it honours it the same way.
+                     * The timer is cleared where the answer arrives, together with the callback.
+                     */
+                    let timer: undefined | NodeJS.Timeout;
+
+                    if (options?.timeout) {
+                        timer = setTimeout(() => {
+                            const callbackObj = this.messageCallbacks.get(callbackId);
+
+                            if (callbackObj) {
+                                callbackObj.cb(new Error('Timeout exceeded'));
+                                this.messageCallbacks.delete(callbackId);
+                            }
+                        }, options.timeout);
+                    }
+
+                    this.messageCallbacks.set(callbackId, { cb: callback, time: Date.now(), timer });
                 } else {
                     // callback is an object
                     obj.callback = callback;
