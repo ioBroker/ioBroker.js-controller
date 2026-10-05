@@ -6,7 +6,7 @@
 
 # Interface: InternalGetSessionOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:258](https://github.com/ioBroker/ioBroker.js-controller/blob/6ced20881612eb358e0a36a3f73613051ebf9143/packages/adapter/src/lib/_Types.ts#L258)
+Defined in: [adapter/src/lib/\_Types.ts:258](https://github.com/ioBroker/ioBroker.js-controller/blob/42efadab3febad1eb5d878e0072bbd67b3eb0223/packages/adapter/src/lib/_Types.ts#L258)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:258](https://github.com/ioBroker/ioBroke
 
 > **callback**: [`GetSessionCallback`](../type-aliases/GetSessionCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/6ced20881612eb358e0a36a3f73613051ebf9143/packages/adapter/src/lib/_Types.ts#L260)
+Defined in: [adapter/src/lib/\_Types.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/42efadab3febad1eb5d878e0072bbd67b3eb0223/packages/adapter/src/lib/_Types.ts#L260)
 
 ***
 
@@ -22,4 +22,4 @@ Defined in: [adapter/src/lib/\_Types.ts:260](https://github.com/ioBroker/ioBroke
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/6ced20881612eb358e0a36a3f73613051ebf9143/packages/adapter/src/lib/_Types.ts#L259)
+Defined in: [adapter/src/lib/\_Types.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/42efadab3febad1eb5d878e0072bbd67b3eb0223/packages/adapter/src/lib/_Types.ts#L259)

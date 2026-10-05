@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
+## 7.2.5 (2026-10-05)
 * (@GermanBluefox) Added the user context to messages: `sendTo`/`sendToHost` write the `user`
 
 ## 7.2.4 (2026-10-03)

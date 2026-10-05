@@ -6,7 +6,7 @@
 
 # Interface: InternalGetStateOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/6ced20881612eb358e0a36a3f73613051ebf9143/packages/adapter/src/lib/_Types.ts#L507)
+Defined in: [adapter/src/lib/\_Types.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/42efadab3febad1eb5d878e0072bbd67b3eb0223/packages/adapter/src/lib/_Types.ts#L507)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [adapter/src/lib/\_Types.ts:507](https://github.com/ioBroker/ioBroke
 
 > `optional` **callback?**: [`GetStateCallback`](../type-aliases/GetStateCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:510](https://github.com/ioBroker/ioBroker.js-controller/blob/6ced20881612eb358e0a36a3f73613051ebf9143/packages/adapter/src/lib/_Types.ts#L510)
+Defined in: [adapter/src/lib/\_Types.ts:510](https://github.com/ioBroker/ioBroker.js-controller/blob/42efadab3febad1eb5d878e0072bbd67b3eb0223/packages/adapter/src/lib/_Types.ts#L510)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [adapter/src/lib/\_Types.ts:510](https://github.com/ioBroker/ioBroke
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/6ced20881612eb358e0a36a3f73613051ebf9143/packages/adapter/src/lib/_Types.ts#L508)
+Defined in: [adapter/src/lib/\_Types.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/42efadab3febad1eb5d878e0072bbd67b3eb0223/packages/adapter/src/lib/_Types.ts#L508)
 
 ***
 
@@ -30,4 +30,4 @@ Defined in: [adapter/src/lib/\_Types.ts:508](https://github.com/ioBroker/ioBroke
 
 > `optional` **options?**: `Record`\<`string`, `any`\> \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/6ced20881612eb358e0a36a3f73613051ebf9143/packages/adapter/src/lib/_Types.ts#L509)
+Defined in: [adapter/src/lib/\_Types.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/42efadab3febad1eb5d878e0072bbd67b3eb0223/packages/adapter/src/lib/_Types.ts#L509)

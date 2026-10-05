@@ -8,4 +8,4 @@
 
 > **GetStatePromise** = `Promise`\<[`CallbackReturnTypeOf`](CallbackReturnTypeOf.md)\<[`GetStateCallback`](GetStateCallback.md)\>\>
 
-Defined in: [types-dev/index.d.ts:520](https://github.com/ioBroker/ioBroker.js-controller/blob/6ced20881612eb358e0a36a3f73613051ebf9143/packages/types-dev/index.d.ts#L520)
+Defined in: [types-dev/index.d.ts:520](https://github.com/ioBroker/ioBroker.js-controller/blob/42efadab3febad1eb5d878e0072bbd67b3eb0223/packages/types-dev/index.d.ts#L520)
