@@ -33,6 +33,7 @@
 * (@GermanBluefox) Fixed `getEncryptedConfig` decrypting an attribute of `encryptedNative` a second time, which returned garbage because the adapter start already decrypted it
 * (@krobipd) Fixed an alias read/write function returning a boolean (e.g. "val < 20") being stored unconverted in a state declared as number
 * (@GermanBluefox) Added `common.adminTab.order` and `common.adminTab.icon` to the `io-package.json` schema: admin uses both, but an adapter setting them failed the schema validation
+* (@krobipd) Fixed the built-in database servers copying everything received so far for every incoming network chunk: a single large message such as the ~13 MB repository that the host sends to admin cost about 1.3 GB of allocations, and the memory freed afterwards stayed with the controller process (1.4 GB measured on a 6 GB system); the RESP parser of the unmaintained `respjs` package now lives in `@iobroker/db-base` and copies a large value only once
 
 ## 7.2.5 (2026-10-05)
 * (@GermanBluefox) Added the user context to messages: `sendTo`/`sendToHost` write the `user`
