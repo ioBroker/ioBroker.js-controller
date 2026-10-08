@@ -378,8 +378,8 @@ function readBuffer(buf: Buffer, i: number): ReadRes | null {
  * @returns the value, null if it is incomplete, or an Error for invalid data
  */
 function parseBuffer(buf: Buffer, index: number, bufBulk: boolean): ReadRes | Error | null {
-    let result: ReadRes | null = null;
-    let num: number | null = NaN;
+    let result: ReadRes | null;
+    let num: number | null;
     if (index >= buf.length) {
         return null;
     }
