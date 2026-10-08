@@ -4,6 +4,8 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Fixed `iobroker upgrade <adapter>` aborting with "this.objects.extendObjectAsync is not a function" before the adapter was installed - on Windows this hit every adapter that has an instance
+* (@GermanBluefox) Fixed `iobroker upgrade <adapter>@latest` and `iobroker upgrade self@latest`: `latest` is npm's dist tag and was passed to semver as a version, which skipped the upgrade dialog and reported "Invalid Version: latest"
 * (@GermanBluefox) Added `adapter.mayRead({ user, type, id, fileName })`: whether a user may read a state, an object or a file of an adapter, answered with the rules of the database itself - the ACL of the thing, its owner, the groups of the user and the default ACL, with the administrator group not restricted by any of it. A socket server has to ask this before it hands an event to a connection, because a subscription says what a client is interested in and never what it may see, and so far everyone who needed the answer had to rebuild these rules on the side. Two answers follow the database rather than intuition and are documented as such: a state whose object does not exist may be read by anybody, and so may an object that is not there any more
 * (@GermanBluefox) Fixed `getSession` method
 * (@GermanBluefox) A states database error while reading a session is no longer swallowed, but reported and logged instead of looking like a logged out user
