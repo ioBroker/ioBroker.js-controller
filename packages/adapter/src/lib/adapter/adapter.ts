@@ -539,11 +539,13 @@ export interface AdapterClass {
      * @param hostName name of the host
      * @param command command name
      * @param message message to send
+     * @param options optional options to control the send behaviour
      */
     sendToHostAsync(
         hostName: string,
         command: string,
         message: ioBroker.MessagePayload,
+        options?: SendToOptions,
     ): Promise<ioBroker.MessagePayload>;
 
     /**
@@ -8983,12 +8985,14 @@ export class AdapterClass extends EventEmitter {
      * @param command command name
      * @param message message to send
      * @param callback optional return result
+     * @param options optional options to control the send behaviour
      */
     sendToHost(
         hostName: string | null,
         command: string,
         message: any,
         callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
+        options?: SendToOptions,
     ): void;
 
     /**
@@ -9007,8 +9011,10 @@ export class AdapterClass extends EventEmitter {
      *              if (!result) adapter.log.error('No response received');
      *            }
      *        ```
+     * @param options optional send options: a `timeout` for the answer, or the `user` this message is
+     * sent on behalf of - the host sees it as `obj.user`
      */
-    sendToHost(hostName: unknown, command: unknown, message: unknown, callback?: unknown): any {
+    sendToHost(hostName: unknown, command: unknown, message: unknown, callback?: unknown, options?: unknown): any {
         if (typeof message === 'function' && typeof callback === 'undefined') {
             callback = message;
             message = undefined;
@@ -9026,12 +9032,18 @@ export class AdapterClass extends EventEmitter {
         if (!tools.isObject(callback)) {
             Validator.assertOptionalCallback(callback, 'callback');
         }
+        if (options !== undefined) {
+            Validator.assertObject<SendToOptions>(options, 'options');
+        }
 
         if (tools.isObject(callback)) {
             this.#fireAndForget(
-                this.#async.sendToHost(hostName, command, message, {
-                    callback: callback as ioBroker.MessageCallbackInfo,
-                }),
+                this.#async.sendToHost(
+                    hostName,
+                    command,
+                    message,
+                    this.#withSendFlags(options, { callback: callback as ioBroker.MessageCallbackInfo }),
+                ),
                 'Error in sendToHost',
             );
             return;
@@ -9041,7 +9053,7 @@ export class AdapterClass extends EventEmitter {
 
         // A broadcast (hostName === null) yields many replies, so the callback is ignored — matching legacy behavior.
         if (typeof cb === 'function' && hostName !== null) {
-            this.sendToHostAsync(hostName, command, message).then(
+            this.sendToHostAsync(hostName, command, message, options).then(
                 (reply: any) => cb(reply),
                 (err: Error) => cb(err),
             );
@@ -9049,7 +9061,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         this.#fireAndForget(
-            this.#async.sendToHost(hostName, command, message, { expectReply: false }),
+            this.#async.sendToHost(hostName, command, message, this.#withSendFlags(options, { expectReply: false })),
             'Error in sendToHost',
         );
     }
@@ -9060,14 +9072,20 @@ export class AdapterClass extends EventEmitter {
      * @param hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is null, the message will be sent to all hosts.
      * @param command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
      * @param message object that will be given as argument for request
+     * @param options optional send options, e.g. a `timeout` or the `user` the message is sent for
      */
-    sendToHostAsync(hostName: unknown, command: unknown, message?: unknown): any {
+    sendToHostAsync(hostName: unknown, command: unknown, message?: unknown, options?: unknown): any {
         if (typeof message === 'undefined') {
             message = command;
             command = 'send';
         }
         // broadcast (null host) yields many responses → never wait for a reply
-        return this.#async.sendToHost(hostName, command, message, { expectReply: hostName !== null });
+        return this.#async.sendToHost(
+            hostName,
+            command,
+            message,
+            this.#withSendFlags(options, { expectReply: hostName !== null }),
+        );
     }
 
     /**

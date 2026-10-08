@@ -412,3 +412,140 @@ describe('MessagingManager callback registry', () => {
         assert.equal(mgr.resolveCallback({ callback: { ack: true, id: 999 } } as any), false);
     });
 });
+
+describe('MessagingManager.sendToHost timeout', () => {
+    /*
+     * A host that does not know a command never answers. Here both ways of waiting - to an instance
+     * and to a host - go through the same reply registry, so the budget of the send options counts
+     * for a host message as well; on the 7.2.x line, where the two paths are separate, that had to be
+     * built. This test is what keeps them from drifting apart again.
+     */
+    it('rejects a host message that is not answered within the budget', async () => {
+        const clock = sinon.useFakeTimers();
+        try {
+            const pushMessage = sinon.stub().resolves();
+            const subscribeMessage = sinon.stub().resolves();
+            const fakeCommon = {
+                supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
+            } as any;
+            const mgr = new MessagingManager(
+                makeContext({ states: { pushMessage, subscribeMessage } as any, common: fakeCommon }),
+            );
+
+            const replyPromise = mgr.sendToHost({
+                hostName: 'host',
+                command: 'getVersion',
+                message: null,
+                expectReply: true,
+                options: { timeout: 1000 },
+            });
+
+            clock.tick(1001);
+            await assert.rejects(replyPromise, (err: Error) => {
+                assert.equal(err.message, 'Timeout exceeded');
+                return true;
+            });
+        } finally {
+            clock.restore();
+        }
+    });
+
+    it('waits on where no budget is named, as it always did', async () => {
+        const clock = sinon.useFakeTimers();
+        try {
+            const pushMessage = sinon.stub().resolves();
+            const subscribeMessage = sinon.stub().resolves();
+            const fakeCommon = {
+                supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
+            } as any;
+            const mgr = new MessagingManager(
+                makeContext({ states: { pushMessage, subscribeMessage } as any, common: fakeCommon }),
+            );
+
+            let settled = false;
+            void mgr.sendToHost({ hostName: 'host', command: 'getVersion', message: null, expectReply: true }).then(
+                () => (settled = true),
+                () => (settled = true),
+            );
+
+            clock.tick(3_600_000);
+            await Promise.resolve();
+            assert.equal(settled, false, 'a host message without a budget must not give up by itself');
+            mgr.clearPendingCallbacks();
+        } finally {
+            clock.restore();
+        }
+    });
+});
+
+describe('MessagingManager user context', () => {
+    it('puts options.user into the message of sendTo', async () => {
+        const pushMessage = sinon.stub().resolves();
+        const mgr = new MessagingManager(makeContext({ states: { pushMessage } as any }));
+
+        await mgr.sendTo({
+            instanceName: 'inst.0',
+            command: 'cmd',
+            message: {},
+            options: { user: 'system.user.someone' },
+        });
+
+        const [, sentObj] = pushMessage.firstCall.args as [string, ioBroker.SendableMessage];
+        assert.equal(sentObj.user, 'system.user.someone');
+    });
+
+    it('puts options.user into the message of sendToHost', async () => {
+        const pushMessage = sinon.stub().resolves();
+        const mgr = new MessagingManager(makeContext({ states: { pushMessage } as any }));
+
+        await mgr.sendToHost({
+            hostName: 'host',
+            command: 'cmd',
+            message: {},
+            options: { user: 'system.user.someone' },
+        });
+
+        const [, sentObj] = pushMessage.firstCall.args as [string, ioBroker.SendableMessage];
+        assert.equal(sentObj.user, 'system.user.someone');
+    });
+
+    it('leaves the field out when no user is named, so a receiver can tell the difference', async () => {
+        const pushMessage = sinon.stub().resolves();
+        const mgr = new MessagingManager(makeContext({ states: { pushMessage } as any }));
+
+        await mgr.sendTo({ instanceName: 'inst.0', command: 'cmd', message: {} });
+        await mgr.sendTo({ instanceName: 'inst.0', command: 'cmd', message: {}, options: { timeout: 1000 } });
+        await mgr.sendTo({ instanceName: 'inst.0', command: 'cmd', message: {}, options: { user: '' } as any });
+
+        for (const call of pushMessage.getCalls()) {
+            const [, sentObj] = call.args as [string, ioBroker.SendableMessage];
+            assert.equal('user' in sentObj, false);
+        }
+    });
+
+    it('keeps the user on a message that waits for a reply', async () => {
+        const pushMessage = sinon.stub().resolves();
+        const subscribeMessage = sinon.stub().resolves();
+        const fakeCommon = {
+            supportedMessages: { custom: false, object: false, state: false, deviceManager: false },
+        } as any;
+        const mgr = new MessagingManager(
+            makeContext({ states: { pushMessage, subscribeMessage } as any, common: fakeCommon }),
+        );
+
+        void mgr.sendTo({
+            instanceName: 'inst.0',
+            command: 'cmd',
+            message: {},
+            expectReply: true,
+            options: { user: 'system.user.someone' },
+        });
+        // let the push happen
+        await new Promise(resolve => setImmediate(resolve));
+
+        const [, sentObj] = pushMessage.firstCall.args as [string, ioBroker.SendableMessage];
+        assert.equal(sentObj.user, 'system.user.someone');
+        assert.ok(sentObj.callback, 'the reply header is still set');
+        mgr.clearPendingCallbacks();
+    });
+});
