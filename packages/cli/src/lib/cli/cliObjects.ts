@@ -397,32 +397,32 @@ export class CLIObjects extends CLICommand {
         value: string,
     ): Promise<void> {
         // input: it's an instance object and has encrypted native, was a native value set?
-        if (/^native\..+[^.]$/g.test(propPath) && typeof value === 'string') {
-            // single native property
-            const prop = propPath.split('.')[1];
-            if ('encryptedNative' in res && res.encryptedNative?.includes(prop)) {
+        if (/^native\..+$/.test(propPath) && typeof value === 'string') {
+            // a single native property, the path may reach into native like `hosts.0.password`
+            const prop = propPath.substring('native.'.length);
+            const isEncryptedAttr =
+                'encryptedNative' in res && !!res.encryptedNative?.some(attr => matchesAttrPath(attr, prop));
+
+            if (isEncryptedAttr) {
                 try {
                     const config = await objects.getObjectAsync('system.config');
-                    res.native[prop] = tools.encrypt(config!.native.secret, res.native[prop]);
+                    deepSetProperty(res, propPath, tools.encrypt(config!.native.secret, value));
                 } catch (e) {
                     console.error(`Could not auto-encrypt property "${prop}": ${e.message}`);
                 }
             }
         } else if (propPath === 'native' && tools.isObject(value)) {
-            // whole native attribute
-            let config;
-            for (const prop of Object.keys(value)) {
-                if (
-                    typeof (res.native as Record<string, any>)[prop] === 'string' &&
-                    'encryptedNative' in res &&
-                    res.encryptedNative?.includes(prop)
-                ) {
-                    try {
-                        config = config || (await objects.getObjectAsync('system.config'))!;
-                        res.native[prop] = tools.encrypt(config.native.secret, res.native[prop]);
-                    } catch (e) {
-                        console.error(`Could not auto-encrypt property "${prop}": ${e.message}`);
+            // the whole native attribute, where an entry of encryptedNative may reach into it
+            const attrs = ('encryptedNative' in res ? res.encryptedNative : undefined) || [];
+
+            if (attrs.length) {
+                try {
+                    const config = (await objects.getObjectAsync('system.config'))!;
+                    for (const attr of attrs) {
+                        encryptAtPath(res.native as Record<string, any>, attr.split('.'), config.native.secret);
                     }
+                } catch (e) {
+                    console.error(`Could not auto-encrypt the native of "${res._id}": ${e.message}`);
                 }
             }
         }
@@ -695,6 +695,63 @@ function deepSelectProperty(object: ioBroker.AnyObject, path: string): any {
     }
     path = normalizePropertyPath(path);
     return _deepSelectProperty(object, path.split('.'));
+}
+
+/**
+ * Encrypt every value that an `encryptedNative` entry addresses
+ *
+ * An entry may reach into `native`: `hosts.password` means the password of every row of the
+ * `hosts` table, so the path is followed through each element of an array. What the path does not
+ * reach, and anything that is not a non-empty string, is left alone.
+ *
+ * @param obj The object to walk, `native` of the instance object or a part of it
+ * @param attrParts The remaining segments of the attribute path
+ * @param secret The system secret to encrypt with
+ */
+function encryptAtPath(obj: Record<string, any>, attrParts: string[], secret: string): void {
+    const [part, ...rest] = attrParts;
+
+    if (!rest.length) {
+        if (typeof obj[part] === 'string' && obj[part]) {
+            obj[part] = tools.encrypt(secret, obj[part]);
+        }
+        return;
+    }
+
+    const next = obj[part];
+    if (!next || typeof next !== 'object') {
+        return;
+    }
+
+    if (Array.isArray(next)) {
+        for (const entry of next) {
+            if (entry && typeof entry === 'object') {
+                encryptAtPath(entry, rest, secret);
+            }
+        }
+        return;
+    }
+
+    encryptAtPath(next, rest, secret);
+}
+
+/**
+ * Check if a set property path is addressed by an entry of `encryptedNative`
+ *
+ * An entry names the attribute inside `native`, and it may reach into it: `hosts.password` means
+ * the password of every row of the `hosts` table. A path that was set names the row it belongs to,
+ * so `hosts[0].password` has to be recognized as that very attribute. The index segments are
+ * therefore dropped before the two are compared.
+ *
+ * @param attr An entry of `encryptedNative`, e.g. `password` or `hosts.password`
+ * @param propPath The property path that was set, relative to `native`, e.g. `hosts[0].password`
+ */
+function matchesAttrPath(attr: string, propPath: string): boolean {
+    const pathParts = normalizePropertyPath(propPath)
+        .split('.')
+        .filter(part => !/^(\[\d+]|\d+)$/.test(part));
+
+    return attr === pathParts.join('.');
 }
 
 /**
