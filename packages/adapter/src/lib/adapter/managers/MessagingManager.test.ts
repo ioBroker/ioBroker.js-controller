@@ -463,12 +463,10 @@ describe('MessagingManager.sendToHost timeout', () => {
             );
 
             let settled = false;
-            void mgr
-                .sendToHost({ hostName: 'host', command: 'getVersion', message: null, expectReply: true })
-                .then(
-                    () => (settled = true),
-                    () => (settled = true),
-                );
+            void mgr.sendToHost({ hostName: 'host', command: 'getVersion', message: null, expectReply: true }).then(
+                () => (settled = true),
+                () => (settled = true),
+            );
 
             clock.tick(3_600_000);
             await Promise.resolve();
