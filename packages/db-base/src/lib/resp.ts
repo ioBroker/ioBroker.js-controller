@@ -24,13 +24,19 @@
  * SOFTWARE.
  *
  * Changed for ioBroker: the parser no longer copies everything received so far for every incoming chunk.
- * A value that announces its length (bulk string, array) is collected chunk by chunk and copied once
- * when the announced length has arrived. Before, a 13 MB message received in 64 KB chunks allocated
+ * A bulk string that is not complete yet - also inside an array - is collected chunk by chunk and copied
+ * once when its announced length has arrived; the parser learns that length in the same pass that parses. Before, a 13 MB message received in 64 KB chunks allocated
  * about 200 buffers with 1.3 GB in total.
  */
 import { EventEmitter } from 'node:events';
 
 const CRLF = '\r\n';
+
+/**
+ * End index (in the buffer) that the bulk string at which the last parseBuffer call stopped needs; 0 if that call
+ * stopped at an incomplete header line instead. Set in the same pass that parses, so no second walk is needed.
+ */
+let incompleteEnd = 0;
 
 /** A decoded RESP value */
 export type RespValue = string | number | null | Buffer | Error | RespValue[];
@@ -251,10 +257,12 @@ export class Resp extends EventEmitter {
         }
 
         while (this._pos < this._buf.length) {
+            incompleteEnd = 0;
             const result = parseBuffer(this._buf, this._pos, this._bufBulk);
             if (result == null) {
-                const needed = neededLength(this._buf, this._pos);
-                if (needed > this._buf.length - this._pos) {
+                // parseBuffer stopped at a bulk string whose announced end lies beyond the received data
+                const needed = incompleteEnd - this._pos;
+                if (incompleteEnd > this._buf.length) {
                     // wait until the announced length has arrived instead of copying the whole buffer for every chunk
                     this._pending = [this._buf.subarray(this._pos)];
                     this._pendingLength = this._buf.length - this._pos;
@@ -301,57 +309,6 @@ export class Resp extends EventEmitter {
         this._pendingLength = 0;
         this._needed = 0;
     }
-}
-
-/**
- * Minimum number of bytes from index on that the next RESP value needs, as far as the headers already received tell.
- * Returns 0 if that is not known yet (e.g. an incomplete header line) or the value is complete.
- *
- * @param buf the received data
- * @param index start of the value
- */
-function neededLength(buf: Buffer, index: number): number {
-    const end = valueEnd(buf, index);
-    return end < 0 ? -end - index : 0;
-}
-
-/**
- * End index of the RESP value at index if it is complete, -(minimum end index) if it is incomplete and that minimum
- * is known, and 0 if nothing is known. Bulk strings are skipped without decoding them.
- *
- * @param buf the received data
- * @param index start of the value
- */
-function valueEnd(buf: Buffer, index: number): number {
-    if (index >= buf.length) {
-        return 0;
-    }
-    const type = buf[index];
-    const header = readBuffer(buf, index + 1);
-    if (header == null) {
-        return 0;
-    }
-    if (type !== 36 && type !== 42) {
-        // simple string, error or integer
-        return header.index;
-    }
-    const num = parseInteger(header.content);
-    if (num == null || num < 0) {
-        return header.index;
-    }
-    if (type === 36) {
-        const end = header.index + num + 2;
-        return end <= buf.length ? end : -end;
-    }
-    let pos = header.index;
-    for (let i = 0; i < num; i++) {
-        const end = valueEnd(buf, pos);
-        if (end <= 0) {
-            return end;
-        }
-        pos = end;
-    }
-    return pos;
 }
 
 /**
@@ -436,6 +393,7 @@ function parseBuffer(buf: Buffer, index: number, bufBulk: boolean): ReadRes | Er
                 // Null Bulk
                 result.content = null;
             } else if (buf.length < endIndex + 2) {
+                incompleteEnd = endIndex + 2;
                 return null;
             } else if (!isCRLF(buf, endIndex)) {
                 return new Error('Parse "$" failed, invalid CRLF');
