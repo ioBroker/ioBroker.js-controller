@@ -10,6 +10,7 @@ import { register as testAdapterHelpers } from './testAdapterHelpers.js';
 import { register as testEnums } from './testEnums.js';
 import { register as testFiles } from './testFiles.js';
 import { register as testHelperStates } from './testHelperStates.js';
+import { register as testMayRead } from './testMayRead.js';
 import { register as testMessages } from './testMessages.js';
 import { register as testObjectsFunctions } from './testObjectsFunctions.js';
 import { register as testObjectsACL } from './testObjectsACL.js';
@@ -52,6 +53,7 @@ export default function testAdapter(options: Record<string, any>): void {
         testEnums,
         testFiles,
         testHelperStates,
+        testMayRead,
         testMessages,
         testObjectsFunctions,
         testObjectsACL,
