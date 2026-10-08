@@ -7,6 +7,9 @@ import { PERMISSIONS } from './permissions.js';
  * connection: may this user see this at all? The answer has to be the one the database itself would
  * give, which is why these tests go through real users, real groups and real ACLs rather than
  * through a mock of them.
+ *
+ * @param it The mocha test function to register the tests on
+ * @param context The shared test context (adapter, states and objects clients)
  */
 export function register(it: Mocha.TestFunction, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} adapter: mayRead `;
@@ -103,31 +106,27 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
     });
 
     it(`${testName}answers for a file along its mode`, async () => {
+        // files live under an object of type `meta`, so one has to exist before anything is written
+        const filesId = 'mayReadFiles.0';
         const fileName = 'mayRead/file.json';
-        await context.adapter.writeFileAsync(context.adapterShortName, fileName, '{}');
+
+        await context.adapter.setForeignObject(filesId, {
+            type: 'meta',
+            common: { name: 'Files of the mayRead tests', type: 'meta.user' },
+            native: {},
+        });
+
+        await context.adapter.writeFileAsync(filesId, fileName, '{}');
 
         assert.equal(
-            await context.adapter.mayRead({
-                user: READER,
-                type: 'file',
-                id: `${context.adapterShortName}.0`,
-                fileName,
-            }),
+            await context.adapter.mayRead({ user: READER, type: 'file', id: filesId, fileName }),
             true,
             'a file that was just written is readable',
         );
 
         // now only its owner may have it
-        await context.adapter.chmodFileAsync(context.adapterShortName, fileName, { mode: PERMISSIONS['0600'] });
+        await context.adapter.chmodFileAsync(filesId, fileName, { mode: PERMISSIONS['0600'] });
 
-        assert.equal(
-            await context.adapter.mayRead({
-                user: READER,
-                type: 'file',
-                id: `${context.adapterShortName}.0`,
-                fileName,
-            }),
-            false,
-        );
+        assert.equal(await context.adapter.mayRead({ user: READER, type: 'file', id: filesId, fileName }), false);
     });
 }
