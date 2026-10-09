@@ -150,6 +150,8 @@ interface RepoRequester {
     /** requesting instance */
     from: string;
     callback: ioBroker.MessageCallbackInfo;
+    /** `getRepository` for the whole content, `getRepositoryCompact` for versions and icons only */
+    command: string;
 }
 
 interface SendResponseToOptions {
@@ -2799,8 +2801,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         }
 
         case 'getRepository':
+        case 'getRepositoryCompact':
             if (msg.callback && msg.from) {
-                requestedRepoUpdates.push({ from: msg.from, callback: msg.callback });
+                requestedRepoUpdates.push({ from: msg.from, callback: msg.callback, command: msg.command });
                 if (requestedRepoUpdates.length > 1) {
                     // someone has requested repo previous to us
                     logger.debug(
@@ -2814,27 +2817,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     systemConfig = await objects!.getObject(SYSTEM_CONFIG_ID);
                 } catch {
                     // ignore
-                }
-
-                // Collect statistics (only if license has been confirmed - user agreed)
-                if (
-                    systemConfig?.common?.diag &&
-                    systemConfig.common.licenseConfirmed &&
-                    (!lastDiagSend || Date.now() - lastDiagSend > 30_000) // prevent sending of diagnostics by multiple admin instances
-                ) {
-                    lastDiagSend = Date.now();
-                    try {
-                        const obj = await collectDiagInfo(systemConfig.common.diag);
-                        // if the user selected 'none', we will have null here and do not want to send it
-                        if (obj) {
-                            // Ignore the response here and do not wait for a result to decrease the repo fetching as it used in admin GUI
-                            tools
-                                .sendDiagInfo(obj)
-                                .catch(e => logger.error(`${hostLogPrefix} Cannot send diag info: ${e.message}`));
-                        }
-                    } catch (e) {
-                        logger.error(`${hostLogPrefix} cannot collect diagnostics: ${e.message}`);
-                    }
                 }
 
                 const globalRepo = {};
@@ -2930,10 +2912,40 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 for (const requester of requestedRepoUpdates) {
-                    sendTo(requester.from, msg.command, globalRepo, requester.callback);
+                    sendTo(
+                        requester.from,
+                        requester.command,
+                        requester.command === 'getRepositoryCompact' ? toCompactRepository(globalRepo) : globalRepo,
+                        requester.callback,
+                    );
                 }
 
                 requestedRepoUpdates = [];
+
+                // Everything below only has the repository as its trigger, so it runs once the
+                // requesters have their answer. Collecting the diagnostics alone took seconds on a
+                // big installation, and the GUI of admin was waiting for all of it
+
+                // Collect statistics (only if license has been confirmed - user agreed)
+                if (
+                    systemConfig?.common?.diag &&
+                    systemConfig.common.licenseConfirmed &&
+                    (!lastDiagSend || Date.now() - lastDiagSend > 30_000) // prevent sending of diagnostics by multiple admin instances
+                ) {
+                    lastDiagSend = Date.now();
+                    try {
+                        const obj = await collectDiagInfo(systemConfig.common.diag);
+                        // if the user selected 'none', we will have null here and do not want to send it
+                        if (obj) {
+                            // Ignore the response here and do not wait for a result to decrease the repo fetching as it used in admin GUI
+                            tools
+                                .sendDiagInfo(obj)
+                                .catch(e => logger.error(`${hostLogPrefix} Cannot send diag info: ${e.message}`));
+                        }
+                    } catch (e) {
+                        logger.error(`${hostLogPrefix} cannot collect diagnostics: ${e.message}`);
+                    }
+                }
 
                 try {
                     await checkAvailableDockerUpdate();
@@ -7135,6 +7147,25 @@ async function checkRebootRequired(): Promise<void> {
         message,
         instance: `system.host.${hostname}`,
     });
+}
+
+/**
+ * Reduces a repository to the version and the icon of every entry
+ *
+ * The whole repository is several megabytes, of which a GUI that only shows which adapter exists in
+ * which version uses two fields. Sending all of it through the message box made the start of the
+ * admin GUI wait seconds for an answer it hardly used.
+ *
+ * @param repo the merged repository
+ */
+function toCompactRepository(repo: Record<string, any>): Record<string, { version: string; icon?: string }> {
+    const result: Record<string, { version: string; icon?: string }> = {};
+
+    for (const name of Object.keys(repo)) {
+        result[name] = { version: repo[name]?.version, icon: repo[name]?.extIcon };
+    }
+
+    return result;
 }
 
 /**
