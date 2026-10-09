@@ -202,7 +202,20 @@ export class RedisHandler extends EventEmitter {
         }
 
         if (this.listenerCount(command) !== 0) {
-            setImmediate(() => this.emit(command, data, responseId));
+            setImmediate(() => {
+                try {
+                    this.emit(command, data, responseId);
+                } catch (e) {
+                    // A command handler runs inside `setImmediate`, so anything it throws is an
+                    // uncaught exception at the top of the event loop rather than a failed
+                    // command: no reply reaches the client, and the process is at the mercy of
+                    // whatever `uncaughtException` handling it happens to have. Since `data` comes
+                    // off a socket, one client sending something a handler does not expect could
+                    // take the whole database server with it. Answering with an error keeps the
+                    // failure where it belongs -- with the command that caused it.
+                    this.sendError(responseId, e instanceof Error ? e : new Error(String(e)));
+                }
+            });
         } else {
             this.sendError(responseId, new Error(`${command} NOT SUPPORTED`));
         }
@@ -371,14 +384,30 @@ export class RedisHandler extends EventEmitter {
     sendError(responseId: ResponseId, error: Error): void {
         this.log.warn(`${this.socketId} Error from InMemDB: ${error.stack}`);
 
-        for (let i = 0; i < this.activeMultiCalls.length; i++) {
-            if (this.activeMultiCalls[i].responseIds.includes(responseId)) {
-                this._handleMultiResponse(responseId, i, Resp.encodeError(error));
-                return;
-            }
-        }
+        // A RESP error is one line, and `Resp.encodeError` writes the message as it is. Parts of it come from
+        // the client - the id of a command, the payload quoted back by a JSON parser - so a CR or LF in there
+        // would end the frame and turn the rest into what looks like the answer to another command. The client
+        // then reads a truncated error, an answer nobody asked for and finally a fragment that starts with a
+        // byte which is no RESP type, and tears the connection down. That is the failure this is meant to
+        // prevent, so the line stays one line.
+        const singleLine = new Error(error.message.replace(/[\r\n]+/g, ' '));
 
-        this.sendResponse(responseId, Resp.encodeError(error));
+        // This is the last line of defence - it runs from `catch` blocks, which are outside the `try` that
+        // would have caught anything thrown here. Answering twice while a MULTI is open, for instance, lets
+        // `_sendExecResponse` encode a response that was never filled in, and that exception would arrive
+        // uncaught at the top of the event loop: the failure this method exists to avoid.
+        try {
+            for (let i = 0; i < this.activeMultiCalls.length; i++) {
+                if (this.activeMultiCalls[i].responseIds.includes(responseId)) {
+                    this._handleMultiResponse(responseId, i, Resp.encodeError(singleLine));
+                    return;
+                }
+            }
+
+            this.sendResponse(responseId, Resp.encodeError(singleLine));
+        } catch (e) {
+            this.log.warn(`${this.socketId} Cannot send error response: ${e.message}`);
+        }
     }
 
     /**

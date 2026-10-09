@@ -52,6 +52,15 @@ export interface LogInfo extends TransformableInfo {
     };
     /** ISO timestamp of the log entry */
     timestamp: string;
+    /**
+     * Whether whoever produced this record has already pushed it to the log transporters itself.
+     *
+     * A record can reach the host a second time, e.g. captured from the output of a child process that logs on
+     * its own. Logging it here is what puts it in the host's log file, but pushing it to the transporters again
+     * would show it twice to the user. The flag travels with the record to the `logged` event, where the push
+     * happens, and is set by whoever reads the record - the only place that knows where it came from.
+     */
+    alreadyPushed?: boolean;
 }
 
 // We must check if SysLog is defined before extending it
@@ -135,11 +144,15 @@ class NotifierTransport extends Transport {
     }
 
     log(info: LogInfo, callback: () => void): void {
-        const msg = {
+        const msg: Partial<ioBroker.LogMessage> = {
             severity: info[LEVEL],
             ts: new Date(info.timestamp).getTime(),
             message: info.message,
         };
+        // the listener decides about the push, so it has to learn that this record was pushed already
+        if (info.alreadyPushed) {
+            msg.alreadyPushed = true;
+        }
         setImmediate(() => this.emit('logged', msg));
         callback();
     }

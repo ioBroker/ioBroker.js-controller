@@ -682,6 +682,18 @@ export interface SendToOptions {
     user?: ioBroker.ObjectIDs.User;
 }
 
+/** What is to be read, and by whom - see `AdapterClass.mayRead` */
+export interface MayReadOptions {
+    /** The user the question is about, e.g. `system.user.someone` */
+    user: ioBroker.ObjectIDs.User;
+    /** What kind of thing it is: the object itself, the value of a state, or a file of an adapter */
+    type: 'object' | 'state' | 'file';
+    /** The object, the state, or the adapter a file belongs to, e.g. `vis.0` */
+    id: string;
+    /** The file inside `id`, for `type: 'file'`, e.g. `main/vis-views.json` */
+    fileName?: string;
+}
+
 /** Options for sending a message to another instance */
 export interface InternalSendToOptions {
     /** The instance to send the message to */

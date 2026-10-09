@@ -1691,8 +1691,10 @@ export class StateRedisClient {
         let obj;
         try {
             obj = await this.client.get(this.namespaceSession + id);
-        } catch {
-            // ignore
+        } catch (e) {
+            // A failed read is a database problem, not a missing session. Swallowing it here
+            // turns every connection error into a silent "not logged in".
+            return tools.maybeCallbackWithRedisError(callback, e);
         }
 
         this.settings.connection.enhancedLogging && this.log.silly(`${this.namespace} redis get ${id} ${obj}`);
@@ -1702,7 +1704,9 @@ export class StateRedisClient {
             this.log.warn(`${this.namespace} Cannot parse "${obj}"`);
             obj = null;
         }
-        return tools.maybeCallback(callback, obj);
+        // The callback is node style, like the error paths above: passing the session as the
+        // first argument would make every caller read it as the error and see no session.
+        return tools.maybeCallbackWithError(callback, null, obj);
     }
 
     /**

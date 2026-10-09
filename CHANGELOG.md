@@ -6,9 +6,13 @@
 ## __WORK IN PROGRESS__
 * (@GermanBluefox) `getLogs` accepts an optional `logLevel` now, so a requester can ask for a minimum severity instead of filtering on its own
 * (@GermanBluefox) Added the host command `searchLogs` (feature `CONTROLLER_SEARCH_LOGS`): it searches the log files of the host - the rotated and gzipped ones too - by time range, level, source and text and returns only the matching entries, so that admin does not have to transfer every log file of another host
+* (@GermanBluefox) Added an optional `--level` filter to `iobroker logs`, e.g. `iobroker logs --watch --level warn`
+* (@GermanBluefox) Added `adapter.mayRead({ user, type, id, fileName })`: whether a user may read a state, an object or a file of an adapter, answered with the rules of the database itself - the ACL of the thing, its owner, the groups of the user and the default ACL, with the administrator group not restricted by any of it. A socket server has to ask this before it hands an event to a connection, because a subscription says what a client is interested in and never what it may see, and so far everyone who needed the answer had to rebuild these rules on the side. Two answers follow the database rather than intuition and are documented as such: a state whose object does not exist may be read by anybody, and so may an object that is not there any more
+* (@GermanBluefox) Fixed `getSession` method
+* (@GermanBluefox) A states database error while reading a session is no longer swallowed, but reported and logged instead of looking like a logged out user
+* (@GermanBluefox) Added support for adapters written in Python via `common.platform: "Python"` (feature flag `CONTROLLER_PYTHON_ADAPTERS`)
 * (@GermanBluefox) Fixed the controller refusing to start after a crash on a busy Windows machine: the check whether the recorded pid still belongs to the controller gave up after 10 seconds, and a check that cannot be answered counts as "the controller is running"
 * (@GermanBluefox) Node.js 22.19 is now the minimum version - 22.0 to 22.18 are no longer supported
-* (@GermanBluefox) Added an optional `--level` filter to `iobroker logs`, e.g. `iobroker logs --watch --level warn`
 * (@GermanBluefox) Fixed `start` refusing to run after an unclean shutdown because of a left over `pids.txt`
 * (@GermanBluefox) Fixed the ACL of states restricting members of the administrator group - objects and files already let them through, states only the `admin` user
 * (@GermanBluefox) Added `tipsDisabled` to `system.config`, with which the admin remembers that the "Did you know ...?" tips must not be shown at the start
@@ -19,11 +23,30 @@
 * (@krobipd) Fixed the automatic ENOTEMPTY recovery not removing the blocking npm temp directory on npm >= 10.6.0
 * (@krobipd) Fixed an occasional "Connection is closed" warning logged when a fast schedule/once adapter shuts down
 * (@krobipd) Fixed `info.connection` not being reset when an instance goes offline, which also left a stray state named after the instance namespace
+* (@GermanBluefox) Fixed a command handler throwing in the built-in database servers escaping as an uncaught exception instead of failing that one command
+* (@GermanBluefox) Fixed a PUBLISH with a payload that is not valid JSON costing the client its connection to the built-in databases
+* (@GermanBluefox) Fixed `findObject` crashing when called without options and the search reached an object whose name is translated
+* (@GermanBluefox) Fixed a Python instance being started while its environment was being rebuilt, which failed on an import of a package that was there a moment earlier
+* (@GermanBluefox) A Python instance no longer gets the `memHeapTotal` and `memHeapUsed` states, which only exist on V8 and stayed empty, and its `eventLoopLag` is no longer described as a Node.js one
+* (@GermanBluefox) A memory limit or `nodeProcessParams` set on a Python instance is now reported as ignored instead of silently having no effect
+* (@GermanBluefox) Fixed every log line of a Python adapter reaching the log transporters twice: the adapter pushes its own records since SDK 0.8.0, and the copy captured from its stdout is now written to the host log only
+* (@GermanBluefox) A Python adapter can now be started on a Redis Sentinel installation: the sentinels are passed to it instead of a fixed address, and the SDK follows the master across a failover (needs the Python SDK 0.9.0)
 * (@GermanBluefox) Fixed complex attribute names (e.g. `devices.password`) and arrays in `encryptedNative` not being decrypted when the adapter starts and documented complex attribute names for `encryptedNative` and `protectedNative`
 * (@GermanBluefox) Fixed `getEncryptedConfig` dropping entries that are not a string when the attribute resolves to an array
 * (@GermanBluefox) Fixed `getEncryptedConfig` decrypting an attribute of `encryptedNative` a second time, which returned garbage because the adapter start already decrypted it
 * (@krobipd) Fixed an alias read/write function returning a boolean (e.g. "val < 20") being stored unconverted in a state declared as number
 * (@GermanBluefox) Added `common.adminTab.order` and `common.adminTab.icon` to the `io-package.json` schema: admin uses both, but an adapter setting them failed the schema validation
+
+## 7.2.5 (2026-10-05)
+* (@GermanBluefox) Added the user context to messages: `sendTo`/`sendToHost` write the `user`
+
+## 7.2.4 (2026-10-03)
+* (@GermanBluefox) Added support of Node.js 26
+* (@GermanBluefox) Fixed storage of the sessions
+* (@GermanBluefox) Fixed encryption and decryption of arrays
+* (@krobipd) Fixed `info.connection` not being reset when an instance goes offline
+* (@krobipd) Fixed an alias read/write function returning a boolean
+* (@GermanBluefox) Improved typings
 
 ## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling

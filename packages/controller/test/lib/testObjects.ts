@@ -141,6 +141,39 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             });
     });
 
+    it(`${testName}should find object beside one with a translated name`, async () => {
+        // `findObject` without options leaves `options` null internally, and the search only reads
+        // it once it has fallen through to matching by *name* and met an object whose name is
+        // translated. Both conditions together, which is why this went unnoticed until a database
+        // happened to hold such an object -- the crash was an unhandled rejection, so the caller
+        // was left waiting for a callback that never came.
+        const objects = context.objects;
+        const translated = `${namespace}.translated`;
+
+        await objects.setObjectAsync(translated, {
+            type: 'state',
+            common: {
+                name: { en: 'translated name', de: 'uebersetzter Name' },
+                type: 'string',
+                read: true,
+                write: true,
+                role: 'state',
+            },
+            native: {},
+        });
+
+        try {
+            assert.strictEqual(await objects.findObject('test2'), testId, 'the search must survive it');
+            assert.strictEqual(
+                await objects.findObject('translated name'),
+                translated,
+                'and still match a translated name, in the default language',
+            );
+        } finally {
+            await objects.delObjectAsync(translated);
+        }
+    }).timeout(5_000);
+
     it(`${testName}should read objects by pattern`, done => {
         const objects = context.objects;
         objects.getObjectsByPattern(`${testId}*`, null, (err, objs) => {
