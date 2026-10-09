@@ -1,0 +1,153 @@
+import assert from 'node:assert/strict';
+import os from 'node:os';
+import path from 'node:path';
+import fs from 'fs-extra';
+import { getSupportedFeatures } from '@iobroker/js-controller-common';
+import { parseGetLogsMessage, readLogTail } from '../src/lib/logsReader.js';
+
+/** A log file as it is written on disk: the level is wrapped in color codes, entries can span lines */
+const LOG_CONTENT = [
+    '2026-08-06 10:00:00.001  - [32minfo[39m: host.test first info',
+    '2026-08-06 10:00:00.002  - [34mdebug[39m: host.test some debug',
+    '2026-08-06 10:00:00.003  - [33mwarn[39m: host.test a warning',
+    '2026-08-06 10:00:00.004  - [31merror[39m: host.test an error',
+    '    at Immediate.<anonymous> (/opt/iobroker/test.ts:1:1)',
+    '    at process.processImmediate (node:internal/timers:1:1)',
+    '2026-08-06 10:00:00.005  - [32minfo[39m: host.test second info',
+].join('\n');
+
+describe('test logsReader', () => {
+    let logFile: string;
+
+    before(async () => {
+        const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'iob-logs-'));
+        logFile = path.join(dir, 'iobroker.log');
+        await fs.writeFile(logFile, LOG_CONTENT);
+    });
+
+    after(async () => {
+        await fs.remove(path.dirname(logFile));
+    });
+
+    it('announces the feature so requesters can detect an older host', () => {
+        // an older js-controller does not know the flag and answers "false" to checkFeatureSupported,
+        // which is how admin can tell that it has to stay with the plain number of lines
+        assert.ok(getSupportedFeatures().includes('CONTROLLER_GET_LOGS_LOG_LEVEL'));
+    });
+
+    it('parseGetLogsMessage stays backward compatible', () => {
+        // the message used to be just the number of lines
+        assert.deepStrictEqual(parseGetLogsMessage(500), { lines: 500 });
+        // no message at all keeps the defaults
+        assert.deepStrictEqual(parseGetLogsMessage(undefined), {});
+        // the new object form
+        assert.deepStrictEqual(parseGetLogsMessage({ lines: 100, logLevel: 'warn' }), {
+            lines: 100,
+            logLevel: 'warn',
+        });
+        // an unknown level is ignored instead of hiding everything
+        assert.deepStrictEqual(parseGetLogsMessage({ lines: 100, logLevel: 'bogus' }), {
+            lines: 100,
+            logLevel: undefined,
+        });
+    });
+
+    it('returns every line when no level is given', async () => {
+        const { lines, size } = await readLogTail(logFile, {});
+
+        assert.deepStrictEqual(lines, LOG_CONTENT.split('\n'));
+        assert.strictEqual(size, Buffer.byteLength(LOG_CONTENT));
+    });
+
+    it('keeps the given level and the more severe ones', async () => {
+        const { lines } = await readLogTail(logFile, { logLevel: 'warn' });
+
+        assert.ok(
+            lines.every(line => /warn|error|at /.test(line)),
+            `unexpected lines: ${lines.join(' | ')}`,
+        );
+        assert.ok(lines.some(line => line.includes('a warning')));
+        assert.ok(lines.some(line => line.includes('an error')));
+        assert.ok(!lines.some(line => line.includes('some debug')));
+        assert.ok(!lines.some(line => line.includes('first info')));
+    });
+
+    it('keeps the follow-up lines of a matching entry', async () => {
+        const { lines } = await readLogTail(logFile, { logLevel: 'error' });
+
+        assert.deepStrictEqual(lines, [
+            '2026-08-06 10:00:00.004  - [31merror[39m: host.test an error',
+            '    at Immediate.<anonymous> (/opt/iobroker/test.ts:1:1)',
+            '    at process.processImmediate (node:internal/timers:1:1)',
+        ]);
+    });
+
+    it('the lowest level returns the same as no filter at all', async () => {
+        const unfiltered = await readLogTail(logFile, {});
+        const silly = await readLogTail(logFile, { logLevel: 'silly' });
+
+        assert.deepStrictEqual(silly.lines, unfiltered.lines);
+    });
+
+    it('trims to the requested number of lines without cutting an entry', async () => {
+        const { lines } = await readLogTail(logFile, { lines: 2, logLevel: 'silly' });
+
+        // the newest line is always there
+        assert.ok(lines[lines.length - 1].includes('second info'));
+        // the cut would land inside the error entry and its stack trace, so the window is extended
+        // backwards to the header - returning the two `at ...` frames on their own would be useless
+        assert.ok(lines[0].includes('an error'), `result starts mid-entry: ${JSON.stringify(lines)}`);
+        assert.strictEqual(lines.length, 4);
+    });
+
+    it('does not report a level token quoted inside a message', async () => {
+        const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'iob-logs-'));
+        const file = path.join(dir, 'quoted.log');
+        await fs.writeFile(
+            file,
+            [
+                '2026-08-06 10:00:00.001  - [32minfo[39m: host.test parse failed: " - error: boom" in payload',
+                '2026-08-06 10:00:00.002  - [31merror[39m: host.test a real error',
+            ].join('\n'),
+        );
+
+        try {
+            const { lines } = await readLogTail(file, { logLevel: 'error' });
+
+            assert.strictEqual(lines.length, 1, `an info line leaked: ${JSON.stringify(lines)}`);
+            assert.ok(lines[0].includes('a real error'));
+        } finally {
+            await fs.remove(dir);
+        }
+    });
+
+    it('does not take a continuation line for the start of an entry', async () => {
+        const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'iob-logs-'));
+        const file = path.join(dir, 'continuation.log');
+        await fs.writeFile(
+            file,
+            [
+                '2026-08-06 10:00:00.001  - [32minfo[39m: host.test multi',
+                '     payload:  - error: nested',
+                '2026-08-06 10:00:00.002  - [31merror[39m: host.test a real error',
+            ].join('\n'),
+        );
+
+        try {
+            const { lines } = await readLogTail(file, { logLevel: 'error' });
+
+            // the continuation belongs to an info entry - returning it alone, without its header,
+            // would be worse than dropping it
+            assert.strictEqual(lines.length, 1, `a continuation line leaked: ${JSON.stringify(lines)}`);
+            assert.ok(lines[0].includes('a real error'));
+        } finally {
+            await fs.remove(dir);
+        }
+    });
+
+    it('reports the current file size', async () => {
+        const { size } = await readLogTail(logFile, { logLevel: 'error' });
+
+        assert.strictEqual(size, Buffer.byteLength(LOG_CONTENT));
+    });
+});

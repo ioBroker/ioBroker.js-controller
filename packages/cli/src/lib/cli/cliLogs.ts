@@ -1,5 +1,12 @@
 import { CLICommand, type CLICommandOptions } from './cliCommand.js';
-import { tools, logger as toolsLogger } from '@iobroker/js-controller-common';
+import {
+    tools,
+    logger as toolsLogger,
+    EXIT_CODES,
+    LOG_LEVELS,
+    isLogLevelAtLeast,
+    parseLogEntryHeader,
+} from '@iobroker/js-controller-common';
 import chokidar from 'chokidar';
 import fs from 'fs-extra';
 import os from 'node:os';
@@ -15,12 +22,16 @@ interface CLILogsOptions {
     complete?: boolean;
     /** An optional RegExp to filter by */
     regex?: RegExp;
+    /** The lowest level to still show, if the output is restricted to a severity */
+    minLevel?: ioBroker.LogLevel;
 }
 
 /** Command ioBroker state ... */
 export class CLILogs extends CLICommand {
     private readonly fileSizes = new Map<string, number>();
     private isReady = false;
+    /** Whether the log entry currently being read passed the level filter */
+    private showCurrentEntry = true;
 
     /**
      * @param options The command options including context and parameters
@@ -44,6 +55,18 @@ export class CLILogs extends CLICommand {
             complete: this.options.all,
         };
 
+        // Optional, so calls without a level keep showing everything as before
+        if (params.level !== undefined) {
+            const level = String(params.level).toLowerCase();
+
+            if (!tools.isLogLevel(level)) {
+                console.error(`Unknown log level "${params.level}". Use one of: ${LOG_LEVELS.join(', ')}`);
+                return void this.options.callback(EXIT_CODES.UNKNOWN_ERROR);
+            }
+
+            options.minLevel = level;
+        }
+
         const config = fs.readJSONSync(require.resolve(getConfigFileName()));
         const logger = toolsLogger(config.log);
         // @ts-expect-error todo adjust logger type
@@ -61,7 +84,7 @@ export class CLILogs extends CLICommand {
                 options.regex = regex;
             }
             lines.forEach(line => {
-                if (regex && !regex.test(line)) {
+                if (!this.matches(line, options)) {
                     return;
                 }
                 console.log(line);
@@ -143,16 +166,49 @@ export class CLILogs extends CLICommand {
             start,
             autoClose: true,
         });
-        if (options.regex) {
+        if (options.regex || options.minLevel) {
             // Read the input line by line and only include the lines matching the filter
             input
                 .pipe(es.split())
-                .pipe(es.filterSync(line => options.regex!.test(line)))
+                .pipe(es.filterSync((line: string) => this.matches(line, options)))
                 .pipe(es.mapSync((line: string) => line + os.EOL))
                 .pipe(process.stdout);
         } else {
             // just pipe the input through
             tools.pipeLinewise(input, process.stdout);
         }
+    }
+
+    /**
+     * Check a log line against the active filters
+     *
+     * A log entry can span several lines, e.g. a stack trace, and only its first line carries the
+     * level. Those follow-up lines inherit the decision made for the entry they belong to, so
+     * filtering by level does not cut a stack trace in half. Which lines start an entry is decided
+     * by the shared parser, the same one the host commands `getLogs` and `searchLogs` use: it takes
+     * a level only where the time stamp of an entry is, so a level quoted inside a message does not
+     * count as one.
+     *
+     * @param line the log line to check
+     * @param options the active filters
+     */
+    private matches(line: string, options: CLILogsOptions): boolean {
+        if (options.minLevel) {
+            const header = parseLogEntryHeader(line);
+
+            if (header) {
+                this.showCurrentEntry = isLogLevelAtLeast(header.level, options.minLevel);
+            }
+
+            if (!this.showCurrentEntry) {
+                return false;
+            }
+        }
+
+        if (options.regex && !options.regex.test(line)) {
+            return false;
+        }
+
+        return true;
     }
 }
