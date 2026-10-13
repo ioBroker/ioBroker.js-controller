@@ -1843,6 +1843,7 @@ async function setMeta(): Promise<void> {
                 }
                 const pluginStatesIndex = `${hostObjectPrefix}.plugins.`.length;
                 const notificationStatesIndex = `${hostObjectPrefix}.notifications.`.length;
+                const usedResourcesStatesIndex = `${hostObjectPrefix}.usedResources.`.length;
                 const toDelete = thisHostStates.filter(out1 => {
                     const found = tasks.find(out2 => out1.id === out2._id);
                     if (found === undefined) {
@@ -1855,6 +1856,10 @@ async function setMeta(): Promise<void> {
                         } else if (out1.id.startsWith(`${hostObjectPrefix}.notifications.`)) {
                             // notification states are allowed to exist if their scope still exists
                             return !notificationHandler.scopeExists(out1.id.substring(notificationStatesIndex));
+                        } else if (out1.id.startsWith(`${hostObjectPrefix}.usedResources.`)) {
+                            // the registry creates its states on demand, so no task knows them: a deleted
+                            // object leaves the state behind, where no read by pattern finds it any more
+                            return !isValidUsedResourceType(out1.id.substring(usedResourcesStatesIndex));
                         }
                     }
 
