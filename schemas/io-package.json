@@ -31,32 +31,12 @@
         }
       }
     },
-    "isCompactTrue": {
-      "properties": {
-        "compact": {
-          "const": true
-        }
-      },
-      "required": [
-        "compact"
-      ]
-    },
     "disallowNodeProcessParams": {
       "not": {
         "required": [
           "nodeProcessParams"
         ]
       }
-    },
-    "isPythonPlatform": {
-      "properties": {
-        "platform": {
-          "const": "Python"
-        }
-      },
-      "required": [
-        "platform"
-      ]
     },
     "disallowCompact": {
       "properties": {
@@ -1919,8 +1899,16 @@
       },
       "allOf": [
         {
+          "$comment": "The if conditions are written out instead of referenced: JetBrains IDEs do not resolve a $ref inside if, treat the condition as always true and apply then to every adapter",
           "if": {
-            "$ref": "#/definitions/isCompactTrue"
+            "properties": {
+              "compact": {
+                "const": true
+              }
+            },
+            "required": [
+              "compact"
+            ]
           },
           "then": {
             "$ref": "#/definitions/disallowNodeProcessParams"
@@ -1928,7 +1916,14 @@
         },
         {
           "if": {
-            "$ref": "#/definitions/isPythonPlatform"
+            "properties": {
+              "platform": {
+                "const": "Python"
+              }
+            },
+            "required": [
+              "platform"
+            ]
           },
           "then": {
             "$ref": "#/definitions/pythonRestrictions"
