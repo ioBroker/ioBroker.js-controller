@@ -8,7 +8,7 @@
 
 > **ReadFileCallback** = (`err?`, `data?`, `mimeType?`) => `void`
 
-Defined in: [types-dev/index.d.ts:684](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/types-dev/index.d.ts#L684)
+Defined in: [types-dev/index.d.ts:684](https://github.com/ioBroker/ioBroker.js-controller/blob/09c6db0d139e54806793dd9e609f30d8a4def223/packages/types-dev/index.d.ts#L684)
 
 ## Parameters
 
