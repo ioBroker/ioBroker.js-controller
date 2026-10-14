@@ -1272,6 +1272,10 @@
               "description": "Position of the TAB in the admin menu. The built-in tabs use 1 to 120, a TAB without order gets 200. 0 counts as not set. Once the user has sorted the menu, the stored order wins.",
               "type": "number"
             },
+            "proxy": {
+              "description": "If true, admin shows the TAB through its own proxy (/proxy/<instance>/) instead of opening the own port of the instance directly. The target is native.bind, native.port and native.secure of the instance. The TAB is then reachable on the address of admin, protected by its login, and only for members of system.group.administrator.",
+              "type": "boolean"
+            },
             "singleton": {
               "description": "If true, only one TAB for all instances will be shown.",
               "type": "boolean"
