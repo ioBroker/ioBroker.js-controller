@@ -4,6 +4,8 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Added `services` to `common.visWidgets.<set>` and `common.deviceWidgets` in the `io-package.json` schema and the typings: background components that vis-2 and the devices app render once next to the views, whichever view is shown - e.g. for a phone that has to stay registered to ring
+* (@GermanBluefox) Fixed the `io-package.json` schema rejecting `common.deviceWidgets.iconsManifest`, which the typings and the devices app already know
 * (@GermanBluefox) Fixed the host deleting the objects of its own used-resources registry while starting, which hid the registered resources from every read by pattern
 * (@GermanBluefox) Fixed the `io-package.json` schema demanding `common.main` from every adapter in JetBrains IDEs - only Python adapters need it
 * (@GermanBluefox) Added `adapter.mayRead({ user, type, id, fileName })`: whether a user may read a state, an object or a file of an adapter, answered with the rules of the database itself - the ACL of the thing, its owner, the groups of the user and the default ACL, with the administrator group not restricted by any of it. A socket server has to ask this before it hands an event to a connection, because a subscription says what a client is interested in and never what it may see, and so far everyone who needed the answer had to rebuild these rules on the side. Two answers follow the database rather than intuition and are documented as such: a state whose object does not exist may be read by anybody, and so may an object that is not there any more
