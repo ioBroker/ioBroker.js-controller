@@ -542,6 +542,16 @@ describe('pythonRuntime', () => {
                     'sys.stderr.write("tail without newline")',
                 ].join('\n'),
             );
+
+            // The first full start of the interpreter took anything from half a second to more than
+            // 20 seconds on the GitHub Windows runners, while later starts are quick. That cold start
+            // is paid here, so the test below checks the contract and not the speed of the runner.
+            this.timeout(120_000);
+            spawnSync(python!, ['-u', '-m', 'testmod'], {
+                cwd: path.join(adapterDir, 'python'),
+                windowsHide: true,
+                timeout: 90_000,
+            });
         });
 
         after(async () => {
@@ -580,7 +590,7 @@ describe('pythonRuntime', () => {
             const logged: { level: string; line: string }[] = [];
             forwardPythonOutput(proc, 'python.7', (level, line) => logged.push({ level, line }));
 
-            // Done in about a second. On the Windows runners Python occasionally hangs - then the
+            // Done in about a second once the interpreter is warm. Should it still take too long, the
             // failure has to show how far it got, which a bare mocha timeout does not.
             const exitCode = await new Promise<number | null>((resolve, reject) => {
                 const timer = setTimeout(
