@@ -528,6 +528,12 @@ declare global {
             bundlerType?: 'module';
             /** The vis widget does not support the listed major versions of vis */
             ignoreInVersions?: number[];
+            /**
+             * Background components of the set, exposed by its module federation like the `components`. vis-2 renders each of them once
+             * in the runtime, next to the views and whichever view is shown, with the widgets of the set in all views of the project that
+             * the user may see. For what must not stop with its view, e.g. a phone that has to stay registered to ring.
+             */
+            services?: string[];
         }
 
         /**
@@ -557,6 +563,12 @@ declare global {
                 /** Icon as a link to picture imageName.png relative to the admin folder or base64 */
                 icon: string;
             }[];
+            /**
+             * Background components, exported by the `Components` module of the plugin like the widgets. The devices app renders each of
+             * them once, next to the category and whichever category is shown, with the widgets of this adapter in all categories that the
+             * user may see. For what must not stop with its category, e.g. a phone that has to stay registered to ring.
+             */
+            services?: string[];
         }
 
         interface VisIconSet {
@@ -668,6 +680,12 @@ declare global {
                 link?: string;
                 /** If true, only one instance of this tab will be created for all instances */
                 singleton?: boolean;
+                /**
+                 * Show the tab through the proxy of admin (`/proxy/<instance>/`) instead of opening the own port of the instance directly.
+                 * The target is `native.bind`, `native.port` and `native.secure` of the instance. The tab is then reachable on the
+                 * address of admin, protected by its login, and only for members of `system.group.administrator`.
+                 */
+                proxy?: boolean;
                 /** Position in the admin menu: the built-in tabs use 1 to 120, a tab without order gets 200. 0 counts as not set. Once the user has sorted the menu, the stored order wins */
                 order?: number;
                 /**
