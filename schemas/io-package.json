@@ -961,6 +961,10 @@
               "type": "string",
               "default": "customDevices.js"
             },
+            "iconsManifest": {
+              "description": "Link to the file with the icons of the adapter for the devices app (e.g. icons.json), relative to `admin/dm-widgets`",
+              "type": "string"
+            },
             "components": {
               "description": "Description of the components (widgets). It could be multiple widgets in one adapter",
               "type": "array",
@@ -1005,6 +1009,13 @@
                   }
                 },
                 "additionalProperties": false
+              }
+            },
+            "services": {
+              "description": "Names of background components, exported by the `Components` module of the plugin like the widgets. The devices app renders each of them once, next to the category and whichever category is shown, with the widgets of this adapter in all categories that the user may see",
+              "type": "array",
+              "items": {
+                "type": "string"
               }
             }
           },
@@ -1718,6 +1729,13 @@
                   "items": {
                     "type": "number",
                     "multipleOf": 1
+                  }
+                },
+                "services": {
+                  "description": "Names of background components of the set, exposed by its module federation like the components. vis-2 renders each of them once in the runtime, next to the views and whichever view is shown, with the widgets of the set in all views of the project that the user may see",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
                   }
                 }
               }
