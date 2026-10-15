@@ -4,6 +4,7 @@ import os from 'node:os';
 import { spawnSync, type ChildProcess } from 'node:child_process';
 import { EventEmitter } from 'node:events';
 import { PassThrough } from 'node:stream';
+import { rm } from 'node:fs/promises';
 import fs from 'fs-extra';
 import {
     buildPythonEnv,
@@ -510,6 +511,8 @@ describe('pythonRuntime', () => {
         // runners of all three OSes ship a Python 3.
         let python: string | null = null;
         let adapterDir: string;
+        /** The process of the running test, so that a test that gives up does not leave it behind */
+        let child: ChildProcess | undefined;
 
         for (const candidate of process.platform === 'win32' ? ['python', 'python3'] : ['python3', 'python']) {
             const probe = spawnSync(candidate, ['--version'], { windowsHide: true, encoding: 'utf8' });
@@ -543,21 +546,36 @@ describe('pythonRuntime', () => {
             );
         });
 
+        afterEach(async () => {
+            // A test that timed out leaves its process running, and on Windows a running process
+            // locks its working directory: removing the adapter directory would fail with EBUSY.
+            if (child && child.exitCode === null && child.signalCode === null) {
+                const closed = new Promise(resolve => child!.once('close', resolve));
+                child.kill('SIGKILL');
+                await closed;
+            }
+            child = undefined;
+        });
+
         after(async () => {
             if (adapterDir) {
-                await fs.remove(adapterDir);
+                // Windows releases the handles of a process a moment after it is gone, and a virus
+                // scanner may still hold a file it was just shown - retry instead of failing on EBUSY.
+                await rm(adapterDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 });
             }
         });
 
         it('starts the module with -m, hands over args and environment, and forwards both streams', async function () {
-            this.timeout(15_000);
+            // Usually well under two seconds, but the first start of Python on a Windows runner was
+            // seen to take 11 seconds - and 15 were exceeded more than once.
+            this.timeout(60_000);
 
             const config = {
                 states: { type: 'jsonl', host: '127.0.0.1', port: 9000 },
                 objects: { type: 'jsonl', host: '127.0.0.1', port: 9001 },
             } as unknown as ioBroker.IoBrokerJson;
 
-            const child = spawnPythonAdapter({
+            const proc = spawnPythonAdapter({
                 adapterName: 'testmod',
                 adapterDir,
                 main: 'python/testmod/__main__.py',
@@ -565,11 +583,12 @@ describe('pythonRuntime', () => {
                 args: ['--instance', '7', '--loglevel', 'debug'],
                 env: buildPythonEnv(config, 7, 'debug'),
             });
+            child = proc;
 
             const logged: { level: string; line: string }[] = [];
-            forwardPythonOutput(child, 'python.7', (level, line) => logged.push({ level, line }));
+            forwardPythonOutput(proc, 'python.7', (level, line) => logged.push({ level, line }));
 
-            const exitCode = await new Promise<number | null>(resolve => child.on('close', resolve));
+            const exitCode = await new Promise<number | null>(resolve => proc.on('close', resolve));
 
             assert.equal(exitCode, 0);
 
