@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@FernetMenta) Fixed a slave host silently no longer answering inter-host messages after the master database restarted: the states system pub/sub subscriptions (including the host messagebox) are now re-armed from the main client's reconnect instead of relying on the system connection's own `ready` event, which did not always re-fire
 * (@GermanBluefox) Added `services` to `common.visWidgets.<set>` and `common.deviceWidgets` in the `io-package.json` schema and the typings: background components that vis-2 and the devices app render once next to the views, whichever view is shown - e.g. for a phone that has to stay registered to ring
 * (@GermanBluefox) Fixed the `io-package.json` schema rejecting `common.deviceWidgets.iconsManifest`, which the typings and the devices app already know
 * (@GermanBluefox) Added `common.adminTab.proxy` to the `io-package.json` schema and the typings: admin shows such a tab through its own proxy, on its own address and behind its login
