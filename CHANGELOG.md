@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Added `sendToHost('getRepositoryCompact')`, which answers with only the version and the icon per adapter (feature flag `CONTROLLER_REPOSITORY_COMPACT`), and the diagnostics are now collected after the repository requesters got their answer instead of before
 * (@GermanBluefox) Added `services` to `common.visWidgets.<set>` and `common.deviceWidgets` in the `io-package.json` schema and the typings: background components that vis-2 and the devices app render once next to the views, whichever view is shown - e.g. for a phone that has to stay registered to ring
 * (@GermanBluefox) Fixed the `io-package.json` schema rejecting `common.deviceWidgets.iconsManifest`, which the typings and the devices app already know
 * (@GermanBluefox) Added `common.adminTab.proxy` to the `io-package.json` schema and the typings: admin shows such a tab through its own proxy, on its own address and behind its login
