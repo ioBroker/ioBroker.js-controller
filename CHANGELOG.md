@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) `getLogs` accepts an optional `logLevel` now, so a requester can ask for a minimum severity instead of filtering on its own
+* (@GermanBluefox) Added the host command `searchLogs` (feature `CONTROLLER_SEARCH_LOGS`): it searches the log files of the host - the rotated and gzipped ones too - by time range, level, source and text and returns only the matching entries, so that admin does not have to transfer every log file of another host
+* (@GermanBluefox) Added an optional `--level` filter to `iobroker logs`, e.g. `iobroker logs --watch --level warn`
 * (@GermanBluefox) Added `sendToHost('getRepositoryCompact')`, which answers with only the version and the icon per adapter (feature flag `CONTROLLER_REPOSITORY_COMPACT`), and the diagnostics are now collected after the repository requesters got their answer instead of before
 * (@GermanBluefox) Added `services` to `common.visWidgets.<set>` and `common.deviceWidgets` in the `io-package.json` schema and the typings: background components that vis-2 and the devices app render once next to the views, whichever view is shown - e.g. for a phone that has to stay registered to ring
 * (@GermanBluefox) Fixed the `io-package.json` schema rejecting `common.deviceWidgets.iconsManifest`, which the typings and the devices app already know
