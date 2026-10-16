@@ -6,7 +6,7 @@
 
 # Interface: InternalDeleteStateOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:778](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L778)
+Defined in: [adapter/src/lib/\_Types.ts:790](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/adapter/src/lib/_Types.ts#L790)
 
 Options for deleting a state by device/channel/name
 
@@ -16,7 +16,7 @@ Options for deleting a state by device/channel/name
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:788](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L788)
+Defined in: [adapter/src/lib/\_Types.ts:800](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/adapter/src/lib/_Types.ts#L800)
 
 Called once the state has been deleted
 
@@ -26,7 +26,7 @@ Called once the state has been deleted
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:786](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L786)
+Defined in: [adapter/src/lib/\_Types.ts:798](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/adapter/src/lib/_Types.ts#L798)
 
 Optional settings including the user context
 
@@ -36,7 +36,7 @@ Optional settings including the user context
 
 > **parentChannel**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:782](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L782)
+Defined in: [adapter/src/lib/\_Types.ts:794](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/adapter/src/lib/_Types.ts#L794)
 
 The parent channel name
 
@@ -46,7 +46,7 @@ The parent channel name
 
 > **parentDevice**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:780](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L780)
+Defined in: [adapter/src/lib/\_Types.ts:792](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/adapter/src/lib/_Types.ts#L792)
 
 The parent device name
 
@@ -56,6 +56,6 @@ The parent device name
 
 > **stateName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:784](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L784)
+Defined in: [adapter/src/lib/\_Types.ts:796](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/adapter/src/lib/_Types.ts#L796)
 
 The name of the state

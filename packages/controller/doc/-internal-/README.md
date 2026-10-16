@@ -135,6 +135,7 @@
 - [LicenseInformationWithPayment](interfaces/LicenseInformationWithPayment.md)
 - [Logger](interfaces/Logger.md)
 - [LogMessage](interfaces/LogMessage.md)
+- [MayReadOptions](interfaces/MayReadOptions.md)
 - [Message](interfaces/Message.md)
 - [MessageCallbackInfo](interfaces/MessageCallbackInfo.md)
 - [MessageRule](interfaces/MessageRule.md)

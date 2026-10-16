@@ -8,6 +8,6 @@
 
 > `const` **Adapter**: *typeof* [`AdapterClass`](../classes/AdapterClass.md)
 
-Defined in: [adapter/src/lib/adapter/adapter.ts:13716](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/adapter/adapter.ts#L13716)
+Defined in: [adapter/src/lib/adapter/adapter.ts:13785](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/adapter/src/lib/adapter/adapter.ts#L13785)
 
 Polyfill to allow calling without `new`

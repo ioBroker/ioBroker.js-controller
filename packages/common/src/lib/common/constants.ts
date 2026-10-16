@@ -27,6 +27,7 @@ const SUPPORTED_FEATURES_INTERNAL = [
     'CONTROLLER_GET_LOGS_LOG_LEVEL', // getLogs host message accepts an object with an optional `logLevel` to filter by severity. Since `js-controller` 8.0
     'CONTROLLER_SEARCH_LOGS', // Host command `searchLogs` searches the log files of the host and returns only the matching entries. Since `js-controller` 8.0
     'CONTROLLER_PYTHON_ADAPTERS', // Controller can start adapters with `common.platform: "Python"`. Since `js-controller` 8.0
+    'CONTROLLER_REPOSITORY_COMPACT', // sendToHost('getRepositoryCompact') answers with the version and the icon per adapter instead of the whole repository. Since `js-controller` 8.0
 ] as const;
 
 export const SUPPORTED_FEATURES = [...SUPPORTED_FEATURES_INTERNAL];
