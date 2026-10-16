@@ -29,7 +29,7 @@
         "@iobroker/eslint-config": "^2.3.4",
         "@iobroker/types": "file:packages/types-public",
         "@iobroker/types-dev": "file:packages/types-dev",
-        "@tsconfig/node22": "^22.0.5",
+        "@tsconfig/node22": "^22.0.6",
         "@types/debug": "^4.1.13",
         "@types/event-stream": "^4.0.6",
         "@types/fs-extra": "^11.0.4",
