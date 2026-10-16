@@ -4,8 +4,18 @@ import { isLogLevelAtLeast, parseLogEntryHeader, tools } from '@iobroker/js-cont
 /** Rough estimate of the size of a log line, used to decide how much of the tail to read */
 const BYTES_PER_LINE = 150;
 
-/** Never read more than this from the end of the log file while looking for matching entries */
-const MAX_READ_BYTES = 20 * 1024 * 1024;
+/** How many lines are returned when the request does not say */
+const DEFAULT_LINES = 200;
+
+/** How a request with a `logLevel` reads the file */
+export interface ReadLimits {
+    /** Bytes read at once, which is about what is held in memory besides the result */
+    chunkBytes: number;
+    /** Never read more than this from the end of the log file while looking for matching entries */
+    maxBytes: number;
+}
+
+const DEFAULT_LIMITS: ReadLimits = { chunkBytes: 256 * 1024, maxBytes: 20 * 1024 * 1024 };
 
 /** Options of a `getLogs` request */
 export interface GetLogsOptions {
@@ -31,6 +41,45 @@ export interface LogTail {
 }
 
 /**
+ * Reading the log file failed after its size was known
+ *
+ * The size is the last element of every `getLogs` answer and requesters continue from it, so it is
+ * still worth answering with when the lines cannot be read, e.g. while the file is being rotated.
+ */
+export class LogReadError extends Error {
+    /** Size of the log file in bytes */
+    readonly size: number;
+
+    /**
+     * @param size size of the log file in bytes
+     * @param cause why reading failed
+     */
+    constructor(size: number, cause: Error) {
+        super(cause.message, { cause });
+        this.name = 'LogReadError';
+        this.size = size;
+    }
+}
+
+/**
+ * Read the number of lines of a request
+ *
+ * The old handler multiplied the message directly, so a number sent as a string worked by coercion,
+ * and it keeps working. Anything that is not at least one line means the default.
+ *
+ * @param value the number of lines as received
+ */
+function toLineCount(value: unknown): number | undefined {
+    const lines = typeof value === 'string' && value.trim() !== '' ? Number(value) : value;
+
+    if (typeof lines !== 'number' || !Number.isFinite(lines) || lines < 1) {
+        return undefined;
+    }
+
+    return Math.floor(lines);
+}
+
+/**
  * Read the message of a `getLogs` request
  *
  * Historically the message was just the number of lines, so that form is still accepted. An object
@@ -39,142 +88,179 @@ export interface LogTail {
  * @param message the message as received from the requester
  */
 export function parseGetLogsMessage(message: unknown): GetLogsOptions {
-    if (typeof message === 'number') {
-        return { lines: message };
-    }
-
     if (!message || typeof message !== 'object') {
-        return {};
+        const lines = toLineCount(message);
+        return lines === undefined ? {} : { lines };
     }
-
-    const { lines, logLevel } = message as Record<string, unknown>;
 
     return {
-        lines: typeof lines === 'number' ? lines : undefined,
-        logLevel: typeof logLevel === 'string' && tools.isLogLevel(logLevel) ? logLevel : undefined,
+        lines: 'lines' in message ? toLineCount(message.lines) : undefined,
+        logLevel:
+            'logLevel' in message && typeof message.logLevel === 'string' && tools.isLogLevel(message.logLevel)
+                ? message.logLevel
+                : undefined,
     };
 }
 
 /**
- * Keep only the entries of the wanted level or a more severe one
+ * Read a range of an open file
  *
- * A log entry can span several lines, e.g. a stack trace, and only its first line carries the
- * level. Those follow-up lines inherit the decision made for the entry they belong to, so a stack
- * trace is not cut in half.
+ * A single `read` may return less than asked for without having reached the end of the file. Taken
+ * as complete, that would silently drop the end of the range, which is the newest part of the log.
  *
- * @param lines the log lines to filter
- * @param logLevel the lowest level to keep
- */
-function filterByLevel(lines: string[], logLevel: ioBroker.LogLevel): string[] {
-    const result: string[] = [];
-    let keepEntry = false;
-
-    for (const line of lines) {
-        const header = parseLogEntryHeader(line);
-        if (header) {
-            keepEntry = isLogLevelAtLeast(header.level, logLevel);
-        }
-
-        if (keepEntry) {
-            result.push(line);
-        }
-    }
-
-    return result;
-}
-
-/**
- * Read a chunk from the end of a file
- *
- * @param fileName the file to read
+ * @param fd the open file
  * @param start byte offset to start at
  * @param end byte offset to stop at
  */
-async function readChunk(fileName: string, start: number, end: number): Promise<string> {
-    const length = end - start;
+async function readRange(fd: number, start: number, end: number): Promise<Buffer> {
+    // only the part that was read is returned, so the buffer does not have to be zeroed
+    const buffer = Buffer.allocUnsafe(Math.max(0, end - start));
+    let filled = 0;
 
-    if (length <= 0) {
-        return '';
+    while (filled < buffer.length) {
+        const { bytesRead } = await fs.read(fd, buffer, filled, buffer.length - filled, start + filled);
+        if (!bytesRead) {
+            break;
+        }
+        filled += bytesRead;
     }
 
-    const fd = await fs.open(fileName, 'r');
-
-    try {
-        const buffer = Buffer.alloc(length);
-        const { bytesRead } = await fs.read(fd, buffer, 0, length, start);
-
-        return buffer.subarray(0, bytesRead).toString();
-    } finally {
-        await fs.close(fd);
-    }
+    return buffer.subarray(0, filled);
 }
 
 /**
- * Trim to the last `wanted` lines without cutting an entry in half
+ * Read the tail of the file in one piece, sized by the number of lines, which is what `getLogs` has
+ * always done
  *
- * Slicing on line boundaries would undo what {@link filterByLevel} is for: when the cut lands
- * inside a multi-line entry, the caller gets orphaned stack frames whose header is gone. So the
- * window is extended backwards to the header of the entry it starts in, which is bounded by the
- * length of that one entry.
- *
- * @param lines the filtered log lines, oldest first
+ * @param fd the open log file
+ * @param size size of the file when the request came in
  * @param wanted how many lines were asked for
  */
-function trimToEntries(lines: string[], wanted: number): string[] {
-    if (lines.length <= wanted) {
-        return lines;
+async function readWindow(fd: number, size: number, wanted: number): Promise<string[]> {
+    const start = Math.max(0, size - BYTES_PER_LINE * wanted);
+    const lines = (await readRange(fd, start, size)).toString().split('\n');
+
+    if (start) {
+        // the first line can be incomplete when we did not start at the beginning of the file
+        lines.shift();
     }
 
-    let start = lines.length - wanted;
-    while (start > 0 && !parseLogEntryHeader(lines[start])) {
-        start--;
+    return lines;
+}
+
+/**
+ * Collect the newest entries of a level and the more severe ones
+ *
+ * The entries of one level are spread over a much larger part of the file than the same number of
+ * lines, so the file is read backwards chunk by chunk until enough entries were found, the beginning
+ * of the file is reached or `maxBytes` were read. Only one chunk is held at a time, and every byte is
+ * read once.
+ *
+ * Read backwards, the follow-up lines of an entry - a stack trace - come before its first line, which
+ * is the only one that carries the level. So they wait until their first line decides whether the
+ * entry is wanted. Follow-up lines whose first line is never reached are dropped, rather than
+ * returned without it.
+ *
+ * Whole entries are added, the newest first, until there are at least `wanted` lines. So a few more
+ * can come back when the last entry is a stack trace, but never a stack trace without its header.
+ *
+ * @param fd the open log file
+ * @param size size of the file when the request came in
+ * @param wanted how many lines were asked for
+ * @param minLevel the least severe level that is still wanted
+ * @param limits chunk size and how far back to read at most
+ * @returns the lines of the matching entries, oldest first
+ */
+async function readEntries(
+    fd: number,
+    size: number,
+    wanted: number,
+    minLevel: ioBroker.LogLevel,
+    limits: ReadLimits,
+): Promise<string[]> {
+    /** The lines of the matching entries, newest first */
+    const found: string[] = [];
+    /** Lines that continue an entry whose first line is further back in the file, newest first */
+    let followUps: string[] = [];
+    /** The beginning of the chunk read last, up to its first line break: the end of a line that starts further back */
+    let partial: Buffer = Buffer.alloc(0);
+    let start = size;
+
+    while (start > 0 && size - start < limits.maxBytes && found.length < wanted) {
+        const end = start;
+        start = Math.max(0, end - limits.chunkBytes, size - limits.maxBytes);
+
+        const chunk = Buffer.concat([await readRange(fd, start, end), partial]);
+        let complete: Buffer = chunk;
+
+        if (start) {
+            // The chunk can start in the middle of a line, and even of a character: keep that part as
+            // bytes until the chunk before it is read. A line break byte is never part of a character.
+            const lineBreak = chunk.indexOf(0x0a);
+            if (lineBreak === -1) {
+                partial = chunk;
+                continue;
+            }
+            partial = chunk.subarray(0, lineBreak);
+            complete = chunk.subarray(lineBreak + 1);
+        }
+
+        const lines = complete.toString().split('\n');
+
+        for (let i = lines.length - 1; i >= 0 && found.length < wanted; i--) {
+            const header = parseLogEntryHeader(lines[i]);
+
+            if (!header) {
+                followUps.push(lines[i]);
+                continue;
+            }
+
+            if (isLogLevelAtLeast(header.level, minLevel)) {
+                for (const line of followUps) {
+                    found.push(line);
+                }
+                found.push(lines[i]);
+            }
+            followUps = [];
+        }
     }
 
-    return lines.slice(start);
+    return found.reverse();
 }
 
 /**
  * Read the last lines of a log file
  *
  * Without a `logLevel` this reads a single chunk sized by the number of requested lines, which is
- * what this has always done. With a `logLevel` the matching entries are usually spread over a much
- * larger part of the file, so the window is enlarged until enough entries were found, the beginning
- * of the file is reached or `MAX_READ_BYTES` is hit.
+ * what this has always done. With a `logLevel` the file is read backwards until enough matching
+ * entries were found, see {@link readEntries}.
  *
  * @param fileName the log file to read
  * @param options how many lines and which minimum level
+ * @param limits how a request with a `logLevel` reads the file, only changed by tests
+ * @throws {LogReadError} if the file could be measured but not read
  */
-export async function readLogTail(fileName: string, options: GetLogsOptions): Promise<LogTail> {
+export async function readLogTail(
+    fileName: string,
+    options: GetLogsOptions,
+    limits: ReadLimits = DEFAULT_LIMITS,
+): Promise<LogTail> {
     const { size } = await fs.stat(fileName);
-    const wanted = options.lines || 200;
+    const wanted = toLineCount(options.lines) ?? DEFAULT_LINES;
 
-    let windowSize = BYTES_PER_LINE * wanted;
-    let lines: string[] = [];
+    try {
+        const fd = await fs.open(fileName, 'r');
 
-    while (true) {
-        const start = size > windowSize ? size - windowSize : 0;
-        const text = await readChunk(fileName, start, size);
+        try {
+            const lines = options.logLevel
+                ? await readEntries(fd, size, wanted, options.logLevel, limits)
+                : await readWindow(fd, size, wanted);
 
-        lines = text.split('\n');
-
-        if (start) {
-            // the first line can be incomplete when we did not start at the beginning of the file
-            lines.shift();
-        }
-
-        if (!options.logLevel) {
             return { lines, size };
+        } finally {
+            await fs.close(fd);
         }
-
-        lines = filterByLevel(lines, options.logLevel);
-
-        if (lines.length >= wanted || start === 0 || windowSize >= MAX_READ_BYTES) {
-            break;
-        }
-
-        windowSize = Math.min(windowSize * 4, MAX_READ_BYTES);
+    } catch (e) {
+        throw new LogReadError(size, e);
     }
-
-    // the enlarged window can hold more entries than asked for
-    return { lines: trimToEntries(lines, wanted), size };
 }

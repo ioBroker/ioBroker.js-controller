@@ -22,10 +22,13 @@ const ANSI_ESCAPE = new RegExp(`${String.fromCharCode(27)}\\[[0-?]*[ -/]*[@-~]`,
  * which happens to contain one is taken for the start of a new entry. Lines that continue an entry never carry a
  * time stamp, which is what tells the two apart.
  *
+ * The logger ends its lines with `os.EOL`, so on Windows a line that was split at `\n` still ends with `\r`. `.` does
+ * not match it, and without the `\r?` no line of such a file would start an entry.
+ *
  * Groups: 1 date, 2 time, 3 level, 4 everything after the level (source, PID and text), 5 source
  */
 const ENTRY_HEADER =
-    /^(\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?)\s+-\s+(silly|debug|info|warn|error):(?:\s+((\S+).*))?$/i;
+    /^(\d{4}-\d{2}-\d{2})\s+(\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?)\s+-\s+(silly|debug|info|warn|error):(?:\s+((\S+).*))?\r?$/i;
 
 /** What the first line of a log entry says about the entry */
 export interface LogEntryHeader {

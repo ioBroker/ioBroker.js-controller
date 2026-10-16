@@ -30,8 +30,6 @@ interface CLILogsOptions {
 export class CLILogs extends CLICommand {
     private readonly fileSizes = new Map<string, number>();
     private isReady = false;
-    /** Whether the log entry currently being read passed the level filter */
-    private showCurrentEntry = true;
 
     /**
      * @param options The command options including context and parameters
@@ -83,8 +81,9 @@ export class CLILogs extends CLICommand {
                 regex = new RegExp(`: ${adapterName}\\.`);
                 options.regex = regex;
             }
+            const matches = this.createFilter(options);
             lines.forEach(line => {
-                if (!this.matches(line, options)) {
+                if (!matches(line)) {
                     return;
                 }
                 console.log(line);
@@ -170,7 +169,7 @@ export class CLILogs extends CLICommand {
             // Read the input line by line and only include the lines matching the filter
             input
                 .pipe(es.split())
-                .pipe(es.filterSync((line: string) => this.matches(line, options)))
+                .pipe(es.filterSync(this.createFilter(options)))
                 .pipe(es.mapSync((line: string) => line + os.EOL))
                 .pipe(process.stdout);
         } else {
@@ -180,7 +179,7 @@ export class CLILogs extends CLICommand {
     }
 
     /**
-     * Check a log line against the active filters
+     * Create the check of log lines against the active filters, for one read of a file
      *
      * A log entry can span several lines, e.g. a stack trace, and only its first line carries the
      * level. Those follow-up lines inherit the decision made for the entry they belong to, so
@@ -189,26 +188,30 @@ export class CLILogs extends CLICommand {
      * a level only where the time stamp of an entry is, so a level quoted inside a message does not
      * count as one.
      *
-     * @param line the log line to check
+     * The decision belongs to one read and starts as "not shown". A read can begin with follow-up
+     * lines - the last lines of a file, or a stream from an offset - whose entry it does not know,
+     * and showing them would ignore the level. Files that are streamed at the same time do not
+     * share it either.
+     *
      * @param options the active filters
      */
-    private matches(line: string, options: CLILogsOptions): boolean {
-        if (options.minLevel) {
-            const header = parseLogEntryHeader(line);
+    private createFilter(options: CLILogsOptions): (line: string) => boolean {
+        let showEntry = false;
 
-            if (header) {
-                this.showCurrentEntry = isLogLevelAtLeast(header.level, options.minLevel);
+        return line => {
+            if (options.minLevel) {
+                const header = parseLogEntryHeader(line);
+
+                if (header) {
+                    showEntry = isLogLevelAtLeast(header.level, options.minLevel);
+                }
+
+                if (!showEntry) {
+                    return false;
+                }
             }
 
-            if (!this.showCurrentEntry) {
-                return false;
-            }
-        }
-
-        if (options.regex && !options.regex.test(line)) {
-            return false;
-        }
-
-        return true;
+            return !options.regex || options.regex.test(line);
+        };
     }
 }

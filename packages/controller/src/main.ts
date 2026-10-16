@@ -63,7 +63,7 @@ import {
 } from '@/lib/pythonRuntime.js';
 import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
-import { parseGetLogsMessage, readLogTail } from '@/lib/logsReader.js';
+import { LogReadError, parseGetLogsMessage, readLogTail } from '@/lib/logsReader.js';
 import { searchLogFiles } from '@/lib/logSearch.js';
 import {
     getUsedResourcesMode,
@@ -3126,7 +3126,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         })
                         .catch(e => {
                             logger.warn(`${hostLogPrefix} Cannot read log file ${logFile_}: ${e.message}`);
-                            msg.callback && sendTo(msg.from, msg.command, [0], msg.callback);
+                            // the size is where the requester continues from, so keep it if the file could be measured
+                            const size = e instanceof LogReadError ? e.size : 0;
+                            msg.callback && sendTo(msg.from, msg.command, [size], msg.callback);
                         });
                 } else {
                     sendTo(msg.from, msg.command, [0], msg.callback);

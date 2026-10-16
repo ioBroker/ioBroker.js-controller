@@ -48,6 +48,17 @@ describe('test logEntries', () => {
         assert.strictEqual(header?.message, '');
     });
 
+    it('reads a line split from a file with Windows line endings', () => {
+        // the logger ends its lines with os.EOL, so splitting at "\n" leaves the "\r"
+        const header = parseLogEntryHeader(`2026-09-16 10:11:12.123  - ${colored('warn', 33)}: admin.0 (1234) text\r`);
+
+        assert.strictEqual(header?.level, 'warn');
+        assert.strictEqual(header?.source, 'admin.0');
+        assert.strictEqual(header?.message, 'admin.0 (1234) text');
+        assert.strictEqual(parseLogEntryHeader('2026-09-16 10:11:12.123  - info:\r')?.message, '');
+        assert.strictEqual(parseLogEntryHeader('    at Immediate.<anonymous> (/opt/iobroker/test.ts:1:1)\r'), null);
+    });
+
     it('does not take a continuation line for the start of an entry', () => {
         assert.strictEqual(parseLogEntryHeader('    at Immediate.<anonymous> (/opt/iobroker/test.ts:1:1)'), null);
         // a level quoted in a continuation line - without the time stamp anchor it would count
