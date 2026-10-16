@@ -297,18 +297,35 @@ describe('test logsReader', () => {
     });
 
     it('reports the size when the file can be measured but not read', async () => {
-        const stub = sinon.stub(fs, 'read').rejects(new Error('EIO: i/o error, read'));
+        // getLogs answers with it, so a requester keeps the position it continues from
+        const hasSize = (e: unknown): boolean => {
+            assert.ok(e instanceof LogReadError);
+            assert.strictEqual(e.size, Buffer.byteLength(LOG_CONTENT));
+            return true;
+        };
 
+        const read = sinon.stub(fs, 'read').rejects(new Error('EIO: i/o error, read'));
         try {
-            await assert.rejects(readLogTail(logFile, { logLevel: 'error' }), (e: unknown) => {
-                assert.ok(e instanceof LogReadError);
-                // getLogs answers with it, so a requester keeps the position it continues from
-                assert.strictEqual(e.size, Buffer.byteLength(LOG_CONTENT));
-                return true;
-            });
+            await assert.rejects(readLogTail(logFile, { logLevel: 'error' }), hasSize);
+            await assert.rejects(readLogTail(logFile, {}), hasSize);
         } finally {
-            stub.restore();
+            read.restore();
         }
+
+        // e.g. while the file is rotated
+        const open = sinon.stub(fs, 'open').rejects(new Error('EBUSY: resource busy or locked, open'));
+        try {
+            await assert.rejects(readLogTail(logFile, { logLevel: 'error' }), hasSize);
+        } finally {
+            open.restore();
+        }
+    });
+
+    it('fails without a size when there is no file', async () => {
+        await assert.rejects(readLogTail(path.join(dir, 'missing.log'), {}), (e: unknown) => {
+            assert.ok(!(e instanceof LogReadError));
+            return true;
+        });
     });
 
     it('reports the current file size', async () => {

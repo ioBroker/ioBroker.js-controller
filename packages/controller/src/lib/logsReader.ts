@@ -245,11 +245,19 @@ export async function readLogTail(
     options: GetLogsOptions,
     limits: ReadLimits = DEFAULT_LIMITS,
 ): Promise<LogTail> {
-    const { size } = await fs.stat(fileName);
     const wanted = toLineCount(options.lines) ?? DEFAULT_LINES;
 
+    let fd: number;
     try {
-        const fd = await fs.open(fileName, 'r');
+        fd = await fs.open(fileName, 'r');
+    } catch (e) {
+        // a file that exists but cannot be opened, e.g. while it is rotated, is still answered with its size
+        throw new LogReadError((await fs.stat(fileName)).size, e);
+    }
+
+    try {
+        // the size of the open file, not of the path: during a rotation the two can be different files
+        const { size } = await fs.fstat(fd);
 
         try {
             const lines = options.logLevel
@@ -257,10 +265,10 @@ export async function readLogTail(
                 : await readWindow(fd, size, wanted);
 
             return { lines, size };
-        } finally {
-            await fs.close(fd);
+        } catch (e) {
+            throw new LogReadError(size, e);
         }
-    } catch (e) {
-        throw new LogReadError(size, e);
+    } finally {
+        await fs.close(fd);
     }
 }
