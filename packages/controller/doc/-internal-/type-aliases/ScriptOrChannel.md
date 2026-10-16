@@ -8,4 +8,4 @@
 
 > **ScriptOrChannel** = `` `script.js.${string}` ``
 
-Defined in: [types-dev/objects.d.ts:75](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/types-dev/objects.d.ts#L75)
+Defined in: [types-dev/objects.d.ts:75](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/objects.d.ts#L75)

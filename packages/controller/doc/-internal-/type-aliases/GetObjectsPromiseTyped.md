@@ -8,7 +8,7 @@
 
 > **GetObjectsPromiseTyped**\<`T`\> = `Promise`\<[`NonNullCallbackReturnTypeOf`](NonNullCallbackReturnTypeOf.md)\<[`GetObjectsCallbackTyped`](GetObjectsCallbackTyped.md)\<`T`\>\>\>
 
-Defined in: [types-dev/index.d.ts:611](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/types-dev/index.d.ts#L611)
+Defined in: [types-dev/index.d.ts:612](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L612)
 
 ## Type Parameters
 

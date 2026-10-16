@@ -8,4 +8,4 @@
 
 > **SendToAllClientOptions** = `Omit`\<[`SendToClientOptions`](../interfaces/SendToClientOptions.md), `"clientId"`\>
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L38)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L38)

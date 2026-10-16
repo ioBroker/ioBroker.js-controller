@@ -6,7 +6,7 @@
 
 # Interface: DevicesWidgets
 
-Defined in: [types-dev/objects.d.ts:536](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/types-dev/objects.d.ts#L536)
+Defined in: [types-dev/objects.d.ts:542](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/objects.d.ts#L542)
 
 This structure defines the widgets for "devices" adapter
 
@@ -16,7 +16,7 @@ This structure defines the widgets for "devices" adapter
 
 > **components**: `object`[]
 
-Defined in: [types-dev/objects.d.ts:550](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/types-dev/objects.d.ts#L550)
+Defined in: [types-dev/objects.d.ts:556](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/objects.d.ts#L556)
 
 Description of the components (widgets). It could be multiple widgets in one adapter
 
@@ -50,7 +50,7 @@ Name of the class
 
 > `optional` **iconsManifest?**: `string`
 
-Defined in: [types-dev/objects.d.ts:548](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/types-dev/objects.d.ts#L548)
+Defined in: [types-dev/objects.d.ts:554](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/objects.d.ts#L554)
 
 Link to the file (icons.json) with specific icons in form
 ```ts
@@ -62,10 +62,22 @@ Link to the file (icons.json) with specific icons in form
 
 ***
 
+### services?
+
+> `optional` **services?**: `string`[]
+
+Defined in: [types-dev/objects.d.ts:571](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/objects.d.ts#L571)
+
+Background components, exported by the `Components` module of the plugin like the widgets. The devices app renders each of
+them once, next to the category and whichever category is shown, with the widgets of this adapter in all categories that the
+user may see. For what must not stop with its category, e.g. a phone that has to stay registered to ring.
+
+***
+
 ### url?
 
 > `optional` **url?**: `string`
 
-Defined in: [types-dev/objects.d.ts:538](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/types-dev/objects.d.ts#L538)
+Defined in: [types-dev/objects.d.ts:544](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/objects.d.ts#L544)
 
 Link to the file with components relatively to `admin/dm-widgets` in admin or `${adapterName}` in web. Default is customDevices.js
