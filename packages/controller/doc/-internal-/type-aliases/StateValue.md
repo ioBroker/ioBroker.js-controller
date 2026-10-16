@@ -8,4 +8,4 @@
 
 > **StateValue** = `string` \| `number` \| `boolean` \| `null`
 
-Defined in: [types-dev/index.d.ts:211](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/types-dev/index.d.ts#L211)
+Defined in: [types-dev/index.d.ts:212](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L212)
