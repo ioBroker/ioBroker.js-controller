@@ -1,5 +1,12 @@
 import { CLICommand, type CLICommandOptions } from './cliCommand.js';
-import { tools, logger as toolsLogger } from '@iobroker/js-controller-common';
+import {
+    tools,
+    logger as toolsLogger,
+    EXIT_CODES,
+    LOG_LEVELS,
+    isLogLevelAtLeast,
+    parseLogEntryHeader,
+} from '@iobroker/js-controller-common';
 import chokidar from 'chokidar';
 import fs from 'fs-extra';
 import os from 'node:os';
@@ -15,6 +22,8 @@ interface CLILogsOptions {
     complete?: boolean;
     /** An optional RegExp to filter by */
     regex?: RegExp;
+    /** The lowest level to still show, if the output is restricted to a severity */
+    minLevel?: ioBroker.LogLevel;
 }
 
 /** Command ioBroker state ... */
@@ -44,6 +53,18 @@ export class CLILogs extends CLICommand {
             complete: this.options.all,
         };
 
+        // Optional, so calls without a level keep showing everything as before
+        if (params.level !== undefined) {
+            const level = String(params.level).toLowerCase();
+
+            if (!tools.isLogLevel(level)) {
+                console.error(`Unknown log level "${params.level}". Use one of: ${LOG_LEVELS.join(', ')}`);
+                return void this.options.callback(EXIT_CODES.UNKNOWN_ERROR);
+            }
+
+            options.minLevel = level;
+        }
+
         const config = fs.readJSONSync(require.resolve(getConfigFileName()));
         const logger = toolsLogger(config.log);
         // @ts-expect-error todo adjust logger type
@@ -60,8 +81,9 @@ export class CLILogs extends CLICommand {
                 regex = new RegExp(`: ${adapterName}\\.`);
                 options.regex = regex;
             }
+            const matches = this.createFilter(options);
             lines.forEach(line => {
-                if (regex && !regex.test(line)) {
+                if (!matches(line)) {
                     return;
                 }
                 console.log(line);
@@ -143,16 +165,53 @@ export class CLILogs extends CLICommand {
             start,
             autoClose: true,
         });
-        if (options.regex) {
+        if (options.regex || options.minLevel) {
             // Read the input line by line and only include the lines matching the filter
             input
                 .pipe(es.split())
-                .pipe(es.filterSync(line => options.regex!.test(line)))
+                .pipe(es.filterSync(this.createFilter(options)))
                 .pipe(es.mapSync((line: string) => line + os.EOL))
                 .pipe(process.stdout);
         } else {
             // just pipe the input through
             tools.pipeLinewise(input, process.stdout);
         }
+    }
+
+    /**
+     * Create the check of log lines against the active filters, for one read of a file
+     *
+     * A log entry can span several lines, e.g. a stack trace, and only its first line carries the
+     * level. Those follow-up lines inherit the decision made for the entry they belong to, so
+     * filtering by level does not cut a stack trace in half. Which lines start an entry is decided
+     * by the shared parser, the same one the host commands `getLogs` and `searchLogs` use: it takes
+     * a level only where the time stamp of an entry is, so a level quoted inside a message does not
+     * count as one.
+     *
+     * The decision belongs to one read and starts as "not shown". A read can begin with follow-up
+     * lines - the last lines of a file, or a stream from an offset - whose entry it does not know,
+     * and showing them would ignore the level. Files that are streamed at the same time do not
+     * share it either.
+     *
+     * @param options the active filters
+     */
+    private createFilter(options: CLILogsOptions): (line: string) => boolean {
+        let showEntry = false;
+
+        return line => {
+            if (options.minLevel) {
+                const header = parseLogEntryHeader(line);
+
+                if (header) {
+                    showEntry = isLogLevelAtLeast(header.level, options.minLevel);
+                }
+
+                if (!showEntry) {
+                    return false;
+                }
+            }
+
+            return !options.regex || options.regex.test(line);
+        };
     }
 }
