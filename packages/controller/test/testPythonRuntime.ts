@@ -510,6 +510,7 @@ describe('pythonRuntime', () => {
         // runners of all three OSes ship a Python 3.
         let python: string | null = null;
         let adapterDir: string;
+        let child: ChildProcess | undefined;
 
         for (const candidate of process.platform === 'win32' ? ['python', 'python3'] : ['python3', 'python']) {
             const probe = spawnSync(candidate, ['--version'], { windowsHide: true, encoding: 'utf8' });
@@ -541,23 +542,42 @@ describe('pythonRuntime', () => {
                     'sys.stderr.write("tail without newline")',
                 ].join('\n'),
             );
+
+            // The first full start of the interpreter took anything from half a second to more than
+            // 20 seconds on the GitHub Windows runners, while later starts are quick. That cold start
+            // is paid here, so the test below checks the contract and not the speed of the runner.
+            this.timeout(120_000);
+            spawnSync(python!, ['-u', '-m', 'testmod'], {
+                cwd: path.join(adapterDir, 'python'),
+                windowsHide: true,
+                timeout: 90_000,
+            });
         });
 
         after(async () => {
+            // A Python that still runs keeps its working directory - the python/ folder - locked on
+            // Windows, and removing it would fail with EBUSY on top of whatever failed the test.
+            const running = child;
+            if (running && running.exitCode === null && running.signalCode === null) {
+                const closed = new Promise(resolve => running.once('close', resolve));
+                running.kill();
+                await Promise.race([closed, new Promise(resolve => setTimeout(resolve, 5_000))]);
+            }
+
             if (adapterDir) {
                 await fs.remove(adapterDir);
             }
         });
 
         it('starts the module with -m, hands over args and environment, and forwards both streams', async function () {
-            this.timeout(15_000);
+            this.timeout(30_000);
 
             const config = {
                 states: { type: 'jsonl', host: '127.0.0.1', port: 9000 },
                 objects: { type: 'jsonl', host: '127.0.0.1', port: 9001 },
             } as unknown as ioBroker.IoBrokerJson;
 
-            const child = spawnPythonAdapter({
+            const proc = spawnPythonAdapter({
                 adapterName: 'testmod',
                 adapterDir,
                 main: 'python/testmod/__main__.py',
@@ -565,11 +585,28 @@ describe('pythonRuntime', () => {
                 args: ['--instance', '7', '--loglevel', 'debug'],
                 env: buildPythonEnv(config, 7, 'debug'),
             });
+            child = proc;
 
             const logged: { level: string; line: string }[] = [];
-            forwardPythonOutput(child, 'python.7', (level, line) => logged.push({ level, line }));
+            forwardPythonOutput(proc, 'python.7', (level, line) => logged.push({ level, line }));
 
-            const exitCode = await new Promise<number | null>(resolve => child.on('close', resolve));
+            // Done in about a second once the interpreter is warm. Should it still take too long, the
+            // failure has to show how far it got, which a bare mocha timeout does not.
+            const exitCode = await new Promise<number | null>((resolve, reject) => {
+                const timer = setTimeout(
+                    () =>
+                        reject(
+                            new Error(
+                                `Python (pid ${proc.pid}) did not exit within 20 seconds, output so far: ${JSON.stringify(logged)}`,
+                            ),
+                        ),
+                    20_000,
+                );
+                proc.on('close', code => {
+                    clearTimeout(timer);
+                    resolve(code);
+                });
+            });
 
             assert.equal(exitCode, 0);
 
