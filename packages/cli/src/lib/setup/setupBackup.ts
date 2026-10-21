@@ -1054,11 +1054,15 @@ export class BackupRestore {
         console.log(`host.${this.hostname} JSONL lines are valid`);
 
         // we check all other json files, we assume them as optional, because user created files may be no valid json
-        try {
-            this._checkDirectory(path.join(backupBaseDir, 'files'));
-        } catch (e) {
-            console.warn(`host.${this.hostname} One or more optional files are corrupted: ${e.message}`);
-            console.warn(`host.${this.hostname} Please ensure that self-created JSON files are valid`);
+        const invalidFiles: string[] = [];
+        this._checkDirectory(path.join(backupBaseDir, 'files'), false, invalidFiles);
+        if (invalidFiles.length) {
+            console.warn(
+                `host.${this.hostname} ${invalidFiles.length} optional file(s) are not valid JSON, the backup is still valid: ${invalidFiles.join(', ')}`,
+            );
+            console.warn(
+                `host.${this.hostname} Please ensure that self-created JSON files are valid or inform the adapter developer`,
+            );
         }
     }
 
@@ -1227,8 +1231,9 @@ export class BackupRestore {
      *
      * @param path - path to the directory
      * @param verbose - if logging should be verbose
+     * @param invalidFiles - if given, invalid files are collected here instead of throwing on the first one
      */
-    private _checkDirectory(path: string, verbose = false): void {
+    private _checkDirectory(path: string, verbose = false, invalidFiles?: string[]): void {
         if (fs.existsSync(path)) {
             const files = fs.readdirSync(path);
             if (!files.length) {
@@ -1238,15 +1243,26 @@ export class BackupRestore {
                 const filePath = `${path}/${file}`;
                 if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
                     // if directory then check it
-                    this._checkDirectory(filePath, verbose);
+                    this._checkDirectory(filePath, verbose, invalidFiles);
                 } else if (file.endsWith('.json')) {
                     try {
+                        // empty files cannot be parsed, but they are not corrupted by the backup either
+                        if (!fs.statSync(filePath).size) {
+                            if (verbose) {
+                                console.log(`host.${this.hostname} ${file} is empty, skipped`);
+                            }
+                            continue;
+                        }
                         fs.readJSONSync(filePath);
                         if (verbose) {
                             console.log(`host.${this.hostname} ${file} OK`);
                         }
                     } catch {
-                        throw new Error(`host.${this.hostname} ${filePath} is not a valid json file`);
+                        if (invalidFiles) {
+                            invalidFiles.push(filePath);
+                        } else {
+                            throw new Error(`host.${this.hostname} ${filePath} is not a valid json file`);
+                        }
                     }
                 }
             }
