@@ -155,7 +155,7 @@ export class AdapterAutoUpgradeManager {
      * @param options information of the adapter to install, e.g. version and name, sa well as active repo
      */
     private async upgradeAdapter(options: UpgradeAdapterOptions): Promise<void> {
-        const { repoName, name, version } = options;
+        const { repoName, name, version, dependencies, globalDependencies } = options;
 
         this.logger.info(`${this.logPrefix} Upgrade adapter "${name}" to ${version}`);
 
@@ -166,6 +166,9 @@ export class AdapterAutoUpgradeManager {
             processExit: () => undefined,
         });
 
+        // Explicit versions bypass the dependency checks inside upgradeAdapter.
+        // Automatic upgrades must reject incompatible versions before stopping any instance.
+        await upgrade.checkDependencies(dependencies, globalDependencies);
         await upgrade.upgradeAdapter(repoName, `${name}@${version}`, false, true, false);
     }
 

@@ -168,7 +168,7 @@ export class Upgrade {
      * @param deps local dependencies - required on this host
      * @param globalDeps global dependencies - required on one of the hosts
      */
-    private async _checkDependencies(deps: IoPackDependencies, globalDeps: IoPackDependencies): Promise<void> {
+    async checkDependencies(deps: IoPackDependencies, globalDeps: IoPackDependencies): Promise<void> {
         if (!deps && !globalDeps) {
             return Promise.resolve();
         }
@@ -533,7 +533,7 @@ export class Upgrade {
         if (repoAdapter.version) {
             if (!forceDowngrade) {
                 try {
-                    await this._checkDependencies(repoAdapter.dependencies, repoAdapter.globalDependencies);
+                    await this.checkDependencies(repoAdapter.dependencies, repoAdapter.globalDependencies);
                 } catch (e) {
                     return console.error(`Cannot check dependencies: ${e.message}`);
                 }
@@ -602,7 +602,7 @@ export class Upgrade {
             if (!forceDowngrade) {
                 try {
                     // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    await this._checkDependencies(ioPack.common.dependencies, ioPack.common.globalDependencies);
+                    await this.checkDependencies(ioPack.common.dependencies, ioPack.common.globalDependencies);
                 } catch (e) {
                     console.error(`Cannot check dependencies: ${e.message}`);
                     return;
