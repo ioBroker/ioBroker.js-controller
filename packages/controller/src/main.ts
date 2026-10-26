@@ -6966,8 +6966,16 @@ function handleProcessEnd(id: string, child: cp.ChildProcess, onExit: (code: num
  */
 async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promise<void> {
     const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
+    // Read before the first await: the object change handler removes the entry of a deleted instance once it stopped
+    // @ts-expect-error it is only set by the object change handler, see there
+    const deleted = !!procs[id]?.config.deleted;
 
     try {
+        if (deleted) {
+            await deleteStatesOfDeletedInstance(id);
+            return;
+        }
+
         outputCount += 2;
         await states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
         await states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
@@ -6986,6 +6994,26 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
         // nothing would correct that afterwards. Persisting reports a failed write instead of rejecting, so
         // this cannot swallow the error of the block above either.
         await persistUsedResourceTypes(usedResources.setInstanceBlocked(adapterInstance, false));
+    }
+}
+
+/**
+ * Delete the states of a deleted instance which have no object. The CLI deletes the objects and states first, but
+ * the instance writes its states until it ends (e.g. `info.connection` on unload), and this host writes `sigKill`
+ * to stop it - all of them would remain without object. An instance with the same number may already exist again,
+ * so only the states without object are deleted.
+ *
+ * @param id id of the deleted instance
+ */
+async function deleteStatesOfDeletedInstance(id: ioBroker.ObjectIDs.Instance): Promise<void> {
+    const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
+
+    for (const pattern of [`${id}.*`, `${adapterInstance}.*`]) {
+        for (const stateId of (await states!.getKeys(pattern)) ?? []) {
+            if (!(await objects!.objectExists(stateId))) {
+                await states!.delState(stateId);
+            }
+        }
     }
 }
 

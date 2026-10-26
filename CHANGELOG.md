@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Fixed states without object left by a deleted instance: the host stopping it wrote `sigKill`, `alive` and `connected` after the objects were gone, and the instance itself e.g. `info.connection` on unload - the host now deletes these states once the instance ended
+* (@GermanBluefox) Fixed instances in mode `once` (e.g. vis) writing `alive`, `connected`, `sigKill`, `logLevel` and `compactMode` without objects - they get the same `system.adapter.<instance>.*` objects as all others now, existing instances at their next start
+* (@GermanBluefox) Fixed `iobroker update` writing the number and the list of updates to `system.adapter.admin.0.info.updatesNumber`/`updatesList`, which have no objects, instead of `admin.0.info.updatesNumber`/`updatesList`
 * (@GermanBluefox) Added `sendToHost('getRepositoryCompact')`, which answers with only the version and the icon per adapter (feature flag `CONTROLLER_REPOSITORY_COMPACT`), and the diagnostics are now collected after the repository requesters got their answer instead of before
 * (@GermanBluefox) Added `services` to `common.visWidgets.<set>` and `common.deviceWidgets` in the `io-package.json` schema and the typings: background components that vis-2 and the devices app render once next to the views, whichever view is shown - e.g. for a phone that has to stay registered to ring
 * (@GermanBluefox) Fixed the `io-package.json` schema rejecting `common.deviceWidgets.iconsManifest`, which the typings and the devices app already know
