@@ -907,7 +907,8 @@ export class Install {
         console.log(`host.${hostname} create instance ${adapter}`);
 
         let objs: ioBroker.StateObject[];
-        if (!instanceObj.common.onlyWWW && instanceObj.common.mode !== 'once') {
+        // Instances in mode "once" run like "schedule" ones: the host and the adapter write alive, sigKill, logLevel, ...
+        if (!instanceObj.common.onlyWWW) {
             objs = tools.getInstanceIndicatorObjects(`${adapter}.${instance}`, instanceObj.common);
         } else {
             objs = [];
