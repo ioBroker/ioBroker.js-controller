@@ -72,6 +72,7 @@ import {
     UsedResourcesRegistry,
     withSerialPortDevice,
 } from '@/lib/usedResources.js';
+import { checkDocker, type DockerCheckResult, getDockerCheckInstance, resolveDockerPlugin } from '@/lib/checkDocker.js';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
 // eslint-disable-next-line unicorn/prefer-module
@@ -3903,6 +3904,35 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             });
             break;
         }
+
+        case 'checkDocker':
+            // Whether an instance can use Docker on this host - asked by the `checkDocker` control of its config
+            // dialog, through admin, when admin runs on another host
+            if (msg.callback && msg.from) {
+                let answer: DockerCheckResult | { error: string };
+                try {
+                    const instance = getDockerCheckInstance(msg.message);
+                    const adapter = instance.slice(0, instance.lastIndexOf('.'));
+                    const adapterDir = tools.getAdapterDir(adapter);
+                    if (!adapterDir) {
+                        throw new Error(`Adapter "${adapter}" is not installed on host ${hostname}`);
+                    }
+                    const pluginPath = resolveDockerPlugin(adapterDir);
+                    if (!pluginPath) {
+                        throw new Error(`Adapter "${adapter}" does not use @iobroker/plugin-docker`);
+                    }
+                    answer = await checkDocker({
+                        pluginPath,
+                        namespace: instance,
+                        log: text => logger.debug(`${hostLogPrefix} checkDocker for ${instance}: ${text}`),
+                    });
+                } catch (e) {
+                    logger.debug(`${hostLogPrefix} Cannot check Docker: ${e.message}`);
+                    answer = { error: e.message };
+                }
+                sendTo(msg.from, msg.command, answer, msg.callback);
+            }
+            break;
 
         case 'checkFeatureSupported': {
             const feature: unknown = msg.message;
