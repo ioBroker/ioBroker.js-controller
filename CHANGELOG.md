@@ -5,6 +5,7 @@
 -->
 ## __WORK IN PROGRESS__
 * (@GermanBluefox) Added `sendToHost('checkDocker', { instance })`, which answers whether the instance can use Docker on that host (feature flag `CONTROLLER_CHECK_DOCKER`). The check is done by the `@iobroker/plugin-docker` of the adapter, in a child process. Admin needs it for the `checkDocker` control when the instance runs on another host than admin - so far it showed the Docker of the admin host
+* (@typhosj) Fixed the state that counts the data points of a vis project: a space in the project name is now replaced by `_`, instead of every letter `s`. The state of an affected project gets a new ID (e.g. `vis-2.0.datapoints.New_project` instead of `New project`), the old state stays behind
 * (@GermanBluefox) Added `sendToHost('getRepositoryCompact')`, which answers with only the version and the icon per adapter (feature flag `CONTROLLER_REPOSITORY_COMPACT`), and the diagnostics are now collected after the repository requesters got their answer instead of before
 * (@GermanBluefox) Added `services` to `common.visWidgets.<set>` and `common.deviceWidgets` in the `io-package.json` schema and the typings: background components that vis-2 and the devices app render once next to the views, whichever view is shown - e.g. for a phone that has to stay registered to ring
 * (@GermanBluefox) Fixed the `io-package.json` schema rejecting `common.deviceWidgets.iconsManifest`, which the typings and the devices app already know
