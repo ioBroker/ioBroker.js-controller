@@ -6,7 +6,7 @@
 
 # Interface: InternalGetEnumOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:570](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/_Types.ts#L570)
+Defined in: [adapter/src/lib/\_Types.ts:570](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/adapter/src/lib/_Types.ts#L570)
 
 Options for reading a single enum
 
@@ -16,7 +16,7 @@ Options for reading a single enum
 
 > **\_enum**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:572](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/_Types.ts#L572)
+Defined in: [adapter/src/lib/\_Types.ts:572](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/adapter/src/lib/_Types.ts#L572)
 
 The name of the enum to read
 
@@ -26,7 +26,7 @@ The name of the enum to read
 
 > `optional` **callback?**: [`GetEnumCallback`](../type-aliases/GetEnumCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/_Types.ts#L576)
+Defined in: [adapter/src/lib/\_Types.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/adapter/src/lib/_Types.ts#L576)
 
 Called with the enum
 
@@ -36,6 +36,6 @@ Called with the enum
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:574](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/_Types.ts#L574)
+Defined in: [adapter/src/lib/\_Types.ts:574](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/adapter/src/lib/_Types.ts#L574)
 
 Optional settings including the user context

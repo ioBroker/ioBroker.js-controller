@@ -8,7 +8,7 @@
 
 > **CallbackReturnTypeOf**\<`T`\> = [`SecondParameterOf`](SecondParameterOf.md)\<`T`\>
 
-Defined in: [types-dev/index.d.ts:641](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L641)
+Defined in: [types-dev/index.d.ts:641](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/types-dev/index.d.ts#L641)
 
 Infers the return type from a callback-style API and leaves null and undefined in
 

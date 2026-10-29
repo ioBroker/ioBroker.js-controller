@@ -6,7 +6,7 @@
 
 # Interface: SetStateChangedResult
 
-Defined in: [adapter/src/lib/\_Types.ts:287](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/_Types.ts#L287)
+Defined in: [adapter/src/lib/\_Types.ts:287](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/adapter/src/lib/_Types.ts#L287)
 
 Result of setting a state only if it changed
 
@@ -16,7 +16,7 @@ Result of setting a state only if it changed
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:291](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/_Types.ts#L291)
+Defined in: [adapter/src/lib/\_Types.ts:291](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/adapter/src/lib/_Types.ts#L291)
 
 The id of the state
 
@@ -26,6 +26,6 @@ The id of the state
 
 > **notChanged**: `boolean`
 
-Defined in: [adapter/src/lib/\_Types.ts:289](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/_Types.ts#L289)
+Defined in: [adapter/src/lib/\_Types.ts:289](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/adapter/src/lib/_Types.ts#L289)
 
 Whether the state value was unchanged
