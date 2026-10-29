@@ -26,6 +26,7 @@ const SUPPORTED_FEATURES_INTERNAL = [
     'CONTROLLER_USED_RESOURCES', // js-controller maintains a registry of exclusive resources (serial/TCP/UDP ports, ...) used by instances. Since `js-controller` 8.0
     'CONTROLLER_PYTHON_ADAPTERS', // Controller can start adapters with `common.platform: "Python"`. Since `js-controller` 8.0
     'CONTROLLER_REPOSITORY_COMPACT', // sendToHost('getRepositoryCompact') answers with the version and the icon per adapter instead of the whole repository. Since `js-controller` 8.0
+    'CONTROLLER_CHECK_DOCKER', // sendToHost('checkDocker', { instance }) answers whether the instance can use Docker on that host, checked by its `@iobroker/plugin-docker`. Since `js-controller` 8.0
 ] as const;
 
 export const SUPPORTED_FEATURES = [...SUPPORTED_FEATURES_INTERNAL];
