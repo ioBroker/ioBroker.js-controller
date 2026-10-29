@@ -1,3 +1,6 @@
+import path from 'node:path';
+import { tools } from '@iobroker/js-controller-common';
+
 /**
  * Get disk warning level from state
  *
@@ -41,4 +44,28 @@ export function getCronExpression(options: GetCronExpressionOptions): string {
 
     const randomSeconds = Math.round(Math.random() * MAX_SCHEDULE_DELAY);
     return `${randomSeconds} ${cronExpression}`;
+}
+
+/**
+ * Get the CLI arguments to reinstall an adapter from the location it was originally installed from
+ *
+ * @param installedFrom the `common.installedFrom` of the instance
+ * @param adapterName name of the adapter, e.g. `admin`
+ * @returns the arguments for the CLI, e.g. `['install', 'admin@7.1.0']`
+ */
+export function getInstallArgsFromInstalledFrom(installedFrom: string, adapterName: string): string[] {
+    if (
+        tools.isShortGithubUrl(installedFrom) ||
+        installedFrom.includes('://') ||
+        path.isAbsolute(installedFrom) ||
+        /\.(tgz|gz|zip)$/i.test(installedFrom)
+    ) {
+        // Installing from URL supports raw http(s) and file URLs, the short GitHub URL format and local archives or paths
+        return ['url', installedFrom, adapterName];
+    }
+
+    if (installedFrom.startsWith(`${tools.appName}.`)) {
+        installedFrom = installedFrom.substring(tools.appName.length + 1);
+    }
+    return ['install', installedFrom];
 }

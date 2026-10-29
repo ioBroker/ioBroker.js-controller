@@ -40,7 +40,12 @@ import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controll
 import decache from 'decache';
 import { CronExpressionParser } from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base';
-import { DEFAULT_DISK_WARNING_LEVEL, getCronExpression, getDiskWarningLevel } from '@/lib/utils.js';
+import {
+    DEFAULT_DISK_WARNING_LEVEL,
+    getCronExpression,
+    getDiskWarningLevel,
+    getInstallArgsFromInstalledFrom,
+} from '@/lib/utils.js';
 import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
 import {
     getHostObject,
@@ -4357,19 +4362,7 @@ function installAdapters(): void {
         const installOptions = { windowsHide: true };
         if (!task.rebuild && task.installedFrom && proc.downloadRetry < 3) {
             // two tries with installed location, afterward we try the normal npm version install
-            if (tools.isShortGithubUrl(task.installedFrom) || task.installedFrom.includes('://')) {
-                // Installing from URL supports raw http(s) and file URLs as well as the short GitHub URL format
-                installArgs.push('url');
-                installArgs.push(task.installedFrom);
-                installArgs.push(task.id.split('.')[2]); // adapter name
-            } else {
-                installArgs.push('install');
-                let installedFrom = task.installedFrom;
-                if (installedFrom.startsWith(`${tools.appName}.`)) {
-                    installedFrom = installedFrom.substring(tools.appName.length + 1);
-                }
-                installArgs.push(installedFrom);
-            }
+            installArgs.push(...getInstallArgsFromInstalledFrom(task.installedFrom, task.id.split('.')[2]));
         } else {
             installArgs.push(commandScope);
             if (!task.rebuild) {
