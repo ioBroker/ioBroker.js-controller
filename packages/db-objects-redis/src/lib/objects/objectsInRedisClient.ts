@@ -151,6 +151,18 @@ export class ObjectsInRedisClient {
     private noLegacyMultihost?: boolean;
     private readonly userSubscriptions: Record<string, boolean>;
     private readonly systemSubscriptions: Record<string, boolean>;
+    /** True while a reconnect-triggered subscription replay is running (coalesces overlapping replays) */
+    private replayInProgress = false;
+    /** Set to true when a reconnect fires while a replay is already running, so the replay runs once more afterwards */
+    private replayPending = false;
+    /**
+     * Monotonic generation counter for the system pub/sub socket (`subSystem`). It is bumped on
+     * every `close` of that socket, independent of the one-shot `ready` replay. A subscription
+     * (e.g. the object-change / `system.config` channel) acknowledged in one generation is lost if
+     * the socket is torn down afterwards, so the replay re-runs the system pass whenever this value
+     * changes while it is restoring subscriptions (see issue #3524 epoch race).
+     */
+    private systemSubEpoch = 0;
 
     /**
      * @param settings Settings for the objects client including connection and namespaces
@@ -406,6 +418,10 @@ export class ObjectsInRedisClient {
                     `✅ ${this.namespace} Objects DB reconnected via Redis Sentinel (master group "${this.settings.connection.options.name}")`,
                 );
             }
+            // Capture whether the main client already reached "ready" before: on a reconnect the
+            // sibling pub/sub connections (subSystem/sub) are not recreated, so their own "ready"
+            // based subscription replay does not run and the object-change subscriptions are lost.
+            const isReconnect = wasReady;
             wasReady = true;
 
             this.log.debug(`${this.namespace} Objects client ready ... initialize now`);
@@ -537,6 +553,14 @@ export class ObjectsInRedisClient {
                     if (ready && typeof this.settings.disconnected === 'function') {
                         this.settings.disconnected();
                     }
+                });
+
+                // Bump the system pub/sub generation on every socket close (transient drop or
+                // permanent end). The reconnect replay reads this to detect that the socket changed
+                // underneath it and that an already-acknowledged psubscribe (e.g. the object-change
+                // channel) was lost with the old socket - see issue #3524 epoch race.
+                this.subSystem.on('close', () => {
+                    this.systemSubEpoch++;
                 });
 
                 this.subSystem.on('error', error => {
@@ -872,7 +896,354 @@ export class ObjectsInRedisClient {
                 !ready && typeof this.settings.connected === 'function' && this.settings.connected();
                 ready = true;
             }
+
+            // On a reconnect the sibling pub/sub connections already exist, so the first-connect
+            // subscription setup above is skipped and their own "ready" handlers may never fire
+            // again (see issue #3524). Re-arm the pub/sub subscriptions explicitly so object-change
+            // notifications (incl. instance start/stop via common.host) resume after an objects DB
+            // reconnect. This intentionally runs after the _determineProtocolVersion() check above:
+            // we do not want to re-subscribe before the protocol has been validated. A transient
+            // throw there aborts this handler, but the next "ready" (reconnect) runs the replay again.
+            if (isReconnect) {
+                void this.replaySubscriptions();
+            }
         });
+    }
+
+    /**
+     * Make sure a sibling pub/sub ioredis client is connected and ready before we replay
+     * subscriptions against it.
+     *
+     * The three ioredis connections (main `client`, `sub`, `subSystem`) each have their own socket
+     * and retry lifecycle. When the main client reaches `ready` again after an objects DB drop, a
+     * sibling may still be `reconnecting`, or may have permanently ended (its retry strategy stops
+     * after `retry_max_count` attempts, status `end`). In both cases simply issuing `psubscribe`
+     * does NOT guarantee the pattern reaches the server: an ended socket never flushes its offline
+     * queue. This brings the sibling back to `ready` - reviving an ended socket via `connect()` -
+     * so the subsequent replay is issued against a live connection.
+     *
+     * @param client the sibling ioredis client (`subSystem` or `sub`) to bring to a ready state
+     * @param timeoutMs how long to wait for the client to reach `ready` before giving up
+     * @returns true if the client is connected and ready, false otherwise
+     */
+    private async ensureSubClientReady(client: IORedis.Redis, timeoutMs = 5_000): Promise<boolean> {
+        if (this.stop) {
+            return false;
+        }
+        const isReady = (): boolean => client.status === 'ready';
+        if (isReady()) {
+            return true;
+        }
+
+        // An ended socket will not reconnect by itself (retry strategy exhausted / stopped).
+        // Revive it explicitly; connect() rejects if it is already connecting/connected, which is
+        // fine - we fall through to waiting for the `ready` event below.
+        const status: string = client.status;
+        if (status === 'end' || status === 'wait') {
+            try {
+                await client.connect();
+                return isReady();
+            } catch {
+                // already connecting/connected, or connect failed - fall through to waiting
+            }
+        }
+
+        // Socket is connecting/reconnecting: wait (bounded) for it to become ready.
+        return new Promise<boolean>(resolve => {
+            let settled = false;
+            let timer: NodeJS.Timeout | null = null;
+            // Resolve true as soon as the socket reports ready; `once` auto-removes this listener.
+            const onReady = (): void => {
+                if (settled) {
+                    return;
+                }
+                settled = true;
+                // Clear the fallback timer so it does not linger and keep the event loop alive
+                // (relevant for a clean process exit and under rapid reconnects).
+                if (timer) {
+                    clearTimeout(timer);
+                    timer = null;
+                }
+                resolve(true);
+            };
+            client.once('ready', onReady);
+            // Bounded fallback: if `ready` never fires, stop waiting. A late `ready` after this is
+            // harmless because `settled` guards the listener. unref() so the timer never by itself
+            // keeps the process alive.
+            timer = setTimeout(() => {
+                timer = null;
+                if (settled) {
+                    return;
+                }
+                settled = true;
+                client.removeListener('ready', onReady);
+                resolve(isReady());
+            }, timeoutMs);
+            timer.unref?.();
+        });
+    }
+
+    /**
+     * Re-arm the system and user pub/sub subscriptions after an objects DB reconnect.
+     *
+     * On a reconnect the `subSystem`/`sub` ioredis instances are reused (not recreated), so the
+     * subscription replay that normally happens inside their one-shot `ready` handlers does not
+     * run again (see issue #3524). This re-issues the `system.config` and meta namespace
+     * subscriptions and every entry in `systemSubscriptions` (the object-change channels, incl.
+     * instance start/stop via `common.host`) and `userSubscriptions`.
+     *
+     * Robustness guarantees for the #3524 failure mode:
+     * - It first brings each sibling connection back to `ready` ({@link ensureSubClientReady}),
+     *   because the main client reaching `ready` does not prove a sibling is usable.
+     * - It tracks per-pattern success and retries once the sibling is confirmed ready, so a
+     *   mid-replay disconnect cannot silently leave an object-change pattern unsubscribed.
+     * - If a `systemSubscriptions` pattern (the inbound object-change channel) still cannot be
+     *   re-established, it escalates through `settings.disconnected()` so the controller performs a
+     *   full reconnect cycle (which recreates the siblings and re-runs the first-connect path),
+     *   rather than running on with reads/writes alive but object-change notifications dead.
+     * - Overlapping replays are coalesced via `replayInProgress`/`replayPending`, so a reconnect
+     *   storm results in a single additional run instead of racing detached replays.
+     *
+     * It is idempotent: re-subscribing an already active pattern is a no-op on the server, and
+     * every step is guarded so a transient failure never throws out of the `ready` handler.
+     */
+    private async replaySubscriptions(): Promise<void> {
+        if (this.stop) {
+            return;
+        }
+
+        // Coalesce overlapping replays: if one is already running, remember that another reconnect
+        // happened and let the active run repeat itself once it finishes.
+        if (this.replayInProgress) {
+            this.replayPending = true;
+            return;
+        }
+        this.replayInProgress = true;
+
+        try {
+            do {
+                this.replayPending = false;
+                await this.doReplaySubscriptions();
+            } while (this.replayPending && !this.stop);
+        } finally {
+            this.replayInProgress = false;
+        }
+    }
+
+    /**
+     * Single pass of the subscription replay. See {@link replaySubscriptions} for the overall
+     * contract; this method performs one attempt and escalates on an unrecoverable object-change
+     * subscription failure.
+     *
+     * The system pub/sub channel is restored first and then re-validated against the connection
+     * generation ({@link systemSubEpoch}): the user pass can take time, and if `subSystem` is torn
+     * down and reconnects while it runs, the server-side object-change subscription acknowledged in
+     * the previous generation is gone. Because the sibling `ready` handler is not a reliable
+     * trigger (issue #3524), the pass re-runs the system replay whenever the generation changed
+     * until it completes within a single stable generation, so no acknowledged subscription is
+     * silently lost.
+     */
+    private async doReplaySubscriptions(): Promise<void> {
+        this.settings.connection.enhancedLogging &&
+            this.log.silly(`${this.namespace} Objects replay subscriptions after reconnect`);
+
+        // Bounded number of system re-passes within one replay, so a reconnect storm cannot spin
+        // here forever. The outer replayPending loop re-runs the whole replay if more happen.
+        const maxSystemPasses = 5;
+        let systemPasses = 0;
+        let systemReplayFailed = false;
+        let epochBeforeSystem = this.systemSubEpoch;
+
+        if (this.subSystem) {
+            // Restore the system channel until it completes within a single, unchanged connection
+            // generation. If the socket flipped (epoch changed) while we were psubscribing, the
+            // acknowledgements may have landed on a now-dead socket, so run it again.
+            do {
+                epochBeforeSystem = this.systemSubEpoch;
+                systemReplayFailed = !(await this.replaySystemSubscriptions());
+                systemPasses++;
+            } while (
+                !systemReplayFailed &&
+                this.systemSubEpoch !== epochBeforeSystem &&
+                !this.stop &&
+                systemPasses < maxSystemPasses
+            );
+
+            if (this.stop) {
+                return;
+            }
+
+            // If we exhausted the pass budget while the generation was still changing, the last
+            // pass's acknowledgements may belong to a now-dead socket. The capped state is not a
+            // stable generation, so treat it as a failure and escalate rather than running on with
+            // a possibly unsubscribed object-change channel (issue #3524 silent-degradation state).
+            if (!systemReplayFailed && this.systemSubEpoch !== epochBeforeSystem) {
+                systemReplayFailed = true;
+            }
+        }
+
+        if (this.sub && !this.stop) {
+            const sub = this.sub;
+            const userReady = await this.ensureSubClientReady(sub);
+            if (userReady) {
+                const failedUserSubs: string[] = [];
+                for (const pattern of Object.keys(this.userSubscriptions)) {
+                    if (this.stop) {
+                        return;
+                    }
+                    try {
+                        await sub.psubscribe(pattern);
+                    } catch {
+                        failedUserSubs.push(pattern);
+                    }
+                }
+                if (failedUserSubs.length && !this.stop && (await this.ensureSubClientReady(sub))) {
+                    for (const pattern of failedUserSubs) {
+                        if (this.stop) {
+                            return;
+                        }
+                        try {
+                            await sub.psubscribe(pattern);
+                        } catch {
+                            // user subscriptions are not part of the #3524 escalation; a stale read
+                            // subscription is recovered on the next reconnect
+                        }
+                    }
+                }
+            }
+        }
+
+        // The user pass may have taken a while. If the system socket flipped generation since the
+        // last good system pass, the object-change subscription acknowledged earlier was lost with
+        // the old socket - replay the system channel again (still bounded) before deciding success.
+        if (this.subSystem && !systemReplayFailed && !this.stop && this.systemSubEpoch !== epochBeforeSystem) {
+            if (systemPasses < maxSystemPasses) {
+                do {
+                    epochBeforeSystem = this.systemSubEpoch;
+                    systemReplayFailed = !(await this.replaySystemSubscriptions());
+                    systemPasses++;
+                } while (
+                    !systemReplayFailed &&
+                    this.systemSubEpoch !== epochBeforeSystem &&
+                    !this.stop &&
+                    systemPasses < maxSystemPasses
+                );
+            }
+
+            // Whether we re-passed and still ended on a changed generation, or the pass budget was
+            // already exhausted so we could not re-pass at all, the system channel is not in a
+            // stable generation: the object-change acknowledgement may belong to a dead socket.
+            // Treat it as a failure and escalate instead of accepting an indeterminate state (#3524).
+            if (!systemReplayFailed && !this.stop && this.systemSubEpoch !== epochBeforeSystem) {
+                systemReplayFailed = true;
+            }
+        }
+
+        // The object-change subscriptions are what instance start/stop (via common.host) and other
+        // inter-host object notifications rely on. If we could not restore the system
+        // subscriptions, do not run on silently (reads/writes alive, object-change dead). Signal a
+        // disconnect so the controller tears down and reconnects, which recreates the sibling
+        // connections and re-runs the first-connect subscription path.
+        if (systemReplayFailed && !this.stop && typeof this.settings.disconnected === 'function') {
+            this.log.warn(
+                `${this.namespace} Could not restore objects system subscriptions after reconnect, forcing reconnect`,
+            );
+            try {
+                this.settings.disconnected();
+            } catch (e) {
+                // never let the escalation throw out of the void-ed replay promise
+                this.log.warn(`${this.namespace} Error while forcing reconnect after failed replay: ${e.message}`);
+            }
+        }
+    }
+
+    /**
+     * Replay the system pub/sub subscriptions (the `system.config` and meta namespace channels and
+     * every `systemSubscriptions` entry, notably the object-change channels driving instance
+     * start/stop via `common.host`) against the current `subSystem` socket exactly once.
+     *
+     * It mirrors the extras issued in the `subSystem.on('ready')` first-connect handler:
+     * `psubscribe(${this.objNamespace}system.config)`, `psubscribe(${this.metaNamespace}*)`, then
+     * every pattern in `systemSubscriptions`. It brings the socket to `ready` first, re-issues each
+     * pattern, and retries any that fail once the socket is confirmed ready again, so a mid-replay
+     * drop does not silently leave an object-change pattern unsubscribed. Detecting a generation
+     * flip that happens *after* a successful pass is the caller's responsibility (see
+     * {@link doReplaySubscriptions}).
+     *
+     * @returns true if the system subscriptions were (re)issued against a ready socket, false if
+     * the socket could not be made ready or a pattern could not be restored
+     */
+    private async replaySystemSubscriptions(): Promise<boolean> {
+        const subSystem = this.subSystem;
+        if (!subSystem) {
+            return true;
+        }
+
+        const systemReady = await this.ensureSubClientReady(subSystem);
+        if (this.stop) {
+            return true;
+        }
+
+        if (!systemReady) {
+            // The system pub/sub socket could not be brought back - object-change notifications
+            // would stay dead. Report failure so the caller escalates.
+            this.log.warn(
+                `${this.namespace} Objects system pub/sub connection not ready on reconnect, cannot replay subscriptions`,
+            );
+            return false;
+        }
+
+        // subscribe to system.config anytime because also adapters need stuff like defaultNewAcl
+        try {
+            await subSystem.psubscribe(`${this.objNamespace}system.config`);
+        } catch {
+            // ignore
+        }
+
+        // subscribe to meta changes
+        try {
+            await subSystem.psubscribe(`${this.metaNamespace}*`);
+        } catch (e) {
+            this.log.warn(
+                `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`,
+            );
+        }
+
+        // Replay the object-change / system subscriptions. Collect patterns that fail so we can
+        // retry them once more after confirming the socket is ready again - a mid-replay disconnect
+        // must not silently drop them.
+        const failedSystemSubs: string[] = [];
+        for (const sub of Object.keys(this.systemSubscriptions)) {
+            if (this.stop) {
+                return true;
+            }
+            try {
+                await subSystem.psubscribe(sub);
+            } catch {
+                failedSystemSubs.push(sub);
+            }
+        }
+
+        if (failedSystemSubs.length && !this.stop) {
+            const retryReady = await this.ensureSubClientReady(subSystem);
+            if (retryReady) {
+                for (const sub of failedSystemSubs.splice(0)) {
+                    if (this.stop) {
+                        return true;
+                    }
+                    try {
+                        await subSystem.psubscribe(sub);
+                    } catch {
+                        failedSystemSubs.push(sub);
+                    }
+                }
+            }
+            if (failedSystemSubs.length) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -5842,6 +6213,8 @@ export class ObjectsInRedisClient {
      */
     async destroy(): Promise<void> {
         this.stop = true;
+        // Cancel any pending reconnect replay; the running loop checks `this.stop` and will exit.
+        this.replayPending = false;
         if (this.client) {
             try {
                 await this.client.quit();
