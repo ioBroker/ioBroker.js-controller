@@ -8,7 +8,7 @@
 
 > **SupportedFeature** = `"ALIAS"` \| `"ALIAS_SEPARATE_READ_WRITE_ID"` \| `"ADAPTER_GETPORT_BIND"` \| `"ADAPTER_DEL_OBJECT_RECURSIVE"` \| `"ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE"` \| `"ADAPTER_AUTO_DECRYPT_NATIVE"` \| `"PLUGINS"` \| `"CONTROLLER_NPM_AUTO_REBUILD"` \| `"CONTROLLER_READWRITE_BASE_SETTINGS"` \| `"CONTROLLER_MULTI_REPO"` \| `"CONTROLLER_LICENSE_MANAGER"` \| `"CONTROLLER_OS_PACKAGE_UPGRADE"` \| `"DEL_INSTANCE_CUSTOM"` \| `"CUSTOM_FULL_VIEW"` \| `"ADAPTER_GET_OBJECTS_BY_ARRAY"` \| `"CONTROLLER_UI_UPGRADE"` \| `"ADAPTER_WEBSERVER_UPGRADE"` \| `"CONTROLLER_CMD_EXEC_FILES"` \| `"CONTROLLER_FEATURE_REQUEST"` \| `"CONTROLLER_USED_RESOURCES"` \| `"CONTROLLER_PYTHON_ADAPTERS"` \| `"CONTROLLER_REPOSITORY_COMPACT"`
 
-Defined in: [types-dev/index.d.ts:63](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L63)
+Defined in: [types-dev/index.d.ts:63](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/types-dev/index.d.ts#L63)
 
 Features which can be checked via `adapter.supportsFeature(...)`.
 The runtime list of currently supported features lives in

@@ -6,7 +6,7 @@
 
 # Interface: SerialPortResourceData
 
-Defined in: [types-dev/index.d.ts:95](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L95)
+Defined in: [types-dev/index.d.ts:95](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/types-dev/index.d.ts#L95)
 
 A serial port occupied by an instance
 
@@ -16,7 +16,7 @@ A serial port occupied by an instance
 
 > `optional` **baudRate?**: `number`
 
-Defined in: [types-dev/index.d.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L102)
+Defined in: [types-dev/index.d.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/types-dev/index.d.ts#L102)
 
 Baud rate the port is opened with, if known
 
@@ -26,7 +26,7 @@ Baud rate the port is opened with, if known
 
 > `optional` **device?**: `string`
 
-Defined in: [types-dev/index.d.ts:108](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L108)
+Defined in: [types-dev/index.d.ts:108](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/types-dev/index.d.ts#L108)
 
 The device `port` resolves to, e.g. "/dev/ttyUSB0" for a "/dev/serial/by-id/..." link or "COM3" for
 "\\\\.\\com3". Set by the host on registration and used to recognize the same port under different
@@ -38,7 +38,7 @@ names; an adapter does not set it.
 
 > **port**: `string`
 
-Defined in: [types-dev/index.d.ts:100](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L100)
+Defined in: [types-dev/index.d.ts:100](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/types-dev/index.d.ts#L100)
 
 System path or name of the serial port as the adapter opens it, e.g. "/dev/ttyUSB0", a stable
 "/dev/serial/by-id/..." link or "COM3"
