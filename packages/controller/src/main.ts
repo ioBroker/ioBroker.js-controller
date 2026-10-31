@@ -4967,19 +4967,31 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
     // check node.js version if defined in package.json
     if (proc.engine) {
         if (!semver.satisfies(process.version.replace(/^v/, ''), proc.engine)) {
-            logger.warn(
-                `${hostLogPrefix} startInstance ${name}.${instanceNo}: required Node.js version ${proc.engine}, actual version ${process.version}`,
-            );
-            // disable instance
-            const obj = await objects.getObject(id);
-            if (obj?.common?.enabled) {
-                obj.common.enabled = false;
-                await objects.setObject(obj._id, obj);
+            /*
+             * Same force marker as the controller engines check above: with the marker file
+             * or IOB_FORCE_NODE=1 set, start the instance anyway (with a warning) instead of
+             * disabling it. This is UNSUPPORTED and meant for test systems only.
+             */
+            const forceMarker = path.join(controllerDir, '..', '..', '.nodejs-force');
+            if (process.env.IOB_FORCE_NODE === '1' || fs.existsSync(forceMarker)) {
                 logger.warn(
-                    `${hostLogPrefix} startInstance ${name}.${instanceNo}: instance disabled because of Node.js version mismatch`,
+                    `${hostLogPrefix} startInstance ${name}.${instanceNo}: required Node.js version ${proc.engine}, actual version ${process.version} - force marker present, starting anyway. This is UNSUPPORTED, use it at your own risk!`,
                 );
+            } else {
+                logger.warn(
+                    `${hostLogPrefix} startInstance ${name}.${instanceNo}: required Node.js version ${proc.engine}, actual version ${process.version}`,
+                );
+                // disable instance
+                const obj = await objects.getObject(id);
+                if (obj?.common?.enabled) {
+                    obj.common.enabled = false;
+                    await objects.setObject(obj._id, obj);
+                    logger.warn(
+                        `${hostLogPrefix} startInstance ${name}.${instanceNo}: instance disabled because of Node.js version mismatch`,
+                    );
+                }
+                return;
             }
-            return;
         }
     }
 
@@ -6553,21 +6565,39 @@ export async function init(compactGroupId?: number): Promise<void> {
         }
 
         if (invalidVersion) {
-            logger.error(
-                `${hostLogPrefix} ioBroker requires Node.js in version ${packageJson.engines.node}, you have ${process.version}`,
-            );
-            logger.error(
-                `${hostLogPrefix} Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten`,
-            );
+            /*
+             * Same force marker as lib-npx/checkVersions.js in ioBroker/ioBroker:
+             * $IOB_DIR/.nodejs-force (created by 'node-update.sh --force') or the env
+             * variable IOB_FORCE_NODE=1 tolerates an unsupported Node.js version for
+             * testing. Warn instead of exit - this is UNSUPPORTED and meant for test
+             * systems only. Remove the marker to re-enable the strict check.
+             */
+            const forceMarker = path.join(controllerDir, '..', '..', '.nodejs-force');
+            if (process.env.IOB_FORCE_NODE === '1' || fs.existsSync(forceMarker)) {
+                logger.warn(
+                    `${hostLogPrefix} ioBroker requires Node.js in version ${packageJson.engines.node}, you have ${process.version}`,
+                );
+                logger.warn(
+                    `${hostLogPrefix} The force marker is present, continuing anyway. This is UNSUPPORTED, use it at your own risk!`,
+                );
+                logger.warn(`${hostLogPrefix} Remove ${forceMarker} to re-enable the strict version check.`);
+            } else {
+                logger.error(
+                    `${hostLogPrefix} ioBroker requires Node.js in version ${packageJson.engines.node}, you have ${process.version}`,
+                );
+                logger.error(
+                    `${hostLogPrefix} Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten`,
+                );
 
-            console.error(
-                `ioBroker requires Node.js in version ${packageJson.engines.node}, you have ${process.version}`,
-            );
-            console.error(
-                'Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten',
-            );
+                console.error(
+                    `ioBroker requires Node.js in version ${packageJson.engines.node}, you have ${process.version}`,
+                );
+                console.error(
+                    'Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten',
+                );
 
-            process.exit(EXIT_CODES.INVALID_NODE_VERSION);
+                process.exit(EXIT_CODES.INVALID_NODE_VERSION);
+            }
         }
     }
 
