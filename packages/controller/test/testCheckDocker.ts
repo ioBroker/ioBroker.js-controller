@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import os from 'node:os';
 import fs from 'fs-extra';
-import { checkDocker, getDockerCheckInstance, resolveDockerPlugin } from '../src/lib/checkDocker.js';
+import { checkDocker, forkCheck, getDockerCheckInstance, resolveDockerPlugin } from '../src/lib/checkDocker.js';
 
 /**
  * Create an adapter directory with a fake `@iobroker/plugin-docker`
@@ -230,6 +230,106 @@ describe('checkDocker', () => {
 
             assert.equal(countChecks(a.countFile), 1);
             assert.equal(countChecks(b.countFile), 1);
+        });
+
+        /**
+         * A plugin that starts a process through the shell, as it runs `docker ps`, and then hangs
+         *
+         * @param dir directory to create the adapter in
+         * @returns the main file of the plugin and the file the started process writes its pid to
+         */
+        function createPluginThatStartsAProcess(dir: string): { pluginPath: string; pidFile: string } {
+            const pidFile = path.join(root, `${dir}.pid`);
+            const script =
+                "require('fs').writeFileSync(process.argv[1], String(process.pid)); setInterval(() => {}, 1000)";
+            const command = `"${process.execPath}" -e "${script}" "${pidFile}"`;
+            const code = WORKING_PLUGIN.replace(
+                'async getDockerDaemonInfo() {',
+                `async getDockerDaemonInfo() {
+                    require('node:child_process').exec(${JSON.stringify(command)});
+                    await new Promise(() => {});`,
+            );
+            return { pluginPath: resolveDockerPlugin(createAdapter(path.join(root, dir), code))!, pidFile };
+        }
+
+        /**
+         * Whether a process runs
+         *
+         * @param pid the process
+         */
+        function isRunning(pid: number): boolean {
+            try {
+                process.kill(pid, 0);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
+        /**
+         * Wait until a condition is met
+         *
+         * @param condition the condition
+         * @param what what is waited for, for the error
+         * @param timeoutMs how long to wait
+         */
+        async function waitFor(condition: () => boolean, what: string, timeoutMs = 5000): Promise<void> {
+            const end = Date.now() + timeoutMs;
+            while (!condition()) {
+                if (Date.now() > end) {
+                    throw new Error(`Waited ${timeoutMs} ms in vain for: ${what}`);
+                }
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+        }
+
+        /**
+         * The pid the process started by the plugin wrote
+         *
+         * @param pidFile see createPluginThatStartsAProcess
+         */
+        async function readStartedPid(pidFile: string): Promise<number> {
+            await waitFor(
+                () => fs.existsSync(pidFile) && !!fs.readFileSync(pidFile, 'utf8'),
+                'the plugin started its process',
+                10_000,
+            );
+            return Number(fs.readFileSync(pidFile, 'utf8'));
+        }
+
+        it('kills what the plugin started, together with a check that does not finish', async () => {
+            const { pluginPath, pidFile } = createPluginThatStartsAProcess('tree');
+            let started: number | undefined;
+            try {
+                await assert.rejects(
+                    checkDocker({ pluginPath, namespace: 'fake.0', timeoutMs: 5000 }),
+                    /did not finish/,
+                );
+                started = await readStartedPid(pidFile);
+                await waitFor(() => !isRunning(started!), 'the process the plugin started is killed');
+            } finally {
+                if (started && isRunning(started)) {
+                    process.kill(started, 'SIGKILL');
+                }
+            }
+        });
+
+        it('ends the check, with what the plugin started, when the controller goes away', async () => {
+            const { pluginPath, pidFile } = createPluginThatStartsAProcess('orphan');
+            const child = forkCheck(pluginPath, 'fake.0');
+            let started: number | undefined;
+            try {
+                started = await readStartedPid(pidFile);
+                // what the child sees when the controller ends
+                child.disconnect();
+                await waitFor(() => child.exitCode !== null || child.signalCode !== null, 'the check ends');
+                await waitFor(() => !isRunning(started!), 'the process the plugin started is killed');
+            } finally {
+                child.kill('SIGKILL');
+                if (started && isRunning(started)) {
+                    process.kill(started, 'SIGKILL');
+                }
+            }
         });
     });
 });

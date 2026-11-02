@@ -10,9 +10,10 @@
  * same code, in the same version, that will run the containers of that instance later.
  *
  * The plugin runs in a child process of its own. It brings a Docker client with many dependencies and calls the
- * docker CLI, and none of that should stay in the memory of the controller, or be able to take it down.
+ * docker CLI, and none of that should stay in the memory of the controller, or be able to take it down. A check that
+ * hangs is killed after a timeout, together with the processes it started.
  */
-import { fork } from 'node:child_process';
+import { type ChildProcess, execFile, fork } from 'node:child_process';
 import { createRequire } from 'node:module';
 import url from 'node:url';
 
@@ -116,6 +117,48 @@ export function checkDocker(options: CheckDockerOptions): Promise<DockerCheckRes
 }
 
 /**
+ * Kill a process and every process it started
+ *
+ * The plugin runs the docker CLI and `systemctl` in processes of their own, and a hanging `docker ps` is what lets a
+ * check run into the timeout. Killing only the node process would leave it running - one more with every dialog that
+ * asks. On Linux and macOS the child leads a process group of its own (see {@link forkCheck}), which is killed as a
+ * whole. Windows has no process groups, there `taskkill /T` kills the tree.
+ *
+ * @param pid the process
+ * @param done called when the kill was sent - if the process kills itself, maybe never
+ */
+function killProcessTree(pid: number, done: () => void): void {
+    if (process.platform === 'win32') {
+        // the callback comes with an error as well if the process is gone already, nothing to do then
+        execFile('taskkill', ['/pid', String(pid), '/T', '/F'], { windowsHide: true }, () => done());
+        return;
+    }
+    try {
+        process.kill(-pid, 'SIGKILL');
+    } catch {
+        // there is no such group (anymore)
+    }
+    done();
+}
+
+/**
+ * Start the child process that checks Docker
+ *
+ * @param pluginPath main file of `@iobroker/plugin-docker`
+ * @param namespace the instance the check is done for
+ */
+export function forkCheck(pluginPath: string, namespace: string): ChildProcess {
+    return fork(modulePath, [pluginPath, namespace], {
+        stdio: ['ignore', 'ignore', 'ignore', 'ipc'],
+        // a debugger port of the controller is taken already, the child could not start with it
+        execArgv: process.execArgv.filter(arg => !arg.startsWith('--inspect')),
+        // a process group of its own, so that what the plugin starts can be killed with it - see killProcessTree.
+        // On Windows this would mean a console of its own instead.
+        detached: process.platform !== 'win32',
+    });
+}
+
+/**
  * Start the child process that checks Docker and wait for its answer
  *
  * @param options what to check
@@ -123,16 +166,21 @@ export function checkDocker(options: CheckDockerOptions): Promise<DockerCheckRes
 function runCheck(options: CheckDockerOptions): Promise<DockerCheckResult> {
     return new Promise((resolve, reject) => {
         let answer: ChildAnswer | undefined;
-        const child = fork(modulePath, [options.pluginPath, options.namespace], {
-            stdio: ['ignore', 'ignore', 'ignore', 'ipc'],
-            // a debugger port of the controller is taken already, the child could not start with it
-            execArgv: process.execArgv.filter(arg => !arg.startsWith('--inspect')),
-        });
+        const child = forkCheck(options.pluginPath, options.namespace);
         const timer = setTimeout(() => {
-            child.kill('SIGKILL');
             reject(
                 new Error(`The Docker check did not finish within ${options.timeoutMs || CHECK_DOCKER_TIMEOUT_MS} ms`),
             );
+            const killChild = (): void => {
+                child.kill('SIGKILL');
+            };
+            // Once the child is reaped, its pid may belong to another process, which must not be killed. The node
+            // process at least is killed in any case, in case the tree could not be.
+            if (child.pid && child.exitCode === null && child.signalCode === null) {
+                killProcessTree(child.pid, killChild);
+            } else {
+                killChild();
+            }
         }, options.timeoutMs || CHECK_DOCKER_TIMEOUT_MS);
 
         child.on('message', (message: ChildAnswer) => {
@@ -193,5 +241,8 @@ async function runCheckInChild(pluginPath: string, namespace: string): Promise<v
 }
 
 if (process.argv[1] === modulePath && process.send) {
+    // The controller is gone: nobody waits for the answer anymore, and nobody would kill a check that hangs.
+    // So the check ends here, with everything it started.
+    process.on('disconnect', () => killProcessTree(process.pid, () => process.exit(1)));
     void runCheckInChild(process.argv[2], process.argv[3]);
 }
