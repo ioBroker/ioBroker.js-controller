@@ -440,7 +440,7 @@ async function runCheckInChild(start: CheckStart): Promise<void> {
     } catch (e) {
         answer = { error: e.message, logs };
     }
-    process.send!(answer, () => process.exit(0));
+    process.send!(answer, () => killProcessTree(process.pid, () => process.exit(0)));
 }
 
 if (process.argv[1] === modulePath && process.send) {
