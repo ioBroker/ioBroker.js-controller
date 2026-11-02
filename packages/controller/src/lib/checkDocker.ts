@@ -12,9 +12,15 @@
  * The plugin runs in a child process of its own. It brings a Docker client with many dependencies and calls the
  * docker CLI, and none of that should stay in the memory of the controller, or be able to take it down. A check that
  * hangs is killed after a timeout, together with the processes it started.
+ *
+ * The Docker that is checked is the one the instance uses: an adapter can name a Docker connection of
+ * `system.docker` in its plugin config (`iobDockerApi`), e.g. a Docker on another machine. See
+ * {@link resolveDockerApi}.
  */
 import { type ChildProcess, execFile, fork } from 'node:child_process';
+import { readFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
+import path from 'node:path';
 import url from 'node:url';
 
 /** The answer of `DockerManager.getDockerDaemonInfo()` of the plugin */
@@ -78,12 +84,86 @@ export function resolveDockerPlugin(adapterDir: string): string | null {
     }
 }
 
-/** What to check, see {@link checkDocker} */
-export interface CheckDockerOptions {
+/** A Docker connection of `system.docker`, as the `DockerManager` of the plugin takes it as `dockerApi` */
+export interface DockerApi {
+    /** host of the Docker API */
+    host?: string;
+    /** port of the Docker API */
+    port?: number | string;
+    /** protocol of the Docker API */
+    protocol?: 'http' | 'https' | 'ssh';
+    /** CA certificate */
+    ca?: string;
+    /** client certificate */
+    cert?: string;
+    /** client key */
+    key?: string;
+}
+
+/**
+ * Find the Docker connection the instance uses, the way the plugin finds it when the instance starts
+ *
+ * The plugin reads `iobDockerApi` of `common.plugins.docker` in the `io-package.json` of the adapter:
+ * - not set: the Docker of this host
+ * - a name: the connection `native.hosts.<name>` of `system.docker`, or the Docker of this host if there is none
+ * - an object: this connection
+ *
+ * A template like `${config.dockerApi}` stays as it is - the plugin does not resolve it either, it looks up the
+ * name as written.
+ *
+ * @param options where to look
+ * @param options.adapterDir directory of the adapter
+ * @param options.getObject reads an object of the objects DB
+ * @param options.log receives how the connection was found
+ * @returns the connection, or undefined for the Docker of this host
+ */
+export async function resolveDockerApi(options: {
+    adapterDir: string;
+    getObject: (id: string) => Promise<ioBroker.Object | null | undefined>;
+    log?: (text: string) => void;
+}): Promise<DockerApi | undefined> {
+    let ioPackage: { common?: { plugins?: { docker?: { iobDockerApi?: unknown } } } };
+    try {
+        ioPackage = JSON.parse(await readFile(path.join(options.adapterDir, 'io-package.json'), 'utf8'));
+    } catch (e) {
+        throw new Error(`Cannot read io-package.json of the adapter: ${e.message}`);
+    }
+    const iobDockerApi = ioPackage.common?.plugins?.docker?.iobDockerApi;
+
+    if (iobDockerApi && typeof iobDockerApi === 'object') {
+        options.log?.('The adapter names its Docker connection in io-package.json');
+        return iobDockerApi;
+    }
+    if (!iobDockerApi || typeof iobDockerApi !== 'string') {
+        return undefined;
+    }
+    const systemDocker = await options.getObject('system.docker');
+    const hosts = (systemDocker?.native as { hosts?: Record<string, DockerApi | undefined> } | undefined)?.hosts;
+    // only own entries: a name like "__proto__" is no connection
+    const dockerApi = hosts && Object.hasOwn(hosts, iobDockerApi) ? hosts[iobDockerApi] : undefined;
+    if (!dockerApi || typeof dockerApi !== 'object') {
+        // the plugin warns in the log of the instance and uses the Docker of this host then
+        options.log?.(
+            `The Docker connection "${iobDockerApi}" of the adapter is not defined in system.docker, the Docker of this host is checked, as the instance would use it`,
+        );
+        return undefined;
+    }
+    options.log?.(`The adapter uses the Docker connection "${iobDockerApi}" of system.docker`);
+    return dockerApi;
+}
+
+/** What the child process gets to check */
+export interface CheckStart {
     /** main file of `@iobroker/plugin-docker`, see {@link resolveDockerPlugin} */
     pluginPath: string;
     /** the instance the check is done for */
     namespace: `${string}.${number}`;
+    /** the Docker connection the instance uses, see {@link resolveDockerApi}; undefined for the Docker of this host */
+    dockerApi?: DockerApi;
+}
+
+/** What to check, see {@link checkDocker} */
+export interface CheckDockerOptions extends CheckStart {
     /** receives every line the plugin logged */
     log?: (text: string) => void;
     /** kill the child after this time */
@@ -91,27 +171,28 @@ export interface CheckDockerOptions {
 }
 
 /**
- * The checks that are running, by the main file of the plugin that does them.
+ * The checks that are running, by the plugin that does them and the Docker it checks.
  *
  * A config dialog asks once per `checkDocker` control it renders, and every check starts a node process that loads a
- * Docker client and needs some seconds. The answer depends only on the host and the plugin, so a question that comes
- * in while the same plugin is checking already gets the answer of that check.
+ * Docker client and needs some seconds. The answer depends only on the plugin and the Docker connection, so a question
+ * that comes in while the same plugin is checking the same Docker already gets the answer of that check.
  */
 const runningChecks = new Map<string, Promise<DockerCheckResult>>();
 
 /**
  * Let the plugin check Docker in a child process
  *
- * If the same plugin is checking already, no second process is started: the caller gets the answer of the running
- * check. Then the plugin logs once, to the `log` of the caller that started the check.
+ * If the same plugin is checking the same Docker already, no second process is started: the caller gets the answer of
+ * the running check. Then the plugin logs once, to the `log` of the caller that started the check.
  *
  * @param options what to check
  */
 export function checkDocker(options: CheckDockerOptions): Promise<DockerCheckResult> {
-    let check = runningChecks.get(options.pluginPath);
+    const key = `${options.pluginPath}\n${JSON.stringify(options.dockerApi ?? null)}`;
+    let check = runningChecks.get(key);
     if (!check) {
-        check = runCheck(options).finally(() => runningChecks.delete(options.pluginPath));
-        runningChecks.set(options.pluginPath, check);
+        check = runCheck(options).finally(() => runningChecks.delete(key));
+        runningChecks.set(key, check);
     }
     return check;
 }
@@ -144,11 +225,14 @@ function killProcessTree(pid: number, done: () => void): void {
 /**
  * Start the child process that checks Docker
  *
- * @param pluginPath main file of `@iobroker/plugin-docker`
- * @param namespace the instance the check is done for
+ * What to check is sent as the first message, not on the command line: that one every user of the machine can read,
+ * and a Docker connection may come with a key.
+ *
+ * @param start what to check
  */
-export function forkCheck(pluginPath: string, namespace: string): ChildProcess {
-    return fork(modulePath, [pluginPath, namespace], {
+export function forkCheck(start: CheckStart): ChildProcess {
+    // the namespace only names the process, e.g. in `ps`
+    const child = fork(modulePath, [start.namespace], {
         stdio: ['ignore', 'ignore', 'ignore', 'ipc'],
         // a debugger port of the controller is taken already, the child could not start with it
         execArgv: process.execArgv.filter(arg => !arg.startsWith('--inspect')),
@@ -156,6 +240,10 @@ export function forkCheck(pluginPath: string, namespace: string): ChildProcess {
         // On Windows this would mean a console of its own instead.
         detached: process.platform !== 'win32',
     });
+    child.send(start, () => {
+        // if the child cannot get it, it ends without an answer, which the caller reports
+    });
+    return child;
 }
 
 /**
@@ -166,7 +254,11 @@ export function forkCheck(pluginPath: string, namespace: string): ChildProcess {
 function runCheck(options: CheckDockerOptions): Promise<DockerCheckResult> {
     return new Promise((resolve, reject) => {
         let answer: ChildAnswer | undefined;
-        const child = forkCheck(options.pluginPath, options.namespace);
+        const child = forkCheck({
+            pluginPath: options.pluginPath,
+            namespace: options.namespace,
+            dockerApi: options.dockerApi,
+        });
         const timer = setTimeout(() => {
             reject(
                 new Error(`The Docker check did not finish within ${options.timeoutMs || CHECK_DOCKER_TIMEOUT_MS} ms`),
@@ -210,24 +302,25 @@ function runCheck(options: CheckDockerOptions): Promise<DockerCheckResult> {
 /**
  * The part that runs in the child process
  *
- * @param pluginPath main file of the plugin
- * @param namespace the instance the check is done for
+ * @param start what to check, see {@link forkCheck}
  */
-async function runCheckInChild(pluginPath: string, namespace: string): Promise<void> {
+async function runCheckInChild(start: CheckStart): Promise<void> {
     const logs: string[] = [];
     const collect = (text: string): void => {
         logs.push(text);
     };
     let answer: ChildAnswer;
     try {
-        const plugin = require(pluginPath);
+        const plugin = require(start.pluginPath);
         const DockerManager = plugin.DockerManager || plugin.default?.DockerManager;
         if (typeof DockerManager !== 'function') {
             throw new Error('This version of @iobroker/plugin-docker cannot check Docker');
         }
         const manager = new DockerManager({
+            // undefined: the Docker of this host
+            dockerApi: start.dockerApi,
             logger: { level: 'debug', silly: collect, debug: collect, info: collect, warn: collect, error: collect },
-            namespace,
+            namespace: start.namespace,
             // the plugin logs a missing Docker on debug level only, the caller shows the result itself
             quiet: true,
         });
@@ -244,5 +337,5 @@ if (process.argv[1] === modulePath && process.send) {
     // The controller is gone: nobody waits for the answer anymore, and nobody would kill a check that hangs.
     // So the check ends here, with everything it started.
     process.on('disconnect', () => killProcessTree(process.pid, () => process.exit(1)));
-    void runCheckInChild(process.argv[2], process.argv[3]);
+    process.once('message', (start: CheckStart) => void runCheckInChild(start));
 }

@@ -2,7 +2,13 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import os from 'node:os';
 import fs from 'fs-extra';
-import { checkDocker, forkCheck, getDockerCheckInstance, resolveDockerPlugin } from '../src/lib/checkDocker.js';
+import {
+    checkDocker,
+    forkCheck,
+    getDockerCheckInstance,
+    resolveDockerApi,
+    resolveDockerPlugin,
+} from '../src/lib/checkDocker.js';
 
 /**
  * Create an adapter directory with a fake `@iobroker/plugin-docker`
@@ -83,6 +89,95 @@ describe('checkDocker', () => {
         });
     });
 
+    describe('resolveDockerApi', () => {
+        const REMOTE = { host: '192.168.1.5', port: 2376, protocol: 'https', ca: 'CA', cert: 'CERT', key: 'KEY' };
+
+        /**
+         * Find the connection for an adapter with this plugin config
+         *
+         * @param dir directory to create the adapter in
+         * @param docker `common.plugins.docker` of the io-package.json, undefined for none
+         * @param systemDocker the object `system.docker`, undefined for none
+         * @returns the connection and what was logged
+         */
+        async function resolve(
+            dir: string,
+            docker: Record<string, unknown> | undefined,
+            systemDocker?: Partial<ioBroker.Object>,
+        ): Promise<{ dockerApi: unknown; logs: string[] }> {
+            const adapterDir = path.join(root, 'api', dir);
+            fs.mkdirpSync(adapterDir);
+            fs.writeJSONSync(path.join(adapterDir, 'io-package.json'), {
+                common: { name: 'fake', ...(docker ? { plugins: { docker } } : {}) },
+            });
+            const logs: string[] = [];
+            const asked: string[] = [];
+            const dockerApi = await resolveDockerApi({
+                adapterDir,
+                getObject: id => {
+                    asked.push(id);
+                    return Promise.resolve(id === 'system.docker' ? (systemDocker as ioBroker.Object) : null);
+                },
+                log: text => logs.push(text),
+            });
+            // no other object is read
+            assert.ok(
+                asked.every(id => id === 'system.docker'),
+                asked.join(),
+            );
+            return { dockerApi, logs };
+        }
+
+        it('is the Docker of this host for an adapter that names no connection', async () => {
+            assert.equal((await resolve('none', undefined)).dockerApi, undefined);
+            assert.equal(
+                (await resolve('files-only', { iobDockerComposeFiles: ['compose.yaml'] })).dockerApi,
+                undefined,
+            );
+        });
+
+        it('takes the connection of system.docker that the adapter names', async () => {
+            const { dockerApi, logs } = await resolve(
+                'named',
+                { iobDockerApi: 'nas' },
+                { native: { hosts: { local: { host: '127.0.0.1', port: 2375 }, nas: REMOTE } } },
+            );
+            assert.deepEqual(dockerApi, REMOTE);
+            assert.match(logs.join(), /"nas" of system.docker/);
+        });
+
+        it('is the Docker of this host, as for the instance, if system.docker does not define the name', async () => {
+            for (const systemDocker of [
+                undefined,
+                { native: {} },
+                { native: { hosts: { other: REMOTE } } },
+            ] as Partial<ioBroker.Object>[]) {
+                const { dockerApi, logs } = await resolve('unknown', { iobDockerApi: 'nas' }, systemDocker);
+                assert.equal(dockerApi, undefined);
+                assert.match(logs.join(), /"nas" .* not defined in system.docker, the Docker of this host is checked/);
+            }
+            // nothing from the prototype of the hosts
+            for (const name of ['__proto__', 'constructor', 'toString']) {
+                const { dockerApi } = await resolve('proto', { iobDockerApi: name }, { native: { hosts: {} } });
+                assert.equal(dockerApi, undefined, name);
+            }
+        });
+
+        it('takes a connection that the adapter defines itself', async () => {
+            const { dockerApi } = await resolve('own', { iobDockerApi: REMOTE });
+            assert.deepEqual(dockerApi, REMOTE);
+        });
+
+        it('refuses an adapter without io-package.json', async () => {
+            const adapterDir = path.join(root, 'api', 'no-io-package');
+            fs.mkdirpSync(adapterDir);
+            await assert.rejects(
+                resolveDockerApi({ adapterDir, getObject: () => Promise.resolve(null) }),
+                /Cannot read io-package.json/,
+            );
+        });
+    });
+
     describe('checkDocker', function () {
         // every check starts a node process, which loads the TypeScript sources here
         this.timeout(20_000);
@@ -100,6 +195,30 @@ describe('checkDocker', () => {
                 driver: 'socket',
             });
             assert.deepEqual(logs, ['probed for fake.0, quiet: true']);
+        });
+
+        it('lets the manager check the Docker connection of the instance, which is not put on the command line', async () => {
+            const code = WORKING_PLUGIN.replace(
+                'async getDockerDaemonInfo() {',
+                `async getDockerDaemonInfo() {
+                    const api = this.options.dockerApi;
+                    return {
+                        version: api ? api.host + ':' + api.port + ' ' + api.key : 'local',
+                        daemonRunning: !process.argv.join(' ').includes('KEY-1'),
+                        driver: api ? api.protocol : 'socket',
+                    };`,
+            );
+            const pluginPath = resolveDockerPlugin(createAdapter(path.join(root, 'remote'), code))!;
+
+            const remote = await checkDocker({
+                pluginPath,
+                namespace: 'fake.0',
+                dockerApi: { host: '192.168.1.5', port: 2376, protocol: 'https', key: 'KEY-1' },
+            });
+            assert.deepEqual(remote, { version: '192.168.1.5:2376 KEY-1', daemonRunning: true, driver: 'https' });
+
+            const local = await checkDocker({ pluginPath, namespace: 'fake.0' });
+            assert.deepEqual(local, { version: 'local', daemonRunning: true, driver: 'socket' });
         });
 
         it('passes on that Docker is not running', async () => {
@@ -232,6 +351,20 @@ describe('checkDocker', () => {
             assert.equal(countChecks(b.countFile), 1);
         });
 
+        it('checks different Docker connections of the same plugin each on its own', async () => {
+            const { pluginPath, countFile } = createCountingPlugin('per-connection');
+            const nas = { host: '192.168.1.5', port: 2375 };
+
+            await Promise.all([
+                checkDocker({ pluginPath, namespace: 'fake.0' }),
+                checkDocker({ pluginPath, namespace: 'fake.0', dockerApi: nas }),
+                checkDocker({ pluginPath, namespace: 'fake.1', dockerApi: { ...nas } }),
+            ]);
+
+            // the local Docker once, the NAS once for both instances
+            assert.equal(countChecks(countFile), 2);
+        });
+
         /**
          * A plugin that starts a process through the shell, as it runs `docker ps`, and then hangs
          *
@@ -316,7 +449,7 @@ describe('checkDocker', () => {
 
         it('ends the check, with what the plugin started, when the controller goes away', async () => {
             const { pluginPath, pidFile } = createPluginThatStartsAProcess('orphan');
-            const child = forkCheck(pluginPath, 'fake.0');
+            const child = forkCheck({ pluginPath, namespace: 'fake.0' });
             let started: number | undefined;
             try {
                 started = await readStartedPid(pidFile);
