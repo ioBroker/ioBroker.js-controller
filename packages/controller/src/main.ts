@@ -76,7 +76,7 @@ import {
     checkDocker,
     type DockerCheckResult,
     getDockerCheckInstance,
-    resolveDockerApi,
+    readDockerApiSource,
     resolveDockerPlugin,
 } from '@/lib/checkDocker.js';
 import * as url from 'node:url';
@@ -3927,14 +3927,15 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     if (!pluginPath) {
                         throw new Error(`Adapter "${adapter}" does not use @iobroker/plugin-docker`);
                     }
-                    const log = (text: string): void => {
-                        logger.debug(`${hostLogPrefix} checkDocker for ${instance}: ${text}`);
-                    };
                     answer = await checkDocker({
                         pluginPath,
                         namespace: instance,
-                        dockerApi: await resolveDockerApi({ adapterDir, getObject: id => objects!.getObject(id), log }),
-                        log,
+                        dockerApiSource: await readDockerApiSource({
+                            adapterDir,
+                            instance,
+                            getObject: id => objects!.getObject(id),
+                        }),
+                        log: text => logger.debug(`${hostLogPrefix} checkDocker for ${instance}: ${text}`),
                     });
                 } catch (e) {
                     logger.debug(`${hostLogPrefix} Cannot check Docker: ${e.message}`);
