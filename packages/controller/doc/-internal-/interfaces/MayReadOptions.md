@@ -6,7 +6,7 @@
 
 # Interface: MayReadOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:686](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/_Types.ts#L686)
+Defined in: [adapter/src/lib/\_Types.ts:686](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/adapter/src/lib/_Types.ts#L686)
 
 What is to be read, and by whom - see `AdapterClass.mayRead`
 
@@ -16,7 +16,7 @@ What is to be read, and by whom - see `AdapterClass.mayRead`
 
 > `optional` **fileName?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:694](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/_Types.ts#L694)
+Defined in: [adapter/src/lib/\_Types.ts:694](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/adapter/src/lib/_Types.ts#L694)
 
 The file inside `id`, for `type: 'file'`, e.g. `main/vis-views.json`
 
@@ -26,7 +26,7 @@ The file inside `id`, for `type: 'file'`, e.g. `main/vis-views.json`
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:692](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/_Types.ts#L692)
+Defined in: [adapter/src/lib/\_Types.ts:692](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/adapter/src/lib/_Types.ts#L692)
 
 The object, the state, or the adapter a file belongs to, e.g. `vis.0`
 
@@ -36,7 +36,7 @@ The object, the state, or the adapter a file belongs to, e.g. `vis.0`
 
 > **type**: `"object"` \| `"state"` \| `"file"`
 
-Defined in: [adapter/src/lib/\_Types.ts:690](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/_Types.ts#L690)
+Defined in: [adapter/src/lib/\_Types.ts:690](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/adapter/src/lib/_Types.ts#L690)
 
 What kind of thing it is: the object itself, the value of a state, or a file of an adapter
 
@@ -46,6 +46,6 @@ What kind of thing it is: the object itself, the value of a state, or a file of 
 
 > **user**: `` `system.user.${string}` ``
 
-Defined in: [adapter/src/lib/\_Types.ts:688](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/_Types.ts#L688)
+Defined in: [adapter/src/lib/\_Types.ts:688](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/adapter/src/lib/_Types.ts#L688)
 
 The user the question is about, e.g. `system.user.someone`

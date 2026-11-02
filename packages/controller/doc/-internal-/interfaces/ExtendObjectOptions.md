@@ -6,7 +6,7 @@
 
 # Interface: ExtendObjectOptions
 
-Defined in: [types-dev/index.d.ts:527](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L527)
+Defined in: [types-dev/index.d.ts:527](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/types-dev/index.d.ts#L527)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/index.d.ts:527](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **owner?**: `` `system.user.${string}` ``
 
-Defined in: [types-dev/index.d.ts:531](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L531)
+Defined in: [types-dev/index.d.ts:531](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/types-dev/index.d.ts#L531)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [types-dev/index.d.ts:531](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **ownerGroup?**: `` `system.group.${string}` ``
 
-Defined in: [types-dev/index.d.ts:532](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L532)
+Defined in: [types-dev/index.d.ts:532](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/types-dev/index.d.ts#L532)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [types-dev/index.d.ts:532](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **preserve?**: [`ExtendObjectOptionsPreserve`](ExtendObjectOptionsPreserve.md)
 
-Defined in: [types-dev/index.d.ts:529](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L529)
+Defined in: [types-dev/index.d.ts:529](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/types-dev/index.d.ts#L529)
 
 Which properties of the original object should be preserved
 
@@ -40,4 +40,4 @@ Which properties of the original object should be preserved
 
 > `optional` **user?**: `` `system.user.${string}` ``
 
-Defined in: [types-dev/index.d.ts:530](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L530)
+Defined in: [types-dev/index.d.ts:530](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/types-dev/index.d.ts#L530)
