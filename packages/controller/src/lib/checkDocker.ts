@@ -77,21 +77,50 @@ export function resolveDockerPlugin(adapterDir: string): string | null {
     }
 }
 
+/** What to check, see {@link checkDocker} */
+export interface CheckDockerOptions {
+    /** main file of `@iobroker/plugin-docker`, see {@link resolveDockerPlugin} */
+    pluginPath: string;
+    /** the instance the check is done for */
+    namespace: `${string}.${number}`;
+    /** receives every line the plugin logged */
+    log?: (text: string) => void;
+    /** kill the child after this time */
+    timeoutMs?: number;
+}
+
+/**
+ * The checks that are running, by the main file of the plugin that does them.
+ *
+ * A config dialog asks once per `checkDocker` control it renders, and every check starts a node process that loads a
+ * Docker client and needs some seconds. The answer depends only on the host and the plugin, so a question that comes
+ * in while the same plugin is checking already gets the answer of that check.
+ */
+const runningChecks = new Map<string, Promise<DockerCheckResult>>();
+
 /**
  * Let the plugin check Docker in a child process
  *
+ * If the same plugin is checking already, no second process is started: the caller gets the answer of the running
+ * check. Then the plugin logs once, to the `log` of the caller that started the check.
+ *
  * @param options what to check
- * @param options.pluginPath main file of `@iobroker/plugin-docker`, see {@link resolveDockerPlugin}
- * @param options.namespace the instance the check is done for
- * @param options.log receives every line the plugin logged
- * @param options.timeoutMs kill the child after this time
  */
-export function checkDocker(options: {
-    pluginPath: string;
-    namespace: `${string}.${number}`;
-    log?: (text: string) => void;
-    timeoutMs?: number;
-}): Promise<DockerCheckResult> {
+export function checkDocker(options: CheckDockerOptions): Promise<DockerCheckResult> {
+    let check = runningChecks.get(options.pluginPath);
+    if (!check) {
+        check = runCheck(options).finally(() => runningChecks.delete(options.pluginPath));
+        runningChecks.set(options.pluginPath, check);
+    }
+    return check;
+}
+
+/**
+ * Start the child process that checks Docker and wait for its answer
+ *
+ * @param options what to check
+ */
+function runCheck(options: CheckDockerOptions): Promise<DockerCheckResult> {
     return new Promise((resolve, reject) => {
         let answer: ChildAnswer | undefined;
         const child = fork(modulePath, [options.pluginPath, options.namespace], {
@@ -113,7 +142,10 @@ export function checkDocker(options: {
             clearTimeout(timer);
             reject(error);
         });
-        child.on('exit', code => {
+        // Not 'exit': it can come before the last message of the child - when the event loop of the controller is
+        // busy, the exit and the message are read in the same round, in any order. 'close' comes after the IPC
+        // channel is closed, so after every message was read.
+        child.on('close', code => {
             clearTimeout(timer);
             for (const line of answer?.logs || []) {
                 options.log?.(line);

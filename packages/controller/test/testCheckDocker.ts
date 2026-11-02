@@ -149,5 +149,87 @@ describe('checkDocker', () => {
 
             await assert.rejects(checkDocker({ pluginPath, namespace: 'fake.0', timeoutMs: 3000 }), /did not finish/);
         });
+
+        /**
+         * A plugin that notes every check in a file and needs a while for it
+         *
+         * @param dir directory to create the adapter in
+         * @param fail whether the check fails
+         * @returns the main file of the plugin and the file with one line per check
+         */
+        function createCountingPlugin(dir: string, fail = false): { pluginPath: string; countFile: string } {
+            const countFile = path.join(root, `${dir}.count`);
+            const code = WORKING_PLUGIN.replace(
+                'async getDockerDaemonInfo() {',
+                `async getDockerDaemonInfo() {
+                    require('node:fs').appendFileSync(${JSON.stringify(countFile)}, 'check\\n');
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    ${fail ? "throw new Error('permission denied');" : ''}`,
+            );
+            return { pluginPath: resolveDockerPlugin(createAdapter(path.join(root, dir), code))!, countFile };
+        }
+
+        /**
+         * How many checks the plugin did
+         *
+         * @param countFile file of the plugin, see createCountingPlugin
+         */
+        function countChecks(countFile: string): number {
+            return fs.existsSync(countFile) ? fs.readFileSync(countFile, 'utf8').split('\n').filter(Boolean).length : 0;
+        }
+
+        it('lets a second caller wait for the running check of the same plugin, and checks again afterwards', async () => {
+            const { pluginPath, countFile } = createCountingPlugin('shared');
+            const firstLogs: string[] = [];
+            const secondLogs: string[] = [];
+
+            const [first, second] = await Promise.all([
+                checkDocker({ pluginPath, namespace: 'fake.0', log: text => firstLogs.push(text) }),
+                checkDocker({ pluginPath, namespace: 'fake.1', log: text => secondLogs.push(text) }),
+            ]);
+
+            assert.equal(countChecks(countFile), 1);
+            assert.deepEqual(second, first);
+            assert.equal(first.daemonRunning, true);
+            // the plugin logged once, to the caller that started the check
+            assert.deepEqual(firstLogs, ['probed for fake.0, quiet: true']);
+            assert.deepEqual(secondLogs, []);
+
+            // the check is over, so the next question is checked anew
+            await checkDocker({ pluginPath, namespace: 'fake.0' });
+            assert.equal(countChecks(countFile), 2);
+        });
+
+        it('passes a failing check on to every caller that waited for it', async () => {
+            const { pluginPath, countFile } = createCountingPlugin('shared-failing', true);
+
+            const answers = await Promise.allSettled([
+                checkDocker({ pluginPath, namespace: 'fake.0' }),
+                checkDocker({ pluginPath, namespace: 'fake.0' }),
+            ]);
+
+            assert.equal(countChecks(countFile), 1);
+            for (const answer of answers) {
+                assert.equal(answer.status, 'rejected');
+                // narrowed by the strict assert above
+                assert.match(answer.reason.message, /permission denied/);
+            }
+
+            await assert.rejects(checkDocker({ pluginPath, namespace: 'fake.0' }), /permission denied/);
+            assert.equal(countChecks(countFile), 2);
+        });
+
+        it('checks different plugins each on its own', async () => {
+            const a = createCountingPlugin('own-a');
+            const b = createCountingPlugin('own-b');
+
+            await Promise.all([
+                checkDocker({ pluginPath: a.pluginPath, namespace: 'fake.0' }),
+                checkDocker({ pluginPath: b.pluginPath, namespace: 'fake.0' }),
+            ]);
+
+            assert.equal(countChecks(a.countFile), 1);
+            assert.equal(countChecks(b.countFile), 1);
+        });
     });
 });
