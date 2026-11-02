@@ -8,7 +8,7 @@
 
 > **GetEnumCallback** = (`err?`, `enums?`, `requestedEnum?`) => `void`
 
-Defined in: [types-dev/index.d.ts:596](https://github.com/ioBroker/ioBroker.js-controller/blob/b65f8b5d8246d1d25f6419b6835a75aff50dd38e/packages/types-dev/index.d.ts#L596)
+Defined in: [types-dev/index.d.ts:597](https://github.com/ioBroker/ioBroker.js-controller/blob/5f38a087bb763386b99c4383020aa2de144ca730/packages/types-dev/index.d.ts#L597)
 
 ## Parameters
 
