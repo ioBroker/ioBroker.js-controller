@@ -8,4 +8,4 @@
 
 > **AutoUpgradePolicy** = `"none"` \| `"patch"` \| `"minor"` \| `"major"`
 
-Defined in: [types-dev/objects.d.ts:520](https://github.com/ioBroker/ioBroker.js-controller/blob/5f38a087bb763386b99c4383020aa2de144ca730/packages/types-dev/objects.d.ts#L520)
+Defined in: [types-dev/objects.d.ts:520](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L520)

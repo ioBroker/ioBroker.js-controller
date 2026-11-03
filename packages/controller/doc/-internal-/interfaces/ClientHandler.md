@@ -6,7 +6,7 @@
 
 # Interface: ClientHandler
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/5f38a087bb763386b99c4383020aa2de144ca730/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L41)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L41)
 
 Handler describing a subscribed UI client
 
@@ -16,7 +16,7 @@ Handler describing a subscribed UI client
 
 > **from**: `string`
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/5f38a087bb763386b99c4383020aa2de144ca730/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L45)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L45)
 
 Name of the subscriber
 
@@ -26,7 +26,7 @@ Name of the subscriber
 
 > **sid**: `string`
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/5f38a087bb763386b99c4383020aa2de144ca730/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L43)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L43)
 
 The session id of the client connection
 
@@ -36,6 +36,6 @@ The session id of the client connection
 
 > **type**: `string`
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:47](https://github.com/ioBroker/ioBroker.js-controller/blob/5f38a087bb763386b99c4383020aa2de144ca730/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L47)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:47](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L47)
 
 Individual type which can be specified
