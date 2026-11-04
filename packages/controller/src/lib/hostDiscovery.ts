@@ -534,6 +534,14 @@ export class HostDiscovery {
     }
 
     /**
+     * Stop announcing this host, but keep listening for the others.
+     */
+    withdraw(): void {
+        this.unpublish();
+        this.announced = null;
+    }
+
+    /**
      * Withdraw the current announcement, if there is one.
      */
     private unpublish(): void {

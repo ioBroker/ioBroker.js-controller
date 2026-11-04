@@ -6,7 +6,7 @@
 
 # Interface: NotificationOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:892](https://github.com/ioBroker/ioBroker.js-controller/blob/45e1308b97991aa172e3f71f94494b11cc461548/packages/adapter/src/lib/_Types.ts#L892)
+Defined in: [adapter/src/lib/\_Types.ts:904](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L904)
 
 Options for the generated notification
 
@@ -16,6 +16,6 @@ Options for the generated notification
 
 > **contextData**: [`NotificationContextData`](NotificationContextData.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:896](https://github.com/ioBroker/ioBroker.js-controller/blob/45e1308b97991aa172e3f71f94494b11cc461548/packages/adapter/src/lib/_Types.ts#L896)
+Defined in: [adapter/src/lib/\_Types.ts:908](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L908)
 
 Additional context for the notification that can be used by notification-processing adapters

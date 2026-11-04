@@ -36,7 +36,7 @@ Settings for the objects client including connection and namespaces
 
 > **activateSets**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1180
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1181
 
 Activates the usage of sets
 
@@ -50,7 +50,7 @@ Activates the usage of sets
 
 > **addPreserveSettings**(`settings`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1091
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1092
 
 Add object property paths that should be preserved when an object is overwritten (controller only)
 
@@ -590,7 +590,7 @@ Connect to the objects database and set up the change and file subscriptions
 
 > **deactivateSets**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1184
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1185
 
 Deactivates the usage of sets
 
@@ -798,7 +798,7 @@ The user on whose behalf the operation is performed
 
 > **destroy**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1115
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1116
 
 Destructor of the class. Called when shutting down to close the redis connections.
 
@@ -812,7 +812,7 @@ Destructor of the class. Called when shutting down to close the redis connection
 
 > **destroyDB**(`options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1100
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1101
 
 Delete the whole objects database (requires admin rights)
 
@@ -840,7 +840,7 @@ Called once the database has been destroyed
 
 > **destroyDBAsync**(`options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1109
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1110
 
 Promise-version of destroyDB
 
@@ -996,7 +996,7 @@ The current request options including the user, or the callback
 
 > **extendPrimaryHostLock**(`ms`): `Promise`\<`number`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1150
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1151
 
 Extend the primary host lock time
 Value will expire after ms milliseconds
@@ -1057,7 +1057,7 @@ optional user context
 
 > **findObject**(`idOrName`, `type`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1063
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1064
 
 Find an object by its id or name
 
@@ -1095,7 +1095,7 @@ Called with the found id and the original id/name
 
 > **findObject**(`idOrName`, `type`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1074
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1075
 
 Find an object by its id or name
 
@@ -1127,7 +1127,7 @@ Called with the found id and the original id/name
 
 > **findObject**(`idOrName`, `type?`, `options?`): `Promise`\<`string` \| `undefined`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1082
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1083
 
 Find an object by its id or name
 
@@ -1333,7 +1333,7 @@ The user on whose behalf the keys are read
 
 > **getMeta**(`id`): `Promise`\<`string` \| `null`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1190
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1191
 
 Get value from meta namespace
 
@@ -2065,7 +2065,7 @@ The user on whose behalf the view is queried
 
 > **getPrimaryHost**(): `Promise`\<`string` \| `null`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1162
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1163
 
 Get the name of the primary host
 
@@ -2079,7 +2079,7 @@ Get the name of the primary host
 
 > **getProtocolVersion**(): `Promise`\<`string` \| `null`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1142
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1143
 
 Returns the protocol version from DB
 
@@ -2149,7 +2149,7 @@ Function to check if comparisons will work according to the configured Locale
 
 > **loadLuaScripts**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1119
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1120
 
 Load and register the Lua scripts used for atomic operations on the redis server
 
@@ -2163,7 +2163,7 @@ Load and register the Lua scripts used for atomic operations on the redis server
 
 > **migrateToSets**(): `Promise`\<`number`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1138
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1139
 
 Migrate all objects to sets
 
@@ -2451,7 +2451,7 @@ Called with the file content and mime type
 
 > **releasePrimaryHost**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1166
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1167
 
 Ensure we are no longer the primary host
 
@@ -2655,7 +2655,7 @@ The default ACL to use, or null to use the built-in default
 
 > **setExists**(`id`): `Promise`\<`boolean`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1132
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1133
 
 Checks if a given set exists
 
@@ -2839,7 +2839,7 @@ use `setObject` without callback instead
 
 > **setPrimaryHost**(`ms`): `Promise`\<`number`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1158
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1159
 
 Sets the current host as primary if no primary host active
 Value expires after ms milliseconds
@@ -2864,7 +2864,7 @@ ms until value expires
 
 > **setProtocolVersion**(`version`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1172
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1173
 
 Sets the protocol version to the DB
 
@@ -2976,7 +2976,7 @@ The current request options including the user
 
 > **subscribePrimaryHost**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1176
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1177
 
 Subscribe to expired events to get expiration of the primary host
 

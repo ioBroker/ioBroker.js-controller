@@ -428,7 +428,19 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInt
                 // a "set" always comes afterwards, so do not publish
                 return void handler.sendInteger(responseId, 0); // do not publish for now
             }
-            const publishCount = this.publishAll(namespace.substr(0, namespace.length - 1), id, JSON.parse(data[1]));
+            let message;
+
+            try {
+                message = JSON.parse(data[1]);
+            } catch (e) {
+                // The payload comes from a client, so it can be anything. Answering with an error
+                // keeps the connection: this used to throw out of the `setImmediate` that calls
+                // this handler, which is an uncaught exception rather than a failed command, and
+                // cost the client its socket over one bad message.
+                return void handler.sendError(responseId, new Error(`ERROR publish id=${id}: ${(e as Error).message}`));
+            }
+
+            const publishCount = this.publishAll(namespace.substr(0, namespace.length - 1), id, message);
             handler.sendInteger(responseId, publishCount);
         });
 

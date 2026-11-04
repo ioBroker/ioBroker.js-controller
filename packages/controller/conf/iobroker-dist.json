@@ -21,7 +21,7 @@
         "secure": true,
         "password":  "",
         "persist": false,
-        "pairing": true
+        "pairing": false
     },
     "objects" : {
         "type": "jsonl",

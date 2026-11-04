@@ -233,3 +233,68 @@ describe('lib/hostDiscovery: entries are removed', () => {
         }
     });
 });
+
+describe('lib/hostDiscovery: our own announcement', () => {
+    it('is not listed when it comes back under our own name', () => {
+        const discovery = makeDiscovery();
+        (discovery as any).ownFqdn = 'ioBroker myhost._iobroker._tcp.local';
+
+        addHost(discovery, makeService({ fqdn: 'ioBroker myhost._iobroker._tcp.local' }));
+
+        assert.strictEqual(discovery.getHosts().length, 0);
+    });
+
+    it('is not listed when it comes back on a second interface under another name', () => {
+        const discovery = makeDiscovery();
+        (discovery as any).announced = { uuid: '0123456789abcdef', unclaimed: true, master: false };
+
+        addHost(discovery, makeService({ fqdn: 'ioBroker myhost (2)._iobroker._tcp.local', txt: { host: 'myhost' } }));
+        assert.strictEqual(discovery.getHosts().length, 0, 'own uuid and own hostname');
+
+        addHost(discovery, makeService({ fqdn: 'other._iobroker._tcp.local', txt: { host: 'other' } }));
+        assert.strictEqual(discovery.getHosts().length, 1, 'the same uuid with another hostname is another host');
+    });
+});
+
+describe('lib/hostDiscovery: the announcement is only re-published on a change', () => {
+    /**
+     * A responder that only counts what is published
+     *
+     * @returns the responder and the published TXT records
+     */
+    function fakeResponder(): { responder: any; published: Record<string, string>[] } {
+        const published: Record<string, string>[] = [];
+        const responder = {
+            publish: (options: { txt: Record<string, string> }) => {
+                published.push(options.txt);
+                return {
+                    fqdn: `own-${published.length}._iobroker._tcp.local`,
+                    name: 'ioBroker myhost',
+                    stop: () => {},
+                };
+            },
+            find: () => ({ on: () => {}, stop: () => {}, update: () => {} }),
+            destroy: (callback: () => void) => callback(),
+        };
+        return { responder, published };
+    }
+
+    it('publishes once for the same information, and again when it changed', async () => {
+        const discovery = makeDiscovery();
+        const { responder, published } = fakeResponder();
+        (discovery as any).responderPromise = Promise.resolve(responder);
+
+        try {
+            const info = { uuid: '0123456789abcdef', unclaimed: true, master: false };
+            await discovery.announce(info);
+            await discovery.announce({ ...info });
+            assert.strictEqual(published.length, 1, 'a re-publish reads as "gone and back" for every master');
+
+            await discovery.announce({ ...info, unclaimed: false });
+            assert.strictEqual(published.length, 2);
+            assert.strictEqual(published[1].unclaimed, '0');
+        } finally {
+            await discovery.close();
+        }
+    });
+});

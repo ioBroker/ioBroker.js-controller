@@ -107,6 +107,8 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 - [Adapter Development](#adapter-development)
 - [Environment Variables](#environment-variables)
 - [Vendor Packages Workflow](#vendor-packages-workflow)
+- [Python adapter](doc/PYTHON.md)
+- [Resources monitor](doc/used-resources.md)
 
 ### Admin UI
 **Feature status:** stable
@@ -402,6 +404,49 @@ Vice versa, the build folder is no longer required and should not be published t
 
 Technically, the sources are compiled with ESBuild at every startup; hence this feature should not be used on adapters 
 consisting of many sources to prevent noticeably delayed adapter starts.
+
+### Adapters written in Python
+**Feature status:** experimental
+
+An adapter can be written in Python instead of Node.js by setting `common.platform` in its
+`io-package.json` and pointing `common.main` at the package's `__main__.py`:
+
+```json
+{
+  "common": {
+    "platform": "Python",
+    "main": "python/myadapter/__main__.py"
+  }
+}
+```
+
+`platform` has always been the field describing what an adapter is written in; its only value so far
+was `Javascript/Node.js`, which stays the default. Every existing adapter therefore keeps the
+Node.js path unaltered.
+
+Such an adapter is still shipped as an npm package -- `io-package.json`, `admin/jsonConfig.json` and
+a `python/` directory containing `pyproject.toml`. Repository, repo checker, `iobroker add`, admin
+updates and backups therefore work unchanged.
+
+The js-controller starts, supervises and stops these adapters like any other: stopping goes through
+the `sigKill` state, and `alive`, `connected` and `uptime` are written by the adapter itself. What
+differs is that it is started from a virtual environment rather than with Node.js, that compact mode
+is not available, and that both its output streams are forwarded to the log -- `print()` and
+libraries logging to stdout on one, tracebacks and Python's default logging on the other.
+
+Building that virtual environment is *not* done by the controller. It is the job of the
+[`py-controller`](https://github.com/ioBroker/ioBroker.py-controller) adapter, which creates one per
+adapter below `iobroker-data/py/` and records what it built in an `environment.json` next to it. The
+controller starts an instance only when that environment exists and matches the installed adapter
+version; otherwise it logs the reason and leaves the repair to `py-controller`. An environment with
+no `environment.json` at all is accepted, because it predates the stamp or was built by hand — one
+whose stamp cannot be read is not, since that is a build nobody finished. This keeps knowledge of
+`pip` and `uv` out of the core.
+
+Adapters are written against the [`iobroker`](https://pypi.org/project/iobroker/) package, which
+provides an API close to `@iobroker/adapter-core`. Database connection settings reach the adapter
+through environment variables rather than command line arguments, so they do not appear in the
+process list, which any user on the machine can read.
 
 ### Statistics
 **Feature status:** stable
@@ -819,23 +864,47 @@ All other hosts are configured to connect to this master host.
 For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?page_id=3068&lang=de
 
 ### Host discovery
-**Feature status:** New in 7.3.0
+**Feature status:** New in 8.0.0
 
 Attaching a new host used to require a shell on that host. On a ready-made image, in a container or
-on a headless device that is exactly what is missing, so hosts now find each other on the network.
+on a headless device that is exactly what is missing, so a fresh host can now be found on the network
+and attached from the Admin of an existing system.
 
-Every host announces itself via mDNS/DNS-SD as `_iobroker._tcp` on port 50005 — the port the
-multihost service already listens on, so a master that finds the announcement can talk to that host
-right away. The TXT record carries the installation id (`uuid`), the host name, the controller
-version and two flags: `unclaimed` and `master`.
+**Pairing is opt-in.** Only a host with `"multihostService": { "pairing": true }` in its
+`iobroker.json` takes part. A normal installation does not have it and stays silent on the network.
+The ready-made images switch it on, because only the image builder knows that a device is fresh: the
+check whether a host is "unclaimed" can only tell that no second host belongs to its system, which is
+just as true for an installation that has been running for years.
 
-A host counts as **unclaimed** while it uses a local objects database and no second host has joined
-it. Installed adapters are deliberately not part of that check — a ready-made image usually ships
-with admin and a backup adapter already set up, and that is still a host nobody has claimed.
+With pairing switched on, the host:
 
-A host that can attach others also listens and keeps the result in
-`system.host.<hostname>.discoveredHosts` as JSON, so the Admin can subscribe to it. The list is
-refreshed every 60 seconds and hosts the user declined are filtered out.
+* announces itself via mDNS/DNS-SD as `_iobroker._tcp` on port 50005 — the port the multihost service
+  already listens on. The TXT record carries the installation id (`uuid`), the host name, the
+  controller version and two flags: `unclaimed` and `master`;
+* opens the **pairing listener** on UDP 50005, which answers a `browse` with its name and accepts the
+  `join` of a master — as long as it uses a local objects database. Burn the image, boot it, and an
+  existing system can offer to attach it, with nothing to confirm on the new host.
+
+A host counts as **unclaimed** while pairing is on, it uses a local objects database and no second
+host has joined it. Installed adapters are deliberately not part of that check — a ready-made image
+usually ships with admin and a backup adapter already set up, and that is still a host nobody has
+claimed.
+
+A `join` switches pairing off again in the stored `iobroker.json`, so after the restart the host
+neither announces itself nor listens for pairing any more. The first `iobroker.json` is kept as
+`iobroker.json.bak` (a second join does not overwrite it). Nothing reads it automatically: to detach
+the host again, copy it back and restart the controller.
+
+Switch pairing off on an image that you do not intend to attach to another system with
+`"pairing": false`, followed by the `updateMultihost` host message — that closes the listener and
+withdraws the announcement immediately, no controller restart needed. `join` is not authenticated, so
+while the listener is open, anyone who can reach the host on the network can attach it to a system of
+their choosing.
+
+A host that can attach others — one with its own objects database — only starts listening for the
+announcements when its Admin asks which hosts are out there (`multihostBrowse`). From then on it keeps
+the result in `system.host.<hostname>.discoveredHosts` as JSON, so the Admin can subscribe to it. The
+list is refreshed every 60 seconds and hosts the user declined are filtered out.
 
 mDNS does not cross a Docker bridge or a subnet border. The multihost UDP protocol on port 50005
 still answers a `browse` in those setups, so `multihostBrowse` merges both sources.
@@ -844,20 +913,6 @@ The mDNS part is provided by the **optional** dependency `bonjour-service`. It b
 does not work on every system — notably not on some Windows setups. When the package is missing or
 cannot be started, the controller writes one info line and carries on without it: hosts are then
 only found over the multihost UDP protocol, and `discoveredHosts` stays empty.
-
-The **pairing listener** — the UDP 50005 socket that accepts a `join` from a master — is on by
-default, and it is what makes the ready-made image work: burn it, boot it, and an existing system can
-offer to attach it, with nothing to confirm on the new host. The listener stops on its own as soon as
-the host belongs to a system, so it is only ever open on a host nobody has claimed yet.
-
-Switch the pairing path off with `"multihostService": { "pairing": false }` in `iobroker.json`,
-followed by the `updateMultihost` host message — that closes the listener immediately, no controller
-restart needed. Do that once the system is set up and you do not intend to attach it to another one:
-`join` is not authenticated, so while the listener is open, anyone who can reach the host on the
-network can attach it to a system of their choosing.
-
-The mDNS announcement and the discovery are independent of that flag and stay active. They only make
-a host visible; nothing about it can be changed through them.
 
 ### TIERS: Start instances in an ordered manner
 **Feature status:** Technology preview (since 3.3.0)
@@ -1238,7 +1293,7 @@ on its own. Hosts the user declined are filtered out.
       port: 50005,
       unclaimed: true,      // belongs to no system yet and can be attached
       master: false,        // runs a multihost master (mDNS source only)
-      version: '7.3.0',     // controller version (mDNS source only)
+      version: '8.0.0',     // controller version (mDNS source only)
       info: { /* os, cpus, memory, ... */ },  // static information (UDP source only)
       source: 'mdns',       // 'mdns' or 'udp'
     },
@@ -1274,7 +1329,10 @@ UDP port 50005.
   it. The target host must have the pairing listener switched on (see
   [Host discovery](#host-discovery)); every command also needs this master's installation id
   (`system.meta.uuid`), because a master the other host cannot identify is one the user could never
-  decline.
+  decline. The master checks itself first: it has to run the multihost service, and its databases
+  must not listen on `127.0.0.1` only — otherwise the answer says what is missing, instead of the
+  other host failing a few seconds later. A host whose master hands out a loopback address refuses
+  the join as well.
 
   All four commands are rate limited per sender, so an unauthenticated flood cannot keep a host busy.
 * `decline` — the host is hidden from the discovery list of this system. The decision is stored on
@@ -1318,6 +1376,42 @@ Normally, all objects can be read by any adapter using getObject or getForeignOb
 If an array with field names from native is defined in io-package.json as common.protectedNative the ioBroker system will sort these fields out when the object is read. Only the adapter itself is allowed to read the full object.
 
 It is best practice adding the field names of encrypted fields to the protectedNative array too to make sure the fields stay protected (even if encrypted). Only let other adapters read your encrypted values if there is a need to (e.g. adapter interoperability)
+
+#### Complex attribute names in encryptedNative and protectedNative
+**Feature status:** Stable, since js-controller 7.0.7
+
+The entries of `encryptedNative` and `protectedNative` are not limited to top-level attributes of `native`. A complex attribute name addresses a nested attribute by joining the path segments with a dot. If a segment points to an array, the rest of the path is applied to every element of that array.
+
+```json5
+// io-package.json
+{
+  "native": {
+    "password": "",
+    "cloud": {
+      "token": ""
+    },
+    "devices": [
+      { "ip": "192.168.1.10", "password": "" },
+      { "ip": "192.168.1.11", "password": "" }
+    ]
+  },
+  "encryptedNative": ["password", "cloud.token", "devices.password"],
+  "protectedNative": ["password", "cloud.token", "devices.password"]
+}
+```
+
+- `cloud.token` addresses `native.cloud.token`
+- `devices.password` addresses `native.devices[i].password` of every element. Elements without this attribute, or with a value that is not a string, are left untouched.
+
+The complex names are respected by:
+- `protectedNative`: the attributes are removed from the instance object when it is read by another adapter, at any depth
+- the adapter start: the attributes are decrypted in `this.config`, e.g. `this.config.cloud.token` and `this.config.devices[0].password` (since js-controller 7.2.3, before only top-level names were decrypted on start)
+- `adapter.updateConfig()`: the attributes are encrypted before the configuration is stored
+- `adapter.getEncryptedConfig()`: `getEncryptedConfig('cloud.token')` returns the decrypted string, `getEncryptedConfig('devices.password')` returns an array with one decrypted value per element
+
+For encryption, a path may run through at most one array.
+
+**Note:** The configuration dialogs of Admin (JSON config and React-based settings) currently encrypt and decrypt only top-level attribute names. A nested value entered there is stored as plain text, and the adapter would then try to decrypt this plain text on start. Only list complex names in `encryptedNative` if these values are stored encrypted, e.g. via `adapter.updateConfig()` or by your own configuration UI.
 
 #### Define Adapter dependencies to other adapters
 **Feature status:** Stable

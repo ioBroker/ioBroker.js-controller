@@ -274,3 +274,69 @@ describe('lib/multihostServer: isUnclaimed is cached', () => {
         assert.strictEqual(isUnclaimed.callCount, 1);
     });
 });
+
+describe('lib/multihostServer: browse of a master hands out its databases only when allowed', () => {
+    const secured = {
+        multihostService: { enabled: true, secure: true, password: 'encrypted', persist: true },
+        objects: { type: 'redis', host: '192.168.1.2', options: { password: 'redis-secret' } },
+        states: { type: 'redis', host: '192.168.1.2', options: { password: 'redis-secret' } },
+    };
+
+    it('answers an unauthenticated browse of a secured master with a salt only', async () => {
+        const harness = makeServer({}, secured);
+        (harness.server as any).secret = 'multihost-secret';
+
+        await harness.process({ cmd: 'browse', id: '1' });
+
+        assert.strictEqual(harness.sent.length, 1);
+        assert.strictEqual(harness.sent[0].result, 'not authenticated');
+        assert.ok(harness.sent[0].salt);
+        assert.strictEqual(harness.sent[0].objects, undefined, 'the Redis password must not leave the host');
+        assert.strictEqual(harness.sent[0].states, undefined);
+    });
+
+    it('answers a browse of an unsecured master with its databases, as before', async () => {
+        const harness = makeServer(
+            {},
+            { ...secured, multihostService: { ...secured.multihostService, secure: false } },
+        );
+
+        await harness.process({ cmd: 'browse', id: '1' });
+
+        assert.strictEqual(harness.sent[0].result, 'ok');
+        assert.strictEqual(harness.sent[0].objects.host, '192.168.1.2');
+    });
+});
+
+describe('lib/multihostServer: the cached isUnclaimed expires', () => {
+    let clock: sinon.SinonFakeTimers;
+
+    beforeEach(() => {
+        clock = sinon.useFakeTimers({ now: 1_000_000, toFake: ['Date'] });
+    });
+
+    afterEach(() => {
+        clock.restore();
+    });
+
+    it('asks again after a few seconds, so a host that was claimed meanwhile stops saying it is free', async () => {
+        const isUnclaimed = sinon.stub();
+        isUnclaimed.onFirstCall().resolves(true);
+        isUnclaimed.onSecondCall().resolves(false);
+        const harness = makeServer({ pairingOnly: true, getUuid: () => VALID_UUID, isUnclaimed });
+
+        await harness.process({ cmd: 'browse', id: '1' });
+        clock.tick(1_000);
+        await harness.process({ cmd: 'browse', id: '2' });
+        assert.strictEqual(isUnclaimed.callCount, 1, 'still cached');
+
+        clock.tick(10_000);
+        await harness.process({ cmd: 'browse', id: '3' });
+
+        assert.strictEqual(isUnclaimed.callCount, 2);
+        assert.deepStrictEqual(
+            harness.sent.map(answer => answer.unclaimed),
+            [true, true, false],
+        );
+    });
+});

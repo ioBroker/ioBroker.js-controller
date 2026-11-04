@@ -8,7 +8,7 @@
 
 > **GenericCallback**\<`T`\> = (`err?`, `result?`) => `void`
 
-Defined in: [types-dev/index.d.ts:448](https://github.com/ioBroker/ioBroker.js-controller/blob/45e1308b97991aa172e3f71f94494b11cc461548/packages/types-dev/index.d.ts#L448)
+Defined in: [types-dev/index.d.ts:583](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L583)
 
 ## Type Parameters
 

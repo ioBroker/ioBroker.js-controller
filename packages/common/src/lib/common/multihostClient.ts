@@ -54,6 +54,16 @@ export interface ReceivedMessage {
 
 export type BrowseResultEntry = Partial<ReceivedMessage>;
 
+/** What {@link MHClient.connectAsync} gets from a multihost server */
+export interface MHConnectResult {
+    /** The objects database configuration of the server */
+    objects: ioBroker.ObjectsDatabaseOptions;
+    /** The states database configuration of the server */
+    states: ioBroker.StatesDatabaseOptions;
+    /** The address the server answered from */
+    address?: string;
+}
+
 /**
  * MHClient implements browsing and connecting to multihost-enabled ioBroker hosts.
  *
@@ -235,6 +245,28 @@ export class MHClient {
                 },
             );
         });
+    }
+
+    /**
+     * Connect to a single multihost server and retrieve its objects/states configuration, see {@link connect}
+     *
+     * @param ip - IP address of the server to connect to.
+     * @param password - Password to use for authentication (if required). Pass empty string to skip.
+     * @returns the database configuration of the server and the address it answered from
+     * @throws {Error} if the server does not answer, refuses the password or sends no configuration
+     */
+    connectAsync(ip: string, password: string): Promise<MHConnectResult> {
+        return new Promise((resolve, reject) =>
+            this.connect(ip, password, (err, objectsConfig, statesConfig, address) => {
+                if (err) {
+                    reject(err);
+                } else if (!objectsConfig || !statesConfig) {
+                    reject(new Error('No configuration received from remote host'));
+                } else {
+                    resolve({ objects: objectsConfig, states: statesConfig, address });
+                }
+            }),
+        );
     }
 
     /**

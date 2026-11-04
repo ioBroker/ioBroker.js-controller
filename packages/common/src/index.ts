@@ -13,7 +13,7 @@ export {
 } from '@/lib/common/objects.js';
 export { NotificationHandler } from '@/lib/common/notificationHandler.js';
 export { MHClient } from '@/lib/common/multihostClient.js';
-export type { ReceivedMessage, BrowseResultEntry } from '@/lib/common/multihostClient.js';
+export type { ReceivedMessage, BrowseResultEntry, MHConnectResult } from '@/lib/common/multihostClient.js';
 export type { SupportedFeature } from '@/lib/common/constants.js';
 export * as zipFiles from '@/lib/common/zipFiles.js';
 export * from '@/lib/common/tools.js';

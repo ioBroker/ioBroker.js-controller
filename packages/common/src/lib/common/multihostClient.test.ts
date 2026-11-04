@@ -109,3 +109,44 @@ describe('lib/multihostClient: the message id is not predictable', () => {
         assert.ok(ids.size > 1, 'the seed has to vary between clients');
     });
 });
+
+describe('lib/multihostClient: browse reports where an answer came from', () => {
+    it('takes the address of the packet when the answer carries none', async () => {
+        const client = new MHClient();
+        const handler = captureHandler(client);
+
+        const pending = client.browse(1_000, false);
+        handler.onReady();
+        // TEST-NET-3, never one of the addresses of the machine running the test
+        handler.onMessage(
+            { cmd: 'browse', id: 1, result: 'ok', hostname: 'fresh', uuid: '0123456789abcdef' },
+            { address: '203.0.113.7', port: 50_005 },
+        );
+        handler.onFinished();
+
+        const list = await pending;
+        assert.strictEqual(list.length, 1);
+        assert.strictEqual(list[0].ip, '203.0.113.7', 'without it, a master has no address to send the join to');
+        assert.strictEqual(list[0].uuid, '0123456789abcdef');
+    });
+});
+
+describe('lib/multihostClient: sendCommand only trusts the host it asked', () => {
+    const TARGET = '192.168.1.50';
+
+    it('ignores an answer with the right id from another address', async () => {
+        const client = new MHClient();
+        const handler = captureHandler(client);
+
+        const pending = client.sendCommand(TARGET, 'join', { masterUuid: '0123456789abcdef' });
+        const id = (client as any).id as number;
+        handler.onReady();
+
+        const spoofed = handler.onMessage({ cmd: 'join', id, result: 'ok' }, { address: '10.6.6.6', port: 50_005 });
+        assert.strictEqual(spoofed, false, 'a stranger must not be able to confirm a join or a decline');
+
+        const real = handler.onMessage({ cmd: 'join', id, result: 'declined' }, { address: TARGET, port: 50_005 });
+        assert.strictEqual(real, true);
+        assert.strictEqual((await pending).result, 'declined');
+    });
+});

@@ -9,7 +9,7 @@ interface DatabaseBackupOptions {
     /** By default, backup every 2 hours. Time is in minutes. To disable backup set the value to 0 */
     period: number;
     '// period': string;
-    /** Absolute path to back-up directory or empty to back-up in data directory */
+    /** Absolute path to the back-up directory or empty to back-up in data directory */
     path: string;
     '// path': string;
 }
@@ -183,12 +183,10 @@ export interface IoBJson {
         password: string;
         persist: boolean;
         /**
-         * Whether this host may be attached to a master over UDP 50005 while it does not belong to
-         * any system yet. Defaults to `true`, which is what lets a freshly installed host be
-         * attached from an existing system without a shell on it.
-         *
-         * Only relevant until the host belongs to a system: once it uses a remote database, the
-         * listener is not started anyway. Set it to `false` to switch the whole pairing path off.
+         * Whether this host offers itself to be attached to a master: it announces itself via mDNS and
+         * accepts the `join` command of a master over UDP 50005. Off when absent - ready-made images
+         * switch it on, because only the image knows that a device is fresh. Switched off again by the
+         * join, and without effect once the host uses a remote database.
          */
         pairing?: boolean;
     };
