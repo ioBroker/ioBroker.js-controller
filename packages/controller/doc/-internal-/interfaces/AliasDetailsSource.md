@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,42 +6,46 @@
 
 # Interface: AliasDetailsSource
 
+Defined in: [adapter/src/lib/\_Types.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L249)
+
+Source definition of an alias
+
 ## Properties
 
 ### max?
 
-> `optional` **max**: `number`
+> `optional` **max?**: `number`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L253)
 
-[adapter/src/lib/\_Types.ts:217](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L217)
+Maximum value of the source
 
 ***
 
 ### min?
 
-> `optional` **min**: `number`
+> `optional` **min?**: `number`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L251)
 
-[adapter/src/lib/\_Types.ts:216](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L216)
+Minimum value of the source
 
 ***
 
 ### type?
 
-> `optional` **type**: [`CommonType`](../type-aliases/CommonType.md)
+> `optional` **type?**: [`CommonType`](../type-aliases/CommonType.md)
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L255)
 
-[adapter/src/lib/\_Types.ts:218](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L218)
+Common type of the source
 
 ***
 
 ### unit?
 
-> `optional` **unit**: `string`
+> `optional` **unit?**: `string`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:257](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L257)
 
-[adapter/src/lib/\_Types.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L219)
+Unit of the source value

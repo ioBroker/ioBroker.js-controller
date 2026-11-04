@@ -1,12 +1,14 @@
 import fs from 'fs-extra';
 import path from 'node:path';
 import readline from 'node:readline';
-import { tools } from '@iobroker/js-controller-common';
-import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common';
-import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import { MHClient, type BrowseResultEntry } from './multihostClient.js';
 import readlineSync from 'readline-sync';
 import prompt from 'prompt';
+
+import { isLocalObjectsDbServer, isLocalStatesDbServer, tools, EXIT_CODES } from '@iobroker/js-controller-common';
+import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
+import { MHClient, type BrowseResultEntry } from './multihostClient.js';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { dbConnect } from '@/lib/setup/dbConnection.js';
 
 interface MHParams {
     secure?: boolean;
@@ -14,16 +16,28 @@ interface MHParams {
     debug?: boolean;
 }
 
+/** Options for Multihost CLI */
 export interface CLIMultihostOptions {
+    /** Redis client for objects DB */
     objects: ObjectsRedisClient;
+    /** Additional parameters */
     params?: MHParams;
 }
 
+/**
+ *  Multihost CLI class
+ *  Handles multihost related commands
+ */
 export class Multihost {
     private readonly configName: string;
     private params: MHParams;
     private objects: ObjectsRedisClient;
 
+    /**
+     * Constructor
+     *
+     * @param options options for the Multihost CLI
+     */
     constructor(options: CLIMultihostOptions) {
         this.configName = tools.getConfigFileName();
         this.params = options.params || {};
@@ -79,8 +93,7 @@ export class Multihost {
     async browse(): Promise<BrowseResultEntry[]> {
         const mhClient = new MHClient();
         try {
-            const res = await mhClient.browse(2_000, !!this.params.debug);
-            return res;
+            return await mhClient.browse(2_000, !!this.params.debug);
         } catch (e) {
             throw new Error(`Multihost discovery client: Cannot browse: ${e.message}`);
         }
@@ -146,8 +159,12 @@ export class Multihost {
                 config.multihostService.enabled && config.multihostService.persist ? 'enabled' : 'disabled'
             }`,
         );
-        console.log(`Objects:                    ${config.objects.type} on ${config.objects.host}`);
-        console.log(`States:                     ${config.states.type} on ${config.states.host}`);
+        console.log(
+            `Objects:                    ${config.objects.type} on ${Array.isArray(config.objects.host) ? config.objects.host.join(', ') : config.objects.host}`,
+        );
+        console.log(
+            `States:                     ${config.states.type} on ${Array.isArray(config.states.host) ? config.states.host.join(', ') : config.states.host}`,
+        );
     }
 
     /**
@@ -166,7 +183,7 @@ export class Multihost {
             config.multihostService.enabled = true;
             config.multihostService.password = '';
             console.log(
-                'Multihost discovery server activated on this host. If iobroker is currently not running please start befeore trying to discover this host.',
+                'Multihost discovery server activated on this host. If iobroker is currently not running please start before trying to discover this host.',
             );
             console.log(
                 'Important: Multihost discovery works with UDP packets. Make sure they are routed correctly in your network. If you use Docker you also need to configure this correctly.',
@@ -219,17 +236,19 @@ export class Multihost {
                 };
                 prompt.start();
 
-                prompt.get(schema, (err, password) => {
+                prompt.get(schema, (_err, password) => {
                     if (password?.password) {
                         if (password.password !== password.passwordRepeat) {
                             callback(new Error('Secret phrases are not equal!'));
                         } else {
-                            this.objects.getObject('system.config', (err, obj) => {
+                            this.objects.getObject('system.config', (_err, obj) => {
                                 config.multihostService.password = tools.encrypt(
                                     obj!.native.secret,
                                     password.password as string,
                                 );
-                                this.showMHState(config, changed);
+                                this.showMHState(config, changed).catch(e =>
+                                    console.error(`Cannot show multihost state: ${e.message}`),
+                                );
                                 callback();
                             });
                         }
@@ -238,11 +257,13 @@ export class Multihost {
                     }
                 });
             } else {
-                this.showMHState(config, changed);
+                this.showMHState(config, changed).catch(e =>
+                    console.error(`Cannot show multihost state: ${e.message}`),
+                );
                 callback();
             }
         } else {
-            this.showMHState(config, changed);
+            this.showMHState(config, changed).catch(e => console.error(`Cannot show multihost state: ${e.message}`));
             callback();
         }
     }
@@ -253,7 +274,7 @@ export class Multihost {
     status(): void {
         const config = this.getConfig();
         config.multihostService = config.multihostService || { enabled: false, secure: true };
-        this.showMHState(config, false);
+        this.showMHState(config, false).catch(e => console.error(`Cannot show multihost state: ${e.message}`));
     }
 
     /**
@@ -266,10 +287,10 @@ export class Multihost {
     /**
      * Connect to given MH server
      *
-     * @param mhClient mhclient used for connection
-     * @param ip ip address of server
+     * @param mhClient MultiHost Client used for connection
+     * @param ip IP address of server
      * @param pass password
-     * @param callback
+     * @param callback callback
      */
     connectHelper(mhClient: MHClient, ip: string, pass: string, callback: (err?: Error) => void): void {
         mhClient.connect(ip, pass, async (err, oObjects, oStates, ipHost) => {
@@ -293,14 +314,35 @@ export class Multihost {
                             `IP Address of the remote host is ${tools.getLocalAddress()}. Connections from this host will not be accepted. Please change the configuration of this host to accept remote connections.`,
                         ),
                     );
-                } else {
-                    if (tools.isListenAllAddress(config.states.host)) {
-                        // TODO: why we set the remote IP only when the local config allows full connectivity?
+                } else if (
+                    (!Array.isArray(config.states.host) || config.states.host.length === 1) &&
+                    (!Array.isArray(config.objects.host) || config.objects.host.length === 1)
+                ) {
+                    const sHost = Array.isArray(config.states.host) ? config.states.host[0] : config.states.host;
+                    // If server delivers 0.0.0.0 or ::, set to actual IP of the host
+                    if (tools.isListenAllAddress(sHost)) {
                         config.states.host = ipHost ?? '';
                     }
-                    if (tools.isListenAllAddress(config.objects.host)) {
-                        // TODO: why we set the remote IP only when the local config allows full connectivity?
+                    const oHost = Array.isArray(config.objects.host) ? config.objects.host[0] : config.objects.host;
+                    // If server delivers 0.0.0.0 or ::, set to actual IP of the host
+                    if (tools.isListenAllAddress(oHost)) {
                         config.objects.host = ipHost ?? '';
+                    }
+
+                    fs.writeFileSync(this.configName, JSON.stringify(config, null, 2));
+                    console.log('Config ok. Please restart ioBroker: "iobroker restart"');
+                    callback();
+                } else {
+                    // Find if any of the hosts is "listen all" or reachable
+                    if (Array.isArray(config.states.host)) {
+                        config.states.host = config.states.host.map((sHost: string) =>
+                            tools.isListenAllAddress(sHost) ? (ipHost ?? '') : sHost,
+                        );
+                    }
+                    if (Array.isArray(config.objects.host)) {
+                        config.objects.host = config.objects.host.map((oHost: string) =>
+                            tools.isListenAllAddress(oHost) ? (ipHost ?? '') : oHost,
+                        );
                     }
 
                     fs.writeFileSync(this.configName, JSON.stringify(config, null, 2));
@@ -318,7 +360,7 @@ export class Multihost {
      *
      * @param index index of host to connect to
      * @param pass password
-     * @param callback
+     * @param callback callback
      */
     async connect(
         index: number | null,
@@ -387,4 +429,85 @@ export class Multihost {
             callback(undefined, list);
         }
     }
+}
+
+/**
+ * Handles the `multihost` / `mh` CLI command.
+ *
+ * @param options the process command options
+ */
+export function processCommandMultihost(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+
+    const cmd = args[0];
+    if (
+        cmd !== 'c' &&
+        cmd !== 'connect' &&
+        cmd !== 's' &&
+        cmd !== 'status' &&
+        cmd !== 'b' &&
+        cmd !== 'browse' &&
+        cmd !== 'e' &&
+        cmd !== 'enable' &&
+        cmd !== 'd' &&
+        cmd !== 'disable'
+    ) {
+        console.log('Invalid parameters. Following is possible: enable, browse, connect, status');
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+    dbConnect(params, async ({ objects, states }) => {
+        const mh = new Multihost({
+            params,
+            objects,
+        });
+
+        if (cmd === 's' || cmd === 'status') {
+            mh.status();
+            return void callback();
+        } else if (cmd === 'b' || cmd === 'browse') {
+            try {
+                const list = await mh.browse();
+                mh.showHosts(list);
+                return void callback();
+            } catch (e) {
+                console.error(e.message);
+                return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+            }
+        } else if (cmd === 'e' || cmd === 'enable') {
+            mh.enable(true, async (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
+                }
+                await states.pushMessage(`system.host.${tools.getHostName()}`, {
+                    command: 'updateMultihost',
+                    message: null,
+                    from: 'setup',
+                });
+
+                callback();
+            });
+        } else if (cmd === 'd' || cmd === 'disable') {
+            mh.enable(false, async (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                    return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
+                }
+                await states.pushMessage(`system.host.${tools.getHostName()}`, {
+                    command: 'updateMultihost',
+                    message: null,
+                    from: 'setup',
+                });
+
+                callback();
+            });
+        } else if (cmd === 'c' || cmd === 'connect') {
+            mh.connect(parseInt(args[1]), args[2], (err: Error | null | undefined) => {
+                if (err) {
+                    console.error(err);
+                }
+                return void callback(err ? 1 : 0);
+            }).catch(e => console.error(`Cannot connect multihost: ${e.message}`));
+        }
+    });
 }

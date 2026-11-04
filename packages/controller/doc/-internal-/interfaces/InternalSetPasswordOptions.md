@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,25 +6,29 @@
 
 # Interface: InternalSetPasswordOptions
 
+Defined in: [adapter/src/lib/\_Types.ts:373](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L373)
+
+Options for setting a user's password
+
 ## Properties
 
 ### callback?
 
-> `optional` **callback**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+> `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:381](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L381)
 
-[adapter/src/lib/\_Types.ts:291](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L291)
+Called once the password has been set
 
 ***
 
 ### options?
 
-> `optional` **options**: `null` \| `Record`\<`string`, `any`\>
+> `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:379](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L379)
 
-[adapter/src/lib/\_Types.ts:290](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L290)
+Optional settings including the user context
 
 ***
 
@@ -32,9 +36,9 @@
 
 > **pw**: `string`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:377](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L377)
 
-[adapter/src/lib/\_Types.ts:289](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L289)
+The new password
 
 ***
 
@@ -42,6 +46,6 @@
 
 > **user**: `string`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:375](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L375)
 
-[adapter/src/lib/\_Types.ts:288](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L288)
+The user whose password is set

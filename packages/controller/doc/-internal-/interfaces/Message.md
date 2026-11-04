@@ -1,10 +1,12 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / Message
 
 # Interface: Message
+
+Defined in: [types-dev/index.d.ts:442](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L442)
 
 A message being passed between adapter instances
 
@@ -18,17 +20,17 @@ A message being passed between adapter instances
 
 > **\_id**: `number`
 
+Defined in: [types-dev/index.d.ts:444](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L444)
+
 ID of this message
-
-#### Defined in
-
-[types-dev/index.d.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L277)
 
 ***
 
 ### callback?
 
-> `optional` **callback**: [`MessageCallbackInfo`](MessageCallbackInfo.md)
+> `optional` **callback?**: [`MessageCallbackInfo`](MessageCallbackInfo.md)
+
+Defined in: [types-dev/index.d.ts:438](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L438)
 
 Callback information. This is set when the source expects a response
 
@@ -36,15 +38,13 @@ Callback information. This is set when the source expects a response
 
 [`SendableMessage`](SendableMessage.md).[`callback`](SendableMessage.md#callback)
 
-#### Defined in
-
-[types-dev/index.d.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L271)
-
 ***
 
 ### command
 
 > **command**: `string`
+
+Defined in: [types-dev/index.d.ts:432](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L432)
 
 The command to be executed
 
@@ -52,15 +52,13 @@ The command to be executed
 
 [`SendableMessage`](SendableMessage.md).[`command`](SendableMessage.md#command)
 
-#### Defined in
-
-[types-dev/index.d.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L265)
-
 ***
 
 ### from
 
 > **from**: `string`
+
+Defined in: [types-dev/index.d.ts:436](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L436)
 
 The source of this message
 
@@ -68,22 +66,16 @@ The source of this message
 
 [`SendableMessage`](SendableMessage.md).[`from`](SendableMessage.md#from)
 
-#### Defined in
-
-[types-dev/index.d.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L269)
-
 ***
 
 ### message
 
 > **message**: `any`
 
+Defined in: [types-dev/index.d.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L434)
+
 The message payload
 
 #### Inherited from
 
 [`SendableMessage`](SendableMessage.md).[`message`](SendableMessage.md#message)
-
-#### Defined in
-
-[types-dev/index.d.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L267)

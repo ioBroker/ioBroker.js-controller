@@ -1,12 +1,12 @@
 {
     "name": "@iobroker/db-states-jsonl",
     "type": "module",
-    "version": "7.0.8-alpha.7-20250928-40cb80c18",
+    "version": "8.0.0-alpha.11-20261103-58da667b3",
     "engines": {
-        "node": ">=12.0.0"
+        "node": ">=22.19.0"
     },
     "dependencies": {
-        "@alcalzone/jsonl-db": "~3.1.1",
+        "@alcalzone/jsonl-db": "~4.0.2",
         "@iobroker/db-base": "file:../db-base",
         "@iobroker/db-states-file": "file:../db-states-file",
         "@iobroker/db-states-redis": "file:../db-states-redis"
@@ -24,11 +24,11 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/db-states-jsonl"
+        "url": "https://github.com/ioBroker/ioBroker.js-controller"
     },
     "scripts": {
         "build": "tsc -b tsconfig.build.json",
-        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
+        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ../cjs/ --cwd=build/esm/"
     },
     "main": "build/cjs/index.js",
     "module": "build/esm/index.js",

@@ -1,10 +1,14 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / InternalStopParameters
 
 # Interface: InternalStopParameters
+
+Defined in: [adapter/src/lib/\_Types.ts:874](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L874)
+
+Internal parameters controlling how the adapter stops
 
 ## Extends
 
@@ -14,7 +18,9 @@
 
 ### exitCode?
 
-> `optional` **exitCode**: `number`
+> `optional` **exitCode?**: `number`
+
+Defined in: [adapter/src/lib/\_Types.ts:868](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L868)
 
 Specify an optional exit code
 
@@ -22,39 +28,33 @@ Specify an optional exit code
 
 [`StopParameters`](StopParameters.md).[`exitCode`](StopParameters.md#exitcode)
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:583](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L583)
-
 ***
 
 ### isPause?
 
-> `optional` **isPause**: `boolean`
+> `optional` **isPause?**: `boolean`
+
+Defined in: [adapter/src/lib/\_Types.ts:876](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L876)
 
 If mode is schedule or once
-
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L590)
 
 ***
 
 ### isScheduled?
 
-> `optional` **isScheduled**: `boolean`
+> `optional` **isScheduled?**: `boolean`
+
+Defined in: [adapter/src/lib/\_Types.ts:878](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L878)
 
 If it has a restart schedule running
-
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:592](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L592)
 
 ***
 
 ### reason?
 
-> `optional` **reason**: `string`
+> `optional` **reason?**: `string`
+
+Defined in: [adapter/src/lib/\_Types.ts:870](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L870)
 
 Specify an optional reason for stoppage
 
@@ -62,18 +62,12 @@ Specify an optional reason for stoppage
 
 [`StopParameters`](StopParameters.md).[`reason`](StopParameters.md#reason)
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:585](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L585)
-
 ***
 
 ### updateAliveState?
 
-> `optional` **updateAliveState**: `boolean`
+> `optional` **updateAliveState?**: `boolean`
+
+Defined in: [adapter/src/lib/\_Types.ts:880](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L880)
 
 If alive state should be updated, if undefined defaults to true
-
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:594](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L594)

@@ -1,10 +1,12 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / StateACL
 
 # Interface: StateACL
+
+Defined in: [types-dev/objects.d.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L35)
 
 Defines access rights for a single state object
 
@@ -18,21 +20,21 @@ Defines access rights for a single state object
 
 > **object**: `number`
 
+Defined in: [types-dev/objects.d.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L31)
+
 Linux-type permissions defining access to this object
 
 #### Inherited from
 
 [`ObjectACL`](ObjectACL.md).[`object`](ObjectACL.md#object)
 
-#### Defined in
-
-[types-dev/objects.d.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L31)
-
 ***
 
 ### owner
 
-> **owner**: `string`
+> **owner**: `` `system.user.${string}` ``
+
+Defined in: [types-dev/objects.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L27)
 
 Full name of the user who owns this object, e.g. "system.user.admin"
 
@@ -40,15 +42,13 @@ Full name of the user who owns this object, e.g. "system.user.admin"
 
 [`ObjectACL`](ObjectACL.md).[`owner`](ObjectACL.md#owner)
 
-#### Defined in
-
-[types-dev/objects.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L27)
-
 ***
 
 ### ownerGroup
 
-> **ownerGroup**: `string`
+> **ownerGroup**: `` `system.group.${string}` ``
+
+Defined in: [types-dev/objects.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L29)
 
 Full name of the group who owns this object, e.g. "system.group.administrator"
 
@@ -56,18 +56,12 @@ Full name of the group who owns this object, e.g. "system.group.administrator"
 
 [`ObjectACL`](ObjectACL.md).[`ownerGroup`](ObjectACL.md#ownergroup)
 
-#### Defined in
-
-[types-dev/objects.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L29)
-
 ***
 
 ### state
 
 > **state**: `number`
 
+Defined in: [types-dev/objects.d.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L37)
+
 Linux-type permissions defining access to this state
-
-#### Defined in
-
-[types-dev/objects.d.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L37)

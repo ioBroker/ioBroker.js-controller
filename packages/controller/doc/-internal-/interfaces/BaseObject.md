@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,24 +6,26 @@
 
 # Interface: BaseObject
 
+Defined in: [types-dev/objects.d.ts:1033](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1033)
+
 ## Extended by
 
-- [`StateObject`](StateObject.md)
-- [`DeviceObject`](DeviceObject.md)
-- [`ChannelObject`](ChannelObject.md)
-- [`FolderObject`](FolderObject.md)
-- [`MetaObject`](MetaObject.md)
 - [`EnumObject`](EnumObject.md)
-- [`HostObject`](HostObject.md)
-- [`AdapterObject`](AdapterObject.md)
 - [`InstanceObject`](InstanceObject.md)
-- [`UserObject`](UserObject.md)
-- [`GroupObject`](GroupObject.md)
+- [`AdapterObject`](AdapterObject.md)
+- [`ChannelObject`](ChannelObject.md)
+- [`MetaObject`](MetaObject.md)
+- [`FolderObject`](FolderObject.md)
+- [`DeviceObject`](DeviceObject.md)
+- [`StateObject`](StateObject.md)
 - [`ScriptObject`](ScriptObject.md)
-- [`ChartObject`](ChartObject.md)
-- [`ScheduleObject`](ScheduleObject.md)
+- [`GroupObject`](GroupObject.md)
+- [`UserObject`](UserObject.md)
+- [`HostObject`](HostObject.md)
 - [`RepositoryObject`](RepositoryObject.md)
 - [`OtherObject`](OtherObject.md)
+- [`ChartObject`](ChartObject.md)
+- [`ScheduleObject`](ScheduleObject.md)
 - [`SystemConfigObject`](SystemConfigObject.md)
 
 ## Properties
@@ -32,21 +34,17 @@
 
 > **\_id**: `string`
 
+Defined in: [types-dev/objects.d.ts:1035](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1035)
+
 The ID of this object
-
-#### Defined in
-
-[types-dev/objects.d.ts:955](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L955)
 
 ***
 
 ### acl?
 
-> `optional` **acl**: [`ObjectACL`](ObjectACL.md)
+> `optional` **acl?**: [`ObjectACL`](ObjectACL.md)
 
-#### Defined in
-
-[types-dev/objects.d.ts:962](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L962)
+Defined in: [types-dev/objects.d.ts:1042](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1042)
 
 ***
 
@@ -54,29 +52,23 @@ The ID of this object
 
 > **common**: `Record`\<`string`, `any`\>
 
-#### Defined in
-
-[types-dev/objects.d.ts:960](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L960)
+Defined in: [types-dev/objects.d.ts:1040](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1040)
 
 ***
 
 ### enums?
 
-> `optional` **enums**: `Record`\<`string`, `string` \| [`Translated`](../type-aliases/Translated.md)\>
+> `optional` **enums?**: `Record`\<`string`, `string` \| [`Translated`](../type-aliases/Translated.md)\>
 
-#### Defined in
-
-[types-dev/objects.d.ts:961](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L961)
+Defined in: [types-dev/objects.d.ts:1041](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1041)
 
 ***
 
 ### from?
 
-> `optional` **from**: `string`
+> `optional` **from?**: `string`
 
-#### Defined in
-
-[types-dev/objects.d.ts:963](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L963)
+Defined in: [types-dev/objects.d.ts:1043](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1043)
 
 ***
 
@@ -84,31 +76,25 @@ The ID of this object
 
 > **native**: `Record`\<`string`, `any`\>
 
-#### Defined in
-
-[types-dev/objects.d.ts:959](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L959)
+Defined in: [types-dev/objects.d.ts:1039](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1039)
 
 ***
 
 ### nonEdit?
 
-> `optional` **nonEdit**: [`NonEditable`](NonEditable.md)
+> `optional` **nonEdit?**: [`NonEditable`](NonEditable.md)
+
+Defined in: [types-dev/objects.d.ts:1048](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1048)
 
 These properties can only be edited if the correct password is provided
-
-#### Defined in
-
-[types-dev/objects.d.ts:968](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L968)
 
 ***
 
 ### ts?
 
-> `optional` **ts**: `number`
+> `optional` **ts?**: `number`
 
-#### Defined in
-
-[types-dev/objects.d.ts:966](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L966)
+Defined in: [types-dev/objects.d.ts:1046](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1046)
 
 ***
 
@@ -116,18 +102,14 @@ These properties can only be edited if the correct password is provided
 
 > **type**: [`ObjectType`](../type-aliases/ObjectType.md)
 
-#### Defined in
-
-[types-dev/objects.d.ts:956](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L956)
+Defined in: [types-dev/objects.d.ts:1036](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1036)
 
 ***
 
 ### user?
 
-> `optional` **user**: `string`
+> `optional` **user?**: `` `system.user.${string}` ``
+
+Defined in: [types-dev/objects.d.ts:1045](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1045)
 
 The user who created or updated this object
-
-#### Defined in
-
-[types-dev/objects.d.ts:965](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L965)

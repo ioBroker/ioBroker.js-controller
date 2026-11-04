@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,15 +6,19 @@
 
 # Interface: InternalDelObjectOptions
 
+Defined in: [adapter/src/lib/\_Types.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L590)
+
+Options for deleting an object
+
 ## Properties
 
 ### callback?
 
-> `optional` **callback**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+> `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:596](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L596)
 
-[adapter/src/lib/\_Types.ts:425](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L425)
+Called once the object has been deleted
 
 ***
 
@@ -22,16 +26,16 @@
 
 > **id**: `string`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:592](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L592)
 
-[adapter/src/lib/\_Types.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L423)
+The id of the object
 
 ***
 
 ### options?
 
-> `optional` **options**: `null` \| [`DelObjectOptions`](DelObjectOptions.md)
+> `optional` **options?**: [`DelObjectOptions`](DelObjectOptions.md) \| `null`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:594](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L594)
 
-[adapter/src/lib/\_Types.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L424)
+Options controlling the deletion

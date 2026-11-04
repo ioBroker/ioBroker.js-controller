@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import assert from 'node:assert/strict';
 
 import { startController, stopController } from './lib/setup4controller.js';
 import fs from 'node:fs';
@@ -50,52 +50,52 @@ describe('States: Test states in File-Redis', function () {
         objects = _objects;
         states = _states;
         states!.subscribe('*');
-        expect(objects).to.be.ok;
-        expect(states).to.be.ok;
+        assert.ok(objects);
+        assert.ok(states);
     });
 
     it('States: should setState', function (done) {
         const testID = 'testObject.0.test1';
         onStatesChanged = function (id, state) {
             if (id === testID) {
-                expect(state).to.be.ok;
-                expect(state!.val).to.be.equal(1);
-                expect(state!.ack).to.be.false;
-                expect(state!.ts).to.be.ok;
-                expect(state!.q).to.be.equal(0);
+                assert.ok(state);
+                assert.strictEqual(state.val, 1);
+                assert.strictEqual(state.ack, false);
+                assert.ok(state.ts);
+                assert.strictEqual(state.q, 0);
 
                 states!.getState(testID, (err, state) => {
-                    expect(err).to.be.not.ok;
-                    expect(state).to.be.ok;
-                    expect(state!.val).to.be.equal(1);
-                    expect(state!.ack).to.be.false;
-                    expect(state!.ts).to.be.ok;
-                    expect(state!.q).to.be.equal(0);
+                    assert.ok(!err);
+                    assert.ok(state);
+                    assert.strictEqual(state.val, 1);
+                    assert.strictEqual(state.ack, false);
+                    assert.ok(state.ts);
+                    assert.strictEqual(state.q, 0);
                     done();
                 });
             }
         };
 
-        states!.setState(testID, 1, err => expect(err).to.be.not.ok);
+        states!.setState(testID, 1, err => assert.ok(!err));
     });
 
     it('States: should setState async', done => {
         const testID = 'testObject.0.test1';
         onStatesChanged = async (id, state) => {
             if (id === testID) {
-                expect(state).to.be.ok;
-                expect(state!.val).to.be.equal(2);
-                expect(state!.ack).to.be.false;
-                expect(state!.ts).to.be.ok;
-                expect(state!.q).to.be.equal(0);
+                assert.ok(state);
+                assert.strictEqual(state.val, 2);
+                assert.strictEqual(state.ack, false);
+                assert.ok(state.ts);
+                assert.strictEqual(state.q, 0);
 
                 // @ts-expect-error adding types alter on
                 state = await states!.getStateAsync(testID);
-                expect(state).to.be.ok;
-                expect(state!.val).to.be.equal(2);
-                expect(state!.ack).to.be.false;
-                expect(state!.ts).to.be.ok;
-                expect(state!.q).to.be.equal(0);
+                assert.ok(state);
+                assert.strictEqual(state.val, 2);
+                assert.strictEqual(state.ack, false);
+                assert.ok(state.ts);
+                assert.strictEqual(state.q, 0);
                 done();
             }
         };

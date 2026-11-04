@@ -21,6 +21,7 @@ interface PacketManagerOptions {
     logger?: Logger;
 }
 
+/** Describes a system packet that should be upgraded */
 export interface UpgradePacket {
     /** Name of the packet which should be upgraded */
     name: string;
@@ -28,6 +29,9 @@ export interface UpgradePacket {
     version?: string;
 }
 
+/**
+ * Wrapper around the system packet manager (apt or yum) to query and upgrade system packages
+ */
 export class PacketManager {
     private manager: Manager;
     private readonly logger: Logger;
@@ -41,6 +45,9 @@ export class PacketManager {
         },
     } as const;
 
+    /**
+     * @param options The packet manager to use, a logger and the log level
+     */
     constructor(options: PacketManagerOptions = { logLevel: LOG_LEVELS.info }) {
         // detect apt or yum
         this.manager = options?.manager || '';
@@ -75,6 +82,9 @@ export class PacketManager {
         }
     }
 
+    /**
+     * Resolve once the packet manager has finished its asynchronous initialization
+     */
     ready(): Promise<void> {
         return this._readyPromise;
     }

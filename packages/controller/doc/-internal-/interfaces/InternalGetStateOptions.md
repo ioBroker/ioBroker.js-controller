@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,15 +6,19 @@
 
 # Interface: InternalGetStateOptions
 
+Defined in: [adapter/src/lib/\_Types.ts:733](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L733)
+
+Options for reading a state
+
 ## Properties
 
 ### callback?
 
-> `optional` **callback**: [`GetStateCallback`](../type-aliases/GetStateCallback.md)
+> `optional` **callback?**: [`GetStateCallback`](../type-aliases/GetStateCallback.md)
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:739](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L739)
 
-[adapter/src/lib/\_Types.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L507)
+Called with the state
 
 ***
 
@@ -22,16 +26,16 @@
 
 > **id**: `string`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:735](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L735)
 
-[adapter/src/lib/\_Types.ts:505](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L505)
+The id of the state
 
 ***
 
 ### options?
 
-> `optional` **options**: `null` \| `Record`\<`string`, `any`\>
+> `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:737](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L737)
 
-[adapter/src/lib/\_Types.ts:506](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L506)
+Optional settings including the user context

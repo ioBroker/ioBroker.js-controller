@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,25 +6,23 @@
 
 # Interface: RepositoryInformation
 
+Defined in: [types-dev/objects.d.ts:1181](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1181)
+
 ## Properties
 
 ### hash?
 
-> `optional` **hash**: `string`
+> `optional` **hash?**: `string`
 
-#### Defined in
-
-[types-dev/objects.d.ts:1087](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L1087)
+Defined in: [types-dev/objects.d.ts:1185](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1185)
 
 ***
 
 ### json
 
-> **json**: `null` \| [`RepositoryJson`](RepositoryJson.md)
+> **json**: [`RepositoryJson`](RepositoryJson.md) \| `null`
 
-#### Defined in
-
-[types-dev/objects.d.ts:1086](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L1086)
+Defined in: [types-dev/objects.d.ts:1184](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1184)
 
 ***
 
@@ -32,30 +30,24 @@
 
 > **link**: `string`
 
+Defined in: [types-dev/objects.d.ts:1183](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1183)
+
 Url to the repository
-
-#### Defined in
-
-[types-dev/objects.d.ts:1085](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L1085)
 
 ***
 
 ### stable?
 
-> `optional` **stable**: `boolean`
+> `optional` **stable?**: `boolean`
+
+Defined in: [types-dev/objects.d.ts:1188](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1188)
 
 If this repository stable
-
-#### Defined in
-
-[types-dev/objects.d.ts:1090](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L1090)
 
 ***
 
 ### time?
 
-> `optional` **time**: `string`
+> `optional` **time?**: `string`
 
-#### Defined in
-
-[types-dev/objects.d.ts:1088](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L1088)
+Defined in: [types-dev/objects.d.ts:1186](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1186)

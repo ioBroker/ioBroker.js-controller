@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,32 +6,36 @@
 
 # Interface: InternalGetEnumsOptions
 
+Defined in: [adapter/src/lib/\_Types.ts:580](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L580)
+
+Options for reading multiple enums
+
 ## Properties
 
 ### \_enumList?
 
-> `optional` **\_enumList**: [`EnumList`](../type-aliases/EnumList.md)
+> `optional` **\_enumList?**: [`EnumList`](../type-aliases/EnumList.md)
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:582](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L582)
 
-[adapter/src/lib/\_Types.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L417)
+The list of enums to read
 
 ***
 
 ### callback?
 
-> `optional` **callback**: [`GetEnumsCallback`](../type-aliases/GetEnumsCallback.md)
+> `optional` **callback?**: [`GetEnumsCallback`](../type-aliases/GetEnumsCallback.md)
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:586](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L586)
 
-[adapter/src/lib/\_Types.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L419)
+Called with the enums
 
 ***
 
 ### options?
 
-> `optional` **options**: `null` \| `Record`\<`string`, `any`\>
+> `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:584](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L584)
 
-[adapter/src/lib/\_Types.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L418)
+Optional settings including the user context

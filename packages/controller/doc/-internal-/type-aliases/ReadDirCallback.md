@@ -1,23 +1,25 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / ReadDirCallback
 
-# Type Alias: ReadDirCallback()
+# Type Alias: ReadDirCallback
 
-> **ReadDirCallback**: (`err`?, `entries`?) => `void`
+> **ReadDirCallback** = (`err?`, `entries?`) => `void`
+
+Defined in: [types-dev/index.d.ts:683](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L683)
 
 ## Parameters
 
-• **err?**: `NodeJS.ErrnoException` \| `null`
+### err?
 
-• **entries?**: [`ReadDirResult`](../interfaces/ReadDirResult.md)[]
+`NodeJS.ErrnoException` \| `null`
+
+### entries?
+
+[`ReadDirResult`](../interfaces/ReadDirResult.md)[]
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[types-dev/index.d.ts:514](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L514)

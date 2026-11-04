@@ -1,20 +1,30 @@
 import fs from 'fs-extra';
-import { tools } from '@iobroker/js-controller-common';
 import path from 'node:path';
-import { EXIT_CODES } from '@iobroker/js-controller-common';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '../_Types.js';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { dbConnect } from '@/lib/setup/dbConnection.js';
 
+/** Options for the vis debug helper */
 export interface CLIVisDebugOptions {
+    /** The objects database client */
     objects: ObjectsRedisClient;
+    /** Callback to exit the process with an exit code */
     processExit: ProcessExitCallback;
 }
 
+/**
+ * Helper to upload a vis widget directory for debugging
+ */
 export class VisDebug {
     private readonly objects: ObjectsRedisClient;
     private readonly processExit: ProcessExitCallback;
 
+    /**
+     * @param options The objects client and the process-exit callback
+     */
     constructor(options: CLIVisDebugOptions) {
         this.objects = options.objects;
         this.processExit = options.processExit;
@@ -48,14 +58,14 @@ export class VisDebug {
     /**
      * Activates vis debug for given widget
      *
-     * @param widgetset widget to activate vis debug for
+     * @param widgetSet widget to activate vis debug for
      */
-    async enableDebug(widgetset: string): Promise<void> {
+    async enableDebug(widgetSet: string): Promise<void> {
         let adapterDir: string | undefined;
 
-        if (widgetset) {
+        if (widgetSet) {
             // Try to find out the adapter directory out of a list of options
-            const adapterNames2Try = [`vis-${widgetset}`, widgetset];
+            const adapterNames2Try = [`vis-${widgetSet}`, widgetSet];
             if (adapterNames2Try[0] === adapterNames2Try[1]) {
                 adapterNames2Try.splice(1, 1);
             }
@@ -125,7 +135,7 @@ export class VisDebug {
         if (fs.existsSync(`${visDir}/www/cache.manifest`)) {
             console.log(`Modify "${path.normalize(`${visDir}/www/cache.manifest`)}"`);
             let file = fs.readFileSync(`${visDir}/www/cache.manifest`, 'utf-8');
-            // if file does not exists
+            // if file does not exist
             if (!file.toString().trim()) {
                 const version = fs.readJSONSync(`${visDir}/package.json`).version;
                 file = `CACHE MANIFEST
@@ -167,30 +177,35 @@ FALLBACK:
             console.log('Disable cache. ioBroker restart required! Execute "iobroker restart"');
         }
 
-        if (widgetset) {
+        if (widgetSet) {
             const { file } = await this.objects.readFile('vis', 'js/config.js', null);
-            let content = typeof file === 'string' ? file : file.toString();
+            let content = typeof file === 'string' ? file : file?.toString() || '';
 
             content = content.replace(/[\r\n]/g, '');
-            const json: Record<string, any> = JSON.parse(content.match(/"widgetSets":\s(.*)};/)![1]);
+            const json: ({ name: string; depends?: string | string[]; always?: boolean; v2?: boolean } | string)[] =
+                JSON.parse(content.match(/"widgetSets":\s(.*)};/)![1]);
             let found = false;
             for (const widget of Object.values(json)) {
-                if (widget === widgetset || widget.name === widgetset) {
+                if (
+                    widget === widgetSet ||
+                    (widget as { name: string; depends?: string | string[]; always?: boolean; v2?: boolean }).name ===
+                        widgetSet
+                ) {
                     found = true;
                     break;
                 }
             }
-            // if widget-set not found in config.js
+            // if the idget set isn't found in config.js
             if (!found) {
                 console.log('Modify config.js');
                 const pckg = fs.readJSONSync(`${adapterDir}/io-package.json`);
-                if (pckg.native && pckg.native.dependencies && pckg.native.dependencies.length) {
+                if (pckg.native?.dependencies?.length) {
                     json.push({
-                        name: widgetset,
+                        name: widgetSet,
                         depends: pckg.native.dependencies,
                     });
                 } else {
-                    json.push(widgetset);
+                    json.push(widgetSet);
                 }
 
                 content = content.replace(/"widgetSets":\s+.*};/, `"widgetSets": ${JSON.stringify(json, null, 2)}};`);
@@ -208,4 +223,25 @@ FALLBACK:
 
         this.processExit(EXIT_CODES.NO_ERROR);
     }
+}
+
+/**
+ * @param options The command options
+ */
+export function processCommandVisDebug(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+
+    let widgetset = args[0];
+    if (widgetset?.startsWith('vis-')) {
+        widgetset = widgetset.substring(4);
+    }
+
+    dbConnect(params, ({ objects }) => {
+        const visDebug = new VisDebug({
+            objects,
+            processExit: callback,
+        });
+
+        visDebug.enableDebug(widgetset).catch(e => console.error(`Cannot enable debug: ${e.message}`));
+    });
 }

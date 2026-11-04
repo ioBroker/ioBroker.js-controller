@@ -3,19 +3,101 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Added `common.webComponents` to the `io-package.json` schema and the typings: the web components an adapter brings (`@iobroker/web-components`), as module URLs relative to its admin folder, which vis-2, devices and admin show as widgets or tiles
+* (@GermanBluefox) Added `sendToHost('checkDocker', { instance })`, which answers whether the instance can use Docker on that host (feature flag `CONTROLLER_CHECK_DOCKER`). If the adapter names a Docker connection of `system.docker` in its plugin config (`iobDockerApi`), that connection is checked, as the instance uses it - with `@iobroker/plugin-docker` 1.3.0 and later also when it is named through a template like `${config.dockerApi}` in the instance settings, as the plugin resolves it itself. The check is done by the `@iobroker/plugin-docker` of the adapter, in a child process; a question that comes in while the same plugin is checking already gets the answer of that check instead of starting another process, and a check that hangs is ended after 20 s together with the processes it started (e.g. a hanging `docker ps`). Admin needs it for the `checkDocker` control when the instance runs on another host than admin - so far it showed the Docker of the admin host
+* (@typhosj) Fixed the state that counts the data points of a vis project: a space in the project name is now replaced by `_`, instead of every letter `s`. The state of an affected project gets a new ID (e.g. `vis-2.0.datapoints.New_project` instead of `New project`), the old state stays behind
+* (@GermanBluefox) Added `sendToHost('getRepositoryCompact')`, which answers with only the version and the icon per adapter (feature flag `CONTROLLER_REPOSITORY_COMPACT`), and the diagnostics are now collected after the repository requesters got their answer instead of before
+* (@GermanBluefox) Added `services` to `common.visWidgets.<set>` and `common.deviceWidgets` in the `io-package.json` schema and the typings: background components that vis-2 and the devices app render once next to the views, whichever view is shown - e.g. for a phone that has to stay registered to ring
+* (@GermanBluefox) Fixed the `io-package.json` schema rejecting `common.deviceWidgets.iconsManifest`, which the typings and the devices app already know
+* (@GermanBluefox) Added `common.adminTab.proxy` to the `io-package.json` schema and the typings: admin shows such a tab through its own proxy, on its own address and behind its login
+* (@GermanBluefox) Fixed the host deleting the objects of its own used-resources registry while starting, which hid the registered resources from every read by pattern
+* (@GermanBluefox) Fixed the `io-package.json` schema demanding `common.main` from every adapter in JetBrains IDEs - only Python adapters need it
+* (@GermanBluefox) Added `adapter.mayRead({ user, type, id, fileName })`: whether a user may read a state, an object or a file of an adapter, answered with the rules of the database itself - the ACL of the thing, its owner, the groups of the user and the default ACL, with the administrator group not restricted by any of it. A socket server has to ask this before it hands an event to a connection, because a subscription says what a client is interested in and never what it may see, and so far everyone who needed the answer had to rebuild these rules on the side. Two answers follow the database rather than intuition and are documented as such: a state whose object does not exist may be read by anybody, and so may an object that is not there any more
+* (@GermanBluefox) Fixed `getSession` method
+* (@GermanBluefox) A states database error while reading a session is no longer swallowed, but reported and logged instead of looking like a logged out user
+* (@GermanBluefox) Added support for adapters written in Python via `common.platform: "Python"` (feature flag `CONTROLLER_PYTHON_ADAPTERS`)
+* (@GermanBluefox) Fixed the controller refusing to start after a crash on a busy Windows machine: the check whether the recorded pid still belongs to the controller gave up after 10 seconds, and a check that cannot be answered counts as "the controller is running"
+* (@GermanBluefox) Node.js 22.19 is now the minimum version - 22.0 to 22.18 are no longer supported
+* (@GermanBluefox) Fixed `start` refusing to run after an unclean shutdown because of a left over `pids.txt`
+* (@GermanBluefox) Fixed the ACL of states restricting members of the administrator group - objects and files already let them through, states only the `admin` user
+* (@GermanBluefox) Added `tipsDisabled` to `system.config`, with which the admin remembers that the "Did you know ...?" tips must not be shown at the start
+* (@GermanBluefox) Added a progress bar for "iobroker upload" when it runs in a terminal
+* (@GermanBluefox) Fixed all Redis object views returning nothing when the Redis server was started with a UTF-8 collation
+* (@GermanBluefox) Added a per-host registry of the exclusive resources (serial, TCP and UDP ports, ...) used by the instances; adapters can declare them themselves with `common.declareUsedResources: true` or opt out with `false`
+* (@krobipd) Fixed a failed adapter install/update being reported as success on npm >= 10.6.0
+* (@krobipd) Fixed the automatic ENOTEMPTY recovery not removing the blocking npm temp directory on npm >= 10.6.0
+* (@krobipd) Fixed an occasional "Connection is closed" warning logged when a fast schedule/once adapter shuts down
+* (@krobipd) Fixed `info.connection` not being reset when an instance goes offline, which also left a stray state named after the instance namespace
+* (@GermanBluefox) Fixed a command handler throwing in the built-in database servers escaping as an uncaught exception instead of failing that one command
+* (@GermanBluefox) Fixed a PUBLISH with a payload that is not valid JSON costing the client its connection to the built-in databases
+* (@GermanBluefox) Fixed `findObject` crashing when called without options and the search reached an object whose name is translated
+* (@GermanBluefox) Fixed a Python instance being started while its environment was being rebuilt, which failed on an import of a package that was there a moment earlier
+* (@GermanBluefox) A Python instance no longer gets the `memHeapTotal` and `memHeapUsed` states, which only exist on V8 and stayed empty, and its `eventLoopLag` is no longer described as a Node.js one
+* (@GermanBluefox) A memory limit or `nodeProcessParams` set on a Python instance is now reported as ignored instead of silently having no effect
+* (@GermanBluefox) Fixed every log line of a Python adapter reaching the log transporters twice: the adapter pushes its own records since SDK 0.8.0, and the copy captured from its stdout is now written to the host log only
+* (@GermanBluefox) A Python adapter can now be started on a Redis Sentinel installation: the sentinels are passed to it instead of a fixed address, and the SDK follows the master across a failover (needs the Python SDK 0.9.0)
+* (@GermanBluefox) Fixed complex attribute names (e.g. `devices.password`) and arrays in `encryptedNative` not being decrypted when the adapter starts and documented complex attribute names for `encryptedNative` and `protectedNative`
+* (@GermanBluefox) Fixed `getEncryptedConfig` dropping entries that are not a string when the attribute resolves to an array
+* (@GermanBluefox) Fixed `getEncryptedConfig` decrypting an attribute of `encryptedNative` a second time, which returned garbage because the adapter start already decrypted it
+* (@krobipd) Fixed an alias read/write function returning a boolean (e.g. "val < 20") being stored unconverted in a state declared as number
+* (@GermanBluefox) Added `common.adminTab.order` and `common.adminTab.icon` to the `io-package.json` schema: admin uses both, but an adapter setting them failed the schema validation
+
+## 7.2.5 (2026-10-05)
+* (@GermanBluefox) Added the user context to messages: `sendTo`/`sendToHost` write the `user`
+
+## 7.2.4 (2026-10-03)
+* (@GermanBluefox) Added support of Node.js 26
+* (@GermanBluefox) Fixed storage of the sessions
+* (@GermanBluefox) Fixed encryption and decryption of arrays
+* (@krobipd) Fixed `info.connection` not being reset when an instance goes offline
+* (@krobipd) Fixed an alias read/write function returning a boolean
+* (@GermanBluefox) Improved typings
+
+## 7.2.2 (2026-06-16)
+* (@Apollon77) Fixed Sentry session reporting disabling
+
+## 7.2.1 (2026-06-15)
+* (@Apollon77) Updated sentry plugin to 3.1.0
+
+## 7.2.0 (2026-06-14)
+* (@GermanBluefox) Added possibility to send files with cmdExec message (feature flag `CONTROLLER_CMD_EXEC_FILES`)
+* (arteck) Added icons to the log for Redis Sentinel reconnects
+* (arteck) Optimized Redis `setState` by using MULTI
+* (@GermanBluefox) Removed the overriding of the adapter-core dependency
+* (@GermanBluefox) Added possibility to check feature by controller directly (feature flag `CONTROLLER_FEATURE_REQUEST`)
+
+## 7.1.2 (2026-05-07) - Milla
+* (@GermanBluefox) Corrected typings
+* (@GermanBluefox) Provided a default object warning limit for adapters so they can apply an appropriate limit during installation: `defaultObjectsWarnLimit`
+
+## 7.1.1 (2026-04-06) - Milla
+* (@GermanBluefox) Corrected typing (@alcalzone/pak)
+* (@GermanBluefox) Remove chai tests and replace them with node assert tests (not relevant for end users)
+* (@adbecaf) Extended isDocker to support `.conatinerenv` file in Podman or CRI-O
+* minor changes in the documentation concerning deprecations
+
+## 7.1.0 (2025-12-06) - Milla
 * (@copilot) Fixed adminUI, adminTab, and adminColumns configurations being incorrectly preserved during adapter uploads
 * (@foxriver76) Added objects warn limit per instance
 * (@Apollon77) Allows only numbers for `ts` and `lc` fields in state when provided for setState
+* (@Apollon77) Respect the adapter-specific stopTimeout in all cases instead of a fallback os 4s
+* (@Apollon77) Updates the adapter-core override dependency to 3.3.2
 * (@GermanBluefox) Added typing for `visIconSets` in `io-package.json`(for vis-2 SVG icon sets)
 * (@GermanBluefox) Added typing for `smartName` in the enum objects
 * (@GermanBluefox) Added typing for `supportsLoadingMessage` in the instance objects
+* (@GermanBluefox) Added creation of JavaScript password to encrypt vendor scripts
+* (@GermanBluefox) Added typing for `findForeignObject`
+* (@GermanBluefox) Enhanced typing for vis and vis 2 widgets
+* (@GermanBluefox) Added typing for `json` in adminUI.tab in `io-package.json`
+* (@GermanBluefox) Added typing for `docker-api`
+* (@foxriver76) Added external authentication to types for UserCommon
+* (@Apollon77) Updated Plugin and Sentry packages
 
 ## 7.0.7 (2025-04-17) - Lucy
 * (@foxriver76) fixed the edge-case problem on Windows (if adapter calls `readDir` on single file)
 * (@foxriver76) fixed setting negative numbers via `state set` cli command
-* (@GermanBluefox) corrected typing for `checkPasswordAsync` command and added caching of mulit-languages names
+* (@GermanBluefox) corrected typing for `checkPasswordAsync` command and added caching of multi-languages names
 * (@GermanBluefox) Added support for the complex attribute names for the encrypted and protected native configuration properties: `encryptedNative` and `protectedNative`
 * (@GermanBluefox) Improvement of `adapter.findForeignObject` (typing and optional parameters fixed)
 * (@GermanBluefox) Improvement of JSON schema for `io-package.json` and type definitions
@@ -29,7 +111,7 @@
 ## 7.0.4 (2024-12-04) - Lucy
 * (@Apollon77) Fixes async usage of extendObject
 * (@Apollon77) Makes setObject async save
-* (@foxriver76) deprecated `set(Foreign)ObjectAsync` as the non async methods are now working correctly with promises
+* (@foxriver76) deprecated `set(Foreign)ObjectAsync` as the non-async methods are now working correctly with promises
 * (@foxriver76) allow specifying a version on `iob upgrade self` command
 
 ## 7.0.3 (2024-11-13) - Lucy
@@ -259,7 +341,7 @@ e.g. for dynamic notifications with Admin adapter
 * (foxriver76) Really fix invalid backup period warning
 
 ## 4.0.18 (2022-03-04)
-* (foxriver76) Also stop instances before GitHub installs on windows
+* (foxriver76) Also stop instances before GitHub installs on Windows
 * (Apollon77) Fix eraseOnUpload logic
 * (Apollon77) Fix invalid backup period warning
 * (Apollon77) Fix maxSize property for logging in a dist file
@@ -397,7 +479,7 @@ The object view definition "custom/state" is now removed from js-controller afte
 * (Apollon77) fixed crash case when Lets encrypt config is not provided but LE is activated
 * (AlCalzone) understand .tar.gz as a valid extension for GitHub URLs
 * (foxriver76) only renew Let's encrypt when configured that way
-* (foxriver76) if free memory reaches threshold, also add a notification
+* (foxriver76) if free memory reaches the threshold, also add a notification
 * (bluefox) fixed applyViewFunc if the name is a localized object
 * (Apollon77) optimize db initialization for fileDB and enhance error case handling
 * (bluefox/Apollon77) made sure all object types are deleted on recursive object deletion

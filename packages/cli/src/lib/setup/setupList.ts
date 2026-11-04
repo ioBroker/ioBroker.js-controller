@@ -1,15 +1,14 @@
 /**
  *      List different objects for CLI
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 
-import { EXIT_CODES } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
-import { tools } from '@iobroker/js-controller-common';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
@@ -70,12 +69,18 @@ interface AdapterListEntry {
     'upgrade policy': ioBroker.AutoUpgradePolicy;
 }
 
+/**
+ * CLI command to list adapters, instances, objects and files
+ */
 export class List {
     private config: Record<string, any>;
     private objects: ObjectsRedisClient;
     private states: StatesRedisClient;
     private readonly processExit: (exitCode?: number) => void;
 
+    /**
+     * @param options The objects/states clients, config and process-exit callback
+     */
     constructor(options: CLIListOptions) {
         options = options || {};
 
@@ -113,6 +118,11 @@ export class List {
         return result;
     }
 
+    /**
+     * Print the table header for a file listing
+     *
+     * @param adapter Optional adapter name printed above the header
+     */
     showFileHeader(adapter?: string): void {
         if (adapter) {
             console.log(`\n-- ${adapter} --`);
@@ -122,6 +132,13 @@ export class List {
         console.log('----------------+----------+--------------+--------------+------+---------');
     }
 
+    /**
+     * Print a single file as a table row
+     *
+     * @param adapter The adapter the file belongs to
+     * @param path The directory path of the file
+     * @param file The file entry to print
+     */
     showFile(adapter: string, path: string, file: ioBroker.ReadDirResult): void {
         //drwxr-xr-x   1 odroid odroid    43 Oct  3  2013 .xsessionrc
         let text = '';
@@ -136,12 +153,12 @@ export class List {
 
         if (file.acl) {
             text += (file.isDir ? 'd' : '-') + List._perm2str(file.acl.permissions || 0);
-            let owner = file.acl.owner;
+            let owner: string = file.acl.owner;
             // cut system.user.
             owner = owner.substring(12);
 
             text += ` ${owner.padStart(14)}`;
-            let group = file.acl.ownerGroup;
+            let group: string = file.acl.ownerGroup;
             // cut system.group.
             group = group.substring(13);
             text += ` ${group.padStart(14)}`;
@@ -159,11 +176,19 @@ export class List {
         }
     }
 
+    /**
+     * Print the table header for an object listing
+     */
     showObjectHeader(): void {
         console.log('ObjectAC | StateAC |     User     |     Group    | ID');
         console.log('---------+---------+--------------+--------------+--------------');
     }
 
+    /**
+     * Print a single object as a table row
+     *
+     * @param obj The object to print
+     */
     showObject(obj: ioBroker.AnyObject): void {
         //drwxr-xr-x   1 odroid odroid    43 Oct  3  2013 .xsessionrc
         let text = '';
@@ -171,12 +196,12 @@ export class List {
             text += `${List._perm2str(obj.acl.object || 0)} ${
                 obj.type === 'state' ? List._perm2str(obj.acl.state || 0) : '         '
             }`;
-            let owner = obj.acl.owner;
+            let owner: string = obj.acl.owner;
             // cut system.user.
             owner = owner.substring(12);
 
             text += ` ${owner.padStart(14)}`;
-            let group = obj.acl.ownerGroup;
+            let group: string = obj.acl.ownerGroup;
             // cut system.group.
             group = group.substring(13);
             text += ` ${group.padStart(14)}`;
@@ -187,6 +212,14 @@ export class List {
         console.log(text);
     }
 
+    /**
+     * Recursively list the files in a directory of an adapter
+     *
+     * @param adapter The adapter the files belong to
+     * @param path The directory path to list
+     * @param allFiles Accumulator of files collected so far, or the callback
+     * @param callback Called with all collected files
+     */
     listDirectory(
         adapter: string,
         path: string | null | undefined,
@@ -256,6 +289,12 @@ export class List {
         });
     }
 
+    /**
+     * Comparator that sorts two file entries by their full path
+     *
+     * @param a The first file entry
+     * @param b The second file entry
+     */
     sortFiles(a: File, b: File): number {
         let a1 = a.path + a.file.file;
         if (a1[0] !== '/') {
@@ -268,6 +307,13 @@ export class List {
         return a1.localeCompare(b1);
     }
 
+    /**
+     * List the files of the given adapters
+     *
+     * @param adapters The adapters whose files should be listed
+     * @param filter Optional name filter, or the callback
+     * @param callback Called once all files have been listed
+     */
     listAdaptersFiles(adapters: string[], filter?: null | string, callback?: () => void): void | Promise<void> {
         if (typeof filter === 'function') {
             callback = filter;
@@ -290,7 +336,7 @@ export class List {
                     .filter(f => !filter || `${f.path}/${f.file.file}`.startsWith(filter))
                     .forEach(f => this.showFile(f.adapter, f.path, f.file));
 
-                this.listAdaptersFiles(adapters, filter, callback);
+                return this.listAdaptersFiles(adapters, filter, callback);
             });
         } else {
             return tools.maybeCallback(callback);
@@ -300,17 +346,17 @@ export class List {
     private _readOnlineState(
         lines: IdValueObject[],
         flags: FlagObject,
-        cb: (res: any[]) => void,
-        _result?: any[],
+        cb: (res: string[]) => void,
+        _result?: string[],
     ): void {
         const result = _result || [];
-        if (!lines || !lines.length) {
+        if (!lines?.length) {
             cb(result);
         } else {
             const task = lines.shift() as IdValueObject;
             const id = `${task.id}.alive`;
-            this.states.getState(id, (err, state) => {
-                if (state && state.val) {
+            this.states.getState(id, (_err, state) => {
+                if (state?.val) {
                     result.push(`+ ${task.value}`);
                 } else if (!flags.alive) {
                     result.push(`  ${task.value}`);
@@ -320,6 +366,13 @@ export class List {
         }
     }
 
+    /**
+     * List items of the given type matching the filter
+     *
+     * @param type The kind of items to list (e.g. adapters, instances, objects)
+     * @param filter A filter applied to the listed items
+     * @param flags Additional flags controlling the output
+     */
     list(type: ListType, filter: string, flags: FlagObject): void {
         this.objects.getObject('system.config', (err, systemConf) => {
             const lang: ioBroker.Languages = systemConf?.common?.language || 'en';
@@ -889,7 +942,9 @@ export class List {
                             names.shift();
                         }
 
-                        this.listAdaptersFiles(adapters, names ? names.join('/') : null, () => this.processExit());
+                        return this.listAdaptersFiles(adapters, names ? names.join('/') : null, () =>
+                            this.processExit(),
+                        );
                     });
                     break;
             }

@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,16 +6,16 @@
 
 # Type Alias: UserInterfaceUnsubscribeInfoBaseObject
 
-> **UserInterfaceUnsubscribeInfoBaseObject**: `object`
+> **UserInterfaceUnsubscribeInfoBaseObject** = `object`
 
-## Type declaration
+Defined in: [adapter/src/lib/\_Types.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L170)
+
+## Properties
 
 ### clientId
 
 > **clientId**: `string`
 
+Defined in: [adapter/src/lib/\_Types.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L172)
+
 The handler id, which can be used to send information to clients
-
-## Defined in
-
-[adapter/src/lib/\_Types.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L156)

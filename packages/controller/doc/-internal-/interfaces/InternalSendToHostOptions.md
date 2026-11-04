@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,15 +6,19 @@
 
 # Interface: InternalSendToHostOptions
 
+Defined in: [adapter/src/lib/\_Types.ts:717](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L717)
+
+Options for sending a message to a host
+
 ## Properties
 
 ### callback?
 
-> `optional` **callback**: [`MessageCallback`](../type-aliases/MessageCallback.md) \| [`MessageCallbackInfo`](MessageCallbackInfo.md)
+> `optional` **callback?**: [`MessageCallbackInfo`](MessageCallbackInfo.md)
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:727](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L727)
 
-[adapter/src/lib/\_Types.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L501)
+Legacy callback-info header to attach to the outbound message (relayed reply descriptor)
 
 ***
 
@@ -22,21 +26,29 @@
 
 > **command**: `string`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:721](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L721)
 
-[adapter/src/lib/\_Types.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L499)
+The command to send
+
+***
+
+### expectReply?
+
+> `optional` **expectReply?**: `boolean`
+
+Defined in: [adapter/src/lib/\_Types.ts:725](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L725)
+
+When true and a specific host is targeted, the manager registers a reply resolver and resolves with the reply
 
 ***
 
 ### hostName
 
-> **hostName**: `null` \| `string`
+> **hostName**: `string` \| `null`
 
-if null, send to all hosts
+Defined in: [adapter/src/lib/\_Types.ts:719](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L719)
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:498](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L498)
+if null, send it to all hosts
 
 ***
 
@@ -44,6 +56,16 @@ if null, send to all hosts
 
 > **message**: `any`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:723](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L723)
 
-[adapter/src/lib/\_Types.ts:500](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L500)
+The message payload
+
+***
+
+### options?
+
+> `optional` **options?**: [`SendToOptions`](SendToOptions.md)
+
+Defined in: [adapter/src/lib/\_Types.ts:729](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L729)
+
+Additional send options

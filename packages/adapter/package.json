@@ -1,12 +1,12 @@
 {
     "name": "@iobroker/js-controller-adapter",
     "type": "module",
-    "version": "7.0.8-alpha.7-20250928-40cb80c18",
+    "version": "8.0.0-alpha.11-20261103-58da667b3",
     "engines": {
-        "node": ">=18.0.0"
+        "node": ">=22.19.0"
     },
     "dependencies": {
-        "@alcalzone/pak": "^0.8.1",
+        "@alcalzone/pak": "^0.12.0",
         "@iobroker/db-objects-file": "file:../db-objects-file",
         "@iobroker/db-objects-jsonl": "file:../db-objects-jsonl",
         "@iobroker/db-objects-redis": "file:../db-objects-redis",
@@ -15,16 +15,16 @@
         "@iobroker/db-states-redis": "file:../db-states-redis",
         "@iobroker/js-controller-common": "file:../common",
         "@iobroker/js-controller-common-db": "file:../common-db",
-        "@iobroker/plugin-base": "~2.0.1",
+        "@iobroker/plugin-base": "~3.0.3",
         "deep-clone": "^3.0.3",
-        "fs-extra": "^11.3.2",
-        "jsonwebtoken": "^9.0.0",
-        "node-schedule": "^2.1.0",
-        "node.extend": "^2.0.2",
-        "pidusage": "^3.0.2",
+        "fs-extra": "^11.3.5",
+        "jsonwebtoken": "^9.0.3",
+        "node-schedule": "^2.1.1",
+        "node.extend": "^2.0.3",
+        "pidusage": "^4.0.1",
         "readline": "^1.3.0",
-        "semver": "^7.5.2",
-        "yargs": "^17.7.2"
+        "semver": "^7.8.5",
+        "yargs": "^18.0.0"
     },
     "keywords": [
         "ioBroker"
@@ -37,11 +37,12 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/adapter"
+        "url": "https://github.com/ioBroker/ioBroker.js-controller"
     },
     "scripts": {
+        "test": "mocha --node-option import=tsx \"src/lib/adapter/managers/**/*.test.ts\" --exit",
         "build": "tsc -b tsconfig.build.json && tsc-alias",
-        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./cert ../build/esm --cwd=src && cpy ./cert ../build/cjs --cwd=src && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/",
+        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./cert ../build/esm --cwd=src && cpy ./cert ../build/cjs --cwd=src && cpy ./**/*.d.ts ../cjs/ --cwd=build/esm/",
         "build:doc": "typedoc --excludeExternals --excludeProtected --excludePrivate --plugin typedoc-plugin-missing-exports --plugin typedoc-plugin-markdown src/lib/adapter/adapter.ts --out ../controller/doc"
     },
     "exports": {
@@ -49,6 +50,11 @@
             "import": "./build/esm/index.js",
             "require": "./build/cjs/index.js",
             "types": "./build/esm/index.d.ts"
+        },
+        "./validator": {
+            "import": "./build/esm/lib/adapter/validator.js",
+            "require": "./build/cjs/lib/adapter/validator.js",
+            "types": "./build/esm/lib/adapter/validator.d.ts"
         },
         "./package.json": "./package.json"
     },

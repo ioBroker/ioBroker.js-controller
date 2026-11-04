@@ -1,10 +1,12 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / FileACL
 
 # Interface: FileACL
+
+Defined in: [types-dev/objects.d.ts:7](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L7)
 
 Defines access rights for a single file
 
@@ -16,25 +18,21 @@ Defines access rights for a single file
 
 ### owner
 
-> **owner**: `string`
+> **owner**: `` `system.user.${string}` ``
+
+Defined in: [types-dev/objects.d.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L9)
 
 Full name of the user who owns this file, e.g. "system.user.admin"
-
-#### Defined in
-
-[types-dev/objects.d.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L9)
 
 ***
 
 ### ownerGroup
 
-> **ownerGroup**: `string`
+> **ownerGroup**: `` `system.group.${string}` ``
+
+Defined in: [types-dev/objects.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L11)
 
 Full name of the group who owns this file, e.g. "system.group.administrator"
-
-#### Defined in
-
-[types-dev/objects.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L11)
 
 ***
 
@@ -42,8 +40,6 @@ Full name of the group who owns this file, e.g. "system.group.administrator"
 
 > **permissions**: `number`
 
+Defined in: [types-dev/objects.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L13)
+
 Linux-type permissions defining access to this file
-
-#### Defined in
-
-[types-dev/objects.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L13)

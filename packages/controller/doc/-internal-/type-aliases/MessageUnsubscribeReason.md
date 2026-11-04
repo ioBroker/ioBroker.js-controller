@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,6 @@
 
 # Type Alias: MessageUnsubscribeReason
 
-> **MessageUnsubscribeReason**: `"client"` \| `"disconnect"`
+> **MessageUnsubscribeReason** = `"client"` \| `"disconnect"`
 
-## Defined in
-
-[adapter/src/lib/\_Types.ts:67](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L67)
+Defined in: [adapter/src/lib/\_Types.ts:66](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L66)

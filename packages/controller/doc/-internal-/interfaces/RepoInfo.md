@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,29 +6,27 @@
 
 # Interface: RepoInfo
 
+Defined in: [types-dev/objects.d.ts:1162](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1162)
+
 ## Properties
 
 ### name
 
 > **name**: `Required`\<[`Translated`](../type-aliases/Translated.md)\>
 
+Defined in: [types-dev/objects.d.ts:1166](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1166)
+
 i18n name of the repository
-
-#### Defined in
-
-[types-dev/objects.d.ts:1068](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L1068)
 
 ***
 
 ### repoReadTime?
 
-> `optional` **repoReadTime**: `string`
+> `optional` **repoReadTime?**: `string`
 
-Time when repository was last read/fetched
+Defined in: [types-dev/objects.d.ts:1170](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1170)
 
-#### Defined in
-
-[types-dev/objects.d.ts:1072](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L1072)
+Time when the repository was last read/fetched
 
 ***
 
@@ -36,20 +34,16 @@ Time when repository was last read/fetched
 
 > **repoTime**: `string`
 
+Defined in: [types-dev/objects.d.ts:1168](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1168)
+
 Time of repository update
-
-#### Defined in
-
-[types-dev/objects.d.ts:1070](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L1070)
 
 ***
 
 ### stable?
 
-> `optional` **stable**: `boolean`
+> `optional` **stable?**: `boolean`
+
+Defined in: [types-dev/objects.d.ts:1164](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1164)
 
 If it is the official stable repository
-
-#### Defined in
-
-[types-dev/objects.d.ts:1066](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/objects.d.ts#L1066)

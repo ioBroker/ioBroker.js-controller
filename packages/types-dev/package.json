@@ -1,9 +1,9 @@
 {
     "name": "@iobroker/types-dev",
     "private": true,
-    "version": "7.0.8-alpha.7-20250928-40cb80c18",
+    "version": "8.0.0-alpha.11-20261103-58da667b3",
     "engines": {
-        "node": ">=12.0.0"
+        "node": ">=22.19.0"
     },
     "keywords": [
         "ioBroker"
@@ -14,7 +14,7 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/types-dev"
+        "url": "https://github.com/ioBroker/ioBroker.js-controller"
     },
     "main": "",
     "types": "index.d.ts",

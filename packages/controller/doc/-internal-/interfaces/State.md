@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,41 +6,37 @@
 
 # Interface: State
 
+Defined in: [types-dev/index.d.ts:215](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L215)
+
 ## Properties
 
 ### ack
 
 > **ack**: `boolean`
 
+Defined in: [types-dev/index.d.ts:220](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L220)
+
 Direction flag: false for desired value and true for actual value. Default: false.
-
-#### Defined in
-
-[types-dev/index.d.ts:65](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L65)
 
 ***
 
 ### c?
 
-> `optional` **c**: `string`
+> `optional` **c?**: `string`
+
+Defined in: [types-dev/index.d.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L241)
 
 Optional comment
-
-#### Defined in
-
-[types-dev/index.d.ts:86](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L86)
 
 ***
 
 ### expire?
 
-> `optional` **expire**: `number`
+> `optional` **expire?**: `number`
+
+Defined in: [types-dev/index.d.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L235)
 
 Optional time in seconds after which the state is reset to null
-
-#### Defined in
-
-[types-dev/index.d.ts:80](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L80)
 
 ***
 
@@ -48,11 +44,9 @@ Optional time in seconds after which the state is reset to null
 
 > **from**: `string`
 
+Defined in: [types-dev/index.d.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L229)
+
 Name of the adapter instance which set the value, e.g. "system.adapter.web.0"
-
-#### Defined in
-
-[types-dev/index.d.ts:74](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L74)
 
 ***
 
@@ -60,23 +54,19 @@ Name of the adapter instance which set the value, e.g. "system.adapter.web.0"
 
 > **lc**: `number`
 
+Defined in: [types-dev/index.d.ts:226](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L226)
+
 Unix timestamp of the last time the value changed
-
-#### Defined in
-
-[types-dev/index.d.ts:71](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L71)
 
 ***
 
 ### q?
 
-> `optional` **q**: `0` \| `64` \| `32` \| `2` \| `1` \| `16` \| `128` \| `17` \| `65` \| `129` \| `18` \| `66` \| `130` \| `68` \| `132`
+> `optional` **q?**: `0` \| `1` \| `2` \| `64` \| `32` \| `16` \| `128` \| `17` \| `65` \| `129` \| `18` \| `66` \| `130` \| `68` \| `132`
+
+Defined in: [types-dev/index.d.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L238)
 
 Optional quality of the state value
-
-#### Defined in
-
-[types-dev/index.d.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L83)
 
 ***
 
@@ -84,23 +74,19 @@ Optional quality of the state value
 
 > **ts**: `number`
 
+Defined in: [types-dev/index.d.ts:223](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L223)
+
 Unix timestamp. Default: current time
-
-#### Defined in
-
-[types-dev/index.d.ts:68](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L68)
 
 ***
 
 ### user?
 
-> `optional` **user**: `string`
+> `optional` **user?**: `string`
+
+Defined in: [types-dev/index.d.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L232)
 
 The user who set this value
-
-#### Defined in
-
-[types-dev/index.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L77)
 
 ***
 
@@ -108,8 +94,6 @@ The user who set this value
 
 > **val**: [`StateValue`](../type-aliases/StateValue.md)
 
+Defined in: [types-dev/index.d.ts:217](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L217)
+
 The value of the state.
-
-#### Defined in
-
-[types-dev/index.d.ts:62](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L62)

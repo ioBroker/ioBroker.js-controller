@@ -1,19 +1,19 @@
-import type { DbConnectAsyncReturn, DbConnectCallback } from '../_Types.js';
+import path from 'node:path';
 import fs from 'fs-extra';
+
 import {
+    tools,
+    EXIT_CODES,
     getObjectsConstructor,
     getStatesConstructor,
     objectsDbHasServer,
     statesDbHasServer,
 } from '@iobroker/js-controller-common';
-import { EXIT_CODES } from '@iobroker/js-controller-common';
-import { tools } from '@iobroker/js-controller-common';
 import { setTimeout as wait } from 'node:timers/promises';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
-import path from 'node:path';
-import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import { PluginHandler } from '@iobroker/plugin-base';
+import { PluginHandler, type InternalAdapterJsonConfig, type PluginHandlerSettings } from '@iobroker/plugin-base';
+import type { DbConnectAsyncReturn, DbConnectCallback } from '../_Types.js';
 
 let pluginHandler: InstanceType<typeof PluginHandler>;
 let Objects: typeof ObjectsInRedisClient | null; // constructor
@@ -32,9 +32,9 @@ export function dbConnect(onlyCheck: boolean, params: Record<string, any>, callb
 /**
  * Connects to the DB or tests the connection.
  *
- * @param onlyCheck
- * @param params
- * @param callback
+ * @param onlyCheck if only connection check should be performed
+ * @param params options used by dbConnect
+ * @param callback called when connection is established or check is done
  */
 export async function dbConnect(
     onlyCheck: boolean | Record<string, any> | DbConnectCallback,
@@ -134,17 +134,16 @@ export async function dbConnect(
                     });
                 } else {
                     console.log(
-                        `No connection to objects ${config.objects.host}:${config.objects.port}[${config.objects.type}]`,
+                        `No connection to objects ${Array.isArray(config.objects.host) ? config.objects.host.join(', ') : config.objects.host}:${Array.isArray(config.objects.port) ? config.objects.port.join(', ') : config.objects.port}[${config.objects.type}]`,
                     );
                     if (onlyCheck) {
-                        callback &&
-                            callback({
-                                objects: objects!,
-                                states: states!,
-                                isOffline: true,
-                                objectsDBType: config.objects.type,
-                                config,
-                            });
+                        callback?.({
+                            objects: objects!,
+                            states: states!,
+                            isOffline: true,
+                            objectsDBType: config.objects.type,
+                            config,
+                        });
                         callback = undefined;
                     } else {
                         return void exitApplicationSave(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
@@ -215,7 +214,7 @@ export async function dbConnect(
                         objects = null;
                     }
                     console.log(
-                        `No connection to states ${config.states.host}:${config.states.port}[${config.states.type}]`,
+                        `No connection to states ${Array.isArray(config.states.host) ? config.states.host.join(', ') : config.states.host}:${Array.isArray(config.states.port) ? config.states.port.join(', ') : config.states.port}[${config.states.type}]`,
                     );
                     if (onlyCheck) {
                         callback &&
@@ -242,15 +241,14 @@ export async function dbConnect(
 
             console.log('No connection to databases possible ...');
             if (onlyCheck) {
-                callback &&
-                    callback({
-                        // TODO types: allow null if onlyCheck is true
-                        objects: null as any,
-                        states: null as any,
-                        isOffline: true,
-                        objectsDBType: config.objects.type,
-                        config,
-                    });
+                callback?.({
+                    // TODO types: allow null if onlyCheck is true
+                    objects: null as any,
+                    states: null as any,
+                    isOffline: true,
+                    objectsDBType: config.objects.type,
+                    config,
+                });
                 callback = undefined;
             } else {
                 return void exitApplicationSave(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
@@ -359,7 +357,7 @@ export async function resetDbConnect(): Promise<void> {
     }
 
     if (pluginHandler) {
-        pluginHandler.destroyAll();
+        await pluginHandler.destroyAll();
     }
 }
 
@@ -403,7 +401,7 @@ function initializePlugins(config: Record<string, any>): Promise<void> {
             error: (msg: string) => console.log(msg),
             level: 'warn',
         },
-        iobrokerConfig: config,
+        iobrokerConfig: config as InternalAdapterJsonConfig,
         parentPackage: packageJson,
         controllerVersion: ioPackage.common.version,
     };
@@ -411,6 +409,7 @@ function initializePlugins(config: Record<string, any>): Promise<void> {
     pluginHandler = new PluginHandler(pluginSettings);
     pluginHandler.addPlugins(ioPackage.common.plugins, tools.getControllerDir()); // Plugins from io-package have priority over ...
     pluginHandler.addPlugins(config.plugins, tools.getControllerDir()); // ... plugins from iobroker.json
+    // @ts-expect-error objects and state object version conflicts that are none
     pluginHandler.setDatabaseForPlugins(objects, states);
 
     return pluginHandler.initPlugins(ioPackage);

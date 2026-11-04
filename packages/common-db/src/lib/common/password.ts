@@ -31,9 +31,13 @@
 
 import crypto from 'node:crypto';
 
+/** Set of password helper functions bound to a specific password */
 export interface PasswordReturnValue {
+    /** Check whether the password fulfills the complexity requirements */
     complexity: (password: string, callback: (isComplex: boolean) => void) => boolean;
+    /** Verify the password against the given stored hash */
     check: (hashedPassword: string, callback: (err?: Error | null, isOk?: boolean) => void) => void;
+    /** Create a salted PBKDF2 hash of the password */
     hash: (
         salt: string | null,
         iterations: number | null,
@@ -41,6 +45,11 @@ export interface PasswordReturnValue {
     ) => void;
 }
 
+/**
+ * Create a set of helper functions (hash, check, complexity) bound to the given password
+ *
+ * @param pw The plain text password to operate on
+ */
 export function password(pw: string): PasswordReturnValue {
     return {
         hash: (salt, iterations, callback) => {

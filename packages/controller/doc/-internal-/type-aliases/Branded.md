@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,14 +6,16 @@
 
 # Type Alias: Branded\<T, B\>
 
-> **Branded**\<`T`, `B`\>: `T` & [`Brand`](Brand.md)\<`B`\>
+> **Branded**\<`T`, `B`\> = `T` & [`Brand`](Brand.md)\<`B`\>
+
+Defined in: [types-dev/utils.d.ts:3](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/utils.d.ts#L3)
 
 ## Type Parameters
 
-• **T**
+### T
 
-• **B**
+`T`
 
-## Defined in
+### B
 
-[types-dev/utils.d.ts:3](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/utils.d.ts#L3)
+`B`

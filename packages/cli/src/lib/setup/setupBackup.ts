@@ -1,28 +1,38 @@
-import fs from 'fs-extra';
 import path from 'node:path';
+import { open, writeFile } from 'node:fs/promises';
+import fs from 'fs-extra';
+import { exec } from 'node:child_process';
+import * as tar from 'tar';
+
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
-import { exec as execAsync } from 'promisify-child-process';
-import tar from 'tar';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { Upload } from './setupUpload.js';
 import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } from '../_Types.js';
-import { dbConnectAsync, resetDbConnect } from './dbConnection.js';
+import { dbConnect, dbConnectAsync, exitApplicationSave, resetDbConnect } from './dbConnection.js';
 import { IoBrokerError } from './customError.js';
 import { CLIProcess } from '@/lib/cli/cliProcess.js';
-import { open, writeFile } from 'node:fs/promises';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
 
+/** Options for the backup/restore command */
 export interface CLIBackupRestoreOptions {
+    /** Whether this is part of a database migration */
     dbMigration?: boolean;
+    /** The states database client */
     states: StatesRedisClient;
+    /** The objects database client */
     objects: ObjectsRedisClient;
+    /** Callback to exit the process with an exit code */
     processExit: ProcessExitCallback;
+    /** Handler to clean the database */
     cleanDatabase: CleanDatabaseHandler;
+    /** Handler to restart the controller */
     restartController: RestartController;
 }
 
 type BackupObject = Omit<ioBroker.GetObjectListItem<ioBroker.Object>, 'doc'>;
 
+/** Result returned after restoring a backup */
 export interface RestoreBackupReturnValue {
     /** Exit code of the process */
     exitCode: EXIT_CODES;
@@ -58,6 +68,7 @@ interface PreprocessObjectOptions {
     thisHostNameStartsWith: string;
 }
 
+/** Options for restoring a backup */
 export interface RestoreBackupOptions {
     /** backup name, absolute path or index */
     name: string | number;
@@ -69,6 +80,9 @@ export interface RestoreBackupOptions {
 
 const controllerDir = tools.getControllerDir();
 
+/**
+ * CLI command to create and restore ioBroker backups
+ */
 export class BackupRestore {
     private readonly hostname = tools.getHostName();
     private readonly tmpDir = path.normalize(path.join(controllerDir, 'tmp'));
@@ -93,6 +107,9 @@ export class BackupRestore {
     /** Postfix for backup name */
     private readonly BACKUP_POSTFIX = `_backup${tools.appNameLowerCase}`;
 
+    /**
+     * @param options The states/objects clients and the exit, clean and restart handlers
+     */
     constructor(options: CLIBackupRestoreOptions) {
         options = options || {};
 
@@ -130,7 +147,7 @@ export class BackupRestore {
     private async _copyFile(id: string, srcPath: string, destPath: string): Promise<void> {
         try {
             const data = await this.objects.readFile(id, srcPath);
-            if (data) {
+            if (data?.file) {
                 fs.writeFileSync(destPath, data.file);
             }
         } catch (err) {
@@ -138,6 +155,13 @@ export class BackupRestore {
         }
     }
 
+    /**
+     * Recursively copy a directory from the object's file storage to disk
+     *
+     * @param id The object id owning the files
+     * @param srcPath The source directory in the object's file storage
+     * @param destPath The destination directory on disk
+     */
     async copyDir(id: string, srcPath: string, destPath: string): Promise<void> {
         fs.ensureDirSync(destPath);
 
@@ -167,6 +191,12 @@ export class BackupRestore {
         return path.join(tools.getRootDir(), 'backups/');
     }
 
+    /**
+     * Copy a single file synchronously
+     *
+     * @param source The source file path
+     * @param target The target file or directory path
+     */
     copyFileSync(source: string, target: string): void {
         let targetFile = target;
 
@@ -184,6 +214,12 @@ export class BackupRestore {
         }
     }
 
+    /**
+     * Recursively copy a folder synchronously
+     *
+     * @param source The source folder path
+     * @param target The target folder path
+     */
     copyFolderRecursiveSync(source: string, target: string): void {
         let files = [];
 
@@ -568,7 +604,7 @@ export class BackupRestore {
         }
 
         if (!isCustomHostname) {
-            if (object._id.match(/^system\.adapter\.([\w\d_-]+).(\d+)$/) && object.common.host === hostname) {
+            if (object._id.match(/^system\.adapter\.([\w_-]+).(\d+)$/) && object.common.host === hostname) {
                 object.common.host = this.HOSTNAME_PLACEHOLDER;
                 object.common.host = this.HOSTNAME_PLACEHOLDER;
             } else if (object._id.startsWith(thisHostNameStartsWith)) {
@@ -577,7 +613,7 @@ export class BackupRestore {
                 object._id = `system.host.${this.HOSTNAME_PLACEHOLDER}`;
                 object.common.name = object._id;
                 object.common.hostname = this.HOSTNAME_PLACEHOLDER;
-                if (object.native && object.native.os) {
+                if (object.native?.os) {
                     object.native.os.hostname = this.HOSTNAME_PLACEHOLDER;
                 }
 
@@ -735,7 +771,9 @@ export class BackupRestore {
         for await (let line of rlStates) {
             line = line.replace(this.HOSTNAME_PLACEHOLDER_REGEX, hostname);
             const state: {
+                /** The id of the state */
                 id: string;
+                /** The state value */
                 state: ioBroker.State;
             } = JSON.parse(line);
             await this._setStateHelper(state.id, state.state);
@@ -852,9 +890,18 @@ export class BackupRestore {
             // js-controller version has changed (setup never called for this version)
             console.log('Forced restore - executing setup ...');
             try {
-                await execAsync(
-                    `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`,
-                );
+                await new Promise<void>((resolve, reject) => {
+                    exec(
+                        `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`,
+                        (error, stdout, stderr) => {
+                            if (error) {
+                                reject(stderr ? new Error(stderr) : error);
+                            } else {
+                                resolve();
+                            }
+                        },
+                    );
+                });
             } catch (e) {
                 console.error(
                     `Could not execute "setup" command, please ensure "setup" is called before starting ioBroker: ${e.message}`,
@@ -1064,8 +1111,8 @@ export class BackupRestore {
                 // List all available backups
                 console.log('Please specify one of the backup names:');
 
-                for (const t in backups) {
-                    console.log(`${backups[t]} or ${backups[t].replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`);
+                for (const [t, backup] of backups.entries()) {
+                    console.log(`${backup} or ${backup.replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`);
                 }
             } else {
                 console.warn(`No backups found. Create a backup, using "${tools.appName} backup" first`);
@@ -1081,10 +1128,8 @@ export class BackupRestore {
                 console.log('No matching backup found');
                 if (backups.length) {
                     console.log('Please specify one of the backup names:');
-                    for (const t in backups) {
-                        console.log(
-                            `${backups[t]} or ${backups[t].replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`,
-                        );
+                    for (const [t, backup] of backups.entries()) {
+                        console.log(`${backup} or ${backup.replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`);
                     }
                 } else {
                     console.log(`No existing backups. Create a backup, using "${tools.appName} backup" first`);
@@ -1341,4 +1386,98 @@ export class BackupRestore {
             }
         }
     }
+}
+
+/**
+ * Processes the `restore` command
+ *
+ * @param options the command options
+ */
+export function processCommandRestore(options: ProcessCommandOptions): void {
+    const { args, params, callback, cleanDatabase, restartController } = options;
+
+    dbConnect(params, async ({ isOffline, objects, states }) => {
+        if (!isOffline) {
+            console.error(`Stop ${tools.appName} first!`);
+            return void callback(EXIT_CODES.CONTROLLER_RUNNING);
+        }
+
+        const backup = new BackupRestore({
+            states,
+            objects,
+            cleanDatabase,
+            restartController,
+            processExit: callback,
+        });
+
+        const { exitCode } = await backup.restoreBackup({
+            name: args[0],
+            force: !!params.force,
+            dontDeleteAdapters: false,
+        });
+
+        if (exitCode === EXIT_CODES.NO_ERROR) {
+            console.log('System successfully restored!');
+        }
+        return void callback(exitCode);
+    });
+}
+
+/**
+ * Processes the `backup` command
+ *
+ * @param options the command options
+ */
+export function processCommandBackup(options: ProcessCommandOptions): void {
+    const { args, params, callback, cleanDatabase, restartController } = options;
+    const name = args[0];
+
+    dbConnect(params, async ({ states, objects }) => {
+        const backup = new BackupRestore({
+            states,
+            objects,
+            cleanDatabase,
+            restartController,
+            processExit: callback,
+        });
+
+        try {
+            const filePath = await backup.createBackup(name);
+            console.log(`Backup created: ${filePath}`);
+            console.log('This backup can only be restored with js-controller version 7.0 or higher');
+            return void callback(EXIT_CODES.NO_ERROR);
+        } catch (e) {
+            console.log(`Cannot create backup: ${e.message}`);
+            return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
+        }
+    });
+}
+
+/**
+ * Processes the `validate` command
+ *
+ * @param options the command options
+ */
+export function processCommandValidate(options: ProcessCommandOptions): void {
+    const { args, params, callback, cleanDatabase, restartController } = options;
+    const name = args[0];
+
+    dbConnect(params, async ({ objects, states }) => {
+        const backup = new BackupRestore({
+            states,
+            objects,
+            cleanDatabase,
+            restartController,
+            processExit: callback,
+        });
+
+        try {
+            await backup.validateBackup(name);
+            console.log('Backup OK');
+            return void exitApplicationSave(0);
+        } catch (e) {
+            console.log(`Backup check failed: ${e.message}`);
+            return void exitApplicationSave(e instanceof IoBrokerError ? e.code : 1);
+        }
+    });
 }

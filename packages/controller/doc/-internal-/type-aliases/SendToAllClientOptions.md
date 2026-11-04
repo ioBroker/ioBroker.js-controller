@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,6 @@
 
 # Type Alias: SendToAllClientOptions
 
-> **SendToAllClientOptions**: `Omit`\<[`SendToClientOptions`](../interfaces/SendToClientOptions.md), `"clientId"`\>
+> **SendToAllClientOptions** = `Omit`\<[`SendToClientOptions`](../interfaces/SendToClientOptions.md), `"clientId"`\>
 
-## Defined in
-
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L35)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L38)

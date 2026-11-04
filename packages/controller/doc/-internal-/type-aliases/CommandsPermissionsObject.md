@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,12 +6,10 @@
 
 # Type Alias: CommandsPermissionsObject
 
-> **CommandsPermissionsObject**: `object`
+> **CommandsPermissionsObject** = `object`
+
+Defined in: [adapter/src/lib/\_Types.ts:405](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L405)
 
 ## Index Signature
 
- \[`permission`: `string`\]: [`CommandsPermissionsEntry`](CommandsPermissionsEntry.md)
-
-## Defined in
-
-[adapter/src/lib/\_Types.ts:307](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L307)
+\[`permission`: `string`\]: [`CommandsPermissionsEntry`](CommandsPermissionsEntry.md)

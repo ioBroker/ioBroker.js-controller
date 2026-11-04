@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,15 +6,19 @@
 
 # Interface: ACLObject
 
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:35
+
+The access control list of an object, state or file
+
 ## Properties
 
 ### file
 
 > **file**: `number`
 
-#### Defined in
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:45
 
-db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:24
+Permission bitmask for file access
 
 ***
 
@@ -22,29 +26,29 @@ db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:24
 
 > **object**: `number`
 
-#### Defined in
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:41
 
-db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:22
+Permission bitmask for object access
 
 ***
 
 ### owner
 
-> **owner**: `string`
+> **owner**: `` `system.user.${string}` ``
 
-#### Defined in
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:37
 
-db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:20
+The user that owns the object
 
 ***
 
 ### ownerGroup
 
-> **ownerGroup**: `string`
+> **ownerGroup**: `` `system.group.${string}` ``
 
-#### Defined in
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:39
 
-db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:21
+The group that owns the object
 
 ***
 
@@ -52,6 +56,6 @@ db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:21
 
 > **state**: `number`
 
-#### Defined in
+Defined in: db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:43
 
-db-objects-redis/build/esm/lib/objects/objectsUtils.d.ts:23
+Permission bitmask for state access

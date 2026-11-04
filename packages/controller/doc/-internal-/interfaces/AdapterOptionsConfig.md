@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,16 +6,22 @@
 
 # Interface: AdapterOptionsConfig
 
+Defined in: [adapter/src/lib/\_Types.ts:222](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L222)
+
+Subset of the adapter config relevant for the connection to the controller
+
 ## Properties
 
 ### log
 
 > **log**: `object`
 
+Defined in: [adapter/src/lib/\_Types.ts:224](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L224)
+
+Logging configuration
+
 #### level
 
 > **level**: [`LogLevel`](../type-aliases/LogLevel.md)
 
-#### Defined in
-
-[adapter/src/lib/\_Types.ts:199](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L199)
+The log level to use

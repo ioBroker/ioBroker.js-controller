@@ -38,22 +38,47 @@ export class Log implements ioBroker.Logger {
         this.warn = this.warn.bind(this);
     }
 
+    /**
+     * Log a message at the silly level, prefixed with the adapter namespace
+     *
+     * @param msg the message to log
+     */
     silly(msg: string): void {
         this.logger.silly(`${this.namespaceLog} ${msg}`);
     }
 
+    /**
+     * Log a message at the debug level, prefixed with the adapter namespace
+     *
+     * @param msg the message to log
+     */
     debug(msg: string): void {
         this.logger.debug(`${this.namespaceLog} ${msg}`);
     }
 
+    /**
+     * Log a message at the info level, prefixed with the adapter namespace
+     *
+     * @param msg the message to log
+     */
     info(msg: string): void {
         this.logger.info(`${this.namespaceLog} ${msg}`);
     }
 
+    /**
+     * Log a message at the error level, prefixed with the adapter namespace
+     *
+     * @param msg the message to log
+     */
     error(msg: string): void {
         this.logger.error(`${this.namespaceLog} ${msg}`);
     }
 
+    /**
+     * Log a message at the warn level, prefixed with the adapter namespace
+     *
+     * @param msg the message to log
+     */
     warn(msg: string): void {
         this.logger.warn(`${this.namespaceLog} ${msg}`);
     }

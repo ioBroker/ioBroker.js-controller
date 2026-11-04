@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,25 +6,45 @@
 
 # Interface: InternalGetStatesOptions
 
+Defined in: [adapter/src/lib/\_Types.ts:743](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L743)
+
+Options for reading multiple states
+
 ## Properties
 
 ### callback
 
 > **callback**: [`GetStatesCallback`](../type-aliases/GetStatesCallback.md)
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:754](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L754)
 
-[adapter/src/lib/\_Types.ts:513](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L513)
+Called with the matching states
 
 ***
 
 ### options
 
-> **options**: `Record`\<`string`, `any`\>
+> **options**: `object`
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:747](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L747)
 
-[adapter/src/lib/\_Types.ts:512](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L512)
+Optional settings including the user context
+
+#### \_objects?
+
+> `optional` **\_objects?**: ([`StateObject`](StateObject.md) \| `null`)[]
+
+#### checked?
+
+> `optional` **checked?**: `boolean`
+
+#### maintenance?
+
+> `optional` **maintenance?**: `boolean`
+
+#### user?
+
+> `optional` **user?**: `` `system.user.${string}` ``
 
 ***
 
@@ -32,6 +52,6 @@
 
 > **pattern**: [`Pattern`](../type-aliases/Pattern.md)
 
-#### Defined in
+Defined in: [adapter/src/lib/\_Types.ts:745](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L745)
 
-[adapter/src/lib/\_Types.ts:511](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/adapter/src/lib/_Types.ts#L511)
+The pattern to match state ids against

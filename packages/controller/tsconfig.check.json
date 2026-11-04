@@ -1,4 +1,9 @@
 // specialized config for type checking (test folder included)
 {
   "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // @types/node 22 ships the `node:test` runner which shadows the mocha
+    // globals (describe/it/before/after) unless mocha is loaded explicitly.
+    "types": ["node", "mocha"]
+  }
 }

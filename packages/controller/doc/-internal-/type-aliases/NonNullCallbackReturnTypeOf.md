@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,14 +6,14 @@
 
 # Type Alias: NonNullCallbackReturnTypeOf\<T\>
 
-> **NonNullCallbackReturnTypeOf**\<`T`\>: `Exclude`\<[`SecondParameterOf`](SecondParameterOf.md)\<`T`\>, `null` \| `undefined`\>
+> **NonNullCallbackReturnTypeOf**\<`T`\> = `Exclude`\<[`SecondParameterOf`](SecondParameterOf.md)\<`T`\>, `null` \| `undefined`\>
+
+Defined in: [types-dev/index.d.ts:637](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L637)
 
 Infers the return type from a callback-style API and strips out null and undefined
 
 ## Type Parameters
 
-• **T** *extends* (...`args`) => `any`
+### T
 
-## Defined in
-
-[types-dev/index.d.ts:470](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L470)
+`T` *extends* (...`args`) => `any`

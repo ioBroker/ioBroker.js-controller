@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,13 +6,17 @@
 
 # Interface: GetObjectViewItem\<T\>
 
+Defined in: [types-dev/index.d.ts:727](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L727)
+
 ## Extended by
 
 - [`GetObjectListItem`](GetObjectListItem.md)
 
 ## Type Parameters
 
-• **T** *extends* [`AnyObject`](../type-aliases/AnyObject.md)
+### T
+
+`T` *extends* [`AnyObject`](../type-aliases/AnyObject.md)
 
 ## Properties
 
@@ -20,11 +24,9 @@
 
 > **id**: `T`\[`"_id"`\]
 
+Defined in: [types-dev/index.d.ts:729](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L729)
+
 The ID of this object
-
-#### Defined in
-
-[types-dev/index.d.ts:554](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L554)
 
 ***
 
@@ -32,8 +34,6 @@ The ID of this object
 
 > **value**: `T`
 
+Defined in: [types-dev/index.d.ts:731](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L731)
+
 A copy of the object from the DB
-
-#### Defined in
-
-[types-dev/index.d.ts:556](https://github.com/ioBroker/ioBroker.js-controller/blob/40cb80c182f7d6dd76c85ace42cdd78fa9b7a8dc/packages/types-dev/index.d.ts#L556)

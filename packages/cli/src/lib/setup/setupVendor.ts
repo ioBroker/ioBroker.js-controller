@@ -1,18 +1,116 @@
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import { tools } from '@iobroker/js-controller-common';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'node:util';
+import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
+import { randomBytes } from 'node:crypto';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { dbConnectAsync } from '@/lib/setup/dbConnection.js';
 
+/** Options for the vendor command */
 export interface CLIVendorOptions {
+    /** The objects database client */
     objects: ObjectsRedisClient;
+}
+
+interface iobVendorFile {
+    vendor?: {
+        id?: string;
+        name?: string;
+        /** Logo for login in admin */
+        icon?: string;
+        /** Logo in the top left corner of admin */
+        logo?: string;
+        admin?: {
+            menu?: {
+                // Settings for left menu
+                editable?: false; // Hide edit button in menu
+                'tab-hosts'?: false; // Hide hosts item (See all https://github.com/ioBroker/ioBroker.admin/blob/master/src-rx/src/components/Drawer.js#L142)
+                'tab-files'?: false; // Hide files item
+                'tab-users'?: false; // Hide users item
+                'tab-intro'?: false; // Hide intro item
+                'tab-info'?: false; // Hide info item
+                'tab-adapters'?: false; // Hide adapters item
+                'tab-instances'?: false; // Hide instances item
+                'tab-objects'?: false; // Hide objects item
+                'tab-enums'?: false; // Hide enums item
+                'tab-devices'?: false; // Hide devices item
+                'tab-logs'?: false; // Hide logs item
+                'tab-scenes'?: false; // Hide scenes item
+                'tab-events'?: false; // Hide events item
+                'tab-javascript'?: false; // Hide javascript item
+                'tab-text2command-0'?: false; // Hide text2command-0 item
+                'tab-echarts'?: false; // Hide echarts item
+                [tabName: string]: false | undefined;
+            };
+            appBar?: {
+                discovery?: false;
+                systemSettings?: false;
+                toggleTheme?: false;
+                expertMode?: false;
+                hostSelector?: false;
+            };
+            settings?: {
+                tabConfig?: false; // Main config tab
+                tabRepositories?: false; // Repositories tab
+                tabCertificates?: false; // Certificates tab
+                tabLetsEncrypt?: false; // Let's Encrypt tab
+                tabDefaultACL?: false; // Default ACL tab
+                tabStatistics?: false; // Statistics tab
+
+                language?: false;
+                tempUnit?: false;
+                currency?: false;
+                dateFormat?: false;
+                isFloatComma?: false;
+                defaultHistory?: false;
+                activeRepo?: false;
+                expertMode?: false;
+                defaultLogLevel?: false;
+            };
+            adapters?: {
+                gitHubInstall?: false; // hide button install from GitHub/npm
+                statistics?: false; // hide statistics on the right top
+                filterUpdates?: false; // hide button filter updates in adapter tab
+                allowAdapterRating?: false; // do not show and do not load adapter ratings
+            };
+            login?: {
+                title?: string;
+                motto?: string;
+                link?: string;
+            };
+        };
+        /** Favicon for admin */
+        ico?: string;
+        uuidPrefix?: string;
+    };
+    model?: {
+        /** name for host */
+        name?: string;
+        /** Icon for host */
+        icon?: string;
+        /** Color for host */
+        color?: string;
+    };
+    uuid?: string;
+    iobroker?: Partial<ioBroker.IoBrokerJson>;
+    objects?: {
+        [id: string]: ioBroker.Object;
+    };
 }
 
 const VENDOR_FILE = '/etc/iob-vendor.json';
 
+/**
+ * CLI command to apply vendor-specific customizations from the vendor file
+ */
 export class Vendor {
     private readonly objects: ObjectsRedisClient;
 
+    /**
+     * @param options The objects database client
+     */
     constructor(options: CLIVendorOptions) {
         this.objects = options.objects;
     }
@@ -42,18 +140,26 @@ export class Vendor {
      *
      * @param file file path if not given, default path is used
      * @param password vendor password
-     * @param logger
+     * @param javascriptPassword vendor JavaScript password
+     * @param logger Logger used to report progress and errors
      */
-    async checkVendor(file: string | undefined, password: string, logger?: any): Promise<void> {
-        logger = logger || {
+    async checkVendor(
+        file: string | undefined,
+        password: string,
+        javascriptPassword: string | undefined,
+        logger?: InternalLogger,
+    ): Promise<boolean> {
+        logger ||= {
             debug: (text: string) => console.log(text),
             info: (text: string) => console.log(text),
             error: (text: string) => console.error(text),
             warn: (text: string) => console.warn(text),
+            silly: (text: string) => console.log(text),
         };
 
-        file = file || VENDOR_FILE;
-        let data: Record<string, any>;
+        file ||= VENDOR_FILE;
+
+        let data: iobVendorFile;
         if (fs.existsSync(file)) {
             try {
                 data = fs.readJSONSync(file);
@@ -66,9 +172,8 @@ export class Vendor {
             throw new Error(`"${file}" does not exist`);
         }
 
-        if (data.uuid) {
+        if (data?.uuid) {
             const uuid = data.uuid;
-            data.uuid = null;
 
             // check UUID
             const obj = await this.objects.getObject('system.meta.uuid');
@@ -78,7 +183,7 @@ export class Vendor {
 
                     logger.info(`Update "system.meta.uuid:native.uuid" = "${obj.native.uuid}"`);
 
-                    obj.nonEdit = obj.nonEdit || {};
+                    obj.nonEdit ||= {};
                     obj.nonEdit.password = password;
                     try {
                         await this.objects.setObjectAsync('system.meta.uuid', obj);
@@ -99,7 +204,7 @@ export class Vendor {
                         ts: new Date().getTime(),
                         from: `system.host.${tools.getHostName()}.tools`,
                         native: {
-                            uuid: uuid,
+                            uuid,
                         },
                     });
                     logger.info(`object system.meta.uuid created: ${uuid}`);
@@ -110,45 +215,83 @@ export class Vendor {
         }
 
         // patch iobroker.json file
-        if (data.iobroker) {
+        if (data?.iobroker) {
             const settings = fs.readJSONSync(tools.getConfigFileName());
             logger.info('Update iobroker.json file');
             this.deepMerge(settings, data.iobroker);
             fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(settings, null, 2));
         }
 
-        if (data.vendor) {
+        if (data?.vendor) {
             const vendor = deepClone(data.vendor);
-            data._vendor = deepClone(vendor);
-            data.vendor = null;
 
             // store vendor
             try {
-                const obj = await this.objects.getObject('system.config');
-                if (obj && obj.native) {
-                    if (!isDeepStrictEqual(obj.native.vendor, vendor)) {
-                        obj.native.vendor = vendor;
-                        obj.nonEdit = obj.nonEdit || {};
-                        obj.nonEdit.password = password;
-                        await this.objects.setObjectAsync(obj._id, obj);
+                const configObj = await this.objects.getObject('system.config');
+                if (configObj?.native) {
+                    let javascriptPasswordEncrypted: string | undefined;
+                    if (javascriptPassword) {
+                        if (!configObj.native?.secret) {
+                            const buf = randomBytes(24);
+                            configObj.native.secret = buf.toString('hex');
+                        }
+                        javascriptPasswordEncrypted = tools.encrypt(configObj.native.secret, javascriptPassword);
+                    }
+
+                    if (
+                        !isDeepStrictEqual(configObj.native.vendor, vendor) ||
+                        configObj.native.javascriptPassword !== javascriptPasswordEncrypted
+                    ) {
+                        configObj.native.vendor = vendor;
+                        configObj.nonEdit ||= {};
+                        if (javascriptPassword) {
+                            configObj.native.javascriptPassword = javascriptPasswordEncrypted;
+                            configObj.nonEdit.native ||= {};
+                            configObj.nonEdit.native.javascriptPassword = javascriptPasswordEncrypted;
+                        }
+                        configObj.nonEdit.password = password;
+                        await this.objects.setObjectAsync(configObj._id, configObj);
                         logger.info('object system.config updated');
                     }
                 }
             } catch (e) {
                 logger.error(`Cannot update system.config: ${e.message}`);
             }
+        } else if (javascriptPassword) {
+            const configObj = await this.objects.getObject('system.config');
+
+            if (configObj?.native) {
+                if (!configObj.native?.secret) {
+                    const buf = randomBytes(24);
+                    configObj.native.secret = buf.toString('hex');
+                }
+                const javascriptPasswordEncrypted = tools.encrypt(configObj.native.secret, javascriptPassword);
+                if (configObj.native.javascriptPassword !== javascriptPasswordEncrypted) {
+                    configObj.native.javascriptPassword = javascriptPasswordEncrypted;
+                    configObj.nonEdit ||= {};
+                    configObj.nonEdit.password = password;
+                    configObj.nonEdit.native ||= {};
+                    configObj.nonEdit.native.javascriptPassword = javascriptPasswordEncrypted;
+                    try {
+                        await this.objects.setObjectAsync(configObj._id, configObj);
+                        logger.info('object system.config updated');
+                    } catch (e) {
+                        logger.error(`Cannot update system.config: ${e.message}`);
+                    }
+                }
+            }
         }
 
         // update all existing objects according to vendor
-        if (data.objects) {
+        if (data?.objects) {
             for (let id of Object.keys(data.objects)) {
                 if (!id.includes('*')) {
                     const _newObj = data.objects[id];
                     const obj = await this.objects.getObject(id);
                     if (obj) {
-                        obj.nonEdit = obj.nonEdit || {};
+                        obj.nonEdit ||= {} as ioBroker.NonEditable;
                         const originalObj = deepClone(obj);
-                        _newObj.nonEdit = _newObj.nonEdit || {};
+                        _newObj.nonEdit ||= {} as ioBroker.NonEditable;
                         _newObj.nonEdit.passHash = obj.nonEdit.passHash;
                         // merge objects
                         tools.copyAttributes(_newObj, obj);
@@ -183,13 +326,13 @@ export class Vendor {
                         { checked: true },
                     );
 
-                    if (arr && arr.rows && arr.rows.length) {
+                    if (arr?.rows?.length) {
                         for (const row of arr.rows) {
                             const obj = row.value;
                             if (obj) {
-                                obj.nonEdit = obj.nonEdit || {};
+                                obj.nonEdit ||= {};
                                 const originalObj = deepClone(obj);
-                                _obj.nonEdit = _obj.nonEdit || {};
+                                _obj.nonEdit ||= {};
                                 _obj.nonEdit.passHash = obj.nonEdit.passHash;
                                 // merge objects
                                 tools.copyAttributes(_obj, obj);
@@ -213,12 +356,11 @@ export class Vendor {
         }
 
         // update host as last
-        if (data.model) {
+        if (data?.model) {
             const model = data.model;
-            data.model = null;
             const hostname = tools.getHostName();
             const obj = await this.objects.getObject(`system.host.${hostname}`);
-            if (obj && obj.common) {
+            if (obj?.common) {
                 if (
                     (model.name && model.name !== 'JS controller' && obj.common.title === 'JS controller') ||
                     (model.icon && !obj.common.icon) ||
@@ -234,15 +376,18 @@ export class Vendor {
                         obj.common.color = model.color;
                     }
 
-                    obj.nonEdit = obj.nonEdit || {};
+                    obj.nonEdit ||= {};
                     obj.nonEdit.password = password;
 
-                    obj.common.title &&
+                    if (obj.common.title) {
                         logger.info(`Update "system.host.${hostname}:common.title" = "${obj.common.title}"`);
-                    obj.common.icon &&
+                    }
+                    if (obj.common.icon) {
                         logger.info(`Update "system.host.${hostname}:common.icon"  = "${!!obj.common.icon}"`);
-                    obj.common.color &&
+                    }
+                    if (obj.common.color) {
                         logger.info(`Update "system.host.${hostname}:common.color" = "${obj.common.color}"`);
+                    }
 
                     try {
                         await this.objects.setObjectAsync(obj._id, obj);
@@ -255,9 +400,35 @@ export class Vendor {
         }
 
         // restart ioBroker
-        setTimeout(() => {
-            logger.warn('RESTART!');
-            process.exit(-1);
-        }, 2_000);
+        return true;
+    }
+}
+
+/**
+ * @param options The process command options
+ */
+export async function processCommandVendor(options: ProcessCommandOptions): Promise<void> {
+    const { args, params, callback } = options;
+
+    const password = args[0];
+    const file = args[1];
+    const javascriptPassword = args[2];
+    if (!password) {
+        console.warn(
+            `Please specify the password to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`,
+        );
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+
+    const { objects } = await dbConnectAsync(false, params);
+    const vendor = new Vendor({ objects });
+
+    try {
+        await vendor.checkVendor(file, password, javascriptPassword);
+        console.log(`Synchronised vendor information.`);
+        return void callback();
+    } catch (err) {
+        console.error(`Cannot update vendor information: ${err.message}`);
+        return void callback(EXIT_CODES.CANNOT_UPDATE_VENDOR);
     }
 }

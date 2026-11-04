@@ -55,7 +55,7 @@ async function calcProject(options: CalculateProjectOptions): Promise<Calculated
         const dps = getUsedObjectIDs(json, false);
         if (dps?.IDs) {
             result.push({
-                id: `${visAdapter}.${instance}.datapoints.${project.file.replace(/[.\\s]/g, '_')}`,
+                id: `${visAdapter}.${instance}.datapoints.${project.file.replace(/[.\s]/g, '_')}`,
                 val: dps.IDs.length,
             });
         }
