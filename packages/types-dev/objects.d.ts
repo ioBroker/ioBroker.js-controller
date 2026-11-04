@@ -886,6 +886,11 @@ declare global {
             visIconSets?: Record<string, VisIconSet>;
             /** Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/1.2.3/material` instead of `http://ip:port/material` */
             webByVersion?: boolean;
+            /**
+             * Web components of the adapter (see `@iobroker/web-components`): URLs of ES modules, relative to the admin
+             * folder, which admin and web serve as `/adapter/<name>/`. vis-2, devices and admin load them from there
+             */
+            webComponents?: string[];
             /** Whether the web server in this adapter can be extended with plugin/extensions */
             webExtendable?: boolean;
             /** Relative path to a module that contains an extension for the web adapter. Use together with {@link native.webInstance} to configure which instances this affects */
