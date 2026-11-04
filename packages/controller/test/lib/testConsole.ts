@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { exec as execAsync } from 'promisify-child-process';
-import { BackupRestore } from '@iobroker/js-controller-cli';
+import { BackupRestore, Install } from '@iobroker/js-controller-cli';
 import type { TestContext } from '../_Types.js';
 import fs from 'fs-extra';
 import assert from 'node:assert/strict';
@@ -725,6 +725,49 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         obj = await context.objects.getObjectAsync('system.adapter.vis.0');
         assert.strictEqual(obj?.native.license, licenseText);
     }).timeout(20_000);
+
+    // the instances are stopped before and started after an adapter upgrade
+    it(`${testName}enableInstances`, async () => {
+        const id = 'system.adapter.enabletest.0';
+        await context.objects.setObject(id, {
+            common: {
+                name: 'enabletest',
+                version: '1.0.0',
+                host: 'system.host.test',
+                enabled: true,
+                mode: 'daemon',
+                platform: 'Javascript/Node.js',
+                materialize: false,
+                installedVersion: '1.0.0',
+            },
+            native: {},
+            type: 'instance',
+            instanceObjects: [],
+            objects: [],
+        });
+        const instance = (await context.objects.getObjectAsync(id)) as ioBroker.InstanceObject;
+
+        const install = new Install({
+            objects: context.objects,
+            states: context.states,
+            params: {},
+            processExit: exitCode => assert.fail(`processExit(${exitCode}) must not be called`),
+        });
+
+        try {
+            await install.enableInstances([instance], false);
+            let obj = await context.objects.getObjectAsync(id);
+            assert.strictEqual(obj?.common.enabled, false);
+            // the object is extended, not replaced
+            assert.strictEqual(obj?.common.name, 'enabletest');
+
+            await install.enableInstances([instance], true);
+            obj = await context.objects.getObjectAsync(id);
+            assert.strictEqual(obj?.common.enabled, true);
+        } finally {
+            await context.objects.delObjectAsync(id);
+        }
+    }).timeout(10_000);
 
     // info
     it(`${testName}info`, async () => {
