@@ -83,7 +83,8 @@ declare global {
             | 'CONTROLLER_USED_RESOURCES'
             | 'CONTROLLER_PYTHON_ADAPTERS'
             | 'CONTROLLER_REPOSITORY_COMPACT'
-            | 'CONTROLLER_CHECK_DOCKER';
+            | 'CONTROLLER_CHECK_DOCKER'
+            | 'CONTROLLER_DISK_FILES';
 
         // #region Used resources
         // ---------------------------------------------------------------------------------------------------
