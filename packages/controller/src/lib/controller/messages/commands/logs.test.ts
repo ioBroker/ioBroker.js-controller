@@ -88,6 +88,8 @@ describe('host commands for the log files', () => {
     beforeEach(async () => {
         dir = await fs.mkdtemp(path.join(os.tmpdir(), 'iob-log-commands-'));
         controllerDir = path.join(dir, 'node_modules', 'iobroker.js-controller');
+        // the fallback path goes through it with `..`, which Linux resolves only for directories that exist
+        await fs.ensureDir(controllerDir);
         const now = Date.now();
         logFile = path.join(dir, 'log', `${tools.appName}.${logTime(new Date(now)).slice(0, 10)}.log`);
         content = logContent(now);
