@@ -86,6 +86,10 @@ const multihostBrowse: HostCommand<MultihostCommandsDeps> = async (deps, msg) =>
             if (!entry.uuid || declined.includes(entry.uuid) || (entry.ip && seen.has(entry.ip))) {
                 continue;
             }
+            // a host with two interfaces in the same network answers the broadcast twice
+            if (entry.ip) {
+                seen.add(entry.ip);
+            }
             // Picked explicitly instead of spread: a master that runs unsecured answers a `browse` with
             // its `objects`/`states` sections, which carry the database host and, for Redis, the
             // credentials. Only what the Admin needs travels on.
@@ -196,7 +200,8 @@ const multihostPair: HostCommand<MultihostCommandsDeps> = async (deps, msg) => {
         const client = deps.createClient ? deps.createClient() : new MHClient();
         const answer = await client.sendCommand(ip, cmd, { masterUuid, password: password || '', revoke });
         logger.info(`${hostLogPrefix} Multihost ${cmd} to ${ip}: ${answer.result}`);
-        reply(deps, msg, { result: answer.result === 'ok', answer: answer.result });
+        // a decline is done once it is stored here; what the other host says only adds to it
+        reply(deps, msg, { result: cmd === 'decline' || answer.result === 'ok', answer: answer.result });
     } catch (e) {
         // For a decline this is not fatal - the host is already hidden locally
         if (cmd === 'decline') {

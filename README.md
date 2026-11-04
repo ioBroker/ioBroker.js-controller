@@ -1341,6 +1341,10 @@ UDP port 50005.
 * `identify` — the host writes its own name into its log, which helps to tell two freshly installed
   devices apart.
 
+The other host only carries out `join`, `decline` and `identify` while it offers itself for pairing.
+Any other host answers `not in pairing mode`, so with pairing off nothing on it can be changed
+without authentication.
+
 #### multihostConnect
 Attaches **this** host to a master. The counterpart to `multihostPair` with `join`, for the case
 where the user sits in the Admin of the new host rather than in the Admin of the master. The

@@ -18,7 +18,9 @@
  *
  */
 
+import { randomBytes } from 'node:crypto';
 import { isIPv4 } from 'node:net';
+import os from 'node:os';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import { MULTIHOST_PORT } from '@/lib/multihostServer.js';
 
@@ -42,6 +44,8 @@ const ENTRY_TTL = 5 * 60_000;
 const MAX_HOSTS = 200;
 /** Longest string accepted from a TXT record. Everything here is a name, a uuid or a version */
 const MAX_TXT_LENGTH = 128;
+/** Longest DNS name, the key of an entry */
+const MAX_FQDN_LENGTH = 255;
 /** A uuid has to look like one before it is stored and shown */
 const UUID_PATTERN = /^[0-9a-fA-F-]{16,64}$/;
 /** Announcements are collected for this long before the change is reported, in ms */
@@ -78,9 +82,36 @@ interface MdnsResponder {
     }) => MdnsService;
     find: (options: { type: string; protocol: 'tcp' | 'udp' }) => MdnsBrowser;
     destroy: (callback?: () => void) => void;
+    /** Internal to the package, but the only place where a failed bind of UDP 5353 is reported */
+    server?: { mdns?: MdnsSocket };
+}
+
+/** The `multicast-dns` emitter inside the responder */
+interface MdnsSocket {
+    on: (event: 'error' | 'warning', listener: (err: Error) => void) => void;
 }
 
 type MdnsResponderConstructor = new (options?: unknown, errorCallback?: (err: Error) => void) => MdnsResponder;
+
+/**
+ * Something that tells two hosts with the same name apart in the mDNS instance name
+ *
+ * Two devices flashed from the same image are both called `iobroker`, and `bonjour-service` does not
+ * rename a service whose name is taken: it probes, finds the other host and silently gives up. Only
+ * the first device would ever be found. The end of the MAC address differs between such devices and
+ * stays the same across restarts, so a master does not see the host come back under a new name.
+ */
+function instanceSuffix(): string {
+    for (const addresses of Object.values(os.networkInterfaces())) {
+        for (const address of addresses || []) {
+            if (!address.internal && address.mac && address.mac !== '00:00:00:00:00:00') {
+                return address.mac.replace(/:/g, '').slice(-6).toLowerCase();
+            }
+        }
+    }
+
+    return randomBytes(3).toString('hex');
+}
 
 /**
  * What this host publishes about itself.
@@ -155,6 +186,8 @@ export class HostDiscovery {
     private readonly refreshInterval: number;
     private readonly onChange?: (hosts: DiscoveredHost[]) => void;
     private readonly onRefresh?: () => void;
+    /** The mDNS instance name of this host, unique on the network, see {@link instanceSuffix} */
+    private readonly instanceName: string;
 
     private responder: MdnsResponder | null = null;
     /** The one and only attempt to load and start the optional package */
@@ -187,6 +220,7 @@ export class HostDiscovery {
         this.refreshInterval = options.refreshInterval || DEFAULT_REFRESH_INTERVAL;
         this.onChange = options.onChange;
         this.onRefresh = options.onRefresh;
+        this.instanceName = `ioBroker ${options.hostname} ${instanceSuffix()}`;
     }
 
     /**
@@ -210,6 +244,10 @@ export class HostDiscovery {
      * @returns the responder, or `null` when mDNS cannot be used here
      */
     private getResponder(): Promise<MdnsResponder | null> {
+        if (this.unavailable) {
+            return Promise.resolve(null);
+        }
+
         this.responderPromise ||= this.createResponder();
 
         return this.responderPromise;
@@ -245,7 +283,62 @@ export class HostDiscovery {
             return null;
         }
 
-        return this.responder;
+        return this.watchSocket(this.responder);
+    }
+
+    /**
+     * Turn a failed bind of UDP 5353 into "mDNS is not available here" instead of a crash
+     *
+     * `multicast-dns`, which the package uses underneath, reports `EADDRINUSE` and `EACCES` as an
+     * `error` event - after the constructor returned, on an emitter the package itself never listens
+     * on. An `error` event without a listener throws, so a port held by another mDNS responder (common
+     * on Windows) would end the whole controller instead of only this optional feature.
+     *
+     * The emitter is internal to the package. If a version lays it out differently, mDNS is not used
+     * at all rather than risking that crash.
+     *
+     * @param responder The freshly created responder
+     * @returns the responder, or `null` when its socket cannot be watched
+     */
+    private watchSocket(responder: MdnsResponder): MdnsResponder | null {
+        const socket = responder.server?.mdns;
+
+        if (typeof socket?.on !== 'function') {
+            this.unavailable = true;
+            this.responder = null;
+            this.logger.warn(
+                `${this.logPrefix} Host discovery: unknown version of "${MDNS_MODULE}", mDNS is not used. Other hosts can still find this one over the multihost protocol.`,
+            );
+            try {
+                responder.destroy();
+            } catch {
+                // it was never used
+            }
+            return null;
+        }
+
+        socket.on('error', err => this.disable(err));
+        socket.on('warning', err => this.logger.debug(`${this.logPrefix} Host discovery: ${err.message}`));
+
+        return responder;
+    }
+
+    /**
+     * Give up on mDNS after its socket failed, see {@link watchSocket}
+     *
+     * @param err What the socket reported
+     */
+    private disable(err: Error): void {
+        // a failed bind is reported twice, by the socket and by the bind itself
+        if (this.unavailable) {
+            return;
+        }
+        this.unavailable = true;
+
+        this.logger.warn(
+            `${this.logPrefix} Host discovery: cannot use mDNS (${err.message}). Other hosts can still find this one over the multihost protocol.`,
+        );
+        void this.close();
     }
 
     /**
@@ -298,7 +391,7 @@ export class HostDiscovery {
 
         try {
             this.service = responder.publish({
-                name: `ioBroker ${this.hostname}`,
+                name: this.instanceName,
                 type: DISCOVERY_SERVICE_TYPE,
                 protocol: 'tcp',
                 port: MULTIHOST_PORT,
@@ -417,7 +510,12 @@ export class HostDiscovery {
 
         const hostname = txt.host || service.name;
 
-        if (!hostname || hostname.length > MAX_TXT_LENGTH || (txt.v || '').length > MAX_TXT_LENGTH) {
+        if (
+            !hostname ||
+            hostname.length > MAX_TXT_LENGTH ||
+            (txt.v || '').length > MAX_TXT_LENGTH ||
+            (service.fqdn || '').length > MAX_FQDN_LENGTH
+        ) {
             return;
         }
 
@@ -471,6 +569,9 @@ export class HostDiscovery {
         if (
             !known ||
             known.ip !== host.ip ||
+            known.port !== host.port ||
+            known.hostname !== host.hostname ||
+            known.version !== host.version ||
             known.unclaimed !== host.unclaimed ||
             known.master !== host.master ||
             known.uuid !== host.uuid
@@ -499,9 +600,9 @@ export class HostDiscovery {
     /**
      * Key of a host in the internal map.
      *
-     * The mDNS instance name is unique on the network - it is what the responders resolve conflicts
-     * on - so it is the better key than the UUID, which two freshly installed hosts can share when
-     * they were cloned from the same image.
+     * The mDNS instance name is unique on the network - every host adds {@link instanceSuffix} to it,
+     * and a responder does not publish a name that is taken - so it is the better key than the UUID,
+     * which two freshly installed hosts can share when they were cloned from the same image.
      *
      * @param service The service as reported by the browser
      * @param host Identity taken from the TXT record

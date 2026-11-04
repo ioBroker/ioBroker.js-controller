@@ -240,6 +240,24 @@ describe('lib/multihostServer: identify', () => {
     });
 });
 
+describe('lib/multihostServer: a master is no pairing target', () => {
+    it('refuses decline and identify, as it refuses join', async () => {
+        const logger = { ...silentLogger, info: sinon.stub() };
+        const harness = makeServer({ pairingOnly: false });
+        (harness.server as any).logger = logger;
+
+        await harness.process({ cmd: 'decline', id: '1', masterUuid: VALID_UUID });
+        await harness.process({ cmd: 'identify', id: '2' });
+
+        assert.deepStrictEqual(
+            harness.sent.map(answer => answer.result),
+            ['not in pairing mode', 'not in pairing mode'],
+        );
+        assert.deepStrictEqual(harness.declined(), [], 'with pairing off, nothing unauthenticated changes the host');
+        assert.strictEqual(logger.info.callCount, 0);
+    });
+});
+
 describe('lib/multihostServer: rate limit', () => {
     it('stops answering a sender that floods and keeps serving another one', async () => {
         const harness = makeServer({

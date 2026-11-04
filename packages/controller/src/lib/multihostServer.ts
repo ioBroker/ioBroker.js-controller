@@ -433,6 +433,13 @@ export class MHServer {
             }
 
             case 'decline':
+                // Like `join`, only for a host that offers itself for pairing: a master is never
+                // joined, so a list of masters it refuses means nothing there - and with pairing off,
+                // nothing unauthenticated should change anything on this host.
+                if (!this.options.pairingOnly) {
+                    this.send({ cmd: 'decline', id: msg.id, result: 'not in pairing mode' }, rinfo);
+                    break;
+                }
                 if (!msg.masterUuid) {
                     this.send({ cmd: 'decline', id: msg.id, result: 'error', error: 'No masterUuid' }, rinfo);
                     break;
@@ -456,6 +463,10 @@ export class MHServer {
                 break;
 
             case 'identify': {
+                if (!this.options.pairingOnly) {
+                    this.send({ cmd: 'identify', id: msg.id, result: 'not in pairing mode' }, rinfo);
+                    break;
+                }
                 // Helps to tell two freshly flashed hosts apart. It is meant for a human looking at
                 // the log, so repeats are swallowed - otherwise this is a one-line remote log flood
                 // that fills the disk of exactly the small installations this feature is aimed at.

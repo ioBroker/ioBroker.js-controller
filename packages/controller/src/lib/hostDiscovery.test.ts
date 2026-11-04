@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { EventEmitter } from 'node:events';
 import sinon from 'sinon';
 import { DISCOVERY_PROTOCOL_VERSION, HostDiscovery, type DiscoveredHost } from './hostDiscovery.js';
 
@@ -110,6 +111,8 @@ describe('lib/hostDiscovery: addHost accepts only our own announcements', () => 
         const discovery = makeDiscovery();
         addHost(discovery, makeService({ txt: { host: 'x'.repeat(500) } }));
         addHost(discovery, makeService({ txt: { v: 'x'.repeat(500) }, fqdn: 'b._iobroker._tcp.local' }));
+        // the name is the key of the map, the values are not the only thing a stranger chooses
+        addHost(discovery, makeService({ fqdn: `${'x'.repeat(500)}._iobroker._tcp.local` }));
 
         assert.deepStrictEqual(discovery.getHosts(), []);
     });
@@ -130,6 +133,24 @@ describe('lib/hostDiscovery: addHost accepts only our own announcements', () => 
         const hosts = discovery.getHosts();
         assert.strictEqual(hosts.length, 1);
         assert.strictEqual(hosts[0].unclaimed, false);
+    });
+
+    it('reports a change of every published field, but not a mere re-announcement', async () => {
+        const discovery = makeDiscovery();
+        const notify = sinon.spy(discovery as any, 'notifyChange');
+
+        try {
+            addHost(discovery, makeService());
+            addHost(discovery, makeService());
+            assert.strictEqual(notify.callCount, 1, 'only lastSeen differs');
+
+            addHost(discovery, makeService({ txt: { v: '8.0.0' } }));
+            addHost(discovery, makeService({ port: 50006 }));
+            addHost(discovery, makeService({ txt: { host: 'renamed' } }));
+            assert.strictEqual(notify.callCount, 4, 'the Admin would show the old version, port or name');
+        } finally {
+            await discovery.close();
+        }
     });
 });
 
@@ -262,11 +283,13 @@ describe('lib/hostDiscovery: the announcement is only re-published on a change',
      *
      * @returns the responder and the published TXT records
      */
-    function fakeResponder(): { responder: any; published: Record<string, string>[] } {
+    function fakeResponder(): { responder: any; published: Record<string, string>[]; names: string[] } {
         const published: Record<string, string>[] = [];
+        const names: string[] = [];
         const responder = {
-            publish: (options: { txt: Record<string, string> }) => {
+            publish: (options: { name: string; txt: Record<string, string> }) => {
                 published.push(options.txt);
+                names.push(options.name);
                 return {
                     fqdn: `own-${published.length}._iobroker._tcp.local`,
                     name: 'ioBroker myhost',
@@ -276,8 +299,23 @@ describe('lib/hostDiscovery: the announcement is only re-published on a change',
             find: () => ({ on: () => {}, stop: () => {}, update: () => {} }),
             destroy: (callback: () => void) => callback(),
         };
-        return { responder, published };
+        return { responder, published, names };
     }
+
+    it('publishes under a name that two hosts called the same do not share', async () => {
+        const discovery = makeDiscovery();
+        const { responder, names } = fakeResponder();
+        (discovery as any).responderPromise = Promise.resolve(responder);
+
+        try {
+            await discovery.announce({ uuid: '0123456789abcdef', unclaimed: true, master: false });
+            // bonjour-service gives up on a taken name instead of renaming, so the second device
+            // flashed from the same image would never be found
+            assert.match(names[0], /^ioBroker myhost [0-9a-f]{6}$/);
+        } finally {
+            await discovery.close();
+        }
+    });
 
     it('publishes once for the same information, and again when it changed', async () => {
         const discovery = makeDiscovery();
@@ -296,5 +334,58 @@ describe('lib/hostDiscovery: the announcement is only re-published on a change',
         } finally {
             await discovery.close();
         }
+    });
+});
+
+describe('lib/hostDiscovery: a failed bind of UDP 5353 does not end the controller', () => {
+    /**
+     * A responder laid out like the one of `bonjour-service`, with the `multicast-dns` emitter inside
+     *
+     * @returns the responder, its socket and whether it was destroyed
+     */
+    function bonjourLikeResponder(): { responder: any; socket: EventEmitter; destroyed: () => boolean } {
+        const socket = new EventEmitter();
+        let destroyed = false;
+        const responder = {
+            server: { mdns: socket },
+            publish: () => ({ fqdn: 'own._iobroker._tcp.local', name: 'ioBroker myhost', stop: () => {} }),
+            find: () => ({ on: () => {}, stop: () => {}, update: () => {} }),
+            destroy: (callback?: () => void) => {
+                destroyed = true;
+                callback?.();
+            },
+        };
+        return { responder, socket, destroyed: () => destroyed };
+    }
+
+    it('switches mDNS off when the socket reports EADDRINUSE', async () => {
+        const discovery = makeDiscovery();
+        const { responder, socket, destroyed } = bonjourLikeResponder();
+        (discovery as any).responder = (discovery as any).watchSocket(responder);
+        (discovery as any).responderPromise = Promise.resolve(responder);
+
+        const err = Object.assign(new Error('bind EADDRINUSE 0.0.0.0:5353'), { code: 'EADDRINUSE' });
+        // without a listener, EventEmitter throws on `error` - and multicast-dns emits it twice
+        socket.emit('error', err);
+        socket.emit('error', err);
+        await new Promise(resolve => setImmediate(resolve));
+
+        assert.strictEqual(discovery.isAvailable(), false);
+        assert.strictEqual(destroyed(), true, 'the socket is released');
+
+        // from here on everything is a no-op instead of publishing on a dead socket
+        const publish = sinon.spy(responder, 'publish');
+        await discovery.announce({ uuid: '0123456789abcdef', unclaimed: true, master: false });
+        assert.strictEqual(publish.callCount, 0);
+    });
+
+    it('does not use a version of the package whose socket it cannot watch', () => {
+        const discovery = makeDiscovery();
+        const { responder, destroyed } = bonjourLikeResponder();
+        delete responder.server;
+
+        assert.strictEqual((discovery as any).watchSocket(responder), null);
+        assert.strictEqual(discovery.isAvailable(), false);
+        assert.strictEqual(destroyed(), true);
     });
 });
