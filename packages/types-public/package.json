@@ -1,8 +1,8 @@
 {
     "name": "@iobroker/types",
-    "version": "7.1.0",
+    "version": "8.0.0-alpha.11-20261103-58da667b3",
     "engines": {
-        "node": ">=12.0.0"
+        "node": ">=22.19.0"
     },
     "keywords": [
         "ioBroker"
@@ -16,7 +16,7 @@
         "url": "https://github.com/ioBroker/ioBroker.js-controller"
     },
     "scripts": {
-        "build": "ts-node build.ts",
+        "build": "node build.mts",
         "test": "tsd"
     },
     "main": "index.js",
@@ -26,7 +26,7 @@
         "access": "public"
     },
     "devDependencies": {
-        "tsd": "^0.31.2"
+        "tsd": "^0.33.0"
     },
     "files": [
         "build/",
@@ -37,6 +37,7 @@
     "tsd": {
         "compilerOptions": {
             "types": [
+                "node",
                 "@iobroker/types"
             ]
         }

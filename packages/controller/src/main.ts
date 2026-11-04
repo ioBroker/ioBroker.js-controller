@@ -22,6 +22,8 @@ import {
     zipFiles,
     getInstancesOrderedByStartPrio,
     isInstalledFromNpm,
+    type SupportedFeature,
+    getSupportedFeatures,
 } from '@iobroker/js-controller-common';
 import {
     SYSTEM_ADAPTER_PREFIX,
@@ -36,9 +38,8 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
 import decache from 'decache';
-import cronParser from 'cron-parser';
+import { CronExpressionParser } from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base';
-import type { GetDiskInfoResponse } from '@iobroker/js-controller-common-db/tools';
 import { DEFAULT_DISK_WARNING_LEVEL, getCronExpression, getDiskWarningLevel } from '@/lib/utils.js';
 import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
 import {
@@ -47,11 +48,37 @@ import {
     type HostInfo,
     isAdapterEsmModule,
     isLogLevel,
+    type GetDiskInfoResponse,
 } from '@iobroker/js-controller-common-db/tools';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
+import {
+    buildPythonEnv,
+    checkPythonEnvironment,
+    forwardPythonOutput,
+    isPythonAdapter,
+    type PythonLogLevel,
+    spawnPythonAdapter,
+    unsupportedPythonDbConfig,
+} from '@/lib/pythonRuntime.js';
 import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
+import {
+    getUsedResourcesMode,
+    isRegisteredResource,
+    isValidUsedResourceType,
+    normalizeUsedResourceData,
+    resolveSerialPortName,
+    UsedResourcesRegistry,
+    withSerialPortDevice,
+} from '@/lib/usedResources.js';
+import {
+    checkDocker,
+    type DockerCheckResult,
+    getDockerCheckInstance,
+    readDockerApiSource,
+    resolveDockerPlugin,
+} from '@/lib/checkDocker.js';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
 // eslint-disable-next-line unicorn/prefer-module
@@ -102,9 +129,11 @@ interface Process {
     rebuildArgs?: RebuildArgs;
     startedAsCompactGroup?: boolean;
     engine?: string;
+    /** Interpreter of the virtual environment; only set for adapters with `common.platform: "Python"` */
+    pythonInterpreter?: string;
     lastCleanErrors?: number;
     lastStart?: number;
-    /** Name of variable, that is subscribed automatically */
+    /** Name of the variable that is subscribed automatically */
     subscribe?: string;
     stopping?: boolean;
     crashCount?: number;
@@ -128,6 +157,8 @@ interface RepoRequester {
     /** requesting instance */
     from: string;
     callback: ioBroker.MessageCallbackInfo;
+    /** `getRepository` for the whole content, `getRepositoryCompact` for versions and icons only */
+    command: string;
 }
 
 interface SendResponseToOptions {
@@ -227,6 +258,11 @@ let compactGroupController = false;
 let compactGroup: null | number = null;
 const compactProcs: Record<string, CompactProcess> = {};
 const scheduledInstances: Record<string, any> = {};
+/**
+ * In-memory registry of the exclusive resources (serial ports, TCP/UDP ports, USB devices, ...) currently used
+ * by the instances running on this host. Mirrored into `system.host.<name>.usedResources.<type>`.
+ */
+const usedResources = new UsedResourcesRegistry();
 /** If less than this disk space free in %, generate a warning */
 let diskWarningLevel = DEFAULT_DISK_WARNING_LEVEL;
 
@@ -279,7 +315,7 @@ function getConfig(): ioBroker.IoBrokerJson | never {
 /**
  * Starts the multihost discovery server
  *
- * @param _config Configuration fron iobroker.json
+ * @param _config Configuration from iobroker.json
  * @param secret MultiHost communication password
  */
 function _startMultihost(_config: ioBroker.IoBrokerJson, secret: string | false): void {
@@ -358,9 +394,8 @@ async function startMultihost(__config?: ioBroker.IoBrokerJson): Promise<boolean
                 if (obj?.native?.secret) {
                     if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
                         // if old encryption was used, we need to decrypt in old fashion
-                        tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
-                            _startMultihost(_config, secret!),
-                        );
+                        const secret = await tools.decryptPhrase(obj.native.secret, _config.multihostService.password);
+                        _startMultihost(_config, secret || false);
                     } else {
                         try {
                             // it can throw in edge cases #1474, we need further investigation
@@ -440,10 +475,11 @@ function startUpdateIPs(): void {
 
 // subscribe or unsubscribe loggers
 /**
+ * Subscribe or unsubscribe a logger instance for receiving redirected log messages
  *
- * @param isActive
- * @param id
- * @param reason
+ * @param isActive Whether to subscribe (true) or unsubscribe (false) the logger
+ * @param id The id of the logger instance
+ * @param reason Human readable reason for the change, used for logging
  */
 function logRedirect(isActive: boolean, id: string, reason: string): void {
     console.log(`================================== > LOG REDIRECT ${id} => ${isActive} [${reason}]`);
@@ -479,7 +515,9 @@ function handleDisconnect(): void {
     } else {
         stop(true, () => {
             restartTimeout = setTimeout(() => {
-                processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix });
+                processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix }).catch(e =>
+                    logger.error(`${hostLogPrefix} Cannot process restart message: ${e.message}`),
+                );
                 setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1_000);
             }, 10_000);
         });
@@ -487,8 +525,9 @@ function handleDisconnect(): void {
 }
 
 /**
+ * Create and initialize the states database client
  *
- * @param onConnect
+ * @param onConnect Called once the states database is connected
  */
 function createStates(onConnect: () => void): void {
     states = new States({
@@ -527,7 +566,9 @@ function createStates(onConnect: () => void): void {
                             }
                         }
                     } else {
-                        processMessage(obj);
+                        processMessage(obj).catch(e =>
+                            logger.error(`${hostLogPrefix} Cannot process message: ${e.message}`),
+                        );
                     }
                 }
             } else if (!compactGroupController && id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
@@ -569,7 +610,9 @@ function createStates(onConnect: () => void): void {
                     // wake up adapter
                     if (procs[sub]) {
                         console.log(`Wake up ${id} ${JSON.stringify(state)}`);
-                        startInstance(sub, true);
+                        startInstance(sub, true).catch(e =>
+                            logger.error(`${hostLogPrefix} Cannot start instance ${sub}: ${e.message}`),
+                        );
                     } else {
                         logger.warn(`${hostLogPrefix} controller Adapter subscribed on ${id} does not exist!`);
                     }
@@ -583,13 +626,13 @@ function createStates(onConnect: () => void): void {
                 let currentLevel = config.log.level;
                 if (typeof state.val === 'string' && state.val !== currentLevel && isLogLevel(state.val)) {
                     config.log.level = state.val;
-                    for (const transport in logger.transports) {
+                    for (const transport of logger.transports) {
                         if (
-                            logger.transports[transport].level === currentLevel &&
+                            transport.level === currentLevel &&
                             // @ts-expect-error it's our custom property
-                            !logger.transports[transport]._defaultConfigLoglevel
+                            !transport._defaultConfigLoglevel
                         ) {
-                            logger.transports[transport].level = state.val;
+                            transport.level = state.val;
                         }
                     }
                     logger.info(`${hostLogPrefix} Loglevel changed from "${currentLevel}" to "${state.val}"`);
@@ -657,7 +700,9 @@ function createStates(onConnect: () => void): void {
             initMessageQueue();
             startAliveInterval();
 
-            initializeController();
+            initializeController().catch(e =>
+                logger.error(`${hostLogPrefix} Cannot initialize controller: ${e.message}`),
+            );
             onConnect && onConnect();
         },
         disconnected: () => {
@@ -710,7 +755,7 @@ async function initializeController(): Promise<void> {
     autoUpgradeManager = new AdapterAutoUpgradeManager({ objects, states, logger, logPrefix: hostLogPrefix });
     blocklistManager = new BlocklistManager({ objects });
 
-    checkSystemLocaleSupported();
+    await checkSystemLocaleSupported();
 
     if (connected === null) {
         connected = true;
@@ -718,14 +763,17 @@ async function initializeController(): Promise<void> {
             // @ts-expect-error objects and state object version conflicts that are none
             pluginHandler.setDatabaseForPlugins(objects, states);
             await pluginHandler.initPlugins(ioPackage);
-            states.subscribe(`${hostObjectPrefix}.plugins.*`);
+            states
+                .subscribe(`${hostObjectPrefix}.plugins.*`)
+                .catch(e => logger.error(`${hostLogPrefix} Cannot subscribe to plugin states: ${e.message}`));
 
             // Do not start if we're still stopping the instances
             await checkHost();
-            startMultihost(config);
-            setMeta();
+            await startMultihost(config);
+            await setMeta();
+            await loadUsedResources();
             started = true;
-            getInstances();
+            await getInstances();
         }
     } else {
         connected = true;
@@ -733,15 +781,16 @@ async function initializeController(): Promise<void> {
 
         // Do not start if we're still stopping the instances
         if (!isStopping) {
-            getInstances();
+            await getInstances();
         }
     }
 }
 
 // create "objects" object
 /**
+ * Create and initialize the objects database client
  *
- * @param onConnect
+ * @param onConnect Called once the objects database is connected
  */
 function createObjects(onConnect: () => void): void {
     objects = new Objects({
@@ -769,9 +818,11 @@ function createObjects(onConnect: () => void): void {
             }
 
             // first execution now
-            checkPrimaryHost();
+            checkPrimaryHost().catch(e => logger.error(`${hostLogPrefix} Cannot check primary host: ${e.message}`));
 
-            initializeController();
+            initializeController().catch(e =>
+                logger.error(`${hostLogPrefix} Cannot initialize controller: ${e.message}`),
+            );
             onConnect && onConnect();
         },
         disconnected: (/*error*/) => {
@@ -800,6 +851,11 @@ function createObjects(onConnect: () => void): void {
 
             try {
                 logger.debug(`${hostLogPrefix} object change ${id} (from: ${obj ? obj.from : null})`);
+
+                // the configuration of an instance defines which resources it occupies, so keep the registry
+                // in line with it - no matter whether the instance is known here, running, or was just deleted
+                await syncUsedResourcesOfInstance(id, obj);
+
                 // known adapter
                 const proc = procs[id];
 
@@ -810,18 +866,19 @@ function createObjects(onConnect: () => void): void {
                         if (
                             !compactGroupController &&
                             proc.config.common.compactGroup &&
-                            compactProcs[proc.config.common.compactGroup]?.instances?.includes(id as any)
+                            compactProcs[proc.config.common.compactGroup]?.instances?.includes(id)
                         ) {
                             compactProcs[proc.config.common.compactGroup].instances.splice(
-                                compactProcs[proc.config.common.compactGroup].instances.indexOf(id as any),
+                                compactProcs[proc.config.common.compactGroup].instances.indexOf(id),
                                 1,
                             );
                         }
 
                         // instance removed -> remove all notifications
-                        await notificationHandler.clearNotifications(null, null, id as any);
+                        // (its used resources were already freed by syncUsedResourcesOfInstance above)
+                        await notificationHandler.clearNotifications(null, null, id);
                         proc.config.common.enabled = false;
-                        // @ts-expect-error check if we can handle it different
+                        // @ts-expect-error check if we can handle it differently
                         proc.config.common.host = null;
                         // @ts-expect-error it is only used in checkAndAddInstance, find a way without modifying the InstanceObject
                         proc.config.deleted = true;
@@ -841,10 +898,10 @@ function createObjects(onConnect: () => void): void {
                             proc.config.common.compactGroup &&
                             (proc.config.common.compactGroup !== obj.common.compactGroup ||
                                 proc.config.common.runAsCompactMode !== obj.common.runAsCompactMode) &&
-                            compactProcs[proc.config.common.compactGroup]?.instances?.includes(id as any)
+                            compactProcs[proc.config.common.compactGroup]?.instances?.includes(id)
                         ) {
                             compactProcs[proc.config.common.compactGroup].instances.splice(
-                                compactProcs[proc.config.common.compactGroup].instances.indexOf(id as any),
+                                compactProcs[proc.config.common.compactGroup].instances.indexOf(id),
                                 1,
                             );
                         }
@@ -858,7 +915,7 @@ function createObjects(onConnect: () => void): void {
                         }
                         const _ipArr = tools.findIPs();
 
-                        if (checkAndAddInstance(proc.config as any, _ipArr)) {
+                        if (checkAndAddInstance(proc.config, _ipArr)) {
                             if (
                                 proc.config.common.enabled &&
                                 (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
@@ -866,7 +923,7 @@ function createObjects(onConnect: () => void): void {
                                 if (proc.restartTimer) {
                                     clearTimeout(proc.restartTimer);
                                 }
-                                const restartTimeout = (proc.config.common.stopTimeout || 500) + 2_500;
+                                const restartTimeout = 2_500;
                                 proc.restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                             }
                         } else {
@@ -874,10 +931,10 @@ function createObjects(onConnect: () => void): void {
                             if (
                                 !compactGroupController &&
                                 proc.config.common.compactGroup &&
-                                compactProcs[proc.config.common.compactGroup]?.instances?.includes(id as any)
+                                compactProcs[proc.config.common.compactGroup]?.instances?.includes(id)
                             ) {
                                 compactProcs[proc.config.common.compactGroup].instances.splice(
-                                    compactProcs[proc.config.common.compactGroup].instances.indexOf(id as any),
+                                    compactProcs[proc.config.common.compactGroup].instances.indexOf(id),
                                     1,
                                 );
                             }
@@ -898,22 +955,24 @@ function createObjects(onConnect: () => void): void {
                         );
                     } else {
                         const _ipArr = tools.findIPs();
-                        if (proc.config && checkAndAddInstance(proc.config as any, _ipArr)) {
+                        if (proc.config && checkAndAddInstance(proc.config, _ipArr)) {
                             if (
                                 proc.config.common.enabled &&
                                 (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
                             ) {
-                                startInstance(id);
+                                startInstance(id).catch(e =>
+                                    logger.error(`${hostLogPrefix} Cannot start instance ${id}: ${e.message}`),
+                                );
                             }
                         } else {
                             // moved: also remove from an instance list of compactGroup
                             if (
                                 !compactGroupController &&
                                 proc.config.common.compactGroup &&
-                                compactProcs[proc.config.common.compactGroup]?.instances?.includes(id as any)
+                                compactProcs[proc.config.common.compactGroup]?.instances?.includes(id)
                             ) {
                                 compactProcs[proc.config.common.compactGroup].instances.splice(
-                                    compactProcs[proc.config.common.compactGroup].instances.indexOf(id as any),
+                                    compactProcs[proc.config.common.compactGroup].instances.indexOf(id),
                                     1,
                                 );
                             }
@@ -955,7 +1014,7 @@ function createObjects(onConnect: () => void): void {
             if (!isStopping) {
                 isPrimary = false;
                 logger.info('The primary host is no longer active. Checking responsibilities.');
-                checkPrimaryHost();
+                checkPrimaryHost().catch(e => logger.error(`${hostLogPrefix} Cannot check primary host: ${e.message}`));
             }
         },
     });
@@ -968,15 +1027,17 @@ function startAliveInterval(): void {
         config.system.checkDiskInterval !== 0 ? Math.round(config.system.checkDiskInterval) || 300_000 : 0;
     if (!compactGroupController) {
         // Provide info to see for each host if compact is enabled or not and be able to use in Admin or such
-        states!.setState(`${hostObjectPrefix}.compactModeEnabled`, {
-            ack: true,
-            from: hostObjectPrefix,
-            val: config.system.compact || false,
-        });
+        states!
+            .setState(`${hostObjectPrefix}.compactModeEnabled`, {
+                ack: true,
+                from: hostObjectPrefix,
+                val: config.system.compact || false,
+            })
+            .catch(e => logger.error(`${hostLogPrefix} Cannot set compactModeEnabled state: ${e.message}`));
     }
     reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
 
-    reportStatus();
+    reportStatus().catch(e => logger.error(`${hostLogPrefix} Cannot report status: ${e.message}`));
     tools.measureEventLoopLag(1_000, lag => eventLoopLags.push(lag!));
 }
 
@@ -1027,18 +1088,38 @@ async function checkPrimaryHost(): Promise<void> {
     }
 }
 
+/**
+ * Run fire-and-forget database writes in parallel and log any that reject.
+ *
+ * @param writes The pending write operations, kept running concurrently
+ * @param errorText Context prepended to the error log if a write rejects
+ */
+function logWriteErrors(writes: Promise<unknown>[], errorText: string): void {
+    Promise.allSettled(writes)
+        .then(results => {
+            for (const result of results) {
+                if (result.status === 'rejected') {
+                    logger.error(`${hostLogPrefix} ${errorText}: ${result.reason}`);
+                }
+            }
+        })
+        .catch(e => logger.error(`${hostLogPrefix} ${errorText}: ${e.message}`));
+}
+
 async function reportStatus(): Promise<void> {
     if (!states) {
         return;
     }
     const id = hostObjectPrefix;
     outputCount += 10;
-    states.setState(`${id}.alive`, {
-        val: true,
-        ack: true,
-        expire: Math.floor(config.system.statisticsInterval / 1_000) + 10,
-        from: id,
-    });
+    states
+        .setState(`${id}.alive`, {
+            val: true,
+            ack: true,
+            expire: Math.floor(config.system.statisticsInterval / 1_000) + 10,
+            from: id,
+        })
+        .catch(e => logger.error(`${hostLogPrefix} Cannot update host alive state: ${e.message}`));
 
     // provide infos about current process
 
@@ -1056,12 +1137,13 @@ async function reportStatus(): Promise<void> {
         pidUsage(process.pid, (err, stats) => {
             // controller.s might be stopped, but this is still running
             if (!err && states && states.setState && stats) {
-                states.setState(`${id}.cpu`, {
-                    ack: true,
-                    from: id,
-                    val: Math.round(100 * stats.cpu) / 100,
-                });
-                states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1_000 });
+                logWriteErrors(
+                    [
+                        states.setState(`${id}.cpu`, { ack: true, from: id, val: Math.round(100 * stats.cpu) / 100 }),
+                        states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1_000 }),
+                    ],
+                    'Cannot update process status states',
+                );
                 outputCount += 2;
             }
         });
@@ -1071,41 +1153,61 @@ async function reportStatus(): Promise<void> {
 
     try {
         const mem = process.memoryUsage();
-        states.setState(`${id}.memRss`, {
-            val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100,
-            ack: true,
-            from: id,
-        });
-        states.setState(`${id}.memHeapTotal`, {
-            val: Math.round(mem.heapTotal / 10485.76 /* 1MB / 100 */) / 100,
-            ack: true,
-            from: id,
-        });
-        states.setState(`${id}.memHeapUsed`, {
-            val: Math.round(mem.heapUsed / 10485.76 /* 1MB / 100 */) / 100,
-            ack: true,
-            from: id,
-        });
+        logWriteErrors(
+            [
+                states.setState(`${id}.memRss`, {
+                    val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100,
+                    ack: true,
+                    from: id,
+                }),
+                states.setState(`${id}.memHeapTotal`, {
+                    val: Math.round(mem.heapTotal / 10485.76 /* 1MB / 100 */) / 100,
+                    ack: true,
+                    from: id,
+                }),
+                states.setState(`${id}.memHeapUsed`, {
+                    val: Math.round(mem.heapUsed / 10485.76 /* 1MB / 100 */) / 100,
+                    ack: true,
+                    from: id,
+                }),
+            ],
+            'Cannot update memory status states',
+        );
     } catch (e) {
         logger.error(`${hostLogPrefix} Cannot read memoryUsage data: ${e.message}`);
     }
 
     // provide machine infos
-    states.setState(`${id}.load`, { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id });
-    states.setState(`${id}.uptime`, { val: Math.round(process.uptime()), ack: true, from: id });
-    states.setState(`${id}.mem`, { val: Math.round(100 - (os.freemem() / os.totalmem()) * 100), ack: true, from: id });
-    states.setState(`${id}.freemem`, { val: Math.round(os.freemem() / 1_048_576 /* 1MB */), ack: true, from: id });
+    logWriteErrors(
+        [
+            states.setState(`${id}.load`, { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id }),
+            states.setState(`${id}.uptime`, { val: Math.round(process.uptime()), ack: true, from: id }),
+            states.setState(`${id}.mem`, {
+                val: Math.round(100 - (os.freemem() / os.totalmem()) * 100),
+                ack: true,
+                from: id,
+            }),
+            states.setState(`${id}.freemem`, {
+                val: Math.round(os.freemem() / 1_048_576 /* 1MB */),
+                ack: true,
+                from: id,
+            }),
+        ],
+        'Cannot update machine status states',
+    );
 
     if (fs.existsSync('/proc/meminfo')) {
         try {
             const text = fs.readFileSync('/proc/meminfo', 'utf8');
             const m = text && text.match(/MemAvailable:\s*(\d+)/);
             if (m && m[1]) {
-                states.setState(`${id}.memAvailable`, {
-                    val: Math.round(parseInt(m[1], 10) * 0.001024),
-                    ack: true,
-                    from: id,
-                });
+                states
+                    .setState(`${id}.memAvailable`, {
+                        val: Math.round(parseInt(m[1], 10) * 0.001024),
+                        ack: true,
+                        from: id,
+                    })
+                    .catch(e => logger.error(`${hostLogPrefix} Cannot update memAvailable state: ${e.message}`));
                 outputCount++;
             }
         } catch (e) {
@@ -1139,16 +1241,13 @@ async function reportStatus(): Promise<void> {
                     });
                 }
 
-                states.setState(`${id}.diskSize`, {
-                    val: diskSize,
-                    ack: true,
-                    from: id,
-                });
-                states.setState(`${id}.diskFree`, {
-                    val: diskFree,
-                    ack: true,
-                    from: id,
-                });
+                logWriteErrors(
+                    [
+                        states.setState(`${id}.diskSize`, { val: diskSize, ack: true, from: id }),
+                        states.setState(`${id}.diskFree`, { val: diskFree, ack: true, from: id }),
+                    ],
+                    'Cannot update disk status states',
+                );
 
                 outputCount += 2;
             }
@@ -1158,16 +1257,26 @@ async function reportStatus(): Promise<void> {
     }
 
     // some statistics
-    states.setState(`${id}.inputCount`, { val: inputCount, ack: true, from: id });
-    states.setState(`${id}.outputCount`, { val: outputCount, ack: true, from: id });
+    logWriteErrors(
+        [
+            states.setState(`${id}.inputCount`, { val: inputCount, ack: true, from: id }),
+            states.setState(`${id}.outputCount`, { val: outputCount, ack: true, from: id }),
+        ],
+        'Cannot update statistics states',
+    );
 
     if (eventLoopLags.length) {
         const eventLoopLag = Math.ceil(eventLoopLags.reduce((a, b) => a + b) / eventLoopLags.length);
-        states.setState(`${id}.eventLoopLag`, { val: eventLoopLag, ack: true, from: id }); // average of measured values
+        // average of measured values
+        states
+            .setState(`${id}.eventLoopLag`, { val: eventLoopLag, ack: true, from: id })
+            .catch(e => logger.error(`${hostLogPrefix} Cannot update eventLoopLag state: ${e.message}`));
         eventLoopLags = [];
     }
 
-    states.setState(`${id}.compactgroupProcesses`, { val: Object.keys(compactProcs).length, ack: true, from: id });
+    states
+        .setState(`${id}.compactgroupProcesses`, { val: Object.keys(compactProcs).length, ack: true, from: id })
+        .catch(e => logger.error(`${hostLogPrefix} Cannot update compactgroupProcesses state: ${e.message}`));
     let realProcesses = 0;
     let compactProcesses = 0;
     Object.values(procs).forEach(proc => {
@@ -1179,8 +1288,13 @@ async function reportStatus(): Promise<void> {
             }
         }
     });
-    states.setState(`${id}.instancesAsProcess`, { val: realProcesses, ack: true, from: id });
-    states.setState(`${id}.instancesAsCompact`, { val: compactProcesses, ack: true, from: id });
+    logWriteErrors(
+        [
+            states.setState(`${id}.instancesAsProcess`, { val: realProcesses, ack: true, from: id }),
+            states.setState(`${id}.instancesAsCompact`, { val: compactProcesses, ack: true, from: id }),
+        ],
+        'Cannot update instance count states',
+    );
 
     inputCount = 0;
     outputCount = 0;
@@ -1191,10 +1305,11 @@ async function reportStatus(): Promise<void> {
 }
 
 /**
+ * Reassign the given instance objects from one host to another
  *
- * @param objs
- * @param oldHostname
- * @param newHostname
+ * @param objs The instance objects to reassign
+ * @param oldHostname The hostname the instances currently belong to
+ * @param newHostname The hostname the instances should be moved to
  */
 async function changeHost(
     objs: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[],
@@ -1227,7 +1342,7 @@ async function changeHost(
  *
  * @param instance instance id without `system.adapter.` prefix
  * @param autoInstance instance id
- * @param callback
+ * @param callback Called once the auto subscribe has been cleaned
  */
 function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.Instance, callback: () => void): void {
     inputCount++;
@@ -1269,9 +1384,10 @@ function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.I
 }
 
 /**
+ * Clean all auto subscribes of the given instance
  *
- * @param instanceID
- * @param callback
+ * @param instanceID The full instance id (e.g. "system.adapter.admin.0")
+ * @param callback Called once all auto subscribes have been cleaned
  */
 function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: () => void): void {
     const instance = instanceID.substring(15); // get name.0
@@ -1298,8 +1414,9 @@ function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: 
 }
 
 /**
+ * Delete the given objects from the objects database
  *
- * @param objs
+ * @param objs The objects to delete
  */
 async function delObjects(objs: ioBroker.GetObjectViewItem<ioBroker.AnyObject>[]): Promise<void> {
     for (const row of objs) {
@@ -1586,8 +1703,9 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
 
 // check if some IPv4 address found. If not try in 30 seconds one more time (max 10 times)
 /**
+ * Store the host IP addresses in the objects database
  *
- * @param ipList
+ * @param ipList The list of IP addresses to store; if omitted, the current addresses are determined
  */
 function setIPs(ipList?: string[]): void {
     if (isStopping) {
@@ -1644,7 +1762,7 @@ function setIPs(ipList?: string[]): void {
 /**
  * Extends objects, optionally you can provide a state at each task (does not throw)
  *
- * @param tasks
+ * @param tasks The objects to extend, each optionally carrying a state to set
  */
 async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
     for (const task of tasks) {
@@ -1654,8 +1772,8 @@ async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
         }
 
         try {
-            await objects!.extendObjectAsync(task._id, task);
-            // if extend throws we don't want to set corresponding state
+            await objects!.extendObject(task._id, task);
+            // if extend throws, we don't want to set corresponding state
             if (state) {
                 await states!.setState(task._id, state);
             }
@@ -1744,6 +1862,7 @@ async function setMeta(): Promise<void> {
                 }
                 const pluginStatesIndex = `${hostObjectPrefix}.plugins.`.length;
                 const notificationStatesIndex = `${hostObjectPrefix}.notifications.`.length;
+                const usedResourcesStatesIndex = `${hostObjectPrefix}.usedResources.`.length;
                 const toDelete = thisHostStates.filter(out1 => {
                     const found = tasks.find(out2 => out1.id === out2._id);
                     if (found === undefined) {
@@ -1756,6 +1875,10 @@ async function setMeta(): Promise<void> {
                         } else if (out1.id.startsWith(`${hostObjectPrefix}.notifications.`)) {
                             // notification states are allowed to exist if their scope still exists
                             return !notificationHandler.scopeExists(out1.id.substring(notificationStatesIndex));
+                        } else if (out1.id.startsWith(`${hostObjectPrefix}.usedResources.`)) {
+                            // the registry creates its states on demand, so no task knows them: a deleted
+                            // object leaves the state behind, where no read by pattern finds it any more
+                            return !isValidUsedResourceType(out1.id.substring(usedResourcesStatesIndex));
                         }
                     }
 
@@ -1830,7 +1953,7 @@ async function setMeta(): Promise<void> {
                         // terminate ioBroker to restart the controller as UUID probably changed
                         logger.info(`${hostLogPrefix} Restart js-controller because vendor information updated`);
                         await wait(200);
-                        restart(() => !isStopping && stop(false));
+                        await restart(() => !isStopping && stop(false));
                     }
                 }
             }
@@ -1840,16 +1963,41 @@ async function setMeta(): Promise<void> {
 
 // Subscribe on message queue
 function initMessageQueue(): void {
-    states!.subscribeMessage(hostObjectPrefix);
+    states!
+        .subscribeMessage(hostObjectPrefix)
+        .catch(e => logger.error(`${hostLogPrefix} Cannot subscribe to host messages: ${e.message}`));
 }
 
 /**
  * Send a message to another adapter instance
  *
  * @param objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
- * @param command
- * @param message
- * @param callback
+ * @param command The command to send
+ * @param message The message payload to send
+ */
+function sendTo(objName: string, command: string, message: ioBroker.MessagePayload): Promise<void>;
+/**
+ * Send a message to another adapter instance
+ *
+ * @param objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
+ * @param command The command to send
+ * @param message The message payload to send
+ * @param callback Called with the response from the target instance
+ */
+function sendTo(
+    objName: string,
+    command: string,
+    message: ioBroker.MessagePayload,
+    callback: ioBroker.ErrorCallback | ioBroker.MessageCallbackInfo,
+): void;
+
+/**
+ * Send a message to another adapter instance
+ *
+ * @param objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
+ * @param command The command to send
+ * @param message The message payload to send
+ * @param callback Called with the response from the target instance
  */
 async function sendTo(
     objName: string,
@@ -1973,10 +2121,522 @@ async function uploadAdapter(task: UploadTask): Promise<void> {
     }
 }
 
+/** Resource types whose state object has already been created in this controller run */
+const createdUsedResourceObjects = new Set<ioBroker.UsedResourceType>();
+/** The write currently in flight per resource type, so that two writes of the same type cannot interleave */
+const pendingUsedResourceWrites = new Map<ioBroker.UsedResourceType, Promise<boolean>>();
+
+/**
+ * Write the current content of a resource type into `system.host.<name>.usedResources.<type>`.
+ *
+ * The object is only created the first time this type is written in this controller run - `extendObject`
+ * costs an objects-DB write plus a change event broadcast to every connected client, which is not worth
+ * paying on every resource change.
+ *
+ * Never rejects, because the callers are partly fire-and-forget: a failed write is logged and reported
+ * through the return value, so the request/response handlers can tell the adapter that its change did not
+ * reach the state.
+ *
+ * @param type the resource type to write
+ * @returns whether the state was written
+ */
+async function writeUsedResources(type: ioBroker.UsedResourceType): Promise<boolean> {
+    const id = `${hostObjectPrefix}.usedResources.${type}`;
+
+    try {
+        if (!createdUsedResourceObjects.has(type)) {
+            await objects!.extendObject(id, {
+                type: 'state',
+                common: {
+                    name: `Used resources: ${type}`,
+                    type: 'array',
+                    role: 'json',
+                    read: true,
+                    write: false,
+                },
+                native: {},
+            });
+            createdUsedResourceObjects.add(type);
+        }
+
+        // read the registry only now: everything before this point may have yielded to another write
+        const resources = usedResources.get(type);
+        await states!.setState(id, { val: JSON.stringify(resources), ack: true, from: hostObjectPrefix });
+        return true;
+    } catch (e) {
+        logger.warn(`${hostLogPrefix} Cannot persist used resources of type "${type}": ${e.message}`);
+        return false;
+    }
+}
+
+/**
+ * Persist the used resources of a given type into `system.host.<name>.usedResources.<type>`.
+ *
+ * Writes of the same type are chained: several callers are deliberately fire-and-forget (instance start and
+ * exit handlers), so without the chain two of them could read the registry, interleave over their awaits and
+ * let the older content win - which would then also be what the next controller start reads back.
+ *
+ * @param type the resource type to persist
+ * @returns whether the state was written
+ */
+function persistUsedResources(type: ioBroker.UsedResourceType): Promise<boolean> {
+    if (compactGroupController) {
+        // the registry of a host is owned by its main controller: a compact group controller writes to its own
+        // `system.host.<name>compactGroup<n>` prefix, which nobody reads, and would compete with the real one.
+        // Guarding here covers every caller, including the lifecycle handlers shared with the main controller.
+        return Promise.resolve(true);
+    }
+
+    const pending = pendingUsedResourceWrites.get(type) || Promise.resolve();
+    // `.catch` before chaining on purpose: a rejected link would otherwise never run the write of the
+    // next one, and the cleanup below would never fire either - so that resource type would silently
+    // stop being persisted for the rest of this controller's life. writeUsedResources() handles its
+    // own errors today, but that invariant lives in another function.
+    const next = pending.catch(() => {}).then(() => writeUsedResources(type));
+    pendingUsedResourceWrites.set(type, next);
+
+    // forget the chain again once nothing else is queued behind it
+    void next
+        .catch(() => {})
+        .then(() => {
+            if (pendingUsedResourceWrites.get(type) === next) {
+                pendingUsedResourceWrites.delete(type);
+            }
+        });
+
+    return next;
+}
+
+/**
+ * Persist all given resource types (as reported changed by a registry mutation).
+ *
+ * @param types the resource types to persist
+ * @returns whether every one of them was written
+ */
+async function persistUsedResourceTypes(types: ioBroker.UsedResourceType[]): Promise<boolean> {
+    let persisted = true;
+    for (const type of types) {
+        persisted = (await persistUsedResources(type)) && persisted;
+    }
+    return persisted;
+}
+
+/**
+ * Load the used resources persisted under `system.host.<name>.usedResources.*` back into the registry.
+ * Called once on controller start so that registrations survive a controller restart.
+ *
+ * On load an assessment is done (see {@link UsedResourcesRegistry.assess}):
+ * - all `isBlocked` flags are reset to `false`, because at controller start no instance is running yet
+ *   (running instances re-register and thereby re-block their resources on their next start);
+ * - resources of instances that no longer exist (e.g. deleted via CLI while the controller was down) are removed,
+ *   and so are those of instances which opted out of the registry (`common.declareUsedResources: false`).
+ */
+async function loadUsedResources(): Promise<void> {
+    if (!states || !objects || compactGroupController) {
+        // the registry of a host is owned by its main controller
+        return;
+    }
+    try {
+        // collect the instances (namespaces, e.g. "mqtt.0") of this host that may keep entries, and the ones
+        // whose resources the controller derives from their configuration
+        const trackedInstances = new Set<string>();
+        const controllerManaged: ioBroker.InstanceObject[] = [];
+        const instanceView = await objects.getObjectViewAsync('system', 'instance', {
+            startkey: SYSTEM_ADAPTER_PREFIX,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`,
+        });
+        for (const row of instanceView.rows) {
+            const instance = row.value;
+            if (!instance?._id) {
+                continue;
+            }
+            // Only instances of this host count: the registry is per host, so an instance that was
+            // moved elsewhere while this controller was down must not keep its entries alive here -
+            // nothing would ever remove them, because no object change follows a move that already
+            // happened.
+            if (instance.common?.host !== hostname) {
+                continue;
+            }
+
+            const mode = getUsedResourcesMode(instance);
+            // an instance that opted out must not keep anything, e.g. what was derived before an adapter
+            // update set the flag - so it is treated like one that does not exist anymore
+            if (mode === 'none') {
+                continue;
+            }
+
+            trackedInstances.add(instance._id.substring(SYSTEM_ADAPTER_PREFIX.length));
+            if (mode === 'controller') {
+                controllerManaged.push(instance);
+            }
+        }
+
+        // types whose content changed while loading and must be written back
+        const changedTypes = new Set<ioBroker.UsedResourceType>();
+
+        const keys = (await states.getKeys(`${hostObjectPrefix}.usedResources.*`)) || [];
+        const values = keys.length ? (await states.getStates(keys)) || [] : [];
+        for (let i = 0; i < keys.length; i++) {
+            const state = values[i];
+            if (!state || typeof state.val !== 'string' || !state.val) {
+                continue;
+            }
+            const type = keys[i].split('.').pop();
+            if (!isValidUsedResourceType(type)) {
+                logger.warn(`${hostLogPrefix} Ignoring used resources of invalid type in "${keys[i]}"`);
+                continue;
+            }
+            try {
+                const parsed: unknown = JSON.parse(state.val);
+                if (Array.isArray(parsed)) {
+                    // drop entries that do not have the expected shape, so nothing malformed enters the registry.
+                    // An entry whose own type does not match the state it is stored in would land in this bucket
+                    // while claiming to be something else, which makes conflicts and duplicates inconsistent.
+                    const valid = parsed.filter(entry => isRegisteredResource(entry) && entry.type === type);
+                    if (valid.length !== parsed.length) {
+                        logger.warn(
+                            `${hostLogPrefix} Ignoring ${parsed.length - valid.length} malformed used resource(s) of type "${type}"`,
+                        );
+                        changedTypes.add(type);
+                    }
+                    usedResources.setType(type, valid);
+                }
+            } catch {
+                // ignore malformed content
+            }
+        }
+
+        // reset blocking flags and drop resources of no longer existing or opted-out instances
+        for (const type of usedResources.assess(trackedInstances)) {
+            changedTypes.add(type);
+        }
+
+        // (re)derive the resources of the instances the controller manages itself, so that their configured
+        // ports are listed no matter whether they were ever started
+        for (const instance of controllerManaged) {
+            for (const type of seedUsedResourcesOfInstance(instance)) {
+                changedTypes.add(type);
+            }
+        }
+
+        await persistUsedResourceTypes([...changedTypes]);
+    } catch (e) {
+        logger.warn(`${hostLogPrefix} Cannot load used resources: ${e.message}`);
+    }
+}
+
+/**
+ * Determine the TCP port an instance occupies according to its configuration.
+ *
+ * @param instance the instance object
+ * @returns the resource payload for `native.port` (plus `native.bind` if set), or null if no port is configured
+ */
+function getConfiguredTcpPort(instance: ioBroker.InstanceObject): ioBroker.TcpPortResourceData | null {
+    const port = instance.native?.port;
+    const portNumber =
+        typeof port === 'number' ? port : typeof port === 'string' && port.trim() !== '' ? Number(port) : Number.NaN;
+    // port 0 means "pick a free one at runtime", so it does not occupy anything
+    if (!Number.isInteger(portNumber) || portNumber <= 0 || portNumber > 65_535) {
+        return null;
+    }
+
+    const data: ioBroker.TcpPortResourceData = { port: portNumber };
+    // if the instance also binds to a specific interface, record it together with the port
+    const bind = instance.native?.bind;
+    if (typeof bind === 'string' && bind.trim() !== '') {
+        data.bind = bind;
+    }
+
+    return data;
+}
+
+/**
+ * Derive the used resources of an instance the controller manages itself (`common.declareUsedResources` not set)
+ * from its configuration and replace what was derived for it before.
+ *
+ * Deriving from the object instead of registering on process start is what makes the registry answer the
+ * question it exists for: a port configured for an instance that was never started, or that is currently
+ * stopped, is listed as well - and a changed `native.port` is picked up right away instead of at the next
+ * restart.
+ *
+ * @param instance the instance object
+ * @returns the resource types that changed and should be persisted
+ */
+function seedUsedResourcesOfInstance(instance: ioBroker.InstanceObject): ioBroker.UsedResourceType[] {
+    const namespace = instance._id.substring(SYSTEM_ADAPTER_PREFIX.length);
+    const changed = new Set<ioBroker.UsedResourceType>(usedResources.removeInstance(namespace));
+
+    const data = getConfiguredTcpPort(instance);
+    if (data) {
+        for (const type of usedResources.register('tcpPort', data, namespace)) {
+            changed.add(type);
+        }
+        // register() marks a resource as actively held, which is only true while the instance runs
+        const isRunning = !!procs[instance._id]?.process;
+        for (const type of usedResources.setInstanceBlocked(namespace, isRunning)) {
+            changed.add(type);
+        }
+    }
+
+    return [...changed];
+}
+
+/**
+ * Bring the used-resources registry in line with an instance that is about to run.
+ *
+ * Called from the paths that actually launch a process, not from {@link startInstance} as a whole: a
+ * redundant call for an instance that is already running must not touch the registry, because nothing
+ * would re-register afterwards and the live entries would simply be gone.
+ *
+ * @param id the instance id, e.g. "system.adapter.mqtt.0"
+ * @param instance the instance object
+ */
+async function markInstanceResourcesStarting(id: string, instance: ioBroker.InstanceObject): Promise<void> {
+    if (compactGroupController) {
+        return;
+    }
+
+    const namespace = id.substring(SYSTEM_ADAPTER_PREFIX.length);
+
+    await persistUsedResourceTypes(
+        getUsedResourcesMode(instance) === 'controller'
+            ? // the resources derived from the configuration are held again as soon as the instance runs
+              usedResources.setInstanceBlocked(namespace, true)
+            : // the adapter declares its resources itself: drop what it declared before this (re)start,
+              // because the settings may have changed in between. What it registers now is additive.
+              // An instance that opted out has no entries, so this only catches a leftover.
+              usedResources.removeInstance(namespace),
+    );
+}
+
+/**
+ * Undo what {@link markInstanceResourcesStarting} prepared when the launch did not produce a process.
+ *
+ * Nothing corrects this later: the handler that unblocks the entries again is installed together with the
+ * process, so a failed start would leave the derived resources of the instance listed as actively held. An
+ * instance whose adapter declares its own resources has no entries at this point, which is exactly right -
+ * it is not running and has not declared anything yet.
+ *
+ * @param id the instance id, e.g. "system.adapter.mqtt.0"
+ */
+async function markInstanceResourcesNotStarted(id: string): Promise<void> {
+    if (compactGroupController) {
+        return;
+    }
+
+    await persistUsedResourceTypes(usedResources.setInstanceBlocked(id.substring(SYSTEM_ADAPTER_PREFIX.length), false));
+}
+
+/**
+ * Bring the used-resources registry in line with the current state of an instance object. This is the single
+ * place where the configuration of an instance enters the registry:
+ *
+ * - an instance that was deleted or moved to another host loses all its entries;
+ * - an instance the controller manages itself gets its entries derived from its configuration;
+ * - an adapter-managed instance (`common.declareUsedResources: true`) is left alone - it declares its resources
+ *   itself while it runs, and {@link startInstance} drops the previous declarations when it starts;
+ * - an instance that opted out (`common.declareUsedResources: false`) loses all its entries, e.g. the ones
+ *   derived before an adapter update set the flag.
+ *
+ * @param id the instance id, e.g. "system.adapter.mqtt.0"
+ * @param obj the current instance object, or null if the instance was deleted
+ */
+async function syncUsedResourcesOfInstance(
+    id: ioBroker.ObjectIDs.Instance,
+    obj: ioBroker.InstanceObject | null,
+): Promise<void> {
+    if (compactGroupController) {
+        // the registry of a host is owned by its main controller
+        return;
+    }
+
+    const namespace = id.substring(SYSTEM_ADAPTER_PREFIX.length);
+    let changed: ioBroker.UsedResourceType[];
+
+    if (!obj?.common || obj.common.host !== hostname) {
+        // deleted or moved to another host: this host does not track its resources anymore
+        changed = usedResources.removeInstance(namespace);
+    } else {
+        const mode = getUsedResourcesMode(obj);
+
+        if (mode === 'adapter') {
+            if (procs[id]?.process) {
+                // it is running, so its entries are the ones it declared itself - and nothing would register
+                // them again before the next start
+                return;
+            }
+
+            // It is not running, so whatever is left can only be what the controller derived before the flag
+            // was set, e.g. by an adapter update. Nothing else would ever remove it: the entries are dropped
+            // when the instance starts, which may be never.
+            changed = usedResources.removeInstance(namespace);
+        } else {
+            changed =
+                mode === 'controller' ? seedUsedResourcesOfInstance(obj) : usedResources.removeInstance(namespace);
+        }
+    }
+
+    await persistUsedResourceTypes(changed);
+}
+
+/**
+ * Determine which instance an incoming used-resources host message belongs to.
+ *
+ * The instance is derived from `msg.from` and not taken from the message body: the host message box is
+ * reachable by everything that may `sendToHost`, so trusting `msg.message.instance` would let one instance
+ * register resources in the name of another - or free another one's registrations of a whole type. A body
+ * that claims a different instance is rejected instead of being silently corrected, so a caller that got it
+ * wrong notices. (`from` is written by the sender as well, so this is a plausibility check and not an
+ * authentication of the sender.)
+ *
+ * @param msg the received host message
+ * @returns the namespace of the instance the message belongs to, e.g. "mqtt.0"
+ */
+function getUsedResourceMessageInstance(msg: ioBroker.SendableMessage): string {
+    const from = typeof msg.from === 'string' ? msg.from : '';
+    if (!from.startsWith(SYSTEM_ADAPTER_PREFIX) || from.length === SYSTEM_ADAPTER_PREFIX.length) {
+        throw new Error(`used resources can only be addressed by an instance, but sender is "${from || 'unknown'}"`);
+    }
+    const instance = from.substring(SYSTEM_ADAPTER_PREFIX.length);
+
+    const claimedInstance: unknown = msg.message?.instance;
+    if (claimedInstance !== undefined && claimedInstance !== instance) {
+        throw new Error(
+            `instance "${instance}" must not act on the used resources of ${JSON.stringify(claimedInstance)}`,
+        );
+    }
+
+    return instance;
+}
+
+/**
+ * Refuse a change to the registry by an instance which does not declare its resources itself.
+ *
+ * An instance without the flag is controller-managed: its entries are derived from the instance object, and the
+ * next change to that object replaces whatever it registered here. One that opted out has no entries at all, and
+ * the next change drops what it registered. Accepting the call would look like it worked and the entry would
+ * vanish later for an unrelated reason, so it is refused with something the adapter developer can act on.
+ *
+ * Only the mutating commands go through this. Asking whether somebody else holds a resource changes nothing, and
+ * the instances which do not declare their own resources are exactly the ones that want to ask before they open a
+ * port. The config comes from `procs`, so this costs no database read.
+ *
+ * @param instance the namespace of the instance, e.g. "mqtt.0"
+ */
+async function assertInstanceDeclaresUsedResources(instance: string): Promise<void> {
+    const id = `${SYSTEM_ADAPTER_PREFIX}${instance}` as ioBroker.ObjectIDs.Instance;
+    // `procs` is a cache of the instances this host runs, so it answers without a database read - but the flag
+    // lives in the object, and the cache is missing exactly where it matters: an instance of another host
+    // sending here, and one whose object was deleted while its process still runs. Both must not get through.
+    let config = procs[id]?.config;
+
+    if (!config) {
+        try {
+            config = (await objects!.getObject(id)) as ioBroker.InstanceObject;
+        } catch (e) {
+            // a change to the registry is refused when it cannot be justified
+            throw new Error(`cannot read the object of instance "${instance}": ${e.message}`);
+        }
+    }
+
+    if (!config?.common) {
+        throw new Error(`instance "${instance}" does not exist`);
+    }
+
+    if (config.common.host !== hostname) {
+        // the registry belongs to one host, and the instance is supervised by the host it runs on
+        throw new Error(`instance "${instance}" does not run on this host`);
+    }
+
+    const mode = getUsedResourcesMode(config);
+
+    if (mode === 'controller') {
+        throw new Error(
+            `instance "${instance}" does not declare its used resources - add "common.declareUsedResources": true to its io-package.json`,
+        );
+    }
+    if (mode === 'none') {
+        throw new Error(
+            `instance "${instance}" opted out of the used resources registry - "common.declareUsedResources" is false in its io-package.json, set it to true to declare used resources`,
+        );
+    }
+}
+
+/**
+ * Let a caller that waits for an answer know when its change did not reach the state.
+ *
+ * The registry in memory has the change either way, and the next mutation of that type writes it again. But an
+ * adapter that awaits `registerUsedResource` would otherwise get a resolved promise for something
+ * `getHostUsedResources` cannot see, so the request/response path says what happened instead of only logging it.
+ *
+ * @param persisted what {@link persistUsedResourceTypes} reported
+ */
+function assertUsedResourcesPersisted(persisted: boolean): void {
+    if (!persisted) {
+        throw new Error('the used resources could not be written, see the log of the host');
+    }
+}
+
+/**
+ * Validate an incoming `registerUsedResource` / `freeUsedResource` / `checkUsedResource` host message and bring
+ * its payload into the stored form.
+ *
+ * The command decides two things: a registration has to describe the resource completely while a filter may leave
+ * fields out, and only the two commands which change the registry require the instance to declare its resources
+ * itself (see {@link assertInstanceDeclaresUsedResources}).
+ *
+ * @param msg the received host message
+ * @param command which of the three commands the message carries
+ * @returns the validated instance, resource type and normalized payload
+ */
+async function parseUsedResourceMessage(
+    msg: ioBroker.SendableMessage,
+    command: 'register' | 'free' | 'check',
+): Promise<{ instance: string; type: ioBroker.UsedResourceType; data: ioBroker.UsedResourceData | undefined }> {
+    const isRegistration = command === 'register';
+    const instance = getUsedResourceMessageInstance(msg);
+
+    if (command !== 'check') {
+        await assertInstanceDeclaresUsedResources(instance);
+    }
+
+    // the type becomes the last segment of "system.host.<name>.usedResources.<type>", so it must be validated
+    const type: unknown = msg.message?.type;
+    if (!isValidUsedResourceType(type)) {
+        throw new Error(`invalid resource type ${JSON.stringify(type)}`);
+    }
+
+    const raw: unknown = msg.message?.data;
+    if (raw === undefined) {
+        if (isRegistration) {
+            throw new Error(`missing payload for resource type "${type}"`);
+        }
+        return { instance, type, data: undefined };
+    }
+    if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
+        throw new Error(`invalid payload for resource type "${type}"`);
+    }
+
+    const normalized = normalizeUsedResourceData(type, raw, !isRegistration);
+    if ('error' in normalized) {
+        throw new Error(`invalid payload for resource type "${type}": ${normalized.error}`);
+    }
+
+    let data = normalized.data;
+    if (type === 'serialPort') {
+        // this host is the machine the port belongs to, so only here it can be told which names lead to the same device
+        data = await withSerialPortDevice(data as Partial<ioBroker.SerialPortResourceData>, isRegistration, name =>
+            resolveSerialPortName(name, process.platform, path => fs.realpath(path)),
+        );
+    }
+
+    return { instance, type, data: data as ioBroker.UsedResourceData };
+}
+
 /**
  * Process message to controller, like execute some script
  *
- * @param msg
+ * @param msg The message to process
  */
 async function processMessage(msg: ioBroker.SendableMessage): Promise<null | void> {
     // important: Do not forget to update the list of protected commands in iobroker.admin/lib/socket.js for "socket.on('sendToHost'"
@@ -2013,51 +2673,149 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         case 'cmdExec': {
             const mainFile = path.join(tools.getControllerDir(), `${tools.appName.toLowerCase()}.js`);
             const args = [...getDefaultNodeArgs(mainFile), mainFile];
-            if (!msg.message.data || typeof msg.message.data !== 'string') {
+            const message: {
+                id: string;
+                data: string;
+                files?: { file: string | Buffer; name: string; doNotDelete?: boolean }[];
+            } = msg.message;
+            // Each cmdExec call gets an own temporary folder for the sent files to avoid collisions between parallel calls
+            let tmpFolder: string | undefined;
+            let keepTmpFolder = false;
+            const filesToDelete: string[] = [];
+            const exitFromCmd = (exitCode: number | null, error?: string): void => {
+                if (tmpFolder) {
+                    if (keepTmpFolder) {
+                        // Some files are marked with "doNotDelete", so delete only the other ones
+                        for (const fileName of filesToDelete) {
+                            try {
+                                fs.unlinkSync(fileName);
+                            } catch (e) {
+                                logger.error(`Cannot delete file "${fileName}": ${e.message}`);
+                            }
+                        }
+                    } else {
+                        try {
+                            fs.rmSync(tmpFolder, { recursive: true, force: true });
+                        } catch (e) {
+                            logger.error(`Cannot delete temporary folder "${tmpFolder}": ${e.message}`);
+                        }
+                    }
+                }
+                if (msg.from) {
+                    if (error) {
+                        sendTo(msg.from, 'cmdStderr', {
+                            id: message.id,
+                            data: error,
+                        }).catch(e => logger.error(`Cannot sendTo: ${e}`));
+                    }
+                    sendTo(msg.from, 'cmdExit', { id: message.id, data: exitCode }).catch(e =>
+                        logger.error(`Cannot sendTo: ${e}`),
+                    );
+                    // Sometimes finished command is lost, resend it
+                    setTimeout(
+                        () =>
+                            sendTo(msg.from, 'cmdExit', { id: message.id, data: exitCode }).catch(e =>
+                                logger.error(`Cannot sendTo: ${e}`),
+                            ),
+                        1_000,
+                    );
+                }
+            };
+
+            if (!message.data || typeof message.data !== 'string') {
                 logger.warn(
                     `${hostLogPrefix} ${
                         tools.appName
                     } Invalid cmdExec object. Expected key "data" with the command as string. Got as "data": ${JSON.stringify(
-                        msg.message.data,
+                        message.data,
                     )}`,
                 );
+                exitFromCmd(
+                    EXIT_CODES.INVALID_ARGUMENTS,
+                    'Invalid cmdExec object. Expected key "data" with the command as string',
+                );
             } else {
-                const extraArgs = msg.message.data.split(' ');
+                // cmdExec can send files with the command
+                const fileNames = new Map<string, string>();
+                if (message.files?.length) {
+                    // store files in an own temporary folder, so parallel cmdExec calls cannot overwrite each other
+                    try {
+                        tmpFolder = fs.mkdtempSync(path.join(os.tmpdir(), `${tools.appName.toLowerCase()}-cmd-`));
+                    } catch (e) {
+                        exitFromCmd(EXIT_CODES.UNKNOWN_ERROR, `Cannot create temporary folder: ${e.message}`);
+                        return;
+                    }
+                    for (const file of message.files) {
+                        if (!file.name || typeof file.name !== 'string') {
+                            exitFromCmd(EXIT_CODES.INVALID_ARGUMENTS, 'Empty file name');
+                            return;
+                        }
+                        if (file.name.includes('\\') || file.name.includes('/')) {
+                            exitFromCmd(
+                                EXIT_CODES.INVALID_ARGUMENTS,
+                                'Invalid file name: file name cannot contain \\ or /',
+                            );
+                            return;
+                        }
+                        const data = typeof file.file === 'string' ? Buffer.from(file.file, 'base64') : file.file;
+                        const fullName = path.join(tmpFolder, file.name);
+                        try {
+                            fs.writeFileSync(fullName, data);
+                        } catch (e) {
+                            exitFromCmd(
+                                EXIT_CODES.INVALID_ARGUMENTS,
+                                `Cannot write file "${fullName}": ${e.toString()}`,
+                            );
+                            return;
+                        }
+                        fileNames.set(file.name, fullName);
+                        if (file.doNotDelete) {
+                            keepTmpFolder = true;
+                        } else {
+                            filesToDelete.push(fullName);
+                        }
+                    }
+                }
+
+                // The sender refers to the sent files just by name, so replace the names with the full paths in the temporary folder
+                const extraArgs = message.data.split(' ').map(arg => fileNames.get(arg) || arg);
                 args.push(...extraArgs);
                 logger.info(`${hostLogPrefix} ${tools.appName.toLowerCase()} ${extraArgs.join(' ')}`);
 
                 try {
                     const child = spawn(process.execPath, args, { windowsHide: true });
-                    if (child.stdout) {
-                        child.stdout.on('data', data => {
-                            data = data.toString().replace(/\n/g, '');
-                            logger.info(`${hostLogPrefix} ${tools.appName} ${data}`);
-                            msg.from && sendTo(msg.from, 'cmdStdout', { id: msg.message.id, data: data });
-                        });
-                    }
-
-                    if (child.stderr) {
-                        child.stderr.on('data', data => {
-                            data = data.toString().replace(/\n/g, '');
-                            logger.error(`${hostLogPrefix} ${tools.appName} ${data}`);
-                            msg.from && sendTo(msg.from, 'cmdStderr', { id: msg.message.id, data: data });
-                        });
-                    }
-
-                    child.on('exit', exitCode => {
-                        logger.info(`${hostLogPrefix} ${tools.appName} exit ${exitCode}`);
+                    child.stdout?.on('data', data => {
+                        data = data.toString().replace(/\n/g, '');
+                        logger.info(`${hostLogPrefix} ${tools.appName} ${data}`);
                         if (msg.from) {
-                            sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode });
-                            // Sometimes finished command is lost, recent it
-                            setTimeout(
-                                () => sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode }),
-                                1_000,
+                            sendTo(msg.from, 'cmdStdout', { id: message.id, data }).catch(e =>
+                                logger.error(`Cannot sendTo: ${e}`),
                             );
                         }
                     });
+
+                    child.stderr?.on('data', data => {
+                        data = data.toString().replace(/\n/g, '');
+                        logger.error(`${hostLogPrefix} ${tools.appName} ${data}`);
+                        if (msg.from) {
+                            sendTo(msg.from, 'cmdStderr', { id: message.id, data }).catch(e =>
+                                logger.error(`Cannot sendTo: ${e}`),
+                            );
+                        }
+                    });
+
+                    child.on('error', error => {
+                        logger.error(`${hostLogPrefix} ${tools.appName} error: ${error.message}`);
+                        exitFromCmd(EXIT_CODES.UNKNOWN_ERROR, error.message);
+                    });
+
+                    child.on('exit', exitCode => {
+                        logger.info(`${hostLogPrefix} ${tools.appName} exit ${exitCode}`);
+                        exitFromCmd(exitCode);
+                    });
                 } catch (e) {
                     logger.error(`${hostLogPrefix} ${tools.appName} ${e.message}`);
-                    msg.from && sendTo(msg.from, 'cmdStderr', { id: msg.message.id, data: e.message });
+                    exitFromCmd(EXIT_CODES.UNKNOWN_ERROR, e.message);
                 }
             }
 
@@ -2065,8 +2823,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         }
 
         case 'getRepository':
+        case 'getRepositoryCompact':
             if (msg.callback && msg.from) {
-                requestedRepoUpdates.push({ from: msg.from, callback: msg.callback });
+                requestedRepoUpdates.push({ from: msg.from, callback: msg.callback, command: msg.command });
                 if (requestedRepoUpdates.length > 1) {
                     // someone has requested repo previous to us
                     logger.debug(
@@ -2080,25 +2839,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     systemConfig = await objects!.getObject(SYSTEM_CONFIG_ID);
                 } catch {
                     // ignore
-                }
-
-                // Collect statistics (only if license has been confirmed - user agreed)
-                if (
-                    systemConfig?.common?.diag &&
-                    systemConfig.common.licenseConfirmed &&
-                    (!lastDiagSend || Date.now() - lastDiagSend > 30_000) // prevent sending of diagnostics by multiple admin instances
-                ) {
-                    lastDiagSend = Date.now();
-                    try {
-                        const obj = await collectDiagInfo(systemConfig.common.diag);
-                        // if the user selected 'none', we will have null here and do not want to send it
-                        if (obj) {
-                            // Ignore the response here and do not wait for a result to decrease the repo fetching as it used in admin GUI
-                            tools.sendDiagInfo(obj);
-                        }
-                    } catch (e) {
-                        logger.error(`${hostLogPrefix} cannot collect diagnostics: ${e.message}`);
-                    }
                 }
 
                 const globalRepo = {};
@@ -2194,10 +2934,40 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 for (const requester of requestedRepoUpdates) {
-                    sendTo(requester.from, msg.command, globalRepo, requester.callback);
+                    sendTo(
+                        requester.from,
+                        requester.command,
+                        requester.command === 'getRepositoryCompact' ? toCompactRepository(globalRepo) : globalRepo,
+                        requester.callback,
+                    );
                 }
 
                 requestedRepoUpdates = [];
+
+                // Everything below only has the repository as its trigger, so it runs once the
+                // requesters have their answer. Collecting the diagnostics alone took seconds on a
+                // big installation, and the GUI of admin was waiting for all of it
+
+                // Collect statistics (only if license has been confirmed - user agreed)
+                if (
+                    systemConfig?.common?.diag &&
+                    systemConfig.common.licenseConfirmed &&
+                    (!lastDiagSend || Date.now() - lastDiagSend > 30_000) // prevent sending of diagnostics by multiple admin instances
+                ) {
+                    lastDiagSend = Date.now();
+                    try {
+                        const obj = await collectDiagInfo(systemConfig.common.diag);
+                        // if the user selected 'none', we will have null here and do not want to send it
+                        if (obj) {
+                            // Ignore the response here and do not wait for a result to decrease the repo fetching as it used in admin GUI
+                            tools
+                                .sendDiagInfo(obj)
+                                .catch(e => logger.error(`${hostLogPrefix} Cannot send diag info: ${e.message}`));
+                        }
+                    } catch (e) {
+                        logger.error(`${hostLogPrefix} cannot collect diagnostics: ${e.message}`);
+                    }
+                }
 
                 try {
                     await checkAvailableDockerUpdate();
@@ -2343,7 +3113,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                             }
                         }
 
-                        sendTo(msg.from, msg.command, resList, msg.callback);
+                        msg.callback && sendTo(msg.from, msg.command, resList, msg.callback);
                     });
                     break;
                 } else {
@@ -2381,11 +3151,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                 lines.shift(); // remove first line of the file as it could be not full if starts not from 0
                             }
                             lines.push(stats.size.toString()); // place as last line the current size of log
-                            sendTo(msg.from, msg.command, lines, msg.callback);
+                            msg.callback && sendTo(msg.from, msg.command, lines, msg.callback);
                         })
                         .on('error', () =>
                             // done
-                            sendTo(msg.from, msg.command, [stats.size], msg.callback),
+                            msg.callback ? sendTo(msg.from, msg.command, [stats.size], msg.callback) : undefined,
                         );
                 } else {
                     sendTo(msg.from, msg.command, [0], msg.callback);
@@ -2600,19 +3370,15 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'readDirAsZip':
             if (msg.callback && msg.from) {
-                zipFiles.readDirAsZip(
-                    objects!,
-                    msg.message.id,
-                    msg.message.name,
-                    msg.message.options,
-                    (err, base64) => {
+                zipFiles
+                    .readDirAsZip(objects!, msg.message.id, msg.message.name, msg.message.options, (err, base64) => {
                         if (base64) {
-                            sendTo(msg.from, msg.command, { error: err, data: base64 }, msg.callback);
+                            msg.callback && sendTo(msg.from, msg.command, { error: err, data: base64 }, msg.callback);
                         } else {
-                            sendTo(msg.from, msg.command, { error: err }, msg.callback);
+                            msg.callback && sendTo(msg.from, msg.command, { error: err }, msg.callback);
                         }
-                    },
-                );
+                    })
+                    .catch(e => logger.error(`${hostLogPrefix} Cannot read dir as zip: ${e.message}`));
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -2690,14 +3456,19 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'writeObjectsAsZip':
-            zipFiles.writeObjectsAsZip(
-                objects!,
-                msg.message.id,
-                msg.message.adapter,
-                Buffer.from(msg.message.data || '', 'base64'),
-                msg.message.options,
-                err => msg.callback && msg.from && sendTo(msg.from, msg.command, { error: err?.message }, msg.callback),
-            );
+            zipFiles
+                .writeObjectsAsZip(
+                    objects!,
+                    msg.message.id,
+                    msg.message.adapter,
+                    Buffer.from(msg.message.data || '', 'base64'),
+                    msg.message.options,
+                    err =>
+                        msg.callback &&
+                        msg.from &&
+                        sendTo(msg.from, msg.command, { error: err?.message }, msg.callback),
+                )
+                .catch(e => logger.error(`${hostLogPrefix} Cannot write objects as zip: ${e.message}`));
             break;
 
         case 'checkLogging':
@@ -2744,7 +3515,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 for (const _id of Object.keys(procs)) {
                     if (procs[_id].process) {
                         outputCount++;
-                        states!.setState(`${_id}.checkLogging`, { val: true, ack: false, from: hostObjectPrefix });
+                        states!
+                            .setState(`${_id}.checkLogging`, { val: true, ack: false, from: hostObjectPrefix })
+                            .catch(e => logger.error(`${hostLogPrefix} Cannot set checkLogging state: ${e.message}`));
                     }
                 }
             })();
@@ -2818,7 +3591,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'upload': {
             if (msg.message) {
-                uploadAdapter({ adapter: msg.message, msg });
+                await uploadAdapter({ adapter: msg.message, msg });
             } else {
                 logger.error(`${hostLogPrefix} No adapter name is specified for upload command from  ${msg.from}`);
             }
@@ -2970,6 +3743,98 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             }
             break;
 
+        case 'registerUsedResource':
+            try {
+                const { instance, type, data } = await parseUsedResourceMessage(msg, 'register');
+
+                // asked before the registration, so this instance's own entry is not in the way
+                const conflicts = usedResources.findConflicts(type, data!, instance);
+
+                assertUsedResourcesPersisted(
+                    await persistUsedResourceTypes(usedResources.register(type, data!, instance)),
+                );
+
+                if (conflicts.length) {
+                    // The registration still stands - the registry records what an adapter says it
+                    // uses, it does not hand out permission. But two instances claiming the same
+                    // resource is worth a line, because the adapter that loses it usually reports
+                    // something unhelpful like EADDRINUSE.
+                    logger.warn(
+                        `${hostLogPrefix} "${instance}" registered a ${type} which ${conflicts
+                            .map(entry => `"${entry.instance}"`)
+                            .join(', ')} already holds: ${JSON.stringify(data)}`,
+                    );
+                }
+
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: 'ok', conflicts }, msg.callback);
+                }
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot register used resource: ${e.message}`);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
+            }
+            break;
+
+        case 'checkUsedResource':
+            // Asks whether anybody else currently holds a resource, without registering anything -
+            // the call an adapter makes *before* it opens the port or the device.
+            try {
+                const { instance, type, data } = await parseUsedResourceMessage(msg, 'check');
+                const conflicts = usedResources.findConflicts(type, data || {}, instance);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: 'ok', conflicts }, msg.callback);
+                }
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot check used resource: ${e.message}`);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
+            }
+            break;
+
+        case 'freeUsedResource':
+            try {
+                const { instance, type, data } = await parseUsedResourceMessage(msg, 'free');
+                const changed = usedResources.free(type, data, instance);
+                assertUsedResourcesPersisted(await persistUsedResourceTypes(changed));
+
+                if (!changed.length) {
+                    // the payload is only a filter, so this is a real mismatch and not a forgotten optional
+                    // field - say so, because the adapter API does not wait for this answer
+                    logger.warn(
+                        `${hostLogPrefix} "${instance}" freed no used resource of type "${type}"${data ? ` matching ${JSON.stringify(data)}` : ''}: nothing like that is registered`,
+                    );
+                }
+
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: 'ok', freed: !!changed.length }, msg.callback);
+                }
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot free used resource: ${e.message}`);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
+            }
+            break;
+
+        case 'clearUsedResources':
+            try {
+                const instance = getUsedResourceMessageInstance(msg);
+                await assertInstanceDeclaresUsedResources(instance);
+                assertUsedResourcesPersisted(await persistUsedResourceTypes(usedResources.removeInstance(instance)));
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
+                }
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot clear used resources: ${e.message}`);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
+            }
+            break;
+
         // read licenses from iobroker.net
         case 'updateLicenses': {
             try {
@@ -2983,7 +3848,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         .map(l => l.product)
                         .join(', ')}"`,
                 );
-                msg.callback && msg.from && sendTo(msg.from, msg.command, { result: licenses }, msg.callback);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: licenses }, msg.callback);
+                }
             } catch (e) {
                 logger.error(`${hostLogPrefix} Cannot read licenses: ${e.message}`);
 
@@ -2999,9 +3866,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
             try {
                 await upgradeOsPackages(packages);
-                sendTo(msg.from, msg.command, { success: true }, msg.callback);
+                msg.callback && sendTo(msg.from, msg.command, { success: true }, msg.callback);
             } catch (e) {
-                sendTo(msg.from, msg.command, { error: e.message, success: false }, msg.callback);
+                msg.callback && sendTo(msg.from, msg.command, { error: e.message, success: false }, msg.callback);
                 return;
             }
 
@@ -3014,16 +3881,18 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             if (restartRequired) {
                 logger.info(`${hostLogPrefix} Restart js-controller because desired after package upgrade`);
                 await wait(200);
-                restart(() => !isStopping && stop(false));
+                await restart(() => !isStopping && stop(false));
             }
             break;
         }
 
         case 'restartController': {
-            msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
+            if (msg.callback) {
+                sendTo(msg.from, msg.command, '', msg.callback);
+            }
             // let the answer be sent
             await wait(200);
-            restart(() => !isStopping && stop(false));
+            await restart(() => !isStopping && stop(false));
             break;
         }
 
@@ -3051,6 +3920,53 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             });
             break;
         }
+
+        case 'checkDocker':
+            // Whether an instance can use Docker on this host, or on the Docker connection it is configured for -
+            // asked by the `checkDocker` control of its config dialog, through admin, when admin runs on another host
+            if (msg.callback && msg.from) {
+                let answer: DockerCheckResult | { error: string };
+                try {
+                    const instance = getDockerCheckInstance(msg.message);
+                    const adapter = instance.slice(0, instance.lastIndexOf('.'));
+                    const adapterDir = tools.getAdapterDir(adapter);
+                    if (!adapterDir) {
+                        throw new Error(`Adapter "${adapter}" is not installed on host ${hostname}`);
+                    }
+                    const pluginPath = resolveDockerPlugin(adapterDir);
+                    if (!pluginPath) {
+                        throw new Error(`Adapter "${adapter}" does not use @iobroker/plugin-docker`);
+                    }
+                    answer = await checkDocker({
+                        pluginPath,
+                        namespace: instance,
+                        dockerApiSource: await readDockerApiSource({
+                            adapterDir,
+                            instance,
+                            getObject: id => objects!.getObject(id),
+                        }),
+                        log: text => logger.debug(`${hostLogPrefix} checkDocker for ${instance}: ${text}`),
+                    });
+                } catch (e) {
+                    logger.debug(`${hostLogPrefix} Cannot check Docker: ${e.message}`);
+                    answer = { error: e.message };
+                }
+                sendTo(msg.from, msg.command, answer, msg.callback);
+            }
+            break;
+
+        case 'checkFeatureSupported': {
+            const feature: unknown = msg.message;
+            if (msg.callback && msg.from) {
+                if (typeof feature === 'string') {
+                    const result = getSupportedFeatures().includes(feature as SupportedFeature);
+                    sendTo(msg.from, msg.command, { result }, msg.callback);
+                } else {
+                    sendTo(msg.from, msg.command, { error: 'Invalid feature type' }, msg.callback);
+                }
+            }
+            break;
+        }
     }
 }
 
@@ -3059,11 +3975,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
  *
  * @param options The received message and response payload
  */
-async function sendResponseTo(options: SendResponseToOptions): Promise<void> {
+function sendResponseTo(options: SendResponseToOptions): void {
     const { receivedMsg, payload } = options;
 
     if (receivedMsg.callback && receivedMsg.from) {
-        await sendTo(receivedMsg.from, receivedMsg.command, payload, receivedMsg.callback);
+        sendTo(receivedMsg.from, receivedMsg.command, payload, receivedMsg.callback);
     }
 }
 
@@ -3150,6 +4066,18 @@ async function getInstances(): Promise<void> {
  * @returns true if instance needs to be handled by this host else false
  */
 function instanceRelevantForThisController(instance: ioBroker.InstanceObject, _ipArr: string[]): boolean {
+    // Compact mode loads an adapter into an existing Node.js process, which a Python adapter can
+    // never be part of. Cleared here, where instances are first considered, rather than at start
+    // time: everything below and in checkAndAddInstance reads the flag to decide compact group
+    // membership, so a mistakenly published adapter would already have been claimed by a group
+    // before the start path ever ran.
+    if (instance.common.compact && isPythonAdapter(instance.common)) {
+        instance.common.compact = false;
+        logger.warn(
+            `${hostLogPrefix} Adapter ${instance.common.name} is marked "compact" but runs on Python, ignoring compact mode`,
+        );
+    }
+
     // Normalize Compact group configuration
     if (config.system.compact && instance.common.compact) {
         if (instance.common.runAsCompactMode === undefined) {
@@ -3248,7 +4176,9 @@ function initInstances(): void {
             }
         } else if (procs[id].process) {
             // stop instance if disabled
-            stopInstance(id, false);
+            stopInstance(id, false).catch(e =>
+                logger.error(`${hostLogPrefix} Cannot stop instance ${id}: ${e.message}`),
+            );
         }
     }
 
@@ -3301,7 +4231,7 @@ function initInstances(): void {
  * @param name - name of the dependency
  * @param version - version requirement, e.g. ">=3.3.0"
  * @param instances - object of instances and their corresponding instance objects
- * @throws
+ * @throws {Error} if the required adapter version is not satisfied or the adapter is not found
  */
 function checkVersion(name: string, version: string, instances: Record<string, ioBroker.InstanceObject>): void {
     let isFound = false;
@@ -3553,16 +4483,26 @@ function installAdapters(): void {
                                     logger.info(
                                         `${hostLogPrefix} startInstance ${task.id}: instance is disabled but should be started, re-enabling it`,
                                     );
-                                    states!.setState(`${task.id}.alive`, {
-                                        val: true,
-                                        ack: false,
-                                        from: hostObjectPrefix,
-                                    });
+                                    states!
+                                        .setState(`${task.id}.alive`, {
+                                            val: true,
+                                            ack: false,
+                                            from: hostObjectPrefix,
+                                        })
+                                        .catch(e =>
+                                            logger.error(`${hostLogPrefix} Cannot set ${task.id}.alive: ${e.message}`),
+                                        );
                                 } else if (task.rebuild) {
                                     // on rebuild, we send a restart signal via object change to also reach compact group processes
-                                    objects!.extendObject(task.id, {});
+                                    objects!
+                                        .extendObject(task.id, {})
+                                        .catch(e =>
+                                            logger.error(`${hostLogPrefix} Cannot rebuild ${task.id}: ${e.message}`),
+                                        );
                                 } else {
-                                    startInstance(task.id, task.wakeUp);
+                                    startInstance(task.id, task.wakeUp).catch(e =>
+                                        logger.error(`${hostLogPrefix} Cannot start instance ${task.id}: ${e.message}`),
+                                    );
                                 }
                             } else {
                                 logger.debug(
@@ -3624,10 +4564,11 @@ function installAdapters(): void {
 }
 
 /**
+ * Remove outdated error entries of a process and optionally log the remaining ones
  *
- * @param procObj
- * @param now
- * @param doOutput
+ * @param procObj The process whose errors should be cleaned
+ * @param now The current timestamp in ms, or null to keep the entries as-is
+ * @param doOutput Whether the remaining errors should be written to the log
  */
 function cleanErrors(procObj: Process, now: number | null, doOutput?: boolean): void {
     if (!procObj || !procObj.errors || !procObj.errors.length || procObj.startedAsCompactGroup) {
@@ -3689,7 +4630,9 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
         delay = skipped ? 0 : delay + 2_000;
         setTimeout(() => {
             delete scheduledInstances[id];
-            startScheduledInstance(callback);
+            startScheduledInstance(callback).catch(e =>
+                logger.error(`${hostLogPrefix} Cannot start scheduled instance: ${e.message}`),
+            );
         }, delay); // 4 seconds pause
     };
 
@@ -3718,13 +4661,51 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                 '--loglevel',
                 instance.common.loglevel || 'info',
             ];
+
+            if (proc.pythonInterpreter) {
+                // The interpreter was chosen when this instance was set up, and a scheduled run happens
+                // whenever its cron says so - hours later, and possibly while py-controller is rebuilding the
+                // environment. Starting into a half-built virtual environment fails on an import of a package
+                // that was there a moment earlier, so this run is skipped and the next tick tries again. Every
+                // other start goes through `startInstance`, which asks the same question.
+                const env = await checkPythonEnvironment(instance.common.name, instance.common.version);
+
+                if (!env.ready) {
+                    logger.warn(
+                        `${hostLogPrefix} scheduled run of ${instance._id} skipped, it will be started at the next scheduled time: ${env.reason}`,
+                    );
+                    skipped = true;
+                    processNextScheduledInstance();
+                    return;
+                }
+
+                proc.pythonInterpreter = env.interpreter;
+            }
+
             try {
-                proc.process = cp.fork(fileNameFull, args, {
-                    execArgv: tools.getDefaultNodeArgs(fileNameFull),
-                    // @ts-expect-error missing from types, but we already tested it is needed
-                    windowsHide: true,
-                    cwd: adapterDir,
-                });
+                if (proc.pythonInterpreter) {
+                    proc.process = spawnPythonAdapter({
+                        adapterName: instance.common.name,
+                        adapterDir,
+                        main: instance.common.main,
+                        interpreter: proc.pythonInterpreter,
+                        args,
+                        env: buildPythonEnv(config, instance._id.split('.').pop() || '0', instance.common.loglevel),
+                    });
+                    forwardPythonOutput(
+                        proc.process,
+                        instance._id.substring(SYSTEM_ADAPTER_PREFIX.length),
+                        (level, line, alreadyPushed) =>
+                            logPythonLine(level, `${hostLogPrefix} ${instance._id} ${line}`, alreadyPushed),
+                    );
+                } else {
+                    proc.process = cp.fork(fileNameFull, args, {
+                        execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                        // @ts-expect-error missing from types, but we already tested it is needed
+                        windowsHide: true,
+                        cwd: adapterDir,
+                    });
+                }
             } catch (err) {
                 logger.error(`${hostLogPrefix} instance ${id} could not be started: ${err.message}`);
                 delete proc.process;
@@ -3742,9 +4723,27 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                     `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`,
                 );
 
-                proc.process.on('exit', (code, signal) => {
+                // the scheduled run holds the resources of this instance until it exits again - same
+                // handling as any other start
+                markInstanceResourcesStarting(id, instance).catch(e =>
+                    logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`),
+                );
+
+                handleProcessEnd(id, proc.process, (code, signal) => {
                     outputCount++;
-                    states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+                    states!
+                        .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
+                        .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));
+
+                    // the instance is no longer running: keep its resource registrations but mark them as not
+                    // actively blocked, so the user still sees which resources it would occupy when started again
+                    const instanceNamespace = id.startsWith(`${SYSTEM_ADAPTER_PREFIX}`)
+                        ? id.substring(SYSTEM_ADAPTER_PREFIX.length)
+                        : id;
+                    persistUsedResourceTypes(usedResources.setInstanceBlocked(instanceNamespace, false)).catch(e =>
+                        logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`),
+                    );
+
                     if (signal) {
                         logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                     } else if (code === null) {
@@ -3791,7 +4790,7 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
  * Start given instance
  *
  * @param id - id of instance, like 'system.adapter.hm-rpc.0'
- * @param wakeUp
+ * @param wakeUp Whether the instance is being started because of a wake-up (scheduled or message) event
  */
 async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): Promise<void> {
     if (isStopping || !connected || !objects) {
@@ -3804,6 +4803,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         logger.error(`${hostLogPrefix} startInstance ${id}: object not found!`);
         return;
     }
+
+    // procs[id] survives configuration changes, so the interpreter has to be re-derived on every start rather
+    // than left over from a previous one: an adapter switched back from Python to Node.js would otherwise keep
+    // being spawned through the Python path, since that is chosen by the presence of this field. It happens
+    // before anything below can return early - a pending upload, a blocked version, a failed dependency check -
+    // because `startScheduledInstance` branches on the field alone and would then use a stale one.
+    delete proc.pythonInterpreter;
 
     const instance = proc.config;
     const name = id.split('.')[2];
@@ -3943,10 +4949,73 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
     proc.downloadRetry = 0;
 
-    // read node.js engine requirements
+    const isPython = isPythonAdapter(instance.common);
+
+    if (isPython) {
+        // Web extensions are loaded into the Node.js process of the hosting web server, which a
+        // Python adapter cannot take part in. Saying so beats the silent fall-through of the mode
+        // switch below -- the instance would simply never appear, with nothing in the log. Not
+        // rejected by the io-package.json schema, because running extensions out of process (over
+        // an internal socket) is a possible later extension of the runtime.
+        if (instance.common.mode === 'extension') {
+            logger.error(
+                `${hostLogPrefix} startInstance ${name}.${instanceNo}: web extensions run inside the ` +
+                    'Node.js process of the hosting web server and are not supported for Python adapters yet',
+            );
+            return;
+        }
+
+        // Refuse configurations the environment variables cannot express (a unix socket). A
+        // Python adapter started anyway would open a TCP connection to port 0 and fail looking
+        // like a network problem.
+        const unsupportedDb = unsupportedPythonDbConfig(config);
+
+        if (unsupportedDb) {
+            logger.error(`${hostLogPrefix} startInstance ${name}.${instanceNo}: ${unsupportedDb}`);
+            return;
+        }
+
+        // Both of these end up in `execArgv`, which is handed to Node and not to an interpreter
+        // that would not know what to do with it. Admin offers the memory limit for every instance
+        // and has no way to know it does nothing here, so the log is where a user finds out --
+        // silently ignoring a limit somebody set against an adapter they think is leaking is the
+        // kind of thing that costs an evening.
+        if (instance.common.memoryLimitMB && Math.round(instance.common.memoryLimitMB)) {
+            logger.warn(
+                `${hostLogPrefix} startInstance ${name}.${instanceNo}: the memory limit ` +
+                    `(${Math.round(instance.common.memoryLimitMB)} MB) applies to Node.js adapters only and is ignored here`,
+            );
+        }
+
+        if (Array.isArray(instance.common.nodeProcessParams) && instance.common.nodeProcessParams.length) {
+            logger.warn(
+                `${hostLogPrefix} startInstance ${name}.${instanceNo}: "nodeProcessParams" are Node.js ` +
+                    'arguments and are ignored for a Python adapter',
+            );
+        }
+
+        // A Python adapter needs its virtual environment before it can be started. Building that
+        // environment is the job of the "py-controller" adapter, so all this side does is refuse to
+        // start and say why -- py-controller watches for exactly this and triggers a restart once
+        // the environment is in place.
+        const env = await checkPythonEnvironment(name, instance.common.version);
+
+        if (!env.ready) {
+            logger.error(`${hostLogPrefix} startInstance ${name}.${instanceNo}: ${env.reason}`);
+            return;
+        }
+
+        proc.pythonInterpreter = env.interpreter;
+    }
+
+    // read node.js engine requirements -- not applicable to Python adapters. Their equivalent,
+    // "requires-python" in pyproject.toml, is enforced by uv when the virtual environment is
+    // created: it refuses to build one whose interpreter does not satisfy the constraint. Checking
+    // it again here would mean parsing TOML in the core to re-verify something that has already
+    // been decided, and by the component that owns it.
     try {
         // read directly from disk and not via require to allow "on the fly" updates of adapters.
-        const packJSON = fs.readJSONSync(path.join(adapterDir, 'package.json'));
+        const packJSON = isPython ? undefined : fs.readJSONSync(path.join(adapterDir, 'package.json'));
         proc.engine = packJSON?.engines?.node;
     } catch {
         logger.error(
@@ -4042,6 +5111,8 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     delete proc.stopping;
                 }
 
+                await markInstanceResourcesStarting(id, instance);
+
                 logger.debug(
                     `${hostLogPrefix} startInstance ${name}.${instanceNo} loglevel=${loglevel}, compact=${
                         instance.common.compact && instance.common.runAsCompactMode
@@ -4051,7 +5122,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 );
                 // Exit Handler for normal Adapters started as own processes
                 const exitHandler = (code: number, signal: string): void => {
-                    setInstanceOfflineStates(id);
+                    setInstanceOfflineStates(id).catch(e =>
+                        logger.error(`${hostLogPrefix} Cannot set instance ${id} offline: ${e.message}`),
+                    );
 
                     // if we have waiting kill timeouts from stopInstance clear them
                     // and call callback because process ended now
@@ -4072,7 +5145,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             console.log(
                                 `================================== > LOG REDIRECT ${id} => false [Process stopped]`,
                             );
-                            states!.setState(`${id}.logging`, { val: false, ack: true, from: hostObjectPrefix });
+                            states!
+                                .setState(`${id}.logging`, { val: false, ack: true, from: hostObjectPrefix })
+                                .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.logging: ${e.message}`));
                         }
 
                         // show stored errors
@@ -4188,10 +5263,14 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                                 if (!compactGroupController) {
                                     // execute directly
-                                    processMessage(msg as any);
+                                    processMessage(msg as any).catch(e =>
+                                        logger.error(`${hostLogPrefix} Cannot process message: ${e.message}`),
+                                    );
                                 } else {
                                     // send to the main controller to make sure only one npm process runs at a time
-                                    sendTo(`system.host.${hostname}`, 'rebuildAdapter', msg);
+                                    sendTo(`system.host.${hostname}`, 'rebuildAdapter', msg).catch(e =>
+                                        logger.error(`${hostLogPrefix} Cannot send rebuildAdapter: ${e.message}`),
+                                    );
                                 }
                             } else {
                                 logger.info(
@@ -4320,28 +5399,58 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     if (!proc.process) {
                         // We were not able or should not start as compact mode
                         try {
-                            proc.process = cp.fork(adapterMainFile, args, {
-                                execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
-                                stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-                                // @ts-expect-error missing from types, but we already tested it is needed
-                                windowsHide: true,
-                                cwd: adapterDir,
-                            });
+                            if (proc.pythonInterpreter) {
+                                proc.process = spawnPythonAdapter({
+                                    adapterName: name,
+                                    adapterDir,
+                                    main: instance.common.main,
+                                    interpreter: proc.pythonInterpreter,
+                                    args,
+                                    env: buildPythonEnv(config, instanceNo, instance.common.loglevel),
+                                });
+                            } else {
+                                proc.process = cp.fork(adapterMainFile, args, {
+                                    execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
+                                    stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
+                                    // @ts-expect-error missing from types, but we already tested it is needed
+                                    windowsHide: true,
+                                    cwd: adapterDir,
+                                });
+                            }
                         } catch (err) {
                             logger.error(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
                         }
                     }
 
-                    if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
-                        states!.setState(`${id}.sigKill`, {
-                            val: proc.process.pid,
-                            ack: true,
-                            from: hostObjectPrefix,
-                        });
+                    // Both streams in one place. The error handler further down does Node.js
+                    // rebuild detection on stderr, which cannot match a Python process; letting it
+                    // attach as well would log everything twice and split the handling in two.
+                    if (proc.pythonInterpreter && proc.process) {
+                        forwardPythonOutput(
+                            proc.process,
+                            instance._id.substring(SYSTEM_ADAPTER_PREFIX.length),
+                            (level, line, alreadyPushed) =>
+                                logPythonLine(level, `${hostLogPrefix} ${instance._id} ${line}`, alreadyPushed),
+                        );
                     }
 
-                    // catch error output
-                    if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process?.stderr) {
+                    if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
+                        states!
+                            .setState(`${id}.sigKill`, {
+                                val: proc.process.pid,
+                                ack: true,
+                                from: hostObjectPrefix,
+                            })
+                            .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.sigKill: ${e.message}`));
+                    }
+
+                    // catch error output -- Node only, see above
+                    if (
+                        !proc.pythonInterpreter &&
+                        !proc.startedInCompactMode &&
+                        !proc.startedAsCompactGroup &&
+                        proc.process?.stderr
+                    ) {
                         proc.process.stderr.on('data', data => {
                             const proc = procs[id];
 
@@ -4379,7 +5488,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     storePids();
 
                     if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
-                        proc.process.on('exit', exitHandler);
+                        handleProcessEnd(id, proc.process, exitHandler);
                     }
 
                     if (
@@ -4478,11 +5587,15 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                         if (proc.process && !proc.process.kill) {
                             proc.process.kill = () => {
-                                states!.setState(`${id}.sigKill`, {
-                                    val: -1,
-                                    ack: false,
-                                    from: hostObjectPrefix,
-                                });
+                                states!
+                                    .setState(`${id}.sigKill`, {
+                                        val: -1,
+                                        ack: false,
+                                        from: hostObjectPrefix,
+                                    })
+                                    .catch(e =>
+                                        logger.error(`${hostLogPrefix} Cannot set ${id}.sigKill: ${e.message}`),
+                                    );
 
                                 return true;
                             };
@@ -4578,9 +5691,10 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     }
 
                                     /**
+                                     * Mark the given compact-mode instances as stopped
                                      *
-                                     * @param instances
-                                     * @param callback
+                                     * @param instances The instances to mark as stopped
+                                     * @param callback Called once all instances have been marked
                                      */
                                     function markCompactInstancesAsStopped(
                                         instances: ioBroker.ObjectIDs.Instance[],
@@ -4593,16 +5707,21 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                                         const id = instances.shift()!;
                                         outputCount += 2;
-                                        states!.setState(`${id}.alive`, {
-                                            val: false,
-                                            ack: true,
-                                            from: hostObjectPrefix,
-                                        });
-                                        states!.setState(`${id}.connected`, {
-                                            val: false,
-                                            ack: true,
-                                            from: hostObjectPrefix,
-                                        });
+                                        logWriteErrors(
+                                            [
+                                                states!.setState(`${id}.alive`, {
+                                                    val: false,
+                                                    ack: true,
+                                                    from: hostObjectPrefix,
+                                                }),
+                                                states!.setState(`${id}.connected`, {
+                                                    val: false,
+                                                    ack: true,
+                                                    from: hostObjectPrefix,
+                                                }),
+                                            ],
+                                            `Cannot reset ${id} alive/connected states`,
+                                        );
 
                                         cleanAutoSubscribes(id, () => {
                                             const proc = procs[id];
@@ -4717,6 +5836,11 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     }
                     handleAdapterProcessStart();
                 }
+
+                if (!procs[id]?.process) {
+                    // the launch did not produce a process, so nothing will ever unblock the entries again
+                    await markInstanceResourcesNotStarted(id);
+                }
             } else {
                 if (!wakeUp && proc) {
                     logger.warn(
@@ -4748,7 +5872,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             }
 
             try {
-                cronParser.parseExpression(instance.common.schedule);
+                CronExpressionParser.parse(instance.common.schedule);
             } catch (e) {
                 logger.error(`${hostLogPrefix} Cannot schedule start of instance ${instance._id}: ${e.message}`);
                 break;
@@ -4766,26 +5890,49 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         adapterDir,
                         wakeUp,
                     };
-                    Object.keys(scheduledInstances).length === 1 && startScheduledInstance();
+                    Object.keys(scheduledInstances).length === 1 &&
+                        startScheduledInstance().catch(e =>
+                            logger.error(`${hostLogPrefix} Cannot start scheduled instance: ${e.message}`),
+                        );
                 },
             );
             logger.info(`${hostLogPrefix} instance scheduled ${instance._id} ${instance.common.schedule}`);
             // Start one time adapter by start or if configuration changed
             if (instance.common.allowInit) {
                 try {
-                    // @ts-expect-error if mode !== extension we have ensured it exists
-                    proc.process = cp.fork(adapterMainFile, args, {
+                    if (proc.pythonInterpreter) {
+                        proc.process = spawnPythonAdapter({
+                            adapterName: name,
+                            adapterDir,
+                            main: instance.common.main,
+                            interpreter: proc.pythonInterpreter,
+                            args,
+                            env: buildPythonEnv(config, instanceNo, instance.common.loglevel),
+                        });
+                        forwardPythonOutput(
+                            proc.process,
+                            instance._id.substring(SYSTEM_ADAPTER_PREFIX.length),
+                            (level, line, alreadyPushed) =>
+                                logPythonLine(level, `${hostLogPrefix} ${instance._id} ${line}`, alreadyPushed),
+                        );
+                    } else {
                         // @ts-expect-error if mode !== extension we have ensured it exists
-                        execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
-                        // @ts-expect-error missing from types, but we already tested it is necessary
-                        windowsHide: true,
-                        cwd: adapterDir,
-                    });
+                        proc.process = cp.fork(adapterMainFile, args, {
+                            // @ts-expect-error if mode !== extension we have ensured it exists
+                            execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
+                            // @ts-expect-error missing from types, but we already tested it is necessary
+                            windowsHide: true,
+                            cwd: adapterDir,
+                        });
+                    }
                 } catch (e) {
                     logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${e.message}`);
                 }
                 if (proc.process) {
                     storePids();
+                    // this forks an adapter right away, so it needs the same resource handling as any
+                    // other start - the exit handler below unblocks them again
+                    await markInstanceResourcesStarting(id, instance);
                     const isNpm = isInstalledFromNpm({
                         installedFrom: instance.common.installedFrom,
                         adapterName: instance.common.name,
@@ -4795,12 +5942,24 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`,
                     );
 
-                    proc.process.on('exit', (code, signal) => {
+                    handleProcessEnd(id, proc.process, (code, signal) => {
                         cleanAutoSubscribes(id, () => {
                             const proc = procs[id];
 
                             outputCount++;
-                            states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+                            states!
+                                .setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix })
+                                .catch(e => logger.error(`${hostLogPrefix} Cannot set ${id}.alive: ${e.message}`));
+
+                            // the init run is over: keep the registrations but mark them as no longer held
+                            if (!compactGroupController) {
+                                persistUsedResourceTypes(
+                                    usedResources.setInstanceBlocked(id.substring(SYSTEM_ADAPTER_PREFIX.length), false),
+                                ).catch(e =>
+                                    logger.warn(`${hostLogPrefix} Cannot update used resources of ${id}: ${e.message}`),
+                                );
+                            }
+
                             if (signal) {
                                 logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                             } else if (code === null) {
@@ -4888,9 +6047,9 @@ async function stopInstance(id: string, force: boolean): Promise<void> {
 
                     // Unsubscribe
                     if (proc.subscribe.startsWith('messagebox.')) {
-                        states!.unsubscribeMessage(proc.subscribe.substring('messagebox.'.length));
+                        await states!.unsubscribeMessage(proc.subscribe.substring('messagebox.'.length));
                     } else {
-                        states!.unsubscribe(proc.subscribe);
+                        await states!.unsubscribe(proc.subscribe);
                     }
                 }
             }
@@ -5064,9 +6223,10 @@ async function stopInstance(id: string, force: boolean): Promise<void> {
 }
 
 /**
+ * Stop all running instances
  *
- * @param forceStop
- * @param callback
+ * @param forceStop Whether to force-stop the instances instead of waiting for a graceful shutdown
+ * @param callback Called once all instances have been stopped
  */
 function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => void) | null): void {
     let maxTimeout: NodeJS.Timeout | null | undefined;
@@ -5100,7 +6260,9 @@ function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => 
         }
 
         for (const id of Object.keys(procs)) {
-            stopInstance(id, forceStop);
+            stopInstance(id, forceStop).catch(e =>
+                logger.error(`${hostLogPrefix} Cannot stop instance ${id}: ${e.message}`),
+            );
         }
         if (forceStop || isDaemon) {
             // send instances SIGTERM, only needed if running in a background (isDaemon)
@@ -5363,9 +6525,17 @@ export async function init(compactGroupId?: number): Promise<void> {
     // @ts-expect-error types do not seem to be perfect here
     const ts = logger.transports.find(t => t.name === 'NT');
     ts!.on('logged', info => {
+        // A record a Python adapter already pushed itself, captured here from its stdout and marked by the
+        // forwarder. It still belongs in the host's log file, which is why it was logged at all -- but pushing
+        // it to the transporters as well would show every Python line twice in admin, once attributed to the
+        // instance and once to this host.
+        if (info.alreadyPushed) {
+            return;
+        }
+
         info.from = hostLogPrefix;
         for (const log of logList) {
-            states!.pushLog(log, info);
+            states!.pushLog(log, info).catch(e => logger.error(`${hostLogPrefix} Cannot push log: ${e.message}`));
         }
     });
 
@@ -5505,24 +6675,32 @@ export async function init(compactGroupId?: number): Promise<void> {
                 clearTimeout(connectTimeout);
                 connectTimeout = null;
             }
-            // Subscribe for all logging objects
-            states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
-
-            // Subscribe for all alive states
-            states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.alive`);
-            states.subscribe(`${hostObjectPrefix}.diskWarning`);
+            // Subscribe for all logging objects, all alive states and disk warnings
+            logWriteErrors(
+                [
+                    states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`),
+                    states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.alive`),
+                    states.subscribe(`${hostObjectPrefix}.diskWarning`),
+                ],
+                'Cannot subscribe to system states',
+            );
             const diskWarningState = await states.getState(`${hostObjectPrefix}.diskWarning`);
             if (diskWarningState) {
                 diskWarningLevel = getDiskWarningLevel(diskWarningState);
             }
 
             // set current Loglevel and subscribe for changes
-            states.setState(`${hostObjectPrefix}.logLevel`, {
-                val: config.log.level,
-                ack: true,
-                from: hostObjectPrefix,
-            });
-            states.subscribe(`${hostObjectPrefix}.logLevel`);
+            logWriteErrors(
+                [
+                    states.setState(`${hostObjectPrefix}.logLevel`, {
+                        val: config.log.level,
+                        ack: true,
+                        from: hostObjectPrefix,
+                    }),
+                    states.subscribe(`${hostObjectPrefix}.logLevel`),
+                ],
+                'Cannot set/subscribe logLevel',
+            );
 
             if (!compactGroupController) {
                 try {
@@ -5607,7 +6785,9 @@ export async function init(compactGroupId?: number): Promise<void> {
                 if (toDelete.length) {
                     toDelete.forEach(id => {
                         logger.warn(`${hostLogPrefix} logger ${id} was deleted`);
-                        states!.delState(id);
+                        states!
+                            .delState(id)
+                            .catch(e => logger.error(`${hostLogPrefix} Cannot delete ${id}: ${e.message}`));
                     });
                 }
             }
@@ -5618,7 +6798,9 @@ export async function init(compactGroupId?: number): Promise<void> {
         connectTimeout = null;
         logger.error(`${hostLogPrefix} No connection to databases possible, restart`);
         !compactGroupController &&
-            processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix });
+            processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix }).catch(e =>
+                logger.error(`${hostLogPrefix} Cannot process restart message: ${e.message}`),
+            );
         setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), compactGroupController ? 0 : 1_000);
     }, 30_000);
 
@@ -5663,7 +6845,9 @@ export async function init(compactGroupId?: number): Promise<void> {
         }
         stop(false);
         // Restart itself
-        processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix });
+        processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix }).catch(e =>
+            logger.error(`${hostLogPrefix} Cannot process restart message: ${e.message}`),
+        );
     };
 
     process.on('SIGINT', () => {
@@ -5762,22 +6946,105 @@ async function _getNumberOfInstances(): Promise<
 }
 
 /**
+ * Log a line recovered from the output of a Python adapter
+ *
+ * A record the adapter pushed to the log transporters itself is marked as such, so that the `logged` handler
+ * can leave it out of the push - otherwise admin shows every one of those lines twice, once under the instance
+ * and once under this host. It still goes into the host's log file, which is what the forwarding is for.
+ *
+ * @param level severity the line is logged with
+ * @param message the line, with the prefix of this host already in front of it
+ * @param alreadyPushed whether the adapter pushed this record to the transporters itself
+ */
+function logPythonLine(level: PythonLogLevel, message: string, alreadyPushed: boolean): void {
+    if (alreadyPushed) {
+        // travels with the record to the `logged` handler, which does the pushing
+        logger[level](message, { alreadyPushed: true });
+    } else {
+        logger[level](message);
+    }
+}
+
+/**
+ * Run the exit handling of an instance once, whether its process ended or never came up
+ *
+ * `spawn()` reports a program it cannot run - a missing or non-executable Python interpreter, a working
+ * directory that is gone - through the `error` event and not by throwing, and it emits no `exit` afterwards.
+ * Two things follow from that, and both are handled here:
+ *
+ * - without an `error` listener Node rethrows, which ends the whole controller and every adapter on this host;
+ * - without the exit path the instance would keep its `alive` state with no process behind it, and nothing
+ *   would ever restart it.
+ *
+ * A process that is up can report an `error` too - a signal that could not be delivered, a message that could
+ * not be sent - and that one is not an end: the adapter keeps running. Only a process which never came up is
+ * treated as gone, which is what its missing pid says.
+ *
+ * `error` and `exit` can both arrive, so the handler runs once.
+ *
+ * @param id the instance id, e.g. "system.adapter.mqtt.0"
+ * @param child the process which was started for it
+ * @param onExit what the caller does when the instance is gone
+ */
+function handleProcessEnd(id: string, child: cp.ChildProcess, onExit: (code: number, signal: string) => void): void {
+    let handled = false;
+    const handleOnce = (code: number, signal: string): void => {
+        if (handled) {
+            return;
+        }
+        handled = true;
+        onExit(code, signal);
+    };
+
+    child.on('error', (e: Error) => {
+        // A process that came up keeps running after an error of its own, so ending the instance here would
+        // leave an adapter behind that this host no longer tracks: it would neither stop nor restart it, and
+        // the next start would run a second copy. Its `exit` is still to come and does the ending.
+        if (child.pid !== undefined) {
+            logger.error(`${hostLogPrefix} instance ${id} reported an error: ${e.message}`);
+            return;
+        }
+
+        logger.error(`${hostLogPrefix} instance ${id} could not be started: ${e.message}`);
+        handleOnce(EXIT_CODES.UNKNOWN_ERROR, '');
+
+        // nothing is running under this entry, and leaving it behind would refuse every later start
+        const proc = procs[id as ioBroker.ObjectIDs.Instance];
+        if (proc?.process === child) {
+            delete proc.process;
+        }
+    });
+
+    child.on('exit', handleOnce);
+}
+
+/**
  * Mark given adapter instance as offline on state level
  *
  * @param id id of the instance
  */
 async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promise<void> {
-    outputCount += 2;
-    await states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-    await states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
-
     const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
 
-    const state = await states!.getState(`${adapterInstance}.info.connection`);
+    try {
+        outputCount += 2;
+        await states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+        await states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
 
-    if (state?.val === true) {
-        outputCount++;
-        await states!.setState(adapterInstance, { val: false, ack: true, from: hostObjectPrefix });
+        const connectionStateId = `${adapterInstance}.info.connection`;
+        const state = await states!.getState(connectionStateId);
+
+        if (state?.val === true) {
+            outputCount++;
+            await states!.setState(connectionStateId, { val: false, ack: true, from: hostObjectPrefix });
+        }
+    } finally {
+        // The instance is no longer running: keep its resource registrations but mark them as not actively
+        // blocked. In a `finally`, because a status write that does not get through - a crash, an interrupted
+        // database - must not leave the registry claiming that a stopped instance still holds its resources;
+        // nothing would correct that afterwards. Persisting reports a failed write instead of rejecting, so
+        // this cannot swallow the error of the block above either.
+        await persistUsedResourceTypes(usedResources.setInstanceBlocked(adapterInstance, false));
     }
 }
 
@@ -5947,6 +7214,25 @@ async function checkRebootRequired(): Promise<void> {
 }
 
 /**
+ * Reduces a repository to the version and the icon of every entry
+ *
+ * The whole repository is several megabytes, of which a GUI that only shows which adapter exists in
+ * which version uses two fields. Sending all of it through the message box made the start of the
+ * admin GUI wait seconds for an answer it hardly used.
+ *
+ * @param repo the merged repository
+ */
+function toCompactRepository(repo: Record<string, any>): Record<string, { version: string; icon?: string }> {
+    const result: Record<string, { version: string; icon?: string }> = {};
+
+    for (const name of Object.keys(repo)) {
+        result[name] = { version: repo[name]?.version, icon: repo[name]?.extIcon };
+    }
+
+    return result;
+}
+
+/**
  * Upgrade all upgradeable adapters with respect to their auto upgrade policy
  */
 async function autoUpgradeAdapters(): Promise<void> {
@@ -6013,5 +7299,5 @@ async function disableBlocklistedInstances(): Promise<void> {
 // eslint-disable-next-line unicorn/prefer-module
 const modulePath = url.fileURLToPath(import.meta.url || `file://${__filename}`);
 if (process.argv[1] === modulePath) {
-    init();
+    init().catch(e => console.error(`Cannot start js-controller: ${e.message}`));
 }

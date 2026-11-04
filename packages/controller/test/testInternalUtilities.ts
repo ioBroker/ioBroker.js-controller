@@ -1,5 +1,5 @@
 import { getCronExpression } from '../src/lib/utils.js';
-import { expect } from 'chai';
+import assert from 'node:assert/strict';
 import { BlocklistManager } from '../src/lib/blocklistManager.js';
 import { startController, stopController } from './lib/setup4controller.js';
 import url from 'node:url';
@@ -40,44 +40,46 @@ describe('test internal helpers', () => {
         const cronWithSeconds = '3 15 * * * *';
 
         const cronSecondsAdded = getCronExpression({ cronExpression: cronWithoutSeconds, connectionType: 'cloud' });
-        expect(cronSecondsAdded).to.be.not.equal(cronWithoutSeconds);
-        expect(cronSecondsAdded.split(' ').length).to.be.equal(6);
+        assert.notStrictEqual(cronSecondsAdded, cronWithoutSeconds);
+        assert.strictEqual(cronSecondsAdded.split(' ').length, 6);
 
         const cronNothingAdded = getCronExpression({ cronExpression: cronWithSeconds, connectionType: 'cloud' });
-        expect(cronNothingAdded).to.be.equal(cronWithSeconds);
+        assert.strictEqual(cronNothingAdded, cronWithSeconds);
 
         // no delay for connection types different from cloud
         const cronSecondsWrongConnectionType = getCronExpression({
             cronExpression: cronWithoutSeconds,
             connectionType: 'local',
         });
-        expect(cronSecondsWrongConnectionType).to.be.equal(cronWithoutSeconds);
+        assert.strictEqual(cronSecondsWrongConnectionType, cronWithoutSeconds);
     });
 
     it('BlocklistManager', async () => {
         const blocklistManager = new BlocklistManager({ objects });
 
         let isBlocked = await blocklistManager.isAdapterVersionBlocked({ version: '1.0.0', adapterName: 'test' });
-        expect(isBlocked).to.be.false;
+        assert.strictEqual(isBlocked, false);
 
         isBlocked = await blocklistManager.isAdapterVersionBlocked({ version: '3.14.0', adapterName: 'alexa2' });
-        expect(isBlocked).to.be.true;
+        assert.strictEqual(isBlocked, true);
     });
 
     it('isInstalledFromNpm', () => {
-        expect(
+        assert.strictEqual(
             isInstalledFromNpm({
                 adapterName: 'admin',
                 installedFrom: 'iobroker.admin@6.13.16' as ioBroker.InstalledFrom,
             }),
-        ).to.be.true;
+            true,
+        );
 
-        expect(
+        assert.strictEqual(
             isInstalledFromNpm({
                 adapterName: 'benchmark',
                 installedFrom: 'foxriver76/ioBroker.benchmark' as ioBroker.InstalledFrom,
             }),
-        ).to.be.false;
+            false,
+        );
     });
 
     after('Stop js-controller', async function () {

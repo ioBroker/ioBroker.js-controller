@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,39 +6,35 @@
 
 # Interface: VisIconSet
 
+Defined in: [types-dev/objects.d.ts:574](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L574)
+
 ## Properties
 
 ### icon?
 
-> `optional` **icon**: `string`
+> `optional` **icon?**: `string`
 
-If set, this is not a widget set, but icon set. url, name and icon are required
+Defined in: [types-dev/objects.d.ts:578](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L578)
 
-#### Defined in
-
-[types-dev/objects.d.ts:537](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L537)
+If set, this is not a widget set, but an icon set. url, name and icon are required
 
 ***
 
 ### ignoreInVersions?
 
-> `optional` **ignoreInVersions**: `number`[]
+> `optional` **ignoreInVersions?**: `number`[]
+
+Defined in: [types-dev/objects.d.ts:580](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L580)
 
 The vis icon set does not support the listed major versions of vis
-
-#### Defined in
-
-[types-dev/objects.d.ts:539](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L539)
 
 ***
 
 ### name?
 
-> `optional` **name**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
+> `optional` **name?**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
-#### Defined in
-
-[types-dev/objects.d.ts:534](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L534)
+Defined in: [types-dev/objects.d.ts:575](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L575)
 
 ***
 
@@ -46,6 +42,4 @@ The vis icon set does not support the listed major versions of vis
 
 > **url**: `string`
 
-#### Defined in
-
-[types-dev/objects.d.ts:535](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L535)
+Defined in: [types-dev/objects.d.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L576)

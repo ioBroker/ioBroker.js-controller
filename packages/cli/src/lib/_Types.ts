@@ -2,7 +2,7 @@ import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
 export type ProcessExitCallback = (exitCode: number) => void;
-export type CleanDatabaseHandler = (isDeleteDb: boolean) => any;
+export type CleanDatabaseHandler = (isDeleteDb: boolean) => Promise<number>;
 export type DbConnectCallback = (params: DbConnectAsyncReturn) => void;
 
 export type DbConnect = (
@@ -11,10 +11,15 @@ export type DbConnect = (
     callback?: DbConnectCallback,
 ) => void;
 
+/** Result returned once the database connection has been established */
 export interface DbConnectAsyncReturn {
+    /** The connected objects database client */
     objects: ObjectsRedisClient;
+    /** The connected states database client */
     states: StatesRedisClient;
+    /** Whether the controller is offline (no running host) */
     isOffline?: boolean;
+    /** Type of the objects database backend */
     objectsDBType: string;
     /** The iobroker.json config file */
     config: ioBroker.IoBrokerJson;
@@ -31,6 +36,8 @@ interface IoPackageCommon extends ioBroker.AdapterCommon {
         };
     };
 }
+/** An adapter object as stored in io-package.json */
 export interface IoPackage extends ioBroker.AdapterObject {
+    /** The common section including the plugins configuration */
     common: IoPackageCommon;
 }

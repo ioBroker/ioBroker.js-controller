@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-floating-promises -- type-only assertions; the functions below are never executed */
 
 import { maybeCallback, maybeCallbackWithError, maybeCallbackWithRedisError } from '@/lib/common/maybeCallback.js';
 

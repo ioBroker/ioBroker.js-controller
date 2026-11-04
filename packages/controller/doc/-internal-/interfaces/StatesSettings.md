@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,49 +6,53 @@
 
 # Interface: StatesSettings
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:15
+
+Settings for the states database client
+
 ## Properties
 
 ### autoConnect?
 
-> `optional` **autoConnect**: `boolean`
+> `optional` **autoConnect?**: `boolean`
 
-#### Defined in
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:27
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:20
+Whether to connect to the database immediately (default true)
 
 ***
 
 ### change?
 
-> `optional` **change**: [`ChangeFunction`](../type-aliases/ChangeFunction.md)
+> `optional` **change?**: [`ChangeFunction`](../type-aliases/ChangeFunction.md)
 
-#### Defined in
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:23
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:18
+Handler for system-level state and message changes
 
 ***
 
 ### changeUser?
 
-> `optional` **changeUser**: [`UserChangeFunction`](../type-aliases/UserChangeFunction.md)
+> `optional` **changeUser?**: [`UserChangeFunction`](../type-aliases/UserChangeFunction.md)
 
-#### Defined in
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:21
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:17
+Handler for user-level state changes
 
 ***
 
-### connected()?
+### connected?
 
-> `optional` **connected**: () => `void`
+> `optional` **connected?**: () => `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:17
+
+Called once the client is connected
 
 #### Returns
 
 `void`
-
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:15
 
 ***
 
@@ -56,100 +60,100 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:15
 
 > **connection**: [`ConnectionOptions`](ConnectionOptions.md)
 
-#### Defined in
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:25
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:19
+Connection options for the redis server
 
 ***
 
-### disconnected()?
+### disconnected?
 
-> `optional` **disconnected**: () => `void`
+> `optional` **disconnected?**: () => `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:19
+
+Called when the client gets disconnected
 
 #### Returns
 
 `void`
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:16
-
 ***
 
 ### hostname?
 
-> `optional` **hostname**: `string`
+> `optional` **hostname?**: `string`
 
-#### Defined in
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:31
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:22
+Name of this host
 
 ***
 
 ### logger?
 
-> `optional` **logger**: [`InternalLogger`](../type-aliases/InternalLogger.md)
+> `optional` **logger?**: [`InternalLogger`](../type-aliases/InternalLogger.md)
 
-#### Defined in
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:29
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:21
+Logger instance to use
 
 ***
 
 ### metaNamespace?
 
-> `optional` **metaNamespace**: `string`
+> `optional` **metaNamespace?**: `string`
 
-#### Defined in
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:35
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:24
+Namespace used for meta information
 
 ***
 
 ### namespace?
 
-> `optional` **namespace**: `string`
+> `optional` **namespace?**: `string`
 
-#### Defined in
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:33
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:23
+Namespace of this client
 
 ***
 
 ### namespaceLog?
 
-> `optional` **namespaceLog**: `string`
+> `optional` **namespaceLog?**: `string`
 
-#### Defined in
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:39
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:26
+Namespace used for log messages
 
 ***
 
 ### namespaceMsg?
 
-> `optional` **namespaceMsg**: `string`
+> `optional` **namespaceMsg?**: `string`
 
-#### Defined in
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:41
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:27
+Namespace used for the message box
 
 ***
 
 ### namespaceSession?
 
-> `optional` **namespaceSession**: `string`
+> `optional` **namespaceSession?**: `string`
 
-#### Defined in
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:37
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:25
+Namespace used for sessions
 
 ***
 
 ### redisNamespace?
 
-> `optional` **redisNamespace**: `string`
+> `optional` **redisNamespace?**: `string`
 
-#### Defined in
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:43
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:28
+Redis key prefix (defaults to "io")

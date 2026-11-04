@@ -21,6 +21,8 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 - [License](#license)
 
 ## Compatibility
+* js-controller 8.x (Nicole) works with Node.js 22.x, 24.x and 26.x
+* js-controller 7.2 (Milla) works with Node.js 18.x, 20.x, 22.x and 24.x
 * js-controller 7.x (Lucy) works with Node.js 18.x, 20.x, 22.x and probably 24.x
 * js-controller 6.x (Kiera) works with Node.js 18.x, 20.x, 22.x
 * js-controller 5.x works with Node.js 16.x, 18.x, 20.x
@@ -104,13 +106,15 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 - [Adapter Development](#adapter-development)
 - [Environment Variables](#environment-variables)
 - [Vendor Packages Workflow](#vendor-packages-workflow)
+- [Python adapter](doc/PYTHON.md)
+- [Resources monitor](doc/used-resources.md)
 
 ### Admin UI
 **Feature status:** stable
 
 The admin adapter is installed automatically and starts a web-server that hosts the Admin UI. Default port is 8081, so just open `http://<iobroker-ip>:8081/`
 
-If port 8081 is occupied, you can install a second Admin UI on an alternate port and change the port for the first admin UI. To do so, run `iobroker add admin --enabled --port 8090` and go to the `http://<iobroker-ip>:8090/`. Of course you can change port 8090 to a different one.
+If port 8081 is occupied, you can install a second Admin UI on an alternate port and change the port for the first admin UI. To do so, run `iobroker add admin --enabled --port 8090` and go to the `http://<iobroker-ip>:8090/`. Of course, you can change port 8090 to a different one.
 
 ### Automatic adapter upgrade
 **Feature status:** New in 6.0.0
@@ -307,7 +311,7 @@ Another example, if you want to ignore all updates in the `1.5.x` range, you can
 The controller can upgrade OS packages on Linux via `yum` and `apt`.
 To upgrade a package, you have to send a message to the controller with the following this example:
 
-```ts
+```typescript
 sendToHostAsync('system.host.test', 'upgradeOsPackages', {
     packages: [{
       // the package name
@@ -325,7 +329,7 @@ If a package fails, the response will have a value of `false` for `success` and 
 
 Currently only upgrading of packages is supported. If you need a specific OS dependency for your adapter, you can specify it inside `io-package.json` with the field `osDependencies`.
 
-### Custom install logic
+### Custom installation logic
 **Feature status:** New in 5.0.0
 
 If an adapter needs to execute custom install logic, one possibility is to use the `scripts` attribute of `package.json`. 
@@ -351,13 +355,14 @@ If changes are needed there are CLI commands available to update the hostname. L
 
 If you need to set a specific hostname before the first start of iobroker you can also edit the iobroker.json file:
 
-```
+```json5
 {
   "system": {
-    ...
-    "hostname":"local",
-    ...
+    // ...
+    "hostname": "local",
+    // ...
   },
+}
 ```
 
 ### Adapter process memory limitation
@@ -367,20 +372,20 @@ By default, the memory management is done by Node.js automatically. A Garbage Co
 
 If needed, especially for low memory situations the memory limit for all adapter processes can be set in `iobroker.json`. Only set this if really needed, and you know what you are doing. Leave the value at 0 to not set a special memory limitation.
 
-```
+```json5
 {
-...
+  // ...
   "system": {
-    ...
+    // ...
     "memoryLimitMB": 0,
-    ...
+    // ...
   },
-...
+  // ...
 }
 ```
 
 ### Directly executing TypeScript adapters
-**Feature status:** Technology preview since js-controller 3.3.0
+**Feature status:** Stable since js-controller 3.3.0
 
 The js-controller is able to execute `.ts` files, which removes the need of compiling to JavaScript first.
 To use this feature, simply define the adapter main file as the required `.ts` file.
@@ -398,6 +403,49 @@ Vice versa, the build folder is no longer required and should not be published t
 
 Technically, the sources are compiled with ESBuild at every startup; hence this feature should not be used on adapters 
 consisting of many sources to prevent noticeably delayed adapter starts.
+
+### Adapters written in Python
+**Feature status:** experimental
+
+An adapter can be written in Python instead of Node.js by setting `common.platform` in its
+`io-package.json` and pointing `common.main` at the package's `__main__.py`:
+
+```json
+{
+  "common": {
+    "platform": "Python",
+    "main": "python/myadapter/__main__.py"
+  }
+}
+```
+
+`platform` has always been the field describing what an adapter is written in; its only value so far
+was `Javascript/Node.js`, which stays the default. Every existing adapter therefore keeps the
+Node.js path unaltered.
+
+Such an adapter is still shipped as an npm package -- `io-package.json`, `admin/jsonConfig.json` and
+a `python/` directory containing `pyproject.toml`. Repository, repo checker, `iobroker add`, admin
+updates and backups therefore work unchanged.
+
+The js-controller starts, supervises and stops these adapters like any other: stopping goes through
+the `sigKill` state, and `alive`, `connected` and `uptime` are written by the adapter itself. What
+differs is that it is started from a virtual environment rather than with Node.js, that compact mode
+is not available, and that both its output streams are forwarded to the log -- `print()` and
+libraries logging to stdout on one, tracebacks and Python's default logging on the other.
+
+Building that virtual environment is *not* done by the controller. It is the job of the
+[`py-controller`](https://github.com/ioBroker/ioBroker.py-controller) adapter, which creates one per
+adapter below `iobroker-data/py/` and records what it built in an `environment.json` next to it. The
+controller starts an instance only when that environment exists and matches the installed adapter
+version; otherwise it logs the reason and leaves the repair to `py-controller`. An environment with
+no `environment.json` at all is accepted, because it predates the stamp or was built by hand — one
+whose stamp cannot be read is not, since that is a build nobody finished. This keeps knowledge of
+`pip` and `uv` out of the core.
+
+Adapters are written against the [`iobroker`](https://pypi.org/project/iobroker/) package, which
+provides an API close to `@iobroker/adapter-core`. Database connection settings reach the adapter
+through environment variables rather than command line arguments, so they do not appear in the
+process list, which any user on the machine can read.
 
 ### Statistics
 **Feature status:** stable
@@ -557,7 +605,7 @@ By default, this threshold is 5 % of disk space. Via the state `system.host.<hos
 **Feature status:** New in 7.1.0
 
 The js-controller will generate a notification of in the scope `system` and the category `numberObjectsLimitExceeded` on warning level, if your number of objects for an adapter instance exceed a specified threshold.
-By default, this is set to `5000` objects. Via the state `system.host.adapter.<adapter>.<instance>.objectsWarnLimit` you can override this threshold to any positive number.
+By default, this is set to `5000` objects. Via the state `system.adapter.<adapter>.<instance>.objectsWarnLimit` you can override this threshold to any positive number.
 
 ### Logging
 #### Log levels
@@ -572,14 +620,14 @@ The js-controller and each adapter can define their own log level. By default, `
 
 The log level for js-controller is configured in iobroker.json in the logs section:
 
-```
+```json5
 {
-  ...
+  // ...
   "log": {
     "level": "info",
-    ...
+    // ...
   }
-  ...
+  // ...
 }
 ```
 
@@ -601,9 +649,9 @@ The default logging will log file based in the log directory inside the ioBroker
 
 The logging is configured in the `iobroker.json` file and can be changed there:
 
-```
+```json5
 {
-  ...
+  // ...
   "log": {
     "level": "info",
     "maxDays": 7,
@@ -618,7 +666,8 @@ The logging is configured in the `iobroker.json` file and can be changed there:
         "maxFiles": null
       },
     },
-  ...
+    // ...
+  },
 }
 ```
 
@@ -628,19 +677,20 @@ Since js-controller 3.0 Logfiles on non-Windows-based systems are compressed in 
 
 If you do not want to compress the files, this behavior can be deactivated by `iobroker.json`:
 
-```
+```json5
 {
-  ...
+  // ...
   "log": {
-    ...
+    // ...
     "transport": {
       "file1": {
-        ...
+        // ...
         "zippedArchive": false,
-        ...
+        // ...
       },
     },
-  ...
+    // ...
+  },
 }
 ```
 
@@ -650,13 +700,13 @@ If you do not want to compress the files, this behavior can be deactivated by `i
 
 ioBroker also supports logging to a syslog server. The configuration is also stored in the `iobroker.json` configuration file. A section for syslog is pre-created but disabled by default.
 
-```
+```json5
 {
-  ...
+  // ...
   "log": {
-    ...
+    // ...
     "transport": {
-      ...
+      // ...
       "syslog1": {
         "type": "syslog",
         "enabled": false,
@@ -675,7 +725,7 @@ ioBroker also supports logging to a syslog server. The configuration is also sto
       }
     }
   }
-  ...
+  // ...
 }
 ```
 
@@ -740,14 +790,14 @@ To minimize the risk, adapter instances are run by default in compact group 1 wh
 
 To enable compact mode for a js-controller instance, you can use the new "compact" CLI commands, or you can manually change the `iobroker.json` configuration file
 
-```
+```json5
 {
-  ...
+  // ...
   "system": {
-    ...
+    // ...
     "compact":true
   }
-  ...
+  // ...
 }
 ```
 and restart the js-controller.
@@ -776,14 +826,16 @@ For adapters running in compact mode, special care must be taken to clean up use
 
 The js-controller checks the available RAM of the system before starting a new adapter process. If the available RAM is below 50/100 MB by default, an error/warn is logged. The limits can be configured in iobroker.json
 
-```
-    "system": {
-        "memLimitWarn": 100,
-        "memLimitWarnComment": "If the available RAM is below this threshold on adapter start, a warning will be logged.",
-        "memLimitError": 50,
-        "memLimitErrorComment": "If the available RAM is below this threshold on adapter start, an error will be logged."
-    }
-    ...
+```json5
+{
+  "system": {
+    "memLimitWarn": 100,
+    "memLimitWarnComment": "If the available RAM is below this threshold on adapter start, a warning will be logged.",
+    "memLimitError": 50,
+    "memLimitErrorComment": "If the available RAM is below this threshold on adapter start, an error will be logged."
+  }
+  // ...
+}
 ```
 
 Later versions of js-controller might prevent the start of a new adapter process if system resources are too low! 
@@ -793,8 +845,8 @@ Later versions of js-controller might prevent the start of a new adapter process
 
 For debugging reasons, sometimes it is necessary to start an adapter instance via the command line to get more detailed logging.
 
-To do so, manually execute the adapter's main javascript file, which is usually named `main.js` or `<adaptername>.js` (where "adaptername" is the name of the adapter):
-```
+To do so, manually execute the adapter's main JavaScript file, which is usually named `main.js` or `<adaptername>.js` (where "adaptername" is the name of the adapter):
+```bash
 node node_modules/iobroker.adaptername/main.js --force --logs
 ```
 All log output will now be printed to the console.
@@ -878,7 +930,7 @@ Alternatively, you can use Admin interface on the "Objects" tab to create aliase
 
 To create an alias object simple create a new object with an own name in the `alias.0` namespace and add the alias definition in the common section (here for an alias with the id `"alias.0.aliasName"`):
 
-```
+```json5
 {
     _id: "alias.0.aliasName",
     common: {
@@ -900,7 +952,7 @@ To create an alias object simple create a new object with an own name in the `al
 
 or using different read and write ids (supported starting js-controller 3.0, check using feature flag `ALIAS_SEPARATE_READ_WRITE_ID`):
 
-```
+```json5
 {
     _id: "alias.0.aliasName",
     common: {
@@ -913,7 +965,7 @@ or using different read and write ids (supported starting js-controller 3.0, che
             id: {
                 read: 'state.id.to.read.from',
                 write: 'state.id.to.write.to'
-            }
+            },
             read: 'val * 10 + 1',
             write: '(val - 1) / 10'
         }
@@ -940,7 +992,7 @@ Note, that alias states will be automatically scaled if the following conditions
 
 To set the alias properties without a JavaScript or in adapter code you can also use the cli commands like:
 
-```
+```bash
 iobroker object set alias.0.aliasName common.alias.id=state.id.of.target
 iobroker object set alias.0.aliasName common.alias.read="read-func"
 iobroker object set alias.0.aliasName common.alias.write="write-func"
@@ -967,23 +1019,26 @@ js-controller 1.x was using socket.io as the communication protocol between the 
 
 For the objects and states databases, special additional logging of the redis protocol messages can be activated in iobroker.json
 
-```
-"objects": {
-  ...
-  "enhancedLogging": false
+```json5
+{
+  "objects": {
+    //...
+    "enhancedLogging": false
+  }
 }
 ```
 
 When not configured differently, the file databases are persisted every 15s (15000ms) after data are changed. The interval in ms can be changed by configuration in iobroker.json starting js-controller 3.0.
 > **_NOTE:_** If you do that be aware that you may lose data when the js-controller crashes unexpectedly!
 
-```
-"objects": {
-  ...
-  "writeFileInterval": 60000
+```json5
+{
+  "objects": {
+    // ...
+    "writeFileInterval": 60000
+  }
 }
 ```
-
 
 #### Redis as database
 Redis is a well-known industrial grade in-memory database optimized for speed and stability. It performs better than the ioBroker In-Memory database which is written in JavaScript.
@@ -996,11 +1051,12 @@ e.g. for Linux:
 https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04
 
 ##### Configure Redis
-###### make sure Locale is set correctly
-ioBroker requires the "Locale" for the redis-server process to be set to "LANG=C" instead of other locales in order to get correct sorted results when Objects are stored in Redis.
+###### Locale of the redis-server process
+Since js-controller 7.2.3 the locale of the redis-server process no longer matters. Nothing needs to be configured.
 
-On Linux, ideally set the LC_ALL environment variable for the redis-server process correctly.
-For more information to see if changes are needed and how to do them see https://forum.iobroker.net/topic/52976/wichtiger-hinweis-f%C3%BCr-redis-installationen (German right now).
+Earlier versions required it to be `LANG=C`, because Redis calls `setlocale(LC_COLLATE, "")` on startup and its Lua engine then compared object keys with `strcoll()`. Under a UTF-8 collation the key range check in the view scripts stopped holding, and **every** object view (`getObjectView`, `getAdapterObjects`, `getForeignObjects`, ...) silently returned nothing — while the objects themselves were stored correctly and reading a single object by its id kept working. The view scripts now compare keys byte by byte, which gives the same result on every host and is a little faster than before.
+
+If you are still on an older version and see empty views, adapters that find no objects, or an empty admin object tree while the data is clearly in Redis, set `LC_ALL=C` for the redis-server process (see https://forum.iobroker.net/topic/52976/wichtiger-hinweis-f%C3%BCr-redis-installationen, German) or upgrade.
 
 ###### Allow Network access
 Ideally, the Redis server should be installed on the same host as the js-controller process because as soon as Redis is configured to be used, the ioBroker installation will not work without it.
@@ -1016,7 +1072,7 @@ More details can be found at https://redis.io/topics/replication#configuration a
 
 Redis slaves will be not writable by default.
 
-In case of a crash of the master, you can reconfigure one of the slaves to be the new master and it will use the current content. After reconfiguring all slaves to sync with the new Master, the redis database is functional again.
+In case of a crash of the master, you can reconfigure one of the slaves to be the new master, and it will use the current content. After reconfiguring all slaves to sync with the new Master, the redis database is functional again.
 
 After reconfiguring Redis, you also need to update all ioBroker states/objects DB settings to connect to the new Redis Master host.
 
@@ -1040,7 +1096,7 @@ It is possible to switch anytime between Redis and in-memory Javascript DB.
 
 To switch to Redis, execute the following on the console:
 
-```
+```bash
 iobroker stop
 iobroker setup custom
 ```
@@ -1190,34 +1246,74 @@ If an array with field names from native is defined in io-package.json as common
 
 It is best practice adding the field names of encrypted fields to the protectedNative array too to make sure the fields stay protected (even if encrypted). Only let other adapters read your encrypted values if there is a need to (e.g. adapter interoperability)
 
+#### Complex attribute names in encryptedNative and protectedNative
+**Feature status:** Stable, since js-controller 7.0.7
+
+The entries of `encryptedNative` and `protectedNative` are not limited to top-level attributes of `native`. A complex attribute name addresses a nested attribute by joining the path segments with a dot. If a segment points to an array, the rest of the path is applied to every element of that array.
+
+```json5
+// io-package.json
+{
+  "native": {
+    "password": "",
+    "cloud": {
+      "token": ""
+    },
+    "devices": [
+      { "ip": "192.168.1.10", "password": "" },
+      { "ip": "192.168.1.11", "password": "" }
+    ]
+  },
+  "encryptedNative": ["password", "cloud.token", "devices.password"],
+  "protectedNative": ["password", "cloud.token", "devices.password"]
+}
+```
+
+- `cloud.token` addresses `native.cloud.token`
+- `devices.password` addresses `native.devices[i].password` of every element. Elements without this attribute, or with a value that is not a string, are left untouched.
+
+The complex names are respected by:
+- `protectedNative`: the attributes are removed from the instance object when it is read by another adapter, at any depth
+- the adapter start: the attributes are decrypted in `this.config`, e.g. `this.config.cloud.token` and `this.config.devices[0].password` (since js-controller 7.2.3, before only top-level names were decrypted on start)
+- `adapter.updateConfig()`: the attributes are encrypted before the configuration is stored
+- `adapter.getEncryptedConfig()`: `getEncryptedConfig('cloud.token')` returns the decrypted string, `getEncryptedConfig('devices.password')` returns an array with one decrypted value per element
+
+For encryption, a path may run through at most one array.
+
+**Note:** The configuration dialogs of Admin (JSON config and React-based settings) currently encrypt and decrypt only top-level attribute names. A nested value entered there is stored as plain text, and the adapter would then try to decrypt this plain text on start. Only list complex names in `encryptedNative` if these values are stored encrypted, e.g. via `adapter.updateConfig()` or by your own configuration UI.
+
 #### Define Adapter dependencies to other adapters
 **Feature status:** Stable
 
 Dependencies are defined in an array and can contain an adapter name of an object.
 
 When using the object style, you can define a semver version range for this adapter:
-```
-"dependencies": [
-      {
-        "js-controller": ">=2.0.0"
-      }
-    ],
+```json5
+{
+  "dependencies": [
+    {
+      "js-controller": ">=2.0.0"
+    }
+  ],
+}
 ```
 
 If the version do not matter and just the adapter itself needs to be present you can also use:
-```
-"dependencies": [
-      "web"
-    ],
+```json5
+{
+  "dependencies": [
+    "web"
+  ],
+}
 ```
 
 There are two types of adapter dependencies that can be defined in io-package.json and will be checked on installation and adapter start.
 
-**common.dependencies for Same Host dependencies**
+**`common.dependencies` for Same Host dependencies**
 With `common.dependencies` in io-package.json you can define if an adapter needs to be present on the same host and optionally in which version.
 This is mainly used to define the needed "js-controller" version for yor adapter and can also be relevant e.g. for web extension adapters (adapters that can be plugged in into the web adapter, so the code needs to be on the same host).
 
-**common.globalDependencies for dependencies on any Host**
+**`common.globalDependencies` for dependencies on any Host**
 With common.globalDependencies in io-package.json and starting with js-controller 3.0, you can define a global dependency that will be checked over all hosts. Irrelevant where on the system the referenced adapter is installed it needs to match the version and at least one instance needs to exist.
 This can mainly be used for more loose dependencies where adapters are split over multiple hosts but still work together, e.g. Admin. 
 
@@ -1254,6 +1350,7 @@ The following features can be checked using this method:
 * **CONTROLLER_MULTI_REPO**: indicates that the controller supports multiple repository sources, which will be combined in one (since js-controller 4.0)
 * **CONTROLLER_LICENSE_MANAGER**: js-controller can read licenses from iobroker.net (since js-controller 4.0)
 * **DEL_INSTANCE_CUSTOM**: indicates that controller is able to delete all custom attributes of an adapter and instance if it is deleted via `--custom` flag (since js-controller 4.0)
+* **CONTROLLER_CMD_EXEC_FILES**: the `cmdExec` host message supports sending files together with the command via the `files` property (since js-controller 7.2)
 
 To check if certain adapter methods itself are existing, please simply check for their existence like
 
@@ -1292,7 +1389,7 @@ Invalid entries could be:
 
 To make it possible to get such an entries, the maintenance mode was implemented.
 To make a call in maintenance mode, you must provide `options` object with the at least following attributes:
-```
+```json5
 {
     user: 'system.user.admin',
     maintenance: true,
@@ -1416,6 +1513,6 @@ This new process and rules are introduced with js-controller 2.0 and updated to 
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2024 bluefox <dogafox@gmail.com>,
+Copyright (c) 2014-2026 bluefox <dogafox@gmail.com>,
 
 Copyright (c) 2014      hobbyquaker

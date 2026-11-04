@@ -7,15 +7,18 @@ import fs from 'fs-extra';
 export class CLICompact extends CLICommand {
     private readonly config: ioBroker.IoBrokerJson = fs.readJSONSync(tools.getConfigFileName());
 
+    /**
+     * @param options The command options including context and parameters
+     */
     constructor(options: CLICommandOptions) {
         super(options);
     }
     /**
      * Executes a command
      *
-     * @param args
+     * @param args The command arguments (the first is the sub-command)
      */
-    execute(args: any[]): void {
+    execute(args: string[]): void {
         const { callback, showHelp } = this.options;
         const command = args[0];
         switch (command) {
@@ -28,19 +31,23 @@ export class CLICompact extends CLICommand {
             case 'off':
                 return this.setCompactModeHost(false);
             default:
-                if (command && command.includes('.')) {
+                if (command?.includes('.')) {
                     if (args[1]) {
                         switch (args[1]) {
                             case 'status':
-                                return this.statusCompactModeInstance(command);
+                                return this.statusCompactModeInstance(command as `${string}.${number}`);
                             case 'enable':
                             case 'on':
-                                return this.setCompactModeInstance(command, true, args[2]);
+                                return this.setCompactModeInstance(command as `${string}.${number}`, true, args[2]);
                             case 'disable':
                             case 'off':
-                                return this.setCompactModeInstance(command, false);
+                                return this.setCompactModeInstance(command as `${string}.${number}`, false);
                             case 'group':
-                                return this.setCompactModeInstance(command, undefined, args[2]);
+                                return this.setCompactModeInstance(
+                                    command as `${string}.${number}`,
+                                    undefined,
+                                    args[2],
+                                );
                         }
                     }
                 }

@@ -1,21 +1,21 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / GetSessionCallback
 
-# Type Alias: GetSessionCallback()
+# Type Alias: GetSessionCallback
 
-> **GetSessionCallback**: (`session`) => `void`
+> **GetSessionCallback** = (`session`) => `void`
+
+Defined in: [types-dev/index.d.ts:757](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L757)
 
 ## Parameters
 
-• **session**: [`Session`](Session.md)
+### session
+
+[`Session`](Session.md) \| `null`
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[types-dev/index.d.ts:582](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/index.d.ts#L582)

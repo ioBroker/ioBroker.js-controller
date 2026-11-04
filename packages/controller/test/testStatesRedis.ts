@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import assert from 'node:assert/strict';
 import { startController, stopController } from './lib/setup4controller.js';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -53,8 +53,8 @@ describe('States-Redis: Test states in Redis', function () {
         objects = _objects;
         states = _states;
         states!.subscribe('*');
-        expect(objects).to.be.ok;
-        expect(states).to.be.ok;
+        assert.ok(objects);
+        assert.ok(states);
         await new Promise<void>(resolve => {
             setTimeout(() => resolve(), 5_000);
         });
@@ -64,26 +64,26 @@ describe('States-Redis: Test states in Redis', function () {
         const testID = 'testObject.0.test1';
         onStatesChanged = (id, state) => {
             if (id === testID) {
-                expect(state).to.be.ok;
-                expect(state!.val).to.be.equal(1);
-                expect(state!.ack).to.be.false;
-                expect(state!.ts).to.be.ok;
-                expect(state!.q).to.be.equal(0);
+                assert.ok(state);
+                assert.strictEqual(state.val, 1);
+                assert.strictEqual(state.ack, false);
+                assert.ok(state.ts);
+                assert.strictEqual(state.q, 0);
 
                 states!.getState(testID, (err, state) => {
-                    expect(err).to.be.not.ok;
-                    expect(state).to.be.ok;
-                    expect(state!.val).to.be.equal(1);
-                    expect(state!.ack).to.be.false;
-                    expect(state!.ts).to.be.ok;
-                    expect(state!.q).to.be.equal(0);
+                    assert.ok(!err);
+                    assert.ok(state);
+                    assert.strictEqual(state.val, 1);
+                    assert.strictEqual(state.ack, false);
+                    assert.ok(state.ts);
+                    assert.strictEqual(state.q, 0);
                     done();
                 });
             }
         };
 
         states!.setState(testID, 1, err => {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
         });
     }).timeout(10000);
 
@@ -91,21 +91,21 @@ describe('States-Redis: Test states in Redis', function () {
         const testID = 'testObject.0.test1';
         onStatesChanged = async (id, state) => {
             if (id === testID) {
-                expect(state).to.be.ok;
-                expect(state!.val).to.be.equal(2);
-                expect(state!.ack).to.be.false;
-                expect(state!.ts).to.be.ok;
-                expect(state!.lc).to.be.equal(state!.ts);
-                expect(state!.q).to.be.equal(0);
+                assert.ok(state);
+                assert.strictEqual(state.val, 2);
+                assert.strictEqual(state.ack, false);
+                assert.ok(state.ts);
+                assert.strictEqual(state.lc, state.ts);
+                assert.strictEqual(state.q, 0);
 
                 // @ts-expect-error adding types later on
                 state = await states!.getStateAsync(testID);
-                expect(state).to.be.ok;
-                expect(state!.val).to.be.equal(2);
-                expect(state!.ack).to.be.false;
-                expect(state!.ts).to.be.ok;
-                expect(state!.lc).to.be.equal(state!.ts);
-                expect(state!.q).to.be.equal(0);
+                assert.ok(state);
+                assert.strictEqual(state.val, 2);
+                assert.strictEqual(state.ack, false);
+                assert.ok(state.ts);
+                assert.strictEqual(state.lc, state.ts);
+                assert.strictEqual(state.q, 0);
                 done();
             }
         };
@@ -117,21 +117,21 @@ describe('States-Redis: Test states in Redis', function () {
         const testID = 'testObject.0.test1';
         onStatesChanged = async (id, state) => {
             if (id === testID) {
-                expect(state).to.be.ok;
-                expect(state!.val).to.be.equal(3);
-                expect(state!.ack).to.be.true;
-                expect(state!.ts).to.be.equal(123456000);
-                expect(state!.lc).to.be.equal(state!.ts);
-                expect(state!.q).to.be.equal(1);
+                assert.ok(state);
+                assert.strictEqual(state.val, 3);
+                assert.strictEqual(state.ack, true);
+                assert.strictEqual(state.ts, 123456000);
+                assert.strictEqual(state.lc, state.ts);
+                assert.strictEqual(state.q, 1);
 
                 // @ts-expect-error adding types later on
                 state = await states!.getStateAsync(testID);
-                expect(state).to.be.ok;
-                expect(state!.val).to.be.equal(3);
-                expect(state!.ack).to.be.true;
-                expect(state!.ts).to.be.equal(123456000);
-                expect(state!.lc).to.be.equal(state!.ts);
-                expect(state!.q).to.be.equal(1);
+                assert.ok(state);
+                assert.strictEqual(state.val, 3);
+                assert.strictEqual(state.ack, true);
+                assert.strictEqual(state.ts, 123456000);
+                assert.strictEqual(state.lc, state.ts);
+                assert.strictEqual(state.q, 1);
                 done();
             }
         };
@@ -143,29 +143,100 @@ describe('States-Redis: Test states in Redis', function () {
         const testID = 'testObject.0.test1';
         onStatesChanged = async (id, state) => {
             if (id === testID) {
-                expect(state).to.be.ok;
-                expect(state!.val).to.be.equal(4);
-                expect(state!.ack).to.be.true;
-                expect(state!.ts).to.be.ok;
-                expect(state!.ts).to.be.not.equal(123456000);
-                expect(state!.lc).to.be.equal(state!.ts);
-                expect(state!.q).to.be.equal(1);
+                assert.ok(state);
+                assert.strictEqual(state.val, 4);
+                assert.strictEqual(state.ack, true);
+                assert.ok(state.ts);
+                assert.notStrictEqual(state.ts, 123456000);
+                assert.strictEqual(state.lc, state.ts);
+                assert.strictEqual(state.q, 1);
 
                 // @ts-expect-error adding types later on
                 state = await states!.getStateAsync(testID);
-                expect(state).to.be.ok;
-                expect(state!.val).to.be.equal(4);
-                expect(state!.ack).to.be.true;
-                expect(state!.ts).to.be.ok;
-                expect(state!.ts).to.be.not.equal(123456000);
-                expect(state!.lc).to.be.equal(state!.ts);
-                expect(state!.q).to.be.equal(1);
+                assert.ok(state);
+                assert.strictEqual(state.val, 4);
+                assert.strictEqual(state.ack, true);
+                assert.ok(state.ts);
+                assert.notStrictEqual(state.ts, 123456000);
+                assert.strictEqual(state.lc, state.ts);
+                assert.strictEqual(state.q, 1);
                 done();
             }
         };
 
         // @ts-expect-error ignore types here for ts to test the case
         states!.setState(testID, { val: 4, ack: true, ts: null, q: 1 });
+    }).timeout(10_000);
+
+    it('States-Redis: should setState with expire (setex + publish in one MULTI)', done => {
+        // setState writes the value and publishes the change in a single MULTI.
+        // The expire branch uses SETEX, so this verifies that branch end-to-end:
+        // the value is stored with a TTL AND the publish still delivers the event.
+        const testID = 'testObject.0.testExpire';
+        onStatesChanged = (id, state) => {
+            if (id === testID && state && state.val === 5) {
+                onStatesChanged = null; // do not react to the later expiry event
+                // PUBLISH inside the MULTI delivered the change event
+                assert.strictEqual(state.ack, true);
+
+                // SETEX inside the MULTI stored the value...
+                states!.getState(testID, (err, storedState) => {
+                    assert.ok(!err);
+                    assert.ok(storedState);
+                    assert.strictEqual(storedState.val, 5);
+
+                    // ...with a TTL, so it must be gone after the expire window
+                    setTimeout(() => {
+                        states!.getState(testID, (err, expiredState) => {
+                            assert.ok(!err);
+                            assert.strictEqual(expiredState, null);
+                            done();
+                        });
+                    }, 1_500);
+                });
+            }
+        };
+
+        states!.setState(testID, { val: 5, ack: true, expire: 1 }, err => {
+            assert.ok(!err);
+        });
+    }).timeout(10_000);
+
+    it('States-Redis: should keep lc on unchanged value and bump it on change', done => {
+        // The MULTI write is preceded by a GET to compute "lc" (last change).
+        // This guards that read-modify-write logic: lc stays stable when the value
+        // is identical and is bumped only when the value actually changes.
+        onStatesChanged = null;
+        const testID = 'testObject.0.testLc';
+        states!.setState(testID, { val: 10, ack: true }, () => {
+            states!.getState(testID, (err, first) => {
+                assert.ok(!err);
+                assert.ok(first);
+                const firstLc = first.lc;
+                setTimeout(() => {
+                    // identical value -> lc must stay, ts must advance
+                    states!.setState(testID, { val: 10, ack: true }, () => {
+                        states!.getState(testID, (err, second) => {
+                            assert.ok(!err);
+                            assert.ok(second);
+                            assert.strictEqual(second.lc, firstLc, 'lc must not change for identical value');
+                            assert.ok(second.ts >= first.ts, 'ts must advance');
+                            setTimeout(() => {
+                                // changed value -> lc must be bumped
+                                states!.setState(testID, { val: 20, ack: true }, () => {
+                                    states!.getState(testID, (err, third) => {
+                                        assert.ok(!err);
+                                        assert.ok(third);
+                                        assert.notStrictEqual(third.lc, firstLc, 'lc must change when value changes');
+                                        done();
+                                    });
+                                });
+                            }, 5);
+                        });
+                    });
+                }, 5);
+            });
+        });
     }).timeout(10_000);
 
     // todo: write more tests

@@ -3,6 +3,7 @@ import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 import { enumInstances } from './cliTools.js';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 
+/** Command iobroker message ... */
 export class CLIMessage extends CLICommand {
     /** @param options The CLI Message options */
     constructor(options: CLICommandOptions) {
@@ -14,7 +15,7 @@ export class CLIMessage extends CLICommand {
      *
      * @param args parsed arguments
      */
-    execute(args: any[]): void {
+    execute(args: string[]): void {
         const { callback, dbConnect, showHelp } = this.options;
         let [adapter, command, message] = args;
         if (adapter === null || adapter === undefined) {

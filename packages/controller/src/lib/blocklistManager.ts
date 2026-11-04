@@ -26,10 +26,16 @@ interface InternalAdapterVersionBlockedOptions extends AdapterVersionBlockedOpti
     systemConfigObj: ioBroker.SystemConfigObject;
 }
 
+/**
+ * Checks adapters and their versions against the configured block list
+ */
 export class BlocklistManager {
     /** The objects client */
     private readonly objects: ObjectsClient;
 
+    /**
+     * @param options The objects client used to read the block list
+     */
     constructor(options: BlocklistManagerOptions) {
         this.objects = options.objects;
     }

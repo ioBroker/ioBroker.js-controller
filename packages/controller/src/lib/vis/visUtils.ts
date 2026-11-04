@@ -188,17 +188,7 @@ interface WidgetStyle {
 
     'border-width'?: string | null;
     'border-style'?:
-        | ''
-        | 'dotted'
-        | 'dashed'
-        | 'solid'
-        | 'double'
-        | 'groove'
-        | 'ridge'
-        | 'inset'
-        | 'outset'
-        | 'hidden'
-        | null;
+        '' | 'dotted' | 'dashed' | 'solid' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset' | 'hidden' | null;
     'border-color'?: string | null;
     'border-radius'?: string | null;
 

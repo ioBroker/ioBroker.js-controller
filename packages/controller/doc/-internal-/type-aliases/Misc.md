@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,6 @@
 
 # Type Alias: Misc
 
-> **Misc**: \`system.host.$\{string\}.$\{string\}\` \| \`0\_userdata.0.$\{string\}\`
+> **Misc** = `` `system.host.${string}.${string}` `` \| `` `0_userdata.0.${string}` ``
 
-## Defined in
-
-[types-dev/objects.d.ts:70](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L70)
+Defined in: [types-dev/objects.d.ts:70](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L70)

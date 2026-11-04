@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { expect } from 'chai';
+import assert from 'node:assert/strict';
 import { startController, stopController } from '../lib/setup4controller.js';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
@@ -56,8 +56,8 @@ describe('States-Redis-Socket: Test states', () => {
         objects = _objects;
         states = _states!;
         states.subscribe('*');
-        expect(objects).to.be.ok;
-        expect(states).to.be.ok;
+        assert.ok(objects);
+        assert.ok(states);
         await new Promise<void>(resolve => {
             setTimeout(() => resolve(), 5_000);
         });
@@ -70,27 +70,27 @@ describe('States-Redis-Socket: Test states', () => {
         onStatesChanged = (id, _state) => {
             if (id === testID) {
                 const state = _state!;
-                expect(state).to.be.ok;
-                expect(state.val).to.be.equal(1);
-                expect(state.ack).to.be.false;
-                expect(state.ts).to.be.ok;
-                expect(state.q).to.be.equal(0);
+                assert.ok(state);
+                assert.strictEqual(state.val, 1);
+                assert.strictEqual(state.ack, false);
+                assert.ok(state.ts);
+                assert.strictEqual(state.q, 0);
 
                 states!.getState(testID, (err, _state) => {
                     const state = _state!;
-                    expect(err).to.be.not.ok;
-                    expect(state).to.be.ok;
-                    expect(state.val).to.be.equal(1);
-                    expect(state.ack).to.be.false;
-                    expect(state.ts).to.be.ok;
-                    expect(state.q).to.be.equal(0);
+                    assert.ok(!err);
+                    assert.ok(state);
+                    assert.strictEqual(state.val, 1);
+                    assert.strictEqual(state.ack, false);
+                    assert.ok(state.ts);
+                    assert.strictEqual(state.q, 0);
                     done();
                 });
             }
         };
 
         states!.setState(testID, 1, function (err) {
-            expect(err).to.be.not.ok;
+            assert.ok(!err);
         });
     });
 

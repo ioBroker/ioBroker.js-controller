@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,6 @@
 
 # Type Alias: UserInterfaceClientRemoveMessage
 
-> **UserInterfaceClientRemoveMessage**: `Omit`\<[`Message`](../interfaces/Message.md), `"message"` \| `"command"`\> & `object` \| `Omit`\<[`Message`](../interfaces/Message.md), `"message"` \| `"command"`\> & `object`
+> **UserInterfaceClientRemoveMessage** = `Omit`\<[`Message`](../interfaces/Message.md), `"message"` \| `"command"`\> & `object` \| `Omit`\<[`Message`](../interfaces/Message.md), `"message"` \| `"command"`\> & `object`
 
-## Defined in
-
-[adapter/src/lib/\_Types.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/adapter/src/lib/_Types.ts#L180)
+Defined in: [adapter/src/lib/\_Types.ts:195](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L195)

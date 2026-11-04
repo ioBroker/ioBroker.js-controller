@@ -19,12 +19,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0 # Fetch the history, or this action won't work
 
       - name: Use Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
 
@@ -48,7 +48,7 @@ jobs:
 
       - name: Determine the version bump
         id: version
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           VERSION_BUMP: ${{ inputs.versionBump }}
         with:
@@ -68,7 +68,7 @@ jobs:
       - name: Prepare io-package.json
         env:
           VERSION: ${{ steps.version.outputs.result }}
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const semver = require('semver');
@@ -107,7 +107,7 @@ jobs:
       - name: Prepare changelog
         env:
           VERSION: ${{ steps.version.outputs.result }}
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs-extra');
@@ -147,14 +147,21 @@ jobs:
 
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.PR_TOKEN }}
           commit-message: "[OFFICIAL RELEASE] ${{ steps.version.outputs.result }}"
           committer: foxriver76 <moritz.heusinger@gmail.com>
           author: foxriver76 <moritz.heusinger@gmail.com>
           signoff: false
-          branch: official-release
+          # Back into the branch the release was started from. Without this, the action falls back
+          # to the repository's default branch, so a release cut from a maintenance branch would
+          # open its pull request against master -- carrying that branch's version number into the
+          # line that is being developed there.
+          base: ${{ github.ref_name }}
+          # Named after that branch too, so two release runs on different lines cannot overwrite
+          # each other's pull request branch.
+          branch: official-release-${{ github.ref_name }}
           delete-branch: true
           title: "[OFFICIAL RELEASE] ${{ steps.version.outputs.result }}"
           body: |

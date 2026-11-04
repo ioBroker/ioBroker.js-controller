@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,45 +6,51 @@
 
 # Class: UserInterfaceMessagingController
 
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:65](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L65)
+
+Controller for messaging with UI clients (subscribe, heartbeat and sending data)
+
 ## Constructors
 
-### new UserInterfaceMessagingController()
+### Constructor
 
-> **new UserInterfaceMessagingController**(`options`): [`UserInterfaceMessagingController`](UserInterfaceMessagingController.md)
+> **new UserInterfaceMessagingController**(`options`): `UserInterfaceMessagingController`
+
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L79)
 
 #### Parameters
 
-• **options**: [`MessagingControllerOptions`](../interfaces/MessagingControllerOptions.md)
+##### options
+
+[`MessagingControllerOptions`](../interfaces/MessagingControllerOptions.md)
+
+The adapter and the subscribe/unsubscribe callbacks
 
 #### Returns
 
-[`UserInterfaceMessagingController`](UserInterfaceMessagingController.md)
-
-#### Defined in
-
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:69](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L69)
+`UserInterfaceMessagingController`
 
 ## Methods
 
 ### registerClientSubscribeByMessage()
 
-> **registerClientSubscribeByMessage**(`msg`): `Promise`\<`undefined` \| [`UserInterfaceClientSubscribeReturnType`](../interfaces/UserInterfaceClientSubscribeReturnType.md)\>
+> **registerClientSubscribeByMessage**(`msg`): `Promise`\<[`UserInterfaceClientSubscribeReturnType`](../interfaces/UserInterfaceClientSubscribeReturnType.md) \| `undefined`\>
+
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:126](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L126)
 
 Register subscription from new client
 
 #### Parameters
 
-• **msg**: [`Message`](../interfaces/Message.md)
+##### msg
+
+[`Message`](../interfaces/Message.md)
 
 The subscribe message
 
 #### Returns
 
-`Promise`\<`undefined` \| [`UserInterfaceClientSubscribeReturnType`](../interfaces/UserInterfaceClientSubscribeReturnType.md)\>
-
-#### Defined in
-
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L116)
+`Promise`\<[`UserInterfaceClientSubscribeReturnType`](../interfaces/UserInterfaceClientSubscribeReturnType.md) \| `undefined`\>
 
 ***
 
@@ -52,12 +58,16 @@ The subscribe message
 
 > **removeClientSubscribeByMessage**(`msg`): `void`
 
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L169)
+
 Remove a client subscription, issued by message
 It contains an array of types which should be unsubscribed
 
 #### Parameters
 
-• **msg**: [`UserInterfaceClientRemoveMessage`](../type-aliases/UserInterfaceClientRemoveMessage.md)
+##### msg
+
+[`UserInterfaceClientRemoveMessage`](../type-aliases/UserInterfaceClientRemoveMessage.md)
 
 The unsubscribe message
 
@@ -65,21 +75,21 @@ The unsubscribe message
 
 `void`
 
-#### Defined in
-
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L159)
-
 ***
 
 ### sendToAllClients()
 
 > **sendToAllClients**(`options`): `Promise`\<`void`\>
 
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:113](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L113)
+
 Send a message to all active clients
 
 #### Parameters
 
-• **options**: [`SendToAllClientOptions`](../type-aliases/SendToAllClientOptions.md)
+##### options
+
+[`SendToAllClientOptions`](../type-aliases/SendToAllClientOptions.md)
 
 Data and states options
 
@@ -87,28 +97,24 @@ Data and states options
 
 `Promise`\<`void`\>
 
-#### Defined in
-
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:103](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L103)
-
 ***
 
 ### sendToClient()
 
 > **sendToClient**(`options`): `Promise`\<`void`\>
 
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:92](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L92)
+
 Send a message to the given clientId
 
 #### Parameters
 
-• **options**: [`SendToClientOptions`](../interfaces/SendToClientOptions.md)
+##### options
+
+[`SendToClientOptions`](../interfaces/SendToClientOptions.md)
 
 Data, states and client information
 
 #### Returns
 
 `Promise`\<`void`\>
-
-#### Defined in
-
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L82)

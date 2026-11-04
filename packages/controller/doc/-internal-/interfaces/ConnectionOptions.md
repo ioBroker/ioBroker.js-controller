@@ -1,10 +1,14 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / ConnectionOptions
 
 # Interface: ConnectionOptions
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:23
+
+Options describing how to connect to the database server
 
 ## Extended by
 
@@ -14,33 +18,31 @@
 
 ### backup?
 
-> `optional` **backup**: [`BackupOptions`](BackupOptions.md)
+> `optional` **backup?**: [`BackupOptions`](BackupOptions.md)
 
-#### Defined in
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:45
 
-db-base/build/esm/lib/inMemFileDB.d.ts:19
+Backup configuration
 
 ***
 
 ### dataDir?
 
-> `optional` **dataDir**: `string`
+> `optional` **dataDir?**: `string`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:47
 
 relative path to the data dir
-
-#### Defined in
-
-db-base/build/esm/lib/inMemFileDB.d.ts:21
 
 ***
 
 ### enhancedLogging?
 
-> `optional` **enhancedLogging**: `boolean`
+> `optional` **enhancedLogging?**: `boolean`
 
-#### Defined in
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:39
 
-db-base/build/esm/lib/inMemFileDB.d.ts:18
+Enable more verbose connection logging
 
 ***
 
@@ -48,31 +50,49 @@ db-base/build/esm/lib/inMemFileDB.d.ts:18
 
 > **host**: `string` \| `string`[]
 
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:29
+
 array on sentinel
 
-#### Defined in
+***
 
-db-base/build/esm/lib/inMemFileDB.d.ts:14
+### jsonlOptions?
+
+> `optional` **jsonlOptions?**: [`JsonlOptions`](JsonlOptions.md)
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:35
+
+Options forwarded to the JSONL database backend
+
+***
+
+### noFileCache?
+
+> `optional` **noFileCache?**: `boolean`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:41
+
+Disable the in-memory file cache and always read files from disk
 
 ***
 
 ### options
 
-> **options**: `Record`\<`string`, `any`\>
+> **options**: [`DatabaseConnectionOptions`](DatabaseConnectionOptions.md)
 
-#### Defined in
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:33
 
-db-base/build/esm/lib/inMemFileDB.d.ts:17
+Additional connection options passed to the database driver
 
 ***
 
 ### pass?
 
-> `optional` **pass**: `string`
+> `optional` **pass?**: `string`
 
-#### Defined in
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:25
 
-db-base/build/esm/lib/inMemFileDB.d.ts:11
+Password for authentication, if required
 
 ***
 
@@ -80,18 +100,46 @@ db-base/build/esm/lib/inMemFileDB.d.ts:11
 
 > **port**: `number` \| `number`[]
 
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:31
+
 array on sentinel
 
-#### Defined in
+***
 
-db-base/build/esm/lib/inMemFileDB.d.ts:16
+### redisNamespace?
+
+> `optional` **redisNamespace?**: `string`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:37
+
+Redis key prefix used by the in-memory server
+
+***
+
+### secure?
+
+> `optional` **secure?**: `boolean`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:43
+
+Whether the connection should be secured via TLS
 
 ***
 
 ### sentinelName?
 
-> `optional` **sentinelName**: `string`
+> `optional` **sentinelName?**: `string`
 
-#### Defined in
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:27
 
-db-base/build/esm/lib/inMemFileDB.d.ts:12
+Name of the sentinel master to connect to
+
+***
+
+### writeFileInterval?
+
+> `optional` **writeFileInterval?**: `number`
+
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:49
+
+Interval in milliseconds in which the in-memory states are persisted to disk

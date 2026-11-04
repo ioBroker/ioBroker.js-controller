@@ -8,7 +8,7 @@
  */
 
 import fs from 'fs-extra';
-import { tools } from '@iobroker/js-controller-common';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'node:util';
 import axios from 'axios';
@@ -17,11 +17,17 @@ import { join } from 'node:path';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { dbConnect } from '@/lib/setup/dbConnection.js';
+import { ProgressBar } from '@/lib/progressBar.js';
 
 const hostname = tools.getHostName();
 
+/** Options for the upload command */
 export interface CLIUploadOptions {
+    /** The states database client */
     states: StatesRedisClient;
+    /** The objects database client */
     objects: ObjectsRedisClient;
 }
 
@@ -37,6 +43,9 @@ interface Logger extends InternalLogger {
 /** Logger without noisy levels */
 type MinimalLogger = Omit<Logger, 'info' | 'silly' | 'debug'>;
 
+/**
+ * CLI command to upload adapter files into the objects database
+ */
 export class Upload {
     private readonly states: StatesRedisClient;
     private readonly objects: ObjectsRedisClient;
@@ -46,6 +55,9 @@ export class Upload {
     private callbacks: Record<string, any> = {};
     private lastProgressUpdate = Date.now();
 
+    /**
+     * @param _options The states and objects database clients
+     */
     constructor(_options: CLIUploadOptions) {
         const options = _options || {};
 
@@ -61,6 +73,11 @@ export class Upload {
         this.sendToHostFromCliAsync = tools.promisifyNoError(this.sendToHostFromCli);
     }
 
+    /**
+     * Filter the given hosts to those that are currently alive
+     *
+     * @param hosts The hosts to check
+     */
     async checkHostsIfAlive(hosts: string[]): Promise<string[]> {
         const result = [];
         if (hosts) {
@@ -74,6 +91,11 @@ export class Upload {
         return result;
     }
 
+    /**
+     * Get the list of known hosts
+     *
+     * @param onlyAlive Whether to only return hosts that are currently alive
+     */
     async getHosts(onlyAlive: boolean): Promise<string[]> {
         const hosts = [];
         try {
@@ -100,7 +122,11 @@ export class Upload {
         return hosts;
     }
 
-    // Check if some adapters must be restarted and restart them
+    /**
+     * Check if some adapters must be restarted because of the given adapter's files and restart them
+     *
+     * @param adapter The adapter whose dependents should be restarted
+     */
     async checkRestartOther(adapter: string): Promise<void> {
         const adapterDir = tools.getAdapterDir(adapter);
 
@@ -153,6 +179,14 @@ export class Upload {
         }
     }
 
+    /**
+     * Send a message to a host from the CLI
+     *
+     * @param host The target host id
+     * @param command The command to send
+     * @param message The message payload
+     * @param callback Called with the host's response
+     */
     sendToHostFromCli(
         host: string,
         command: string,
@@ -167,7 +201,7 @@ export class Upload {
                 callback();
             }
             callback = null;
-            this.states.unsubscribeMessage(from);
+            this.states.unsubscribeMessage(from).catch(e => console.error(`Cannot unsubscribe: ${e.message}`));
             // @ts-expect-error todo: I don't think this works
             this.states.onChange = null;
         }, 60_000);
@@ -182,7 +216,7 @@ export class Upload {
                     callback(msg && msg.message);
                     callback = null;
                     clearTimeout(timeout);
-                    this.states.unsubscribeMessage(from);
+                    this.states.unsubscribeMessage(from).catch(e => console.error(`Cannot unsubscribe: ${e.message}`));
                     // @ts-expect-error
                     this.states.onChange = null;
                 }
@@ -209,10 +243,15 @@ export class Upload {
             this.callbacks[`_${obj.callback.id}`] = { cb: callback };
 
             // we cannot receive answers from hosts in CLI, so this command is "fire and forget"
-            this.states.pushMessage(host, obj);
+            this.states.pushMessage(host, obj).catch(e => console.error(`Cannot push message: ${e.message}`));
         });
     }
 
+    /**
+     * Upload the files of all given adapters from every host
+     *
+     * @param adapters The adapters to upload
+     */
     async uploadAdapterFullAsync(adapters: string[]): Promise<void> {
         if (adapters?.length) {
             const liveHosts = await this.getHosts(true);
@@ -326,8 +365,14 @@ export class Upload {
         return `${adapter}/${target}`;
     }
 
-    async eraseFiles(files: any[], logger: MinimalLogger | typeof console): Promise<void> {
-        if (files && files.length) {
+    /**
+     * Delete the given files from the objects database
+     *
+     * @param files The files to delete
+     * @param logger Logger used to report errors
+     */
+    async eraseFiles(files: File[], logger: MinimalLogger | typeof console): Promise<void> {
+        if (files?.length) {
             for (const file of files) {
                 try {
                     await this.objects.unlinkAsync(file.adapter, file.path);
@@ -392,6 +437,15 @@ export class Upload {
         return { filesToDelete: _files, dirs: _dirs };
     }
 
+    /**
+     * Upload the files of a single adapter into the objects database
+     *
+     * @param adapter The adapter whose files are uploaded
+     * @param isAdmin Whether the admin files should be uploaded
+     * @param files The files to upload
+     * @param id The upload state id used to report progress
+     * @param logger Logger used to report progress
+     */
     async upload(
         adapter: string,
         isAdmin: boolean,
@@ -402,6 +456,12 @@ export class Upload {
         const uploadID = `system.adapter.${adapter}.upload`;
 
         await this.states.setState(uploadID, { val: 0, ack: true });
+
+        // A bar only makes sense when the output goes to a terminal which can overwrite its own
+        // line, and when it goes to the console at all - an upload triggered by the controller
+        // writes through a real logger into iobroker.log, where control characters are noise.
+        const progress =
+            files.length && logger === console && ProgressBar.isSupported() ? new ProgressBar(id, files.length) : null;
 
         for (let f = 0; f < files.length; f++) {
             const file = files[f];
@@ -422,7 +482,9 @@ export class Upload {
 
             const remainingFiles = files.length - f - 1;
 
-            if (remainingFiles >= 100) {
+            if (progress) {
+                progress.update(f + 1);
+            } else if (remainingFiles >= 100) {
                 (!f || !(remainingFiles % 50)) &&
                     logger.log(`upload [${remainingFiles}] ${id} ${file} ${attName} ${mimeType}`);
             } else if (remainingFiles > 20) {
@@ -449,9 +511,14 @@ export class Upload {
                 const content = await fs.readFile(file);
                 await this.objects.writeFileAsync(id, attName, content, { mimeType: mimeType || undefined });
             } catch (e) {
+                // close the bar's line first, otherwise the message lands inside it and the next
+                // redraw overwrites it
+                progress?.interrupt();
                 console.error(`Error: Cannot upload ${file}: ${e.message}`);
             }
         }
+
+        progress?.finish();
 
         // Set upload progress to 0;
         if (!isAdmin && files.length) {
@@ -462,6 +529,12 @@ export class Upload {
     }
 
     // Read synchronous all files recursively from local directory
+    /**
+     * Recursively collect all file paths below the given directory
+     *
+     * @param dir The directory to walk
+     * @param _results Accumulator of results collected so far
+     */
     walk(dir: string, _results?: string[]): string[] {
         const results = _results || [];
         try {
@@ -633,6 +706,12 @@ export class Upload {
         return adapter;
     }
 
+    /**
+     * Deep-merge additional values into the native section of an object
+     *
+     * @param target The target object to extend
+     * @param additional The additional values to merge in
+     */
     extendNative(target: Record<string, any>, additional: Record<string, unknown>): Record<string, any> {
         if (tools.isObject(additional)) {
             for (const [attr, attrData] of Object.entries(additional)) {
@@ -653,6 +732,13 @@ export class Upload {
         return target;
     }
 
+    /**
+     * Merge additional values into the common section of an instance object, preserving some attributes
+     *
+     * @param target The target common object to extend
+     * @param additional The additional values to merge in
+     * @param instance The instance id the common belongs to
+     */
     extendCommon(
         target: Record<string, any>,
         additional: Record<string, any>,
@@ -893,5 +979,87 @@ export class Upload {
         }
 
         return name;
+    }
+}
+
+/**
+ * @param options The process command options
+ */
+export function processCommandUpload(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    const { showHelp } = options.commandOptions;
+
+    const name = args[0];
+    const subTree = args[1];
+    if (name) {
+        dbConnect(params, async ({ objects, states }) => {
+            const upload = new Upload({ states, objects });
+
+            if (name === 'all') {
+                try {
+                    const objs = await objects.getObjectListAsync({
+                        startkey: 'system.adapter.',
+                        endkey: 'system.adapter.\u9999',
+                    });
+
+                    if (objs) {
+                        const adapters = [];
+
+                        for (const row of objs.rows) {
+                            if (row.value.type !== 'adapter') {
+                                continue;
+                            }
+
+                            adapters.push(
+                                tools.isObject(row.value.common.name)
+                                    ? row.value.common.name.en
+                                    : row.value.common.name,
+                            );
+                        }
+
+                        await upload.uploadAdapterFullAsync(adapters);
+                    }
+                    callback();
+                } catch (err) {
+                    console.error(`Cannot upload all adapters: ${err.message}`);
+                    return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
+                }
+            } else {
+                // if upload of file
+                if (name.includes('.')) {
+                    if (!subTree) {
+                        console.log(
+                            `Please specify target name, like:\n${tools.appName} upload /file/picture.png /vis-2.0/main/img/picture.png`,
+                        );
+                        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+                    }
+
+                    try {
+                        const newName = await upload.uploadFile(name, subTree);
+                        console.log(`File "${name}" is successfully saved under ${newName}`);
+                        return void callback();
+                    } catch (err) {
+                        console.error(`Cannot upload file "${name}": ${err.message}`);
+                        return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
+                    }
+                } else {
+                    try {
+                        if (subTree) {
+                            await upload.uploadAdapter(name, false, true, subTree);
+                        } else {
+                            await upload.uploadAdapterFullAsync([name]);
+                        }
+                        return void callback();
+                    } catch (err) {
+                        console.error(`Cannot upload files "${name}": ${err.message}`);
+                        return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
+                    }
+                }
+            }
+        });
+    } else {
+        console.log('No adapter name found!');
+        showHelp();
+        return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
     }
 }

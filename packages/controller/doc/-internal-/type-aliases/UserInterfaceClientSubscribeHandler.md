@@ -1,21 +1,21 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / UserInterfaceClientSubscribeHandler
 
-# Type Alias: UserInterfaceClientSubscribeHandler()
+# Type Alias: UserInterfaceClientSubscribeHandler
 
-> **UserInterfaceClientSubscribeHandler**: (`subscribeInfo`) => [`UserInterfaceClientSubscribeReturnType`](../interfaces/UserInterfaceClientSubscribeReturnType.md) \| `Promise`\<[`UserInterfaceClientSubscribeReturnType`](../interfaces/UserInterfaceClientSubscribeReturnType.md)\>
+> **UserInterfaceClientSubscribeHandler** = (`subscribeInfo`) => [`UserInterfaceClientSubscribeReturnType`](../interfaces/UserInterfaceClientSubscribeReturnType.md) \| `Promise`\<[`UserInterfaceClientSubscribeReturnType`](../interfaces/UserInterfaceClientSubscribeReturnType.md)\>
+
+Defined in: [adapter/src/lib/\_Types.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L156)
 
 ## Parameters
 
-• **subscribeInfo**: [`UserInterfaceSubscribeInfo`](../interfaces/UserInterfaceSubscribeInfo.md)
+### subscribeInfo
+
+[`UserInterfaceSubscribeInfo`](../interfaces/UserInterfaceSubscribeInfo.md)
 
 ## Returns
 
 [`UserInterfaceClientSubscribeReturnType`](../interfaces/UserInterfaceClientSubscribeReturnType.md) \| `Promise`\<[`UserInterfaceClientSubscribeReturnType`](../interfaces/UserInterfaceClientSubscribeReturnType.md)\>
-
-## Defined in
-
-[adapter/src/lib/\_Types.ts:143](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/adapter/src/lib/_Types.ts#L143)

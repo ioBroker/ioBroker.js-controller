@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,22 +6,26 @@
 
 # Interface: DbStatus
 
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:53
+
+Status information about the database
+
 ## Properties
 
 ### server
 
 > **server**: `boolean`
 
-#### Defined in
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:57
 
-db-base/build/esm/lib/inMemFileDB.d.ts:26
+Whether this process runs the database server
 
 ***
 
 ### type
 
-> **type**: `string`
+> **type**: `"file"` \| `"jsonl"` \| `"redis"`
 
-#### Defined in
+Defined in: db-base/build/esm/lib/inMemFileDB.d.ts:55
 
-db-base/build/esm/lib/inMemFileDB.d.ts:25
+Type of the database backend (e.g. file, jsonl, redis)

@@ -1,10 +1,12 @@
 import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from '@/lib/adapter/constants.js';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
+import type { Client as ObjectsInRedisClient } from '../../../../db-objects-redis/src/index.js';
 
 type Callback = (...args: any[]) => void | Promise<void>;
 type OptionalCallback = undefined | Callback;
 type Pattern = string | string[];
 
+/** Options for validating an object/state id */
 export interface ValidateIdOptions {
     /** in maintenance mode, we can access invalid ids to delete them, only works with the admin user */
     maintenance?: boolean;
@@ -12,11 +14,15 @@ export interface ValidateIdOptions {
     user?: string;
 }
 
+/**
+ * Validates arguments passed to the adapter's public methods
+ *
+ * @internal
+ */
 export class Validator {
-    private readonly objects: any;
-    private readonly states: any;
+    private readonly objects: ObjectsInRedisClient;
     private readonly namespaceLog: string;
-    private readonly log: any;
+    private readonly log: ioBroker.Logger;
     private readonly namespace: string;
     private readonly namespaceRegExp: RegExp;
 
@@ -24,22 +30,19 @@ export class Validator {
      * Validator for internal adapter.js usage
      *
      * @param objects - Objects DB
-     * @param states - States DB
      * @param namespaceLog - Log prefix
      * @param logger - Logger instance
      * @param namespace - the namespace of the adapter
      * @param namespaceRegExp - the namespace RegExp of the adapter `adapter.0`
      */
     constructor(
-        objects: any,
-        states: any,
+        objects: ObjectsInRedisClient,
         namespaceLog: string,
-        logger: any,
+        logger: ioBroker.Logger,
         namespace: string,
         namespaceRegExp: RegExp,
     ) {
         this.objects = objects;
-        this.states = states;
         this.namespaceLog = namespaceLog;
         this.namespace = namespace;
         this.namespaceRegExp = namespaceRegExp;
@@ -83,15 +86,13 @@ export class Validator {
 
                 if (state.val !== null) {
                     // now check if a type is correct, null is always allowed
-                    if (
-                        !(
-                            (obj.common.type === 'mixed' && typeof state.val !== 'object') ||
-                            (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
-                            (obj.common.type === 'array' && typeof state.val === 'string') ||
-                            (obj.common.type === 'json' && typeof state.val === 'string') ||
-                            (obj.common.type === 'object' && typeof state.val === 'string')
-                        )
-                    ) {
+                    if (!(
+                        (obj.common.type === 'mixed' && typeof state.val !== 'object') ||
+                        (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
+                        (obj.common.type === 'array' && typeof state.val === 'string') ||
+                        (obj.common.type === 'json' && typeof state.val === 'string') ||
+                        (obj.common.type === 'object' && typeof state.val === 'string')
+                    )) {
                         // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json';
                         // 'array', 'object', 'json' need to be string
                         if (['object', 'json', 'array'].includes(obj.common.type)) {
@@ -148,14 +149,15 @@ export class Validator {
      * @param id id to check or object with properties device, channel and state
      * @param isForeignId true&false if the ID is a foreign/full ID or only an "adapter local" id
      * @param options optional
-     * @throws Error when id is invalid
+     * @throws {Error} when id is invalid
      */
-    validateId(id: any, isForeignId: boolean, options?: ValidateIdOptions | null): asserts id is string {
+    validateId(id: string, isForeignId: boolean, options?: ValidateIdOptions | null): asserts id is string {
         // there is a special maintenance mode to clear the DB from invalid IDs
         if (options && options.maintenance && options.user === SYSTEM_ADMIN_USER) {
             return;
         }
 
+        // @ts-expect-error could happen
         if (!id && id !== 0) {
             throw new Error('The id is empty! Please provide a valid id.');
         }

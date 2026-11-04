@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,8 +6,6 @@
 
 # Type Alias: AnyObject
 
-> **AnyObject**: [`StateObject`](../interfaces/StateObject.md) \| [`ChannelObject`](../interfaces/ChannelObject.md) \| [`DeviceObject`](../interfaces/DeviceObject.md) \| [`FolderObject`](../interfaces/FolderObject.md) \| [`EnumObject`](../interfaces/EnumObject.md) \| [`MetaObject`](../interfaces/MetaObject.md) \| [`HostObject`](../interfaces/HostObject.md) \| [`AdapterObject`](../interfaces/AdapterObject.md) \| [`InstanceObject`](../interfaces/InstanceObject.md) \| [`UserObject`](../interfaces/UserObject.md) \| [`GroupObject`](../interfaces/GroupObject.md) \| [`ScriptObject`](../interfaces/ScriptObject.md) \| [`ChartObject`](../interfaces/ChartObject.md) \| [`ScheduleObject`](../interfaces/ScheduleObject.md) \| [`RepositoryObject`](../interfaces/RepositoryObject.md) \| [`OtherObject`](../interfaces/OtherObject.md) \| [`DesignObject`](../interfaces/DesignObject.md)
+> **AnyObject** = [`StateObject`](../interfaces/StateObject.md) \| [`ChannelObject`](../interfaces/ChannelObject.md) \| [`DeviceObject`](../interfaces/DeviceObject.md) \| [`FolderObject`](../interfaces/FolderObject.md) \| [`EnumObject`](../interfaces/EnumObject.md) \| [`MetaObject`](../interfaces/MetaObject.md) \| [`HostObject`](../interfaces/HostObject.md) \| [`AdapterObject`](../interfaces/AdapterObject.md) \| [`InstanceObject`](../interfaces/InstanceObject.md) \| [`UserObject`](../interfaces/UserObject.md) \| [`GroupObject`](../interfaces/GroupObject.md) \| [`ScriptObject`](../interfaces/ScriptObject.md) \| [`ChartObject`](../interfaces/ChartObject.md) \| [`ScheduleObject`](../interfaces/ScheduleObject.md) \| [`RepositoryObject`](../interfaces/RepositoryObject.md) \| [`OtherObject`](../interfaces/OtherObject.md) \| [`DesignObject`](../interfaces/DesignObject.md)
 
-## Defined in
-
-[types-dev/objects.d.ts:1282](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L1282)
+Defined in: [types-dev/objects.d.ts:1376](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1376)

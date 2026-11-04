@@ -1,19 +1,27 @@
 /**
  *      Setup
  *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2026 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 import fs from 'fs-extra';
 import path from 'node:path';
+import os from 'node:os';
+import crypto from 'node:crypto';
+import deepClone from 'deep-clone';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
+import { isDeepStrictEqual } from 'node:util';
+import rl from 'readline-sync';
 
 import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '@/lib/_Types.js';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { CLICert } from '@/lib/cli/cliCert.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
-import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import {
     statesDbHasServer,
     isLocalStatesDbServer,
@@ -21,19 +29,17 @@ import {
     objectsDbHasServer,
     performObjectsInterview,
     performStatesInterview,
+    EXIT_CODES,
+    tools,
 } from '@iobroker/js-controller-common';
-import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
-import { BackupRestore } from '@/lib/setup/setupBackup.js';
-import crypto from 'node:crypto';
-import deepClone from 'deep-clone';
-import * as pluginInfos from '@/lib/setup/pluginInfos.js';
-import rl from 'readline-sync';
 import { FORBIDDEN_CHARS, getHostObject } from '@iobroker/js-controller-common-db/tools';
-import os from 'node:os';
 import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
+
+import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
+import { BETA_REPO_URL, STABLE_REPO_URL } from '@/lib/setup/utils.js';
+import { BackupRestore } from '@/lib/setup/setupBackup.js';
+import * as pluginInfos from '@/lib/setup/pluginInfos.js';
 import { Upload } from '@/lib/setup/setupUpload.js';
-import { createRequire } from 'node:module';
-import * as url from 'node:url';
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
@@ -46,13 +52,19 @@ const COLOR_RESET = '\x1b[0m';
 const COLOR_GREEN = '\x1b[32m';
 const CONTROLLER_DIR = tools.getControllerDir();
 
+/** Options for the setup command */
 export interface CLISetupOptions {
+    /** Handler to clean the database */
     cleanDatabase: CleanDatabaseHandler;
+    /** Callback to exit the process with an exit code */
     processExit: ProcessExitCallback;
+    /** Parsed CLI parameters */
     params: Record<string, any>;
+    /** Handler to restart the controller */
     restartController: RestartController;
 }
 
+/** Options for running the setup command */
 export interface SetupCommandOptions {
     /** Callback called afterward */
     callback: (isCreated?: boolean) => void;
@@ -62,11 +74,12 @@ export interface SetupCommandOptions {
     useRedis: boolean;
 }
 
+/**
+ * CLI command that performs the initial ioBroker setup (databases, config and objects)
+ */
 export class Setup {
     /** Object IDs which are not allowed to exist but could be generated due to errors in the past */
     private readonly KNOWN_GARBAGE_OBJECT_IDS = ['null', 'undefined'];
-    /** Adapter core version supported by this js-controller */
-    private readonly SUPPORTED_ADAPTER_CORE_VERSION = '^3.3.2';
     /** Default name for redis sentinels */
     private readonly DEFAULT_SENTINEL_NAME = 'mymaster';
     private readonly processExit: ProcessExitCallback;
@@ -76,6 +89,9 @@ export class Setup {
     private readonly cleanDatabase: CleanDatabaseHandler;
     private readonly restartController: RestartController;
 
+    /**
+     * @param options Handlers for cleaning the DB, exiting and restarting, plus the CLI parameters
+     */
     constructor(options: CLISetupOptions) {
         this.processExit = options.processExit;
         this.params = options.params;
@@ -85,6 +101,11 @@ export class Setup {
         this.dbSetup = this.dbSetup.bind(this);
     }
 
+    /**
+     * Print information about the plugins configured for the controller
+     *
+     * @param systemConfig The system.config object, used to read the active repository
+     */
     async informAboutPlugins(systemConfig?: ioBroker.SystemConfigObject | null): Promise<void> {
         if (!this.states) {
             throw new Error('States not set up, call setupObjects first');
@@ -203,9 +224,9 @@ export class Setup {
         }
 
         try {
-            await this.addOrUpdateAdapterCoreRequirement();
+            await this.removeAdapterCoreRequirement();
         } catch (e) {
-            console.error(`Could not add "@iobroker/adapter-core" requirement: ${e.message}`);
+            console.error(`Could not remove "@iobroker/adapter-core" override: ${e.message}`);
         }
 
         await this._cleanupInstallation();
@@ -257,6 +278,13 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         }
     }
 
+    /**
+     * Create the initial set of objects and design documents in the database
+     *
+     * @param iopkg The io-package.json of the controller
+     * @param ignoreExisting Whether to proceed even if the config already exists
+     * @param callback Called once the database has been set up
+     */
     async dbSetup(iopkg: IoPackage, ignoreExisting: boolean, callback: () => void): Promise<void> {
         if (!this.objects) {
             throw new Error('Objects not set up, call setupObjects first');
@@ -416,17 +444,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
                         } catch {
                             //ignore
                         }
-                        this.dbSetup(iopkg, true, callback);
-                        return;
+                        return this.dbSetup(iopkg, true, callback);
                     }
                 }
-                this.dbSetup(iopkg, true, callback);
-            } else {
-                this.dbSetup(iopkg, true, callback);
+                return this.dbSetup(iopkg, true, callback);
             }
-        } else {
-            this.dbSetup(iopkg, false, callback);
+            return this.dbSetup(iopkg, true, callback);
         }
+        return this.dbSetup(iopkg, false, callback);
     }
 
     /**
@@ -684,6 +709,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         return EXIT_CODES.NO_ERROR;
     }
 
+    /**
+     * Interactively configure the databases and write the configuration file
+     */
     async setupCustom(): Promise<EXIT_CODES> {
         let config: ioBroker.IoBrokerJson;
         // read actual configuration
@@ -1110,9 +1138,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
     }
 
     /**
-     * Add or update adapter-core in supported version in the overrides field of the root package.json and call install there to apply it
+     * Remove, if required, adapter-core in the overrides field of the root package.json and call install there to apply it
      */
-    private async addOrUpdateAdapterCoreRequirement(): Promise<void> {
+    private async removeAdapterCoreRequirement(): Promise<void> {
         if (tools.isDevInstallation()) {
             return;
         }
@@ -1121,20 +1149,17 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
         const packPath = path.join(rootDir, 'package.json');
         const packJson = await fs.readJson(packPath);
 
-        if (packJson.overrides?.['@iobroker/adapter-core'] === this.SUPPORTED_ADAPTER_CORE_VERSION) {
-            console.log(
-                `The supported version of "@iobroker/adapter-core" is already specified as "${this.SUPPORTED_ADAPTER_CORE_VERSION}"`,
-            );
+        if (!packJson.overrides?.['@iobroker/adapter-core']) {
+            console.log(`The "@iobroker/adapter-core" override is already removed`);
             return;
         }
 
-        packJson.overrides = { '@iobroker/adapter-core': this.SUPPORTED_ADAPTER_CORE_VERSION };
-
-        await fs.writeFile(packPath, JSON.stringify(packJson));
-
-        console.log(
-            `Successfully specified supported "@iobroker/adapter-core" version as "${this.SUPPORTED_ADAPTER_CORE_VERSION}"`,
-        );
+        delete packJson.overrides['@iobroker/adapter-core'];
+        if (!Object.keys(packJson.overrides).length) {
+            delete packJson.overrides;
+        }
+        await fs.writeJson(packPath, packJson, { spaces: 4 });
+        console.log(`Successfully removed override for "@iobroker/adapter-core"`);
     }
 
     /**
@@ -1217,7 +1242,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
      * Replace the `controller.js` file in the root directory to work with ESM
      */
     async _fixWindowsControllerJs(): Promise<void> {
-        const content = `import('./node_modules/iobroker.js-controller/controller.js');`;
+        const content = `import('./node_modules/iobroker.js-controller/controller.js');\n`;
         const filePath = path.join(tools.getRootDir(), 'controller.js');
 
         try {
@@ -1608,10 +1633,211 @@ require('${path.normalize(`${thisDir}/..`)}/setup').execute();`;
             }
         } else if (ignoreIfExist) {
             // it is a setup first run and config exists yet
-            this.setupObjects(() => callback?.(), true);
+            this.setupObjects(() => callback?.(), true).catch(e => console.error(`Cannot setup objects: ${e.message}`));
             return;
         }
 
-        this.setupObjects(() => callback?.(isCreated));
+        this.setupObjects(() => callback?.(isCreated)).catch(e => console.error(`Cannot setup objects: ${e.message}`));
     }
+}
+
+/**
+ * Process the `setup` command
+ *
+ * @param options the command options
+ */
+export async function processCommandSetup(options: ProcessCommandOptions): Promise<void> {
+    const { args, params, callback, commandOptions, cleanDatabase, restartController } = options;
+
+    const setup = new Setup({
+        processExit: callback,
+        cleanDatabase,
+        restartController,
+        params,
+    });
+    if (args[0] === 'custom' || params.custom) {
+        const exitCode = await setup.setupCustom();
+        callback(exitCode);
+        return;
+    }
+
+    let isFirst = false;
+    let isRedis = false;
+
+    // we support "first" and "redis" without "--" flag
+    for (const arg of args) {
+        if (arg === 'first') {
+            isFirst = true;
+        } else if (arg === 'redis') {
+            isRedis = true;
+        }
+    }
+
+    // and as --flag
+    isRedis = (params.redis as boolean) || isRedis;
+    isFirst = (params.first as boolean) || isFirst;
+
+    setup.setup({
+        callback: async () => {
+            const { states, objects } = await dbConnectAsync(false, params);
+            if (isFirst) {
+                // Creates all instances that are needed on a fresh installation
+                const { Install } = await import('@/lib/setup/setupInstall.js');
+                const install = new Install({
+                    objects,
+                    states,
+                    processExit: callback,
+                    params,
+                });
+                // Define the necessary instances
+                const initialInstances = ['admin', 'discovery', 'backitup'];
+                // And try to install each of them
+                for (const instance of initialInstances) {
+                    try {
+                        const adapterInstalled = !!require.resolve(`${tools.appName.toLowerCase()}.${instance}`);
+
+                        if (adapterInstalled) {
+                            let otherInstanceExists = false;
+                            try {
+                                // check if another instance exists
+                                const res = await objects.getObjectViewAsync('system', 'instance', {
+                                    startkey: `system.adapter.${instance}`,
+                                    endkey: `system.adapter.${instance}\u9999`,
+                                });
+
+                                otherInstanceExists = !!res.rows.length;
+                            } catch {
+                                // ignore - on install we have no object views
+                            }
+
+                            if (!otherInstanceExists) {
+                                await install.createInstance(instance, {
+                                    enabled: true,
+                                    ignoreIfExists: true,
+                                });
+                            }
+                        }
+                    } catch {
+                        // not found, just continue
+                    }
+                }
+
+                await new Promise(resolve => {
+                    // Creates a fresh certificate
+                    // Create a new instance of the cert command,
+                    // but use the resolve method as a callback
+                    const cert = new CLICert({ ...commandOptions, callback: resolve });
+                    cert.create().catch(e => console.error(`Cannot create certificate: ${e.message}`));
+                });
+            }
+
+            // we update existing things, in first as well as normal setup
+            // Rename repositories
+            const { Repo } = await import('@/lib/setup/setupRepo.js');
+            const repo = new Repo({ objects, states });
+
+            try {
+                await repo.rename('default', 'stable', STABLE_REPO_URL);
+                await repo.rename('latest', 'beta', BETA_REPO_URL);
+            } catch (err) {
+                console.warn(`Cannot rename: ${err.message}`);
+            }
+
+            // there has been a bug that user can upload js-controller
+            try {
+                await objects.delObjectAsync('system.adapter.js-controller');
+            } catch {
+                // ignore
+            }
+
+            try {
+                const configFile = tools.getConfigFileName();
+
+                const configOrig = fs.readJSONSync(configFile);
+                const config = deepClone(configOrig);
+
+                config.objects.options = config.objects.options || {
+                    auth_pass: null,
+                    retry_max_delay: 5_000,
+                };
+                if (config.objects.options.retry_max_delay === 15_000 || !config.objects.options.retry_max_delay) {
+                    config.objects.options.retry_max_delay = 5_000;
+                }
+                config.states.options = config.states.options || {
+                    auth_pass: null,
+                    retry_max_delay: 5_000,
+                };
+                if (config.states.options.retry_max_delay === 15_000 || !config.states.options.retry_max_delay) {
+                    config.states.options.retry_max_delay = 5_000;
+                }
+
+                let migrated = '';
+                // We migrate file to jsonl
+                if (config.states.type === 'file') {
+                    config.states.type = 'jsonl';
+
+                    const hasLocalStatesServer = await isLocalStatesDbServer('file', config.states.host);
+                    if (hasLocalStatesServer) {
+                        // silent config change on secondaries
+                        console.log('States DB type migrated from "file" to "jsonl"');
+                        migrated += 'States';
+                    }
+                }
+
+                if (config.objects.type === 'file') {
+                    config.objects.type = 'jsonl';
+
+                    const hasLocalObjectsServer = await isLocalObjectsDbServer('file', config.objects.host);
+                    if (hasLocalObjectsServer) {
+                        // silent config change on secondaries
+                        console.log('Objects DB type migrated from "file" to "jsonl"');
+                        migrated += migrated ? ' and Objects' : 'Objects';
+                    }
+                }
+
+                if (migrated) {
+                    const { NotificationHandler } = await import('@iobroker/js-controller-common');
+
+                    const hostname = tools.getHostName();
+
+                    const notificationSettings = {
+                        states,
+                        objects,
+                        log: console,
+                        logPrefix: '',
+                        host: hostname,
+                    };
+
+                    const notificationHandler = new NotificationHandler(notificationSettings);
+
+                    try {
+                        const ioPackage = fs.readJsonSync(path.join(tools.getControllerDir(), 'io-package.json'));
+                        await notificationHandler.addConfig(ioPackage.notifications);
+
+                        await notificationHandler.addMessage({
+                            scope: 'system',
+                            category: 'fileToJsonl',
+                            message: `Migrated: ${migrated}`,
+                            instance: `system.host.${hostname}`,
+                        });
+
+                        notificationHandler.storeNotifications();
+                    } catch (e) {
+                        console.warn(`Could not add File-to-JSONL notification: ${e.message}`);
+                    }
+                }
+
+                if (!isDeepStrictEqual(config, configOrig)) {
+                    fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+                    console.log('ioBroker configuration updated');
+                }
+            } catch (err) {
+                console.log(`Could not update ioBroker configuration: ${err.message}`);
+            }
+
+            return void callback();
+        },
+        ignoreIfExist: isFirst,
+        useRedis: isRedis,
+    });
 }

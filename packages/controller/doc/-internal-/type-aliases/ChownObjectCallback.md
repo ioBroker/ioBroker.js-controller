@@ -1,23 +1,25 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / ChownObjectCallback
 
-# Type Alias: ChownObjectCallback()
+# Type Alias: ChownObjectCallback
 
-> **ChownObjectCallback**: (`err`?, `list`?) => `void`
+> **ChownObjectCallback** = (`err?`, `list?`) => `void`
+
+Defined in: [types-dev/index.d.ts:723](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L723)
 
 ## Parameters
 
-• **err?**: `NodeJS.ErrnoException` \| `null`
+### err?
 
-• **list?**: [`Object`](Object.md)[]
+`NodeJS.ErrnoException` \| `null`
+
+### list?
+
+[`Object`](Object.md)[]
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[types-dev/index.d.ts:548](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/index.d.ts#L548)

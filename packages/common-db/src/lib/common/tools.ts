@@ -1,38 +1,49 @@
-import fs from 'fs-extra';
 import path from 'node:path';
 import semver from 'semver';
 import os from 'node:os';
-import forge from 'node-forge';
-import deepClone from 'deep-clone';
-import { type ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
+import crypto from 'node:crypto';
 import { createInterface } from 'node:readline';
 import { PassThrough } from 'node:stream';
-import type { CommandResult, InstallOptions, PackageManager } from '@alcalzone/pak';
-import { detectPackageManager, packageManagers } from '@alcalzone/pak';
-import { EXIT_CODES } from '@/lib/common/exitCodes.js';
 import zlib from 'node:zlib';
-import { password } from '@/lib/common/password.js';
-import jwt from 'jsonwebtoken';
-import axios from 'axios';
-import crypto from 'node:crypto';
-import type { ExecOptions } from 'node:child_process';
-import { exec } from 'node:child_process';
+import { exec, execFile, type ExecOptions } from 'node:child_process';
 import { URLSearchParams } from 'node:url';
 import events from 'node:events';
-import { maybeCallbackWithError } from '@/lib/common/maybeCallback.js';
+import { setDefaultResultOrder } from 'node:dns';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
+
+import forge from 'node-forge';
+import fs from 'fs-extra';
+import deepClone from 'deep-clone';
+
+import {
+    detectPackageManager,
+    packageManagers,
+    type CommandResult,
+    type InstallOptions,
+    type PackageManager,
+} from '@alcalzone/pak';
+import jwt from 'jsonwebtoken';
+import axios, { type AxiosResponse } from 'axios';
 // @ts-expect-error has no types
 import extend from 'node.extend';
-import { setDefaultResultOrder } from 'node:dns';
+import type * as DiskUsage from 'diskusage';
+
+import { EXIT_CODES } from '@/lib/common/exitCodes.js';
+import { password } from '@/lib/common/password.js';
 import {
     applyAliasAutoScaling,
     applyAliasConvenienceConversion,
     applyAliasTransformer,
 } from '@/lib/common/aliasProcessing.js';
-import type * as DiskUsage from 'diskusage';
-import * as url from 'node:url';
-import { createRequire } from 'node:module';
 import type { WithRequired } from '@iobroker/types-dev';
 import { DEFAULT_OBJECTS_WARN_LIMIT } from '@/lib/common/constants.js';
+// Cannot use import here because of cyclical dependency
+// import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
+type ObjectsRedisClient = any;
+type StatesRedisClient = any;
+
+const HASH_TEXT = 'hash';
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
@@ -55,6 +66,7 @@ type DockerInformation =
           isOfficial: false;
       };
 
+/** Detailed information about the host system ioBroker runs on */
 export interface HostInfo {
     /** Converted OS for human readability */
     Platform: NodeJS.Platform | 'docker' | 'Windows' | 'OSX';
@@ -94,12 +106,12 @@ interface FormatAliasValueOptions {
     /** State to format */
     state: ioBroker.State | null | undefined;
     /** Logger used for logging */
-    logger: any;
+    logger: InternalLogger;
     /** Prefix for log messages */
     logNamespace: string;
-    /** Id of the source object, used for logging */
+    /** ID of the source object, used for logging */
     sourceId?: string;
-    /** Id of the target object, used for logging */
+    /** ID of the target object, used for logging */
     targetId?: string;
 }
 
@@ -112,7 +124,7 @@ interface DockerHubResponse {
         {
             /** Contains the version like v1.5.3 */
             name: string;
-            /** Timestamp of last update of this image, like 2024-08-29T01:26:32.378554Z */
+            /** Timestamp of the last update of this image, like 2024-08-29T01:26:32.378554Z */
             last_updated: string;
             [other: string]: unknown;
         },
@@ -120,6 +132,7 @@ interface DockerHubResponse {
     [other: string]: unknown;
 }
 
+/** Information about the available ioBroker Docker image */
 export interface DockerImageInformation {
     /** The official version like v10.0.0 */
     version: string;
@@ -148,13 +161,13 @@ const OFFICIAL_DOCKER_FILE = '/opt/scripts/.docker_config/.thisisdocker';
 const DOCKER_INFO_URL = 'https://hub.docker.com/v2/namespaces/iobroker/repositories/iobroker/tags?page_size=1';
 /** Time the image approx. needs to be built and published to DockerHub */
 const DOCKER_HUB_BUILD_TIME_MS = 6 * 60 * 60 * 1_000;
-/** Version of official Docker image which started to support UI upgrade */
+/** Version of the official Docker image that started to support UI upgrade */
 const DOCKER_VERSION_UI_UPGRADE = '8.1.0';
 
 let lastCalculationOfIps: number;
 let ownIpArr: string[] = [];
 // Here we define all characters that are forbidden in IDs. Since we want to allow multiple
-// unicode character classes, we do that by OR-ing the character classes and negating the result.
+// Unicode character classes, we do that by OR-ing the character classes and negating the result.
 // Also, we can easily whitelist characters this way.
 //
 // We allow:
@@ -282,7 +295,7 @@ export function checkNonEditable(
 }
 
 /**
- * Checks if a version is up-to-date, throws error on invalid version strings
+ * Checks if a version is up to date, throws error on invalid version strings
  *
  * @param repoVersion version in repository
  * @param installedVersion the current installed version
@@ -292,31 +305,67 @@ export function upToDate(repoVersion: string, installedVersion: string): boolean
     return semver.gte(installedVersion, repoVersion);
 }
 
-// TODO: this is only here for backward compatibility, if MULTIHOST password was still setup with old decryption
-export function decryptPhrase(password: string, data: any, callback: (decrypted?: null | string) => void): void {
-    const decipher = crypto.createDecipher('aes192', password);
-
-    try {
-        let decrypted = '';
-        decipher.on('readable', () => {
-            const data = decipher.read();
-            if (data) {
-                decrypted += data.toString('utf8');
-            }
-        });
-        decipher.on('error', error => {
-            console.error(`Cannot decode secret: ${error.message}`);
-            callback(null);
-        });
-
-        decipher.on('end', () => callback(decrypted));
-
-        decipher.write(data, 'hex');
-        decipher.end();
-    } catch (e) {
-        console.error(`Cannot decode secret: ${e.message}`);
-        callback(null);
+/**
+ * Derive the key and IV from a password exactly as the legacy `crypto.createCipher`/`createDecipher`
+ * functions did: OpenSSL's `EVP_BytesToKey` with MD5, a single iteration and no salt. Needed to stay
+ * compatible with data that was encrypted before `createDecipheriv` was used.
+ *
+ * @param password The password to derive the key material from (interpreted as UTF-8, like legacy Node)
+ * @param keyLen Required key length in bytes
+ * @param ivLen Required IV length in bytes
+ * @returns The derived key and IV
+ */
+function evpBytesToKeyMD5(password: string, keyLen: number, ivLen: number): { key: Buffer; iv: Buffer } {
+    const passwordBuffer = Buffer.from(password, 'utf8');
+    let material = Buffer.alloc(0);
+    let block = Buffer.alloc(0);
+    while (material.length < keyLen + ivLen) {
+        block = crypto
+            .createHash('md5')
+            .update(Buffer.concat([block, passwordBuffer]))
+            .digest();
+        material = Buffer.concat([material, block]);
     }
+    return {
+        key: material.subarray(0, keyLen),
+        iv: material.subarray(keyLen, keyLen + ivLen),
+    };
+}
+
+// TODO: this is only here for backward compatibility, if MULTIHOST password was still setup with old decryption
+/**
+ * Decrypt a phrase that was encrypted with the legacy aes192 algorithm
+ *
+ * @param password The password used to derive the decryption key
+ * @param data The encrypted data to decrypt
+ */
+export function decryptPhrase(password: string, data: string | Buffer): Promise<null | string> {
+    const { key, iv } = evpBytesToKeyMD5(password, 24, 16);
+    const decipher = crypto.createDecipheriv('aes-192-cbc', key, iv);
+
+    return new Promise<string | null>(resolve => {
+        try {
+            let decrypted = '';
+            decipher.on('readable', () => {
+                const data = decipher.read();
+                if (data) {
+                    decrypted += data.toString('utf8');
+                }
+            });
+            decipher.on('error', error => {
+                console.error(`Cannot decode secret: ${error.message}`);
+                resolve(null);
+            });
+
+            decipher.on('end', () => resolve(decrypted));
+
+            decipher.write(data, 'hex');
+            decipher.end();
+        } catch (e) {
+            console.error(`Cannot decode secret: ${e.message}`);
+            resolve(null);
+        }
+    });
 }
 
 /**
@@ -325,11 +374,11 @@ export function decryptPhrase(password: string, data: any, callback: (decrypted?
  * @param objects the objects db
  * @returns true if only one host object exists
  */
-export async function isSingleHost(objects: any): Promise<boolean> {
-    const res: { rows: ioBroker.GetObjectListItem<ioBroker.HostObject>[] } = await objects.getObjectList({
+export async function isSingleHost(objects: ObjectsRedisClient): Promise<boolean> {
+    const res: { rows: ioBroker.GetObjectListItem<ioBroker.HostObject>[] } = (await objects.getObjectList({
         startkey: 'system.host.',
         endkey: 'system.host.\u9999',
-    });
+    })) as { rows: ioBroker.GetObjectListItem<ioBroker.HostObject>[] };
     const hostObjs = res.rows.filter(obj => obj.value && obj.value.type === 'host');
     return hostObjs.length <= 1; // on setup no host object is there yet
 }
@@ -341,7 +390,7 @@ export async function isSingleHost(objects: any): Promise<boolean> {
  * @param states the states db
  * @returns true if one or more hosts running else false
  */
-export async function isHostRunning(objects: any, states: any): Promise<boolean> {
+export async function isHostRunning(objects: ObjectsRedisClient, states: StatesRedisClient): Promise<boolean> {
     // do it without an object view for now, TODO: can be reverted if no one downgrades to < 4 (redis-sets)
     // const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
     const res: GetObjectViewResult = await objects.getObjectList({
@@ -353,8 +402,8 @@ export async function isHostRunning(objects: any, states: any): Promise<boolean>
     res.rows = res.rows.filter(obj => obj.value?.type === 'host');
 
     for (const hostObj of res.rows) {
-        const state: ioBroker.State = await states.getState(`${hostObj.id}.alive`);
-        if (state && state.val) {
+        const state: ioBroker.State | null | undefined = await states.getState(`${hostObj.id}.alive`);
+        if (state?.val) {
             return true;
         }
     }
@@ -409,10 +458,10 @@ export function findIPs(): string[] {
 }
 
 /**
- * Find the correct path based on given path and url
+ * Find the correct path based on the given path and url
  *
- * @param path
- * @param url
+ * @param path The base path the url may be relative to
+ * @param url The url or relative/absolute path to resolve
  */
 function findPath(path: string, url: string): string {
     if (!url) {
@@ -431,7 +480,7 @@ function findPath(path: string, url: string): string {
 }
 
 /**
- * Get MAC address of this host
+ * Get the MAC address of this host
  */
 async function getMac(): Promise<string> {
     const macRegex = /(?:[a-z0-9]{2}[:-]){5}[a-z0-9]{2}/gi;
@@ -445,7 +494,7 @@ async function getMac(): Promise<string> {
     }
 
     if (typeof stdout !== 'string') {
-        throw new Error(`Unexpected stdout: ${stdout?.toString()}`);
+        throw new Error(`Unexpected stdout: ${typeof stdout}`);
     }
 
     let macAddress;
@@ -543,6 +592,14 @@ export function isDocker(): boolean {
     }
 
     try {
+        // check a container environment, works with Podman or CRI-O
+        fs.statSync('/run/.containerenv');
+        return true;
+    } catch {
+        // ignore error
+    }
+
+    try {
         // check a docker group, works in most cases, but not on arm
         return fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
     } catch {
@@ -556,7 +613,7 @@ export function isDocker(): boolean {
  * @param givenMac the given MAC address
  */
 async function uuid(givenMac?: string): Promise<string> {
-    givenMac = givenMac ?? '';
+    givenMac ??= '';
     const _isDocker = isDocker();
 
     // return constant UUID for all CI environments to keep the statistics clean
@@ -564,10 +621,9 @@ async function uuid(givenMac?: string): Promise<string> {
         return '55travis-pipe-line-cior-githubaction';
     }
 
-    let mac = givenMac !== null ? givenMac || '' : null;
-    let u;
+    let u: string;
 
-    if (!_isDocker && mac === '') {
+    if (!_isDocker && !givenMac) {
         const ifaces = os.networkInterfaces();
 
         // Find first not empty MAC
@@ -575,28 +631,28 @@ async function uuid(givenMac?: string): Promise<string> {
             if (iface) {
                 for (const entry of iface) {
                     if (entry.mac !== '00:00:00:00:00:00') {
-                        mac = entry.mac;
+                        givenMac = entry.mac;
                         break;
                     }
                 }
             }
 
-            if (mac) {
+            if (givenMac) {
                 break;
             }
         }
     }
 
-    if (!_isDocker && mac === '') {
+    if (!_isDocker && !givenMac) {
         const mac = await getMac();
         return uuid(mac);
     }
 
-    if (!_isDocker && mac) {
+    if (!_isDocker && givenMac) {
         const md5sum = crypto.createHash('md5');
-        md5sum.update(mac);
-        mac = md5sum.digest('hex');
-        u = `${mac.substring(0, 8)}-${mac.substring(8, 12)}-${mac.substring(12, 16)}-${mac.substring(16, 20)}-${mac.substring(20)}`;
+        md5sum.update(givenMac);
+        givenMac = md5sum.digest('hex');
+        u = `${givenMac.substring(0, 8)}-${givenMac.substring(8, 12)}-${givenMac.substring(12, 16)}-${givenMac.substring(16, 20)}-${givenMac.substring(20)}`;
     } else {
         // Returns a RFC4122 compliant v4 UUID https://gist.github.com/LeverOne/1308368 (DO WTF YOU WANT TO PUBLIC LICENSE)
         let a: any;
@@ -617,7 +673,7 @@ async function uuid(givenMac?: string): Promise<string> {
  * @param newUuid the new UUID to set
  * @param _objects the objects DB instance
  */
-async function updateUuid(newUuid: string, _objects: any): Promise<string> {
+async function updateUuid(newUuid: string, _objects: ObjectsRedisClient): Promise<string> {
     let _uuid = await uuid('');
     _uuid = newUuid || _uuid;
     // Add vendor prefix to UUID
@@ -666,7 +722,7 @@ async function updateUuid(newUuid: string, _objects: any): Promise<string> {
  * @param objects - objects DB
  * @returns uuid if successfully created/updated
  */
-export async function createUuid(objects: any): Promise<void | string> {
+export async function createUuid(objects: ObjectsRedisClient): Promise<void | string> {
     const userObj: ioBroker.UserObject = await objects.getObject('system.user.admin');
     if (!userObj) {
         await new Promise<void>(resolve => {
@@ -715,7 +771,7 @@ export async function createUuid(objects: any): Promise<void | string> {
     }
 
     // Read vis license
-    const licObj: ioBroker.Object = objects.getObject('system.adapter.vis.0');
+    const licObj = await objects.getObject('system.adapter.vis.0');
     if (!licObj || !licObj.native || !licObj.native.license) {
         return updateUuid('', objects);
     }
@@ -740,13 +796,13 @@ export async function createUuid(objects: any): Promise<void | string> {
 }
 
 /**
- * Download file to tmp or return file name directly
+ * Download the file to tmp or return the file name directly
  *
- * @param urlOrPath
- * @param fileName
- * @param callback
+ * @param urlOrPath URL to download from, or a local file path
+ * @param fileName Target file name used when the source is downloaded to the tmp directory
+ * @returns The path to the local file
  */
-export async function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void): Promise<void> {
+export async function getFile(urlOrPath: string, fileName: string): Promise<string> {
     // If object was read
     if (
         urlOrPath.substring(0, 'http://'.length) === 'http://' ||
@@ -764,146 +820,117 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
                 },
             });
 
-            res.data.pipe(fs.createWriteStream(tmpFile)).on('close', () => {
-                console.log(`downloaded ${tmpFile}`);
-                callback && callback(tmpFile);
+            await new Promise<void>((resolve, reject) => {
+                res.data.pipe(fs.createWriteStream(tmpFile)).on('close', resolve).on('error', reject);
             });
+            console.log(`downloaded ${tmpFile}`);
         } catch (e) {
             console.log(`Cannot download "${tmpFile}": ${e.message}`);
-            callback && callback(tmpFile);
         }
-    } else {
-        try {
-            if (fs.existsSync(urlOrPath)) {
-                callback && callback(urlOrPath);
-            } else if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
-                callback && callback(`${thisDir}/../${urlOrPath}`);
-            } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
-                callback && callback(`${thisDir}/../tmp/${urlOrPath}`);
-            } else {
-                console.log(`File not found: ${urlOrPath}`);
-                process.exit(EXIT_CODES.FILE_NOT_FOUND);
-            }
-        } catch (err) {
-            console.log(`File "${urlOrPath}" could no be read: ${err.message}`);
-            process.exit(EXIT_CODES.FILE_NOT_FOUND);
-        }
+        return tmpFile;
     }
-}
 
-// Return content of the JSON file. Download it or read directly
-export async function getJson(
-    urlOrPath: string,
-    agent: string,
-    callback: (sources?: Record<string, any> | null, urlOrPath?: string | null) => void,
-): Promise<void> {
-    if (typeof agent === 'function') {
-        callback = agent;
-        agent = '';
-    }
-    agent = agent || '';
-
-    let sources = {};
-    // If object was read
-    if (urlOrPath && typeof urlOrPath === 'object') {
-        if (callback) {
-            callback(urlOrPath);
+    try {
+        if (fs.existsSync(urlOrPath)) {
+            return urlOrPath;
         }
-    } else if (!urlOrPath) {
-        console.log('Empty url!');
-        if (callback) {
-            callback(null);
+        if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
+            return `${thisDir}/../${urlOrPath}`;
         }
-    } else {
-        if (
-            urlOrPath.substring(0, 'http://'.length) === 'http://' ||
-            urlOrPath.substring(0, 'https://'.length) === 'https://'
-        ) {
-            try {
-                const res = await axios.get(urlOrPath, {
-                    headers: { 'Accept-Encoding': 'gzip', timeout: 10000, 'User-Agent': agent },
-                });
-
-                if (res.status !== 200 || !res.data) {
-                    throw new Error(`Invalid response, body: ${res.data}, status code: ${res.status}`);
-                }
-
-                sources = res.data;
-
-                if (callback) {
-                    callback(sources, urlOrPath);
-                }
-            } catch (e) {
-                console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
-                if (callback) {
-                    callback(null, urlOrPath);
-                }
-                return;
-            }
-        } else {
-            if (fs.existsSync(urlOrPath)) {
-                try {
-                    sources = fs.readJSONSync(urlOrPath);
-                } catch (e) {
-                    console.log(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
-                    if (callback) {
-                        callback(null, urlOrPath);
-                    }
-                    return;
-                }
-                if (callback) {
-                    callback(sources, urlOrPath);
-                }
-            } else if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
-                try {
-                    sources = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
-                } catch (e) {
-                    console.log(`Cannot parse json file from ${thisDir}/../${urlOrPath}. Error: ${e.message}`);
-                    if (callback) {
-                        callback(null, urlOrPath);
-                    }
-                    return;
-                }
-                if (callback) {
-                    callback(sources, urlOrPath);
-                }
-            } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
-                try {
-                    sources = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
-                } catch (e) {
-                    console.log(`Cannot parse json file from ${thisDir}/../tmp/${urlOrPath}. Error: ${e.message}`);
-                    if (callback) {
-                        callback(null, urlOrPath);
-                    }
-                    return;
-                }
-                if (callback) {
-                    callback(sources, urlOrPath);
-                }
-            } else {
-                if (callback) {
-                    callback(null, urlOrPath);
-                }
-            }
+        if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
+            return `${thisDir}/../tmp/${urlOrPath}`;
         }
+        console.log(`File not found: ${urlOrPath}`);
+        process.exit(EXIT_CODES.FILE_NOT_FOUND);
+    } catch (err) {
+        console.log(`File "${urlOrPath}" could no be read: ${err.message}`);
+        process.exit(EXIT_CODES.FILE_NOT_FOUND);
     }
 }
 
 /**
- * Return content of the json file. Download it or read directly
+ * Return the content of a JSON file, downloading it from a URL or reading it directly from disk
+ *
+ * @param urlOrPath URL to download the JSON from, or a local file path
+ * @param agent User agent string used for the download request
+ */
+export async function getJson<T>(urlOrPath: string, agent?: string): Promise<T | null> {
+    agent ||= '';
+
+    let result: T = {} as T;
+    // If object was read
+    if (!urlOrPath) {
+        console.log('Empty url!');
+        return null;
+    }
+
+    if (
+        urlOrPath.substring(0, 'http://'.length) === 'http://' ||
+        urlOrPath.substring(0, 'https://'.length) === 'https://'
+    ) {
+        try {
+            const res = await axios.get(urlOrPath, {
+                headers: { 'Accept-Encoding': 'gzip', timeout: 10000, 'User-Agent': agent },
+            });
+
+            if (res.status !== 200 || !res.data) {
+                throw new Error(`Invalid response, body: ${res.data}, status code: ${res.status}`);
+            }
+
+            result = res.data;
+
+            return result;
+        } catch (e) {
+            console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
+            return null;
+        }
+    }
+    if (fs.existsSync(urlOrPath)) {
+        try {
+            result = fs.readJSONSync(urlOrPath);
+        } catch (e) {
+            console.log(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
+            return null;
+        }
+        return result;
+    }
+    if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
+        try {
+            result = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
+        } catch (e) {
+            console.log(`Cannot parse json file from ${thisDir}/../${urlOrPath}. Error: ${e.message}`);
+            return null;
+        }
+        return result;
+    }
+    if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
+        try {
+            result = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
+        } catch (e) {
+            console.log(`Cannot parse json file from ${thisDir}/../tmp/${urlOrPath}. Error: ${e.message}`);
+            return null;
+        }
+        return result;
+    }
+    return null;
+}
+
+/**
+ * Return the content of the json file. Download it or read directly
  *
  * @param urlOrPath URL where the json file could be found
  * @param agent optional agent identifier like "Windows Chrome 12.56"
  * @returns json object
  */
 export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<Record<string, any> | null> {
-    agent = agent || '';
+    agent ||= '';
 
     let sources = {};
     // If object was read
     if (urlOrPath && typeof urlOrPath === 'object') {
         return urlOrPath;
-    } else if (!urlOrPath) {
+    }
+    if (!urlOrPath) {
         console.log('Empty url!');
         return null;
     }
@@ -950,7 +977,7 @@ export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<R
 }
 
 /**
- * Scans directory for adapters and adds information to list
+ * Scans the directory for adapters and adds information to list
  *
  * @param dirName name of the directory to scan
  * @param list prefilled list to extend adapters too
@@ -1018,6 +1045,7 @@ interface Multilingual {
     'zh-cn'?: string;
 }
 
+/** Information about an installed adapter */
 export interface AdapterInformation {
     /** this flag is only true for the js-controller */
     controller: boolean;
@@ -1025,7 +1053,7 @@ export interface AdapterInformation {
     version: string;
     /** path to icon of the adapter */
     icon: string;
-    /** path to local icon of the adater */
+    /** path to the local icon of the adapter */
     localIcon?: string;
     /** title of the adapter */
     title: string;
@@ -1110,378 +1138,181 @@ export function getInstalledInfo(hostRunningVersion?: string): Record<string, Ad
  * Reads an adapter's npm version
  *
  * @param adapter The adapter to read the npm version from. Null for the root ioBroker packet
- * @param callback
  */
-function getNpmVersion(adapter: string, callback?: (err: Error | null, version?: string | null) => void): void {
+async function getNpmVersion(adapter: string): Promise<string> {
     adapter = adapter ? `${appName}.${adapter}` : appName;
     adapter = adapter.toLowerCase();
 
     const cliCommand = `npm view ${adapter}@latest version`;
 
-    exec(cliCommand, { timeout: 2000, windowsHide: true }, (error, stdout, _stderr) => {
-        let version;
-        if (error) {
-            // command failed
-            if (typeof callback === 'function') {
-                callback(error);
-                return;
-            }
-        } else if (stdout) {
-            version = semver.valid(stdout.trim());
-        }
-        if (typeof callback === 'function') {
-            callback(null, version);
-        }
-    });
-}
-
-function getIoPack(
-    sources: Record<string, any>,
-    name: string,
-    callback: (sources: Record<string, any>, name: string) => void,
-): void {
-    getJson(sources[name].meta, '', ioPack => {
-        const packUrl = sources[name].meta.replace('io-package.json', 'package.json');
-        if (!ioPack) {
-            if (sources._helper) {
-                sources._helper.failCounter.push(name);
-            }
-            if (callback) {
-                callback(sources, name);
-            }
-        } else {
-            setImmediate(() => {
-                getJson(packUrl, '', pack => {
-                    const version = sources[name].version;
-                    const type = sources[name].type;
-                    // If installed from git or something else,
-                    // js-controller is exception, because can be installed from npm and from git
-                    if (sources[name].url && name !== 'js-controller') {
-                        if (ioPack && ioPack.common) {
-                            sources[name] = extend(true, sources[name], ioPack.common);
-
-                            // overwrite type of adapter from repository
-                            if (type) {
-                                sources[name].type = type;
-                            }
-                            if (pack && pack.licenses && pack.licenses.length) {
-                                if (!sources[name].license) {
-                                    sources[name].license = pack.licenses[0].type;
-                                }
-                                if (!sources[name].licenseUrl) {
-                                    sources[name].licenseUrl = pack.licenses[0].url;
-                                }
-                            }
-                        }
-
-                        if (callback) {
-                            callback(sources, name);
-                        }
-                    } else {
-                        if (ioPack && ioPack.common) {
-                            sources[name] = extend(true, sources[name], ioPack.common);
-                            if (pack && pack.licenses && pack.licenses.length) {
-                                if (!sources[name].license) {
-                                    sources[name].license = pack.licenses[0].type;
-                                }
-                                if (!sources[name].licenseUrl) {
-                                    sources[name].licenseUrl = pack.licenses[0].url;
-                                }
-                            }
-                        }
-
-                        // overwrite type of adapter from repository
-                        if (type) {
-                            sources[name].type = type;
-                        }
-
-                        if (version) {
-                            sources[name].version = version;
-                            if (callback) {
-                                callback(sources, name);
-                            }
-                        } else {
-                            if (
-                                sources[name].meta.substring(0, 'http://'.length) === 'http://' ||
-                                sources[name].meta.substring(0, 'https://'.length) === 'https://'
-                            ) {
-                                //installed from npm
-                                getNpmVersion(name, (_err, version) => {
-                                    if (version) {
-                                        sources[name].version = version;
-                                    } else {
-                                        sources[name].version = 'npm error';
-                                    }
-                                    if (callback) {
-                                        callback(sources, name);
-                                    }
-                                });
-                            } else {
-                                if (callback) {
-                                    callback(sources, name);
-                                }
-                            }
-                        }
-                    }
-                });
-            });
-        }
-    });
-}
-
-function _getRepositoryFile(
-    sources: Record<string, any>,
-    path: string,
-    callback?: (err?: Error, sources?: Record<string, any>) => void,
-): void {
-    if (!sources._helper) {
-        let count = 0;
-        for (const _name in sources) {
-            if (!Object.prototype.hasOwnProperty.call(sources, _name)) {
-                continue;
-            }
-            count++;
-        }
-        sources._helper = { failCounter: [] };
-
-        sources._helper.timeout = setTimeout(() => {
-            if (sources._helper) {
-                delete sources._helper;
-                for (const __name of Object.keys(sources)) {
-                    if (sources[__name].processed !== undefined) {
-                        delete sources[__name].processed;
-                    }
-                }
-                if (callback) {
-                    callback(new Error(`Timeout by read all package.json (${count}) seconds`), sources);
-                }
-                callback = undefined;
-            }
-        }, count * 1000);
+    const result = await execAsync(cliCommand, { timeout: 2000, windowsHide: true });
+    let version;
+    if (result?.stdout) {
+        version = semver.valid(result.stdout.trim());
     }
+    return version || '';
+}
 
-    for (const name of Object.keys(sources)) {
-        if (sources[name].processed || name === '_helper') {
-            continue;
-        }
-
-        sources[name].processed = true;
-        if (sources[name].url) {
-            sources[name].url = findPath(path, sources[name].url);
-        }
-        if (sources[name].meta) {
-            sources[name].meta = findPath(path, sources[name].meta);
-        }
-        if (sources[name].icon) {
-            sources[name].icon = findPath(path, sources[name].icon);
-        }
-
-        if (!sources[name].name && sources[name].meta) {
-            getIoPack(sources, name, _ignore => {
-                if (sources._helper) {
-                    if (sources._helper.failCounter.length > 10) {
-                        clearTimeout(sources._helper.timeout);
-                        delete sources._helper;
-                        for (const _name of Object.keys(sources)) {
-                            if (sources[_name].processed !== undefined) {
-                                delete sources[_name].processed;
-                            }
-                        }
-                        if (callback) {
-                            callback(new Error('Looks like there is no internet.'), sources);
-                        }
-                        callback = undefined;
-                    } else {
-                        // process next
-                        setImmediate(() => _getRepositoryFile(sources, path, callback));
-                    }
-                }
-            });
+async function getIoPack(sources: ioBroker.RepositoryJson, name: string, failCounter: string[]): Promise<void> {
+    let packSource = sources[name] as ioBroker.RepositoryJsonAdapterContent;
+    try {
+        const ioPack = await getJson<ioBroker.AdapterObject>(packSource.meta);
+        const packUrl = packSource.meta.replace('io-package.json', 'package.json');
+        if (!ioPack) {
+            failCounter.push(name);
             return;
         }
-    }
+        const pack = await getJson<ioBroker.RepositoryJsonAdapterContent>(packUrl);
+        const version = packSource.version;
+        const type = packSource.type;
 
-    // all packages are processed
-    if (sources._helper) {
-        let err;
-        if (sources._helper.failCounter.length) {
-            err = new Error(`Following packages cannot be read: ${sources._helper.failCounter.join(', ')}`);
+        // If installed from git or something else,
+        // js-controller is exception, because can be installed from npm and from git
+        if (packSource.url && name !== 'js-controller') {
+            if (ioPack?.common) {
+                sources[name] = extend(true, packSource, ioPack.common);
+                packSource = sources[name] as ioBroker.RepositoryJsonAdapterContent;
+
+                // overwrite type of adapter from repository
+                if (type) {
+                    packSource.type = type;
+                }
+                if (pack?.licenses?.length) {
+                    packSource.license ||= pack.licenses[0].type;
+                    packSource.licenseUrl ||= pack.licenses[0].url;
+                }
+            }
+
+            return;
         }
-        clearTimeout(sources._helper.timeout);
-        delete sources._helper;
-        for (const __name of Object.keys(sources)) {
-            if (sources[__name].processed !== undefined) {
-                delete sources[__name].processed;
+
+        if (ioPack?.common) {
+            sources[name] = extend(true, packSource, ioPack.common);
+            packSource = sources[name] as ioBroker.RepositoryJsonAdapterContent;
+            if (pack?.licenses?.length) {
+                packSource.license ||= pack.licenses[0].type;
+                packSource.licenseUrl ||= pack.licenses[0].url;
             }
         }
-        if (callback) {
-            callback(err, sources);
+
+        // overwrite type of adapter from repository
+        if (type) {
+            packSource.type = type;
         }
-        callback = undefined;
+
+        if (version) {
+            packSource.version = version;
+            return;
+        }
+        if (
+            packSource.meta.substring(0, 'http://'.length) === 'http://' ||
+            packSource.meta.substring(0, 'https://'.length) === 'https://'
+        ) {
+            // installed from npm
+            try {
+                const version = await getNpmVersion(name);
+                if (version) {
+                    packSource.version = version;
+                } else {
+                    packSource.version = 'npm error';
+                }
+            } catch {
+                packSource.version = 'npm error';
+            }
+        }
+    } catch (e) {
+        console.error(`Cannot prepare repository entry for ${name}: ${e.message}`);
     }
 }
 
-async function _checkRepositoryFileHash(
-    urlOrPath: string,
-    additionalInfo: Record<string, any>,
-    callback: (err?: null | Error, sources?: Record<string, any> | null, hash?: string | number) => void,
-): Promise<void> {
-    // read hash of file
-    if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
-        urlOrPath = urlOrPath.replace(/\.json$/, '-hash.json');
-        let json: null | Record<string, any> = null;
-        try {
-            const res = await axios.get(urlOrPath, { headers: { 'Accept-Encoding': 'gzip', timeout: 10000 } });
-            if (!res.data || res.status !== 200) {
-                throw new Error(`Invalid response, body: ${res.data}, status code: ${res.status}`);
+async function _getRepositoryFile(sources: ioBroker.RepositoryJson, path = ''): Promise<Error | null> {
+    const names = Object.keys(sources).filter(name => name !== '_helper');
+    const failCounter: string[] = [];
+    let aborted = false;
+
+    // Hard time limit: one second per repository entry. Raced against the processing so a hanging
+    // network request cannot block forever.
+    let timeout: NodeJS.Timeout | undefined;
+    const timeoutPromise = new Promise<Error>(resolve => {
+        timeout = setTimeout(() => {
+            aborted = true;
+            resolve(new Error(`Timeout by read all package.json (${names.length}) seconds`));
+        }, names.length * 10_000);
+    });
+
+    const processPromise = (async (): Promise<Error | null> => {
+        for (const name of names) {
+            if (aborted) {
+                // the timeout already won the race; this result is discarded
+                return null;
+            }
+            const source = sources[name] as ioBroker.RepositoryJsonAdapterContent;
+
+            if (source.url) {
+                source.url = findPath(path, source.url);
+            }
+            if (source.meta) {
+                source.meta = findPath(path, source.meta);
+            }
+            if (source.icon) {
+                source.icon = findPath(path, source.icon);
             }
 
-            json = res.data;
-        } catch (e) {
-            console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
+            if (!source.name && source.meta) {
+                await getIoPack(sources, name, failCounter);
+                if (failCounter.length > 10) {
+                    return new Error('Looks like there is no internet.');
+                }
+            }
         }
 
-        if (json && json.hash) {
-            // The hash download was successful
-            if (additionalInfo && additionalInfo.sources && json.hash === additionalInfo.hash) {
-                // The hash is the same as for the cached sources
-                console.log('hash unchanged, use cached sources');
-                callback(null, additionalInfo.sources, json.hash);
-            } else {
-                // Either we have no sources cached or the hash changed
-                // => force download of new sources
-                console.log('hash changed or no sources cached => force download of new sources');
-                callback(null, null, json.hash);
-            }
-        } else {
-            // Could not download new sources, use the old ones
-            console.log('failed to download new sources, use cached sources');
-            callback(null, additionalInfo.sources, '');
-        }
-    } else {
-        // it is a file and file has not hash
-        callback(null, null, 0);
+        return failCounter.length ? new Error(`Following packages cannot be read: ${failCounter.join(', ')}`) : null;
+    })();
+
+    try {
+        return await Promise.race([processPromise, timeoutPromise]);
+    } finally {
+        clearTimeout(timeout);
     }
 }
 
 /**
  * Get a list of all adapters and controller in some repository file or in /conf/source-dist.json
- *
- * @param urlOrPath URL starting with http:// or https:// or local file link
- * @param additionalInfo destination object
- * @param callback function (err, sources, actualHash) { }
  */
-export function getRepositoryFile(
-    urlOrPath: string,
-    additionalInfo: Record<string, any>,
-    callback: (err?: Error | null, sources?: Record<string, any>, actualHash?: string | number) => void,
-): void {
-    let sources: Record<string, any> = {};
-    let _path = '';
-
-    if (typeof additionalInfo === 'function') {
-        // @ts-expect-error: fix all fun calls then remove
-        callback = additionalInfo;
-        additionalInfo = {};
+export async function getRepositoryFile(): Promise<ioBroker.RepositoryJson> {
+    let sources: ioBroker.RepositoryJson = {} as ioBroker.RepositoryJson;
+    let controllerDir: string | undefined;
+    try {
+        controllerDir = getControllerDir();
+        if (controllerDir) {
+            sources = fs.readJSONSync(path.join(controllerDir, getDefaultDataDir(), 'sources.json'));
+        }
+    } catch {
+        sources = {} as ioBroker.RepositoryJson;
+    }
+    try {
+        if (controllerDir) {
+            const sourcesDist = fs.readJSONSync(path.join(controllerDir, 'conf', 'sources-dist.json'));
+            sources = extend(true, sourcesDist, sources);
+        }
+    } catch {
+        // continue regardless of error
     }
 
-    additionalInfo = additionalInfo || {};
-
-    if (urlOrPath) {
-        const parts = urlOrPath.split('/');
-        _path = `${parts.splice(0, parts.length - 1).join('/')}/`;
+    const error = await _getRepositoryFile(sources);
+    if (error) {
+        console.error(`[${new Date().toString()}] ${error.message}`);
     }
-
-    // If an object was read
-    if (urlOrPath && typeof urlOrPath === 'object') {
-        if (typeof callback === 'function') {
-            callback(null, urlOrPath);
-        }
-    } else if (!urlOrPath) {
-        try {
-            const controllerDir = getControllerDir();
-            if (controllerDir) {
-                sources = fs.readJSONSync(path.join(controllerDir, getDefaultDataDir(), 'sources.json'));
-            }
-        } catch {
-            sources = {};
-        }
-        try {
-            const controllerDir = getControllerDir();
-            if (controllerDir) {
-                const sourcesDist = fs.readJSONSync(path.join(controllerDir, 'conf', 'sources-dist.json'));
-                sources = extend(true, sourcesDist, sources);
-            }
-        } catch {
-            // continue regardless of error
-        }
-
-        for (const s of Object.keys(sources)) {
-            if (additionalInfo[s] && additionalInfo[s].published) {
-                sources[s].published = additionalInfo[s].published;
-            }
-        }
-
-        _getRepositoryFile(sources, _path, err => {
-            if (err) {
-                console.error(`[${new Date().toString()}] ${err.message}`);
-            }
-            if (typeof callback === 'function') {
-                callback(err, sources);
-            }
-        });
-    } else {
-        let agent = '';
-        if (additionalInfo) {
-            // Add some information to user-agent, like chrome, IE and Firefox do
-            agent = `${additionalInfo.name}, RND: ${additionalInfo.randomID || randomID}, Node:${
-                additionalInfo.node
-            }, V:${additionalInfo.controller}`;
-        }
-
-        // load hash of file first to not load the whole 1MB of sources
-        _checkRepositoryFileHash(urlOrPath, additionalInfo, (err, sources, actualSourcesHash) => {
-            if (!err && sources) {
-                // Source file was not changed
-                typeof callback === 'function' && callback(err, sources, actualSourcesHash);
-            } else {
-                getJson(urlOrPath, agent, sources => {
-                    if (sources) {
-                        for (const s of Object.keys(sources)) {
-                            if (additionalInfo[s] && additionalInfo[s].published) {
-                                sources[s].published = additionalInfo[s].published;
-                            }
-                        }
-                        setImmediate(() =>
-                            _getRepositoryFile(sources, _path, err => {
-                                err && console.error(`[${new Date().toString()}] ${err.message}`);
-                                typeof callback === 'function' && callback(err, sources, actualSourcesHash);
-                            }),
-                        );
-                    } else {
-                        // return cached sources, because no sources found
-                        console.log(
-                            `failed to download new sources, ${
-                                additionalInfo.sources ? 'use cached sources' : 'no cached sources available'
-                            }`,
-                        );
-                        return maybeCallbackWithError(
-                            callback,
-                            `Cannot read "${urlOrPath}"`,
-                            additionalInfo.sources,
-                            '',
-                        );
-                    }
-                });
-            }
-        });
+    if (!error || Object.keys(sources).length > 0) {
+        return sources;
     }
+    throw error;
 }
 
 /** Result of getRepositoryFileAsync */
 export interface RepositoryFile {
     /** The repository JSON content */
-    json: ioBroker.RepositoryJson;
+    json: ioBroker.RepositoryJson | null;
     /** Whether the repository has changed compared to the provided hash */
     changed: boolean;
     /** The actual hash of the repository */
@@ -1502,30 +1333,33 @@ export async function getRepositoryFileAsync(
     force?: boolean,
     _actualRepo?: ioBroker.RepositoryJson | null,
 ): Promise<RepositoryFile> {
-    let _hash;
-    let data;
+    let hashResponse: AxiosResponse<{ hash: string }> | undefined;
+    let data: ioBroker.RepositoryJson | null = null;
 
     if (url.startsWith('http://') || url.startsWith('https://')) {
         try {
-            _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10_000 });
+            hashResponse = await axios<{ hash: string }>({
+                url: url.replace(/\.json$/, `-${HASH_TEXT}.json`),
+                timeout: 10_000,
+            });
         } catch {
             // ignore missing hash file
         }
 
         // If we have the actual repo and the hash matches, return it
-        if (_actualRepo && !force && hash && _hash?.data && _hash.data.hash === hash) {
+        if (_actualRepo && !force && hash && hashResponse?.data?.hash === hash) {
             data = _actualRepo;
         } else {
             const agent = `${appName}, RND: ${randomID}, Node:${process.version}, V:${
                 require('@iobroker/js-controller-common/package.json').version
             }`;
             try {
-                data = await axios({
+                const response = await axios<ioBroker.RepositoryJson>({
                     url,
                     timeout: 10_000,
                     headers: { 'User-Agent': agent },
                 });
-                data = data.data;
+                data = response.data;
             } catch (e) {
                 throw new Error(`Cannot download repository file from "${url}": ${e.message}`);
             }
@@ -1544,8 +1378,8 @@ export async function getRepositoryFileAsync(
 
     return {
         json: data,
-        changed: _hash?.data ? hash !== _hash.data.hash : true,
-        hash: _hash?.data ? _hash.data.hash : '',
+        changed: hashResponse?.data ? hash !== hashResponse.data.hash : true,
+        hash: hashResponse?.data ? hashResponse.data.hash : '',
     };
 }
 
@@ -1591,7 +1425,7 @@ export function getAdapterDir(adapter: string): string | null {
 
     let adapterPath;
     for (const possibility of possibilities) {
-        // special case to not read adapters from js-controller/node_module/adapter and check first in parent directory
+        // special case to didn't read adapters from js-controller/node_module/adapter and check first in parent directory
         if (fs.existsSync(path.join(getControllerDir(), '..', possibility))) {
             adapterPath = path.join(getControllerDir(), '..', possibility);
         } else if (fs.existsSync(path.join(getControllerDir(), 'node_modules', possibility))) {
@@ -1634,72 +1468,37 @@ export function getHostName(): string {
 }
 
 /**
- * Read version of system npm
+ * Read version of system NPM
  *
- * @param callback return result
- *        <pre><code>
- *            function (err, version) {
- *              adapter.log.debug('NPM version is: ' + version);
- *            }
- *        </code></pre>
+ * @returns NPM version
  */
-function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) => void): void {
-    const { exec } = require('node:child_process');
-
-    // remove local node_modules\.bin dir from a path
+async function getSystemNpmVersion(): Promise<string | null> {
+    // remove local node_modules\.bin dir from a path,
     // or we potentially get a wrong npm version
     const newEnv = Object.assign({}, process.env);
-    // @ts-expect-error TODO
-    newEnv.PATH = (newEnv.PATH || newEnv.Path || newEnv.path)
+
+    newEnv.PATH = (newEnv.PATH || newEnv.Path || newEnv.path || '')
         .split(path.delimiter)
         .filter(dir => {
             dir = dir.toLowerCase();
             return !dir.includes('iobroker') || !dir.includes(path.join('node_modules', '.bin'));
         })
         .join(path.delimiter);
-    try {
-        let timeout: NodeJS.Timeout | null = setTimeout(() => {
-            timeout = null;
-            if (callback) {
-                callback(new Error('timeout'));
-                callback = undefined;
-            }
-        }, 10_000);
-
-        exec(
-            'npm -v',
-            { encoding: 'utf8', env: newEnv, windowsHide: true },
-            (error: any, stdout: string | undefined | null) => {
-                //, stderr) {
-                if (timeout) {
-                    clearTimeout(timeout);
-                    timeout = null;
-                }
-                if (stdout) {
-                    stdout = semver.valid(stdout.trim());
-                }
-                if (callback) {
-                    callback(error, stdout);
-                    callback = undefined;
-                }
-            },
-        );
-    } catch (e) {
-        if (callback) {
-            callback(e);
-            callback = undefined;
-        }
+    const result = await execAsync('npm -v', { env: newEnv, timeout: 10_000 });
+    let version;
+    if (result.stdout) {
+        version = semver.valid(result.stdout.trim());
     }
+    return version || null;
 }
 
-const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
-
+/** Options for installing a node module */
 export interface InstallNodeModuleOptions {
-    // Whether the `--unsafe-perm` flag should be used
+    /** Whether the `--unsafe-perm` flag should be used */
     unsafePerm?: boolean;
-    // Whether to include `stderr` in the output and increase the loglevel to include more than errors
+    /** Whether to include `stderr` in the output and increase the loglevel to include more than errors */
     debug?: boolean;
-    // Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+    /** Which directory to work in. If none is given, this defaults to ioBroker's root directory. */
     cwd?: string;
 }
 
@@ -1776,10 +1575,11 @@ export async function installNodeModule(
     return pak.install([npmUrl], installOpts);
 }
 
+/** Options for uninstalling a node module */
 export interface UninstallNodeModuleOptions {
-    // Whether to include `stderr` in the output and increase the loglevel to include more than errors
+    /** Whether to include `stderr` in the output and increase the loglevel to include more than errors */
     debug?: boolean;
-    // Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+    /** Which directory to work in. If none is given, this defaults to ioBroker's root directory. */
     cwd?: string;
 }
 
@@ -1814,12 +1614,13 @@ export async function uninstallNodeModule(
     return pak.uninstall([packageName]);
 }
 
+/** Options for rebuilding native node modules */
 export interface RebuildNodeModulesOptions {
-    // Whether to include `stderr` in the output and increase the loglevel to include more than errors
+    /** Whether to include `stderr` in the output and increase the loglevel to include more than errors */
     debug?: boolean;
-    // Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+    /** Which directory to work in. If none is given, this defaults to ioBroker's root directory. */
     cwd?: string;
-    // module which should be rebuilt
+    /** module that should be rebuilt */
     module?: string;
 }
 
@@ -1851,13 +1652,16 @@ export async function rebuildNodeModules(options: RebuildNodeModulesOptions = {}
     return pak.rebuild(options.module ? [options.module] : undefined);
 }
 
+/** Information about the disk on which ioBroker is installed */
 export interface GetDiskInfoResponse {
+    /** Total size of the disk in bytes */
     'Disk size': number;
+    /** Free space on the disk in bytes */
     'Disk free': number;
 }
 
 /**
- * Read disk free space
+ * Read the disk-free space
  */
 export async function getDiskInfo(): Promise<GetDiskInfoResponse | null> {
     const platform = process.platform;
@@ -1917,7 +1721,9 @@ export async function getDiskInfo(): Promise<GetDiskInfoResponse | null> {
     return null;
 }
 
+/** Parsed information about an SSL/TLS certificate */
 export interface CertificateInfo {
+    /** path to the certificate file, or null if the certificate was passed directly */
     certificateFilename: string | null;
     /** the certificate itself */
     certificate: string;
@@ -1925,15 +1731,17 @@ export interface CertificateInfo {
     serialNumber: string;
     /** type of signature as text like "RSA" */
     signature: string;
-    /** bits used for encryption key like 2048 */
+    /** bits used for an encryption key like 2048 */
     keyLength: number;
     /** issuer of the certificate */
     issuer: Record<string, any>;
     /** subject that is signed */
     subject: Record<string, any>;
-    /** server name this certificate belong to */
+    /** server name this certificate belongs to */
     dnsNames: {
+        /** Type of the subject alternative name entry */
         type: number;
+        /** Value of the subject alternative name entry */
         value: string;
     }[];
     /** this certificate can be used for the following purposes */
@@ -1949,7 +1757,7 @@ export interface CertificateInfo {
 /**
  * Returns information about a certificate
  *
- * @param cert
+ * @param cert The certificate as a PEM string, or a path to the certificate file
  * @returns certificate information object
  */
 export function getCertificateInfo(cert: string): null | CertificateInfo {
@@ -1995,8 +1803,11 @@ export function getCertificateInfo(cert: string): null | CertificateInfo {
     }
 }
 
+/** Default self-signed certificates shipped with the controller */
 export interface DefaultCertificates {
+    /** PEM encoded a default private key */
     defaultPrivate: string;
+    /** PEM encoded default public certificate */
     defaultPublic: string;
 }
 
@@ -2109,14 +1920,14 @@ function makeid(length: number): string {
 /**
  * Collects information about host and available adapters
  *
- *  Following info will be collected:
+ *  The following info will be collected:
  *    - available adapters
  *    - node.js --version
  *    - npm --version
  *
  * @param objects db
  */
-export async function getHostInfo(objects: any): Promise<HostInfo> {
+export async function getHostInfo(objects: ObjectsRedisClient): Promise<HostInfo> {
     if (!diskusage) {
         try {
             diskusage = require('diskusage');
@@ -2125,23 +1936,23 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
         }
     }
 
-    const systemConfig: ioBroker.OtherObject = await objects.getObjectAsync('system.config');
-    const systemRepos: ioBroker.OtherObject = await objects.getObjectAsync('system.repositories');
+    const systemConfig: ioBroker.SystemConfigObject = await objects.getObjectAsync('system.config');
+    const systemRepos: ioBroker.RepositoryObject = await objects.getObjectAsync('system.repositories');
 
     // Check if repositories exist
-    const allRepos: Record<string, any> = {};
+    const allRepos: ioBroker.RepositoryJson = {} as ioBroker.RepositoryJson;
     if (systemRepos?.native?.repositories && systemConfig) {
         const repos: string[] = Array.isArray(systemConfig.common.activeRepo)
             ? systemConfig.common.activeRepo
             : [systemConfig.common.activeRepo];
         repos
-            .filter(repo => systemRepos.native.repositories[repo] && systemRepos.native.repositories[repo].json)
+            .filter(repo => systemRepos.native.repositories[repo]?.json)
             .forEach(repo => Object.assign(allRepos, systemRepos.native.repositories[repo].json));
     }
 
     if (!npmVersion) {
         try {
-            npmVersion = await getSystemNpmVersionAsync();
+            npmVersion = (await getSystemNpmVersion()) || '';
         } catch (e) {
             console.error(`Cannot get NPM version: ${e.message}`);
         }
@@ -2163,7 +1974,7 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
         time: dateObj.getTime(),
         timeOffset: dateObj.getTimezoneOffset(),
         NPM: npmVersion,
-        'adapters count': Object.keys(allRepos).length,
+        'adapters count': Object.keys(allRepos).filter(id => id !== '_repoInfo').length,
     };
 
     if (data.Platform === 'win32') {
@@ -2197,8 +2008,8 @@ export function getControllerDir(): string {
     const possibilities = ['iobroker.js-controller', 'ioBroker.js-controller'];
     for (const pkg of possibilities) {
         try {
-            // package.json is guaranteed to be in the module root folder
-            // so once that is resolved, take the dirname and we're done
+            // package.json is guaranteed to be in the module root folder,
+            // so once that is resolved, take the dirname, and we're done
             const possiblePath = require.resolve(`${pkg}/package.json`);
 
             if (fs.existsSync(possiblePath)) {
@@ -2253,7 +2064,7 @@ export function isDevServerInstallation(): boolean {
 
 /**
  * All paths are returned always relative to /node_modules/' + appName + '.js-controller
- * the result has always "/" as last symbol
+ * the result has always "/" as the last symbol
  */
 export function getDefaultDataDir(): string {
     // Allow overriding the data directory with an environment variable
@@ -2271,6 +2082,26 @@ export function getDefaultDataDir(): string {
     }
 
     return path.join('..', '..', `${appNameLowerCase}-data/`);
+}
+
+/**
+ * Determine where an adapter's Python virtual environment lives
+ *
+ * Lives here rather than in the controller because the CLI needs the same path when it removes an
+ * adapter: the environment is host-local state like node_modules and has to be cleaned up with it.
+ * One environment per adapter rather than per instance -- the isolation exists to keep adapters
+ * from fighting over package versions, which is not a problem two instances of the same adapter
+ * can have.
+ *
+ * The result is absolute on purpose. getDefaultDataDir() is relative to the controller directory
+ * by design, but the interpreter path derived from this becomes the executable of a spawn() whose
+ * cwd is the adapter's package directory -- a relative path would be resolved against that and
+ * fail with ENOENT, while every check done from the controller's own cwd would still pass.
+ *
+ * @param adapterName name of the adapter without the `iobroker.` prefix
+ */
+export function getPythonEnvDir(adapterName: string): string {
+    return path.resolve(getControllerDir(), getDefaultDataDir(), 'py', adapterName);
 }
 
 /**
@@ -2446,7 +2277,7 @@ export function promisifyNoError(
     };
 }
 
-async function _setQualityForStates(states: any, keys: string[], quality: number): Promise<void> {
+async function _setQualityForStates(states: StatesRedisClient, keys: string[], quality: number): Promise<void> {
     for (const key of keys) {
         try {
             await states.setState(key, { ack: null, q: quality });
@@ -2456,7 +2287,20 @@ async function _setQualityForStates(states: any, keys: string[], quality: number
     }
 }
 
-export function setQualityForInstance(objects: any, states: any, namespace: string, q: number): Promise<void> {
+/**
+ * Set the given quality code on all states belonging to an instance
+ *
+ * @param objects The objects database client
+ * @param states The states database client
+ * @param namespace The instance namespace whose states should be updated (e.g. "admin.0")
+ * @param q The quality code to assign to each state
+ */
+export function setQualityForInstance(
+    objects: ObjectsRedisClient,
+    states: StatesRedisClient,
+    namespace: string,
+    q: number,
+): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         objects.getObjectView(
             'system',
@@ -2483,7 +2327,7 @@ export function setQualityForInstance(objects: any, states: any, namespace: stri
                     }
                     // read all values for IDs
                     states.getStates(keys, async (_err: Error | null, values: Record<string, ioBroker.State>) => {
-                        // Get only states, that have ack = true
+                        // Get only states that have ack = true
                         keys = keys.filter((_id, i) => values[i] && values[i].ack);
                         // update quality code of the states to new one
                         await _setQualityForStates(states, keys, q);
@@ -2518,8 +2362,7 @@ export function pattern2RegEx(pattern: string): string {
 /**
  * Checks if a pattern is valid
  *
- * @param pattern
- * @pattern pattern to check for validity
+ * @param pattern The pattern to check for validity
  */
 export function isValidPattern(pattern: string): boolean {
     pattern = pattern.replace(/\*/g, '');
@@ -2607,7 +2450,7 @@ function decryptLegacy(key: string, value: string): string {
  */
 export function encrypt(key: string, value: string): string {
     if (!/^[0-9a-f]{48}$/.test(key)) {
-        // key length is not matching for AES-192-CBC or key is no valid hex - fallback to old encryption
+        // key length is not matching for AES-192-CBC, or key is no valid hex - fallback to old encryption
         return encryptLegacy(key, value);
     }
 
@@ -2690,7 +2533,7 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
         // we use Math.max to handle a case where timers are running efficiently
         // and our callback executes earlier than `ms` due to how timers are
         // implemented. this is ok. it means we're healthy.
-        cb && cb(Math.max(0, t - start - ms));
+        cb?.(Math.max(0, t - start - ms));
         start = t;
 
         timeout = setTimeout(check, ms);
@@ -2704,10 +2547,10 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
 }
 
 /**
- * This function convert state values by read and write of aliases. Function is synchronous.
+ * This function converts state values by read and write of aliases. Function is synchronous.
  * On errors, null is returned instead
  *
- * @param options
+ * @param options Source and target common/id definitions, the state to convert and a logger
  */
 export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.State | null {
     const { sourceCommon, sourceId, targetCommon, targetId, state, logger } = options;
@@ -2781,25 +2624,25 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
  * @param allEnums objects with all enums to use - if not provided all enums will be queried
  * @returns Promise All objects are tried to be updated - reject will happen as soon as one fails with the error of the first fail
  */
-export async function removeIdFromAllEnums(objects: any, id: string, allEnums?: Record<string, any>): Promise<void> {
-    if (!allEnums) {
-        allEnums = await getAllEnums(objects);
-    }
+export async function removeIdFromAllEnums(
+    objects: ObjectsRedisClient,
+    id: string,
+    allEnums?: Record<string, ioBroker.EnumObject>,
+): Promise<void> {
+    allEnums ||= await getAllEnums(objects);
 
     let error = null;
     for (const [enumId, enumObj] of Object.entries(allEnums)) {
         const idx = enumObj.common.members ? enumObj.common.members.indexOf(id) : -1;
         if (idx !== -1) {
             // the id is in the enum now we have to remove it
-            enumObj.common.members.splice(idx, 1);
+            enumObj.common.members!.splice(idx, 1);
             try {
                 await objects.setObjectAsync(enumId, enumObj);
                 // update cache directly to prevent race conditions when sending many delete in a short time
                 allEnums[enumId] = enumObj;
             } catch (err) {
-                if (!error) {
-                    error = err;
-                }
+                error ||= err;
             }
         }
     }
@@ -2809,7 +2652,7 @@ export async function removeIdFromAllEnums(objects: any, id: string, allEnums?: 
 }
 
 /**
- * Parses dependencies to standardized object of form
+ * Parses dependencies to a standardized object of form
  *
  * @param dependencies dependencies array or single dependency
  * @returns parsedDeps parsed dependencies
@@ -2846,15 +2689,18 @@ export function parseDependencies(
  *
  * @param obj an object which will be validated
  * @param extend (optional) if true checks allow more optional cases for extendObject calls
- * @throws Error if a property has the wrong type or `obj.type` is non-existing
+ * @throws {Error} if a property has the wrong type or `obj.type` is non-existing
  */
-export function validateGeneralObjectProperties(obj: any, extend?: boolean): void {
+export function validateGeneralObjectProperties(
+    obj: ioBroker.SettableObject | null | undefined,
+    extend?: boolean,
+): void {
     if (!obj || (obj.type === undefined && !extend)) {
         throw new Error(`obj.type has to exist`);
     }
 
     if (obj.type !== undefined && typeof obj.type !== 'string') {
-        throw new Error(`obj.type has an invalid type! Expected "string", received "${typeof obj.type}"`);
+        throw new Error(`obj.type has an invalid type! Expected "string", received "${typeof (obj as any).type}"`);
     }
 
     if (obj.native !== undefined && !isObject(obj.native)) {
@@ -2901,10 +2747,10 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         throw new Error(`obj.common.name has an invalid type! Expected "string", received "${typeof obj.common.name}"`);
     }
 
-    if (obj.common.type !== undefined) {
-        if (typeof obj.common.type !== 'string') {
+    if ((obj.common as ioBroker.StateCommon).type !== undefined) {
+        if (typeof (obj.common as ioBroker.StateCommon).type !== 'string') {
             throw new Error(
-                `obj.common.type has an invalid type! Expected "string", received "${typeof obj.common.type}"`,
+                `obj.common.type has an invalid type! Expected "string", received "${typeof (obj.common as ioBroker.StateCommon).type}"`,
             );
         }
 
@@ -2954,18 +2800,17 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
                 }
             }
 
-            // ensure, that default value has correct type
-            if (obj.common.def !== undefined && obj.common.def !== null) {
+            // ensure that default value has correct type
+            if (obj.common.def != null) {
                 // else do what strictObjectChecks does for val
-                if (
-                    !(
-                        (obj.common.type === 'mixed' && typeof obj.common.def !== 'object') ||
-                        (obj.common.type !== 'object' && obj.common.type === typeof obj.common.def) ||
-                        (obj.common.type === 'array' && typeof obj.common.def === 'string') ||
-                        (obj.common.type === 'json' && typeof obj.common.def === 'string') ||
-                        (obj.common.type === 'object' && typeof obj.common.def === 'string')
-                    )
-                ) {
+                if (!(
+                    (obj.common.type === 'mixed' && typeof obj.common.def !== 'object') ||
+                    (obj.common.type !== 'object' && obj.common.type === typeof obj.common.def) ||
+                    (obj.common.type === 'array' && typeof obj.common.def === 'string') ||
+                    // @ts-expect-error deprecated
+                    (obj.common.type === 'json' && typeof obj.common.def === 'string') ||
+                    (obj.common.type === 'object' && typeof obj.common.def === 'string')
+                )) {
                     // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json';
                     // 'array', 'object', 'json' need to be string
                     if (['object', 'json', 'array'].includes(obj.common.type)) {
@@ -2986,15 +2831,21 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         }
     }
 
-    if (obj.common.read !== undefined && typeof obj.common.read !== 'boolean') {
+    if (
+        (obj.common as ioBroker.StateCommon).read !== undefined &&
+        typeof (obj.common as ioBroker.StateCommon).read !== 'boolean'
+    ) {
         throw new Error(
-            `obj.common.read has an invalid type! Expected "boolean", received "${typeof obj.common.read}"`,
+            `obj.common.read has an invalid type! Expected "boolean", received "${typeof (obj.common as ioBroker.StateCommon).read}"`,
         );
     }
 
-    if (obj.common.write !== undefined && typeof obj.common.write !== 'boolean') {
+    if (
+        (obj.common as ioBroker.StateCommon).write !== undefined &&
+        typeof (obj.common as ioBroker.StateCommon).write !== 'boolean'
+    ) {
         throw new Error(
-            `obj.common.write has an invalid type! Expected "boolean", received "${typeof obj.common.write}"`,
+            `obj.common.write has an invalid type! Expected "boolean", received "${typeof (obj.common as ioBroker.StateCommon).write}"`,
         );
     }
 
@@ -3008,12 +2859,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         );
     }
 
-    if (
-        obj.type === 'state' &&
-        obj.common.custom !== undefined &&
-        obj.common.custom !== null &&
-        !isObject(obj.common.custom)
-    ) {
+    if (obj.type === 'state' && obj.common.custom != null && !isObject(obj.common.custom)) {
         throw new Error(
             `obj.common.custom has an invalid type! Expected "object", received "${typeof obj.common.custom}"`,
         );
@@ -3021,13 +2867,12 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
     // common.states needs to be a real object or an array
     if (
-        obj.common.states !== null && // we allow null for deletion TODO: implement https://github.com/ioBroker/ioBroker.js-controller/issues/1735
-        obj.common.states !== undefined &&
-        !isObject(obj.common.states) &&
-        !Array.isArray(obj.common.states)
+        (obj.common as ioBroker.StateCommon).states != null && // we allow null for deletion TODO: implement https://github.com/ioBroker/ioBroker.js-controller/issues/1735
+        !isObject((obj.common as ioBroker.StateCommon).states) &&
+        !Array.isArray((obj.common as ioBroker.StateCommon).states)
     ) {
         throw new Error(
-            `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`,
+            `obj.common.states has an invalid type! Expected "object", received "${typeof (obj.common as ioBroker.StateCommon).states}"`,
         );
     }
 }
@@ -3039,7 +2884,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
  * @param objects class redis objects
  * @returns array of IDs
  */
-export async function getAllInstances(adapters: string[], objects: any): Promise<string[]> {
+export async function getAllInstances(adapters: string[], objects: ObjectsRedisClient): Promise<string[]> {
     const instances: string[] = [];
 
     for (let i = 0; i < adapters.length; i++) {
@@ -3053,10 +2898,8 @@ export async function getAllInstances(adapters: string[], objects: any): Promise
                     instances.push(inst[j]);
                 }
             }
-        } else {
-            if (!instances.includes(adapters[i])) {
-                instances.push(adapters[i]);
-            }
+        } else if (!instances.includes(adapters[i])) {
+            instances.push(adapters[i]);
         }
     }
 
@@ -3074,8 +2917,8 @@ type GetObjectViewResult<TObject extends ioBroker.AnyObject = ioBroker.Object> =
  * @param objects - objects db
  * @returns Promise
  */
-export async function getAllEnums(objects: any): Promise<Record<string, ioBroker.EnumObject>> {
-    const allEnums: Record<string, any> = {};
+export async function getAllEnums(objects: ObjectsRedisClient): Promise<Record<string, ioBroker.EnumObject>> {
+    const allEnums: Record<string, ioBroker.EnumObject> = {};
     const res: GetObjectViewResult<ioBroker.EnumObject> = await objects.getObjectViewAsync('system', 'enum', {
         startkey: 'enum.',
         endkey: 'enum.\u9999',
@@ -3098,7 +2941,7 @@ export async function getAllEnums(objects: any): Promise<Record<string, ioBroker
  */
 export async function getInstances<TWithObjects extends boolean>(
     adapter: string,
-    objects: any,
+    objects: ObjectsRedisClient,
     withObjects: TWithObjects,
 ): Promise<TWithObjects extends true ? ioBroker.InstanceObject[] : ioBroker.ObjectIDs.Instance[]> {
     const arr = await objects.getObjectListAsync({
@@ -3126,13 +2969,19 @@ export async function getInstances<TWithObjects extends boolean>(
 
 /**
  * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
- * On error, the promise rejects with the exit code or signal, as well as stdout and stderr.
+ * In error, the promise rejects with the exit code or signal, as well as stdout and stderr.
  *
  * @param command The command to execute
  * @param execOptions The options for child_process.exec
  * @returns child process promise
  */
-export function execAsync(command: string, execOptions?: ExecOptions): ChildProcessPromise {
+export function execAsync(
+    command: string,
+    execOptions?: ExecOptions,
+): Promise<{
+    stdout?: string;
+    stderr?: string;
+}> {
     const defaultOptions = {
         // we do not want to show the node.js window on Windows
         windowsHide: true,
@@ -3140,7 +2989,72 @@ export function execAsync(command: string, execOptions?: ExecOptions): ChildProc
         encoding: 'utf8',
     };
 
-    return cpExecAsync(command, { ...defaultOptions, ...execOptions });
+    return new Promise<{
+        stdout: string;
+        stderr: string;
+    }>((resolve, reject) => {
+        exec(command, { ...defaultOptions, ...execOptions }, (error, stdout, stderr) => {
+            if (error) {
+                reject(stderr ? new Error(stderr.toString()) : error);
+            } else {
+                resolve({
+                    stderr: stderr?.toString(),
+                    stdout: stdout?.toString(),
+                });
+            }
+        });
+    });
+}
+
+/**
+ * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
+ *
+ * On error it rejects with the error of `child_process.execFile`, whose `code` (the exit code, or `ENOENT` when
+ * the command does not exist), `killed` and `signal` say what happened - a command killed by the `timeout`
+ * option has to stay distinguishable from one that exited non-zero. Only the message is replaced by the output
+ * on stderr when there is any, because that usually says more than "Command failed".
+ *
+ * @param file The command to execute
+ * @param args The arguments to pass to the command
+ * @param execOptions The options for child_process.execFile
+ * @returns child process promise
+ */
+export function execFileAsync(
+    file: string,
+    args: readonly string[],
+    execOptions?: ExecOptions,
+): Promise<{
+    stdout?: string;
+    stderr?: string;
+}> {
+    const defaultOptions = {
+        // we do not want to show the node.js window on Windows
+        windowsHide: true,
+        // And we want to capture stdout/stderr
+        encoding: 'utf8',
+    };
+
+    return new Promise<{
+        stdout: string;
+        stderr: string;
+    }>((resolve, reject) => {
+        execFile(file, [...args], { ...defaultOptions, ...execOptions }, (error, stdout, stderr) => {
+            if (error) {
+                // the error of execFile is an Error carrying `code`, `killed` and `signal` - what the caller
+                // needs to tell a missing command and a timeout apart from a plain non-zero exit
+                const failure: Error = error;
+                if (stderr) {
+                    failure.message = stderr.toString();
+                }
+                reject(failure);
+            } else {
+                resolve({
+                    stderr: stderr?.toString(),
+                    stdout: stdout?.toString(),
+                });
+            }
+        });
+    });
 }
 
 /**
@@ -3230,12 +3144,12 @@ export async function resolveAdapterMainFile(adapter: string): Promise<string> {
 /**
  * Returns the default nodeArgs required to execute the main file, e.g., transpile hooks for TypeScript
  *
- * @param mainFile
+ * @param mainFile Path to the adapter main file that will be executed
  * @returns default node args for cli
  */
 export function getDefaultNodeArgs(mainFile: string): string[] {
     const ret: string[] = [];
-    // Support executing TypeScript files directly
+    // Support for executing TypeScript files directly
     if (mainFile.endsWith('.ts')) {
         ret.push('-r', '@alcalzone/esbuild-register');
     }
@@ -3275,9 +3189,13 @@ export function isShortGithubUrl(url: string): boolean {
     return shortGithubUrlRegex.test(url);
 }
 
+/** A short GitHub URL parsed into its separate parts */
 export interface ParsedGithubUrl {
+    /** GitHub user or organization name */
     user: string;
+    /** Repository name */
     repo: string;
+    /** Optional commit-ish (branch, tag or commit hash) */
     commit?: string;
 }
 
@@ -3352,7 +3270,7 @@ export function removePreservedProperties(
                 // array, only rm selected subattributes instead of whole attribute
                 for (const rmProp of preserve[prop]) {
                     if (oldObj[prop][rmProp] !== undefined && newObj[prop][rmProp] !== undefined) {
-                        // only delete if conflicting
+                        // only delete it if conflicting
                         delete newObj[prop][rmProp];
                     }
                 }
@@ -3361,15 +3279,48 @@ export function removePreservedProperties(
     }
 }
 
+/** Value of `common.platform` that marks an adapter as Python. */
+export const PYTHON_PLATFORM = 'Python';
+
+/**
+ * Whether an adapter runs on Python rather than on Node.js
+ *
+ * Compared case-insensitively: `common.platform` is hand-written, and wrong casing already exists
+ * in the wild. The JSON schema only accepts the exact spelling, so this is about what is installed
+ * today, not about what a new adapter may declare.
+ *
+ * @param common the adapter's `common` section, or an instance object's
+ */
+export function isPythonAdapter(common?: { platform?: string } | null): boolean {
+    // `?.` guards null and undefined, not a wrong type, and `common.platform` comes from an `io-package.json`
+    // which is not validated against the schema again once the adapter is installed. A published
+    // `"platform": 1` would throw here, on a path every instance start runs through.
+    return typeof common?.platform === 'string' && common.platform.toLowerCase() === PYTHON_PLATFORM.toLowerCase();
+}
+
 /**
  * Returns the array of system.adapter.<namespace>.* objects which are created for every instance
  *
+ * A Python instance gets a slightly shorter list: `memHeapTotal` and `memHeapUsed` are V8's heap,
+ * and CPython has no comparable number to put there -- its allocator publishes no total, and the
+ * one figure that could be measured costs several times the memory it reports. Created anyway they
+ * are two rows in the object tree that stay empty for the life of the installation, which reads as
+ * a broken adapter rather than as a number that does not apply.
+ *
+ * Only for instances created from here on. An installation that already has them keeps them:
+ * deleting objects a user may have put in a chart is not this function's business.
+ *
  * @param namespace - adapter namespace + id, e.g., hm-rpc.0
+ * @param adapterCommon - adapter object from io-package.json
  */
-export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateObject[] {
+export function getInstanceIndicatorObjects(
+    namespace: string,
+    adapterCommon: ioBroker.AdapterCommon,
+): ioBroker.StateObject[] {
     const id = `system.adapter.${namespace}`;
+    const isPython = isPythonAdapter(adapterCommon);
 
-    return [
+    const objects: ioBroker.StateObject[] = [
         {
             _id: `${id}.alive`,
             type: 'state',
@@ -3517,8 +3468,8 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
             _id: `${id}.eventLoopLag`,
             type: 'state',
             common: {
-                name: `${namespace} Node.js event loop lag`,
-                desc: 'Node.js event loop lag in ms averaged over 15 seconds',
+                name: `${namespace} ${isPython ? 'event loop lag' : 'Node.js event loop lag'}`,
+                desc: `${isPython ? 'asyncio' : 'Node.js'} event loop lag in ms averaged over 15 seconds`,
                 type: 'number',
                 read: true,
                 write: false,
@@ -3563,16 +3514,29 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 write: true,
                 desc: 'If the number of objects of this adapter instance exceeds this limit, the user will receive a warning',
                 role: 'state',
-                def: DEFAULT_OBJECTS_WARN_LIMIT,
+                def: adapterCommon.defaultObjectsWarnLimit ?? DEFAULT_OBJECTS_WARN_LIMIT,
             },
             native: {},
         },
     ];
+
+    if (!isPython) {
+        return objects;
+    }
+
+    const heap = [`${id}.memHeapTotal`, `${id}.memHeapUsed`];
+
+    return objects.filter(obj => !heap.includes(obj._id));
 }
 
 export type InternalLogger = Omit<ioBroker.Logger, 'level'>;
 
-export function getLogger(log: any): InternalLogger {
+/**
+ * Normalize a logger-like object into a complete logger, filling missing log level methods with no-ops
+ *
+ * @param log A logger or partial logger object; if falsy, a no-op logger is created
+ */
+export function getLogger(log?: InternalLogger): InternalLogger {
     if (!log) {
         log = {
             silly: function (_msg: string) {
@@ -3618,7 +3582,7 @@ export async function setExecutableCapabilities(
         return;
     }
 
-    // if Docker and Admin Capabilities should be set check if we are allowed to do that
+    // if Docker and Admin Capabilities should be set, check if we are allowed to do that
     if (isDocker() && capabilities.includes('cap_net_admin')) {
         try {
             const systemCaps = fs.readFileSync(`/proc/${process.pid}/status`, 'utf-8');
@@ -3673,7 +3637,23 @@ export async function setExecutableCapabilities(
  * @param password Decoded password for ioBroker.net
  * @returns array of all licenses stored on iobroker.net
  */
-async function _readLicenses(login: string, password: string): Promise<any[]> {
+async function _readLicenses(
+    login: string,
+    password: string,
+): Promise<
+    {
+        json: string;
+        id: string;
+        email: string;
+        product: string;
+        version: string;
+        invoice: string;
+        uuid: string;
+        time: string;
+        validTill: string;
+        usedBy?: string;
+    }[]
+> {
     const config = {
         headers: { Authorization: `Basic ${Buffer.from(`${login}:${password}`).toString('base64')}` },
         timeout: 4_000,
@@ -3712,15 +3692,32 @@ async function _readLicenses(login: string, password: string): Promise<any[]> {
  * @param password Decoded password for ioBroker.net
  * @returns array of all licenses stored on iobroker.net
  */
-export async function updateLicenses(objects: any, login: string, password: string): Promise<any[]> {
+export async function updateLicenses(
+    objects: ObjectsRedisClient,
+    login: string,
+    password: string,
+): Promise<
+    {
+        json: string;
+        id: string;
+        email: string;
+        product: string;
+        version: string;
+        invoice: string;
+        uuid: string;
+        time: string;
+        validTill: string;
+        usedBy?: string;
+    }[]
+> {
     // if login and password provided in the message, just try to read without saving it in system.licenses
     if (login && password) {
-        return _readLicenses(login, password);
+        return await _readLicenses(login, password);
     }
     // get actual object
     const systemLicenses: ioBroker.Object = await objects.getObjectAsync('system.licenses');
     // If password and login exist
-    if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
+    if (systemLicenses?.native?.password && systemLicenses.native.login) {
         try {
             // get the secret to decode the password
             const systemConfig: ioBroker.Object = await objects.getObjectAsync('system.config');
@@ -3737,7 +3734,18 @@ export async function updateLicenses(objects: any, login: string, password: stri
             const licenses = await _readLicenses(systemLicenses.native.login, password);
             // save licenses to system.licenses and remember the time.
             // merge the information together
-            const oldLicenses: any[] = systemLicenses.native.licenses || [];
+            const oldLicenses: {
+                json: string;
+                id: string;
+                email: string;
+                product: string;
+                version: string;
+                invoice: string;
+                uuid: string;
+                time: string;
+                validTill: string;
+                usedBy?: string;
+            }[] = systemLicenses.native.licenses || [];
             systemLicenses.native.licenses = licenses;
             oldLicenses.forEach(oldLicense => {
                 if (oldLicense.usedBy) {
@@ -3757,12 +3765,7 @@ export async function updateLicenses(objects: any, login: string, password: stri
             // if password is invalid
             if (err.message.includes('Authentication required') || err.message.includes('Cannot decode password:')) {
                 // clear existing licenses if exist
-                if (
-                    systemLicenses &&
-                    systemLicenses.native &&
-                    systemLicenses.native.licenses &&
-                    systemLicenses.native.licenses.length
-                ) {
+                if (systemLicenses?.native?.licenses?.length) {
                     systemLicenses.native.licenses = [];
                     systemLicenses.native.readTime = new Date().toISOString();
                     await objects.setObjectAsync('system.licenses', systemLicenses);
@@ -3773,12 +3776,7 @@ export async function updateLicenses(objects: any, login: string, password: stri
         }
     } else {
         // if password or login are empty => clear existing licenses if exist
-        if (
-            systemLicenses &&
-            systemLicenses.native &&
-            systemLicenses.native.licenses &&
-            systemLicenses.native.licenses.length
-        ) {
+        if (systemLicenses?.native?.licenses?.length) {
             systemLicenses.native.licenses = [];
             systemLicenses.native.readTime = new Date().toISOString();
             await objects.setObjectAsync('system.licenses', systemLicenses);
@@ -3787,8 +3785,9 @@ export async function updateLicenses(objects: any, login: string, password: stri
     }
 }
 
+/** Options for compressing a file with GZip */
 export interface GZipFileOptions {
-    // Delete the input file after compression. Default: false.
+    /** Delete the input file after compression. Default: false. */
     deleteInput?: boolean;
 }
 /**
@@ -3833,8 +3832,9 @@ export function compressFileGZip(
     });
 }
 
+/** Result of validating a configured data directory */
 export interface DataDirValidation {
-    /** if data directory is valid */
+    /** if the data directory is valid */
     valid: boolean;
     /** absolute path it resolves too */
     path: string;
@@ -3843,7 +3843,7 @@ export interface DataDirValidation {
 }
 
 /**
- * Validate if the dir, is a valid dataDir
+ * Validate if the dir is a valid dataDir
  * Data dirs in node_modules are not allowed, note that dataDirs are relative to js-controller dir or absolute
  *
  * @param dataDir dataDir to check
@@ -3865,7 +3865,7 @@ export function validateDataDir(dataDir: string): DataDirValidation {
 }
 
 /**
- * If an array is passed it will be stringified, else the parameter is returned
+ * If an array is passed, it will be stringified, else the parameter is returned
  *
  * @param maybeArr parameter which will be stringified if it is an array
  */
@@ -3901,7 +3901,7 @@ function getDNSResolutionOrder(): DNSOrder {
 }
 
 /**
- * Checks if given ip address is matching ipv4 or ipv6 localhost
+ * Checks if the given ip address is matching ipv4 or ipv6 localhost
  *
  * @param ip ipv4 or ipv6 address
  */
@@ -3912,7 +3912,7 @@ export function isLocalAddress(ip: string): boolean {
 }
 
 /**
- * Checks if given ip address is matching ipv4 or ipv6 "listen all" address
+ * Checks if the given ip address is matching ipv4 or ipv6 "listen all" address
  *
  * @param ip ipv4 or ipv6 address
  */
@@ -3930,7 +3930,7 @@ export function getLocalAddress(): '127.0.0.1' | '::1' {
 }
 
 /**
- * Get the ip to listen to all addresses according to configured DNS resolution strategy
+ * Get the ip to listen to all addresses according to a configured DNS resolution strategy
  */
 export function getListenAllAddress(): '0.0.0.0' | '::' {
     const dnsOrder = getDNSResolutionOrder();
@@ -3947,7 +3947,7 @@ export function ensureDNSOrder(): void {
 }
 
 /**
- * Determine if ioBroker is installed as systemd service
+ * Determine if ioBroker is installed as a systemd service
  */
 export async function isIoBrokerInstalledAsSystemd(): Promise<boolean> {
     try {
@@ -4036,9 +4036,9 @@ export function getPidsFileName(): string {
 }
 
 /**
- * Get all ioBroker process ids
+ * Get all ioBroker process IDs
  *
- * @returns process ids or empty array if no process running
+ * @returns process IDs or empty array if no process running
  */
 export async function getPids(): Promise<number[]> {
     let pids: number[] = [];
@@ -4056,7 +4056,7 @@ export async function getPids(): Promise<number[]> {
 }
 
 /**
- * Check if given string is a valid loglevel
+ * Check if a given string is a valid loglevel
  *
  * @param level level to validate
  */
@@ -4072,6 +4072,174 @@ export function isLogLevel(level: string): level is ioBroker.LogLevel {
 export async function getControllerPid(): Promise<number | undefined> {
     const pids = await getPids();
     return pids.pop();
+}
+
+/**
+ * Check if a process with the given id currently exists
+ *
+ * @param pid process id to check
+ * @returns true if a process with this id is running
+ */
+export function isProcessRunning(pid: number): boolean {
+    // 0 and negative values address process groups instead of a single process and would not
+    // throw below, so a corrupt pids file must not slip through here
+    if (!Number.isInteger(pid) || pid <= 0) {
+        return false;
+    }
+
+    try {
+        // Signal 0 sends nothing, it only performs the existence and permission check
+        process.kill(pid, 0);
+        return true;
+    } catch (e) {
+        // EPERM means the process does exist, it just belongs to another user
+        return e.code === 'EPERM';
+    }
+}
+
+/**
+ * Check if a command line belongs to a js-controller process
+ *
+ * Only the started script counts, not a mere mention of the controller directory, which also shows
+ * up in the command line of the CLI or of tools working on the installation.
+ *
+ * @param commandLine the full command line of the process
+ * @returns true if the command line looks like the controller
+ */
+function isControllerCommandLine(commandLine: string): boolean {
+    const command = commandLine.toLowerCase();
+    return (
+        // On POSIX the title the running controller gives itself replaces the command line
+        command.startsWith(`${appNameLowerCase}.js-controller`) ||
+        // "node <path>/controller.js", as started by the CLI, the service or the installer
+        /(^|[\s"'/\\])controller\.js(["'\s]|$)/.test(command) ||
+        // The entry point started directly
+        /[/\\](iobroker\.js-controller|controller)[/\\]build[/\\](esm|cjs)[/\\]main\.js/.test(command)
+    );
+}
+
+/**
+ * Check if a pid is proven to belong to a program which is not the controller
+ *
+ * After a reboot the operating system may hand a recorded pid to an unrelated program, which
+ * Windows in particular does readily, so a live pid alone does not prove the controller is
+ * running. Being a Node.js process proves nothing either - Node-RED, zigbee2mqtt or this very CLI
+ * are Node.js processes too - so the command line has to identify the controller. This only
+ * reports a foreign program when it could actually be identified as one: whenever the process
+ * cannot be inspected, the answer is "no", because acting on a wrong guess would start a second
+ * controller and both would then fail with EADDRINUSE.
+ *
+ * @param pid process id to inspect
+ * @returns true only if the process was identified as a different program
+ */
+export async function isForeignProcess(pid: number): Promise<boolean> {
+    // Only a plain positive integer may become part of the PowerShell command below
+    if (!Number.isInteger(pid) || pid <= 0) {
+        return false;
+    }
+
+    // The stale pid may even have been handed to the process asking right now
+    if (pid === process.pid) {
+        return true;
+    }
+
+    try {
+        if (os.platform() === 'win32') {
+            // tasklist only knows the image name, which is node.exe for every Node.js program
+            const { stdout } = await execFileAsync(
+                'powershell.exe',
+                [
+                    '-NoProfile',
+                    '-NonInteractive',
+                    '-Command',
+                    `[Console]::OutputEncoding = [Text.Encoding]::UTF8; Get-CimInstance Win32_Process -Filter 'ProcessId=${pid}' | Select-Object Name, CommandLine | ConvertTo-Json -Compress`,
+                ],
+                // PowerShell needs seconds for its cold start alone, and WMI answers slowly on a
+                // busy machine - exactly the situation this runs in, right after a crash or a
+                // power loss. A timeout is answered with "cannot inspect", which keeps the
+                // controller from starting, so it is better to wait than to give up early.
+                { timeout: 30_000 },
+            );
+            // No output means the process is gone
+            const output = (stdout || '').trim();
+            if (!output) {
+                return false;
+            }
+
+            const { Name, CommandLine } = JSON.parse(output) as { Name?: string; CommandLine?: string | null };
+            if (!Name) {
+                return false;
+            }
+            if (!Name.toLowerCase().startsWith('node')) {
+                return true;
+            }
+
+            // Without elevation the command line of another user's process is not readable
+            return CommandLine ? !isControllerCommandLine(CommandLine) : false;
+        }
+
+        // Unlike comm, args is not truncated and shows the title the controller gives itself
+        const { stdout } = await execFileAsync('ps', ['-p', String(pid), '-o', 'args='], { timeout: 10_000 });
+        const commandLine = (stdout || '').trim();
+
+        if (!commandLine) {
+            return false;
+        }
+
+        return !isControllerCommandLine(commandLine);
+    } catch (e) {
+        // Could not inspect the process - assume it is the controller. Say so, because otherwise a machine
+        // where the lookup cannot run at all - no PowerShell, no WMI service, a timeout - keeps answering
+        // "Controller is already running with pid ..." without a hint that nothing was ever checked.
+        console.warn(`Cannot inspect process ${pid}, assuming it belongs to the controller: ${e.message}`);
+        return false;
+    }
+}
+
+/** A resource type ends up as the last segment of `system.host.<name>.usedResources.<type>`, so it has to be a plain identifier */
+const RESOURCE_TYPE_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
+
+/**
+ * Check that a value can be used as a resource type of the used-resources registry.
+ *
+ * `UsedResourceDataMap` is intentionally open for module augmentation, so unknown type names are accepted as
+ * long as they are usable as a state id segment. What this rejects is a missing, non-string or otherwise
+ * malformed type, which would create a `system.host.<name>.usedResources.undefined` state that the host would
+ * read back as a real resource type on its next start.
+ *
+ * @param type the value to check
+ */
+export function isValidUsedResourceType(type: unknown): type is ioBroker.UsedResourceType {
+    return typeof type === 'string' && RESOURCE_TYPE_PATTERN.test(type);
+}
+
+/**
+ * Check that a value has the shape of an entry of the used-resources registry.
+ *
+ * Lives here rather than in the host, because both ends need it: the host when it reads the states back into
+ * its registry, and an adapter when it reads them to show what is occupied. The states are declared read-only,
+ * but nothing stops anything from writing them, so neither side should hand their content on unchecked.
+ *
+ * The host additionally validates the payload against the rules of its resource type, which are its own.
+ *
+ * @param entry the value to check
+ */
+export function hasRegisteredResourceShape(entry: unknown): entry is ioBroker.RegisteredResource {
+    if (typeof entry !== 'object' || entry === null) {
+        return false;
+    }
+    const candidate = entry as Partial<ioBroker.RegisteredResource>;
+
+    return (
+        isValidUsedResourceType(candidate.type) &&
+        typeof candidate.instance === 'string' &&
+        !!candidate.instance &&
+        typeof candidate.ts === 'number' &&
+        typeof candidate.isBlocked === 'boolean' &&
+        typeof candidate.data === 'object' &&
+        candidate.data !== null &&
+        !Array.isArray(candidate.data)
+    );
 }
 
 export * from '@/lib/common/maybeCallback.js';

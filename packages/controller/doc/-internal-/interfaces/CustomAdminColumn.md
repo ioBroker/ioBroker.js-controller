@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,45 +6,39 @@
 
 # Interface: CustomAdminColumn
 
+Defined in: [types-dev/objects.d.ts:631](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L631)
+
 ## Properties
 
 ### align?
 
-> `optional` **align**: `"left"` \| `"center"` \| `"right"`
+> `optional` **align?**: `"left"` \| `"center"` \| `"right"`
 
-#### Defined in
-
-[types-dev/objects.d.ts:597](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L597)
+Defined in: [types-dev/objects.d.ts:638](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L638)
 
 ***
 
 ### edit?
 
-> `optional` **edit**: `boolean`
+> `optional` **edit?**: `boolean`
 
-#### Defined in
-
-[types-dev/objects.d.ts:595](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L595)
+Defined in: [types-dev/objects.d.ts:636](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L636)
 
 ***
 
 ### name?
 
-> `optional` **name**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
+> `optional` **name?**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
-#### Defined in
-
-[types-dev/objects.d.ts:592](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L592)
+Defined in: [types-dev/objects.d.ts:633](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L633)
 
 ***
 
 ### objTypes?
 
-> `optional` **objTypes**: [`ObjectType`](../type-aliases/ObjectType.md) \| [`ObjectType`](../type-aliases/ObjectType.md)[]
+> `optional` **objTypes?**: [`ObjectType`](../type-aliases/ObjectType.md) \| [`ObjectType`](../type-aliases/ObjectType.md)[]
 
-#### Defined in
-
-[types-dev/objects.d.ts:593](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L593)
+Defined in: [types-dev/objects.d.ts:634](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L634)
 
 ***
 
@@ -52,26 +46,20 @@
 
 > **path**: `string`
 
-#### Defined in
-
-[types-dev/objects.d.ts:591](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L591)
+Defined in: [types-dev/objects.d.ts:632](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L632)
 
 ***
 
 ### type?
 
-> `optional` **type**: [`CommonType`](../type-aliases/CommonType.md)
+> `optional` **type?**: [`CommonType`](../type-aliases/CommonType.md)
 
-#### Defined in
-
-[types-dev/objects.d.ts:596](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L596)
+Defined in: [types-dev/objects.d.ts:637](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L637)
 
 ***
 
 ### width?
 
-> `optional` **width**: `number`
+> `optional` **width?**: `number`
 
-#### Defined in
-
-[types-dev/objects.d.ts:594](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L594)
+Defined in: [types-dev/objects.d.ts:635](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L635)

@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](README.md)
 
 ***
 

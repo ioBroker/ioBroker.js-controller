@@ -1,12 +1,16 @@
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import { tools } from '@iobroker/js-controller-common';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'node:util';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import { randomBytes } from 'node:crypto';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import { dbConnectAsync } from '@/lib/setup/dbConnection.js';
 
+/** Options for the vendor command */
 export interface CLIVendorOptions {
+    /** The objects database client */
     objects: ObjectsRedisClient;
 }
 
@@ -98,9 +102,15 @@ interface iobVendorFile {
 
 const VENDOR_FILE = '/etc/iob-vendor.json';
 
+/**
+ * CLI command to apply vendor-specific customizations from the vendor file
+ */
 export class Vendor {
     private readonly objects: ObjectsRedisClient;
 
+    /**
+     * @param options The objects database client
+     */
     constructor(options: CLIVendorOptions) {
         this.objects = options.objects;
     }
@@ -131,7 +141,7 @@ export class Vendor {
      * @param file file path if not given, default path is used
      * @param password vendor password
      * @param javascriptPassword vendor JavaScript password
-     * @param logger
+     * @param logger Logger used to report progress and errors
      */
     async checkVendor(
         file: string | undefined,
@@ -391,5 +401,34 @@ export class Vendor {
 
         // restart ioBroker
         return true;
+    }
+}
+
+/**
+ * @param options The process command options
+ */
+export async function processCommandVendor(options: ProcessCommandOptions): Promise<void> {
+    const { args, params, callback } = options;
+
+    const password = args[0];
+    const file = args[1];
+    const javascriptPassword = args[2];
+    if (!password) {
+        console.warn(
+            `Please specify the password to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`,
+        );
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+
+    const { objects } = await dbConnectAsync(false, params);
+    const vendor = new Vendor({ objects });
+
+    try {
+        await vendor.checkVendor(file, password, javascriptPassword);
+        console.log(`Synchronised vendor information.`);
+        return void callback();
+    } catch (err) {
+        console.error(`Cannot update vendor information: ${err.message}`);
+        return void callback(EXIT_CODES.CANNOT_UPDATE_VENDOR);
     }
 }

@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,47 +6,49 @@
 
 # Class: StateRedisClient
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:50
+
+Client for the states database backed by Redis (or the in-memory redis-protocol server)
+
 ## Constructors
 
-### new StateRedisClient()
+### Constructor
 
-> **new StateRedisClient**(`settings`): [`StateRedisClient`](StateRedisClient.md)
+> **new StateRedisClient**(`settings`): `StateRedisClient`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:76
 
 #### Parameters
 
-• **settings**: [`StatesSettings`](../interfaces/StatesSettings.md)
+##### settings
+
+[`StatesSettings`](../interfaces/StatesSettings.md)
+
+Settings for the states client including connection and namespaces
 
 #### Returns
 
-[`StateRedisClient`](StateRedisClient.md)
-
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:55
-
-## Properties
-
-### namespaceMsg
-
-> **namespaceMsg**: `string`
-
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:36
+`StateRedisClient`
 
 ## Methods
 
 ### \_destroyDBHelper()
 
-> **\_destroyDBHelper**(`keys`, `callback`?): `Promise`\<`void`\>
+> **\_destroyDBHelper**(`keys`, `callback?`): `Promise`\<`void`\>
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:153
 
 #### Parameters
 
-• **keys**: `string`[]
+##### keys
+
+`string`[]
 
 array of keys which will be deleted from db
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+##### callback?
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
 function to be executed after keys have been deleted
 
@@ -54,15 +56,13 @@ function to be executed after keys have been deleted
 
 `Promise`\<`void`\>
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:90
-
 ***
 
 ### \_determineProtocolVersion()
 
 > **\_determineProtocolVersion**(): `Promise`\<`void`\>
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:81
 
 Checks if we are allowed to start and sets the protocol version accordingly
 
@@ -70,43 +70,69 @@ Checks if we are allowed to start and sets the protocol version accordingly
 
 `Promise`\<`void`\>
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:60
-
 ***
 
 ### connectDb()
 
 > **connectDb**(): `void`
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:85
+
+Connect to the states database and set up the change and message subscriptions
+
 #### Returns
 
 `void`
-
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:61
 
 ***
 
 ### delState()
 
-> **delState**(`id`, `callback`?): `Promise`\<`undefined` \| `string` \| `void`\>
+#### Call Signature
 
-#### Parameters
+> **delState**(`id`): `Promise`\<`string` \| `undefined`\>
 
-• **id**: `string`
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:171
 
-• **callback?**: [`DeleteStateCallback`](../type-aliases/DeleteStateCallback.md)
+Delete a state and publish the deletion
 
-#### Returns
+##### Parameters
 
-`Promise`\<`undefined` \| `string` \| `void`\>
+###### id
 
-#### Defined in
+`string`
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:96
+The id of the state to delete
+
+##### Returns
+
+`Promise`\<`string` \| `undefined`\>
+
+#### Call Signature
+
+> **delState**(`id`, `callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:178
+
+Delete a state and publish the deletion
+
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the state to delete
+
+###### callback
+
+[`DeleteStateCallback`](../type-aliases/DeleteStateCallback.md)
+
+Callback called with the deleted id
+
+##### Returns
+
+`void`
 
 ***
 
@@ -114,255 +140,369 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:96
 
 > **destroy**(): `Promise`\<`void`\>
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:165
+
+Destructor of the class. Called when shutting down to close the redis connections.
+
 #### Returns
 
 `Promise`\<`void`\>
-
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:95
 
 ***
 
 ### destroyDB()
 
-> **destroyDB**(`callback`?): `Promise`\<`void`\>
+#### Call Signature
 
-#### Parameters
+> **destroyDB**(): `Promise`\<`void`\>
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:157
 
-cb function to be executed after DB has been destroyed
+Destroy (delete) all states in the database
 
-#### Returns
+##### Returns
 
 `Promise`\<`void`\>
 
-#### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:94
+> **destroyDB**(`callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:161
+
+##### Parameters
+
+###### callback
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
+
+cb function to be executed after DB has been destroyed
+
+##### Returns
+
+`void`
 
 ***
 
 ### destroySession()
 
-> **destroySession**(`id`, `callback`?): `Promise`\<`void`\>
+#### Call Signature
 
-#### Parameters
+> **destroySession**(`id`): `Promise`\<`void`\>
 
-• **id**: `string`
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:387
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+Destroy (delete) a session by its id
 
-#### Returns
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the session to destroy
+
+##### Returns
 
 `Promise`\<`void`\>
 
-#### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:121
+> **destroySession**(`id`, `callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:394
+
+Destroy (delete) a session by its id
+
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the session to destroy
+
+###### callback
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
+
+callback function
+
+##### Returns
+
+`void`
 
 ***
 
 ### getKeys()
 
-#### getKeys(pattern, callback, dontModify)
+#### Call Signature
 
-> **getKeys**(`pattern`, `callback`?, `dontModify`?): `Promise`\<`undefined` \| `string`[]\>
+> **getKeys**(`pattern`, `callback?`, `dontModify?`): `Promise`\<`string`[] \| `undefined`\>
 
-##### Parameters
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:186
 
-• **pattern**: `string`
-
-• **callback?**: `undefined`
-
-• **dontModify?**: `boolean`
-
-##### Returns
-
-`Promise`\<`undefined` \| `string`[]\>
-
-##### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:97
-
-#### getKeys(pattern, callback, dontModify)
-
-> **getKeys**(`pattern`, `callback`, `dontModify`?): `Promise`\<`void`\>
+Get all state ids matching the given pattern
 
 ##### Parameters
 
-• **pattern**: `string`
+###### pattern
 
-• **callback**: [`GetKeysCallback`](../type-aliases/GetKeysCallback.md)
+`string`
 
-• **dontModify?**: `boolean`
+The pattern to match state ids against
+
+###### callback?
+
+`undefined`
+
+Optional callback, leave out and use the promise return type
+
+###### dontModify?
+
+`boolean`
+
+If true, the returned keys are not stripped of the namespace
 
 ##### Returns
 
-`Promise`\<`void`\>
+`Promise`\<`string`[] \| `undefined`\>
 
-##### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:98
+> **getKeys**(`pattern`, `callback`, `dontModify?`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:194
+
+Get all state ids matching the given pattern
+
+##### Parameters
+
+###### pattern
+
+`string`
+
+The pattern to match state ids against
+
+###### callback
+
+[`GetKeysCallback`](../type-aliases/GetKeysCallback.md)
+
+Callback called with the matching keys
+
+###### dontModify?
+
+`boolean`
+
+If true, the returned keys are not stripped of the namespace
+
+##### Returns
+
+`void`
 
 ***
 
 ### getProtocolVersion()
 
-> **getProtocolVersion**(): `Promise`\<`null` \| `string`\>
+> **getProtocolVersion**(): `Promise`\<`string` \| `null`\>
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:399
 
 Returns the protocol version from DB
 
 #### Returns
 
-`Promise`\<`null` \| `string`\>
-
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:126
+`Promise`\<`string` \| `null`\>
 
 ***
 
 ### getSession()
 
-> **getSession**(`id`, `callback`): `Promise`\<`null` \| `void` \| `Record`\<`string`, `any`\>\>
+#### Call Signature
 
-#### Parameters
+> **getSession**(`id`): `Promise`\<[`Session`](../type-aliases/Session.md) \| `null`\>
 
-• **id**: `string`
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:357
 
-• **callback**
+Get a stored session by its id
 
-#### Returns
+##### Parameters
 
-`Promise`\<`null` \| `void` \| `Record`\<`string`, `any`\>\>
+###### id
 
-#### Defined in
+`string`
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:119
+The id of the session to read
+
+##### Returns
+
+`Promise`\<[`Session`](../type-aliases/Session.md) \| `null`\>
+
+#### Call Signature
+
+> **getSession**(`id`, `callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:364
+
+Get a stored session by its id
+
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the session to read
+
+###### callback
+
+(`err`, `session?`) => `void`
+
+Called with the session object, or null if not found
+
+##### Returns
+
+`void`
 
 ***
 
 ### getState()
 
-#### getState(id)
+#### Call Signature
 
 > **getState**(`id`): [`GetStatePromise`](../type-aliases/GetStatePromise.md)
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:119
+
+Get state from database
+
 ##### Parameters
 
-• **id**: `string`
+###### id
+
+`string`
+
+id of the state
 
 ##### Returns
 
 [`GetStatePromise`](../type-aliases/GetStatePromise.md)
 
-##### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:75
+> **getState**(`id`, `callback`): `void`
 
-#### getState(id, callback)
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:126
 
-> **getState**(`id`, `callback`?): `Promise`\<`undefined` \| `null` \| `void` \| [`State`](../interfaces/State.md)\>
+Get state from database
 
 ##### Parameters
 
-• **id**: `string`
+###### id
 
-• **callback?**
+`string`
+
+id of the state
+
+###### callback
+
+(`err`, `state?`) => `void`
+
+optional callback, leave out and use promise return type
 
 ##### Returns
 
-`Promise`\<`undefined` \| `null` \| `void` \| [`State`](../interfaces/State.md)\>
-
-##### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:76
+`void`
 
 ***
 
 ### getStateAsync()
 
-> **getStateAsync**(`id`): `Promise`\<`undefined` \| `null` \| `void` \| [`State`](../interfaces/State.md)\>
+> **getStateAsync**(`id`): `Promise`\<`void` \| [`State`](../interfaces/State.md) \| `null` \| `undefined`\>
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:132
 
 Promise-version of getState
 
 #### Parameters
 
-• **id**: `string`
+##### id
+
+`string`
+
+id of the state to get
 
 #### Returns
 
-`Promise`\<`undefined` \| `null` \| `void` \| [`State`](../interfaces/State.md)\>
-
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:82
+`Promise`\<`void` \| [`State`](../interfaces/State.md) \| `null` \| `undefined`\>
 
 ***
 
 ### getStates()
 
-#### getStates(keys, callback, dontModify)
+#### Call Signature
 
-> **getStates**(`keys`, `callback`?, `dontModify`?): `Promise`\<(`null` \| [`State`](../interfaces/State.md))[]\>
+> **getStates**(`keys`, `callback?`, `dontModify?`): `Promise`\<([`State`](../interfaces/State.md) \| `null`)[]\>
 
-##### Parameters
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:140
 
-• **keys**: `string`[]
-
-• **callback?**: `undefined`
-
-• **dontModify?**: `boolean`
-
-##### Returns
-
-`Promise`\<(`null` \| [`State`](../interfaces/State.md))[]\>
-
-##### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:83
-
-#### getStates(keys, callback, dontModify)
-
-> **getStates**(`keys`, `callback`, `dontModify`?): `Promise`\<`void`\>
+Get the values of multiple states
 
 ##### Parameters
 
-• **keys**: `string`[]
+###### keys
 
-• **callback**
+`string`[]
 
-• **dontModify?**: `boolean`
+The ids of the states to read
+
+###### callback?
+
+`undefined`
+
+Optional callback, leave out and use the promise return type
+
+###### dontModify?
+
+`boolean`
+
+If true, the returned states are not cloned/modified
 
 ##### Returns
 
-`Promise`\<`void`\>
+`Promise`\<([`State`](../interfaces/State.md) \| `null`)[]\>
 
-##### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:84
+> **getStates**(`keys`, `callback`, `dontModify?`): `void`
 
-#### getStates(keys, callback, dontModify)
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:148
 
-> **getStates**(`keys`, `callback`, `dontModify`?): `Promise`\<`void`\>
+Get the values of multiple states
 
 ##### Parameters
 
-• **keys**: `string`[]
+###### keys
 
-• **callback**
+`string`[]
 
-• **dontModify?**: `boolean`
+The ids of the states to read
+
+###### callback
+
+(`err`, `states?`) => `void`
+
+Callback called with the read states
+
+###### dontModify?
+
+`boolean`
+
+If true, the returned states are not cloned/modified
 
 ##### Returns
 
-`Promise`\<`void`\>
-
-##### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:85
+`void`
 
 ***
 
@@ -370,35 +510,75 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:85
 
 > **getStatus**(): [`DbStatus`](../interfaces/DbStatus.md)
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:89
+
+Get the current status of the database
+
 #### Returns
 
 [`DbStatus`](../interfaces/DbStatus.md)
-
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:62
 
 ***
 
 ### pushLog()
 
-> **pushLog**(`id`, `log`, `callback`?): `Promise`\<`string` \| `void`\>
+#### Call Signature
 
-#### Parameters
+> **pushLog**(`id`, `log`): `Promise`\<`string`\>
 
-• **id**: `string`
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:317
 
-• **log**: [`LogMessageInternal`](../type-aliases/LogMessageInternal.md)
+Push a log message to the given log target
 
-• **callback?**
+##### Parameters
 
-#### Returns
+###### id
 
-`Promise`\<`string` \| `void`\>
+`string`
 
-#### Defined in
+The id of the log target
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:116
+###### log
+
+[`LogMessageInternal`](../type-aliases/LogMessageInternal.md)
+
+The log message to push
+
+##### Returns
+
+`Promise`\<`string`\>
+
+#### Call Signature
+
+> **pushLog**(`id`, `log`, `callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:325
+
+Push a log message to the given log target
+
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the log target
+
+###### log
+
+[`LogMessageInternal`](../type-aliases/LogMessageInternal.md)
+
+The log message to push
+
+###### callback
+
+(`err`, `id?`) => `void`
+
+Callback called with the generated log id
+
+##### Returns
+
+`void`
 
 ***
 
@@ -406,19 +586,27 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:116
 
 > **pushMessage**(`id`, `message`): `Promise`\<`void`\>
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:283
+
+Push a message into the message box of the given id
+
 #### Parameters
 
-• **id**: `string`
+##### id
 
-• **message**: [`SendableMessage`](../interfaces/SendableMessage.md)
+`string`
+
+The id of the message box owner
+
+##### message
+
+[`SendableMessage`](../interfaces/SendableMessage.md)
+
+The message to push
 
 #### Returns
 
 `Promise`\<`void`\>
-
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:113
 
 ***
 
@@ -426,11 +614,15 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:113
 
 > **setProtocolVersion**(`version`): `Promise`\<`void`\>
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:405
+
 Sets the protocol version to the DB
 
 #### Parameters
 
-• **version**: `number`
+##### version
+
+`number`
 
 protocol version
 
@@ -438,99 +630,165 @@ protocol version
 
 `Promise`\<`void`\>
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:132
-
 ***
 
 ### setRawState()
 
 > **setRawState**(`id`, `state`): `Promise`\<`string`\>
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:113
+
+Directly set the raw stored value of a state without publishing a change (used for restore, do not call it)
+
 #### Parameters
 
-• **id**: `string`
+##### id
 
-• **state**: [`SettableState`](../type-aliases/SettableState.md)
+`string`
+
+The id of the state to set
+
+##### state
+
+[`SettableState`](../type-aliases/SettableState.md)
+
+The raw state object to store
 
 #### Returns
 
 `Promise`\<`string`\>
-
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:74
 
 ***
 
 ### setSession()
 
-> **setSession**(`id`, `expireS`, `obj`, `callback`?): `Promise`\<`void`\>
+#### Call Signature
 
-#### Parameters
+> **setSession**(`id`, `expireS`, `obj`): `Promise`\<`void`\>
 
-• **id**: `string`
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:372
 
-• **expireS**: `number`
+Create or update a session and set its expiration
 
-• **obj**: `Record`\<`string`, `any`\>
+##### Parameters
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+###### id
 
-#### Returns
+`string`
+
+The id of the session
+
+###### expireS
+
+`number`
+
+Expiration time in seconds from now
+
+###### obj
+
+[`Session`](../type-aliases/Session.md)
+
+The session data to store
+
+##### Returns
 
 `Promise`\<`void`\>
 
-#### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:120
+> **setSession**(`id`, `expireS`, `obj`, `callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:381
+
+Create or update a session and set its expiration
+
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the session
+
+###### expireS
+
+`number`
+
+Expiration time in seconds from now
+
+###### obj
+
+[`Session`](../type-aliases/Session.md)
+
+The session data to store
+
+###### callback
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
+
+callback function
+
+##### Returns
+
+`void`
 
 ***
 
 ### setState()
 
-#### setState(id, state)
+#### Call Signature
 
 > **setState**(`id`, `state`): `Promise`\<`string`\>
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:96
+
+Set the value of a state
+
 ##### Parameters
 
-• **id**: `string`
+###### id
 
-• **state**: [`SettableState`](../type-aliases/SettableState.md) \| [`StateValue`](../type-aliases/StateValue.md)
+`string`
+
+The id of the state to set
+
+###### state
+
+[`SettableState`](../type-aliases/SettableState.md) \| [`StateValue`](../type-aliases/StateValue.md)
+
+The value (or full state object) to set
 
 ##### Returns
 
 `Promise`\<`string`\>
 
-##### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:63
+> **setState**(`id`, `state`, `callback`): `void`
 
-#### setState(id, state, callback)
-
-> **setState**(`id`, `state`, `callback`): `Promise`\<`void`\>
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:98
 
 ##### Parameters
 
-• **id**: `string`
+###### id
 
-• **state**: [`SettableState`](../type-aliases/SettableState.md) \| [`StateValue`](../type-aliases/StateValue.md)
+`string`
 
-• **callback**
+###### state
+
+[`SettableState`](../type-aliases/SettableState.md) \| [`StateValue`](../type-aliases/StateValue.md)
+
+###### callback
+
+(`err`, `id`) => `void`
 
 ##### Returns
 
-`Promise`\<`void`\>
+`void`
 
 ##### Deprecated
 
 migrate to promisified version (without callback)
-
-##### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:65
 
 ***
 
@@ -538,13 +796,23 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:65
 
 > **setStateAsync**(`id`, `state`): `Promise`\<`string`\>
 
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:106
+
 Promise-version of setState
 
 #### Parameters
 
-• **id**: `string`
+##### id
 
-• **state**: [`SettableState`](../type-aliases/SettableState.md) \| [`StateValue`](../type-aliases/StateValue.md)
+`string`
+
+The id of the state to set
+
+##### state
+
+[`SettableState`](../type-aliases/SettableState.md) \| [`StateValue`](../type-aliases/StateValue.md)
+
+The value (or full state object) to set
 
 #### Returns
 
@@ -554,214 +822,518 @@ Promise-version of setState
 
 use version without `Async` postfix
 
-#### Defined in
-
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:73
-
 ***
 
 ### subscribe()
 
-#### subscribe(pattern, callback)
+#### Call Signature
 
-> **subscribe**(`pattern`, `callback`?): `Promise`\<`void`\>
+> **subscribe**(`pattern`): `Promise`\<`void`\>
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:200
+
+Subscribe to state changes matching the given pattern
 
 ##### Parameters
 
-• **pattern**: `string`
+###### pattern
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+`string`
+
+The pattern to subscribe to
 
 ##### Returns
 
 `Promise`\<`void`\>
 
-##### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:99
+> **subscribe**(`pattern`, `callback`): `void`
 
-#### subscribe(pattern, asUser, callback)
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:207
 
-> **subscribe**(`pattern`, `asUser`, `callback`?): `Promise`\<`void`\>
+Subscribe to state changes matching the given pattern
 
 ##### Parameters
 
-• **pattern**: `string`
+###### pattern
 
-• **asUser**: `boolean`
+`string`
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+The pattern to subscribe to
+
+###### callback
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
+
+callback function
+
+##### Returns
+
+`void`
+
+#### Call Signature
+
+> **subscribe**(`pattern`, `asUser`): `Promise`\<`void`\>
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:214
+
+Subscribe to state changes matching the given pattern
+
+##### Parameters
+
+###### pattern
+
+`string`
+
+The pattern to subscribe to
+
+###### asUser
+
+`boolean`
+
+if true it will be subscribed as user
 
 ##### Returns
 
 `Promise`\<`void`\>
 
-##### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:100
+> **subscribe**(`pattern`, `asUser`, `callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:222
+
+Subscribe to state changes matching the given pattern
+
+##### Parameters
+
+###### pattern
+
+`string`
+
+The pattern to subscribe to
+
+###### asUser
+
+`boolean`
+
+if true it will be subscribed as user
+
+###### callback
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
+
+callback function
+
+##### Returns
+
+`void`
 
 ***
 
 ### subscribeLog()
 
-> **subscribeLog**(`id`, `callback`?): `Promise`\<`void`\>
+#### Call Signature
 
-#### Parameters
+> **subscribeLog**(`id`): `Promise`\<`void`\>
 
-• **id**: `string`
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:331
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+Subscribe to log messages of the given id
 
-#### Returns
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the log target to subscribe to
+
+##### Returns
 
 `Promise`\<`void`\>
 
-#### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:117
+> **subscribeLog**(`id`, `callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:338
+
+Subscribe to log messages of the given id
+
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the log target to subscribe to
+
+###### callback
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
+
+callback function
+
+##### Returns
+
+`void`
 
 ***
 
 ### subscribeMessage()
 
-> **subscribeMessage**(`id`, `callback`?): `Promise`\<`void`\>
+#### Call Signature
 
-#### Parameters
+> **subscribeMessage**(`id`): `Promise`\<`void`\>
 
-• **id**: `string`
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:289
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+Subscribe to messages sent to the given id
 
-#### Returns
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the message box to subscribe to
+
+##### Returns
 
 `Promise`\<`void`\>
 
-#### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:114
+> **subscribeMessage**(`id`, `callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:296
+
+Subscribe to messages sent to the given id
+
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the message box to subscribe to
+
+###### callback
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
+
+callback function
+
+##### Returns
+
+`void`
 
 ***
 
 ### subscribeUser()
 
-> **subscribeUser**(`pattern`, `callback`?): `Promise`\<`void`\>
+#### Call Signature
 
-#### Parameters
+> **subscribeUser**(`pattern`): `Promise`\<`void`\>
 
-• **pattern**: `string`
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:228
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+Subscribe to state changes matching the given pattern as a user
 
-callback function (optional)
+##### Parameters
 
-#### Returns
+###### pattern
+
+`string`
+
+The pattern to subscribe to
+
+##### Returns
 
 `Promise`\<`void`\>
 
-#### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:105
+> **subscribeUser**(`pattern`, `callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:235
+
+Subscribe to state changes matching the given pattern as a user
+
+##### Parameters
+
+###### pattern
+
+`string`
+
+The pattern to subscribe to
+
+###### callback
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
+
+callback function
+
+##### Returns
+
+`void`
 
 ***
 
 ### unsubscribe()
 
-#### unsubscribe(pattern, asUser, callback)
+#### Call Signature
 
-> **unsubscribe**(`pattern`, `asUser`, `callback`?): `Promise`\<`void`\>
+> **unsubscribe**(`pattern`): `Promise`\<`void`\>
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:241
+
+Unsubscribe from state changes matching the given pattern
 
 ##### Parameters
 
-• **pattern**: `string`
+###### pattern
 
-• **asUser**: `boolean`
+`string`
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+The pattern to unsubscribe from
 
 ##### Returns
 
 `Promise`\<`void`\>
 
-##### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:106
+> **unsubscribe**(`pattern`, `callback`): `void`
 
-#### unsubscribe(pattern, callback)
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:248
 
-> **unsubscribe**(`pattern`, `callback`?): `Promise`\<`void`\>
+Unsubscribe from state changes matching the given pattern
 
 ##### Parameters
 
-• **pattern**: `string`
+###### pattern
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+`string`
+
+The pattern to unsubscribe from
+
+###### callback
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
+
+callback function
+
+##### Returns
+
+`void`
+
+#### Call Signature
+
+> **unsubscribe**(`pattern`, `asUser`): `Promise`\<`void`\>
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:255
+
+Unsubscribe from state changes matching the given pattern
+
+##### Parameters
+
+###### pattern
+
+`string`
+
+The pattern to unsubscribe from
+
+###### asUser
+
+`boolean`
+
+if true it will be unsubscribed as user
 
 ##### Returns
 
 `Promise`\<`void`\>
 
-##### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:107
+> **unsubscribe**(`pattern`, `asUser`, `callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:263
+
+Unsubscribe from state changes matching the given pattern
+
+##### Parameters
+
+###### pattern
+
+`string`
+
+The pattern to unsubscribe from
+
+###### asUser
+
+`boolean`
+
+if true it will be unsubscribed as user
+
+###### callback
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
+
+callback function
+
+##### Returns
+
+`void`
 
 ***
 
 ### unsubscribeLog()
 
-> **unsubscribeLog**(`id`, `callback`?): `Promise`\<`void`\>
+#### Call Signature
 
-#### Parameters
+> **unsubscribeLog**(`id`): `Promise`\<`void`\>
 
-• **id**: `string`
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:344
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+Unsubscribe from log messages of the given id
 
-#### Returns
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the log target to unsubscribe from
+
+##### Returns
 
 `Promise`\<`void`\>
 
-#### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:118
+> **unsubscribeLog**(`id`, `callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:351
+
+Unsubscribe from log messages of the given id
+
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the log target to unsubscribe from
+
+###### callback
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
+
+callback function
+
+##### Returns
+
+`void`
 
 ***
 
 ### unsubscribeMessage()
 
-> **unsubscribeMessage**(`id`, `callback`?): `Promise`\<`void`\>
+#### Call Signature
 
-#### Parameters
+> **unsubscribeMessage**(`id`): `Promise`\<`void`\>
 
-• **id**: `string`
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:302
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+Unsubscribe from messages sent to the given id
 
-#### Returns
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the message box to unsubscribe from
+
+##### Returns
 
 `Promise`\<`void`\>
 
-#### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:115
+> **unsubscribeMessage**(`id`, `callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:309
+
+Unsubscribe from messages sent to the given id
+
+##### Parameters
+
+###### id
+
+`string`
+
+The id of the message box to unsubscribe from
+
+###### callback
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
+
+callback function
+
+##### Returns
+
+`void`
 
 ***
 
 ### unsubscribeUser()
 
-> **unsubscribeUser**(`pattern`, `callback`?): `Promise`\<`void`\>
+#### Call Signature
 
-#### Parameters
+> **unsubscribeUser**(`pattern`): `Promise`\<`void`\>
 
-• **pattern**: `string`
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:269
 
-• **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
+Unsubscribe from state changes matching the given pattern as a user
 
-callback function (optional)
+##### Parameters
 
-#### Returns
+###### pattern
+
+`string`
+
+The pattern to unsubscribe from
+
+##### Returns
 
 `Promise`\<`void`\>
 
-#### Defined in
+#### Call Signature
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:112
+> **unsubscribeUser**(`pattern`, `callback`): `void`
+
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:276
+
+Unsubscribe from state changes matching the given pattern as a user
+
+##### Parameters
+
+###### pattern
+
+`string`
+
+The pattern to unsubscribe from
+
+###### callback
+
+[`ErrorCallback`](../type-aliases/ErrorCallback.md)
+
+callback function
+
+##### Returns
+
+`void`

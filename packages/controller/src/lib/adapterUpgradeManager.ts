@@ -1,13 +1,14 @@
-import { tools } from '@iobroker/js-controller-common';
 import http from 'node:http';
 import https from 'node:https';
-import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
-import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { setTimeout as wait } from 'node:timers/promises';
-import type { Logger } from 'winston';
-import { Upgrade, type ProcessExitCallback } from '@iobroker/js-controller-cli';
 import type { Socket } from 'node:net';
 import type { Duplex } from 'node:stream';
+import type { Logger } from 'winston';
+
+import { tools } from '@iobroker/js-controller-common';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
+import { Upgrade, type ProcessExitCallback } from '@iobroker/js-controller-cli';
 
 interface Certificates {
     /** Public certificate */
@@ -55,10 +56,13 @@ interface ServerResponse {
     running: boolean;
     stderr: string[];
     stdout: string[];
-    /** if installation process succeeded */
+    /** if the installation process succeeded */
     success?: boolean;
 }
 
+/**
+ * Manages the upgrade of a single adapter, including stopping it and serving a web UI for the upgrade progress
+ */
 export class AdapterUpgradeManager {
     /** Wait ms until adapter is stopped */
     private readonly STOP_TIMEOUT_MS = 3_000;
@@ -76,7 +80,7 @@ export class AdapterUpgradeManager {
     };
     /** Used to stop the stop shutdown timeout */
     private shutdownAbortController?: AbortController;
-    /** Logger to log to file and other transports */
+    /** Logger to log to a file and other transports */
     private readonly logger: Logger;
 
     /** The server used for communicating upgrade status */
@@ -89,9 +93,9 @@ export class AdapterUpgradeManager {
     private readonly objects: ObjectsClient;
     /** The states DB client */
     private readonly states: StatesClient;
-    /** List of instances which have been stopped */
+    /** List of instances that have been stopped */
     private stoppedInstances: string[] = [];
-    /** If webserver should be started with https */
+    /** If a webserver should be started with https */
     private readonly useHttps: boolean;
     /** Public certificate name if https is desired */
     private readonly certPublicName?: string;
@@ -100,6 +104,9 @@ export class AdapterUpgradeManager {
     /** Port where the webserver should be running */
     private readonly port: number;
 
+    /**
+     * @param options Adapter name, target version, logger and webserver options
+     */
     constructor(options: AdapterUpgradeManagerOptions) {
         this.adapterName = options.adapterName;
         this.version = options.version;
@@ -125,7 +132,7 @@ export class AdapterUpgradeManager {
     }
 
     /**
-     * Start all instances which were enabled before the upgrade
+     * Start all instances that were enabled before the upgrade
      */
     async startAdapter(): Promise<void> {
         await this.enableInstances(this.stoppedInstances, true);
@@ -148,12 +155,12 @@ export class AdapterUpgradeManager {
                 ts,
             } as Partial<ioBroker.InstanceObject>;
 
-            await this.objects.extendObjectAsync(instance, updatedObj);
+            await this.objects.extendObject(instance, updatedObj);
         }
     }
 
     /**
-     * Install given version of adapter
+     * Install a given version of the adapter
      */
     async performUpgrade(): Promise<void> {
         const processExitHandler: ProcessExitCallback = exitCode => {
@@ -216,7 +223,7 @@ export class AdapterUpgradeManager {
     }
 
     /**
-     * Destroy all sockets, to prevent requests from keeping server alive
+     * Destroy all sockets to prevent requests from keeping the server alive
      */
     destroySockets(): void {
         for (const socket of this.sockets) {
@@ -351,7 +358,7 @@ export class AdapterUpgradeManager {
     }
 
     /**
-     * Tells the upgrade manager, that server can be shut down on next response or on timeout
+     * Tells the upgrade manager that the server can be shut down on the next response or on timeout
      */
     private async setFinished(): Promise<void> {
         this.response.running = false;
@@ -360,7 +367,7 @@ export class AdapterUpgradeManager {
     }
 
     /**
-     * Start a timeout which starts adapter and shuts down the server if expired
+     * Start a timeout which starts the adapter and shuts down the server if expired
      */
     async startShutdownTimeout(): Promise<void> {
         this.shutdownAbortController = new AbortController();

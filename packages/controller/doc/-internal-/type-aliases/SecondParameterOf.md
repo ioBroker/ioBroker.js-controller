@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,12 +6,12 @@
 
 # Type Alias: SecondParameterOf\<T\>
 
-> **SecondParameterOf**\<`T`\>: `T` *extends* (`arg0`, `arg1`, ...`args`) => `any` ? `R` : `never`
+> **SecondParameterOf**\<`T`\> = `T` *extends* (`arg0`, `arg1`, ...`args`) => `any` ? `R` : `never`
+
+Defined in: [types-dev/index.d.ts:629](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L629)
 
 ## Type Parameters
 
-• **T** *extends* (...`args`) => `any`
+### T
 
-## Defined in
-
-[types-dev/index.d.ts:462](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/index.d.ts#L462)
+`T` *extends* (...`args`) => `any`

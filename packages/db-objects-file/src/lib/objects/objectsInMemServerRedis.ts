@@ -1,0 +1,1122 @@
+/**
+ *      Objects DB in memory - Server with Redis protocol
+ *
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
+ *
+ *      MIT License
+ *
+ */
+
+import net from 'node:net';
+import fs from 'fs-extra';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { objectsUtils as utils } from '@iobroker/db-objects-redis';
+import { tools } from '@iobroker/db-base';
+import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
+import { EXIT_CODES } from '@iobroker/js-controller-common-db';
+
+import { RedisHandler, type ConnectionOptions, type FileDbSettings } from '@iobroker/db-base';
+import { type FileOptions, ObjectsInMemoryFileDB } from './objectsInMemFileDB.js';
+
+// settings = {
+//    change:    function (id, state) {},
+//    connected: function (nameOfServer) {},
+//    logger: {
+//           silly: function (msg) {},
+//           debug: function (msg) {},
+//           info:  function (msg) {},
+//           warn:  function (msg) {},
+//           error: function (msg) {}
+//    },
+//    connection: {
+//           dataDir: 'relative path'
+//    },
+//    auth: null, //unused
+//    secure: true/false,
+//    certificates: as required by createServer
+//    port: 9001,
+//    host: localhost
+// };
+//
+type RedisHandlerInternal = RedisHandler & {
+    _subscribe?: Record<
+        string,
+        {
+            pattern: string;
+            regex: RegExp;
+        }[]
+    >;
+};
+
+/**
+ * This class inherits statesInMemoryFileDB class and adds redis communication layer
+ * to access the methods via redis protocol
+ */
+export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInternal> {
+    private readonly serverConnections: Record<string, RedisHandler> = {};
+    private readonly namespaceObjects: string;
+    private readonly namespaceFile: string;
+    private readonly namespaceObj: string;
+    private readonly namespaceSet: string;
+    private readonly namespaceSetLen: number;
+    private readonly namespaceFileLen: number;
+    private readonly namespaceObjLen: number;
+    private readonly namespaceMeta: string;
+    private readonly namespaceMetaLen: number;
+    private readonly knownScripts: Record<
+        string,
+        { design?: string; search?: string; redlock?: boolean; func?: string }
+    > = {};
+    private readonly normalizeFileRegex1: RegExp;
+    private readonly normalizeFileRegex2: RegExp;
+    private server: net.Server | undefined;
+
+    /**
+     * Constructor
+     *
+     * @param settings State and InMem-DB settings
+     */
+    constructor(settings: FileDbSettings<ioBroker.AnyObject>) {
+        super(settings);
+
+        this.namespaceObjects = `${this.settings.redisNamespace || settings.connection?.redisNamespace || 'cfg'}.`;
+        this.namespaceFile = `${this.namespaceObjects}f.`;
+        this.namespaceObj = `${this.namespaceObjects}o.`;
+        this.namespaceSet = `${this.namespaceObjects}s.`;
+        this.namespaceSetLen = this.namespaceSet.length;
+
+        // this.namespaceObjectsLen   = this.namespaceObjects.length;
+        this.namespaceFileLen = this.namespaceFile.length;
+        this.namespaceObjLen = this.namespaceObj.length;
+        this.namespaceMeta = `${this.settings.namespaceMeta || 'meta'}.`;
+        this.namespaceMetaLen = this.namespaceMeta.length;
+
+        this.normalizeFileRegex1 = new RegExp('^(.*)\\$%\\$(.*)\\$%\\$(meta|data)$');
+        this.normalizeFileRegex2 = new RegExp('^(.*)\\$%\\$(.*)\\/?\\*$');
+
+        this.open()
+            .then(() => this._initRedisServer(this.settings.connection))
+            .then(() => {
+                this.log.debug(
+                    `${this.namespace} ${settings.secure ? 'Secure ' : ''} Redis inMem-objects listening on port ${
+                        (this.settings.connection.port as number) || 9001
+                    }`,
+                );
+
+                if (typeof this.settings.connected === 'function') {
+                    setImmediate(() => this.settings.connected());
+                }
+            })
+            .catch(e => {
+                this.log.error(
+                    `${this.namespace} Cannot start inMem-objects on port ${(this.settings.connection.port as number) || 9001}: ${e.message}`,
+                );
+                process.exit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
+            });
+    }
+
+    /**
+     * Separate Namespace from ID and return both
+     *
+     * @param idWithNamespace ID or Array of IDs containing a redis namespace and the real ID
+     * @returns Object with namespace and the
+     *                                                      ID/Array of IDs without the namespace
+     */
+    _normalizeId(idWithNamespace: string): {
+        id: string | null;
+        namespace: string;
+        name: string;
+        isMeta: boolean | undefined;
+    } {
+        let ns = this.namespaceObjects;
+        let id: string | null = null;
+        let name = '';
+        let isMeta;
+        if (typeof idWithNamespace === 'string') {
+            id = idWithNamespace;
+            if (idWithNamespace.startsWith(this.namespaceObjects)) {
+                let idx = -1;
+                if (idWithNamespace.startsWith(this.namespaceObj)) {
+                    idx = this.namespaceObjLen;
+                } else if (idWithNamespace.startsWith(this.namespaceFile)) {
+                    idx = this.namespaceFileLen;
+                } else if (idWithNamespace.startsWith(this.namespaceSet)) {
+                    idx = this.namespaceSetLen;
+                }
+
+                if (idx !== -1) {
+                    ns = idWithNamespace.substr(0, idx);
+                    id = idWithNamespace.substr(idx);
+                }
+                if (ns === this.namespaceFile) {
+                    let fileIdDetails = id.match(this.normalizeFileRegex1);
+                    if (fileIdDetails) {
+                        id = fileIdDetails[1];
+                        name = fileIdDetails[2] || '';
+                        isMeta = fileIdDetails[3] === 'meta';
+                    } else {
+                        fileIdDetails = id.match(this.normalizeFileRegex2);
+                        if (fileIdDetails) {
+                            id = fileIdDetails[1];
+                            name = fileIdDetails[2] || '';
+                            isMeta = undefined;
+                        } else {
+                            name = '';
+                            isMeta = undefined;
+                        }
+                    }
+                }
+            } else if (idWithNamespace.startsWith(this.namespaceMeta)) {
+                const idx = this.namespaceMetaLen;
+                if (idx !== -1) {
+                    ns = idWithNamespace.substr(0, idx);
+                    id = idWithNamespace.substr(idx);
+                }
+            }
+        }
+        return { id, namespace: ns, name, isMeta };
+    }
+
+    /**
+     * Publish a subscribed value to one of the redis connections in redis format
+     *
+     * @param client Instance of RedisHandler
+     * @param type Type of subscribed key
+     * @param id Subscribed ID
+     * @param obj Object to publish
+     * @returns Publish counter 0 or 1 depending on if send out or not
+     */
+    publishToClients(
+        client: RedisHandlerInternal,
+        type: string,
+        id: string,
+        obj: ioBroker.AnyObject | ioBroker.DesignObject,
+    ): number {
+        if (!client._subscribe?.[type]) {
+            return 0;
+        }
+        const s = client._subscribe[type];
+
+        const found = s.find(sub => sub.regex.test(id));
+
+        if (found) {
+            if (type === 'meta') {
+                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${JSON.stringify(obj)}`);
+                const sendPattern = this.namespaceMeta + found.pattern;
+                const sendId = this.namespaceMeta + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
+            } else if (type === 'files') {
+                const objString = JSON.stringify(obj);
+                this.log.silly(`${this.namespace} Redis Publish File ${id}=${objString}`);
+                const sendPattern = this.namespaceFile + found.pattern;
+                const sendId = this.namespaceFile + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+            } else {
+                const objString = JSON.stringify(obj);
+                this.log.silly(`${this.namespace} Redis Publish Object ${id}=${objString}`);
+                const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + found.pattern;
+                const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+            }
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+     * Generate ID for a File
+     *
+     * @param id ID of the File
+     * @param name Name of the file
+     * @param isMeta generate a META ID or a Data ID?
+     * @returns File-ID
+     */
+    getFileId(id: string, name: string, isMeta?: boolean): string {
+        // e.g. ekey.admin and admin/ekey.png
+        if (id.endsWith('.admin')) {
+            if (name.startsWith('admin/')) {
+                name = name.replace(/^admin\//, '');
+            } else if (name.match(/^iobroker.[-\d\w]\/admin\//i)) {
+                // e.g. ekey.admin and iobroker.ekey/admin/ekey.png
+                name = name.replace(/^iobroker.[-\d\w]\/admin\//i, '');
+            }
+        }
+
+        return `${this.namespaceFile + id}$%$${name}${isMeta !== undefined ? (isMeta ? '$%$meta' : '$%$data') : ''}`;
+    }
+
+    /**
+     * Register all event listeners for Handler and implement the relevant logic
+     *
+     * @param handler RedisHandler instance
+     */
+    _socketEvents(handler: RedisHandler): void {
+        let connectionName: string | null = null;
+        let namespaceLog = this.namespace;
+
+        // Handle Redis "INFO" request
+        handler.on('info', (_data, responseId) => {
+            let infoString = '# Server\r\n';
+            infoString += 'redis_version:3.0.0-iobroker\r\n';
+            infoString += '# Clients\r\n';
+            infoString += '# Memory\r\n';
+            infoString += '# Persistence\r\n';
+            infoString += '# Stats\r\n';
+            infoString += '# Replication\r\n';
+            infoString += '# CPU\r\n';
+            infoString += '# Cluster\r\n';
+            infoString += '# Keyspace\r\n';
+            infoString += `db0:keys=${Object.keys(this.dataset).length},expires=0,avg_ttl=98633637897`;
+            handler.sendBulk(responseId, infoString);
+        });
+
+        // Handle Redis "QUIT" request
+        handler.on('quit', (_data, responseId) => {
+            this.log.silly(`${namespaceLog} Redis QUIT received, close connection`);
+            handler.sendString(responseId, 'OK');
+            handler.close();
+        });
+
+        // Handle Redis "SCRIPT" request
+        handler.on('script', (data: [command: 'exists' | 'load', buffer: string], responseId) => {
+            data[0] = data[0].toLowerCase() as 'exists' | 'load';
+            if (data[0] === 'exists') {
+                data.shift();
+                const scripts: number[] = [];
+                data.forEach((checksum: string) => scripts.push(this.knownScripts[checksum] ? 1 : 0));
+                handler.sendArray(responseId, scripts);
+            } else if (data[0] === 'load') {
+                const shasum = crypto.createHash('sha1');
+                const buf = Buffer.from(data[1]);
+                shasum.update(buf);
+                const scriptChecksum = shasum.digest('hex');
+
+                const scriptDesign = data[1].match(/^-- design: ([a-z0-9A-Z-.]+)\s/m);
+                const scriptFunc = data[1].match(/^-- func: (.+)$/m);
+                if (scriptDesign?.[1]) {
+                    const design = scriptDesign[1];
+                    let search: string | undefined;
+                    const scriptSearch = data[1].match(/^-- search: ([a-z0-9A-Z-.]*)\s/m);
+                    if (scriptSearch?.[1]) {
+                        search = scriptSearch[1];
+                    }
+
+                    this.knownScripts[scriptChecksum] = { design, search };
+                    if (this.settings.connection.enhancedLogging) {
+                        this.log.silly(
+                            `${namespaceLog} Register View LUA Script: ${scriptChecksum} = ${JSON.stringify(
+                                this.knownScripts[scriptChecksum],
+                            )}`,
+                        );
+                    }
+                    handler.sendBulk(responseId, scriptChecksum);
+                } else if (scriptFunc?.[1]) {
+                    this.knownScripts[scriptChecksum] = { func: scriptFunc[1] };
+                    if (this.settings.connection.enhancedLogging) {
+                        this.log.silly(
+                            `${namespaceLog} Register Func LUA Script: ${scriptChecksum} = ${JSON.stringify(
+                                this.knownScripts[scriptChecksum],
+                            )}`,
+                        );
+                    }
+                    handler.sendBulk(responseId, scriptChecksum);
+                } else if (data[1].includes('-- REDLOCK SCRIPT')) {
+                    // redlock scripts are currently not needed for Simulator
+                    this.knownScripts[scriptChecksum] = { redlock: true };
+                    if (this.settings.connection.enhancedLogging) {
+                        this.log.silly(
+                            `${namespaceLog} Register Func LUA Script: ${scriptChecksum} = ${JSON.stringify(
+                                this.knownScripts[scriptChecksum],
+                            )}`,
+                        );
+                    }
+                    handler.sendBulk(responseId, scriptChecksum);
+                } else {
+                    handler.sendError(responseId, new Error(`Unknown LUA script ${data[1]}`));
+                }
+            } else {
+                handler.sendError(responseId, new Error(`Unsupported Script command ${data[0] as string}`));
+            }
+        });
+
+        // Handle Redis "EVALSHA" request
+        handler.on(
+            'evalsha',
+            (
+                data: [
+                    scriptId: string,
+                    ignore: string,
+                    name: string,
+                    startkey: string,
+                    endkey: string,
+                    search: string,
+                ],
+                responseId,
+            ) => {
+                if (!this.knownScripts[data[0]]) {
+                    return void handler.sendError(responseId, new Error(`Unknown Script ${data[0]}`));
+                }
+                if (this.knownScripts[data[0]].design) {
+                    const scriptDesign: string = this.knownScripts[data[0]].design!;
+                    if (typeof data[2] === 'string' && data[2].startsWith(this.namespaceObj) && data.length > 4) {
+                        let scriptSearch = this.knownScripts[data[0]].search;
+                        if (scriptDesign === 'system' && !scriptSearch && data[5]) {
+                            scriptSearch = data[5];
+                        }
+                        if (!scriptSearch) {
+                            scriptSearch = 'state';
+                        }
+                        if (this.settings.connection.enhancedLogging) {
+                            this.log.silly(
+                                `${namespaceLog} Script transformed into getObjectView: design=${scriptDesign}, search=${scriptSearch}`,
+                            );
+                        }
+                        let objs;
+                        try {
+                            objs = this._getObjectView(scriptDesign, scriptSearch, {
+                                startkey: data[3],
+                                endkey: data[4],
+                                include_docs: true,
+                            });
+                        } catch (err) {
+                            return void handler.sendError(
+                                responseId,
+                                new Error(`_getObjectView Error for ${scriptDesign}/${scriptSearch}: ${err.message}`),
+                            );
+                        }
+
+                        const res = objs.rows.map(obj =>
+                            JSON.stringify(this.dataset[(obj.value as ioBroker.AnyObject)._id || obj.id]),
+                        );
+                        handler.sendArray(responseId, res);
+                    }
+                } else if (this.knownScripts[data[0]].func && data.length > 4) {
+                    const scriptFunc = { map: this.knownScripts[data[0]].func!.replace('%1', data[5]) };
+                    if (this.settings.connection.enhancedLogging) {
+                        this.log.silly(`${namespaceLog} Script transformed into _applyView: func=${scriptFunc.map}`);
+                    }
+                    const objs = this._applyView(scriptFunc, {
+                        startkey: data[3],
+                        endkey: data[4],
+                        include_docs: true,
+                    });
+                    const res = objs.rows.map(obj =>
+                        JSON.stringify(this.dataset[(obj.value as ioBroker.AnyObject)._id || obj.id]),
+                    );
+
+                    return void handler.sendArray(responseId, res);
+                } else if (this.knownScripts[data[0]].redlock) {
+                    // just return a dummy
+                    return void handler.sendArray(responseId, [0]);
+                } else {
+                    handler.sendError(responseId, new Error(`Unknown LUA script eval call ${JSON.stringify(data)}`));
+                }
+            },
+        );
+
+        // Handle Redis "PUBLISH" request
+        handler.on('publish', (data: [addr: string, obj: string], responseId) => {
+            const { id, namespace } = this._normalizeId(data[0]);
+
+            if (
+                namespace === this.namespaceObj ||
+                namespace === this.namespaceMeta ||
+                namespace === this.namespaceFile ||
+                !id
+            ) {
+                // a "set" always comes afterwards, so do not publish
+                return void handler.sendInteger(responseId, 0); // do not publish for now
+            }
+            let message;
+
+            try {
+                message = JSON.parse(data[1]);
+            } catch (e) {
+                // The payload comes from a client, so it can be anything. Answering with an error
+                // keeps the connection: this used to throw out of the `setImmediate` that calls
+                // this handler, which is an uncaught exception rather than a failed command, and
+                // cost the client its socket over one bad message.
+                return void handler.sendError(responseId, new Error(`ERROR publish id=${id}: ${(e as Error).message}`));
+            }
+
+            const publishCount = this.publishAll(namespace.substr(0, namespace.length - 1), id, message);
+            handler.sendInteger(responseId, publishCount);
+        });
+
+        // Handle Redis "MGET" requests
+        handler.on('mget', (data: string[], responseId) => {
+            if (!data?.length) {
+                return void handler.sendArray(responseId, []);
+            }
+            const { namespace, isMeta } = this._normalizeId(data[0]);
+
+            if (namespace === this.namespaceObj) {
+                const keys: (string | null)[] = [];
+                data.forEach((dataId: string) => {
+                    const { id, namespace } = this._normalizeId(dataId);
+                    if (namespace !== this.namespaceObj) {
+                        keys.push(null);
+                        this.log.warn(
+                            `${namespaceLog} Got MGET request for non Object-ID in Objects-ID chunk for ${namespace} / ${dataId}`,
+                        );
+                        return;
+                    }
+                    keys.push(id);
+                });
+                let result: (ioBroker.AnyObject | ioBroker.DesignObject | Record<string, string> | undefined)[];
+                try {
+                    result = this._getObjects(keys);
+                } catch (err) {
+                    return void handler.sendError(responseId, new Error(`ERROR _getObjects: ${err.message}`));
+                }
+                const resultObjs = result.map(el => (el ? JSON.stringify(el) : null));
+                handler.sendArray(responseId, resultObjs);
+            } else if (namespace === this.namespaceFile) {
+                // Handle request for Metadata for files
+                if (isMeta) {
+                    const response: (string | null)[] = [];
+                    data.forEach((dataId: string) => {
+                        const { id, namespace, name } = this._normalizeId(dataId);
+                        if (!id || namespace !== this.namespaceFile) {
+                            response.push(null);
+                            this.log.warn(
+                                `${namespaceLog} Got MGET request for non File ID in File-ID chunk for ${dataId}`,
+                            );
+                            return;
+                        }
+                        this._loadFileSettings(id);
+                        if (!this.fileOptions[id] || !this.fileOptions[id][name]) {
+                            response.push(null);
+                            return;
+                        }
+                        const obj: FileOptions = this._clone(this.fileOptions[id][name]);
+                        try {
+                            obj.stats = fs.statSync(path.join(this.objectsDir, id, name));
+                        } catch (err) {
+                            if (!name.endsWith('/_data.json')) {
+                                this.log.warn(
+                                    `${namespaceLog} Got MGET request for non existing file ${dataId}, err: ${err.message}`,
+                                );
+                            }
+                            response.push(null);
+                            return;
+                        }
+                        response.push(JSON.stringify(obj));
+                    });
+                    handler.sendArray(responseId, response);
+                } else {
+                    // Handle request for File data
+                    handler.sendError(responseId, new Error('MGET-UNSUPPORTED for file data'));
+                }
+            } else {
+                handler.sendError(
+                    responseId,
+                    new Error(`MGET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
+                );
+            }
+        });
+
+        // Handle Redis "GET" requests
+        handler.on('get', (data, responseId) => {
+            const { id, namespace, name, isMeta } = this._normalizeId(data[0]);
+
+            if (!id) {
+                handler.sendNull(responseId);
+                return;
+            }
+            if (namespace === this.namespaceObj) {
+                const result = this._getObject(id);
+                if (!result) {
+                    handler.sendNull(responseId);
+                } else {
+                    handler.sendBulk(responseId, JSON.stringify(result));
+                }
+            } else if (namespace === this.namespaceFile) {
+                // Handle request for Metadata for files
+                if (isMeta) {
+                    let stats: fs.Stats;
+                    try {
+                        stats = fs.statSync(path.join(this.objectsDir, id, name));
+                    } catch {
+                        return void handler.sendNull(responseId);
+                    }
+                    if (stats.isDirectory()) {
+                        return void handler.sendBulk(
+                            responseId,
+                            JSON.stringify({
+                                file: name,
+                                stats: {},
+                                isDir: true,
+                            }),
+                        );
+                    }
+                    this._loadFileSettings(id);
+                    if (!this.fileOptions[id] || !this.fileOptions[id][name]) {
+                        return void handler.sendNull(responseId);
+                    }
+
+                    let obj: FileOptions = this._clone(this.fileOptions[id][name]);
+                    if (typeof obj !== 'object') {
+                        obj = {
+                            mimeType: obj,
+                            acl: {
+                                owner: this.defaultNewAcl?.owner || utils.CONSTS.SYSTEM_ADMIN_USER,
+                                ownerGroup: this.defaultNewAcl?.ownerGroup || utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                                permissions:
+                                    this.defaultNewAcl?.file ||
+                                    utils.CONSTS.ACCESS_USER_ALL |
+                                        utils.CONSTS.ACCESS_GROUP_ALL |
+                                        utils.CONSTS.ACCESS_EVERY_ALL, // 777
+                            },
+                            stats,
+                        };
+                    } else {
+                        obj.stats = stats;
+                    }
+                    handler.sendBulk(responseId, JSON.stringify(obj));
+                } else {
+                    // Handle request for File data
+                    let data;
+                    try {
+                        data = this._readFile(id, name);
+                    } catch {
+                        return void handler.sendNull(responseId);
+                    }
+                    if (data.fileContent === undefined || data.fileContent === null) {
+                        return void handler.sendNull(responseId);
+                    }
+                    let fileData = data.fileContent;
+                    if (!Buffer.isBuffer(fileData) && tools.isObject(fileData)) {
+                        // if it's an invalid object, stringify it and log warning
+                        fileData = JSON.stringify(fileData);
+                        this.log.warn(
+                            `${namespaceLog} Data of "${id}/${name}" has invalid structure at file data request: ${fileData}`,
+                        );
+                    }
+                    handler.sendBufBulk(responseId, Buffer.from(fileData));
+                }
+            } else if (namespace === this.namespaceMeta) {
+                // special handling for the primaryHost
+                if (id === 'objects.primaryHost') {
+                    // we are the server -> we are primary
+                    handler.sendString(responseId, this.settings.hostname as string);
+                } else {
+                    const result = this.getMeta(id);
+                    if (result === undefined || result === null) {
+                        handler.sendNull(responseId);
+                    } else {
+                        handler.sendBulk(responseId, result);
+                    }
+                }
+            } else {
+                handler.sendError(
+                    responseId,
+                    new Error(`GET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
+                );
+            }
+        });
+
+        // Handle Redis "SET" requests
+        handler.on('set', (data, responseId) => {
+            const { id, namespace, name, isMeta } = this._normalizeId(data[0]);
+
+            if (!id) {
+                return void handler.sendError(responseId, new Error(`ERROR setObject id=${id}: id is null`));
+            }
+
+            if (namespace === this.namespaceObj) {
+                try {
+                    const obj = JSON.parse(data[1].toString('utf-8'));
+                    this._setObjectDirect(id, obj);
+                } catch (err) {
+                    return void handler.sendError(responseId, new Error(`ERROR setObject id=${id}: ${err.message}`));
+                }
+                handler.sendString(responseId, 'OK');
+            } else if (namespace === this.namespaceFile) {
+                // Handle request to set meta-data, we ignore it because
+                // will be set when data are written
+                if (isMeta) {
+                    this._loadFileSettings(id);
+
+                    try {
+                        fs.ensureDirSync(path.join(this.objectsDir, id, path.dirname(name)));
+
+                        // only set if the meta-object is already/still existing
+                        if (this.fileOptions[id]) {
+                            this.fileOptions[id][name] = JSON.parse(data[1].toString('utf-8'));
+                            fs.writeFileSync(
+                                path.join(this.objectsDir, id, '_data.json'),
+                                JSON.stringify(this.fileOptions[id]),
+                            );
+                        }
+                    } catch (err) {
+                        return void handler.sendError(
+                            responseId,
+                            new Error(`ERROR writeFile-Meta id=${id}: ${err.message}`),
+                        );
+                    }
+                    handler.sendString(responseId, 'OK');
+                } else {
+                    // Handle request to write the file
+                    try {
+                        this._writeFile(id, name, data[1]);
+                    } catch (err) {
+                        return void handler.sendError(
+                            responseId,
+                            new Error(`ERROR writeFile id=${id}: ${err.message}`),
+                        );
+                    }
+                    handler.sendString(responseId, 'OK');
+                }
+            } else if (namespace === this.namespaceMeta) {
+                this.setMeta(id, data[1].toString('utf-8'));
+                handler.sendString(responseId, 'OK');
+            } else {
+                handler.sendError(
+                    responseId,
+                    new Error(`SET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
+                );
+            }
+        });
+
+        // Handle Redis "RENAME" requests
+        handler.on('rename', (data, responseId) => {
+            const oldDetails = this._normalizeId(data[0]);
+            const newDetails = this._normalizeId(data[1]);
+
+            if (!oldDetails.id || !newDetails.id || oldDetails.namespace === this.namespaceFile) {
+                if (!oldDetails.id || !newDetails.id) {
+                    return void handler.sendError(responseId, new Error('ERROR renameObject: id needs to be not null'));
+                }
+                if (oldDetails.id !== newDetails.id) {
+                    return void handler.sendError(
+                        responseId,
+                        new Error('ERROR renameObject: id needs to stay the same'),
+                    );
+                }
+
+                // Handle request for Metadata for files
+                if (oldDetails.isMeta) {
+                    handler.sendString(responseId, 'OK');
+                } else {
+                    // Handle request for File data
+                    try {
+                        this._rename(oldDetails.id, oldDetails.name, newDetails.name);
+                    } catch {
+                        return void handler.sendNull(responseId);
+                    }
+                    handler.sendString(responseId, 'OK');
+                }
+            } else {
+                handler.sendError(
+                    responseId,
+                    new Error(`RENAME-UNSUPPORTED for namespace ${oldDetails.namespace}: Data=${JSON.stringify(data)}`),
+                );
+            }
+        });
+
+        // Handle Redis "DEL" request for state and session namespace
+        handler.on('del', (data, responseId) => {
+            const { id, namespace, name, isMeta } = this._normalizeId(data[0]);
+
+            if (!id) {
+                return void handler.sendError(responseId, new Error('id is null'));
+            }
+            if (namespace === this.namespaceObj) {
+                try {
+                    this._delObject(id);
+                } catch (err) {
+                    return void handler.sendError(responseId, err);
+                }
+                handler.sendInteger(responseId, 1);
+            } else if (namespace === this.namespaceFile) {
+                // Handle request to delete meta-data, we ignore it because
+                // will be removed when data are deleted
+                if (isMeta) {
+                    handler.sendString(responseId, 'OK');
+                } else {
+                    // Handle request to remove the file
+                    try {
+                        this._unlink(id, name);
+                    } catch (err) {
+                        return void handler.sendError(responseId, err);
+                    }
+                    handler.sendString(responseId, 'OK');
+                }
+            } else {
+                handler.sendError(
+                    responseId,
+                    new Error(`DEL-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
+                );
+            }
+        });
+
+        handler.on('exists', (data, responseId) => {
+            if (!data || !data.length) {
+                return void handler.sendInteger(responseId, 0);
+            }
+
+            // Note: we only simulate single key existence check
+            const { id, namespace, name } = this._normalizeId(data[0]);
+            if (!id) {
+                return void handler.sendError(responseId, new Error('id is null'));
+            }
+            if (namespace === this.namespaceObj) {
+                let exists;
+                try {
+                    exists = this._objectExists(id);
+                } catch (e) {
+                    return void handler.sendError(responseId, e);
+                }
+                handler.sendInteger(responseId, exists ? 1 : 0);
+            } else if (namespace === this.namespaceFile) {
+                let exists;
+                try {
+                    exists = this._fileExists(id, name);
+                } catch (e) {
+                    return void handler.sendError(responseId, e);
+                }
+                handler.sendInteger(responseId, exists ? 1 : 0);
+            } else if (namespace === this.namespaceSet) {
+                // we are not using sets in simulator, so just say it exists
+                return void handler.sendInteger(responseId, 1);
+            } else {
+                handler.sendError(responseId, new Error(`EXISTS-UNSUPPORTED for namespace ${namespace}`));
+            }
+        });
+
+        // handle Redis "SCAN" request for objects namespace
+        handler.on('scan', (data, responseId) => {
+            if (!data || data.length < 3) {
+                return void handler.sendArray(responseId, ['0', []]);
+            }
+
+            return this._handleScanOrKeys(handler, data[2], responseId, true);
+        });
+
+        // Handle Redis "KEYS" request for state namespace
+        handler.on('keys', (data, responseId) => {
+            if (!data || !data.length) {
+                return void handler.sendArray(responseId, []);
+            }
+
+            return this._handleScanOrKeys(handler, data[0], responseId);
+        });
+
+        // commands for redis SETS, just dummies
+        handler.on('sadd', (data, responseId) => {
+            return void handler.sendInteger(responseId, 1);
+        });
+
+        handler.on('srem', (data, responseId) => {
+            return void handler.sendInteger(responseId, 1);
+        });
+
+        handler.on('eval', (data, responseId) => {
+            return void handler.sendNull(responseId);
+        });
+
+        handler.on('sscan', (data, responseId) => {
+            // for file DB it does the same as scan but data looks different
+            if (!data || data.length < 4) {
+                return void handler.sendArray(responseId, ['0', []]);
+            }
+
+            return this._handleScanOrKeys(handler, data[3], responseId, true);
+        });
+
+        // Handle Redis "PSUBSCRIBE" request for state, log and session namespace
+        handler.on('psubscribe', (data, responseId) => {
+            const { id, namespace, name } = this._normalizeId(data[0]);
+            if (!id) {
+                return void handler.sendError(responseId, new Error('id is null'));
+            }
+            if (namespace === this.namespaceObj) {
+                this._subscribeConfigForClient(handler, id);
+                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+            } else if (namespace === this.namespaceMeta) {
+                this._subscribeMeta(handler, id);
+                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+            } else if (namespace === this.namespaceFile) {
+                this._subscribeFileForClient(handler, id, name);
+                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+            } else {
+                handler.sendError(
+                    responseId,
+                    new Error(`PSUBSCRIBE-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
+                );
+            }
+        });
+
+        // Handle Redis "UNSUBSCRIBE" request for state, log and session namespace
+        handler.on('punsubscribe', (data, responseId) => {
+            const { id, namespace, name } = this._normalizeId(data[0]);
+            if (!id) {
+                return void handler.sendError(responseId, new Error('id is null'));
+            }
+            if (namespace === this.namespaceObj) {
+                this._unsubscribeConfigForClient(handler, id);
+                handler.sendArray(responseId, ['punsubscribe', data[0], 1]);
+            } else if (namespace === this.namespaceFile) {
+                this._unsubscribeFileForClient(handler, id, name);
+                handler.sendArray(responseId, ['punsubscribe', data[0], 1]);
+            } else {
+                handler.sendError(
+                    responseId,
+                    new Error(`PUNSUBSCRIBE-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
+                );
+            }
+        });
+
+        // Handle Redis "SUBSCRIBE" ... currently mainly ignored
+        handler.on('subscribe', (data, responseId) => {
+            if (data[0].startsWith('__keyevent@')) {
+                // we ignore these type of events because we publish expires anyway directly
+                handler.sendArray(responseId, ['subscribe', data[0], 1]);
+            } else {
+                handler.sendError(responseId, new Error(`SUBSCRIBE-UNSUPPORTED for ${data[0]}`));
+            }
+        });
+
+        // Handle Redis "CONFIG" ... currently mainly ignored
+        handler.on('config', (data, responseId) => {
+            const command = typeof data[0] === 'string' ? data[0].toLowerCase() : data[0].toString().toLowerCase();
+            if (command === 'set' && data[1] === 'notify-keyspace-events') {
+                // we ignore these type of commands for now, should only be to subscribe to keyspace events
+                handler.sendString(responseId, 'OK');
+            } else if (command === 'set' && data[1] === 'lua-time-limit') {
+                // we ignore these type of commands for now, irrelevant
+                handler.sendString(responseId, 'OK');
+            } else {
+                handler.sendError(responseId, new Error(`CONFIG-UNSUPPORTED for ${JSON.stringify(data)}`));
+            }
+        });
+
+        // handle client SETNAME/GETNAME
+        handler.on('client', (data, responseId) => {
+            if (data[0] === 'setname' && typeof data[1] === 'string') {
+                if (data[1] === '') {
+                    // on empty string redis sets null again and sends 'OK'
+                    connectionName = null;
+                } else {
+                    connectionName = data[1];
+                    namespaceLog = connectionName;
+                }
+                handler.sendString(responseId, 'OK');
+            } else if (data[0] === 'getname') {
+                if (typeof connectionName === 'string' && connectionName !== '') {
+                    handler.sendString(responseId, connectionName);
+                } else {
+                    // redis sends null if no name defined
+                    handler.sendNull(responseId);
+                }
+            } else if (typeof data[0] === 'string' && data[0].toLowerCase() === 'setinfo') {
+                // ioredis >= 5.8 announces its lib-name/lib-ver via CLIENT SETINFO on connect.
+                // Real Redis (>= 7.2) replies OK, so acknowledge it to stay compatible.
+                handler.sendString(responseId, 'OK');
+            } else {
+                handler.sendError(responseId, new Error(`CLIENT-UNSUPPORTED for ${JSON.stringify(data)}`));
+            }
+        });
+
+        handler.on('error', err => this.log.warn(`${namespaceLog} Redis objects: ${err}`));
+    }
+
+    /**
+     * Return connected RedisHandlers/Connections
+     *
+     * @returns the currently connected RedisHandlers/Connections
+     */
+    getClients(): Record<string, RedisHandler> {
+        return this.serverConnections;
+    }
+
+    /**
+     * Destructor of the class. Called by shutting down.
+     */
+    async destroy(): Promise<void> {
+        if (this.server) {
+            Object.keys(this.serverConnections).forEach(s => {
+                this.serverConnections[s].close();
+                delete this.serverConnections[s];
+            });
+
+            await new Promise<void>(resolve => {
+                if (!this.server) {
+                    return void resolve();
+                }
+                try {
+                    this.server.close(() => resolve());
+                } catch (e) {
+                    console.log((e as Error).message);
+                    resolve();
+                }
+            });
+        }
+
+        await super.destroy();
+    }
+
+    /**
+     * Get keys matching pattern and send it to given responseId, for "SCAN" and "KEYS" - Objects and files supported
+     *
+     * @param handler RedisHandler instance
+     * @param pattern - pattern without namespace prefix
+     * @param responseId - ID where response will be sent to
+     * @param isScan - if used by "SCAN" this flag should be true
+     */
+    _handleScanOrKeys(handler: RedisHandler, pattern: string, responseId: number, isScan = false): void {
+        const { id, namespace, name, isMeta } = this._normalizeId(pattern);
+        // `_normalizeId` returns id === '' for a full-DB enumeration; only `null` means "no id".
+        if (id === null) {
+            return void handler.sendError(responseId, new Error('id is null'));
+        }
+        let response: string[] = [];
+        if (namespace === this.namespaceObj || namespace === this.namespaceObjects) {
+            try {
+                response = this._getKeys(id).map(val => this.namespaceObj + val);
+            } catch (e) {
+                return void handler.sendError(responseId, e);
+            }
+
+            // if "scan", we send the cursor as first argument
+            if (namespace !== this.namespaceObjects) {
+                // When it was not the full DB namespace send out response
+                return void handler.sendArray(responseId, isScan ? ['0', response] : response);
+            }
+        }
+        if (namespace === this.namespaceFile || namespace === this.namespaceObjects) {
+            // Handle request to get metadata keys
+            if (isMeta === undefined) {
+                let res: {
+                    file: string;
+                    stats: { size?: number };
+                    isDir: boolean;
+                    virtualFile?: boolean;
+                    notExists?: boolean;
+                    acl?: {
+                        read?: boolean;
+                        write?: boolean;
+                        owner: ioBroker.ObjectIDs.User;
+                        ownerGroup: ioBroker.ObjectIDs.Group;
+                        permissions: number;
+                    };
+                    modifiedAt?: number | undefined;
+                    createdAt?: undefined | number;
+                }[];
+                try {
+                    res = this._readDir(id, name);
+                    if (!res?.length) {
+                        res = [
+                            {
+                                file: '_data.json',
+                                stats: {},
+                                isDir: false,
+                                virtualFile: true,
+                                notExists: true,
+                            },
+                        ];
+                    }
+                } catch (e) {
+                    if (!e.message.endsWith(utils.ERRORS.ERROR_NOT_FOUND)) {
+                        return void handler.sendError(responseId, new Error(`ERROR readDir id=${id}: ${e.message}`));
+                    }
+                    res = [];
+                }
+                let baseName = name || '';
+                if (baseName.length && !baseName.endsWith('/')) {
+                    baseName += '/';
+                }
+                res.forEach(arr => {
+                    let entryId = id;
+                    if (arr.isDir) {
+                        if (entryId === '' || entryId === '*') {
+                            entryId = arr.file;
+                            arr.file = '_data.json'; // We return a "virtual file" to mark the directory as existing
+                        } else {
+                            arr.file += '/_data.json'; // We return a "virtual file" to mark the directory as existing
+                        }
+                    }
+                    // We need to simulate the Metadata here, so return both
+                    response.push(this.getFileId(entryId, baseName + arr.file, true));
+                    response.push(this.getFileId(entryId, baseName + arr.file, false));
+                });
+                handler.sendArray(responseId, isScan ? ['0', response] : response); // send out file or full db response
+            } else {
+                // such a request should never happen
+                handler.sendArray(responseId, isScan ? ['0', []] : []); // send out file or full db response
+            }
+        } else if (namespace === this.namespaceSet) {
+            handler.sendArray(responseId, isScan ? ['0', []] : []); // send out empty array, we have no sets
+        } else {
+            handler.sendError(
+                responseId,
+                new Error(`${isScan ? 'SCAN' : 'KEYS'}-UNSUPPORTED for namespace ${namespace}: Pattern=${pattern}`),
+            );
+        }
+    }
+
+    /**
+     * Initialize RedisHandler for a new network connection
+     *
+     * @param socket Network socket
+     */
+    _initSocket(socket: net.Socket): void {
+        if (this.settings.connection.enhancedLogging) {
+            this.log.silly(`${this.namespace} Handling new Redis Objects connection`);
+        }
+        const options = {
+            log: this.log,
+            logScope: `${this.settings.namespace || ''} Objects`,
+            handleAsBuffers: true,
+            enhancedLogging: this.settings.connection.enhancedLogging,
+        };
+        const handler = new RedisHandler(socket, options);
+        this._socketEvents(handler);
+
+        this.serverConnections[`${socket.remoteAddress}:${socket.remotePort}`] = handler;
+        socket.on('close', () => {
+            if (this.serverConnections[`${socket.remoteAddress}:${socket.remotePort}`]) {
+                delete this.serverConnections[`${socket.remoteAddress}:${socket.remotePort}`];
+            }
+        });
+    }
+
+    /**
+     * Initialize Redis Server
+     *
+     * @param settings Settings object
+     * @returns a promise that resolves once the Redis server is listening
+     */
+    _initRedisServer(settings: ConnectionOptions): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            if (settings.secure) {
+                reject(new Error('Secure Redis unsupported for File-DB'));
+            }
+            try {
+                this.server = net.createServer();
+                this.server.on('error', err =>
+                    this.log.info(
+                        `${this.namespace} ${settings.secure ? 'Secure ' : ''} Error inMem-objects listening on port ${
+                            (settings.port as number) || 9001
+                        }: ${err}`,
+                    ),
+                );
+                this.server.on('connection', socket => this._initSocket(socket));
+
+                this.server.listen(
+                    (settings.port as number) || 9001,
+                    settings.host === 'localhost'
+                        ? getLocalAddress()
+                        : settings.host
+                          ? (settings.host as string)
+                          : undefined,
+                    () => resolve(),
+                );
+            } catch (err) {
+                reject(err as Error);
+            }
+        });
+    }
+}

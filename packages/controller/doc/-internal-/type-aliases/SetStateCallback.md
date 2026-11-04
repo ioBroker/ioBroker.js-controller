@@ -1,23 +1,25 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
 [@iobroker/js-controller-adapter](../../globals.md) / [\<internal\>](../README.md) / SetStateCallback
 
-# Type Alias: SetStateCallback()
+# Type Alias: SetStateCallback
 
-> **SetStateCallback**: (`err`?, `id`?) => `void`
+> **SetStateCallback** = (`err?`, `id?`) => `void`
+
+Defined in: [types-dev/index.d.ts:650](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L650)
 
 ## Parameters
 
-• **err?**: `Error` \| `null`
+### err?
 
-• **id?**: `string`
+`Error` \| `null`
+
+### id?
+
+`string`
 
 ## Returns
 
 `void`
-
-## Defined in
-
-[types-dev/index.d.ts:483](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/index.d.ts#L483)

@@ -7,23 +7,27 @@
  *
  */
 
-import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
-import fs from 'fs-extra';
 import path from 'node:path';
-import semver from 'semver';
 import child_process from 'node:child_process';
-import axios from 'axios';
 import { URL } from 'node:url';
+import { createRequire } from 'node:module';
+import axios from 'axios';
+import type { CommandResult } from '@alcalzone/pak';
+import fs from 'fs-extra';
+import semver from 'semver';
+
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import { Upload } from '@/lib/setup/setupUpload.js';
 import { PacketManager } from '@/lib/setup/setupPacketManager.js';
 import { getRepository } from '@/lib/setup/utils.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '@/lib/_Types.js';
+import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
 import { IoBrokerError } from '@/lib/setup/customError.js';
-import type { CommandResult } from '@alcalzone/pak';
+import { dbConnect } from '@/lib/setup/dbConnection.js';
+import * as CLITools from '@/lib/cli/cliTools.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
-import { createRequire } from 'node:module';
 
 // eslint-disable-next-line unicorn/prefer-module
 const require = createRequire(import.meta.url || `file://${__filename}`);
@@ -55,10 +59,15 @@ interface NotEmptyErrorOptions extends Omit<NpmInstallOptions, 'isRetry'> {
     result: CommandResult;
 }
 
+/** Options for the install command */
 export interface CLIInstallOptions {
+    /** Parsed CLI parameters */
     params: Record<string, any>;
+    /** The states database client */
     states: StatesRedisClient;
+    /** The objects database client */
     objects: ObjectsRedisClient;
+    /** Callback to exit the process with an exit code */
     processExit: ProcessExitCallback;
 }
 
@@ -69,6 +78,7 @@ interface DownloadPacketReturnObject {
     packetName: string;
 }
 
+/** Options for downloading an adapter packet */
 export interface CLIDownloadPacketOptions {
     /** will stop the db before upgrade ONLY use it for controller upgrade */
     stopDb?: boolean;
@@ -86,6 +96,9 @@ interface CreateInstanceOptions {
     port?: number;
 }
 
+/**
+ * CLI command to install and download adapters and create their instances
+ */
 export class Install {
     private readonly isRootOnUnix: boolean;
     private readonly objects: ObjectsRedisClient;
@@ -96,6 +109,9 @@ export class Install {
     private upload: Upload;
     private packetManager?: PacketManager;
 
+    /**
+     * @param options The states/objects clients, CLI parameters and the process-exit callback
+     */
     constructor(options: CLIInstallOptions) {
         this.isRootOnUnix = typeof process.getuid === 'function' && process.getuid() === 0;
 
@@ -154,7 +170,7 @@ export class Install {
      * @param stoppedList list of stopped instances (as instance objects)
      */
     async downloadPacket(
-        repoUrlOrRepo: string | undefined | Record<string, ioBroker.RepositoryJsonAdapterContent>,
+        repoUrlOrRepo: string | undefined | ioBroker.RepositoryJson,
         packetName: string,
         options?: CLIDownloadPacketOptions,
         stoppedList?: ioBroker.InstanceObject[],
@@ -163,8 +179,8 @@ export class Install {
             options = {};
         }
 
-        stoppedList = stoppedList || [];
-        let sources: Record<string, ioBroker.RepositoryJsonAdapterContent>;
+        stoppedList ||= [];
+        let sources: ioBroker.RepositoryJson;
 
         if (!repoUrlOrRepo || !tools.isObject(repoUrlOrRepo)) {
             sources = await getRepository({ repoName: repoUrlOrRepo, objects: this.objects });
@@ -187,14 +203,14 @@ export class Install {
             version = parts[1];
         } else {
             // always take a version from repository
-            if (sources[packetName]?.version) {
-                version = sources[packetName].version;
+            if ((sources[packetName] as ioBroker.RepositoryJsonAdapterContent)?.version) {
+                version = (sources[packetName] as ioBroker.RepositoryJsonAdapterContent).version;
             } else {
                 version = '';
             }
         }
 
-        const source = sources[packetName];
+        const source = sources[packetName] as ioBroker.RepositoryJsonAdapterContent;
 
         if (!source) {
             const errMessage = `Unknown packet name ${packetName}. Please install packages from outside the repository using "${tools.appNameLowerCase} url <url-or-package>"!`;
@@ -354,7 +370,9 @@ export class Install {
         });
 
         // code 1 is sometimes a real error and sometimes a strange error, where everything is installed but still the error
-        const isSuccess = result.success || (result.exitCode === 1 && !result.stderr.startsWith('npm ERR!'));
+        const isSuccess =
+            result.success ||
+            (result.exitCode === 1 && !result.stderr.startsWith('npm ERR!') && !result.stderr.startsWith('npm error '));
 
         if (isSuccess) {
             // Determine where the packet would be installed if npm succeeds
@@ -418,7 +436,7 @@ export class Install {
 
         const errorFilePath = result.stderr
             .split('\n')
-            ?.find(line => line.startsWith('npm ERR! dest'))
+            ?.find(line => line.startsWith('npm ERR! dest') || line.startsWith('npm error dest'))
             ?.split('dest')[1]
             .trim();
 
@@ -612,7 +630,7 @@ export class Install {
                 obj.ts = Date.now();
 
                 try {
-                    await this.objects.extendObjectAsync(obj._id, obj);
+                    await this.objects.extendObject(obj._id, obj);
                 } catch (err) {
                     console.error(`host.${hostname} error setObject ${obj._id} ${err.message}`);
                     return;
@@ -627,8 +645,8 @@ export class Install {
      * Installs given adapter
      *
      * @param adapter The adapter name
-     * @param repoUrl
-     * @param _installCount
+     * @param repoUrl Optional repository URL to install the adapter from
+     * @param _installCount Internal recursion counter limiting the number of dependency installs
      */
     async installAdapter(adapter: string, repoUrl?: string, _installCount?: number): Promise<string | void> {
         _installCount = _installCount || 0;
@@ -709,6 +727,11 @@ export class Install {
         return adapter;
     }
 
+    /**
+     * Install the OS packages required by an adapter
+     *
+     * @param osDependencies The OS dependencies declared by the adapter, keyed by platform
+     */
     async installOSPackages(osDependencies: NonNullable<ioBroker.AdapterCommon['osDependencies']>): Promise<void> {
         if (osPlatform in osDependencies) {
             try {
@@ -722,6 +745,12 @@ export class Install {
         }
     }
 
+    /**
+     * Run the custom install script of an adapter if it defines one
+     *
+     * @param adapter The adapter name
+     * @param config The adapter object containing the install configuration
+     */
     async callInstallOfAdapter(adapter: string, config: ioBroker.AdapterObject): Promise<string | void> {
         if (config.common.install) {
             // Install node modules
@@ -879,7 +908,7 @@ export class Install {
 
         let objs: ioBroker.StateObject[];
         if (!instanceObj.common.onlyWWW && instanceObj.common.mode !== 'once') {
-            objs = tools.getInstanceIndicatorObjects(`${adapter}.${instance}`);
+            objs = tools.getInstanceIndicatorObjects(`${adapter}.${instance}`, instanceObj.common);
         } else {
             objs = [];
         }
@@ -1012,10 +1041,10 @@ export class Install {
     /**
      * Enumerate all instances of an adapter
      *
-     * @param knownObjIDs
-     * @param notDeleted
-     * @param adapter
-     * @param instance
+     * @param knownObjIDs Accumulator of object IDs found so far
+     * @param notDeleted Accumulator of object IDs that must not be deleted
+     * @param adapter The adapter name
+     * @param instance Optional instance number to restrict the search to
      */
     private async _enumerateAdapterInstances(
         knownObjIDs: string[],
@@ -1080,9 +1109,9 @@ export class Install {
     /**
      * Enumerate all meta objects of an adapter
      *
-     * @param knownObjIDs
-     * @param adapter
-     * @param metaFilesToDelete
+     * @param knownObjIDs Accumulator of object IDs found so far
+     * @param adapter The adapter name
+     * @param metaFilesToDelete Accumulator of meta files that should be deleted
      */
     async _enumerateAdapterMeta(knownObjIDs: string[], adapter: string, metaFilesToDelete: string[]): Promise<void> {
         try {
@@ -1339,9 +1368,9 @@ export class Install {
     /**
      * Enumerate all state IDs of an adapter (or instance)
      *
-     * @param knownStateIDs
-     * @param adapter
-     * @param instance
+     * @param knownStateIDs Accumulator of state IDs found so far
+     * @param adapter The adapter name
+     * @param instance Optional instance number to restrict the search to
      */
     async _enumerateAdapterStates(knownStateIDs: string[], adapter: string, instance?: number): Promise<void> {
         for (const pattern of [
@@ -1372,12 +1401,12 @@ export class Install {
     /**
      * delete WWW pages, objects and meta files
      *
-     * @param adapter
-     * @param metaFilesToDelete
+     * @param adapter The adapter name
+     * @param metaFilesToDelete The meta files that should be deleted
      */
     private async _deleteAdapterFiles(adapter: string, metaFilesToDelete: string[]): Promise<void> {
         // special files, which are not meta (vis widgets), combined with meta object ids
-        const filesToDelete = [
+        const filesToDelete: { id: string; name?: string }[] = [
             { id: 'vis', name: `widgets/${adapter}` },
             { id: 'vis', name: `widgets/${adapter}.html` },
             { id: 'vis-2', name: `widgets/${adapter}` },
@@ -1492,6 +1521,7 @@ export class Install {
 
                 if (!ioPack.common || !ioPack.common.nondeletable) {
                     await this._npmUninstall(adapterNpm, false);
+
                     // after uninstalling, we have to restart the defined adapters
                     if (ioPack.common.restartAdapters) {
                         if (!Array.isArray(ioPack.common.restartAdapters)) {
@@ -1550,6 +1580,7 @@ export class Install {
                 // remove adapter from custom
                 await this._removeCustomFromObjects([adapter]);
                 await _uninstallNpm();
+                await this._removePythonEnvironment(adapter);
             } else {
                 // we are not allowed to delete the last instance if another instance depends on us
                 const dependentInstance = await this._hasDependentInstances(adapter);
@@ -1573,6 +1604,9 @@ export class Install {
                 await this._deleteAdapterFiles(adapter, metaFilesToDelete);
                 await this._deleteAdapterObjects(knownObjectIDs);
                 await this._deleteAdapterStates(knownStateIDs);
+                // this path removes the instance objects itself instead of going through deleteInstance,
+                // so the registry entries of every instance of the adapter have to be freed here as well
+                await this._freeUsedResources(adapter);
 
                 if (this.params.custom) {
                     // remove adapter from custom
@@ -1580,12 +1614,40 @@ export class Install {
                 }
 
                 await _uninstallNpm();
+                await this._removePythonEnvironment(adapter);
             }
         } catch (e) {
             console.error(`There was an error uninstalling ${adapter} on ${hostname}: ${e.message}`);
         }
 
         return resultCode;
+    }
+
+    /**
+     * Remove the virtual environment a Python adapter leaves behind in the data directory
+     *
+     * Host-local state like `node_modules` - rebuildable, but easily a few hundred megabytes - so it goes when
+     * the adapter goes. Deliberately not part of the npm uninstall: that one starts by resolving the adapter's
+     * `io-package.json`, so for a half-removed installation, where the package directory is already gone, it
+     * throws before ever getting here - and that is precisely the case which leaves the environment behind with
+     * nothing pointing at it.
+     *
+     * Removed without looking at `common.platform` for the same reason: the directory only exists for Python
+     * adapters, and the `io-package.json` that would say so may no longer be there.
+     *
+     * @param adapter adapter name, e.g. "pyexample"
+     */
+    private async _removePythonEnvironment(adapter: string): Promise<void> {
+        try {
+            const pythonEnvDir = tools.getPythonEnvDir(adapter);
+
+            if (await fs.pathExists(pythonEnvDir)) {
+                await fs.remove(pythonEnvDir);
+                console.log(`host.${hostname} Python environment "${pythonEnvDir}" deleted`);
+            }
+        } catch (e) {
+            console.error(`Cannot delete the Python environment of ${adapter}: ${e.message}`);
+        }
     }
 
     /**
@@ -1619,9 +1681,94 @@ export class Install {
 
         await this._deleteAdapterObjects(knownObjectIDs);
         await this._deleteAdapterStates(knownStateIDs);
+        await this._freeUsedResources(adapter, instance);
         if (this.params.custom) {
             // delete instance from custom
             await this._removeCustomFromObjects([`${adapter}.${instance}`]);
+        }
+    }
+
+    /**
+     * Free all exclusive resources (serial ports, TCP/UDP ports, ...) the given instance(s) had registered.
+     *
+     * This is needed because an instance can be deleted via the CLI while a js-controller is not running: it
+     * cannot notice that the instance object disappeared, so its `system.host.<host>.usedResources.<type>`
+     * states would keep listing the resources of an instance that no longer exists.
+     *
+     * Hosts that are running are deliberately skipped. Such a host cleans its own registry up when it sees the
+     * instance object being deleted, and it holds the registry in memory: it rewrites the state from that copy
+     * on its next change, which would silently undo a write made here.
+     *
+     * @param adapter adapter name, e.g. "mqtt"
+     * @param instance instance number; if undefined, all instances of the adapter are freed
+     */
+    private async _freeUsedResources(adapter: string, instance?: number): Promise<void> {
+        const matches = (namespace: string): boolean =>
+            instance !== undefined ? namespace === `${adapter}.${instance}` : namespace.startsWith(`${adapter}.`);
+
+        let keys: string[] | null | undefined;
+        try {
+            keys = await this.states.getKeys('system.host.*.usedResources.*');
+        } catch (e) {
+            console.warn(`Cannot read the used resources registry: ${e.message}`);
+            return;
+        }
+        if (!keys?.length) {
+            return;
+        }
+
+        const hostPrefix = 'system.host.';
+        const registryMarker = '.usedResources.';
+        /** whether a host is currently running, queried once per host */
+        const hostIsRunning = new Map<string, boolean>();
+
+        for (const id of keys) {
+            const markerIndex = id.lastIndexOf(registryMarker);
+            if (!id.startsWith(hostPrefix) || markerIndex <= hostPrefix.length) {
+                continue;
+            }
+            const host = id.substring(hostPrefix.length, markerIndex);
+
+            let isRunning = hostIsRunning.get(host);
+            if (isRunning === undefined) {
+                try {
+                    const aliveState = await this.states.getState(`${hostPrefix}${host}.alive`);
+                    isRunning = aliveState?.val === true;
+                } catch (e) {
+                    // if it cannot be determined, assume the host is running: leaving an entry behind is
+                    // harmless (its controller drops it on the next start) while fighting a live controller
+                    // over the same state is not
+                    console.warn(`Cannot check whether host "${host}" is running: ${e.message}`);
+                    isRunning = true;
+                }
+                hostIsRunning.set(host, isRunning);
+            }
+
+            if (isRunning) {
+                continue;
+            }
+
+            try {
+                const state = await this.states.getState(id);
+                if (!state || typeof state.val !== 'string' || !state.val) {
+                    continue;
+                }
+                const parsed: unknown = JSON.parse(state.val);
+                if (!Array.isArray(parsed)) {
+                    continue;
+                }
+                const original = parsed as { instance?: unknown }[];
+                // keep anything that is malformed: it cannot be attributed to the deleted instance, and one
+                // broken entry must not stop the cleanup of the sound ones in the same state
+                const filtered = original.filter(
+                    entry => typeof entry?.instance !== 'string' || !matches(entry.instance),
+                );
+                if (filtered.length !== original.length) {
+                    await this.states.setStateAsync(id, { val: JSON.stringify(filtered), ack: true });
+                }
+            } catch (e) {
+                console.warn(`Cannot free the used resources in "${id}": ${e.message}`);
+            }
         }
     }
 
@@ -1954,5 +2101,205 @@ export class Install {
         }
 
         return instances as ioBroker.InstanceObject[];
+    }
+}
+
+/**
+ * @param options options provided by the processCommand dispatcher
+ */
+export function processCommandUrl(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+
+    let url = args[0];
+    const name = args[1];
+
+    if (!url) {
+        console.log('Please provide a URL to install from and optionally a name of the adapter to install');
+        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+    }
+
+    if (url[0] === '"' && url[url.length - 1] === '"') {
+        url = url.substring(1, url.length - 1);
+    }
+    url = url.trim();
+
+    dbConnect(params, async ({ objects, states }) => {
+        const install = new Install({
+            objects,
+            states,
+            processExit: callback,
+            params,
+        });
+
+        try {
+            await install.installAdapterFromUrl(url, name);
+            return void callback(EXIT_CODES.NO_ERROR);
+        } catch (e) {
+            console.error(`Could not install adapter from url: ${e.message}`);
+            return void callback(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
+        }
+    });
+}
+
+/**
+ * @param options options provided by the processCommand dispatcher
+ */
+export function processCommandInstall(options: ProcessCommandOptions): void {
+    const { command, args, params, callback } = options;
+    const { showHelp } = options.commandOptions;
+
+    let name = args[0];
+    let instance: string | undefined = args[1];
+    let repoUrl: string | undefined = args[2];
+
+    if (parseInt(instance, 10).toString() !== (instance || '').toString()) {
+        repoUrl = instance;
+        instance = undefined;
+    }
+    if (parseInt(repoUrl, 10).toString() === (repoUrl || '').toString()) {
+        const temp = instance;
+        instance = repoUrl;
+        repoUrl = temp;
+    }
+    if (instance && parseInt(instance, 10).toString() === (instance || '').toString()) {
+        params.instance = parseInt(instance, 10);
+    }
+
+    // If user accidentally wrote tools.appName.adapter => remove adapter
+    name = CLITools.normalizeAdapterName(name);
+
+    const parsedName = CLITools.splitAdapterOrInstanceIdentifierWithVersion(name);
+    if (!parsedName) {
+        console.log('Invalid adapter name for install');
+        showHelp();
+        return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+    }
+
+    // split the adapter into its parts if necessary
+    if (parsedName.instance !== null) {
+        params.instance = parsedName.instance;
+    }
+    name = parsedName.name;
+    const installName = parsedName.nameWithVersion;
+
+    const adapterDir = tools.getAdapterDir(name);
+
+    dbConnect(params, async ({ objects, states }) => {
+        const install = new Install({
+            objects,
+            states,
+            processExit: callback,
+            params,
+        });
+
+        if (params.host && params.host !== tools.getHostName()) {
+            // if host argument provided we should check, that host actually exists in mh environment
+            let obj;
+            try {
+                obj = await objects.getObjectAsync(`system.host.${params.host}`);
+            } catch (err) {
+                console.warn(`Could not check existence of host "${params.host}": ${err.message}`);
+            }
+
+            if (!obj) {
+                console.error(`Cannot add instance to non-existing host "${params.host}"`);
+                return void callback(EXIT_CODES.NON_EXISTING_HOST);
+            }
+        }
+
+        if (!adapterDir || !fs.existsSync(adapterDir)) {
+            try {
+                const { stoppedList } = await install.downloadPacket(repoUrl, installName);
+                await install.installAdapter(installName, repoUrl);
+                await install.enableInstances(stoppedList, true); // even if unlikely make sure to re-enable disabled instances
+                if (command !== 'install' && command !== 'i') {
+                    await install.createInstance(name, params);
+                }
+                return void callback();
+            } catch (e) {
+                console.error(`adapter "${name}" cannot be installed: ${e.message}`);
+                return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
+            }
+        } else if (command !== 'install' && command !== 'i') {
+            try {
+                await install.createInstance(name, params);
+                return void callback();
+            } catch (err) {
+                console.error(`adapter "${name}" cannot be installed: ${err.message}`);
+                return void callback(EXIT_CODES.UNKNOWN_ERROR);
+            }
+        } else {
+            console.log(`adapter "${name}" already installed. Use "upgrade" to upgrade to a newer version.`);
+            return void callback(EXIT_CODES.ADAPTER_ALREADY_INSTALLED);
+        }
+    });
+}
+
+/**
+ * @param options options provided by the processCommand dispatcher
+ */
+export function processCommandDelete(options: ProcessCommandOptions): void {
+    const { args, params, callback } = options;
+    const { showHelp } = options.commandOptions;
+
+    let adapter = args[0];
+    let instance = args[1];
+
+    // The adapter argument is required
+    if (!adapter) {
+        showHelp();
+        return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+    }
+    // If the user accidentally wrote <tools.appName>.adapter,
+    // remove <tools.appName> from the adapter name
+    adapter = CLITools.normalizeAdapterName(adapter);
+
+    // Avoid deleting stuff we don't want to delete
+    // e.g. `system.adapter.*`
+    if (!instance) {
+        // Ensure that adapter contains a valid adapter (without instance nr)
+        // or instance (with instance nr) identifier
+        if (!CLITools.validateAdapterOrInstanceIdentifier(adapter)) {
+            showHelp();
+            return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+        }
+        // split the adapter into adapter + instance if necessary
+        if (adapter.indexOf('.') > -1) {
+            [adapter, instance] = adapter.split('.', 2);
+        }
+    } else {
+        // ensure that adapter contains a valid adapter identifier
+        // and the instance is a number
+        if (!CLITools.validateAdapterIdentifier(adapter) || !/^\d+$/.test(instance)) {
+            showHelp();
+            return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+        }
+    }
+
+    if (instance) {
+        dbConnect(params, async ({ objects, states }) => {
+            const install = new Install({
+                objects,
+                states,
+                processExit: callback,
+                params,
+            });
+
+            console.log(`Delete instance "${adapter}.${instance}"`);
+            await install.deleteInstance(adapter, parseInt(instance));
+            callback();
+        });
+    } else {
+        dbConnect(params, async ({ objects, states }) => {
+            const install = new Install({
+                objects,
+                states,
+                processExit: callback,
+                params,
+            });
+            console.log(`Delete adapter "${adapter}"`);
+            const resultCode = await install.deleteAdapter(adapter);
+            callback(resultCode);
+        });
     }
 }

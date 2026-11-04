@@ -1,4 +1,4 @@
-[**@iobroker/js-controller-adapter**](../../README.md) • **Docs**
+[**@iobroker/js-controller-adapter**](../../README.md)
 
 ***
 
@@ -6,17 +6,17 @@
 
 # Interface: MessageRule
 
+Defined in: [types-dev/objects.d.ts:611](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L611)
+
 ## Properties
 
 ### buttons?
 
-> `optional` **buttons**: (`"agree"` \| `"cancel"` \| `"ok"`)[]
+> `optional` **buttons?**: (`"cancel"` \| `"agree"` \| `"ok"`)[]
 
-The buttons which should be shown on the message dialog
+Defined in: [types-dev/objects.d.ts:623](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L623)
 
-#### Defined in
-
-[types-dev/objects.d.ts:582](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L582)
+The buttons that should be shown on the message dialog
 
 ***
 
@@ -24,7 +24,9 @@ The buttons which should be shown on the message dialog
 
 > **condition**: `object`
 
-The condition which needs to be met to display the message
+Defined in: [types-dev/objects.d.ts:625](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L625)
+
+The condition that needs to be met to display the message
 
 #### operand
 
@@ -34,45 +36,35 @@ The condition which needs to be met to display the message
 
 > **rules**: `string`[]
 
-#### Defined in
-
-[types-dev/objects.d.ts:584](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L584)
-
 ***
 
 ### level
 
 > **level**: `"info"` \| `"warn"` \| `"error"`
 
+Defined in: [types-dev/objects.d.ts:621](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L621)
+
 The severity level of the message
-
-#### Defined in
-
-[types-dev/objects.d.ts:580](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L580)
 
 ***
 
 ### link?
 
-> `optional` **link**: `string`
+> `optional` **link?**: `string`
+
+Defined in: [types-dev/objects.d.ts:617](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L617)
 
 Optional link
-
-#### Defined in
-
-[types-dev/objects.d.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L576)
 
 ***
 
 ### linkText?
 
-> `optional` **linkText**: [`Translated`](../type-aliases/Translated.md)
+> `optional` **linkText?**: [`Translated`](../type-aliases/Translated.md)
+
+Defined in: [types-dev/objects.d.ts:619](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L619)
 
 Text of the link
-
-#### Defined in
-
-[types-dev/objects.d.ts:578](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L578)
 
 ***
 
@@ -80,11 +72,9 @@ Text of the link
 
 > **text**: [`Translated`](../type-aliases/Translated.md)
 
+Defined in: [types-dev/objects.d.ts:615](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L615)
+
 The message content
-
-#### Defined in
-
-[types-dev/objects.d.ts:574](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L574)
 
 ***
 
@@ -92,8 +82,6 @@ The message content
 
 > **title**: [`Translated`](../type-aliases/Translated.md)
 
+Defined in: [types-dev/objects.d.ts:613](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L613)
+
 The message title
-
-#### Defined in
-
-[types-dev/objects.d.ts:572](https://github.com/ioBroker/ioBroker.js-controller/blob/d94f6cd4c9c8578765fb6ec827c46b6c6382af9b/packages/types-dev/objects.d.ts#L572)

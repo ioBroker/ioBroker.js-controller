@@ -1,4 +1,7 @@
-export function register(/*it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext*/): void {
+/**
+ * Register the enum tests on the given mocha test function (currently not implemented)
+ */
+export function register(/*it: Mocha.TestFunction, context: TestContext*/): void {
     // getEnum
     // getEnums
     // addChannelToEnum

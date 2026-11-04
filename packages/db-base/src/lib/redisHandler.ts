@@ -58,14 +58,14 @@ type ResponseId = number | null;
 export class RedisHandler extends EventEmitter {
     private readonly socket: Socket;
     private readonly logScope: string;
-    private readonly handleBuffers: boolean;
+    private readonly handleBuffers;
     private readonly options: RedisHandlerOptions;
     private readonly log: InternalLogger;
     private readonly socketId: string;
-    private initialized: boolean;
-    private stop: boolean;
-    private readonly activeMultiCalls: MultiCallElement[];
-    private readonly writeQueue: WriteQueueElement[];
+    private initialized = false;
+    private stop = false;
+    private readonly activeMultiCalls: MultiCallElement[] = [];
+    private readonly writeQueue: WriteQueueElement[] = [];
     private responseId: number = 0;
     private readonly resp: any;
 
@@ -78,7 +78,7 @@ export class RedisHandler extends EventEmitter {
     constructor(socket: Socket, options: RedisHandlerOptions) {
         super();
 
-        options = options || {};
+        options ||= {} as RedisHandlerOptions;
         this.options = options;
         this.log = options.log || console;
         this.logScope = options.logScope || '';
@@ -88,22 +88,17 @@ export class RedisHandler extends EventEmitter {
         this.socket = socket;
 
         this.socketId = `${this.logScope + socket.remoteAddress}:${socket.remotePort}`;
-        this.initialized = false;
-        this.stop = false;
-
-        this.activeMultiCalls = [];
-        this.writeQueue = [];
 
         this.handleBuffers = false;
-        const respOptions: Record<string, any> = {};
+        const respOptions: { bufBulk?: boolean } = {};
         if (options.handleAsBuffers) {
             this.handleBuffers = true;
             respOptions.bufBulk = true;
         }
         this.resp = new Resp(respOptions);
 
-        this.resp.on('error', (err: any) => {
-            this.log.error(`${this.socketId} (Init=${this.initialized}) Redis error:${err}`);
+        this.resp.on('error', (err: Error) => {
+            this.log.error(`${this.socketId} (Init=${this.initialized}) Redis error: ${err}`);
             if (this.initialized) {
                 this.sendError(null, new Error(`PARSER ERROR ${err}`)); // TODO
             } else {
@@ -207,14 +202,27 @@ export class RedisHandler extends EventEmitter {
         }
 
         if (this.listenerCount(command) !== 0) {
-            setImmediate(() => this.emit(command, data, responseId));
+            setImmediate(() => {
+                try {
+                    this.emit(command, data, responseId);
+                } catch (e) {
+                    // A command handler runs inside `setImmediate`, so anything it throws is an
+                    // uncaught exception at the top of the event loop rather than a failed
+                    // command: no reply reaches the client, and the process is at the mercy of
+                    // whatever `uncaughtException` handling it happens to have. Since `data` comes
+                    // off a socket, one client sending something a handler does not expect could
+                    // take the whole database server with it. Answering with an error keeps the
+                    // failure where it belongs -- with the command that caused it.
+                    this.sendError(responseId, e instanceof Error ? e : new Error(String(e)));
+                }
+            });
         } else {
             this.sendError(responseId, new Error(`${command} NOT SUPPORTED`));
         }
     }
 
     /**
-     * Check if the response to a certain command can be send out directly or
+     * Check if the response to a certain command can be sent out directly or
      * if it needs to wait till earlier responses are ready
      *
      * @param responseId ID of the response
@@ -376,14 +384,30 @@ export class RedisHandler extends EventEmitter {
     sendError(responseId: ResponseId, error: Error): void {
         this.log.warn(`${this.socketId} Error from InMemDB: ${error.stack}`);
 
-        for (let i = 0; i < this.activeMultiCalls.length; i++) {
-            if (this.activeMultiCalls[i].responseIds.includes(responseId)) {
-                this._handleMultiResponse(responseId, i, Resp.encodeError(error));
-                return;
-            }
-        }
+        // A RESP error is one line, and `Resp.encodeError` writes the message as it is. Parts of it come from
+        // the client - the id of a command, the payload quoted back by a JSON parser - so a CR or LF in there
+        // would end the frame and turn the rest into what looks like the answer to another command. The client
+        // then reads a truncated error, an answer nobody asked for and finally a fragment that starts with a
+        // byte which is no RESP type, and tears the connection down. That is the failure this is meant to
+        // prevent, so the line stays one line.
+        const singleLine = new Error(error.message.replace(/[\r\n]+/g, ' '));
 
-        this.sendResponse(responseId, Resp.encodeError(error));
+        // This is the last line of defence - it runs from `catch` blocks, which are outside the `try` that
+        // would have caught anything thrown here. Answering twice while a MULTI is open, for instance, lets
+        // `_sendExecResponse` encode a response that was never filled in, and that exception would arrive
+        // uncaught at the top of the event loop: the failure this method exists to avoid.
+        try {
+            for (let i = 0; i < this.activeMultiCalls.length; i++) {
+                if (this.activeMultiCalls[i].responseIds.includes(responseId)) {
+                    this._handleMultiResponse(responseId, i, Resp.encodeError(singleLine));
+                    return;
+                }
+            }
+
+            this.sendResponse(responseId, Resp.encodeError(singleLine));
+        } catch (e) {
+            this.log.warn(`${this.socketId} Cannot send error response: ${e.message}`);
+        }
     }
 
     /**
