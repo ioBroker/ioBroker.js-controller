@@ -59,7 +59,7 @@ export class CLILogs extends CLICommand {
 
             if (!tools.isLogLevel(level)) {
                 console.error(`Unknown log level "${params.level}". Use one of: ${LOG_LEVELS.join(', ')}`);
-                return void this.options.callback(EXIT_CODES.UNKNOWN_ERROR);
+                return void this.options.callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
 
             options.minLevel = level;
