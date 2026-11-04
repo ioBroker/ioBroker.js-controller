@@ -15,7 +15,7 @@
         "@iobroker/db-states-redis": "file:../db-states-redis",
         "@iobroker/js-controller-common": "file:../common",
         "@iobroker/js-controller-common-db": "file:../common-db",
-        "@iobroker/plugin-base": "~3.0.3",
+        "@iobroker/plugin-base": "~4.0.0",
         "deep-clone": "^3.0.3",
         "fs-extra": "^11.3.5",
         "jsonwebtoken": "^9.0.3",
