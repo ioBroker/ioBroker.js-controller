@@ -38,9 +38,7 @@ function createObjects(files: FakeFiles, unreadable: string[] = []): FakeObjects
             if (!entries.size) {
                 return Promise.reject(new Error('Not exists'));
             }
-            return Promise.resolve(
-                [...entries].map(([file, isDir]) => ({ file, isDir }) as unknown as ioBroker.ReadDirResult),
-            );
+            return Promise.resolve([...entries].map(([file, isDir]) => ({ file, isDir })));
         },
         readFile(_id: string, name: string): Promise<{ file: string; mimeType: string }> {
             if (unreadable.includes(name)) {
@@ -121,7 +119,10 @@ describe('zipFiles', () => {
         it('rejects if no file at all could be packed', async () => {
             const { client } = createObjects({ 'widgets/a.txt': 'A' }, ['widgets/a.txt']);
 
-            await assert.rejects(zipFiles.readDirAsZip(client, 'zipfilestest.0', 'widgets'), /Cannot read file "widgets\/a.txt"/);
+            await assert.rejects(
+                zipFiles.readDirAsZip(client, 'zipfilestest.0', 'widgets'),
+                /Cannot read file "widgets\/a.txt"/,
+            );
         });
 
         it('still answers a callback, given in place of the options', async () => {
@@ -141,7 +142,9 @@ describe('zipFiles', () => {
             const { client } = createObjects({ 'widgets/a.txt': 'A' }, ['widgets/a.txt']);
             const errors: (Error | null | undefined)[] = [];
 
-            const result = await zipFiles.readDirAsZip(client, 'zipfilestest.0', 'widgets', {}, err => errors.push(err));
+            const result = await zipFiles.readDirAsZip(client, 'zipfilestest.0', 'widgets', {}, err =>
+                errors.push(err),
+            );
 
             assert.equal(result, undefined);
             assert.equal(errors.length, 1);
@@ -167,7 +170,10 @@ describe('zipFiles', () => {
             const { client, written } = createObjects({});
             const data = await zipObjects({ 'good.json': { type: 'folder', common: {} }, 'bad.json': '{ not json' });
 
-            await assert.rejects(zipFiles.writeObjectsAsZip(client, 'zipfilestest.0', '', data), /Cannot parse "zipfilestest.0.bad"/);
+            await assert.rejects(
+                zipFiles.writeObjectsAsZip(client, 'zipfilestest.0', '', data),
+                /Cannot parse "zipfilestest.0.bad"/,
+            );
             assert.deepEqual(Object.keys(written), ['zipfilestest.0.good']);
         });
 
