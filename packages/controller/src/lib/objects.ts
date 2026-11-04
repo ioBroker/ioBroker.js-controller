@@ -287,6 +287,19 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
     });
 
     objs.push({
+        _id: `${id}.isPrimary`,
+        type: 'state',
+        common: {
+            name: `${hostname} - is primary host`,
+            read: true,
+            write: false,
+            type: 'boolean',
+            role: 'indicator',
+        },
+        native: {},
+    });
+
+    objs.push({
         _id: `${id}.freemem`,
         type: 'state',
         common: {
