@@ -18,6 +18,7 @@ import semver from 'semver';
 
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import { Upload } from '@/lib/setup/setupUpload.js';
+import { type AdapterCompatibilityProblem, checkAdapterCompatibility } from '@/lib/setup/adapterCompatibility.js';
 import { PacketManager } from '@/lib/setup/setupPacketManager.js';
 import { getRepository } from '@/lib/setup/utils.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
@@ -678,40 +679,19 @@ export class Install {
             return this.processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);
         }
 
-        // Check if the operation system is ok
-        if (adapterConf.common && adapterConf.common.os) {
-            if (typeof adapterConf.common.os === 'string' && adapterConf.common.os !== osPlatform) {
-                console.error(
-                    `host.${hostname} Adapter does not support current os. Required ${adapterConf.common.os}. Actual platform: ${osPlatform}`,
-                );
-                return this.processExit(EXIT_CODES.INVALID_OS);
-            } else if (Array.isArray(adapterConf.common.os) && !adapterConf.common.os.includes(osPlatform as any)) {
-                console.error(
-                    `host.${hostname} Adapter does not support current os. Required one of ${adapterConf.common.os.join(
-                        ', ',
-                    )}. Actual platform: ${osPlatform}`,
-                );
-                return this.processExit(EXIT_CODES.INVALID_OS);
-            }
-        }
-
-        let engineVersion;
+        let packageJson: { engines?: { node?: string } } | null = null;
         try {
             // read directly from disk and not via require to allow "on the fly" updates of adapters.
-            const packJson = fs.readJSONSync(path.join(adapterDir, 'package.json'), 'utf8');
-            engineVersion = packJson?.engines?.node;
+            packageJson = await fs.readJSON(path.join(adapterDir, 'package.json'), 'utf8');
         } catch {
             console.error(`host.${hostname}: Cannot read and parse "${adapterDir}/package.json"`);
         }
 
-        // check node.js version if defined in package.json
-        if (engineVersion) {
-            if (!semver.satisfies(process.version.replace(/^v/, ''), engineVersion)) {
-                console.error(
-                    `host.${hostname} Adapter does not support current nodejs version. Required ${engineVersion}. Actual version: ${process.version}`,
-                );
-                return this.processExit(EXIT_CODES.INVALID_NODE_VERSION);
-            }
+        // Check if the operating system and the Node.js version are supported
+        const problem = checkAdapterCompatibility({ ioPackage: adapterConf, packageJson });
+        if (problem) {
+            console.error(`host.${hostname} ${problem.message}`);
+            return this.processExit(problem.exitCode);
         }
 
         if (adapterConf.common.osDependencies) {
@@ -1829,73 +1809,61 @@ export class Install {
     }
 
     /**
-     * Fetch and validate io-package.json from GitHub before installation
+     * Read a JSON file of a GitHub repository at the given commit
      *
-     * @param user GitHub username
-     * @param repo GitHub repository name
-     * @param commit Commit hash or branch name
-     * @returns Object with io-package data if fetched, or null if not available
+     * @param user GitHub user or organization
+     * @param repo repository name
+     * @param commit commit hash, branch or tag
+     * @param fileName file in the root of the repository
+     * @returns the parsed file, or `null` if it cannot be read
      */
-    private async _fetchAndValidateIoPackage(
-        user: string,
-        repo: string,
-        commit: string,
-    ): Promise<ioBroker.AdapterObject | null> {
+    private async _readGitHubJson<T>(user: string, repo: string, commit: string, fileName: string): Promise<T | null> {
         try {
-            // Try to fetch io-package.json from GitHub using the commit hash
-            const ioPackageUrl = `https://raw.githubusercontent.com/${user}/${repo}/${commit}/io-package.json`;
-            const result = await axios(ioPackageUrl, {
-                headers: {
-                    'User-Agent': 'ioBroker Adapter install',
+            const result = await axios(
+                `https://raw.githubusercontent.com/${user}/${repo}/${encodeURIComponent(commit)}/${fileName}`,
+                {
+                    headers: { 'User-Agent': 'ioBroker Adapter install' },
+                    timeout: 10_000,
+                    validateStatus: status => status === 200,
+                    responseType: 'json',
                 },
-                timeout: 10000,
-                validateStatus: status => status === 200,
-            });
-
-            if (result.data && result.data.common) {
-                return result.data as ioBroker.AdapterObject;
-            }
-            return null;
+            );
+            return result.data && typeof result.data === 'object' ? (result.data as T) : null;
         } catch {
-            // Could not fetch io-package.json
             return null;
         }
     }
 
     /**
-     * Perform adapter compatibility checks using io-package data
+     * Check an adapter on GitHub before it is installed from there: `common.nogit`, the operating system and the
+     * Node.js version, from its `io-package.json` and `package.json` at the commit to be installed
      *
-     * @param ioPackage The io-package.json data
-     * @param repoName The repository name for error messages
-     * @returns true if checks pass, false if installation should be blocked
+     * Without these checks the adapter would be installed first and fail later, e.g. because files that only the
+     * npm package contains are missing.
+     *
+     * @param user GitHub user or organization
+     * @param repo repository name
+     * @param commit commit hash, branch or tag; without it the files cannot be read and nothing is checked
+     * @returns the problem that prevents the installation, or `null`
      */
-    private _performAdapterChecks(ioPackage: ioBroker.AdapterObject, repoName: string): boolean {
-        // Check nogit flag
-        if (ioPackage.common.nogit === true) {
-            console.error(
-                `Cannot install adapter from GitHub: The adapter "${repoName}" has set the "nogit" flag which prevents manual installation from GitHub.`,
+    private async _checkGitHubAdapter(
+        user: string,
+        repo: string,
+        commit: string | undefined,
+    ): Promise<AdapterCompatibilityProblem | null> {
+        const [ioPackage, packageJson] = commit
+            ? await Promise.all([
+                  this._readGitHubJson<ioBroker.AdapterObject>(user, repo, commit, 'io-package.json'),
+                  this._readGitHubJson<{ engines?: { node?: string } }>(user, repo, commit, 'package.json'),
+              ])
+            : [null, null];
+        if (!ioPackage?.common) {
+            console.warn(
+                `host.${hostname} Cannot read io-package.json of ${user}/${repo} from GitHub: whether the adapter can be installed from GitHub is not checked`,
             );
-            return false;
+            return null;
         }
-
-        // Check OS compatibility
-        if (ioPackage.common.os) {
-            if (typeof ioPackage.common.os === 'string' && ioPackage.common.os !== osPlatform) {
-                console.error(
-                    `Cannot install adapter from GitHub: Adapter does not support current OS. Required ${ioPackage.common.os}. Actual platform: ${osPlatform}`,
-                );
-                return false;
-            } else if (Array.isArray(ioPackage.common.os) && !ioPackage.common.os.includes(osPlatform as any)) {
-                console.error(
-                    `Cannot install adapter from GitHub: Adapter does not support current OS. Required one of ${ioPackage.common.os.join(
-                        ', ',
-                    )}. Actual platform: ${osPlatform}`,
-                );
-                return false;
-            }
-        }
-
-        return true;
+        return checkAdapterCompatibility({ ioPackage, packageJson, fromGitHub: true });
     }
 
     /**
@@ -1915,9 +1883,8 @@ export class Install {
 
         const debug = process.argv.includes('--debug');
 
-        let githubUser: string | undefined;
-        let githubRepo: string | undefined;
-        let githubCommit: string | undefined;
+        // the GitHub repository and commit to install, to check the adapter before it is installed
+        let github: { user: string; repo: string; commit?: string } | null = null;
 
         if (parsedUrl && parsedUrl.hostname === 'github.com') {
             if (!tools.isGithubPathname(parsedUrl.pathname)) {
@@ -1928,8 +1895,7 @@ export class Install {
             // @ts-expect-error check if type check above is enough
             const { repo, user, commit } = tools.parseGithubPathname(parsedUrl.pathname);
 
-            githubUser = user;
-            githubRepo = repo;
+            github = { user, repo, commit };
 
             if (!commit) {
                 // No commit given, try to get it from the API
@@ -1942,8 +1908,8 @@ export class Install {
                         },
                     });
                     if (result.data && Array.isArray(result.data) && result.data.length >= 1 && result.data[0].sha) {
-                        githubCommit = result.data[0].sha;
-                        url = `${user}/${repo}#${githubCommit}`;
+                        github.commit = result.data[0].sha;
+                        url = `${user}/${repo}#${github.commit}`;
                     } else {
                         console.log(
                             `Info: Can not get current GitHub commit, only remember that we installed from GitHub.`,
@@ -1959,60 +1925,18 @@ export class Install {
                 }
             } else {
                 // We've extracted all we need from the URL
-                githubCommit = commit;
                 url = `${user}/${repo}#${commit}`;
             }
-
-            // Fetch and validate io-package if we have the commit hash
-            if (githubCommit && githubUser && githubRepo) {
-                const ioPackage = await this._fetchAndValidateIoPackage(githubUser, githubRepo, githubCommit);
-
-                if (ioPackage) {
-                    // Perform all adapter compatibility checks
-                    if (!this._performAdapterChecks(ioPackage, githubRepo)) {
-                        return;
-                    }
-                } else {
-                    console.warn(
-                        `Warning: Could not verify adapter compatibility from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
-                    );
-                }
-            } else if (githubUser && githubRepo) {
-                // We have GitHub info but no commit hash, cannot verify compatibility
-                console.warn(
-                    `Warning: Could not determine commit hash from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
-                );
-            }
+        } else {
+            // the short form `user/repo[#commit]`, as npm understands it
+            github = tools.parseShortGithubUrl(url);
         }
 
-        // Also check short GitHub URL format if not already checked
-        if (!githubUser && !githubRepo) {
-            const shortGithubUrlParts = tools.parseShortGithubUrl(url);
-            if (shortGithubUrlParts) {
-                githubUser = shortGithubUrlParts.user;
-                githubRepo = shortGithubUrlParts.repo;
-                githubCommit = shortGithubUrlParts.commit;
-
-                // Fetch and validate io-package if we have the commit hash
-                if (githubCommit && githubUser && githubRepo) {
-                    const ioPackage = await this._fetchAndValidateIoPackage(githubUser, githubRepo, githubCommit);
-
-                    if (ioPackage) {
-                        // Perform all adapter compatibility checks
-                        if (!this._performAdapterChecks(ioPackage, githubRepo)) {
-                            return;
-                        }
-                    } else {
-                        console.warn(
-                            `Warning: Could not verify adapter compatibility from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
-                        );
-                    }
-                } else if (githubUser && githubRepo) {
-                    // We have GitHub info but no commit hash, cannot verify compatibility
-                    console.warn(
-                        `Warning: Could not determine commit hash from GitHub. Installation will proceed but may fail if the adapter does not support GitHub installation.`,
-                    );
-                }
+        if (github) {
+            const problem = await this._checkGitHubAdapter(github.user, github.repo, github.commit);
+            if (problem) {
+                console.error(`host.${hostname} Cannot install ${github.user}/${github.repo}: ${problem.message}`);
+                return this.processExit(problem.exitCode);
             }
         }
 
