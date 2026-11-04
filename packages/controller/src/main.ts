@@ -3360,15 +3360,22 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'readDirAsZip':
             if (msg.callback && msg.from) {
-                zipFiles
-                    .readDirAsZip(objects!, msg.message.id, msg.message.name, msg.message.options, (err, base64) => {
-                        if (base64) {
-                            msg.callback && sendTo(msg.from, msg.command, { error: err, data: base64 }, msg.callback);
-                        } else {
-                            msg.callback && sendTo(msg.from, msg.command, { error: err }, msg.callback);
-                        }
-                    })
-                    .catch(e => logger.error(`${hostLogPrefix} Cannot read dir as zip: ${e.message}`));
+                try {
+                    const base64 = await zipFiles.readDirAsZip(
+                        objects!,
+                        msg.message.id,
+                        msg.message.name,
+                        msg.message.options,
+                    );
+                    if (base64) {
+                        sendTo(msg.from, msg.command, { error: null, data: base64 }, msg.callback);
+                    } else {
+                        sendTo(msg.from, msg.command, { error: null }, msg.callback);
+                    }
+                } catch (e) {
+                    logger.error(`${hostLogPrefix} Cannot read dir as zip: ${e.message}`);
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+                }
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -3445,21 +3452,23 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             }
             break;
 
-        case 'writeObjectsAsZip':
-            zipFiles
-                .writeObjectsAsZip(
+        case 'writeObjectsAsZip': {
+            let error: string | undefined;
+            try {
+                await zipFiles.writeObjectsAsZip(
                     objects!,
                     msg.message.id,
                     msg.message.adapter,
                     Buffer.from(msg.message.data || '', 'base64'),
                     msg.message.options,
-                    err =>
-                        msg.callback &&
-                        msg.from &&
-                        sendTo(msg.from, msg.command, { error: err?.message }, msg.callback),
-                )
-                .catch(e => logger.error(`${hostLogPrefix} Cannot write objects as zip: ${e.message}`));
+                );
+            } catch (e) {
+                error = e.message;
+                logger.error(`${hostLogPrefix} Cannot write objects as zip: ${error}`);
+            }
+            msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback);
             break;
+        }
 
         case 'checkLogging':
             (function () {
