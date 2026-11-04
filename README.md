@@ -862,6 +862,33 @@ All other hosts are configured to connect to this master host.
 
 For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?page_id=3068&lang=de
 
+#### Files on the disk of another host (`iobdisk://`)
+**Feature status:** New in 8.0.0, feature flag `CONTROLLER_DISK_FILES`
+
+A file path like `/opt/iobroker/iobroker-data/telegram_0/video/1.mp4` is only valid on the host where the file is. If an instance passes such a path to an instance on another host (e.g. telegram passes a received video to the assistant), the other instance cannot read it.
+
+An `iobdisk://` URL names the host too:
+
+```
+iobdisk://<host>/<namespace>/<path below the data directory of the instance>
+iobdisk://pi4/telegram.0/video/2026-11-04_10-00-00.mp4
+```
+
+The instance that stores the file builds the URL, the instance that gets it reads it - from the disk if it runs on the same host, otherwise piece by piece (1 MB each, several at the same time) from the js-controller of that host:
+
+```js
+// telegram.0 on host "pi4"
+const url = this.getDiskFileUrl('/opt/iobroker/iobroker-data/telegram_0/video/1.mp4');
+// -> 'iobdisk://pi4/telegram.0/video/1.mp4'
+
+// assistant.0 on any host
+const video = await this.readDiskFile(url); // Buffer
+// or, without holding a big file in memory as a whole:
+this.createDiskFileReadStream(url).pipe(target);
+```
+
+Only files below the data directory of an instance can be addressed: `iobroker-data/<namespace>` as `utils.getAbsoluteInstanceDataDir()` of adapter-core gives it, or the older `iobroker-data/<adapter>_<instance>`. Paths with `..` and symbolic links leading out of that directory are refused, so no other file of the host can be read this way. The host with the file needs js-controller 8.0 or newer; `readDiskFile` reports an error if it is older or not running.
+
 ### TIERS: Start instances in an ordered manner
 **Feature status:** Technology preview (since 3.3.0)
 
@@ -1221,6 +1248,21 @@ With such a setup, ioBroker will connect to one of these sentinel processes to g
 
 #### writeBaseSettings
 ... TODO
+
+#### readDiskFile
+Hands out one piece of a file below the data directory of an instance on this host - how `adapter.readDiskFile()` reads an `iobdisk://` URL of another host (see [Files on the disk of another host](#files-on-the-disk-of-another-host-iobdisk)). Supported if the host reports the feature `CONTROLLER_DISK_FILES`.
+
+```js
+const answer = await sendToHostAsync('system.host.pi4', 'readDiskFile', {
+    namespace: 'telegram.0',
+    path: 'video/1.mp4', // below iobroker-data/telegram.0 or iobroker-data/telegram_0
+    offset: 0, // optional, default 0
+    length: 1048576, // optional, default 1 MB, at most 4 MB
+});
+// { size: 52428800, mtime: 1793612345000, offset: 0, data: '<base64>' } or { error: '...' }
+```
+
+`data` is empty when `offset` is at or behind the end of the file. A different `size` or `mtime` in a later answer means that the file changed while it was read.
 
 ### Adapter Development
 **Feature status:** Stable

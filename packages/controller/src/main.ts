@@ -79,6 +79,7 @@ import {
     readDockerApiSource,
     resolveDockerPlugin,
 } from '@/lib/checkDocker.js';
+import { type DiskFileChunk, readDiskFileChunk } from '@/lib/diskFiles.js';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
 // eslint-disable-next-line unicorn/prefer-module
@@ -3939,6 +3940,21 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     });
                 } catch (e) {
                     logger.debug(`${hostLogPrefix} Cannot check Docker: ${e.message}`);
+                    answer = { error: e.message };
+                }
+                sendTo(msg.from, msg.command, answer, msg.callback);
+            }
+            break;
+
+        case 'readDiskFile':
+            // One piece of a file below the data directory of an instance on this host - how an instance on another
+            // host reads an `iobdisk://` URL, e.g. a video that telegram stored here
+            if (msg.callback && msg.from) {
+                let answer: DiskFileChunk | { error: string };
+                try {
+                    answer = await readDiskFileChunk(msg.message);
+                } catch (e) {
+                    logger.debug(`${hostLogPrefix} Cannot read disk file for ${msg.from}: ${e.message}`);
                     answer = { error: e.message };
                 }
                 sendTo(msg.from, msg.command, answer, msg.callback);
