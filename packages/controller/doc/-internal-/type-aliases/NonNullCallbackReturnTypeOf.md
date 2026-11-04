@@ -8,7 +8,7 @@
 
 > **NonNullCallbackReturnTypeOf**\<`T`\> = `Exclude`\<[`SecondParameterOf`](SecondParameterOf.md)\<`T`\>, `null` \| `undefined`\>
 
-Defined in: [types-dev/index.d.ts:635](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/types-dev/index.d.ts#L635)
+Defined in: [types-dev/index.d.ts:637](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L637)
 
 Infers the return type from a callback-style API and strips out null and undefined
 

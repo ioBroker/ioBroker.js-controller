@@ -81,7 +81,9 @@ declare global {
             | 'CONTROLLER_CMD_EXEC_FILES'
             | 'CONTROLLER_FEATURE_REQUEST'
             | 'CONTROLLER_USED_RESOURCES'
-            | 'CONTROLLER_PYTHON_ADAPTERS';
+            | 'CONTROLLER_PYTHON_ADAPTERS'
+            | 'CONTROLLER_REPOSITORY_COMPACT'
+            | 'CONTROLLER_CHECK_DOCKER';
 
         // #region Used resources
         // ---------------------------------------------------------------------------------------------------
