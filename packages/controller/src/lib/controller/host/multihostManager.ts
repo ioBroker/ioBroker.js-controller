@@ -1,4 +1,5 @@
 import os from 'node:os';
+import { setTimeout as wait } from 'node:timers/promises';
 import fs from 'fs-extra';
 import { isLocalObjectsDbServer, isLocalStatesDbServer, tools } from '@iobroker/js-controller-common';
 import { SYSTEM_CONFIG_ID } from '@iobroker/js-controller-common-db/constants';
@@ -6,6 +7,7 @@ import { MHServer } from '@/lib/multihostServer.js';
 import { getConfig } from '@/lib/controller/config.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { ControllerLogger } from '@/lib/controller/types.js';
+import type { HostPairing } from '@/lib/controller/host/hostPairing.js';
 
 /** Stop the temporarily activated multihost discovery server after this time */
 const TEMPORARY_MULTIHOST_LIFETIME = 15 * 60_000;
@@ -22,6 +24,10 @@ export interface MultihostManagerOptions {
     hostname: string;
     /** If this controller is a compact group controller, those never run a discovery server */
     isCompactGroupController: boolean;
+    /** Decides whether this host may be attached to a master, and does it */
+    pairing: HostPairing;
+    /** Restarts the controller, after this host joined a master */
+    restartSelf: () => Promise<void>;
 }
 
 /**
@@ -33,6 +39,8 @@ export class MultihostManager {
     readonly #hostLogPrefix: string;
     readonly #hostname: string;
     readonly #isCompactGroupController: boolean;
+    readonly #pairing: HostPairing;
+    readonly #restartSelf: () => Promise<void>;
 
     /** The running multihost discovery server */
     #mhService: MHServer | null = null;
@@ -48,6 +56,8 @@ export class MultihostManager {
         this.#hostLogPrefix = options.hostLogPrefix;
         this.#hostname = options.hostname;
         this.#isCompactGroupController = options.isCompactGroupController;
+        this.#pairing = options.pairing;
+        this.#restartSelf = options.restartSelf;
     }
 
     /**
@@ -55,8 +65,10 @@ export class MultihostManager {
      *
      * @param config Configuration from iobroker.json
      * @param secret MultiHost communication password
+     * @param pairingOnly Only listen for pairing commands; `browse` is then answered with the hostname, the static
+     *     info and the uuid, never with the database configuration
      */
-    #startServer(config: ioBroker.IoBrokerJson, secret: string | false): void {
+    #startServer(config: ioBroker.IoBrokerJson, secret: string | false, pairingOnly = false): void {
         const cpus = os.cpus();
 
         this.#mhService = new MHServer(
@@ -72,6 +84,47 @@ export class MultihostManager {
                 ostype: os.type(),
             },
             secret,
+            {
+                pairingOnly,
+                isUnclaimed: () => this.#pairing.isUnclaimed(),
+                getUuid: () => this.#pairing.uuid,
+                onJoin: async (masterIp: string, password: string) => {
+                    const result = await this.#pairing.join(masterIp, password);
+                    if (result.result) {
+                        // the answer of the command has left already, give the log a moment
+                        await wait(1_000);
+                        await this.#restartSelf();
+                    }
+                    return result;
+                },
+            },
+        );
+    }
+
+    /**
+     * Listen for the pairing commands of a master, if this host offers itself for pairing
+     *
+     * Multihost is switched off here, but without a states database connection the `join` command
+     * over UDP 50005 is the only way for a master to attach this host. Only with
+     * `multihostService.pairing: true`, which the ready-made images set: burn it, boot it, and an
+     * existing system can offer to attach it - without a shell, a screen or anything to confirm on the
+     * new host. A join switches the flag off again.
+     *
+     * @param config Configuration from iobroker.json
+     */
+    async #startPairingListener(config: ioBroker.IoBrokerJson): Promise<void> {
+        if (!this.#pairing.isPairingEnabled(config)) {
+            return;
+        }
+
+        // a remote database means this host already belongs to a system
+        if (!(await isLocalObjectsDbServer(config.objects.type, config.objects.host))) {
+            return;
+        }
+
+        this.#startServer(config, false, true);
+        this.#logger.info(
+            `${this.#hostLogPrefix} Multihost pairing listener started: a master can attach this host (multihostService.pairing)`,
         );
     }
 
@@ -96,7 +149,15 @@ export class MultihostManager {
 
         const _config = __config || getConfig();
 
+        // `updateMultihost` re-reads iobroker.json, so the pairing flag may have changed as well
+        try {
+            await this.#pairing.setPairingEnabled(this.#pairing.isPairingEnabled(_config));
+        } catch (e) {
+            logger.warn(`${hostLogPrefix} Cannot update the host announcement: ${e.message}`);
+        }
+
         if (!_config.multihostService?.enabled) {
+            let result: boolean | undefined;
             if (this.#mhService) {
                 try {
                     this.#mhService.close();
@@ -104,9 +165,11 @@ export class MultihostManager {
                 } catch (e) {
                     logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e.message}`);
                 }
-                return false;
+                result = false;
             }
-            return;
+            // not "the multihost service is on", which is what the answer to `updateMultihost` reports
+            await this.#startPairingListener(_config);
+            return result;
         }
 
         if (this.#mhService) {

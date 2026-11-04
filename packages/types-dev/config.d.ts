@@ -182,6 +182,13 @@ export interface IoBJson {
         secure: boolean;
         password: string;
         persist: boolean;
+        /**
+         * Whether this host offers itself to be attached to a master: it announces itself via mDNS and
+         * accepts the `join` command of a master over UDP 50005. Off when absent - ready-made images
+         * switch it on, because only the image knows that a device is fresh. Switched off again by the
+         * join, and without effect once the host uses a remote database.
+         */
+        pairing?: boolean;
     };
     /** Configuration of the objects database */
     objects: ObjectsDatabaseOptions;

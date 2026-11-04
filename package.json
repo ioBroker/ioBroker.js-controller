@@ -85,6 +85,7 @@
         "test-redis-sentinel": "mocha packages/controller/test/redis-sentinel/*.ts --exit",
         "test-types-check": "tsc --project packages/controller/tsconfig.check.json",
         "test-types": "npm run test-types-check && npm run test --workspace=@iobroker/types",
-        "test-adapter": "npm run test --workspace=@iobroker/js-controller-adapter"
+        "test-adapter": "npm run test --workspace=@iobroker/js-controller-adapter",
+        "test-common": "npm run test-unit --workspace=@iobroker/js-controller-common"
     }
 }

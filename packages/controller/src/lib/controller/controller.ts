@@ -42,6 +42,7 @@ import { HostMetaManager } from '@/lib/controller/host/hostMetaManager.js';
 import { HostStatusReporter } from '@/lib/controller/host/hostStatusReporter.js';
 import { IpManager } from '@/lib/controller/host/ipManager.js';
 import { MultihostManager } from '@/lib/controller/host/multihostManager.js';
+import { HostPairing } from '@/lib/controller/host/hostPairing.js';
 import { SystemChecks } from '@/lib/controller/host/systemChecks.js';
 import type { ControllerLogger, RepoRequester, UploadTask } from '@/lib/controller/types.js';
 
@@ -127,6 +128,7 @@ export class Controller {
     #systemChecks?: SystemChecks;
     /** Starts and stops the multihost discovery server */
     #multihost?: MultihostManager;
+    #pairing?: HostPairing;
     /** What the routing of an incoming state change is called with */
     #stateChangeDeps?: StateChangeRouterDeps;
     /** Handles the plugins of this host */
@@ -274,9 +276,22 @@ export class Controller {
             ...identity,
         });
 
+        this.#pairing = new HostPairing({
+            objects,
+            states,
+            config: this.#config,
+            statistics: this.#statistics,
+            state: this.#state,
+            version: this.#version,
+            isCompactGroupController: this.#isCompactGroupController,
+            ...identity,
+        });
+
         this.#multihost = new MultihostManager({
             objects,
             isCompactGroupController: this.#isCompactGroupController,
+            pairing: this.#pairing,
+            restartSelf: () => this.#restartSelf(),
             logger: this.#logger,
             hostLogPrefix: this.#hostLogPrefix,
             hostname: this.#hostname,
@@ -373,6 +388,14 @@ export class Controller {
                 messages,
                 multihost: this.#multihost,
                 uptimeStart: this.#uptimeStart,
+                logger,
+                hostLogPrefix,
+            },
+            multihost: {
+                objects,
+                messages,
+                pairing: this.#pairing,
+                restartSelf: () => this.#restartSelf(),
                 logger,
                 hostLogPrefix,
             },
@@ -691,6 +714,8 @@ export class Controller {
                 await this.#hostMeta!.checkHost();
                 await this.#multihost!.startMultihost(this.#config);
                 await this.#hostMeta!.setMeta();
+                // after setMeta, because the UUID which is announced is created there
+                await this.#pairing!.start();
                 await this.#instances!.usedResources.load();
                 this.#state.setStarted(true);
                 await this.#instances!.getInstances();
@@ -801,6 +826,9 @@ export class Controller {
      */
     async stop(force = false, exitProcess = true): Promise<void> {
         this.#multihost?.close();
+        this.#pairing
+            ?.close()
+            .catch(e => this.#logger.warn(`${this.#hostLogPrefix} Cannot stop the host discovery: ${e.message}`));
 
         if (this.#primaryHostInterval) {
             clearInterval(this.#primaryHostInterval);

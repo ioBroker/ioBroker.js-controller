@@ -1,6 +1,7 @@
 import { createFileCommands, type FileCommandsDeps } from '@/lib/controller/messages/commands/files.js';
 import { createInfoCommands, type InfoCommandsDeps } from '@/lib/controller/messages/commands/info.js';
 import { createLogCommands, type LogCommandsDeps } from '@/lib/controller/messages/commands/logs.js';
+import { createMultihostCommands, type MultihostCommandsDeps } from '@/lib/controller/messages/commands/multihost.js';
 import {
     createNotificationCommands,
     type NotificationCommandsDeps,
@@ -28,6 +29,8 @@ export interface HostCommandGroupDeps {
     info: InfoCommandsDeps;
     /** What the commands for the log files need */
     logs: LogCommandsDeps;
+    /** What the commands for finding and attaching other hosts need */
+    multihost: MultihostCommandsDeps;
     /** What the commands for the notifications need */
     notifications: NotificationCommandsDeps;
     /** What the commands for the adapter repositories need */
@@ -57,6 +60,7 @@ export function createHostCommands(deps: HostCommandGroupDeps): Record<string, H
         ...createInfoCommands(deps.info),
         ...createFileCommands(deps.files),
         ...createSettingsCommands(deps.settings),
+        ...createMultihostCommands(deps.multihost),
         ...createNotificationCommands(deps.notifications),
         ...createRepositoryCommands(deps.repository),
         ...createResourceCommands(deps.resources),

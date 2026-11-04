@@ -124,10 +124,11 @@ const writeBaseSettings: HostCommand<SettingsCommandsDeps> = (deps, msg) => {
  * @param deps What this group of commands needs
  * @param msg The received message
  */
-const updateMultihost: HostCommand<SettingsCommandsDeps> = (deps, msg) => {
+const updateMultihost: HostCommand<SettingsCommandsDeps> = async (deps, msg) => {
     const { multihost, messages } = deps;
 
-    const result = multihost.startMultihost();
+    // `true` when the multihost service runs, `false` when it was stopped or cannot run
+    const result = await multihost.startMultihost();
 
     if (msg.callback) {
         messages.sendTo(msg.from, msg.command, { result: result }, msg.callback);
