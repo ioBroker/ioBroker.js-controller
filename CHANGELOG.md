@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@copilot) `iobroker url <github>` now checks the adapter before it is installed, with its `io-package.json` and `package.json` from GitHub: an adapter with `common.nogit` is refused, as are a not supported operating system (`common.os`) and Node.js version (`engines.node`). So far it was installed and failed later, e.g. because files that only its npm package contains were missing
 * (@copilot) Fixed the misleading "Adapter dependency not fulfilled on any host" message of a global dependency: it now names the host whose instance has the wrong version, or says that the required adapter is not installed on any host
 * (@GermanBluefox) Added the host discovery and pairing: a host with `multihostService.pairing: true` in `iobroker.json` - the ready-made images set it, a normal installation does not - announces itself via mDNS (optional dependency `bonjour-service`) and can be attached from the Admin of an existing system, without a shell on the new host. The new host messages `multihostBrowse`, `multihostPair` (`join`, `decline`, `identify`) and `multihostConnect` find the hosts, attach or decline them; a master only listens for the announcements once its Admin asks. A join stores the databases of the master, keeps the first `iobroker.json` as `iobroker.json.bak`, switches pairing off and restarts the controller. See "Host discovery" in the README
 * (@GermanBluefox) Fixed the answer to `updateMultihost`, which was always empty instead of saying whether the multihost service runs
