@@ -30,17 +30,17 @@ const readDirAsZip: HostCommand<FileCommandsDeps> = async (deps, msg) => {
         return;
     }
 
+    const { from, command, callback } = msg;
     try {
-        const base64 = await zipFiles.readDirAsZip(objects, msg.message.id, msg.message.name, msg.message.options);
-
-        if (base64) {
-            messages.sendTo(msg.from, msg.command, { error: null, data: base64 }, msg.callback);
-        } else {
-            messages.sendTo(msg.from, msg.command, { error: null }, msg.callback);
-        }
+        await zipFiles.readDirAsZip(objects, msg.message.id, msg.message.name, msg.message.options, (err, base64) => {
+            if (base64) {
+                messages.sendTo(from, command, { error: err, data: base64 }, callback);
+            } else {
+                messages.sendTo(from, command, { error: err }, callback);
+            }
+        });
     } catch (e) {
         logger.error(`${hostLogPrefix} Cannot read dir as zip: ${e.message}`);
-        messages.sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
     }
 };
 
@@ -129,8 +129,6 @@ const readObjectsAsZip: HostCommand<FileCommandsDeps> = async (deps, msg) => {
 const writeObjectsAsZip: HostCommand<FileCommandsDeps> = async (deps, msg) => {
     const { objects, logger, hostLogPrefix, messages } = deps;
 
-    let error: string | undefined;
-
     try {
         await zipFiles.writeObjectsAsZip(
             objects,
@@ -138,14 +136,14 @@ const writeObjectsAsZip: HostCommand<FileCommandsDeps> = async (deps, msg) => {
             msg.message.adapter,
             Buffer.from(msg.message.data || '', 'base64'),
             msg.message.options,
+            err => {
+                if (msg.callback && msg.from) {
+                    messages.sendTo(msg.from, msg.command, { error: err?.message }, msg.callback);
+                }
+            },
         );
     } catch (e) {
-        error = e.message;
-        logger.error(`${hostLogPrefix} Cannot write objects as zip: ${error}`);
-    }
-
-    if (msg.callback && msg.from) {
-        messages.sendTo(msg.from, msg.command, { error }, msg.callback);
+        logger.error(`${hostLogPrefix} Cannot write objects as zip: ${e.message}`);
     }
 };
 

@@ -28,6 +28,9 @@ export function spawnControllerRestart(logger: ControllerLogger, hostLogPrefix: 
             detached: true,
             stdio: 'ignore',
         });
+        // spawn reports a missing executable or a permission problem as an event, not as an exception -
+        // without a listener that event would end this process without saying why no restart came
+        child.on('error', e => logger.error(`${hostLogPrefix} Cannot restart the controller: ${e.message}`));
         child.unref();
         logger.info(`${hostLogPrefix} Restart requested via "${tools.appName.toLowerCase()} _restart"`);
     } catch (e) {
