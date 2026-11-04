@@ -6,7 +6,7 @@
 
 # Interface: UdpPortResourceData
 
-Defined in: [types-dev/index.d.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L120)
+Defined in: [types-dev/index.d.ts:123](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L123)
 
 A UDP port occupied by an instance
 
@@ -16,7 +16,7 @@ A UDP port occupied by an instance
 
 > `optional` **bind?**: `string`
 
-Defined in: [types-dev/index.d.ts:124](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L124)
+Defined in: [types-dev/index.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L127)
 
 Address the socket is bound to. Default "0.0.0.0" (all interfaces)
 
@@ -26,7 +26,7 @@ Address the socket is bound to. Default "0.0.0.0" (all interfaces)
 
 > `optional` **family?**: `4` \| `6`
 
-Defined in: [types-dev/index.d.ts:126](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L126)
+Defined in: [types-dev/index.d.ts:129](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L129)
 
 address family
 
@@ -36,6 +36,6 @@ address family
 
 > **port**: `number`
 
-Defined in: [types-dev/index.d.ts:122](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L122)
+Defined in: [types-dev/index.d.ts:125](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L125)
 
 UDP port number

@@ -106,6 +106,8 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 - [Adapter Development](#adapter-development)
 - [Environment Variables](#environment-variables)
 - [Vendor Packages Workflow](#vendor-packages-workflow)
+- [Python adapter](doc/PYTHON.md)
+- [Resources monitor](doc/used-resources.md)
 
 ### Admin UI
 **Feature status:** stable

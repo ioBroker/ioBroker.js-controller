@@ -7,6 +7,13 @@ import deepClone from 'deep-clone';
 import { getSupportedFeatures, tools, type SupportedFeature } from '@iobroker/js-controller-common';
 import { HIGHEST_UNICODE_SYMBOL, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import type { HostInfo } from '@iobroker/js-controller-common-db/tools';
+import {
+    checkDocker,
+    type DockerCheckResult,
+    getDockerCheckInstance,
+    readDockerApiSource,
+    resolveDockerPlugin,
+} from '@/lib/checkDocker.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { ControllerLogger, HostInformation } from '@/lib/controller/types.js';
 import type { DiagInfoCollector } from '@/lib/controller/host/diagInfoCollector.js';
@@ -342,6 +349,49 @@ const getInterfaces: HostCommand<InfoCommandsDeps> = (deps, msg) => {
 };
 
 /**
+ * Whether an instance can use Docker on this host, or on the Docker connection it is configured for -
+ * asked by the `checkDocker` control of its config dialog, through admin, when admin runs on another host
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const checkDockerCommand: HostCommand<InfoCommandsDeps> = async (deps, msg) => {
+    const { objects, logger, hostLogPrefix, hostname, messages } = deps;
+
+    if (!msg.callback || !msg.from) {
+        return;
+    }
+
+    let answer: DockerCheckResult | { error: string };
+    try {
+        const instance = getDockerCheckInstance(msg.message);
+        const adapter = instance.slice(0, instance.lastIndexOf('.'));
+        const adapterDir = tools.getAdapterDir(adapter);
+        if (!adapterDir) {
+            throw new Error(`Adapter "${adapter}" is not installed on host ${hostname}`);
+        }
+        const pluginPath = resolveDockerPlugin(adapterDir);
+        if (!pluginPath) {
+            throw new Error(`Adapter "${adapter}" does not use @iobroker/plugin-docker`);
+        }
+        answer = await checkDocker({
+            pluginPath,
+            namespace: instance,
+            dockerApiSource: await readDockerApiSource({
+                adapterDir,
+                instance,
+                getObject: id => objects.getObject(id),
+            }),
+            log: text => logger.debug(`${hostLogPrefix} checkDocker for ${instance}: ${text}`),
+        });
+    } catch (e) {
+        logger.debug(`${hostLogPrefix} Cannot check Docker: ${e.message}`);
+        answer = { error: e.message };
+    }
+    messages.sendTo(msg.from, msg.command, answer, msg.callback);
+};
+
+/**
  * Check if a specific feature is supported by this js-controller
  *
  * @param deps What this group of commands needs
@@ -379,6 +429,7 @@ export function createInfoCommands(deps: InfoCommandsDeps): Record<string, HostC
         getHostInfo: msg => getHostInfo(deps, msg),
         getHostInfoShort: msg => getHostInfoShort(deps, msg),
         getInterfaces: msg => getInterfaces(deps, msg),
+        checkDocker: msg => checkDockerCommand(deps, msg),
         checkFeatureSupported: msg => checkFeatureSupported(deps, msg),
     };
 }

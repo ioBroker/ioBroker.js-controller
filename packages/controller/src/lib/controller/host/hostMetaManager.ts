@@ -9,6 +9,7 @@ import {
 } from '@iobroker/js-controller-common-db/constants';
 import { getHostObject } from '@iobroker/js-controller-common-db/tools';
 import { getHostObjects, type TaskObject } from '@/lib/objects.js';
+import { isValidUsedResourceType } from '@/lib/usedResources.js';
 import { COMPACT_GROUP_OBJECT_PREFIX, VENDOR_BOOTSTRAP_FILE, VENDOR_FILE } from '@/lib/controller/constants.js';
 import type { NotificationHandler } from '@iobroker/js-controller-common';
 import type { PluginHandler } from '@iobroker/plugin-base';
@@ -348,6 +349,7 @@ export class HostMetaManager {
             }
             const pluginStatesIndex = `${hostObjectPrefix}.plugins.`.length;
             const notificationStatesIndex = `${hostObjectPrefix}.notifications.`.length;
+            const usedResourcesStatesIndex = `${hostObjectPrefix}.usedResources.`.length;
             const toDelete = thisHostStates.filter(out1 => {
                 const found = tasks.find(out2 => out1.id === out2._id);
                 if (found === undefined) {
@@ -360,6 +362,10 @@ export class HostMetaManager {
                     } else if (out1.id.startsWith(`${hostObjectPrefix}.notifications.`)) {
                         // notification states are allowed to exist if their scope still exists
                         return !notificationHandler.scopeExists(out1.id.substring(notificationStatesIndex));
+                    } else if (out1.id.startsWith(`${hostObjectPrefix}.usedResources.`)) {
+                        // the registry creates its states on demand, so no task knows them: a deleted
+                        // object leaves the state behind, where no read by pattern finds it any more
+                        return !isValidUsedResourceType(out1.id.substring(usedResourcesStatesIndex));
                     }
                 }
 

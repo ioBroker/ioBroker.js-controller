@@ -8,4 +8,4 @@
 
 > **SetStateChangedPromise** = `Promise`\<[`NonNullCallbackReturnTypeOf`](NonNullCallbackReturnTypeOf.md)\<[`SetStateChangedCallback`](SetStateChangedCallback.md)\>\>
 
-Defined in: [types-dev/index.d.ts:645](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L645)
+Defined in: [types-dev/index.d.ts:654](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L654)

@@ -6,7 +6,7 @@
 
 # Interface: IdObject
 
-Defined in: [types-dev/index.d.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L243)
+Defined in: [types-dev/index.d.ts:246](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L246)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/index.d.ts:243](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **channel?**: `string`
 
-Defined in: [types-dev/index.d.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L245)
+Defined in: [types-dev/index.d.ts:248](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L248)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [types-dev/index.d.ts:245](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **device?**: `string`
 
-Defined in: [types-dev/index.d.ts:244](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L244)
+Defined in: [types-dev/index.d.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L247)
 
 ***
 
@@ -30,4 +30,4 @@ Defined in: [types-dev/index.d.ts:244](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **state?**: `string`
 
-Defined in: [types-dev/index.d.ts:246](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L246)
+Defined in: [types-dev/index.d.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L249)

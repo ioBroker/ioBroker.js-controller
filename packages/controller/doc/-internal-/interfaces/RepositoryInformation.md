@@ -6,7 +6,7 @@
 
 # Interface: RepositoryInformation
 
-Defined in: [types-dev/objects.d.ts:1158](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L1158)
+Defined in: [types-dev/objects.d.ts:1181](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1181)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/objects.d.ts:1158](https://github.com/ioBroker/ioBroker.j
 
 > `optional` **hash?**: `string`
 
-Defined in: [types-dev/objects.d.ts:1162](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L1162)
+Defined in: [types-dev/objects.d.ts:1185](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1185)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: [types-dev/objects.d.ts:1162](https://github.com/ioBroker/ioBroker.j
 
 > **json**: [`RepositoryJson`](RepositoryJson.md) \| `null`
 
-Defined in: [types-dev/objects.d.ts:1161](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L1161)
+Defined in: [types-dev/objects.d.ts:1184](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1184)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: [types-dev/objects.d.ts:1161](https://github.com/ioBroker/ioBroker.j
 
 > **link**: `string`
 
-Defined in: [types-dev/objects.d.ts:1160](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L1160)
+Defined in: [types-dev/objects.d.ts:1183](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1183)
 
 Url to the repository
 
@@ -40,7 +40,7 @@ Url to the repository
 
 > `optional` **stable?**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:1165](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L1165)
+Defined in: [types-dev/objects.d.ts:1188](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1188)
 
 If this repository stable
 
@@ -50,4 +50,4 @@ If this repository stable
 
 > `optional` **time?**: `string`
 
-Defined in: [types-dev/objects.d.ts:1163](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L1163)
+Defined in: [types-dev/objects.d.ts:1186](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1186)

@@ -6,7 +6,7 @@
 
 # Interface: DelObjectOptions
 
-Defined in: [types-dev/index.d.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L509)
+Defined in: [types-dev/index.d.ts:518](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L518)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/index.d.ts:509](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **recursive?**: `boolean`
 
-Defined in: [types-dev/index.d.ts:511](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L511)
+Defined in: [types-dev/index.d.ts:520](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L520)
 
 Whether all child objects should be deleted as well
 
@@ -24,4 +24,4 @@ Whether all child objects should be deleted as well
 
 > `optional` **user?**: `` `system.user.${string}` ``
 
-Defined in: [types-dev/index.d.ts:512](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L512)
+Defined in: [types-dev/index.d.ts:521](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L521)

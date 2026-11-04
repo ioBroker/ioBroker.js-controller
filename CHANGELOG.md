@@ -4,6 +4,18 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Added `common.webComponents` to the `io-package.json` schema and the typings: the web components an adapter brings (`@iobroker/web-components`), as module URLs relative to its admin folder, which vis-2, devices and admin show as widgets or tiles
+* (@GermanBluefox) Added `sendToHost('checkDocker', { instance })`, which answers whether the instance can use Docker on that host (feature flag `CONTROLLER_CHECK_DOCKER`). If the adapter names a Docker connection of `system.docker` in its plugin config (`iobDockerApi`), that connection is checked, as the instance uses it - with `@iobroker/plugin-docker` 1.3.0 and later also when it is named through a template like `${config.dockerApi}` in the instance settings, as the plugin resolves it itself. The check is done by the `@iobroker/plugin-docker` of the adapter, in a child process; a question that comes in while the same plugin is checking already gets the answer of that check instead of starting another process, and a check that hangs is ended after 20 s together with the processes it started (e.g. a hanging `docker ps`). Admin needs it for the `checkDocker` control when the instance runs on another host than admin - so far it showed the Docker of the admin host
+* (@typhosj) Fixed the state that counts the data points of a vis project: a space in the project name is now replaced by `_`, instead of every letter `s`. The state of an affected project gets a new ID (e.g. `vis-2.0.datapoints.New_project` instead of `New project`), the old state stays behind
+* (@GermanBluefox) Added `sendToHost('getRepositoryCompact')`, which answers with only the version and the icon per adapter (feature flag `CONTROLLER_REPOSITORY_COMPACT`), and the diagnostics are now collected after the repository requesters got their answer instead of before
+* (@GermanBluefox) Added `services` to `common.visWidgets.<set>` and `common.deviceWidgets` in the `io-package.json` schema and the typings: background components that vis-2 and the devices app render once next to the views, whichever view is shown - e.g. for a phone that has to stay registered to ring
+* (@GermanBluefox) Fixed the `io-package.json` schema rejecting `common.deviceWidgets.iconsManifest`, which the typings and the devices app already know
+* (@GermanBluefox) Added `common.adminTab.proxy` to the `io-package.json` schema and the typings: admin shows such a tab through its own proxy, on its own address and behind its login
+* (@GermanBluefox) Fixed the host deleting the objects of its own used-resources registry while starting, which hid the registered resources from every read by pattern
+* (@GermanBluefox) Fixed the `io-package.json` schema demanding `common.main` from every adapter in JetBrains IDEs - only Python adapters need it
+* (@GermanBluefox) Added `adapter.mayRead({ user, type, id, fileName })`: whether a user may read a state, an object or a file of an adapter, answered with the rules of the database itself - the ACL of the thing, its owner, the groups of the user and the default ACL, with the administrator group not restricted by any of it. A socket server has to ask this before it hands an event to a connection, because a subscription says what a client is interested in and never what it may see, and so far everyone who needed the answer had to rebuild these rules on the side. Two answers follow the database rather than intuition and are documented as such: a state whose object does not exist may be read by anybody, and so may an object that is not there any more
+* (@GermanBluefox) Fixed `getSession` method
+* (@GermanBluefox) A states database error while reading a session is no longer swallowed, but reported and logged instead of looking like a logged out user
 * (@GermanBluefox) Added support for adapters written in Python via `common.platform: "Python"` (feature flag `CONTROLLER_PYTHON_ADAPTERS`)
 * (@GermanBluefox) Fixed the controller refusing to start after a crash on a busy Windows machine: the check whether the recorded pid still belongs to the controller gave up after 10 seconds, and a check that cannot be answered counts as "the controller is running"
 * (@GermanBluefox) Node.js 22.19 is now the minimum version - 22.0 to 22.18 are no longer supported
@@ -30,6 +42,17 @@
 * (@GermanBluefox) Fixed `getEncryptedConfig` decrypting an attribute of `encryptedNative` a second time, which returned garbage because the adapter start already decrypted it
 * (@krobipd) Fixed an alias read/write function returning a boolean (e.g. "val < 20") being stored unconverted in a state declared as number
 * (@GermanBluefox) Added `common.adminTab.order` and `common.adminTab.icon` to the `io-package.json` schema: admin uses both, but an adapter setting them failed the schema validation
+
+## 7.2.5 (2026-10-05)
+* (@GermanBluefox) Added the user context to messages: `sendTo`/`sendToHost` write the `user`
+
+## 7.2.4 (2026-10-03)
+* (@GermanBluefox) Added support of Node.js 26
+* (@GermanBluefox) Fixed storage of the sessions
+* (@GermanBluefox) Fixed encryption and decryption of arrays
+* (@krobipd) Fixed `info.connection` not being reset when an instance goes offline
+* (@krobipd) Fixed an alias read/write function returning a boolean
+* (@GermanBluefox) Improved typings
 
 ## 7.2.2 (2026-06-16)
 * (@Apollon77) Fixed Sentry session reporting disabling

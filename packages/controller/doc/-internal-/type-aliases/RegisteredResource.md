@@ -8,7 +8,7 @@
 
 > **RegisteredResource**\<`T`\> = `{ [K in T]: { data: UsedResourceDataMap[K]; instance: string; isBlocked: boolean; ts: number; type: K } }`\[`T`\]
 
-Defined in: [types-dev/index.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L190)
+Defined in: [types-dev/index.d.ts:193](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L193)
 
 A registered resource as stored on the host: the discriminating `type`, the type-specific payload
 in `data` and the ownership/bookkeeping fields (`instance`, `ts`, `isBlocked`).

@@ -8,6 +8,6 @@
 
 > **GetObjectListParams** = [`GetObjectViewParams`](../interfaces/GetObjectViewParams.md) \| `undefined`
 
-Defined in: [types-dev/index.d.ts:365](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L365)
+Defined in: [types-dev/index.d.ts:368](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L368)
 
 Parameters for adapter.getObjectList

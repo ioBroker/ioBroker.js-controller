@@ -8,7 +8,7 @@
 
 > **GetObjectCallback**\<`T`\> = (`err?`, `obj?`) => `void`
 
-Defined in: [types-dev/index.d.ts:582](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/index.d.ts#L582)
+Defined in: [types-dev/index.d.ts:591](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L591)
 
 ## Type Parameters
 

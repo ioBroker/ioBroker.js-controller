@@ -6,7 +6,7 @@
 
 # Interface: Notification
 
-Defined in: [types-dev/objects.d.ts:1250](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L1250)
+Defined in: [types-dev/objects.d.ts:1273](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1273)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/objects.d.ts:1250](https://github.com/ioBroker/ioBroker.j
 
 > **categories**: [`NotificationCategory`](../type-aliases/NotificationCategory.md)[]
 
-Defined in: [types-dev/objects.d.ts:1258](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L1258)
+Defined in: [types-dev/objects.d.ts:1281](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1281)
 
 All notification categories of this scope
 
@@ -24,7 +24,7 @@ All notification categories of this scope
 
 > **description**: [`Translated`](../type-aliases/Translated.md)
 
-Defined in: [types-dev/objects.d.ts:1256](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L1256)
+Defined in: [types-dev/objects.d.ts:1279](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1279)
 
 The human-readable description of this scope
 
@@ -34,7 +34,7 @@ The human-readable description of this scope
 
 > **name**: [`Translated`](../type-aliases/Translated.md)
 
-Defined in: [types-dev/objects.d.ts:1254](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L1254)
+Defined in: [types-dev/objects.d.ts:1277](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1277)
 
 The human-readable name of this scope
 
@@ -44,6 +44,6 @@ The human-readable name of this scope
 
 > **scope**: `string`
 
-Defined in: [types-dev/objects.d.ts:1252](https://github.com/ioBroker/ioBroker.js-controller/blob/99da17fcc8e508685aa76215228d1f13d7f9efb4/packages/types-dev/objects.d.ts#L1252)
+Defined in: [types-dev/objects.d.ts:1275](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1275)
 
 E.g., `system`. Each adapter can define its own "scopes" for own notifications with its own categories, which then will be available in the system. Adapters should only register one scope which matches the name of the adapter.

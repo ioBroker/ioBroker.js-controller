@@ -120,8 +120,10 @@ export class StatesInMemoryFileDB<
      * @param id The ID of the session to expire
      */
     _expireSession(id: string): void {
-        if (this.sessionExpires[id]?.timeout) {
-            clearTimeout(this.sessionExpires[id].timeout);
+        if (this.sessionExpires[id]) {
+            if (this.sessionExpires[id].timeout) {
+                clearTimeout(this.sessionExpires[id].timeout);
+            }
             delete this.sessionExpires[id];
         }
 
@@ -375,13 +377,13 @@ export class StatesInMemoryFileDB<
         const expireDelay = expireDate - Date.now();
         if (expireDelay <= 0) {
             this._expireSession(id);
-        } else if (expireDate <= this.ONE_DAY_IN_SECS) {
+        } else if (expireDelay <= this.ONE_DAY_IN_SECS) {
             this.sessionExpires[id] = {
                 sessionEnd: expireDate,
                 timeout: setTimeout(() => {
                     this.sessionExpires[id].timeout = null;
                     this._expireSession(id);
-                }, expireDate),
+                }, expireDelay),
             };
         } else {
             this.sessionExpires[id] = {
@@ -419,8 +421,6 @@ export class StatesInMemoryFileDB<
      * @param id The session ID to destroy
      */
     _destroySession(id: string): void {
-        if (this.session[id]) {
-            delete this.session[id];
-        }
+        this._expireSession(id);
     }
 }

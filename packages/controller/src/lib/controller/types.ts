@@ -124,6 +124,8 @@ export interface RepoRequester {
     from: string;
     /** The callback which has to be used to answer the request */
     callback: ioBroker.MessageCallbackInfo;
+    /** `getRepository` for the whole content, `getRepositoryCompact` for versions and icons only */
+    command: string;
 }
 
 /** An instance of type `schedule` which is waiting to be started */
