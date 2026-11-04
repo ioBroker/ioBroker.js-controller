@@ -5,6 +5,39 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { ControllerLogger, Dependencies } from '@/lib/controller/types.js';
 
 /**
+ * Thrown by `checkVersion` if no instance of the required adapter exists
+ */
+class AdapterNotFoundError extends Error {
+    /** Name of the required adapter */
+    readonly adapter: string;
+
+    /**
+     * @param adapter name of the required adapter
+     */
+    constructor(adapter: string) {
+        super(`required adapter "${adapter}" not found!`);
+        this.adapter = adapter;
+    }
+}
+
+/**
+ * Thrown by `checkVersion` if the required adapter or js-controller has a version outside the required range
+ */
+class AdapterVersionMismatchError extends Error {
+    /** Host of the instance with the wrong version, not set for a js-controller dependency */
+    readonly host?: string;
+
+    /**
+     * @param message the error message
+     * @param host host of the instance with the wrong version
+     */
+    constructor(message: string, host?: string) {
+        super(message);
+        this.host = host;
+    }
+}
+
+/**
  * Checks if at least one of the instances of given name satisfies the version
  *
  * @param name - name of the dependency
@@ -25,7 +58,7 @@ function checkVersion(
         // Check only a version
         if (version) {
             if (!semver.satisfies(controllerVersion, version, { includePrerelease: true })) {
-                throw new Error(
+                throw new AdapterVersionMismatchError(
                     `Invalid version of "${name}". Installed "${controllerVersion}", required "${version}"`,
                 );
             } else {
@@ -43,8 +76,9 @@ function checkVersion(
         );
         for (const inst of filteredInst) {
             if (version && !semver.satisfies(instances[inst].common.version, version, { includePrerelease: true })) {
-                throw new Error(
+                throw new AdapterVersionMismatchError(
                     `required adapter "${name}" has wrong version. Installed "${instances[inst].common.version}", required "${version}"!`,
+                    instances[inst].common.host,
                 );
             }
             isFound = true;
@@ -52,7 +86,7 @@ function checkVersion(
     }
 
     if (!isFound) {
-        throw new Error(`required adapter "${name}" not found!`);
+        throw new AdapterNotFoundError(name);
     }
 }
 
@@ -126,6 +160,17 @@ export async function checkVersions(options: CheckVersionsOptions): Promise<void
         }
     } catch (e) {
         logger.debug(`${logPrefix} ${id} [globalDependency]: ${JSON.stringify(globalDeps)}`);
-        throw new Error(`Adapter dependency not fulfilled on any host: ${e.message}`);
+
+        if (e instanceof AdapterNotFoundError) {
+            throw new Error(
+                `Adapter dependency not fulfilled: required adapter "${e.adapter}" is not installed on any host!`,
+            );
+        }
+        if (e instanceof AdapterVersionMismatchError && e.host) {
+            // name the host with the wrong version, the same way as for a same-host dependency
+            throw new Error(`Adapter dependency not fulfilled on "${e.host}": ${e.message}`);
+        }
+        // js-controller version, which is the one of this host, or any other error
+        throw new Error(`Adapter dependency not fulfilled: ${e.message}`);
     }
 }
