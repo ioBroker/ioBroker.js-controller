@@ -430,7 +430,7 @@
         },
         "path": {
           "type": "string",
-          "description": "Absolute path to back-up directory or empty to back-up in data directory"
+          "description": "Absolute path to the back-up directory or empty to back-up in data directory"
         },
         "// path": {
           "type": "string"
