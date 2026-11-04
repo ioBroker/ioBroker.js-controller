@@ -84,7 +84,8 @@ declare global {
             | 'CONTROLLER_GET_LOGS_LOG_LEVEL'
             | 'CONTROLLER_SEARCH_LOGS'
             | 'CONTROLLER_PYTHON_ADAPTERS'
-            | 'CONTROLLER_REPOSITORY_COMPACT';
+            | 'CONTROLLER_REPOSITORY_COMPACT'
+            | 'CONTROLLER_CHECK_DOCKER';
 
         // #region Used resources
         // ---------------------------------------------------------------------------------------------------

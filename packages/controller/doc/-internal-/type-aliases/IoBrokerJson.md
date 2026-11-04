@@ -8,6 +8,6 @@
 
 > **IoBrokerJson** = [`IoBJson`](../interfaces/IoBJson.md)
 
-Defined in: [types-dev/index.d.ts:763](https://github.com/ioBroker/ioBroker.js-controller/blob/00e1bb8a11db1fc2c9d83f2c9fa6c2c89245df07/packages/types-dev/index.d.ts#L763)
+Defined in: [types-dev/index.d.ts:765](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L765)
 
 The ioBroker global config
