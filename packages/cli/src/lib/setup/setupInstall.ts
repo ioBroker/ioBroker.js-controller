@@ -1842,7 +1842,7 @@ export class Install {
      *
      * @param user GitHub user or organization
      * @param repo repository name
-     * @param commit commit hash, branch or tag; without it the files cannot be read and nothing is checked
+     * @param commit commit hash, branch or tag; without it the default branch, which npm installs then as well
      * @returns the problem that prevents the installation, or `null`
      */
     private async _checkGitHubAdapter(
@@ -1850,12 +1850,11 @@ export class Install {
         repo: string,
         commit: string | undefined,
     ): Promise<AdapterCompatibilityProblem | null> {
-        const [ioPackage, packageJson] = commit
-            ? await Promise.all([
-                  this._readGitHubJson<ioBroker.AdapterObject>(user, repo, commit, 'io-package.json'),
-                  this._readGitHubJson<{ engines?: { node?: string } }>(user, repo, commit, 'package.json'),
-              ])
-            : [null, null];
+        const ref = commit || 'HEAD';
+        const [ioPackage, packageJson] = await Promise.all([
+            this._readGitHubJson<ioBroker.AdapterObject>(user, repo, ref, 'io-package.json'),
+            this._readGitHubJson<{ engines?: { node?: string } }>(user, repo, ref, 'package.json'),
+        ]);
         if (!ioPackage?.common) {
             console.warn(
                 `host.${hostname} Cannot read io-package.json of ${user}/${repo} from GitHub: whether the adapter can be installed from GitHub is not checked`,
@@ -1926,8 +1925,9 @@ export class Install {
                 // We've extracted all we need from the URL
                 url = `${user}/${repo}#${commit}`;
             }
-        } else {
-            // the short form `user/repo[#commit]`, as npm understands it
+        } else if (!parsedUrl && !/^[@.]/.test(url)) {
+            // the short form `user/repo[#commit]`, as npm understands it - not a URL of a tarball, a scoped
+            // package (`@scope/name`) or a relative path, which the pattern would match as well
             github = tools.parseShortGithubUrl(url);
         }
 
