@@ -27,9 +27,10 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           # Optional: Path to your auto-merge configuration file
           # config-file-path: '.github/auto-merge.yml'
-          # Optional: Merge method (merge, squash, or rebase)
-          # merge-method: 'squash'
-          # Optional: Wait for other checks to complete
-          # wait-for-checks: 'true'
+          # Merge method (merge, squash, or rebase) - the repository only allows squash merges,
+          # with the default "merge" every merge fails with "Merge commits are not allowed on this repository"
+          merge-method: 'squash'
+          # Only merge once all other checks have passed (the default of the action, stated here on purpose)
+          wait-for-checks: 'true'
           # Optional: Maximum time to wait for checks in seconds (default: 3600)
           # max-wait-time: '3600'
