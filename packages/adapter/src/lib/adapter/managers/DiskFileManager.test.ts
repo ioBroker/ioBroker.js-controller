@@ -26,6 +26,8 @@ interface FakeHost {
     requests: InternalSendToHostOptions[];
     /** The highest number of `readDiskFile` requests that were open at the same time */
     maxParallel: number;
+    /** Whether the file was deleted by `deleteDiskFile` */
+    deleted: boolean;
 }
 
 /**
@@ -42,7 +44,7 @@ function makeManager(
     file: Buffer,
     behaviour: { supported?: boolean; silent?: boolean; changeAt?: number; failAt?: number } = {},
 ): { mgr: DiskFileManager; host: FakeHost } {
-    const host: FakeHost = { requests: [], maxParallel: 0 };
+    const host: FakeHost = { requests: [], maxParallel: 0, deleted: false };
     let open = 0;
     const sendToHost = async (opts: InternalSendToHostOptions): Promise<any> => {
         host.requests.push(opts);
@@ -54,6 +56,17 @@ function makeManager(
         }
         if (opts.command === 'checkFeatureSupported') {
             return { result: (behaviour.supported ?? true) && opts.message === 'CONTROLLER_DISK_FILES' };
+        }
+        if (opts.command === 'deleteDiskFile') {
+            const { namespace, path: filePath } = opts.message;
+            if (filePath === 'video') {
+                return { error: `"${filePath}" of ${namespace} is not a file` };
+            }
+            if (filePath !== 'video/1.mp4' || host.deleted) {
+                return { deleted: false };
+            }
+            host.deleted = true;
+            return { deleted: true };
         }
         assert.equal(opts.command, 'readDiskFile');
         const { namespace, path: filePath, offset, length } = opts.message;
@@ -187,6 +200,34 @@ describe('DiskFileManager on another host', () => {
         }
     });
 
+    it('deletes a file on the host', async () => {
+        const { mgr, host } = makeManager(makeContent(10));
+        assert.equal(await mgr.deleteDiskFile(URL), true);
+        // gone now
+        assert.equal(await mgr.deleteDiskFile(URL), false);
+        const deletes = host.requests.filter(r => r.command === 'deleteDiskFile');
+        assert.deepEqual(
+            deletes.map(r => r.message),
+            [
+                { namespace: 'telegram.0', path: 'video/1.mp4' },
+                { namespace: 'telegram.0', path: 'video/1.mp4' },
+            ],
+        );
+        assert.equal(host.requests.filter(r => r.command === 'checkFeatureSupported').length, 1);
+    });
+
+    it('reports when the host cannot delete', async () => {
+        const { mgr } = makeManager(makeContent(10));
+        await assert.rejects(
+            mgr.deleteDiskFile('iobdisk://there/telegram.0/video'),
+            /host "there" cannot delete telegram.0\/video: "video" of telegram.0 is not a file/,
+        );
+        const old = makeManager(makeContent(10), { supported: false });
+        await assert.rejects(old.mgr.deleteDiskFile(URL), /js-controller of host "there" is too old/);
+        assert.equal(old.host.requests.filter(r => r.command === 'deleteDiskFile').length, 0);
+        await assert.rejects(mgr.deleteDiskFile('iobdisk://there/telegram.0/../x'), /must not contain/);
+    });
+
     it('rejects invalid URLs', async () => {
         const { mgr } = makeManager(makeContent(10));
         await assert.rejects(mgr.readDiskFile('/opt/iobroker/iobroker-data/telegram_0/video/1.mp4'), /not an iobdisk/);
@@ -239,5 +280,17 @@ describe('DiskFileManager on this host', () => {
         assert.equal(Buffer.concat(parts).toString(), 'local content');
         assert.equal(host.requests.length, 0);
         await assert.rejects(mgr.readDiskFile('iobdisk://here/assistant.0/audio/b.ogg'), /not found/);
+    });
+
+    it('deletes a file of this host from the disk, without asking any host', async () => {
+        const { mgr, host } = makeManager(Buffer.alloc(0));
+        await fs.writeFile(path.join(dataDir, 'assistant.0', 'audio', 'c.ogg'), 'to delete');
+        const url = 'iobdisk://here/assistant.0/audio/c.ogg';
+
+        assert.equal(await mgr.deleteDiskFile(url), true);
+        await assert.rejects(fs.stat(path.join(dataDir, 'assistant.0', 'audio', 'c.ogg')), { code: 'ENOENT' });
+        assert.equal(await mgr.deleteDiskFile(url), false);
+        await assert.rejects(mgr.deleteDiskFile('iobdisk://here/assistant.0/audio'), /is not a file/);
+        assert.equal(host.requests.length, 0);
     });
 });

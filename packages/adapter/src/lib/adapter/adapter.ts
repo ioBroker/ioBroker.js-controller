@@ -9158,6 +9158,22 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
+     * Delete the file an `iobdisk://` URL points to, e.g. a video of another instance after it was processed.
+     *
+     * A file on this host is deleted directly, a file on another host by the js-controller of that host (js-controller
+     * 8.0 or newer, feature `CONTROLLER_DISK_FILES`). Only a regular file in the data directory of the instance is
+     * deleted - never a directory, nothing outside the data directory, and a symbolic link is refused instead of
+     * deleting its target.
+     *
+     * @param url e.g. `iobdisk://pi4/telegram.0/video/2026-11-04_10-00-00.mp4`
+     * @returns `true` if the file was deleted, `false` if it did not exist (any more)
+     * @throws {Error} if the URL is invalid, the host does not answer or is too old, or the file cannot be deleted
+     */
+    async deleteDiskFile(url: string): Promise<boolean> {
+        return this.#async.deleteDiskFile(url);
+    }
+
+    /**
      * Register an exclusive resource (serial port, TCP/UDP port, USB device, ...) as used by this instance.
      *
      * Exclusive resources are the ones that cannot be occupied by more than one instance at the same time.

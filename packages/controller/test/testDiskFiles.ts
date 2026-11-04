@@ -4,7 +4,7 @@ import path from 'node:path';
 import fs from 'fs-extra';
 import { realpath } from 'node:fs/promises';
 import { diskFiles } from '@iobroker/js-controller-common';
-import { readDiskFileChunk } from '../src/lib/diskFiles.js';
+import { deleteRequestedDiskFile, readDiskFileChunk } from '../src/lib/diskFiles.js';
 
 const {
     buildDiskFileUrl,
@@ -12,6 +12,7 @@ const {
     isDiskFileUrl,
     toDiskFileLocation,
     resolveDiskFile,
+    deleteDiskFile,
     getInstanceDataDirs,
     DISK_FILE_MAX_CHUNK_SIZE,
 } = diskFiles;
@@ -146,6 +147,59 @@ describe('iobdisk:// files on this host', () => {
             return this.skip();
         }
         await assert.rejects(resolveDiskFile('telegram.0', 'config.json'), /outside its data directory/);
+    });
+
+    it('deletes files in both directory layouts', async () => {
+        const old = path.join(videoDir, 'old.mp4');
+        const fresh = path.join(dataDir, 'test.0', 'b.txt');
+        await fs.writeFile(old, 'x');
+        await fs.writeFile(fresh, 'y');
+
+        assert.equal(await deleteDiskFile('telegram.0', 'video/old.mp4'), true);
+        assert.equal(await fs.pathExists(old), false);
+        assert.deepEqual(await deleteRequestedDiskFile({ namespace: 'test.0', path: 'b.txt' }), { deleted: true });
+        assert.equal(await fs.pathExists(fresh), false);
+
+        // not there (any more): no error
+        assert.equal(await deleteDiskFile('telegram.0', 'video/old.mp4'), false);
+        assert.equal(await deleteDiskFile('telegram.0', 'nothing/here.mp4'), false);
+        assert.equal(await deleteDiskFile('unknown.0', 'x'), false);
+        // the other files are still there
+        assert.equal(await fs.pathExists(path.join(videoDir, '1.mp4')), true);
+        assert.equal(await fs.pathExists(path.join(dataDir, 'iobroker.json')), true);
+    });
+
+    it('deletes no directory and nothing outside the data directory', async () => {
+        await assert.rejects(deleteDiskFile('telegram.0', 'video'), /is not a file/);
+        assert.equal(await fs.pathExists(videoDir), true);
+        await assert.rejects(deleteDiskFile('telegram.0', '../iobroker.json'), /must not contain/);
+        await assert.rejects(deleteDiskFile('files', 'x'), /invalid instance namespace/);
+        await assert.rejects(deleteRequestedDiskFile('video/1.mp4'), /invalid message/);
+        await assert.rejects(
+            deleteRequestedDiskFile({ namespace: 'telegram.0', path: '/etc/passwd' }),
+            /must be relative/,
+        );
+        assert.equal(await fs.pathExists(path.join(dataDir, 'iobroker.json')), true);
+    });
+
+    it('deletes nothing a linked folder leads to', async () => {
+        // a junction needs no extra rights on Windows, elsewhere the type is ignored
+        await fs.symlink(dataDir, path.join(dataDir, 'telegram_0', 'outside'), 'junction');
+        await assert.rejects(deleteDiskFile('telegram.0', 'outside/iobroker.json'), /outside its data directory/);
+        assert.equal(await fs.pathExists(path.join(dataDir, 'iobroker.json')), true);
+    });
+
+    it('deletes no link as the file and not its target', async function () {
+        const fileLink = path.join(dataDir, 'telegram_0', 'link.json');
+        try {
+            await fs.symlink(path.join(dataDir, 'iobroker.json'), fileLink);
+        } catch {
+            // creating symbolic links to files needs extra rights on Windows
+            return this.skip();
+        }
+        await assert.rejects(deleteDiskFile('telegram.0', 'link.json'), /is not a file/);
+        assert.equal(await fs.pathExists(path.join(dataDir, 'iobroker.json')), true);
+        assert.equal((await fs.lstat(fileLink)).isSymbolicLink(), true);
     });
 
     it('hands out a file in pieces', async () => {

@@ -81,3 +81,21 @@ export async function readDiskFileChunk(message: unknown): Promise<DiskFileChunk
         await handle.close();
     }
 }
+
+/**
+ * Delete a file below the data directory of an instance, for `sendToHost(host, 'deleteDiskFile', ...)`
+ *
+ * The message is `{ namespace, path }` - the parts of an `iobdisk://` URL. Only a regular file is deleted, never a
+ * directory or anything outside the data directory of the instance.
+ *
+ * @param message the received message
+ * @returns whether the file was deleted (`false` if it did not exist)
+ * @throws {Error} if the message is invalid or the file cannot be deleted
+ */
+export async function deleteRequestedDiskFile(message: unknown): Promise<{ deleted: boolean }> {
+    if (!message || typeof message !== 'object' || Array.isArray(message)) {
+        throw new Error('invalid message, expected { namespace, path }');
+    }
+    const request = message as Record<string, unknown>;
+    return { deleted: await diskFiles.deleteDiskFile(request.namespace, request.path) };
+}

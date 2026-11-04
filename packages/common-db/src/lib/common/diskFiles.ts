@@ -1,5 +1,6 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
+import type { Stats } from 'node:fs';
 import { getControllerDir, getDefaultDataDir } from '@/lib/common/tools.js';
 
 /**
@@ -8,8 +9,8 @@ import { getControllerDir, getDefaultDataDir } from '@/lib/common/tools.js';
  * `iobdisk://<host>/<namespace>/<path below the data directory of the instance>`
  *
  * e.g. `iobdisk://pi4/telegram.0/video/2026-11-04_10-00-00.mp4`. Unlike a plain file path, such a URL can be handed
- * to an instance on another host, which then reads the file through the js-controller of `<host>`
- * (`sendToHost(host, 'readDiskFile', ...)`).
+ * to an instance on another host, which then reads or deletes the file through the js-controller of `<host>`
+ * (`sendToHost(host, 'readDiskFile', ...)`, `sendToHost(host, 'deleteDiskFile', ...)`).
  *
  * Only files below `iobroker-data/<namespace>` (or the older `iobroker-data/<adapter>_<instance>`) can be addressed,
  * never anything else of the host.
@@ -212,4 +213,50 @@ export async function resolveDiskFile(namespace: unknown, relativePath: unknown)
         return realFile;
     }
     throw new Error(`file "${segments.join('/')}" of ${namespace as string} not found`);
+}
+
+/**
+ * Delete the file an `iobdisk://` URL points to on this host
+ *
+ * Only a regular file inside the data directory of the instance is deleted. The folders on the way are resolved like
+ * in {@link resolveDiskFile}, so a link cannot lead out of the directory; a symbolic link as the file itself is
+ * refused instead of deleting its target. Directories are never deleted.
+ *
+ * @param namespace namespace of the instance, e.g. `telegram.0`
+ * @param relativePath path below the data directory of the instance
+ * @returns `true` if the file was deleted, `false` if it did not exist
+ * @throws {Error} if the path is invalid, outside the data directory or not a regular file, or the file cannot be deleted
+ */
+export async function deleteDiskFile(namespace: unknown, relativePath: unknown): Promise<boolean> {
+    const segments = splitRelativePath(relativePath);
+    const name = segments[segments.length - 1];
+    for (const dir of getInstanceDataDirs(assertNamespace(namespace))) {
+        let realDir: string;
+        let realParent: string;
+        try {
+            realDir = await fs.realpath(dir);
+            realParent = await fs.realpath(path.join(dir, ...segments.slice(0, -1)));
+        } catch {
+            continue;
+        }
+        if (!isInside(realDir, realParent)) {
+            throw new Error(`file "${segments.join('/')}" of ${namespace as string} is outside its data directory`);
+        }
+        const file = path.join(realParent, name);
+        let stat: Stats;
+        try {
+            stat = await fs.lstat(file);
+        } catch (e) {
+            if (e.code === 'ENOENT') {
+                continue;
+            }
+            throw e;
+        }
+        if (!stat.isFile()) {
+            throw new Error(`"${segments.join('/')}" of ${namespace as string} is not a file`);
+        }
+        await fs.unlink(file);
+        return true;
+    }
+    return false;
 }

@@ -79,7 +79,7 @@ import {
     readDockerApiSource,
     resolveDockerPlugin,
 } from '@/lib/checkDocker.js';
-import { type DiskFileChunk, readDiskFileChunk } from '@/lib/diskFiles.js';
+import { type DiskFileChunk, deleteRequestedDiskFile, readDiskFileChunk } from '@/lib/diskFiles.js';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
 // eslint-disable-next-line unicorn/prefer-module
@@ -3960,6 +3960,28 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 sendTo(msg.from, msg.command, answer, msg.callback);
             }
             break;
+
+        case 'deleteDiskFile': {
+            // Delete a file below the data directory of an instance on this host - how an instance on another host
+            // deletes an `iobdisk://` URL, e.g. a video of telegram after it was processed. Works without callback too.
+            let answer: { deleted: boolean } | { error: string };
+            try {
+                answer = await deleteRequestedDiskFile(msg.message);
+                if (answer.deleted) {
+                    const request = msg.message as { namespace: string; path: string };
+                    logger.debug(
+                        `${hostLogPrefix} Deleted disk file ${request.namespace}/${request.path} for ${msg.from}`,
+                    );
+                }
+            } catch (e) {
+                logger.debug(`${hostLogPrefix} Cannot delete disk file for ${msg.from}: ${e.message}`);
+                answer = { error: e.message };
+            }
+            if (msg.callback && msg.from) {
+                sendTo(msg.from, msg.command, answer, msg.callback);
+            }
+            break;
+        }
 
         case 'checkFeatureSupported': {
             const feature: unknown = msg.message;

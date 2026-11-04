@@ -6,7 +6,7 @@ import type { AdapterContext } from '@/lib/adapter/context.js';
 import { AdapterContextBase } from '@/lib/adapter/managers/AdapterContextBase.js';
 import type { MessagingManager } from '@/lib/adapter/managers/MessagingManager.js';
 
-/** Feature flag of a js-controller that answers `readDiskFile` */
+/** Feature flag of a js-controller that answers `readDiskFile` and `deleteDiskFile` */
 const DISK_FILES_FEATURE = 'CONTROLLER_DISK_FILES';
 /** How long the feature check waits for the other host, in ms */
 const FEATURE_CHECK_TIMEOUT = 5_000;
@@ -24,11 +24,11 @@ interface DiskFileChunkAnswer {
 }
 
 /**
- * Creates and reads `iobdisk://` URLs: files below the data directory of an instance on the disk of one host.
+ * Creates, reads and deletes `iobdisk://` URLs: files below the data directory of an instance on the disk of one host.
  *
  * A file on this host is read from the disk; a file on another host is fetched piece by piece from the js-controller
  * of that host with `sendToHost(host, 'readDiskFile', ...)`, so that also big files (videos) can be passed between
- * instances on different hosts.
+ * instances on different hosts. Deleting goes the same way (`sendToHost(host, 'deleteDiskFile', ...)`).
  */
 export class DiskFileManager extends AdapterContextBase {
     readonly #getMessaging: () => MessagingManager;
@@ -87,6 +87,38 @@ export class DiskFileManager extends AdapterContextBase {
             return Readable.from(this.#readLocal(location), { objectMode: false });
         }
         return Readable.from(this.#readFromHost(location), { objectMode: false });
+    }
+
+    /**
+     * Delete the file an `iobdisk://` URL points to, on this or another host
+     *
+     * Only a regular file inside the data directory of the instance is deleted, never a directory.
+     *
+     * @param url e.g. `iobdisk://pi4/telegram.0/video/1.mp4`
+     * @returns `true` if the file was deleted, `false` if it did not exist
+     */
+    async deleteDiskFile(url: string): Promise<boolean> {
+        const location = diskFiles.parseDiskFileUrl(url);
+        if (location.host === this.host) {
+            return diskFiles.deleteDiskFile(location.namespace, location.path);
+        }
+        await this.#assertHostSupportsDiskFiles(location.host);
+        const answer = await this.#getMessaging().sendToHost({
+            hostName: location.host,
+            command: 'deleteDiskFile',
+            message: { namespace: location.namespace, path: location.path },
+            expectReply: true,
+            options: { timeout: CHUNK_TIMEOUT },
+        });
+        if (answer?.error) {
+            throw new Error(
+                `host "${location.host}" cannot delete ${location.namespace}/${location.path}: ${answer.error}`,
+            );
+        }
+        if (typeof answer?.deleted !== 'boolean') {
+            throw new Error(`invalid answer of host "${location.host}" for ${location.namespace}/${location.path}`);
+        }
+        return answer.deleted;
     }
 
     /**

@@ -83,6 +83,17 @@ export class AsyncAdapter {
     }
 
     /**
+     * Deletes the file an `iobdisk://` URL points to, on this or another host.
+     *
+     * @param url e.g. `iobdisk://pi4/telegram.0/video/1.mp4`
+     * @returns `true` if the file was deleted, `false` if it did not exist
+     */
+    async deleteDiskFile(url: unknown): Promise<boolean> {
+        Validator.assertString(url, 'url');
+        return this.#diskFiles.deleteDiskFile(url);
+    }
+
+    /**
      * Sends a message to another adapter instance and, unless `options.expectReply` is `false`,
      * resolves with the reply when it arrives (or rejects with `Error('Timeout exceeded')` on timeout).
      *

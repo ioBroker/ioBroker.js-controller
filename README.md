@@ -885,9 +885,11 @@ const url = this.getDiskFileUrl('/opt/iobroker/iobroker-data/telegram_0/video/1.
 const video = await this.readDiskFile(url); // Buffer
 // or, without holding a big file in memory as a whole:
 this.createDiskFileReadStream(url).pipe(target);
+// and when it is processed:
+await this.deleteDiskFile(url); // true, or false if it did not exist any more
 ```
 
-Only files below the data directory of an instance can be addressed: `iobroker-data/<namespace>` as `utils.getAbsoluteInstanceDataDir()` of adapter-core gives it, or the older `iobroker-data/<adapter>_<instance>`. Paths with `..` and symbolic links leading out of that directory are refused, so no other file of the host can be read this way. The host with the file needs js-controller 8.0 or newer; `readDiskFile` reports an error if it is older or not running.
+Only files below the data directory of an instance can be addressed: `iobroker-data/<namespace>` as `utils.getAbsoluteInstanceDataDir()` of adapter-core gives it, or the older `iobroker-data/<adapter>_<instance>`. Paths with `..` and symbolic links leading out of that directory are refused, so no other file of the host can be read or deleted this way. `deleteDiskFile` deletes only a regular file - no directory, and a symbolic link is refused instead of deleting its target. The host with the file needs js-controller 8.0 or newer; `readDiskFile` and `deleteDiskFile` report an error if it is older or not running.
 
 ### TIERS: Start instances in an ordered manner
 **Feature status:** Technology preview (since 3.3.0)
@@ -1263,6 +1265,19 @@ const answer = await sendToHostAsync('system.host.pi4', 'readDiskFile', {
 ```
 
 `data` is empty when `offset` is at or behind the end of the file. A different `size` or `mtime` in a later answer means that the file changed while it was read.
+
+#### deleteDiskFile
+Deletes a file below the data directory of an instance on this host - how `adapter.deleteDiskFile()` deletes an `iobdisk://` URL of another host (see [Files on the disk of another host](#files-on-the-disk-of-another-host-iobdisk)). Only a regular file is deleted, never a directory or a symbolic link. Supported if the host reports the feature `CONTROLLER_DISK_FILES`.
+
+```js
+const answer = await sendToHostAsync('system.host.pi4', 'deleteDiskFile', {
+    namespace: 'telegram.0',
+    path: 'video/1.mp4', // below iobroker-data/telegram.0 or iobroker-data/telegram_0
+});
+// { deleted: true }, { deleted: false } if the file did not exist, or { error: '...' }
+```
+
+Without a callback the file is deleted as well, only no answer is sent.
 
 ### Adapter Development
 **Feature status:** Stable
