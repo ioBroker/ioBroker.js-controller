@@ -961,6 +961,10 @@
               "type": "string",
               "default": "customDevices.js"
             },
+            "iconsManifest": {
+              "description": "Link to the file with the icons of the adapter for the devices app (e.g. icons.json), relative to `admin/dm-widgets`",
+              "type": "string"
+            },
             "components": {
               "description": "Description of the components (widgets). It could be multiple widgets in one adapter",
               "type": "array",
@@ -1005,6 +1009,13 @@
                   }
                 },
                 "additionalProperties": false
+              }
+            },
+            "services": {
+              "description": "Names of background components, exported by the `Components` module of the plugin like the widgets. The devices app renders each of them once, next to the category and whichever category is shown, with the widgets of this adapter in all categories that the user may see",
+              "type": "array",
+              "items": {
+                "type": "string"
               }
             }
           },
@@ -1271,6 +1282,10 @@
             "order": {
               "description": "Position of the TAB in the admin menu. The built-in tabs use 1 to 120, a TAB without order gets 200. 0 counts as not set. Once the user has sorted the menu, the stored order wins.",
               "type": "number"
+            },
+            "proxy": {
+              "description": "If true, admin shows the TAB through its own proxy (/proxy/<instance>/) instead of opening the own port of the instance directly. The target is native.bind, native.port and native.secure of the instance. The TAB is then reachable on the address of admin, protected by its login, and only for members of system.group.administrator.",
+              "type": "boolean"
             },
             "singleton": {
               "description": "If true, only one TAB for all instances will be shown.",
@@ -1715,6 +1730,13 @@
                     "type": "number",
                     "multipleOf": 1
                   }
+                },
+                "services": {
+                  "description": "Names of background components of the set, exposed by its module federation like the components. vis-2 renders each of them once in the runtime, next to the views and whichever view is shown, with the widgets of the set in all views of the project that the user may see",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -1766,6 +1788,16 @@
         "webByVersion": {
           "description": "Show version as prefix in web adapter (usually - ip:port/material, webByVersion - ip:port/1.2.3/material)",
           "type": "boolean"
+        },
+        "webComponents": {
+          "description": "Web components of the adapter (see @iobroker/web-components): URLs of ES modules, relative to the admin folder, which admin and web serve as /adapter/<name>/. vis-2, devices and admin load them from there",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         },
         "webExtendable": {
           "description": "If web server in this adapter can be extended with plugin/extensions like proxy, simple-api",

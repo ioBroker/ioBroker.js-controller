@@ -9,7 +9,7 @@ interface DatabaseBackupOptions {
     /** By default, backup every 2 hours. Time is in minutes. To disable backup set the value to 0 */
     period: number;
     '// period': string;
-    /** Absolute path to back-up directory or empty to back-up in data directory */
+    /** Absolute path to the back-up directory or empty to back-up in data directory */
     path: string;
     '// path': string;
 }
@@ -182,6 +182,13 @@ export interface IoBJson {
         secure: boolean;
         password: string;
         persist: boolean;
+        /**
+         * Whether this host offers itself to be attached to a master: it announces itself via mDNS and
+         * accepts the `join` command of a master over UDP 50005. Off when absent - ready-made images
+         * switch it on, because only the image knows that a device is fresh. Switched off again by the
+         * join, and without effect once the host uses a remote database.
+         */
+        pairing?: boolean;
     };
     /** Configuration of the objects database */
     objects: ObjectsDatabaseOptions;
