@@ -17,7 +17,9 @@ import * as url from 'node:url';
 
 import {
     EXIT_CODES,
+    describePortInUse,
     getObjectsConstructor,
+    getPortInUse,
     getStatesConstructor,
     isInstalledFromNpm,
     logger,
@@ -2030,16 +2032,19 @@ export class AdapterClass extends EventEmitter {
     }
 
     private _getPort(options: InternalGetPortOptions): void {
+        // set only while this probe listens, so `_exceptionHandler` does not take a later EADDRINUSE for it
         this.getPortRunning = options;
         const server = net.createServer();
         try {
             server.listen({ port: options.port, host: options.host }, () => {
+                this.getPortRunning = null;
                 server.once('close', () => {
                     return tools.maybeCallback(options.callback, options.port);
                 });
                 server.close();
             });
             server.on('error', () => {
+                this.getPortRunning = null;
                 setTimeout(() => this.getPort(options.port + 1, options.host, options.callback), 100);
             });
         } catch {
@@ -13345,8 +13350,8 @@ export class AdapterClass extends EventEmitter {
                 }
             }
 
-            // catch it on Windows
-            if (this.getPortRunning && err?.message === 'listen EADDRINUSE') {
+            // catch it on Windows - the message goes on with the address, so only the code and the port identify it
+            if (this.getPortRunning && getPortInUse(err)?.port === this.getPortRunning.port) {
                 const { host, port, callback } = this.getPortRunning;
                 this._logger.warn(
                     `${this.namespaceLog} Port ${port}${host ? ` for host ${host}` : ''} is in use. Get next`,
@@ -13374,6 +13379,19 @@ export class AdapterClass extends EventEmitter {
         if (err && !this._stopInProgress) {
             const message = err.code ? `Exception-Code: ${err.code}: ${err.message}` : err.message;
             this._logger.error(`${this.namespaceLog} ${message}`);
+            const portInUse = getPortInUse(err);
+            if (portInUse) {
+                try {
+                    const resources = await this.getHostUsedResources(
+                        portInUse.protocol === 'udp' ? 'udpPort' : 'tcpPort',
+                    );
+                    this._logger.error(
+                        `${this.namespaceLog} ${describePortInUse({ portInUse, resources, instance: this.namespace })}`,
+                    );
+                } catch {
+                    // without the used resources of the host there is nobody to name
+                }
+            }
             try {
                 await this.registerNotification('system', null, message);
             } catch {
