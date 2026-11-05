@@ -16,6 +16,7 @@ export { MHClient } from '@/lib/common/multihostClient.js';
 export type { ReceivedMessage, BrowseResultEntry, MHConnectResult } from '@/lib/common/multihostClient.js';
 export type { SupportedFeature } from '@/lib/common/constants.js';
 export * as zipFiles from '@/lib/common/zipFiles.js';
+export * from '@/lib/common/logEntries.js';
 export * from '@/lib/common/tools.js';
 export * from '@iobroker/js-controller-common-db';
 

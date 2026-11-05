@@ -1,10 +1,11 @@
 import path from 'node:path';
 import fs from 'fs-extra';
-import { open } from 'node:fs/promises';
 import { setTimeout as wait } from 'node:timers/promises';
 import { tools } from '@iobroker/js-controller-common';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import { getConfig } from '@/lib/controller/config.js';
+import { LogReadError, parseGetLogsMessage, readLogTail } from '@/lib/logsReader.js';
+import { searchLogFiles } from '@/lib/logSearch.js';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import type { ControllerLogger, GetLogFilesResult } from '@/lib/controller/types.js';
 import type { InstanceManager } from '@/lib/controller/instances/instanceManager.js';
@@ -77,7 +78,7 @@ const getLogs: HostCommand<LogCommandsDeps> = async (deps, msg) => {
         return;
     }
 
-    const requestedLines = msg.message || 200;
+    const options = parseGetLogsMessage(msg.message);
     const logFileNames = [
         // @ts-expect-error types not know this one
         logger.getFileName() as string,
@@ -90,34 +91,45 @@ const getLogs: HostCommand<LogCommandsDeps> = async (deps, msg) => {
     // do not check the existence upfront, the file can be rotated away in between - just try to open it
     for (const logFileName of logFileNames) {
         try {
-            const file = await open(logFileName, 'r');
-
-            try {
-                size = (await file.stat()).size;
-                // read only the last ~150 characters per requested line
-                const start = size > 150 * requestedLines ? size - 150 * requestedLines : 0;
-                const buffer = Buffer.alloc(size - start);
-                const { bytesRead } = await file.read(buffer, 0, buffer.length, start);
-                let text = buffer.subarray(0, bytesRead).toString();
-
-                if (start) {
-                    // drop the first line, it can be incomplete because we did not start reading at 0
-                    text = text.substring(text.indexOf('\n') + 1);
-                }
-
-                lines = text.split('\n');
-                lines.push(size.toString()); // place as last line the current size of log
-            } finally {
-                await file.close();
-            }
-
+            const tail = await readLogTail(logFileName, options);
+            lines = tail.lines;
+            lines.push(tail.size.toString()); // place as last line the current size of log
             break;
-        } catch {
+        } catch (e) {
+            if (e instanceof LogReadError) {
+                // the file exists, but cannot be read: the size is where the requester continues from
+                logger.warn(`${hostLogPrefix} Cannot read log file ${logFileName}: ${e.message}`);
+                size = e.size;
+            }
             // try the next location, or answer with the size only if this was the last one
         }
     }
 
     messages.sendTo(msg.from, msg.command, lines ?? [size], msg.callback);
+};
+
+/**
+ * Search the log files of this host, the rotated ones too, and answer with the matching entries only
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const searchLogs: HostCommand<LogCommandsDeps> = async (deps, msg) => {
+    const { logger, hostLogPrefix, messages } = deps;
+
+    if (!msg.callback || !msg.from) {
+        logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+        return;
+    }
+
+    try {
+        // the file the logger writes now tells where the log files are and how they are named
+        // @ts-expect-error types not know this one
+        const result = await searchLogFiles(logger.getFileName(), msg.message);
+        messages.sendTo(msg.from, msg.command, result, msg.callback);
+    } catch (e) {
+        messages.sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
+    }
 };
 
 /**
@@ -311,6 +323,7 @@ const checkLogging: HostCommand<LogCommandsDeps> = async deps => {
 export function createLogCommands(deps: LogCommandsDeps): Record<string, HostCommandHandler> {
     return {
         getLogs: msg => getLogs(deps, msg),
+        searchLogs: msg => searchLogs(deps, msg),
         getLogFile: msg => getLogFile(deps, msg),
         getLogFiles: msg => getLogFiles(deps, msg),
         delLogs: msg => delLogs(deps, msg),
