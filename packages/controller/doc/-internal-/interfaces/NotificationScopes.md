@@ -6,7 +6,7 @@
 
 # Interface: NotificationScopes
 
-Defined in: [types-dev/index.d.ts:539](https://github.com/ioBroker/ioBroker.js-controller/blob/0aa40743758497cbace847600f063425df31d9bf/packages/types-dev/index.d.ts#L539)
+Defined in: [types-dev/index.d.ts:539](https://github.com/ioBroker/ioBroker.js-controller/blob/487c0bff4a0d0265dd14b97308baecb692589c90/packages/types-dev/index.d.ts#L539)
 
 Predefined notification scopes and their categories
 
@@ -20,4 +20,4 @@ Predefined notification scopes and their categories
 
 > **system**: `"blockedVersions"` \| `"memIssues"` \| `"fsIoErrors"` \| `"noDiskSpace"` \| `"accessErrors"` \| `"nonExistingFileErrors"` \| `"remoteHostErrors"` \| `"restartLoop"` \| `"fileToJsonl"` \| `"numberObjectsLimitExceeded"` \| `"systemRebootRequired"` \| `"dockerUpdate"` \| `"packageUpdates"` \| `"securityIssues"` \| `"databaseErrors"` \| `"automaticAdapterUpgradeSuccessful"` \| `"automaticAdapterUpgradeFailed"`
 
-Defined in: [types-dev/index.d.ts:540](https://github.com/ioBroker/ioBroker.js-controller/blob/0aa40743758497cbace847600f063425df31d9bf/packages/types-dev/index.d.ts#L540)
+Defined in: [types-dev/index.d.ts:540](https://github.com/ioBroker/ioBroker.js-controller/blob/487c0bff4a0d0265dd14b97308baecb692589c90/packages/types-dev/index.d.ts#L540)
