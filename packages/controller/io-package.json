@@ -958,7 +958,7 @@
             "zh-cn": "系统上文件的访问权限存在问题。运行安装修复程序可以解决这些问题。或者，检查相关的目录和文件。"
           },
           "regex": [
-            "^Exception-Code: EACCESS",
+            "^Exception-Code: EACCES: (?!(listen|bind) )",
             "^Exception-Code: EPERM"
           ],
           "limit": 10

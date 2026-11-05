@@ -6,7 +6,9 @@ import { setTimeout as wait } from 'node:timers/promises';
 import {
     EXIT_CODES,
     NotificationHandler,
+    describePortInUse,
     getObjectsConstructor,
+    getPortInUse,
     getStatesConstructor,
     isLocalObjectsDbServer,
     isLocalStatesDbServer,
@@ -1386,6 +1388,22 @@ export class Controller {
     }
 
     /**
+     * Say who holds the address of an `EADDRINUSE`, as far as the used resources of this host know it
+     *
+     * @param err the `EADDRINUSE` error
+     */
+    #describeAddressInUse(err: Error): string {
+        const portInUse = getPortInUse(err);
+        if (!portInUse) {
+            // e.g. a Unix socket, which no instance registers
+            return 'Another instance is running or some application uses the address';
+        }
+        const resources =
+            this.#instances?.usedResources.registry.get(portInUse.protocol === 'udp' ? 'udpPort' : 'tcpPort') ?? [];
+        return describePortInUse({ portInUse, resources });
+    }
+
+    /**
      * Register the handlers for the process signals and uncaught exceptions
      */
     #registerProcessHandlers(): void {
@@ -1414,12 +1432,10 @@ export class Controller {
             }
             this.#uncaughtExceptionCount++;
             if (typeof err === 'object') {
-                // @ts-expect-error should be correct
-                if (err.errno === 'EADDRINUSE') {
-                    this.#logger.error(
-                        `${this.#hostLogPrefix} Another instance is running or some application uses port!`,
-                    );
+                // `errno` is the negative number of libuv, the name of the error is in `code`
+                if ((err as NodeJS.ErrnoException).code === 'EADDRINUSE') {
                     this.#logger.error(`${this.#hostLogPrefix} uncaught exception: ${err.message}`);
+                    this.#logger.error(`${this.#hostLogPrefix} ${this.#describeAddressInUse(err)}`);
                 } else {
                     this.#logger.error(`${this.#hostLogPrefix} uncaught exception: ${err.message}`);
                     this.#logger.error(`${this.#hostLogPrefix} ${err.stack}`);
