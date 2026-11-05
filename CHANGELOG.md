@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Updated the dependencies to their latest versions that support Node.js 22.19 and CommonJS: `cron-parser` 5.10.3, `fs-extra` 11.4.1, `jszip` 3.10.2, `node-schedule` 2.1.2, `pidusage` 4.1.0, `semver` 7.8.6, `yargs` 18.2.0, `@iobroker/plugin-sentry` 3.2.1 and `promisify-child-process` 5.0.1 (now in all packages)
 * (@GermanBluefox) Updated dependencies with security fixes: `axios` to 1.21.0, `node-forge` to 1.4.3 and `tar` to 7.5.22. Also updated `cron-parser` to 5.10.1
 * (@GermanBluefox) `getLogs` accepts an optional `logLevel` now, so a requester can ask for a minimum severity instead of filtering on its own
 * (@GermanBluefox) Added the host command `searchLogs` (feature `CONTROLLER_SEARCH_LOGS`): it searches the log files of the host - the rotated and gzipped ones too - by time range, level, source and text and returns only the matching entries, so that admin does not have to transfer every log file of another host

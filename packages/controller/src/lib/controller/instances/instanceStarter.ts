@@ -668,7 +668,6 @@ export class InstanceStarter {
                     proc.process = cp.fork(adapterMainFile, args, {
                         execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
                         stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-                        // @ts-expect-error missing from types, but we already tested it is needed
                         windowsHide: true,
                         cwd: adapterDir,
                     });
