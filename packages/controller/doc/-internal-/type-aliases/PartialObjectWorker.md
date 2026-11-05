@@ -8,7 +8,7 @@
 
 > **PartialObjectWorker**\<`T`\> = `T` *extends* [`AnyObject`](AnyObject.md) ? [`AnyPartialObject`](AnyPartialObject.md) & `object` : `never`
 
-Defined in: [types-dev/objects.d.ts:1433](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L1433)
+Defined in: [types-dev/objects.d.ts:1438](https://github.com/ioBroker/ioBroker.js-controller/blob/0aa40743758497cbace847600f063425df31d9bf/packages/types-dev/objects.d.ts#L1438)
 
 ## Type Parameters
 
