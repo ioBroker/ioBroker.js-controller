@@ -1,7 +1,7 @@
 {
     "name": "@iobroker/db-objects-jsonl",
     "type": "module",
-    "version": "8.0.0-alpha.11-20261103-58da667b3",
+    "version": "8.0.0-alpha.12-20261105-0aa407437",
     "engines": {
         "node": ">=22.19.0"
     },
