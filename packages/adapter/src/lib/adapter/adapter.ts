@@ -17,7 +17,9 @@ import * as url from 'node:url';
 
 import {
     EXIT_CODES,
+    describePortInUse,
     getObjectsConstructor,
+    getPortInUse,
     getStatesConstructor,
     isInstalledFromNpm,
     logger,
@@ -13345,8 +13347,9 @@ export class AdapterClass extends EventEmitter {
                 }
             }
 
-            // catch it on Windows
-            if (this.getPortRunning && err?.message === 'listen EADDRINUSE') {
+            // the port `getPort()` found free was taken before the adapter listened on it (seen on Windows), so try
+            // the next one. Only the port that `getPort()` handed out counts, any other EADDRINUSE goes on below
+            if (this.getPortRunning && getPortInUse(err)?.port === this.getPortRunning.port) {
                 const { host, port, callback } = this.getPortRunning;
                 this._logger.warn(
                     `${this.namespaceLog} Port ${port}${host ? ` for host ${host}` : ''} is in use. Get next`,
@@ -13374,6 +13377,19 @@ export class AdapterClass extends EventEmitter {
         if (err && !this._stopInProgress) {
             const message = err.code ? `Exception-Code: ${err.code}: ${err.message}` : err.message;
             this._logger.error(`${this.namespaceLog} ${message}`);
+            const portInUse = getPortInUse(err);
+            if (portInUse) {
+                try {
+                    const resources = await this.getHostUsedResources(
+                        portInUse.protocol === 'udp' ? 'udpPort' : 'tcpPort',
+                    );
+                    this._logger.error(
+                        `${this.namespaceLog} ${describePortInUse({ portInUse, resources, instance: this.namespace })}`,
+                    );
+                } catch {
+                    // without the used resources of the host there is nobody to name
+                }
+            }
             try {
                 await this.registerNotification('system', null, message);
             } catch {
