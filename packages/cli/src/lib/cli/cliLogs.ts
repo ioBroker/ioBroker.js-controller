@@ -10,6 +10,7 @@ import {
 import chokidar from 'chokidar';
 import fs from 'fs-extra';
 import os from 'node:os';
+import { basename } from 'node:path';
 import es from 'event-stream';
 import { createRequire } from 'node:module';
 // eslint-disable-next-line unicorn/prefer-module
@@ -93,8 +94,12 @@ export class CLILogs extends CLICommand {
                 fileName = fileName.replace(/\\/g, '/');
                 const parts = fileName.split('/');
                 parts.pop();
+                // chokidar matches no globs since version 4, so `<dir>/iobroker*` was taken as a file name and
+                // nothing was ever watched. Watch the directory and leave out the files that are no log files
                 chokidar
-                    .watch(`${parts.join('/')}/iobroker*`, {
+                    .watch(parts.join('/'), {
+                        depth: 0,
+                        ignored: (file, stats) => !!stats?.isFile() && !basename(file).startsWith('iobroker'),
                         awaitWriteFinish: { stabilityThreshold: 500 },
                         followSymlinks: false,
                     })
@@ -113,32 +118,37 @@ export class CLILogs extends CLICommand {
      * @param event The type of change
      * @param path Which path has changed
      * @param stats Information about the file
-     * @param stats.size The current size of the file in bytes
+     * @param stats.size The current size of the file in bytes - a bigint since chokidar 6
      */
     watchHandler(
         options: CLILogsOptions,
         event: string,
         path: string,
         stats?: {
-            size: number;
+            size: number | bigint;
         },
     ): void {
-        if (!stats) {
+        if (event === 'unlink') {
+            this.fileSizes.delete(path);
             return;
         }
+        // the directory itself and its subdirectories are reported too, `addDir` with the size of a directory
+        if (!stats || (event !== 'add' && event !== 'change')) {
+            return;
+        }
+        // `createReadStream()` refuses a bigint as start
+        const size = Number(stats.size);
         if (event === 'add' || !this.fileSizes.has(path)) {
-            this.fileSizes.set(path, stats.size);
-            if (stats.size > 0 && (this.isReady || (options.complete && this.isTodaysLogfile(path)))) {
+            this.fileSizes.set(path, size);
+            if (size > 0 && (this.isReady || (options.complete && this.isTodaysLogfile(path)))) {
                 this.streamChange(path, 0, options);
             }
         } else if (event === 'change') {
             const oldFileSize = this.fileSizes.get(path)!;
-            this.fileSizes.set(path, stats.size);
-            if (this.isReady && stats.size > oldFileSize) {
+            this.fileSizes.set(path, size);
+            if (this.isReady && size > oldFileSize) {
                 this.streamChange(path, oldFileSize, options);
             }
-        } else if (event === 'unlink') {
-            this.fileSizes.delete(path);
         }
     }
 

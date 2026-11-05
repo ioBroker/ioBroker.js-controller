@@ -132,7 +132,6 @@ export class ScheduleRunner {
             } else {
                 proc.process = cp.fork(adapterMainFile, args, {
                     execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
-                    // @ts-expect-error missing from types, but we already tested it is necessary
                     windowsHide: true,
                     cwd: adapterDir,
                 });
@@ -323,7 +322,6 @@ export class ScheduleRunner {
             } else {
                 proc.process = cp.fork(fileNameFull, args, {
                     execArgv: tools.getDefaultNodeArgs(fileNameFull),
-                    // @ts-expect-error missing from types, but we already tested it is needed
                     windowsHide: true,
                     cwd: adapterDir,
                 });

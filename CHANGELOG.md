@@ -5,6 +5,10 @@
 -->
 ## __WORK IN PROGRESS__
 * (@shrutikbalwan) A repository update drops the downloaded catalogue of every repository that is not active (`json` and `hash`, the entry itself stays). Nothing read it, but it was written with `system.repositories` on every update - with the stable and the beta catalogue several MB more each time. A repository that becomes active again is downloaded anew
+* (@GermanBluefox) Updated the dependencies to their latest versions that support Node.js 22.22.2 and CommonJS: `chokidar` 6.0.0, `cron-parser` 5.10.3, `fs-extra` 11.4.1, `jszip` 3.10.2, `node-schedule` 2.1.2, `pidusage` 4.1.0, `semver` 7.8.6, `yargs` 18.2.0, `@iobroker/plugin-sentry` 3.2.1 and `promisify-child-process` 5.0.1 (now in all packages)
+* (@GermanBluefox) Fixed `iobroker logs --watch` showing no new lines: chokidar matches no glob patterns since version 4, so the pattern `iobroker*` watched nothing. It watches the log directory now
+* (@GermanBluefox) An instance or the controller that fails with `EADDRINUSE` now logs which running instance of the host holds the port, according to the used resources of the host, or that another program holds it. Also fixed three checks that never matched, found by @krobipd: the `EADDRINUSE` check of the controller and the fallback of `getPort()` on Windows compared the wrong property, and the notification category `accessErrors` looked for `EACCESS` instead of `EACCES` - it leaves out `EACCES` of a port (`listen`/`bind`) now, as that is no file access problem
+* (@GermanBluefox) Updated dependencies with security fixes: `axios` to 1.21.0, `node-forge` to 1.4.3 and `tar` to 7.5.22. Also updated `cron-parser` to 5.10.1
 * (@GermanBluefox) `getLogs` accepts an optional `logLevel` now, so a requester can ask for a minimum severity instead of filtering on its own
 * (@GermanBluefox) Added the host command `searchLogs` (feature `CONTROLLER_SEARCH_LOGS`): it searches the log files of the host - the rotated and gzipped ones too - by time range, level, source and text and returns only the matching entries, so that admin does not have to transfer every log file of another host
 * (@GermanBluefox) Added an optional `--level` filter to `iobroker logs`, e.g. `iobroker logs --watch --level warn`
@@ -28,7 +32,7 @@
 * (@GermanBluefox) A states database error while reading a session is no longer swallowed, but reported and logged instead of looking like a logged out user
 * (@GermanBluefox) Added support for adapters written in Python via `common.platform: "Python"` (feature flag `CONTROLLER_PYTHON_ADAPTERS`)
 * (@GermanBluefox) Fixed the controller refusing to start after a crash on a busy Windows machine: the check whether the recorded pid still belongs to the controller gave up after 10 seconds, and a check that cannot be answered counts as "the controller is running"
-* (@GermanBluefox) Node.js 22.19 is now the minimum version - 22.0 to 22.18 are no longer supported
+* (@GermanBluefox) Node.js 22.22.2 is now the minimum version - 22.0 to 22.22.1 are no longer supported
 * (@GermanBluefox) Fixed `start` refusing to run after an unclean shutdown because of a left over `pids.txt`
 * (@GermanBluefox) Fixed the ACL of states restricting members of the administrator group - objects and files already let them through, states only the `admin` user
 * (@GermanBluefox) Added `tipsDisabled` to `system.config`, with which the admin remembers that the "Did you know ...?" tips must not be shown at the start
