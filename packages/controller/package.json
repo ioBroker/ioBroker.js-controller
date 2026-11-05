@@ -1,7 +1,7 @@
 {
     "name": "iobroker.js-controller",
     "type": "module",
-    "version": "8.0.0-alpha.11-20261103-58da667b3",
+    "version": "8.0.0-alpha.12-20261105-0aa407437",
     "engines": {
         "node": ">=22.19.0"
     },
@@ -85,7 +85,7 @@
         "restart": "node iobroker.js restart",
         "release": "release-script",
         "test": "mocha test --exit",
-    "test-unit": "mocha \"src/lib/**/*.test.ts\" --exit",
+        "test-unit": "mocha \"src/lib/**/*.test.ts\" --exit",
         "test-jsonl": "mocha test/jsonl/ --exit",
         "test-redis-socket": "mocha test/redis-socket/ --exit",
         "test-redis-sentinel": "mocha test/redis-sentinel/ --exit"
