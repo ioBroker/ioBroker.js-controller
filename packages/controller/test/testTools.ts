@@ -103,5 +103,7 @@ describe('test tools.js helpers', () => {
             notNode.kill();
             await fs.rm(tmpDir, { recursive: true, force: true });
         }
-    }).timeout(60_000);
+    })
+        // six inspections, each of which may need its own PowerShell start on Windows
+        .timeout(240_000);
 });

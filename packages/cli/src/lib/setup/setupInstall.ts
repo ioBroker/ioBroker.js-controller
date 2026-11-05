@@ -18,6 +18,7 @@ import semver from 'semver';
 
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import { Upload } from '@/lib/setup/setupUpload.js';
+import { type AdapterCompatibilityProblem, checkAdapterCompatibility } from '@/lib/setup/adapterCompatibility.js';
 import { PacketManager } from '@/lib/setup/setupPacketManager.js';
 import { getRepository } from '@/lib/setup/utils.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
@@ -155,8 +156,7 @@ export class Install {
                     ts,
                 };
                 console.log(`host.${hostname} Adapter "${instance._id}" is ${enabled ? 'started' : 'stopped.'}`);
-                // @ts-expect-error should be fixed with #1917
-                await this.objects.extendObjectAsync(instance._id, updatedObj);
+                await this.objects.extendObject(instance._id, updatedObj);
             }
         }
     }
@@ -678,40 +678,19 @@ export class Install {
             return this.processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);
         }
 
-        // Check if the operation system is ok
-        if (adapterConf.common && adapterConf.common.os) {
-            if (typeof adapterConf.common.os === 'string' && adapterConf.common.os !== osPlatform) {
-                console.error(
-                    `host.${hostname} Adapter does not support current os. Required ${adapterConf.common.os}. Actual platform: ${osPlatform}`,
-                );
-                return this.processExit(EXIT_CODES.INVALID_OS);
-            } else if (Array.isArray(adapterConf.common.os) && !adapterConf.common.os.includes(osPlatform as any)) {
-                console.error(
-                    `host.${hostname} Adapter does not support current os. Required one of ${adapterConf.common.os.join(
-                        ', ',
-                    )}. Actual platform: ${osPlatform}`,
-                );
-                return this.processExit(EXIT_CODES.INVALID_OS);
-            }
-        }
-
-        let engineVersion;
+        let packageJson: { engines?: { node?: string } } | null = null;
         try {
             // read directly from disk and not via require to allow "on the fly" updates of adapters.
-            const packJson = fs.readJSONSync(path.join(adapterDir, 'package.json'), 'utf8');
-            engineVersion = packJson?.engines?.node;
+            packageJson = await fs.readJSON(path.join(adapterDir, 'package.json'), 'utf8');
         } catch {
             console.error(`host.${hostname}: Cannot read and parse "${adapterDir}/package.json"`);
         }
 
-        // check node.js version if defined in package.json
-        if (engineVersion) {
-            if (!semver.satisfies(process.version.replace(/^v/, ''), engineVersion)) {
-                console.error(
-                    `host.${hostname} Adapter does not support current nodejs version. Required ${engineVersion}. Actual version: ${process.version}`,
-                );
-                return this.processExit(EXIT_CODES.INVALID_NODE_VERSION);
-            }
+        // Check if the operating system and the Node.js version are supported
+        const problem = checkAdapterCompatibility({ ioPackage: adapterConf, packageJson });
+        if (problem) {
+            console.error(`host.${hostname} ${problem.message}`);
+            return this.processExit(problem.exitCode);
         }
 
         if (adapterConf.common.osDependencies) {
@@ -1521,6 +1500,7 @@ export class Install {
 
                 if (!ioPack.common || !ioPack.common.nondeletable) {
                     await this._npmUninstall(adapterNpm, false);
+
                     // after uninstalling, we have to restart the defined adapters
                     if (ioPack.common.restartAdapters) {
                         if (!Array.isArray(ioPack.common.restartAdapters)) {
@@ -1579,6 +1559,7 @@ export class Install {
                 // remove adapter from custom
                 await this._removeCustomFromObjects([adapter]);
                 await _uninstallNpm();
+                await this._removePythonEnvironment(adapter);
             } else {
                 // we are not allowed to delete the last instance if another instance depends on us
                 const dependentInstance = await this._hasDependentInstances(adapter);
@@ -1602,6 +1583,9 @@ export class Install {
                 await this._deleteAdapterFiles(adapter, metaFilesToDelete);
                 await this._deleteAdapterObjects(knownObjectIDs);
                 await this._deleteAdapterStates(knownStateIDs);
+                // this path removes the instance objects itself instead of going through deleteInstance,
+                // so the registry entries of every instance of the adapter have to be freed here as well
+                await this._freeUsedResources(adapter);
 
                 if (this.params.custom) {
                     // remove adapter from custom
@@ -1609,12 +1593,40 @@ export class Install {
                 }
 
                 await _uninstallNpm();
+                await this._removePythonEnvironment(adapter);
             }
         } catch (e) {
             console.error(`There was an error uninstalling ${adapter} on ${hostname}: ${e.message}`);
         }
 
         return resultCode;
+    }
+
+    /**
+     * Remove the virtual environment a Python adapter leaves behind in the data directory
+     *
+     * Host-local state like `node_modules` - rebuildable, but easily a few hundred megabytes - so it goes when
+     * the adapter goes. Deliberately not part of the npm uninstall: that one starts by resolving the adapter's
+     * `io-package.json`, so for a half-removed installation, where the package directory is already gone, it
+     * throws before ever getting here - and that is precisely the case which leaves the environment behind with
+     * nothing pointing at it.
+     *
+     * Removed without looking at `common.platform` for the same reason: the directory only exists for Python
+     * adapters, and the `io-package.json` that would say so may no longer be there.
+     *
+     * @param adapter adapter name, e.g. "pyexample"
+     */
+    private async _removePythonEnvironment(adapter: string): Promise<void> {
+        try {
+            const pythonEnvDir = tools.getPythonEnvDir(adapter);
+
+            if (await fs.pathExists(pythonEnvDir)) {
+                await fs.remove(pythonEnvDir);
+                console.log(`host.${hostname} Python environment "${pythonEnvDir}" deleted`);
+            }
+        } catch (e) {
+            console.error(`Cannot delete the Python environment of ${adapter}: ${e.message}`);
+        }
     }
 
     /**
@@ -1648,9 +1660,94 @@ export class Install {
 
         await this._deleteAdapterObjects(knownObjectIDs);
         await this._deleteAdapterStates(knownStateIDs);
+        await this._freeUsedResources(adapter, instance);
         if (this.params.custom) {
             // delete instance from custom
             await this._removeCustomFromObjects([`${adapter}.${instance}`]);
+        }
+    }
+
+    /**
+     * Free all exclusive resources (serial ports, TCP/UDP ports, ...) the given instance(s) had registered.
+     *
+     * This is needed because an instance can be deleted via the CLI while a js-controller is not running: it
+     * cannot notice that the instance object disappeared, so its `system.host.<host>.usedResources.<type>`
+     * states would keep listing the resources of an instance that no longer exists.
+     *
+     * Hosts that are running are deliberately skipped. Such a host cleans its own registry up when it sees the
+     * instance object being deleted, and it holds the registry in memory: it rewrites the state from that copy
+     * on its next change, which would silently undo a write made here.
+     *
+     * @param adapter adapter name, e.g. "mqtt"
+     * @param instance instance number; if undefined, all instances of the adapter are freed
+     */
+    private async _freeUsedResources(adapter: string, instance?: number): Promise<void> {
+        const matches = (namespace: string): boolean =>
+            instance !== undefined ? namespace === `${adapter}.${instance}` : namespace.startsWith(`${adapter}.`);
+
+        let keys: string[] | null | undefined;
+        try {
+            keys = await this.states.getKeys('system.host.*.usedResources.*');
+        } catch (e) {
+            console.warn(`Cannot read the used resources registry: ${e.message}`);
+            return;
+        }
+        if (!keys?.length) {
+            return;
+        }
+
+        const hostPrefix = 'system.host.';
+        const registryMarker = '.usedResources.';
+        /** whether a host is currently running, queried once per host */
+        const hostIsRunning = new Map<string, boolean>();
+
+        for (const id of keys) {
+            const markerIndex = id.lastIndexOf(registryMarker);
+            if (!id.startsWith(hostPrefix) || markerIndex <= hostPrefix.length) {
+                continue;
+            }
+            const host = id.substring(hostPrefix.length, markerIndex);
+
+            let isRunning = hostIsRunning.get(host);
+            if (isRunning === undefined) {
+                try {
+                    const aliveState = await this.states.getState(`${hostPrefix}${host}.alive`);
+                    isRunning = aliveState?.val === true;
+                } catch (e) {
+                    // if it cannot be determined, assume the host is running: leaving an entry behind is
+                    // harmless (its controller drops it on the next start) while fighting a live controller
+                    // over the same state is not
+                    console.warn(`Cannot check whether host "${host}" is running: ${e.message}`);
+                    isRunning = true;
+                }
+                hostIsRunning.set(host, isRunning);
+            }
+
+            if (isRunning) {
+                continue;
+            }
+
+            try {
+                const state = await this.states.getState(id);
+                if (!state || typeof state.val !== 'string' || !state.val) {
+                    continue;
+                }
+                const parsed: unknown = JSON.parse(state.val);
+                if (!Array.isArray(parsed)) {
+                    continue;
+                }
+                const original = parsed as { instance?: unknown }[];
+                // keep anything that is malformed: it cannot be attributed to the deleted instance, and one
+                // broken entry must not stop the cleanup of the sound ones in the same state
+                const filtered = original.filter(
+                    entry => typeof entry?.instance !== 'string' || !matches(entry.instance),
+                );
+                if (filtered.length !== original.length) {
+                    await this.states.setStateAsync(id, { val: JSON.stringify(filtered), ack: true });
+                }
+            } catch (e) {
+                console.warn(`Cannot free the used resources in "${id}": ${e.message}`);
+            }
         }
     }
 
@@ -1711,6 +1808,63 @@ export class Install {
     }
 
     /**
+     * Read a JSON file of a GitHub repository at the given commit
+     *
+     * @param user GitHub user or organization
+     * @param repo repository name
+     * @param commit commit hash, branch or tag
+     * @param fileName file in the root of the repository
+     * @returns the parsed file, or `null` if it cannot be read
+     */
+    private async _readGitHubJson<T>(user: string, repo: string, commit: string, fileName: string): Promise<T | null> {
+        try {
+            const result = await axios(
+                `https://raw.githubusercontent.com/${user}/${repo}/${encodeURIComponent(commit)}/${fileName}`,
+                {
+                    headers: { 'User-Agent': 'ioBroker Adapter install' },
+                    timeout: 10_000,
+                    validateStatus: status => status === 200,
+                    responseType: 'json',
+                },
+            );
+            return result.data && typeof result.data === 'object' ? (result.data as T) : null;
+        } catch {
+            return null;
+        }
+    }
+
+    /**
+     * Check an adapter on GitHub before it is installed from there: `common.nogit`, the operating system and the
+     * Node.js version, from its `io-package.json` and `package.json` at the commit to be installed
+     *
+     * Without these checks the adapter would be installed first and fail later, e.g. because files that only the
+     * npm package contains are missing.
+     *
+     * @param user GitHub user or organization
+     * @param repo repository name
+     * @param commit commit hash, branch or tag; without it the default branch, which npm installs then as well
+     * @returns the problem that prevents the installation, or `null`
+     */
+    private async _checkGitHubAdapter(
+        user: string,
+        repo: string,
+        commit: string | undefined,
+    ): Promise<AdapterCompatibilityProblem | null> {
+        const ref = commit || 'HEAD';
+        const [ioPackage, packageJson] = await Promise.all([
+            this._readGitHubJson<ioBroker.AdapterObject>(user, repo, ref, 'io-package.json'),
+            this._readGitHubJson<{ engines?: { node?: string } }>(user, repo, ref, 'package.json'),
+        ]);
+        if (!ioPackage?.common) {
+            console.warn(
+                `host.${hostname} Cannot read io-package.json of ${user}/${repo} from GitHub: whether the adapter can be installed from GitHub is not checked`,
+            );
+            return null;
+        }
+        return checkAdapterCompatibility({ ioPackage, packageJson, fromGitHub: true });
+    }
+
+    /**
      * Installs an adapter from given url
      *
      * @param url url to install adapter from
@@ -1727,6 +1881,9 @@ export class Install {
 
         const debug = process.argv.includes('--debug');
 
+        // the GitHub repository and commit to install, to check the adapter before it is installed
+        let github: { user: string; repo: string; commit?: string } | null = null;
+
         if (parsedUrl && parsedUrl.hostname === 'github.com') {
             if (!tools.isGithubPathname(parsedUrl.pathname)) {
                 return console.error(`Cannot install from GitHub. Invalid URL ${url}`);
@@ -1735,6 +1892,8 @@ export class Install {
             // This is a URL we can parse
             // @ts-expect-error check if type check above is enough
             const { repo, user, commit } = tools.parseGithubPathname(parsedUrl.pathname);
+
+            github = { user, repo, commit };
 
             if (!commit) {
                 // No commit given, try to get it from the API
@@ -1747,7 +1906,8 @@ export class Install {
                         },
                     });
                     if (result.data && Array.isArray(result.data) && result.data.length >= 1 && result.data[0].sha) {
-                        url = `${user}/${repo}#${result.data[0].sha}`;
+                        github.commit = result.data[0].sha;
+                        url = `${user}/${repo}#${github.commit}`;
                     } else {
                         console.log(
                             `Info: Can not get current GitHub commit, only remember that we installed from GitHub.`,
@@ -1764,6 +1924,18 @@ export class Install {
             } else {
                 // We've extracted all we need from the URL
                 url = `${user}/${repo}#${commit}`;
+            }
+        } else if (!parsedUrl && !/^[@.]/.test(url)) {
+            // the short form `user/repo[#commit]`, as npm understands it - not a URL of a tarball, a scoped
+            // package (`@scope/name`) or a relative path, which the pattern would match as well
+            github = tools.parseShortGithubUrl(url);
+        }
+
+        if (github) {
+            const problem = await this._checkGitHubAdapter(github.user, github.repo, github.commit);
+            if (problem) {
+                console.error(`host.${hostname} Cannot install ${github.user}/${github.repo}: ${problem.message}`);
+                return this.processExit(problem.exitCode);
             }
         }
 

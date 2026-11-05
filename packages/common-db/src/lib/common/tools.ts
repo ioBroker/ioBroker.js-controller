@@ -2118,6 +2118,26 @@ export function getDefaultDataDir(): string {
 }
 
 /**
+ * Determine where an adapter's Python virtual environment lives
+ *
+ * Lives here rather than in the controller because the CLI needs the same path when it removes an
+ * adapter: the environment is host-local state like node_modules and has to be cleaned up with it.
+ * One environment per adapter rather than per instance -- the isolation exists to keep adapters
+ * from fighting over package versions, which is not a problem two instances of the same adapter
+ * can have.
+ *
+ * The result is absolute on purpose. getDefaultDataDir() is relative to the controller directory
+ * by design, but the interpreter path derived from this becomes the executable of a spawn() whose
+ * cwd is the adapter's package directory -- a relative path would be resolved against that and
+ * fail with ENOENT, while every check done from the controller's own cwd would still pass.
+ *
+ * @param adapterName name of the adapter without the `iobroker.` prefix
+ */
+export function getPythonEnvDir(adapterName: string): string {
+    return path.resolve(getControllerDir(), getDefaultDataDir(), 'py', adapterName);
+}
+
+/**
  * Returns the path of the config file
  */
 export function getConfigFileName(): string {
@@ -3292,8 +3312,36 @@ export function removePreservedProperties(
     }
 }
 
+/** Value of `common.platform` that marks an adapter as Python. */
+export const PYTHON_PLATFORM = 'Python';
+
+/**
+ * Whether an adapter runs on Python rather than on Node.js
+ *
+ * Compared case-insensitively: `common.platform` is hand-written, and wrong casing already exists
+ * in the wild. The JSON schema only accepts the exact spelling, so this is about what is installed
+ * today, not about what a new adapter may declare.
+ *
+ * @param common the adapter's `common` section, or an instance object's
+ */
+export function isPythonAdapter(common?: { platform?: string } | null): boolean {
+    // `?.` guards null and undefined, not a wrong type, and `common.platform` comes from an `io-package.json`
+    // which is not validated against the schema again once the adapter is installed. A published
+    // `"platform": 1` would throw here, on a path every instance start runs through.
+    return typeof common?.platform === 'string' && common.platform.toLowerCase() === PYTHON_PLATFORM.toLowerCase();
+}
+
 /**
  * Returns the array of system.adapter.<namespace>.* objects which are created for every instance
+ *
+ * A Python instance gets a slightly shorter list: `memHeapTotal` and `memHeapUsed` are V8's heap,
+ * and CPython has no comparable number to put there -- its allocator publishes no total, and the
+ * one figure that could be measured costs several times the memory it reports. Created anyway they
+ * are two rows in the object tree that stay empty for the life of the installation, which reads as
+ * a broken adapter rather than as a number that does not apply.
+ *
+ * Only for instances created from here on. An installation that already has them keeps them:
+ * deleting objects a user may have put in a chart is not this function's business.
  *
  * @param namespace - adapter namespace + id, e.g., hm-rpc.0
  * @param adapterCommon - adapter object from io-package.json
@@ -3303,8 +3351,9 @@ export function getInstanceIndicatorObjects(
     adapterCommon: ioBroker.AdapterCommon,
 ): ioBroker.StateObject[] {
     const id = `system.adapter.${namespace}`;
+    const isPython = isPythonAdapter(adapterCommon);
 
-    return [
+    const objects: ioBroker.StateObject[] = [
         {
             _id: `${id}.alive`,
             type: 'state',
@@ -3452,8 +3501,8 @@ export function getInstanceIndicatorObjects(
             _id: `${id}.eventLoopLag`,
             type: 'state',
             common: {
-                name: `${namespace} Node.js event loop lag`,
-                desc: 'Node.js event loop lag in ms averaged over 15 seconds',
+                name: `${namespace} ${isPython ? 'event loop lag' : 'Node.js event loop lag'}`,
+                desc: `${isPython ? 'asyncio' : 'Node.js'} event loop lag in ms averaged over 15 seconds`,
                 type: 'number',
                 read: true,
                 write: false,
@@ -3503,6 +3552,14 @@ export function getInstanceIndicatorObjects(
             native: {},
         },
     ];
+
+    if (!isPython) {
+        return objects;
+    }
+
+    const heap = [`${id}.memHeapTotal`, `${id}.memHeapUsed`];
+
+    return objects.filter(obj => !heap.includes(obj._id));
 }
 
 export type InternalLogger = Omit<ioBroker.Logger, 'level'>;
@@ -4130,7 +4187,11 @@ export async function isForeignProcess(pid: number): Promise<boolean> {
                     '-Command',
                     `[Console]::OutputEncoding = [Text.Encoding]::UTF8; Get-CimInstance Win32_Process -Filter 'ProcessId=${pid}' | Select-Object Name, CommandLine | ConvertTo-Json -Compress`,
                 ],
-                { timeout: 10_000 },
+                // PowerShell needs seconds for its cold start alone, and WMI answers slowly on a
+                // busy machine - exactly the situation this runs in, right after a crash or a
+                // power loss. A timeout is answered with "cannot inspect", which keeps the
+                // controller from starting, so it is better to wait than to give up early.
+                { timeout: 30_000 },
             );
             // No output means the process is gone
             const output = (stdout || '').trim();
@@ -4151,7 +4212,7 @@ export async function isForeignProcess(pid: number): Promise<boolean> {
         }
 
         // Unlike comm, args is not truncated and shows the title the controller gives itself
-        const { stdout } = await execFileAsync('ps', ['-p', String(pid), '-o', 'args='], { timeout: 2000 });
+        const { stdout } = await execFileAsync('ps', ['-p', String(pid), '-o', 'args='], { timeout: 10_000 });
         const commandLine = (stdout || '').trim();
 
         if (!commandLine) {
@@ -4166,6 +4227,52 @@ export async function isForeignProcess(pid: number): Promise<boolean> {
         console.warn(`Cannot inspect process ${pid}, assuming it belongs to the controller: ${e.message}`);
         return false;
     }
+}
+
+/** A resource type ends up as the last segment of `system.host.<name>.usedResources.<type>`, so it has to be a plain identifier */
+const RESOURCE_TYPE_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
+
+/**
+ * Check that a value can be used as a resource type of the used-resources registry.
+ *
+ * `UsedResourceDataMap` is intentionally open for module augmentation, so unknown type names are accepted as
+ * long as they are usable as a state id segment. What this rejects is a missing, non-string or otherwise
+ * malformed type, which would create a `system.host.<name>.usedResources.undefined` state that the host would
+ * read back as a real resource type on its next start.
+ *
+ * @param type the value to check
+ */
+export function isValidUsedResourceType(type: unknown): type is ioBroker.UsedResourceType {
+    return typeof type === 'string' && RESOURCE_TYPE_PATTERN.test(type);
+}
+
+/**
+ * Check that a value has the shape of an entry of the used-resources registry.
+ *
+ * Lives here rather than in the host, because both ends need it: the host when it reads the states back into
+ * its registry, and an adapter when it reads them to show what is occupied. The states are declared read-only,
+ * but nothing stops anything from writing them, so neither side should hand their content on unchecked.
+ *
+ * The host additionally validates the payload against the rules of its resource type, which are its own.
+ *
+ * @param entry the value to check
+ */
+export function hasRegisteredResourceShape(entry: unknown): entry is ioBroker.RegisteredResource {
+    if (typeof entry !== 'object' || entry === null) {
+        return false;
+    }
+    const candidate = entry as Partial<ioBroker.RegisteredResource>;
+
+    return (
+        isValidUsedResourceType(candidate.type) &&
+        typeof candidate.instance === 'string' &&
+        !!candidate.instance &&
+        typeof candidate.ts === 'number' &&
+        typeof candidate.isBlocked === 'boolean' &&
+        typeof candidate.data === 'object' &&
+        candidate.data !== null &&
+        !Array.isArray(candidate.data)
+    );
 }
 
 export * from '@/lib/common/maybeCallback.js';

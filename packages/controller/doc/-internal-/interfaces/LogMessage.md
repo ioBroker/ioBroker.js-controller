@@ -6,7 +6,7 @@
 
 # Interface: LogMessage
 
-Defined in: [types-dev/index.d.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/index.d.ts#L259)
+Defined in: [types-dev/index.d.ts:388](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L388)
 
 Log message
 
@@ -16,9 +16,21 @@ Log message
 
 > **\_id**: `number`
 
-Defined in: [types-dev/index.d.ts:261](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/index.d.ts#L261)
+Defined in: [types-dev/index.d.ts:390](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L390)
 
 unique ID
+
+***
+
+### alreadyPushed?
+
+> `optional` **alreadyPushed?**: `boolean`
+
+Defined in: [types-dev/index.d.ts:404](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L404)
+
+Set when the producer of this record has already pushed it to the log transporters itself, so
+that a host which logs the record a second time - e.g. captured from the output of a child
+process - does not push it again and show it twice
 
 ***
 
@@ -26,7 +38,7 @@ unique ID
 
 > **from**: `string`
 
-Defined in: [types-dev/index.d.ts:263](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/index.d.ts#L263)
+Defined in: [types-dev/index.d.ts:392](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L392)
 
 id of the source instance
 
@@ -36,7 +48,7 @@ id of the source instance
 
 > **message**: `string`
 
-Defined in: [types-dev/index.d.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/index.d.ts#L269)
+Defined in: [types-dev/index.d.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L398)
 
 actual content
 
@@ -46,7 +58,7 @@ actual content
 
 > **severity**: `string`
 
-Defined in: [types-dev/index.d.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/index.d.ts#L265)
+Defined in: [types-dev/index.d.ts:394](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L394)
 
 log level
 
@@ -56,6 +68,6 @@ log level
 
 > **ts**: `number`
 
-Defined in: [types-dev/index.d.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/index.d.ts#L267)
+Defined in: [types-dev/index.d.ts:396](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L396)
 
 timestamp

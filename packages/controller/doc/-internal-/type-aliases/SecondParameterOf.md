@@ -8,7 +8,7 @@
 
 > **SecondParameterOf**\<`T`\> = `T` *extends* (`arg0`, `arg1`, ...`args`) => `any` ? `R` : `never`
 
-Defined in: [types-dev/index.d.ts:494](https://github.com/ioBroker/ioBroker.js-controller/blob/145a7ac703ef8c4a61ce27a72337ddb9e2049038/packages/types-dev/index.d.ts#L494)
+Defined in: [types-dev/index.d.ts:629](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L629)
 
 ## Type Parameters
 

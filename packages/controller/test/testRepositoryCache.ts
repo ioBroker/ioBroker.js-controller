@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { clearInactiveRepositoryCaches } from '@iobroker/js-controller-common-db/tools';
-import { Repo, type CLIRepoOptions } from '../../cli/build/esm/lib/setup/setupRepo.js';
+import { Repo, type CLIRepoOptions } from '@iobroker/js-controller-cli';
 
 describe('repository cache retention', () => {
     let directory: string;
