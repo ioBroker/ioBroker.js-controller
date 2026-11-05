@@ -2,7 +2,7 @@
     "name": "@iobroker/types",
     "version": "8.0.0-alpha.13-20261105-487c0bff4",
     "engines": {
-        "node": ">=22.19.0"
+        "node": ">=22.22.2"
     },
     "keywords": [
         "ioBroker"

@@ -70,7 +70,6 @@ export class CompactGroupManager {
                     {
                         execArgv,
                         stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-                        // @ts-expect-error missing from types, but we already tested it is needed
                         windowsHide: true,
                     },
                 );
