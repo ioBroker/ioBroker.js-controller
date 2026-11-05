@@ -2032,19 +2032,16 @@ export class AdapterClass extends EventEmitter {
     }
 
     private _getPort(options: InternalGetPortOptions): void {
-        // set only while this probe listens, so `_exceptionHandler` does not take a later EADDRINUSE for it
         this.getPortRunning = options;
         const server = net.createServer();
         try {
             server.listen({ port: options.port, host: options.host }, () => {
-                this.getPortRunning = null;
                 server.once('close', () => {
                     return tools.maybeCallback(options.callback, options.port);
                 });
                 server.close();
             });
             server.on('error', () => {
-                this.getPortRunning = null;
                 setTimeout(() => this.getPort(options.port + 1, options.host, options.callback), 100);
             });
         } catch {
@@ -13350,7 +13347,8 @@ export class AdapterClass extends EventEmitter {
                 }
             }
 
-            // catch it on Windows - the message goes on with the address, so only the code and the port identify it
+            // the port `getPort()` found free was taken before the adapter listened on it (seen on Windows), so try
+            // the next one. Only the port that `getPort()` handed out counts, any other EADDRINUSE goes on below
             if (this.getPortRunning && getPortInUse(err)?.port === this.getPortRunning.port) {
                 const { host, port, callback } = this.getPortRunning;
                 this._logger.warn(
