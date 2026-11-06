@@ -46,6 +46,7 @@ import { IpManager } from '@/lib/controller/host/ipManager.js';
 import { MultihostManager } from '@/lib/controller/host/multihostManager.js';
 import { HostPairing } from '@/lib/controller/host/hostPairing.js';
 import { SystemChecks } from '@/lib/controller/host/systemChecks.js';
+import { PrimaryHostState } from '@/lib/controller/host/primaryHostState.js';
 import type { ControllerLogger, RepoRequester, UploadTask } from '@/lib/controller/types.js';
 
 /** Options to create a controller */
@@ -102,6 +103,8 @@ export class Controller {
     #isDaemon = false;
     /** If this host is the primary host of the installation */
     #isPrimary = false;
+    /** Publishes {@link Controller.#isPrimary} as a state */
+    #primaryHostState!: PrimaryHostState;
     /** All instances which have subscribed to the log messages of this host */
     readonly #logList: string[] = [];
     /** All instances which have requested a repository update */
@@ -189,6 +192,7 @@ export class Controller {
 
         this.#hostObjectPrefix = hostObjectPrefix;
         this.#hostLogPrefix = hostLogPrefix;
+        this.#primaryHostState = new PrimaryHostState(hostObjectPrefix, PRIMARY_HOST_LOCK_TIME);
     }
 
     /**
@@ -684,6 +688,8 @@ export class Controller {
         }
 
         this.#logger.info(`${this.#hostLogPrefix} connected to Objects and States`);
+        // the first primary host check can run before the states database is connected
+        await this.#publishPrimaryHost();
 
         if (this.#ioPackage.notifications) {
             try {
@@ -813,6 +819,22 @@ export class Controller {
         } catch (e) {
             this.#logger.error(`${this.#hostLogPrefix} Could not execute primary host determination: ${e.message}`);
         }
+
+        await this.#publishPrimaryHost();
+    }
+
+    /**
+     * Write the primary host role of this host into the states database
+     */
+    async #publishPrimaryHost(): Promise<void> {
+        if (!this.#states || this.#isCompactGroupController) {
+            return;
+        }
+        try {
+            await this.#primaryHostState.publish(this.#states, this.#isPrimary);
+        } catch (e) {
+            this.#logger.warn(`${this.#hostLogPrefix} Cannot update the primary host state: ${e.message}`);
+        }
     }
 
     /**
@@ -895,6 +917,9 @@ export class Controller {
                 ack: true,
                 from: this.#hostObjectPrefix,
             });
+            if (!this.#isCompactGroupController) {
+                await this.#primaryHostState.publish(this.#states, false);
+            }
         } catch {
             // ignore
         }

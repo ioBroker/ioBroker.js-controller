@@ -55,6 +55,7 @@
 * (@GermanBluefox) Fixed `getEncryptedConfig` decrypting an attribute of `encryptedNative` a second time, which returned garbage because the adapter start already decrypted it
 * (@krobipd) Fixed an alias read/write function returning a boolean (e.g. "val < 20") being stored unconverted in a state declared as number
 * (@GermanBluefox) Added `common.adminTab.order` and `common.adminTab.icon` to the `io-package.json` schema: admin uses both, but an adapter setting them failed the schema validation
+* (@AlanSRU) Added `system.host.<hostname>.isPrimary`, which shows whether a host currently holds the primary host lock
 
 ## 7.2.5 (2026-10-05)
 * (@GermanBluefox) Added the user context to messages: `sendTo`/`sendToHost` write the `user`

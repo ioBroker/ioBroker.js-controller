@@ -864,6 +864,11 @@ All other hosts are configured to connect to this master host.
 
 For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?page_id=3068&lang=de
 
+#### Primary host
+One host holds the primary host lock in the objects database. If that host stops or loses the database, another host takes the lock over.
+
+Each host shows its role in `system.host.<hostname>.isPrimary`. The primary host writes `true` with an expiry equal to the lock time (60 seconds) and renews it every 30 seconds, so the state disappears when the primary host dies or hangs. The other hosts write `false`. An adapter that should only be active on one host at a time can subscribe to the state of the host it runs on.
+
 ### Host discovery
 **Feature status:** New in 8.0.0
 
