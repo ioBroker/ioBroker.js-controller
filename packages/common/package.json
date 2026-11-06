@@ -1,9 +1,9 @@
 {
     "name": "@iobroker/js-controller-common",
     "type": "module",
-    "version": "8.0.0-alpha.10-20261102-5f38a087b",
+    "version": "8.0.0-alpha.14-20261106-c3c2ce2df",
     "engines": {
-        "node": ">=22.19.0"
+        "node": ">=22.22.2"
     },
     "optionalDependencies": {
         "winston-seq-updated": "^1.0.4",
@@ -17,8 +17,8 @@
         "@iobroker/db-states-jsonl": "file:../db-states-jsonl",
         "@iobroker/db-states-redis": "file:../db-states-redis",
         "@iobroker/js-controller-common-db": "file:../common-db",
-        "fs-extra": "^11.3.5",
-        "jszip": "^3.10.1"
+        "fs-extra": "^11.4.1",
+        "jszip": "^3.10.2"
     },
     "keywords": [
         "ioBroker"
@@ -35,7 +35,8 @@
     },
     "scripts": {
         "build": "tsc -b tsconfig.build.json && tsc-alias",
-        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ../cjs/ --cwd=build/esm/"
+        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ../cjs/ --cwd=build/esm/",
+        "test-unit": "mocha --node-option import=tsx \"src/lib/**/*.test.ts\" --exit"
     },
     "main": "build/cjs/index.js",
     "module": "build/esm/index.js",

@@ -8,4 +8,4 @@
 
 > **SubOptions** = \{ `user?`: [`User`](User.md); \} \| `null` \| `undefined`
 
-Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/5f38a087bb763386b99c4383020aa2de144ca730/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L11)
+Defined in: [adapter/src/lib/adapter/managers/SubscriptionManager.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/adapter/managers/SubscriptionManager.ts#L11)

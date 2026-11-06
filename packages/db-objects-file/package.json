@@ -1,15 +1,15 @@
 {
     "name": "@iobroker/db-objects-file",
     "type": "module",
-    "version": "8.0.0-alpha.10-20261102-5f38a087b",
+    "version": "8.0.0-alpha.14-20261106-c3c2ce2df",
     "engines": {
-        "node": ">=22.19.0"
+        "node": ">=22.22.2"
     },
     "dependencies": {
         "@iobroker/db-base": "file:../db-base",
         "@iobroker/db-objects-redis": "file:../db-objects-redis",
         "deep-clone": "^3.0.3",
-        "fs-extra": "^11.3.5"
+        "fs-extra": "^11.4.1"
     },
     "keywords": [
         "ioBroker",
