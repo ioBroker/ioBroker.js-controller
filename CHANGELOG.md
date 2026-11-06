@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@shrutikbalwan) A repository update drops the downloaded catalogue of every repository that is not active (`json` and `hash`, the entry itself stays). Nothing read it, but it was written with `system.repositories` on every update - with the stable and the beta catalogue several MB more each time. A repository that becomes active again is downloaded anew
 * (@GermanBluefox) Added the user context to messages: `sendTo`/`sendToHost`
 * (@GermanBluefox) Updated the dependencies to their latest versions that support Node.js 22.22.2 and CommonJS: `chokidar` 6.0.0, `cron-parser` 5.10.3, `fs-extra` 11.4.1, `jszip` 3.10.2, `node-schedule` 2.1.2, `pidusage` 4.1.0, `semver` 7.8.6, `yargs` 18.2.0, `@iobroker/plugin-sentry` 3.2.1 and `promisify-child-process` 5.0.1 (now in all packages)
 * (@GermanBluefox) Fixed `iobroker logs --watch` showing no new lines: chokidar matches no glob patterns since version 4, so the pattern `iobroker*` watched nothing. It watches the log directory now
