@@ -8,7 +8,7 @@
 
 > **SettableObjectWorker**\<`T`\> = `T` *extends* [`AnyObject`](AnyObject.md) ? `Omit`\<`T`, `"_id"` \| `"acl"`\> & `object` : `never`
 
-Defined in: [types-dev/objects.d.ts:1408](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/types-dev/objects.d.ts#L1408)
+Defined in: [types-dev/objects.d.ts:1431](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/objects.d.ts#L1431)
 
 ## Type Parameters
 

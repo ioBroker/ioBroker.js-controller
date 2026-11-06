@@ -17,7 +17,9 @@ import * as url from 'node:url';
 
 import {
     EXIT_CODES,
+    describePortInUse,
     getObjectsConstructor,
+    getPortInUse,
     getStatesConstructor,
     isInstalledFromNpm,
     logger,
@@ -8998,7 +9000,7 @@ export class AdapterClass extends EventEmitter {
      * If no host name given (e.g. null), the callback argument will be ignored. Because normally many responses will come.
      *
      * @param hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is null, the message will be sent to all hosts.
-     * @param command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
+     * @param command command name. One of: "cmdExec", "getRepository", "getRepositoryCompact", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging", "checkDocker". Commands can be checked in controller.js (function processMessage)
      * @param message object that will be given as argument for request
      * @param callback optional return result
      *        ```js
@@ -9058,7 +9060,7 @@ export class AdapterClass extends EventEmitter {
      * Async version of sendToHost
      *
      * @param hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is null, the message will be sent to all hosts.
-     * @param command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
+     * @param command command name. One of: "cmdExec", "getRepository", "getRepositoryCompact", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging", "checkDocker". Commands can be checked in controller.js (function processMessage)
      * @param message object that will be given as argument for request
      */
     sendToHostAsync(hostName: unknown, command: unknown, message?: unknown): any {
@@ -13345,8 +13347,9 @@ export class AdapterClass extends EventEmitter {
                 }
             }
 
-            // catch it on Windows
-            if (this.getPortRunning && err?.message === 'listen EADDRINUSE') {
+            // the port `getPort()` found free was taken before the adapter listened on it (seen on Windows), so try
+            // the next one. Only the port that `getPort()` handed out counts, any other EADDRINUSE goes on below
+            if (this.getPortRunning && getPortInUse(err)?.port === this.getPortRunning.port) {
                 const { host, port, callback } = this.getPortRunning;
                 this._logger.warn(
                     `${this.namespaceLog} Port ${port}${host ? ` for host ${host}` : ''} is in use. Get next`,
@@ -13374,6 +13377,19 @@ export class AdapterClass extends EventEmitter {
         if (err && !this._stopInProgress) {
             const message = err.code ? `Exception-Code: ${err.code}: ${err.message}` : err.message;
             this._logger.error(`${this.namespaceLog} ${message}`);
+            const portInUse = getPortInUse(err);
+            if (portInUse) {
+                try {
+                    const resources = await this.getHostUsedResources(
+                        portInUse.protocol === 'udp' ? 'udpPort' : 'tcpPort',
+                    );
+                    this._logger.error(
+                        `${this.namespaceLog} ${describePortInUse({ portInUse, resources, instance: this.namespace })}`,
+                    );
+                } catch {
+                    // without the used resources of the host there is nobody to name
+                }
+            }
             try {
                 await this.registerNotification('system', null, message);
             } catch {
@@ -13404,7 +13420,7 @@ export class AdapterClass extends EventEmitter {
             objs = [];
         }
 
-        if (instanceObj && 'instanceObjects' in instanceObj) {
+        if (instanceObj && 'instanceObjects' in instanceObj && instanceObj.instanceObjects) {
             for (const instObj of instanceObj.instanceObjects) {
                 const obj: IoPackageInstanceObject & { state?: ioBroker.StateValue } = instObj;
 

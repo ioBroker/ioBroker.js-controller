@@ -19,8 +19,10 @@ export const appName = appNameLowerCase;
 let objects: ObjectsInRedisClient | null;
 let states: StateRedisClient | null;
 
-// ensure the temp dir is empty, because content of data/files etc is created and checked for existence in some tests
-fs.emptyDirSync(`${rootDir}tmp`);
+// ensure the temp dirs are empty, because content of data/files etc is created and checked for existence in some tests
+// the suites in `test` use `<controller>/tmp`, the ones in `test/<subdir>` use `<controller>/test/tmp`
+fs.emptyDirSync(path.join(rootDir, 'tmp'));
+fs.emptyDirSync(path.join(rootDir, 'test', 'tmp'));
 
 /**
  * Start a controller instance for the integration tests
