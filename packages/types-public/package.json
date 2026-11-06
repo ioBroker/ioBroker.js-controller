@@ -1,8 +1,8 @@
 {
     "name": "@iobroker/types",
-    "version": "8.0.0-alpha.11-20261103-58da667b3",
+    "version": "8.0.0-alpha.14-20261106-c3c2ce2df",
     "engines": {
-        "node": ">=22.19.0"
+        "node": ">=22.22.2"
     },
     "keywords": [
         "ioBroker"
