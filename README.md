@@ -1358,6 +1358,47 @@ controller restarts after a successful connect.
 { result: true }
 ```
 
+#### readDiskDir
+Lists a directory on the disk of this host, e.g. to select a file or a folder in the settings of an
+instance (`diskSelector` of jsonConfig). It is the disk of the host where the instance runs, which
+admin cannot see if it runs on another host. Feature flag `CONTROLLER_READ_DISK_DIR`: an older
+controller never answers, so check the flag first (`checkFeatureSupported`).
+
+```js5
+// message
+{
+  root: '%INSTANCE_DATA_DIR%/certs', // optional, nothing above it is listed. Absolute, may start with
+                                     // %DATA_DIR%, %INSTANCE_DATA_DIR%, %IOBROKER_DIR% or %HOME%.
+                                     // Default: the whole disk, on Windows starting with the drives
+  path: '/opt/iobroker/iobroker-data/myAdapter.0/certs/server.pem', // optional, absolute or relative
+                                     // to root. A file lists its directory, a missing path its nearest
+                                     // existing parent, a path outside of root the root. Default: root
+  filter: '*.pem;*.crt',             // optional, file patterns (case-insensitive), directories always
+  dirsOnly: false,                   // optional, only directories
+  showHidden: false,                 // optional, also the entries starting with a dot
+  instance: 'myAdapter.0',           // needed for %INSTANCE_DATA_DIR%
+}
+// answer
+{
+  root: '/opt/iobroker/iobroker-data/myAdapter.0/certs',
+  path: '/opt/iobroker/iobroker-data/myAdapter.0/certs', // the listed directory
+  parent: null,                      // the directory above, null at the root
+  crumbs: [{ name: '/opt/iobroker/iobroker-data/myAdapter.0/certs', path: '...' }], // root .. path
+  entries: [                         // directories first, then files, sorted by name
+    { name: 'server.pem', path: '/opt/.../certs/server.pem', isDir: false, size: 1500, modified: 1793979169840 },
+  ],
+  selected: 'server.pem',            // the file `path` pointed to
+  truncated: false,                  // more than 5000 entries, only the first ones are listed
+  sep: '/',
+  error: undefined,                  // why nothing could be listed, e.g. the root does not exist
+}
+```
+
+Only the entries the user ioBroker runs as may read are listed (directories: also enter), and no
+sockets, devices or broken links. A symbolic link that leads out of `root` is left out. `root` only
+keeps a dialog where the adapter wants it; who may list the disk at all is decided by the socket
+server, which treats the command as protected like `cmdExec`.
+
 ### Adapter Development
 **Feature status:** Stable
 
