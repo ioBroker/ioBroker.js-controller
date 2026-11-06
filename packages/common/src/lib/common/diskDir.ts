@@ -50,7 +50,7 @@ export interface DiskDirEntry {
     /** Size in bytes, only for files */
     size?: number;
     /** Time of the last modification in ms */
-    modified?: number;
+    mtime?: number;
 }
 
 /** The answer of the host command `readDiskDir` */
@@ -193,7 +193,7 @@ async function checkEntry(
         path: fullPath,
         isDir,
         size: isDir ? undefined : stat.size,
-        modified: Math.round(stat.mtimeMs),
+        mtime: Math.round(stat.mtimeMs),
     };
 }
 

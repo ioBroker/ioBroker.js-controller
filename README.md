@@ -937,7 +937,8 @@ with host commands for two purposes:
 | Select a file or a folder on the host (`diskSelector`) | `readDiskDir`                                           | `CONTROLLER_READ_DISK_DIR` | any directory the user of ioBroker may read, never above `root` if given; hidden entries only with `showHidden` | protected like `cmdExec` by the socket server (administrators) |
 
 Both keep a request below a directory - the package of the adapter, or `root` - with the same checks: nothing above it,
-also not through `..` or a symbolic link that leads out of it, and at most 5000 entries per listing. Both answer an
+also not through `..` or a symbolic link that leads out of it, and at most 5000 entries per listing. Both name the
+time of the last modification `mtime` (in ms) and answer an
 error as `{ error }` instead of throwing, and an older js-controller never answers an unknown command, so check the
 feature flag with `checkFeatureSupported` first.
 
@@ -1596,7 +1597,7 @@ flag `CONTROLLER_READ_DISK_DIR`: an older controller never answers, so check the
   parent: null,                      // the directory above, null at the root
   crumbs: [{ name: '/opt/iobroker/iobroker-data/myAdapter.0/certs', path: '...' }], // root .. path
   entries: [                         // directories first, then files, sorted by name
-    { name: 'server.pem', path: '/opt/.../certs/server.pem', isDir: false, size: 1500, modified: 1793979169840 },
+    { name: 'server.pem', path: '/opt/.../certs/server.pem', isDir: false, size: 1500, mtime: 1793979169840 },
   ],
   selected: 'server.pem',            // the file `path` pointed to
   truncated: false,                  // more than 5000 entries, only the first ones are listed

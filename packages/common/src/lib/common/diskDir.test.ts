@@ -61,7 +61,7 @@ describe('readDiskDir', () => {
         assert.equal(file.isDir, false);
         assert.equal(file.size, 2);
         assert.equal(file.path, path.join(root, 'b.PEM'));
-        assert.equal(typeof file.modified, 'number');
+        assert.equal(typeof file.mtime, 'number');
         assert.equal(answer.entries[0].size, undefined);
     });
 
