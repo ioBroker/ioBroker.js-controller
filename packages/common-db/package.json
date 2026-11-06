@@ -7,7 +7,6 @@
     },
     "optionalDependencies": {
         "@datalust/winston-seq": "^3.0.1",
-        "diskusage": "^1.2.0",
         "winston-syslog": "^2.7.1"
     },
     "dependencies": {
