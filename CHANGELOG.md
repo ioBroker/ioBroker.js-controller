@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Fixed the error `Cannot delete file ... ENOENT` when outdated log files are deleted: writing the "Delete log file" line could start the log rotation, which had already removed the file
 * (@GermanBluefox) Fixed `Cannot read disk size` on current Windows versions: the disk size is now read via `statfs` instead of the removed `wmic` command
 * (@GermanBluefox) Removed the optional native dependency `diskusage` - it is no longer needed, as `statfs` provides the same information
 * (@shrutikbalwan) A repository update drops the downloaded catalogue of every repository that is not active (`json` and `hash`, the entry itself stays). Nothing read it, but it was written with `system.repositories` on every update - with the stable and the beta catalogue several MB more each time. A repository that becomes active again is downloaded anew
