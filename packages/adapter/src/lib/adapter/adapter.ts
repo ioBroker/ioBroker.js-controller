@@ -121,6 +121,8 @@ import type {
     NotificationOptions,
     Pattern,
     MayReadOptions,
+    FetchAdapterDirOptions,
+    FetchAdapterDirResult,
     SendToOptions,
     SendToUserInterfaceClientOptions,
     SetStateChangedResult,
@@ -9239,6 +9241,38 @@ export class AdapterClass extends EventEmitter {
      */
     async getHostUsedResources(type?: ioBroker.UsedResourceType): Promise<ioBroker.RegisteredResource[]> {
         return type === undefined ? this.#async.getHostUsedResources() : this.#async.getHostUsedResources(type);
+    }
+
+    /**
+     * Copy a directory of an installed adapter into a local directory - also from another host.
+     *
+     * The files of an adapter only exist on the hosts it is installed on. vis-2 for example collects the
+     * `widgets` folder of every adapter with widgets, which fails when the adapter runs on another host. This
+     * fetches such a directory: if the adapter is installed on this host, it is copied from its package,
+     * otherwise the js-controller of the host hands the files out piece by piece (js-controller 8.0 or newer on
+     * that host, feature `CONTROLLER_ADAPTER_FILES`).
+     *
+     * Only the package directory of the adapter can be read, and not all of it: everything below
+     * `node_modules`, hidden files and directories (name starting with a dot) and symbolic links are left out.
+     *
+     * Existing files in `target` are overwritten, other files there are kept. If fetching fails, `target` may
+     * hold a part of the files - fetch into an empty directory and move it into place when it is complete.
+     *
+     * @example
+     * ```ts
+     * const { host, files } = await adapter.fetchAdapterDir({
+     *     adapter: 'wattcycle',
+     *     path: 'widgets',
+     *     target: '/opt/iobroker/iobroker-data/vis-2.0/remote/wattcycle',
+     * });
+     * ```
+     * @param options which directory of which adapter, where to, and optionally from which host
+     * @returns the host the files came from and the written files, relative to `target`
+     * @throws {Error} if the adapter or path is invalid, no running host has the adapter, the host is too old or
+     * does not answer, or a file changes while it is fetched
+     */
+    async fetchAdapterDir(options: FetchAdapterDirOptions): Promise<FetchAdapterDirResult> {
+        return this.#async.fetchAdapterDir(options);
     }
 
     // external signatures

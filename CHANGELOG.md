@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Added `adapter.fetchAdapterDir({ adapter, path, target, host? })`: it copies a directory of an installed adapter into a local directory, also when the adapter is installed on another host - then the js-controller of that host hands the files out with the new host commands `listAdapterDir` and `readAdapterFile` (feature flag `CONTROLLER_ADAPTER_FILES`). vis-2 needs it for the widgets of an adapter that runs on another host than vis-2. `node_modules`, hidden files and symbolic links are left out
 * (@GermanBluefox) Fixed `Cannot read disk size` on current Windows versions: the disk size is now read via `statfs` instead of the removed `wmic` command
 * (@GermanBluefox) Removed the optional native dependency `diskusage` - it is no longer needed, as `statfs` provides the same information
 * (@shrutikbalwan) A repository update drops the downloaded catalogue of every repository that is not active (`json` and `hash`, the entry itself stays). Nothing read it, but it was written with `system.repositories` on every update - with the stable and the beta catalogue several MB more each time. A repository that becomes active again is downloaded anew
