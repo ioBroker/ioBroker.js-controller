@@ -8,7 +8,7 @@
 
 > **GetCertificatesCallback** = (`err?`, `certs?`, `useLetsEncryptCert?`) => `void`
 
-Defined in: [adapter/src/lib/\_Types.ts:435](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L435)
+Defined in: [adapter/src/lib/\_Types.ts:435](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/_Types.ts#L435)
 
 ## Parameters
 
