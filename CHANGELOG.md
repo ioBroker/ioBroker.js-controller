@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Added the host command `readDiskDir` (feature `CONTROLLER_READ_DISK_DIR`): it lists a directory on the disk of the host, with only the entries the user of ioBroker may read, and optionally never above a root directory (also not through `..` or a symbolic link). The `diskSelector` control of jsonConfig uses it to select a file or a folder on the host where the instance runs
 * (@GermanBluefox) Fixed `Cannot read disk size` on current Windows versions: the disk size is now read via `statfs` instead of the removed `wmic` command
 * (@GermanBluefox) Removed the optional native dependency `diskusage` - it is no longer needed, as `statfs` provides the same information
 * (@shrutikbalwan) A repository update drops the downloaded catalogue of every repository that is not active (`json` and `hash`, the entry itself stays). Nothing read it, but it was written with `system.repositories` on every update - with the stable and the beta catalogue several MB more each time. A repository that becomes active again is downloaded anew

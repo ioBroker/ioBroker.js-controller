@@ -1489,6 +1489,7 @@ The following features can be checked using this method:
 * **CONTROLLER_CMD_EXEC_FILES**: the `cmdExec` host message supports sending files together with the command via the `files` property (since js-controller 7.2)
 * **CONTROLLER_GET_LOGS_LOG_LEVEL**: the `getLogs` host message accepts an object `{ lines, logLevel }` instead of just the number of lines, so the host returns only entries of the requested severity and more severe ones (since js-controller 8.0)
 * **CONTROLLER_SEARCH_LOGS**: the host command `searchLogs` searches the log files of the host - the rotated and gzipped ones too - with `{ hours, level, source, text, maxRows }` and answers with `{ lines, truncated, files, until }`, so that only the matching entries are transferred (since js-controller 8.0)
+* **CONTROLLER_READ_DISK_DIR**: the host command `readDiskDir` lists a directory on the disk of the host with `{ root, path, filter, dirsOnly, showHidden, instance }` and answers with `{ root, path, parent, crumbs, entries, selected, truncated, sep, error }`. Only the entries the user of ioBroker may read are listed, and nothing above `root`, also not through `..` or a symbolic link. `root` may start with `%DATA_DIR%`, `%INSTANCE_DATA_DIR%` (needs `instance`, e.g. `myAdapter.0`), `%IOBROKER_DIR%` or `%HOME%`. Without `root` the whole disk is listed, on Windows starting with the drives. The `diskSelector` control of jsonConfig uses it (since js-controller 8.0)
 
 To check if certain adapter methods itself are existing, please simply check for their existence like
 
