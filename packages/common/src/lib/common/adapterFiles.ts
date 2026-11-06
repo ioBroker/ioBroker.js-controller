@@ -227,13 +227,13 @@ export async function readFileChunk(
     const toRead = readInteger(length, 'length', 1, ADAPTER_FILE_MAX_CHUNK_SIZE, ADAPTER_FILE_CHUNK_SIZE);
 
     const file = await resolveBelow(root, splitRelativePath(filePath));
-    // checked before opening it: Windows refuses to open a directory, Linux opens it
-    if (!(await fs.stat(file)).isFile()) {
-        throw new Error(`"${String(filePath)}" is no file`);
-    }
     const handle = await fs.open(file, 'r');
     try {
+        // checked on the opened file, so that it cannot be swapped between the check and the reading
         const stat = await handle.stat();
+        if (!stat.isFile()) {
+            throw new Error(`"${String(filePath)}" is no file`);
+        }
         const buffer = Buffer.alloc(Math.max(0, Math.min(toRead, stat.size - start)));
         let read = 0;
         while (read < buffer.length) {
