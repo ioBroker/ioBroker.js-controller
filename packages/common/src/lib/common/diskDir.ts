@@ -9,11 +9,13 @@
  *
  * The listing can be fixed to a root directory. Nothing above it is listed, also not through `..` or through a symbolic
  * link that leads out of it. This keeps the dialog where the adapter wants it; who may list the disk at all is decided
- * by the socket server, which treats the command as protected like `cmdExec`.
+ * by the socket server, which treats the command as protected like `cmdExec`. The checks that keep a path below the
+ * root are shared with the host commands for the files of adapters, see `diskPaths.ts`.
  */
-import { constants as fsConstants, type Dirent } from 'node:fs';
+import type { Dirent } from 'node:fs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { DISK_DIR_MAX_ENTRIES, isHiddenName, isInside, isReadable } from './diskPaths.js';
 
 /** The message of the host command `readDiskDir` */
 export interface ReadDiskDirRequest {
@@ -67,7 +69,7 @@ export interface ReadDiskDirAnswer {
     entries: DiskDirEntry[];
     /** Name of the file the requested `path` pointed to */
     selected?: string;
-    /** More entries than {@link MAX_ENTRIES} matched, only the first ones are listed */
+    /** More entries than {@link DISK_DIR_MAX_ENTRIES} matched, only the first ones are listed */
     truncated?: boolean;
     /** Path separator of this host */
     sep: string;
@@ -83,29 +85,10 @@ export interface DiskDirPlaceholders {
     homeDir: string;
 }
 
-/** Not more entries are listed of one directory */
-export const MAX_ENTRIES = 5_000;
-
 /** How many entries are checked at once */
 const PARALLEL_CHECKS = 64;
 
 const isWindows = process.platform === 'win32';
-
-/**
- * Whether `child` is `parent` or inside of it
- *
- * @param child absolute path
- * @param parent absolute path, `''` for the whole disk
- */
-function isInside(child: string, parent: string): boolean {
-    if (!parent) {
-        return true;
-    }
-    const relative = path.relative(parent, child);
-    return (
-        relative === '' || (relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative))
-    );
-}
 
 /**
  * Replace a placeholder at the beginning of the root with the directory it stands for
@@ -135,7 +118,7 @@ function resolvePlaceholders(root: string, instance: string | undefined, placeho
     } else {
         throw new Error(`Unknown placeholder %${name}%`);
     }
-    return path.join(dir, rest);
+    return path.join(dir, rest ?? '');
 }
 
 /**
@@ -162,22 +145,6 @@ function createFilter(filter: string | undefined): ((name: string) => boolean) |
             ),
     );
     return name => regExps.some(regExp => regExp.test(name));
-}
-
-/**
- * Whether the user ioBroker runs as may read the path (and enter it, if it is a directory)
- *
- * @param fullPath the path to check
- * @param isDir whether it is a directory
- */
-async function isReadable(fullPath: string, isDir: boolean): Promise<boolean> {
-    try {
-        // on Windows X_OK is the same as F_OK
-        await fs.access(fullPath, isDir ? fsConstants.R_OK | fsConstants.X_OK : fsConstants.R_OK);
-        return true;
-    } catch {
-        return false;
-    }
 }
 
 /**
@@ -403,11 +370,11 @@ export async function readDiskDir(
         const dirents = await fs.readdir(dir, { withFileTypes: true });
         const matches = createFilter(request.filter);
         const entries: DiskDirEntry[] = [];
-        for (let i = 0; i < dirents.length && entries.length <= MAX_ENTRIES; i += PARALLEL_CHECKS) {
+        for (let i = 0; i < dirents.length && entries.length <= DISK_DIR_MAX_ENTRIES; i += PARALLEL_CHECKS) {
             const checked = await Promise.all(
                 dirents
                     .slice(i, i + PARALLEL_CHECKS)
-                    .filter(dirent => request.showHidden || !dirent.name.startsWith('.'))
+                    .filter(dirent => request.showHidden || !isHiddenName(dirent.name))
                     .map(dirent => checkEntry(dir, dirent, realRoot, request, matches)),
             );
             for (const entry of checked) {
@@ -416,9 +383,9 @@ export async function readDiskDir(
                 }
             }
         }
-        if (entries.length > MAX_ENTRIES) {
+        if (entries.length > DISK_DIR_MAX_ENTRIES) {
             answer.truncated = true;
-            entries.length = MAX_ENTRIES;
+            entries.length = DISK_DIR_MAX_ENTRIES;
         }
 
         entries.sort((a, b) =>

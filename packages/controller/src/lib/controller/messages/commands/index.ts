@@ -24,7 +24,7 @@ import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHa
  * apart here instead of being merged, which makes it visible per group what it is allowed to touch.
  */
 export interface HostCommandGroupDeps {
-    /** What the commands for the disk of this host need */
+    /** What the commands that read the disk of this host need: a directory, or the package of an adapter */
     disk: DiskCommandsDeps;
     /** What the commands for zip based file and object transfers need */
     files: FileCommandsDeps;
