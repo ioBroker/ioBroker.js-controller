@@ -29,6 +29,7 @@ const SUPPORTED_FEATURES_INTERNAL = [
     'CONTROLLER_PYTHON_ADAPTERS', // Controller can start adapters with `common.platform: "Python"`. Since `js-controller` 8.0
     'CONTROLLER_REPOSITORY_COMPACT', // sendToHost('getRepositoryCompact') answers with the version and the icon per adapter instead of the whole repository. Since `js-controller` 8.0
     'CONTROLLER_CHECK_DOCKER', // sendToHost('checkDocker', { instance }) answers whether the instance can use Docker on that host, checked by its `@iobroker/plugin-docker`. Since `js-controller` 8.0
+    'CONTROLLER_ADAPTER_FILES', // sendToHost('listAdapterDir'), sendToHost('readAdapterFile') and sendToHost('readAdapterFiles') hand out a directory of an adapter installed on the host, e.g. its `widgets`, which `adapter.fetchAdapterDir()` uses. Since `js-controller` 8.0
 ] as const;
 
 export const SUPPORTED_FEATURES = [...SUPPORTED_FEATURES_INTERNAL];
