@@ -12,8 +12,10 @@ const ADAPTER_FILES_FEATURE = 'CONTROLLER_ADAPTER_FILES';
 const FEATURE_CHECK_TIMEOUT = 5_000;
 /** How long the listing or one piece of a file may take, in ms */
 const REQUEST_TIMEOUT = 30_000;
-/** How many files are fetched from another host at the same time */
-const PARALLEL_FILES = 4;
+/** How many requests go to another host at the same time */
+const PARALLEL_REQUESTS = 4;
+/** Files up to this size are fetched together with others in one `readAdapterFiles` */
+const SMALL_FILE_SIZE = 64 * 1024;
 
 /** A file of the listing, with the place it is written to */
 interface PlannedFile {
@@ -21,6 +23,8 @@ interface PlannedFile {
     path: string;
     /** Absolute path of the copy */
     dest: string;
+    /** Size according to the listing, `Infinity` if the listing gave none */
+    size: number;
 }
 
 /**
@@ -28,7 +32,9 @@ interface PlannedFile {
  *
  * An adapter only exists on the hosts it is installed on. If it is installed on this host, the directory is copied
  * from its package; otherwise the js-controller of a host it is installed on hands the files out with
- * `sendToHost(host, 'listAdapterDir', ...)` and `sendToHost(host, 'readAdapterFile', ...)`, piece by piece.
+ * `sendToHost(host, 'listAdapterDir', ...)`, `sendToHost(host, 'readAdapterFiles', ...)` for the small files, several
+ * in one answer, and `sendToHost(host, 'readAdapterFile', ...)` for the big ones, piece by piece - all compressed
+ * with gzip where it helps.
  */
 export class AdapterFileManager extends AdapterContextBase {
     readonly #getMessaging: () => MessagingManager;
@@ -195,26 +201,99 @@ export class AdapterFileManager extends AdapterContextBase {
             throw new Error(`invalid answer of host "${host}" to listAdapterDir`);
         }
         const planned: PlannedFile[] = listing.files.map((entry: unknown) => {
-            const relPath = (entry as { path?: unknown } | null)?.path;
-            return { path: relPath as string, dest: AdapterFileManager.#destination(target, relPath) };
+            const { path: relPath, size } = (entry ?? {}) as { path?: unknown; size?: unknown };
+            return {
+                path: relPath as string,
+                dest: AdapterFileManager.#destination(target, relPath),
+                size: Number.isSafeInteger(size) && (size as number) >= 0 ? (size as number) : Infinity,
+            };
         });
 
+        const tasks = AdapterFileManager.#groupFiles(planned);
         let next = 0;
         let failed = false;
         const worker = async (): Promise<void> => {
-            while (!failed && next < planned.length) {
-                const file = planned[next++];
+            while (!failed && next < tasks.length) {
+                const task = tasks[next++];
                 try {
-                    await this.#fetchFile(host, adapter, `${dirPath}/${file.path}`, file.dest);
+                    if (task.length === 1) {
+                        await this.#fetchFile(host, adapter, `${dirPath}/${task[0].path}`, task[0].dest);
+                    } else {
+                        await this.#fetchFiles(host, adapter, dirPath, task);
+                    }
                 } catch (e) {
                     failed = true;
                     throw e;
                 }
             }
         };
-        await Promise.all(Array.from({ length: Math.min(PARALLEL_FILES, planned.length) }, worker));
+        await Promise.all(Array.from({ length: Math.min(PARALLEL_REQUESTS, tasks.length) }, worker));
 
         return planned.map(file => file.path);
+    }
+
+    /**
+     * Group the small files, so that several of them come with one request, and leave the big ones alone
+     *
+     * @param planned the files of the listing
+     * @returns the groups; a group with one file is fetched with `readAdapterFile`
+     */
+    static #groupFiles(planned: PlannedFile[]): PlannedFile[][] {
+        const tasks: PlannedFile[][] = [];
+        let group: PlannedFile[] = [];
+        let groupSize = 0;
+        for (const file of planned) {
+            if (file.size > SMALL_FILE_SIZE) {
+                tasks.push([file]);
+                continue;
+            }
+            if (
+                group.length &&
+                (group.length >= adapterFiles.ADAPTER_FILES_MAX_BATCH ||
+                    groupSize + file.size > adapterFiles.ADAPTER_FILE_CHUNK_SIZE)
+            ) {
+                tasks.push(group);
+                group = [];
+                groupSize = 0;
+            }
+            group.push(file);
+            groupSize += file.size;
+        }
+        if (group.length) {
+            tasks.push(group);
+        }
+        return tasks;
+    }
+
+    /**
+     * Fetch several small files from another host with one request and write them
+     *
+     * The host stops when it has read 1 MB in total, so a file that was cut off or left out is fetched on with
+     * `readAdapterFile` - e.g. because it grew since the listing.
+     *
+     * @param host name of the host
+     * @param adapter name of the adapter
+     * @param dirPath the directory inside the package of the adapter
+     * @param files the files of the listing
+     */
+    async #fetchFiles(host: string, adapter: string, dirPath: string, files: PlannedFile[]): Promise<void> {
+        const paths = files.map(file => `${dirPath}/${file.path}`);
+        const answer = await this.#request(host, 'readAdapterFiles', {
+            adapter,
+            paths,
+            length: adapterFiles.ADAPTER_FILE_CHUNK_SIZE,
+            compress: true,
+        });
+        if (!Array.isArray(answer.files) || answer.files.length > files.length) {
+            throw new Error(`invalid answer of host "${host}" to readAdapterFiles`);
+        }
+        for (let i = 0; i < files.length; i++) {
+            const first: Record<string, any> | undefined = answer.files[i];
+            if (first && first.path !== paths[i]) {
+                throw new Error(`invalid answer of host "${host}" to readAdapterFiles`);
+            }
+            await this.#fetchFile(host, adapter, paths[i], files[i].dest, first);
+        }
     }
 
     /**
@@ -224,8 +303,15 @@ export class AdapterFileManager extends AdapterContextBase {
      * @param adapter name of the adapter
      * @param filePath the file inside the package of the adapter
      * @param dest where the file is written to
+     * @param first the beginning of the file if it came already with `readAdapterFiles`
      */
-    async #fetchFile(host: string, adapter: string, filePath: string, dest: string): Promise<void> {
+    async #fetchFile(
+        host: string,
+        adapter: string,
+        filePath: string,
+        dest: string,
+        first?: Record<string, any>,
+    ): Promise<void> {
         const chunkSize = adapterFiles.ADAPTER_FILE_CHUNK_SIZE;
         await fs.mkdir(path.dirname(dest), { recursive: true });
         const handle = await fs.open(dest, 'w');
@@ -234,18 +320,21 @@ export class AdapterFileManager extends AdapterContextBase {
             // unknown until the first piece arrives
             let size = -1;
             let mtime = 0;
+            let chunk = first;
             do {
-                const chunk = await this.#request(host, 'readAdapterFile', {
+                // the beginning from readAdapterFiles may be shorter than a piece, as the host stops after 1 MB
+                const fromBatch = !!chunk;
+                chunk ??= await this.#request(host, 'readAdapterFile', {
                     adapter,
                     path: filePath,
                     offset,
                     length: chunkSize,
+                    compress: true,
                 });
                 if (
                     !Number.isSafeInteger(chunk.size) ||
                     chunk.size < 0 ||
                     typeof chunk.mtime !== 'number' ||
-                    typeof chunk.data !== 'string' ||
                     chunk.offset !== offset
                 ) {
                     throw new Error(`invalid answer of host "${host}" for "${filePath}"`);
@@ -256,12 +345,22 @@ export class AdapterFileManager extends AdapterContextBase {
                 } else if (chunk.size !== size || chunk.mtime !== mtime) {
                     throw new Error(`"${filePath}" changed on host "${host}" while it was fetched`);
                 }
-                const data = Buffer.from(chunk.data, 'base64');
-                if (data.length !== Math.min(chunkSize, size - offset)) {
+                const expected = Math.min(
+                    fromBatch ? adapterFiles.ADAPTER_FILE_MAX_CHUNK_SIZE : chunkSize,
+                    size - offset,
+                );
+                let data: Buffer;
+                try {
+                    data = await adapterFiles.decodeChunkData(chunk, expected);
+                } catch (e) {
+                    throw new Error(`invalid piece of "${filePath}" from host "${host}": ${e.message}`);
+                }
+                if (fromBatch ? !data.length && expected > 0 : data.length !== expected) {
                     throw new Error(`incomplete piece of "${filePath}" from host "${host}"`);
                 }
                 await handle.write(data, 0, data.length, offset);
                 offset += data.length;
+                chunk = undefined;
             } while (offset < size);
         } finally {
             await handle.close();

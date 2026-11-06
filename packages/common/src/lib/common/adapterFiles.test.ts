@@ -1,13 +1,18 @@
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import zlib from 'node:zlib';
 import {
     ADAPTER_FILE_MAX_CHUNK_SIZE,
+    ADAPTER_FILES_MAX_BATCH,
     checkAdapterName,
+    decodeChunkData,
     getInstalledAdapterDir,
     listDir,
     readFileChunk,
+    readFiles,
     splitRelativePath,
 } from './adapterFiles.js';
 
@@ -190,6 +195,93 @@ describe('adapterFiles', () => {
                 this.skip();
             }
             await assert.rejects(() => readFileChunk(root, 'widgets/link.txt'), /leads out of the directory/);
+        });
+
+        it('compresses a piece only if asked for and if it gets smaller', async () => {
+            const text = 'export default { name: "test" };\n'.repeat(1000);
+            await fs.writeFile(path.join(root, 'widgets', 'big.js'), text);
+            await fs.writeFile(path.join(root, 'widgets', 'big.png'), text);
+
+            const plain = await readFileChunk(root, 'widgets/big.js');
+            assert.equal(plain.compressed, undefined);
+            assert.equal(Buffer.from(plain.data, 'base64').toString(), text);
+
+            const packed = await readFileChunk(root, 'widgets/big.js', 0, undefined, true);
+            assert.equal(packed.compressed, true);
+            assert.equal(packed.size, text.length);
+            assert.ok(packed.data.length < text.length / 10);
+            assert.equal((await decodeChunkData(packed, text.length)).toString(), text);
+
+            // already compressed formats and tiny pieces stay as they are
+            assert.equal((await readFileChunk(root, 'widgets/big.png', 0, undefined, true)).compressed, undefined);
+            assert.equal((await readFileChunk(root, 'widgets/big.js', 0, 100, true)).compressed, undefined);
+            // random bytes get bigger with gzip
+            await fs.writeFile(path.join(root, 'widgets', 'random.bin'), crypto.randomBytes(4096));
+            assert.equal((await readFileChunk(root, 'widgets/random.bin', 0, undefined, true)).compressed, undefined);
+
+            await assert.rejects(() => readFileChunk(root, 'widgets/big.js', 0, undefined, 'yes'), /invalid compress/);
+        });
+    });
+
+    describe('readFiles', () => {
+        it('reads several files from their beginning, in the requested order', async () => {
+            const files = await readFiles(root, ['widgets/test/img/icon.png', 'widgets/test.html']);
+            assert.deepEqual(
+                files.map(f => [f.path, f.size, f.offset, Buffer.from(f.data, 'base64').toString('hex')]),
+                [
+                    ['widgets/test/img/icon.png', 5, 0, '0102030405'],
+                    ['widgets/test.html', 11, 0, Buffer.from('<div></div>').toString('hex')],
+                ],
+            );
+        });
+
+        it('stops after length bytes in total', async () => {
+            const files = await readFiles(
+                root,
+                ['widgets/test/img/icon.png', 'widgets/test.html', 'widgets/test/customWidgets.js'],
+                8,
+            );
+            assert.deepEqual(
+                files.map(f => [f.path, f.size, Buffer.from(f.data, 'base64').length]),
+                [
+                    ['widgets/test/img/icon.png', 5, 5],
+                    ['widgets/test.html', 11, 3],
+                ],
+            );
+        });
+
+        it('refuses invalid lists and checks all paths before reading', async () => {
+            await assert.rejects(() => readFiles(root, []), /invalid paths/);
+            await assert.rejects(() => readFiles(root, 'widgets/test.html'), /invalid paths/);
+            await assert.rejects(
+                () => readFiles(root, new Array(ADAPTER_FILES_MAX_BATCH + 1).fill('widgets/test.html')),
+                /invalid paths/,
+            );
+            await assert.rejects(() => readFiles(root, ['widgets/test.html', '../outside.txt']), /invalid path/);
+            await assert.rejects(() => readFiles(root, ['widgets/test.html', 'widgets/missing']), /does not exist/);
+        });
+    });
+
+    describe('decodeChunkData', () => {
+        it('decodes plain and compressed pieces', async () => {
+            const data = Buffer.from('hello hello hello');
+            assert.deepEqual(await decodeChunkData({ data: data.toString('base64') }, data.length), data);
+            const packed = zlib.gzipSync(data).toString('base64');
+            assert.deepEqual(await decodeChunkData({ data: packed, compressed: true }, data.length), data);
+        });
+
+        it('refuses pieces that are longer than expected or broken', async () => {
+            const bomb = zlib.gzipSync(Buffer.alloc(1_000_000)).toString('base64');
+            await assert.rejects(
+                () => decodeChunkData({ data: bomb, compressed: true }, 1000),
+                /cannot be decompressed/,
+            );
+            await assert.rejects(() => decodeChunkData({ data: 'aGVsbG8=' }, 2), /longer than expected/);
+            await assert.rejects(
+                () => decodeChunkData({ data: 'aGVsbG8=', compressed: true }, 10),
+                /cannot be decompressed/,
+            );
+            await assert.rejects(() => decodeChunkData({ data: 5 }, 10), /invalid data/);
         });
     });
 });

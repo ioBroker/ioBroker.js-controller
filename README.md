@@ -933,7 +933,8 @@ with widgets - cannot read them from its own disk when that adapter is installed
 
 `adapter.fetchAdapterDir()` copies such a directory into a local directory. If the adapter is installed on the host of
 the calling instance, the directory is copied from its package. Otherwise the js-controller of a host it is installed
-on hands the files out with the host commands `listAdapterDir` and `readAdapterFile`, in pieces of 1 MB:
+on hands the files out with the host commands `listAdapterDir`, `readAdapterFiles` (small files, several in one
+answer) and `readAdapterFile` (big files, in pieces of 1 MB), compressed with gzip where it helps:
 
 ```js
 const { host, files } = await adapter.fetchAdapterDir({
@@ -1515,12 +1516,34 @@ directories, `node_modules` and symbolic links are left out; at most 5000 files 
 
 Reads one piece of a file of an adapter installed on this host. `length` is 1 MB by default and 4 MB at most; the
 answer at the end of the file has an empty `data`. A changed `mtime` between two pieces means the file was changed.
+With `compress: true` the host compresses the piece with gzip if it gets smaller by it and says so with
+`compressed: true`; `offset`, `length` and `size` always count the uncompressed bytes. Already compressed formats
+(images, fonts, archives) and pieces under 256 bytes are not compressed.
 
 ```js5
 // message
-{ adapter: 'wattcycle', path: 'widgets/wattcycle/customWidgets.js', offset: 0, length: 1048576 }
-// answer, data is base64 encoded
-{ size: 2310, mtime: 1762430000000, offset: 0, data: 'aW1wb3J0...' }
+{ adapter: 'wattcycle', path: 'widgets/wattcycle/customWidgets.js', offset: 0, length: 1048576, compress: true }
+// answer, data is base64 encoded - of the gzip compressed bytes if compressed is true
+{ size: 2310, mtime: 1762430000000, offset: 0, data: 'H4sIAAAA...', compressed: true }
+```
+
+#### readAdapterFiles
+
+Reads several small files of an adapter installed on this host in one go, at most 100, each from its beginning, so that
+a widget set with hundreds of small files does not need a request per file. The files are read in the given order
+until `length` bytes (1 MB by default, 4 MB at most) are read in total: the last file may be cut off and the following
+ones are left out then - fetch the rest with `readAdapterFile`. `compress` works as with `readAdapterFile`.
+
+```js5
+// message
+{ adapter: 'wattcycle', paths: ['widgets/wattcycle/customWidgets.js', 'widgets/wattcycle/i18n/de.json'], compress: true }
+// answer, in the order of paths
+{
+    files: [
+        { path: 'widgets/wattcycle/customWidgets.js', size: 2310, mtime: 1762430000000, offset: 0, data: 'H4sIAAAA...', compressed: true },
+        { path: 'widgets/wattcycle/i18n/de.json', size: 120, mtime: 1762430000000, offset: 0, data: 'eyJ0aXRsZSI6...' },
+    ],
+}
 ```
 
 ### Adapter Development
@@ -1662,7 +1685,7 @@ The following features can be checked using this method:
 - **CONTROLLER_CMD_EXEC_FILES**: the `cmdExec` host message supports sending files together with the command via the `files` property (since js-controller 7.2)
 - **CONTROLLER_GET_LOGS_LOG_LEVEL**: the `getLogs` host message accepts an object `{ lines, logLevel }` instead of just the number of lines, so the host returns only entries of the requested severity and more severe ones (since js-controller 8.0)
 - **CONTROLLER_SEARCH_LOGS**: the host command `searchLogs` searches the log files of the host - the rotated and gzipped ones too - with `{ hours, level, source, text, maxRows }` and answers with `{ lines, truncated, files, until }`, so that only the matching entries are transferred (since js-controller 8.0)
-- **CONTROLLER_ADAPTER_FILES**: the host commands `listAdapterDir` and `readAdapterFile` hand out a directory of an adapter installed on the host, e.g. its `widgets`, so that `adapter.fetchAdapterDir()` can fetch it for an instance on another host (since js-controller 8.0)
+- **CONTROLLER_ADAPTER_FILES**: the host commands `listAdapterDir`, `readAdapterFile` and `readAdapterFiles` hand out a directory of an adapter installed on the host, e.g. its `widgets`, so that `adapter.fetchAdapterDir()` can fetch it for an instance on another host (since js-controller 8.0)
 
 To check if certain adapter methods itself are existing, please simply check for their existence like
 

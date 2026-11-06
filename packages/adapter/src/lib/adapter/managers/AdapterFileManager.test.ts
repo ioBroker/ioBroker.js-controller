@@ -3,6 +3,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import zlib from 'node:zlib';
 import sinon from 'sinon';
 import { adapterFiles, tools } from '@iobroker/js-controller-common';
 import { AdapterFileManager } from './AdapterFileManager.js';
@@ -53,7 +54,17 @@ function fakeHost(
                 case 'listAdapterDir':
                     return { files: await adapterFiles.listDir(root, message.path) };
                 case 'readAdapterFile':
-                    return await adapterFiles.readFileChunk(root, message.path, message.offset, message.length);
+                    return await adapterFiles.readFileChunk(
+                        root,
+                        message.path,
+                        message.offset,
+                        message.length,
+                        message.compress,
+                    );
+                case 'readAdapterFiles':
+                    return {
+                        files: await adapterFiles.readFiles(root, message.paths, message.length, message.compress),
+                    };
             }
         } catch (e) {
             return { error: e.message };
@@ -101,10 +112,114 @@ describe('AdapterFileManager.fetchAdapterDir', () => {
         assert.equal((await fs.stat(path.join(target, 'wattcycle', 'empty.txt'))).size, 0);
         await assert.rejects(() => fs.stat(path.join(target, '.secret')));
 
-        // the big file came in three pieces, all requests went to frigate
+        // the big file came in three pieces, the two small ones with one request, all requests went to frigate
         const reads = sendToHost.getCalls().filter(call => call.args[0].command === 'readAdapterFile');
-        assert.equal(reads.filter(call => call.args[0].message.path === 'widgets/wattcycle/assets/big.js').length, 3);
+        assert.equal(reads.length, 3);
+        assert.ok(reads.every(call => call.args[0].message.path === 'widgets/wattcycle/assets/big.js'));
+        const batches = sendToHost.getCalls().filter(call => call.args[0].command === 'readAdapterFiles');
+        assert.deepEqual(
+            batches.map(call => call.args[0].message.paths),
+            [['widgets/wattcycle/customWidgets.js', 'widgets/wattcycle/empty.txt']],
+        );
         assert.ok(sendToHost.getCalls().every(call => call.args[0].hostName === 'frigate'));
+    });
+
+    it('asks for compressed pieces and unpacks them', async () => {
+        const text = Buffer.from('export const widget = { name: "wattcycle" };\n'.repeat(60_000));
+        await fs.writeFile(path.join(remoteRoot, 'widgets', 'wattcycle', 'assets', 'big.js'), text);
+        const answers: { compressed?: boolean; data: string }[] = [];
+        const sendToHost = fakeHost(remoteRoot, {
+            readAdapterFile: async message => {
+                const chunk = await adapterFiles.readFileChunk(
+                    remoteRoot,
+                    message.path,
+                    message.offset,
+                    message.length,
+                    message.compress,
+                );
+                answers.push(chunk);
+                return chunk;
+            },
+        });
+        const mgr = new AdapterFileManager(makeContext(), () => ({ sendToHost }) as any);
+
+        await mgr.fetchAdapterDir({ adapter: 'wattcycle', path: 'widgets/wattcycle/assets', target, host: 'frigate' });
+
+        assert.deepEqual(await fs.readFile(path.join(target, 'big.js')), text);
+        assert.equal(answers.length, 3);
+        assert.ok(answers.every(chunk => chunk.compressed));
+        const sent = answers.reduce((sum, chunk) => sum + chunk.data.length, 0);
+        assert.ok(sent < text.length / 10, `${sent} bytes sent for ${text.length}`);
+    });
+
+    it('fetches many small files with few requests', async () => {
+        const dir = path.join(remoteRoot, 'widgets', 'many');
+        await fs.mkdir(dir);
+        for (let i = 0; i < 150; i++) {
+            await fs.writeFile(path.join(dir, `file${String(i).padStart(3, '0')}.json`), `{"i":${i}}`);
+        }
+        const sendToHost = fakeHost(remoteRoot);
+        const mgr = new AdapterFileManager(makeContext(), () => ({ sendToHost }) as any);
+
+        const result = await mgr.fetchAdapterDir({
+            adapter: 'wattcycle',
+            path: 'widgets/many',
+            target,
+            host: 'frigate',
+        });
+
+        assert.equal(result.files.length, 150);
+        assert.equal(await fs.readFile(path.join(target, 'file149.json'), 'utf8'), '{"i":149}');
+        const commands = sendToHost.getCalls().map(call => call.args[0].command);
+        assert.deepEqual(commands, ['checkFeatureSupported', 'listAdapterDir', 'readAdapterFiles', 'readAdapterFiles']);
+    });
+
+    it('fetches the rest of files the host cut off or left out', async () => {
+        const dir = path.join(remoteRoot, 'widgets', 'cut');
+        await fs.mkdir(dir);
+        await fs.writeFile(path.join(dir, 'a.js'), 'aaaaaaaaaa');
+        await fs.writeFile(path.join(dir, 'b.js'), 'bbbbbbbbbb');
+        await fs.writeFile(path.join(dir, 'c.js'), 'cccccccccc');
+        const sendToHost = fakeHost(remoteRoot, {
+            // a host that stops after 15 bytes: a.js complete, b.js cut off, c.js left out
+            readAdapterFiles: async message => ({
+                files: await adapterFiles.readFiles(remoteRoot, message.paths, 15, message.compress),
+            }),
+        });
+        const mgr = new AdapterFileManager(makeContext(), () => ({ sendToHost }) as any);
+
+        await mgr.fetchAdapterDir({ adapter: 'wattcycle', path: 'widgets/cut', target, host: 'frigate' });
+
+        assert.equal(await fs.readFile(path.join(target, 'a.js'), 'utf8'), 'aaaaaaaaaa');
+        assert.equal(await fs.readFile(path.join(target, 'b.js'), 'utf8'), 'bbbbbbbbbb');
+        assert.equal(await fs.readFile(path.join(target, 'c.js'), 'utf8'), 'cccccccccc');
+        const reads = sendToHost.getCalls().filter(call => call.args[0].command === 'readAdapterFile');
+        assert.deepEqual(
+            reads.map(call => [call.args[0].message.path, call.args[0].message.offset]),
+            [
+                ['widgets/cut/b.js', 5],
+                ['widgets/cut/c.js', 0],
+            ],
+        );
+    });
+
+    it('refuses a compressed piece that unpacks to more than expected', async () => {
+        // only the two small files, so that no other request is still writing when the fetch fails
+        await fs.rm(path.join(remoteRoot, 'widgets', 'wattcycle', 'assets'), { recursive: true });
+        const sendToHost = fakeHost(remoteRoot, {
+            readAdapterFiles: async message => {
+                const files = await adapterFiles.readFiles(remoteRoot, message.paths, message.length);
+                const bomb = zlib.gzipSync(Buffer.alloc(1_000_000)).toString('base64');
+                files[0] = { ...files[0], data: bomb, compressed: true };
+                return { files };
+            },
+        });
+        const mgr = new AdapterFileManager(makeContext(), () => ({ sendToHost }) as any);
+
+        await assert.rejects(
+            () => mgr.fetchAdapterDir({ adapter: 'wattcycle', path: 'widgets/wattcycle', target, host: 'frigate' }),
+            /invalid piece of "widgets\/wattcycle\/customWidgets.js" from host "frigate"/,
+        );
     });
 
     it('checks the feature of a host only once', async () => {

@@ -9249,8 +9249,9 @@ export class AdapterClass extends EventEmitter {
      * The files of an adapter only exist on the hosts it is installed on. vis-2 for example collects the
      * `widgets` folder of every adapter with widgets, which fails when the adapter runs on another host. This
      * fetches such a directory: if the adapter is installed on this host, it is copied from its package,
-     * otherwise the js-controller of the host hands the files out piece by piece (js-controller 8.0 or newer on
-     * that host, feature `CONTROLLER_ADAPTER_FILES`).
+     * otherwise the js-controller of the host hands the files out - small files several in one answer, big files
+     * piece by piece, compressed with gzip where it helps (js-controller 8.0 or newer on that host, feature
+     * `CONTROLLER_ADAPTER_FILES`).
      *
      * Only the package directory of the adapter can be read, and not all of it: everything below
      * `node_modules`, hidden files and directories (name starting with a dot) and symbolic links are left out.

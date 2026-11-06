@@ -69,16 +69,39 @@ const listAdapterDir: HostCommand<AdapterFileCommandsDeps> = (deps, msg) =>
 /**
  * Read one piece of a file of an adapter installed on this host
  *
- * The message is `{ adapter, path, offset?, length? }`, the answer `{ size, mtime, offset, data }` with `data` base64
- * encoded, or `{ error }`. Files are handed out in pieces (1 MB by default, at most 4 MB), so that no file goes
- * through the states DB as one huge message.
+ * The message is `{ adapter, path, offset?, length?, compress? }`, the answer `{ size, mtime, offset, data, compressed? }`
+ * with `data` base64 encoded, or `{ error }`. Files are handed out in pieces (1 MB by default, at most 4 MB), so that
+ * no file goes through the states DB as one huge message. With `compress: true` the piece is compressed with gzip if
+ * it gets smaller by it, which the answer says with `compressed: true`.
  *
  * @param deps What this group of commands needs
  * @param msg The received message
  */
 const readAdapterFile: HostCommand<AdapterFileCommandsDeps> = (deps, msg) =>
     answer(deps, msg, async request => ({
-        ...(await adapterFiles.readAdapterFileChunk(request.adapter, request.path, request.offset, request.length)),
+        ...(await adapterFiles.readAdapterFileChunk(
+            request.adapter,
+            request.path,
+            request.offset,
+            request.length,
+            request.compress,
+        )),
+    }));
+
+/**
+ * Read several small files of an adapter installed on this host in one go
+ *
+ * The message is `{ adapter, paths, length?, compress? }` with at most 100 paths, the answer
+ * `{ files: [{ path, size, mtime, offset, data, compressed? }] }` in the order of `paths`, or `{ error }`. The files
+ * are read until `length` bytes (1 MB by default, at most 4 MB) are read in total: the last file may be cut off and
+ * the following ones are left out then - the requester fetches the rest with `readAdapterFile`.
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const readAdapterFiles: HostCommand<AdapterFileCommandsDeps> = (deps, msg) =>
+    answer(deps, msg, async request => ({
+        files: await adapterFiles.readAdapterFiles(request.adapter, request.paths, request.length, request.compress),
     }));
 
 /**
@@ -90,5 +113,6 @@ export function createAdapterFileCommands(deps: AdapterFileCommandsDeps): Record
     return {
         listAdapterDir: msg => listAdapterDir(deps, msg),
         readAdapterFile: msg => readAdapterFile(deps, msg),
+        readAdapterFiles: msg => readAdapterFiles(deps, msg),
     };
 }

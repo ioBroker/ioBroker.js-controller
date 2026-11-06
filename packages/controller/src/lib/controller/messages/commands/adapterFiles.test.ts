@@ -81,11 +81,29 @@ describe('host commands for the files of adapters', () => {
         assert.equal(Buffer.from(answer.data, 'base64').toString(), 'export {};');
     });
 
+    it('reads several files of an installed adapter in one go', async () => {
+        await commands.readAdapterFiles(
+            request('readAdapterFiles', {
+                adapter: ADAPTER,
+                paths: [`widgets/${ADAPTER}/customWidgets.js`, 'package.json'],
+                compress: true,
+            }),
+        );
+
+        const answer = sendTo.firstCall.args[2];
+        assert.deepEqual(
+            answer.files.map((file: { path: string }) => file.path),
+            [`widgets/${ADAPTER}/customWidgets.js`, 'package.json'],
+        );
+        assert.equal(Buffer.from(answer.files[0].data, 'base64').toString(), 'export {};');
+    });
+
     it('answers with an error for invalid requests', async () => {
         await commands.listAdapterDir(request('listAdapterDir', 'widgets'));
         await commands.listAdapterDir(request('listAdapterDir', { adapter: 'not-installed-here', path: 'widgets' }));
         await commands.readAdapterFile(request('readAdapterFile', { adapter: ADAPTER, path: 'package.json/../..' }));
         await commands.readAdapterFile(request('readAdapterFile', { adapter: 'js-controller', path: 'conf/x.json' }));
+        await commands.readAdapterFiles(request('readAdapterFiles', { adapter: ADAPTER, paths: 'package.json' }));
 
         assert.deepEqual(
             sendTo.getCalls().map(call => call.args[2].error),
@@ -94,6 +112,7 @@ describe('host commands for the files of adapters', () => {
                 'adapter "not-installed-here" is not installed on this host',
                 'invalid path "package.json/../.."',
                 'the js-controller is no adapter whose files can be read',
+                'invalid paths, expected 1 to 100 paths',
             ],
         );
     });
