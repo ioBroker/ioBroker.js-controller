@@ -6,7 +6,7 @@
 
 # Interface: MessageCallbackInfo
 
-Defined in: [types-dev/index.d.ts:421](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L421)
+Defined in: [types-dev/index.d.ts:422](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L422)
 
 Callback information for a passed message
 
@@ -16,7 +16,7 @@ Callback information for a passed message
 
 > **ack**: `boolean`
 
-Defined in: [types-dev/index.d.ts:427](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L427)
+Defined in: [types-dev/index.d.ts:428](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L428)
 
 If ack is false, it means the message is a request. If ack is true, it means the message is a response
 
@@ -26,7 +26,7 @@ If ack is false, it means the message is a request. If ack is true, it means the
 
 > **id**: `number`
 
-Defined in: [types-dev/index.d.ts:425](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L425)
+Defined in: [types-dev/index.d.ts:426](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L426)
 
 ID of this callback
 
@@ -36,7 +36,7 @@ ID of this callback
 
 > **message**: `any`
 
-Defined in: [types-dev/index.d.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L423)
+Defined in: [types-dev/index.d.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L424)
 
 The original message payload
 
@@ -46,6 +46,6 @@ The original message payload
 
 > **time**: `number`
 
-Defined in: [types-dev/index.d.ts:429](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L429)
+Defined in: [types-dev/index.d.ts:430](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L430)
 
 Timestamp of this message
