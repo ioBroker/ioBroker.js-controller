@@ -28,15 +28,11 @@ import {
     tools,
 } from '@iobroker/js-controller-common';
 import {
-    decryptArray,
-    encryptArray,
     getAdapterScopedPackageIdentifier,
     getSupportedFeatures,
     isMessageboxSupported,
     listInstalledNodeModules,
     requestModuleNameByUrl,
-    deleteObjectAttribute,
-    getObjectAttribute,
 } from '@/lib/adapter/utils.js';
 
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -139,7 +135,13 @@ import { AliasManager } from '@/lib/adapter/managers/AliasManager.js';
 import { SubscriptionManager } from '@/lib/adapter/managers/SubscriptionManager.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
 import { SYSTEM_ADAPTER_PREFIX, DEFAULT_OBJECTS_WARN_LIMIT } from '@iobroker/js-controller-common-db/constants';
-import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
+import {
+    decryptArray,
+    deleteObjectAttribute,
+    encryptArray,
+    getObjectAttribute,
+    isLogLevel,
+} from '@iobroker/js-controller-common-db/tools';
 
 const controllerVersion = packJson.version;
 

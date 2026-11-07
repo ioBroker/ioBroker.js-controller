@@ -6,7 +6,7 @@
 
 # Interface: InternalGetHistoryOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:516](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/_Types.ts#L516)
+Defined in: [adapter/src/lib/\_Types.ts:516](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/adapter/src/lib/_Types.ts#L516)
 
 Options for reading the history of a state
 
@@ -16,7 +16,7 @@ Options for reading the history of a state
 
 > **callback**: [`GetHistoryCallback`](../type-aliases/GetHistoryCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:522](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/_Types.ts#L522)
+Defined in: [adapter/src/lib/\_Types.ts:522](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/adapter/src/lib/_Types.ts#L522)
 
 Called with the history data
 
@@ -26,7 +26,7 @@ Called with the history data
 
 > **id**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:518](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/_Types.ts#L518)
+Defined in: [adapter/src/lib/\_Types.ts:518](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/adapter/src/lib/_Types.ts#L518)
 
 The id of the state
 
@@ -36,6 +36,6 @@ The id of the state
 
 > `optional` **options?**: [`GetHistoryOptions`](GetHistoryOptions.md) \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:520](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/_Types.ts#L520)
+Defined in: [adapter/src/lib/\_Types.ts:520](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/adapter/src/lib/_Types.ts#L520)
 
 Options controlling the history query

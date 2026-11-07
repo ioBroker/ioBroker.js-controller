@@ -6,7 +6,7 @@
 
 # Interface: Message
 
-Defined in: [types-dev/index.d.ts:444](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L444)
+Defined in: [types-dev/index.d.ts:461](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L461)
 
 A message being passed between adapter instances
 
@@ -20,7 +20,7 @@ A message being passed between adapter instances
 
 > **\_id**: `number`
 
-Defined in: [types-dev/index.d.ts:446](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L446)
+Defined in: [types-dev/index.d.ts:463](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L463)
 
 ID of this message
 
@@ -30,7 +30,7 @@ ID of this message
 
 > `optional` **callback?**: [`MessageCallbackInfo`](MessageCallbackInfo.md)
 
-Defined in: [types-dev/index.d.ts:440](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L440)
+Defined in: [types-dev/index.d.ts:457](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L457)
 
 Callback information. This is set when the source expects a response
 
@@ -44,7 +44,7 @@ Callback information. This is set when the source expects a response
 
 > **command**: `string`
 
-Defined in: [types-dev/index.d.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L434)
+Defined in: [types-dev/index.d.ts:435](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L435)
 
 The command to be executed
 
@@ -58,7 +58,7 @@ The command to be executed
 
 > **from**: `string`
 
-Defined in: [types-dev/index.d.ts:438](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L438)
+Defined in: [types-dev/index.d.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L439)
 
 The source of this message
 
@@ -72,10 +72,36 @@ The source of this message
 
 > **message**: `any`
 
-Defined in: [types-dev/index.d.ts:436](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L436)
+Defined in: [types-dev/index.d.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L437)
 
 The message payload
 
 #### Inherited from
 
 [`SendableMessage`](SendableMessage.md).[`message`](SendableMessage.md#message)
+
+***
+
+### user?
+
+> `optional` **user?**: `` `system.user.${string}` ``
+
+Defined in: [types-dev/index.d.ts:455](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L455)
+
+The user this message is sent on behalf of, if the sender named one (`options.user` of
+`sendTo`/`sendToHost`). A socket server such as `admin` or `web` puts the authenticated
+user of the connection here, so the receiving instance can check what that user may do
+instead of acting with its own rights.
+
+It is only as trustworthy as `from`: every instance can claim any user here, and all of
+them run with full database rights anyway. Trust it when `from` is an instance you trust
+to have authenticated the user, and never as a substitute for your own permission check.
+
+Set from js-controller 7.2.5 on; an older one never sets it. A message that was sent
+without a user does not carry the field at all, so the absence of the field means
+"nobody was named" - for whichever of the two reasons, and in both cases there is
+nothing to check against.
+
+#### Inherited from
+
+[`SendableMessage`](SendableMessage.md).[`user`](SendableMessage.md#user)
