@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Updated `@iobroker/plugin-base` to 4.0.0, which `@iobroker/plugin-docker` 1.3 already requires; `@iobroker/plugin-sentry` keeps its own copy of 3.x, which works next to it because the plugin handler does not check the class of a plugin
 * (@GermanBluefox) A user who is not an administrator may list a directory now if the file rights (`acl.file`) of the meta object that owns it allow it, e.g. `vis-2.0` for the vis-2 runtime without login. Before, a directory has no rights of its own and was checked against `defaultNewAcl` of `system.config`, which mostly denied it. Writing and creating files are checked as before
 * (@GermanBluefox) `readDir` lists for a user who is not an administrator only the files that the user may read, and `acl.read`/`acl.write` of each file consider the owner and the group too. Before, every file was listed, because the check did not apply to files
 * (@GermanBluefox) Fixed `iobroker object set` not encrypting an attribute of `encryptedNative` that reaches into `native`, like `cloud.token` or `devices.password`, or, when set alone, one with a single character, like `native.a`. It now encrypts exactly what `adapter.updateConfig()` encrypts and what the adapter decrypts on start: also when the set value is a part of `native` or the whole `native`, and every string of an array. Only the set value is encrypted, the rest of `native` is stored encrypted already
