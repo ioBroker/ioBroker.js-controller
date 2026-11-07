@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import sinon from 'sinon';
 import { tools } from '@iobroker/js-controller-common';
@@ -143,5 +144,74 @@ describe('host commands that read the disk', () => {
 
         assert.match(sendTo.firstCall.args[2].error, /must be an absolute path/);
         assert.equal(sendTo.secondCall.args[2].error, 'invalid message, expected an object');
+    });
+});
+
+describe('host commands for iobdisk:// files', () => {
+    const envName = 'IOBROKER_DATA_DIR';
+    let oldEnv: string | undefined;
+    let dataDir: string;
+    let sendTo: sinon.SinonStub;
+    let commands: ReturnType<typeof createDiskCommands>;
+
+    before(async () => {
+        oldEnv = process.env[envName];
+        dataDir = await fs.mkdtemp(path.join(os.tmpdir(), 'diskCommands-'));
+        process.env[envName] = dataDir;
+        await fs.mkdir(path.join(dataDir, 'telegram_0', 'video'), { recursive: true });
+        await fs.writeFile(path.join(dataDir, 'telegram_0', 'video', '1.mp4'), 'video');
+    });
+
+    after(async () => {
+        if (oldEnv === undefined) {
+            delete process.env[envName];
+        } else {
+            process.env[envName] = oldEnv;
+        }
+        await fs.rm(dataDir, { recursive: true, force: true });
+    });
+
+    beforeEach(() => {
+        sendTo = sinon.stub();
+        commands = createDiskCommands({ messages: { sendTo }, logger: silentLogger(), hostLogPrefix: 'host.pi4' });
+    });
+
+    it('reads a piece of a file of an instance', async () => {
+        await commands.readDiskFile(request('readDiskFile', { namespace: 'telegram.0', path: 'video/1.mp4' }));
+
+        const answer = sendTo.firstCall.args[2];
+        assert.equal(answer.size, 5);
+        assert.equal(answer.offset, 0);
+        assert.equal(Buffer.from(answer.data, 'base64').toString(), 'video');
+    });
+
+    it('answers readDiskFile with an error for invalid requests', async () => {
+        await commands.readDiskFile(request('readDiskFile', null));
+        await commands.readDiskFile(request('readDiskFile', { namespace: 'files', path: 'x' }));
+        await commands.readDiskFile(request('readDiskFile', { namespace: 'telegram.0', path: '../iobroker.json' }));
+
+        assert.deepEqual(
+            sendTo.getCalls().map(call => call.args[2].error),
+            [
+                'invalid message, expected an object',
+                'invalid instance namespace "files"',
+                'the path of the file must not contain "..": ../iobroker.json',
+            ],
+        );
+    });
+
+    it('deletes a file of an instance, also without callback', async () => {
+        const file = path.join(dataDir, 'telegram_0', 'video', '2.mp4');
+        await fs.writeFile(file, 'x');
+        await commands.deleteDiskFile(
+            request('deleteDiskFile', { namespace: 'telegram.0', path: 'video/2.mp4' }, false),
+        );
+        await assert.rejects(fs.stat(file), { code: 'ENOENT' });
+        assert.equal(sendTo.callCount, 0);
+
+        await commands.deleteDiskFile(request('deleteDiskFile', { namespace: 'telegram.0', path: 'video/2.mp4' }));
+        await commands.deleteDiskFile(request('deleteDiskFile', { namespace: 'telegram.0', path: 'video' }));
+        assert.deepEqual(sendTo.firstCall.args[2], { deleted: false });
+        assert.match(sendTo.secondCall.args[2].error, /is not a file/);
     });
 });

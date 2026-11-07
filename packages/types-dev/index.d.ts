@@ -87,7 +87,8 @@ declare global {
             | 'CONTROLLER_REPOSITORY_COMPACT'
             | 'CONTROLLER_CHECK_DOCKER'
             | 'CONTROLLER_ADAPTER_FILES'
-            | 'CONTROLLER_READ_DISK_DIR';
+            | 'CONTROLLER_READ_DISK_DIR'
+            | 'CONTROLLER_DISK_FILES';
 
         // #region Used resources
         // ---------------------------------------------------------------------------------------------------

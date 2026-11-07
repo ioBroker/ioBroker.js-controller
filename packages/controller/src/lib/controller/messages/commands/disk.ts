@@ -1,6 +1,6 @@
 import os from 'node:os';
 import path from 'node:path';
-import { adapterFiles, diskDir, tools } from '@iobroker/js-controller-common';
+import { adapterFiles, diskDir, diskFiles, tools } from '@iobroker/js-controller-common';
 import type { ControllerLogger } from '@/lib/controller/types.js';
 import type { MessageBus } from '@/lib/controller/messages/messageBus.js';
 import type { HostCommand, HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
@@ -9,8 +9,9 @@ import type { HostCommand, HostCommandHandler } from '@/lib/controller/messages/
  * Everything the host commands that read the disk of this host need
  *
  * The databases are shared, the disks are not: these commands read the disk of this host for a requester on another
- * host. Each keeps a request below a directory - the package of an adapter, or the `root` of `readDiskDir` - with the
- * same checks (`diskPaths` of common): nothing above it, also not through `..` or a symbolic link.
+ * host. Each keeps a request below a directory - the package of an adapter, the data directory of an instance, or the
+ * `root` of `readDiskDir` - with the same checks (`diskPaths` of common): nothing above it, also not through `..` or a
+ * symbolic link. A file is handed out in the same pieces by all of them (`diskChunks` of common).
  */
 export interface DiskCommandsDeps {
     /** Sends the answers back to the requester */
@@ -44,14 +45,16 @@ function asRequest(message: unknown, optional = false): Record<string, unknown> 
  * @param deps What this group of commands needs
  * @param msg The received message
  * @param handle Builds the answer from the payload
+ * @param withoutCallback Whether the command is carried out also if nobody waits for the answer, e.g. a deletion
  */
 async function answer(
     deps: DiskCommandsDeps,
     msg: ioBroker.SendableMessage,
     handle: (message: unknown) => Promise<object>,
+    withoutCallback = false,
 ): Promise<void> {
     const { messages, logger, hostLogPrefix } = deps;
-    if (!msg.callback || !msg.from) {
+    if ((!msg.callback || !msg.from) && !withoutCallback) {
         logger.warn(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
         return;
     }
@@ -65,7 +68,9 @@ async function answer(
     if (typeof error === 'string' && error) {
         logger.debug(`${hostLogPrefix} ${msg.command} failed: ${error}`);
     }
-    messages.sendTo(msg.from, msg.command, result, msg.callback);
+    if (msg.callback && msg.from) {
+        messages.sendTo(msg.from, msg.command, result, msg.callback);
+    }
 }
 
 /**
@@ -150,8 +155,59 @@ const readAdapterFiles: HostCommand<DiskCommandsDeps> = (deps, msg) =>
     });
 
 /**
+ * Read one piece of a file below the data directory of an instance on this host - how an instance on another host
+ * reads an `iobdisk://` URL, e.g. a video that telegram stored here
+ *
+ * The message is `{ namespace, path, offset?, length?, compress? }`, the parts of the URL plus the range to read; the
+ * answer is the same as of `readAdapterFile`: `{ size, mtime, offset, data, compressed? }`, or `{ error }`.
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const readDiskFile: HostCommand<DiskCommandsDeps> = (deps, msg) =>
+    answer(deps, msg, message => {
+        const request = asRequest(message);
+        return diskFiles.readDiskFileChunk(
+            request.namespace,
+            request.path,
+            request.offset,
+            request.length,
+            request.compress,
+        );
+    });
+
+/**
+ * Delete a file below the data directory of an instance on this host - how an instance on another host deletes an
+ * `iobdisk://` URL, e.g. a video of telegram after it was processed
+ *
+ * The message is `{ namespace, path }`, the answer `{ deleted: true }`, `{ deleted: false }` if the file did not exist,
+ * or `{ error }`. Only a regular file is deleted, never a directory or a symbolic link. The file is deleted also if
+ * nobody waits for the answer.
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const deleteDiskFile: HostCommand<DiskCommandsDeps> = (deps, msg) =>
+    answer(
+        deps,
+        msg,
+        async message => {
+            const request = asRequest(message);
+            const deleted = await diskFiles.deleteDiskFile(request.namespace, request.path);
+            if (deleted) {
+                deps.logger.debug(
+                    `${deps.hostLogPrefix} Deleted disk file ${String(request.namespace)}/${String(request.path)} for ${msg.from}`,
+                );
+            }
+            return { deleted };
+        },
+        true,
+    );
+
+/**
  * Create the host commands that read the disk of this host: `readDiskDir` for any directory the user of ioBroker may
- * read, and `listAdapterDir`, `readAdapterFile` and `readAdapterFiles` for the package of an installed adapter
+ * read, `listAdapterDir`, `readAdapterFile` and `readAdapterFiles` for the package of an installed adapter, and
+ * `readDiskFile` and `deleteDiskFile` for a file in the data directory of an instance (`iobdisk://` URLs)
  *
  * @param deps Everything these commands need
  */
@@ -161,5 +217,7 @@ export function createDiskCommands(deps: DiskCommandsDeps): Record<string, HostC
         listAdapterDir: msg => listAdapterDir(deps, msg),
         readAdapterFile: msg => readAdapterFile(deps, msg),
         readAdapterFiles: msg => readAdapterFiles(deps, msg),
+        readDiskFile: msg => readDiskFile(deps, msg),
+        deleteDiskFile: msg => deleteDiskFile(deps, msg),
     };
 }
