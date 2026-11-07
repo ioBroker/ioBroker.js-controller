@@ -11,13 +11,15 @@
  *
  * Only the package directory of an adapter can be read, and not all of it: everything below `node_modules` and
  * every file or directory whose name starts with a dot (`.git`, `.env`, ...) is left out, symbolic links are not
- * followed, and the js-controller itself is no adapter in this sense.
+ * followed, and the js-controller itself is no adapter in this sense. The checks that keep a path inside the package
+ * are shared with `readDiskDir`, see `diskPaths.ts`.
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import zlib from 'node:zlib';
 import { tools } from '@iobroker/js-controller-common-db';
+import { DISK_DIR_MAX_ENTRIES, isHiddenName, isInside } from './diskPaths.js';
 
 /** Size of one piece of a file, as `readAdapterFile` hands it out by default */
 export const ADAPTER_FILE_CHUNK_SIZE = 1024 * 1024;
@@ -26,7 +28,7 @@ export const ADAPTER_FILE_CHUNK_SIZE = 1024 * 1024;
 export const ADAPTER_FILE_MAX_CHUNK_SIZE = 4 * 1024 * 1024;
 
 /** The most files a directory listing contains - a widgets folder has some hundred */
-export const ADAPTER_DIR_MAX_FILES = 5_000;
+export const ADAPTER_DIR_MAX_FILES = DISK_DIR_MAX_ENTRIES;
 
 /** The most files one `readAdapterFiles` hands out */
 export const ADAPTER_FILES_MAX_BATCH = 100;
@@ -129,7 +131,7 @@ export function checkAdapterName(adapter: unknown): string {
  * @param name name of a single file or directory
  */
 function isExcludedName(name: string): boolean {
-    return name.startsWith('.') || name.toLowerCase() === 'node_modules';
+    return isHiddenName(name) || name.toLowerCase() === 'node_modules';
 }
 
 /**
@@ -190,12 +192,8 @@ async function resolveBelow(root: string, parts: string[]): Promise<string> {
         throw e;
     }
     const relative = path.relative(realRoot, real);
-    if (
-        !relative ||
-        relative.startsWith('..') ||
-        path.isAbsolute(relative) ||
-        relative.split(path.sep).some(isExcludedName)
-    ) {
+    // the root itself is no file of it
+    if (!relative || !isInside(real, realRoot) || relative.split(path.sep).some(isExcludedName)) {
         throw new Error(`"${parts.join('/')}" leads out of the directory`);
     }
     return real;

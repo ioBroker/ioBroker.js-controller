@@ -1,7 +1,4 @@
-import {
-    createAdapterFileCommands,
-    type AdapterFileCommandsDeps,
-} from '@/lib/controller/messages/commands/adapterFiles.js';
+import { createDiskCommands, type DiskCommandsDeps } from '@/lib/controller/messages/commands/disk.js';
 import { createFileCommands, type FileCommandsDeps } from '@/lib/controller/messages/commands/files.js';
 import { createInfoCommands, type InfoCommandsDeps } from '@/lib/controller/messages/commands/info.js';
 import { createLogCommands, type LogCommandsDeps } from '@/lib/controller/messages/commands/logs.js';
@@ -27,8 +24,8 @@ import type { HostCommandHandler } from '@/lib/controller/messages/hostMessageHa
  * apart here instead of being merged, which makes it visible per group what it is allowed to touch.
  */
 export interface HostCommandGroupDeps {
-    /** What the commands that hand out the files of installed adapters need */
-    adapterFiles: AdapterFileCommandsDeps;
+    /** What the commands that read the disk of this host need: a directory, or the package of an adapter */
+    disk: DiskCommandsDeps;
     /** What the commands for zip based file and object transfers need */
     files: FileCommandsDeps;
     /** What the commands for information about this host need */
@@ -65,7 +62,7 @@ export function createHostCommands(deps: HostCommandGroupDeps): Record<string, H
         ...createLogCommands(deps.logs),
         ...createInfoCommands(deps.info),
         ...createFileCommands(deps.files),
-        ...createAdapterFileCommands(deps.adapterFiles),
+        ...createDiskCommands(deps.disk),
         ...createSettingsCommands(deps.settings),
         ...createMultihostCommands(deps.multihost),
         ...createNotificationCommands(deps.notifications),

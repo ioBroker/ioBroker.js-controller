@@ -3,10 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import sinon from 'sinon';
 import { tools } from '@iobroker/js-controller-common';
-import {
-    createAdapterFileCommands,
-    type AdapterFileCommandsDeps,
-} from '@/lib/controller/messages/commands/adapterFiles.js';
+import { createDiskCommands, type DiskCommandsDeps } from '@/lib/controller/messages/commands/disk.js';
 import { silentLogger } from '@/lib/controller/testing.test-utils.js';
 
 /** Name of the adapter that is "installed" on this host during the tests */
@@ -28,11 +25,11 @@ function request(command: string, message: unknown, withCallback = true): ioBrok
     } as unknown as ioBroker.SendableMessage;
 }
 
-describe('host commands for the files of adapters', () => {
+describe('host commands that read the disk', () => {
     let root: string;
     let sendTo: sinon.SinonStub;
     let warn: sinon.SinonStub;
-    let commands: ReturnType<typeof createAdapterFileCommands>;
+    let commands: ReturnType<typeof createDiskCommands>;
 
     before(async () => {
         root = path.join(tools.getControllerDir(), 'node_modules', `iobroker.${ADAPTER}`);
@@ -48,12 +45,12 @@ describe('host commands for the files of adapters', () => {
     beforeEach(() => {
         sendTo = sinon.stub();
         warn = sinon.stub();
-        const deps: AdapterFileCommandsDeps = {
+        const deps: DiskCommandsDeps = {
             messages: { sendTo },
             logger: silentLogger({ warn }),
             hostLogPrefix: 'host.frigate',
         };
-        commands = createAdapterFileCommands(deps);
+        commands = createDiskCommands(deps);
     });
 
     it('lists a directory of an installed adapter', async () => {
@@ -119,8 +116,32 @@ describe('host commands for the files of adapters', () => {
 
     it('ignores a request without callback', async () => {
         await commands.listAdapterDir(request('listAdapterDir', { adapter: ADAPTER, path: 'widgets' }, false));
+        await commands.readDiskDir(request('readDiskDir', { root }, false));
 
         assert.equal(sendTo.callCount, 0);
-        assert.equal(warn.callCount, 1);
+        assert.equal(warn.callCount, 2);
+    });
+
+    it('lists a directory on the disk below a root', async () => {
+        await commands.readDiskDir(request('readDiskDir', { root, path: 'widgets' }));
+
+        const [to, command, answer, callback] = sendTo.firstCall.args;
+        assert.equal(to, 'system.adapter.vis-2.0');
+        assert.equal(command, 'readDiskDir');
+        assert.deepEqual(callback, { id: 7 });
+        assert.equal(answer.error, undefined);
+        assert.equal(answer.path, path.join(root, 'widgets'));
+        assert.deepEqual(
+            answer.entries.map((entry: { name: string }) => entry.name),
+            [ADAPTER],
+        );
+    });
+
+    it('answers readDiskDir with the error in the answer', async () => {
+        await commands.readDiskDir(request('readDiskDir', { root: 'relative/dir' }));
+        await commands.readDiskDir(request('readDiskDir', 'not an object'));
+
+        assert.match(sendTo.firstCall.args[2].error, /must be an absolute path/);
+        assert.equal(sendTo.secondCall.args[2].error, 'invalid message, expected an object');
     });
 });

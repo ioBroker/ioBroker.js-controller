@@ -925,11 +925,27 @@ All other hosts are configured to connect to this master host.
 
 For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?page_id=3068&lang=de
 
-#### Files of adapters on other hosts
+#### Files on the disk of another host
 
-The databases are shared, the disks are not: an adapter exists only on the hosts it is installed on. An instance that
-needs files from the package of another adapter - e.g. vis-2, which collects the `widgets` folder of every adapter
-with widgets - cannot read them from its own disk when that adapter is installed on another host.
+The databases are shared, the disks are not. Whatever lies only on the disk of a host - the package of an adapter
+installed there, a certificate, a backup folder - can only be read by the js-controller of that host. It hands it out
+with host commands for two purposes:
+
+| Purpose                                                | Host commands                                           | Feature flag               | What can be read                                                                                                | Who may ask                                                    |
+| ------------------------------------------------------ | ------------------------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Files of an adapter, e.g. its `widgets` for vis-2      | `listAdapterDir`, `readAdapterFiles`, `readAdapterFile` | `CONTROLLER_ADAPTER_FILES` | only the package directory of the adapter, without `node_modules`, hidden entries and symbolic links            | every instance - it is what npm publishes                      |
+| Select a file or a folder on the host (`diskSelector`) | `readDiskDir`                                           | `CONTROLLER_READ_DISK_DIR` | any directory the user of ioBroker may read, never above `root` if given; hidden entries only with `showHidden` | protected like `cmdExec` by the socket server (administrators) |
+
+Both keep a request below a directory - the package of the adapter, or `root` - with the same checks: nothing above it,
+also not through `..` or a symbolic link that leads out of it, and at most 5000 entries per listing. Both name the
+time of the last modification `mtime` (in ms) and answer an
+error as `{ error }` instead of throwing, and an older js-controller never answers an unknown command, so check the
+feature flag with `checkFeatureSupported` first.
+
+##### Files of an adapter
+
+An instance that needs files from the package of another adapter - e.g. vis-2, which collects the `widgets` folder of
+every adapter with widgets - cannot read them from its own disk when that adapter is installed on another host.
 
 `adapter.fetchAdapterDir()` copies such a directory into a local directory. If the adapter is installed on the host of
 the calling instance, the directory is copied from its package. Otherwise the js-controller of a host it is installed
@@ -950,6 +966,14 @@ The other host needs js-controller 8.0 or newer (feature `CONTROLLER_ADAPTER_FIL
 all of it: `node_modules`, hidden files and directories (name starting with a dot) and symbolic links are left out, and
 the js-controller itself cannot be read this way. Existing files in `target` are overwritten, other files there are kept;
 if fetching fails, `target` may hold a part of the files, so fetch into an empty directory and move it into place.
+
+##### Select a file or a folder on the host
+
+The `diskSelector` control of jsonConfig lets the user pick a file or a folder - e.g. a certificate or a folder for
+backups - on the host where the instance runs, not on the machine of the browser and not on the host of admin. It lists
+the directories with the host command [`readDiskDir`](#readdiskdir) of that host. Only the entries the user ioBroker
+runs as may read are listed. `root` keeps the dialog where the adapter wants it; it is no access control, so the
+adapter must still check the path it gets.
 
 ### Host discovery
 
@@ -1501,7 +1525,7 @@ controller restarts after a successful connect.
 
 Lists the files of a directory of an adapter installed on this host, with all subdirectories. Hidden files and
 directories, `node_modules` and symbolic links are left out; at most 5000 files are listed. Used by
-`adapter.fetchAdapterDir()`, see [Files of adapters on other hosts](#files-of-adapters-on-other-hosts).
+`adapter.fetchAdapterDir()`, see [Files on the disk of another host](#files-on-the-disk-of-another-host).
 
 ```js5
 // message
@@ -1545,6 +1569,47 @@ ones are left out then - fetch the rest with `readAdapterFile`. `compress` works
     ],
 }
 ```
+
+#### readDiskDir
+
+Lists a directory on the disk of this host, e.g. to select a file or a folder in the settings of an instance
+(`diskSelector` of jsonConfig), see [Files on the disk of another host](#files-on-the-disk-of-another-host). Feature
+flag `CONTROLLER_READ_DISK_DIR`: an older controller never answers, so check the flag first (`checkFeatureSupported`).
+
+```js5
+// message
+{
+  root: '%INSTANCE_DATA_DIR%/certs', // optional, nothing above it is listed. Absolute, may start with
+                                     // %DATA_DIR%, %INSTANCE_DATA_DIR%, %IOBROKER_DIR% or %HOME%.
+                                     // Default: the whole disk, on Windows starting with the drives
+  path: '/opt/iobroker/iobroker-data/myAdapter.0/certs/server.pem', // optional, absolute or relative
+                                     // to root. A file lists its directory, a missing path its nearest
+                                     // existing parent, a path outside of root the root. Default: root
+  filter: '*.pem;*.crt',             // optional, file patterns (case-insensitive), directories always
+  dirsOnly: false,                   // optional, only directories
+  showHidden: false,                 // optional, also the entries starting with a dot
+  instance: 'myAdapter.0',           // needed for %INSTANCE_DATA_DIR%
+}
+// answer
+{
+  root: '/opt/iobroker/iobroker-data/myAdapter.0/certs',
+  path: '/opt/iobroker/iobroker-data/myAdapter.0/certs', // the listed directory
+  parent: null,                      // the directory above, null at the root
+  crumbs: [{ name: '/opt/iobroker/iobroker-data/myAdapter.0/certs', path: '...' }], // root .. path
+  entries: [                         // directories first, then files, sorted by name
+    { name: 'server.pem', path: '/opt/.../certs/server.pem', isDir: false, size: 1500, mtime: 1793979169840 },
+  ],
+  selected: 'server.pem',            // the file `path` pointed to
+  truncated: false,                  // more than 5000 entries, only the first ones are listed
+  sep: '/',
+  error: undefined,                  // why nothing could be listed, e.g. the root does not exist
+}
+```
+
+Only the entries the user ioBroker runs as may read are listed (directories: also enter), and no sockets, devices or
+broken links. A symbolic link that leads out of `root` is left out, one that stays inside is followed. `root` only keeps a
+dialog where the adapter wants it; who may list the disk at all is decided by the socket server, which treats the
+command as protected like `cmdExec`.
 
 ### Adapter Development
 
@@ -1686,6 +1751,7 @@ The following features can be checked using this method:
 - **CONTROLLER_GET_LOGS_LOG_LEVEL**: the `getLogs` host message accepts an object `{ lines, logLevel }` instead of just the number of lines, so the host returns only entries of the requested severity and more severe ones (since js-controller 8.0)
 - **CONTROLLER_SEARCH_LOGS**: the host command `searchLogs` searches the log files of the host - the rotated and gzipped ones too - with `{ hours, level, source, text, maxRows }` and answers with `{ lines, truncated, files, until }`, so that only the matching entries are transferred (since js-controller 8.0)
 - **CONTROLLER_ADAPTER_FILES**: the host commands `listAdapterDir`, `readAdapterFile` and `readAdapterFiles` hand out a directory of an adapter installed on the host, e.g. its `widgets`, so that `adapter.fetchAdapterDir()` can fetch it for an instance on another host (since js-controller 8.0)
+- **CONTROLLER_READ_DISK_DIR**: the host command `readDiskDir` lists a directory on the disk of the host with `{ root, path, filter, dirsOnly, showHidden, instance }` and answers with `{ root, path, parent, crumbs, entries, selected, truncated, sep, error }`. Only the entries the user of ioBroker may read are listed, and nothing above `root`, also not through `..` or a symbolic link. `root` may start with `%DATA_DIR%`, `%INSTANCE_DATA_DIR%` (needs `instance`, e.g. `myAdapter.0`), `%IOBROKER_DIR%` or `%HOME%`. Without `root` the whole disk is listed, on Windows starting with the drives. The `diskSelector` control of jsonConfig uses it (since js-controller 8.0)
 
 To check if certain adapter methods itself are existing, please simply check for their existence like
 

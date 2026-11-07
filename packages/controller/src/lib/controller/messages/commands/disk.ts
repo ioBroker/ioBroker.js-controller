@@ -1,10 +1,18 @@
-import { adapterFiles } from '@iobroker/js-controller-common';
+import os from 'node:os';
+import path from 'node:path';
+import { adapterFiles, diskDir, tools } from '@iobroker/js-controller-common';
 import type { ControllerLogger } from '@/lib/controller/types.js';
 import type { MessageBus } from '@/lib/controller/messages/messageBus.js';
 import type { HostCommand, HostCommandHandler } from '@/lib/controller/messages/hostMessageHandler.js';
 
-/** Everything the host commands for the files of installed adapters need */
-export interface AdapterFileCommandsDeps {
+/**
+ * Everything the host commands that read the disk of this host need
+ *
+ * The databases are shared, the disks are not: these commands read the disk of this host for a requester on another
+ * host. Each keeps a request below a directory - the package of an adapter, or the `root` of `readDiskDir` - with the
+ * same checks (`diskPaths` of common): nothing above it, also not through `..` or a symbolic link.
+ */
+export interface DiskCommandsDeps {
     /** Sends the answers back to the requester */
     messages: Pick<MessageBus, 'sendTo'>;
     /** The logger of this controller */
@@ -17,9 +25,13 @@ export interface AdapterFileCommandsDeps {
  * The payload of a request as an object
  *
  * @param message the received payload
+ * @param optional whether a missing payload counts as an empty request
  * @throws {Error} if it is no object
  */
-function asRequest(message: unknown): Record<string, unknown> {
+function asRequest(message: unknown, optional = false): Record<string, unknown> {
+    if (optional && (message === undefined || message === null)) {
+        return {};
+    }
     if (!message || typeof message !== 'object' || Array.isArray(message)) {
         throw new Error('invalid message, expected an object');
     }
@@ -31,26 +43,49 @@ function asRequest(message: unknown): Record<string, unknown> {
  *
  * @param deps What this group of commands needs
  * @param msg The received message
- * @param handle Builds the answer
+ * @param handle Builds the answer from the payload
  */
 async function answer(
-    deps: AdapterFileCommandsDeps,
+    deps: DiskCommandsDeps,
     msg: ioBroker.SendableMessage,
-    handle: (request: Record<string, unknown>) => Promise<Record<string, unknown>>,
+    handle: (message: unknown) => Promise<object>,
 ): Promise<void> {
     const { messages, logger, hostLogPrefix } = deps;
     if (!msg.callback || !msg.from) {
         logger.warn(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
         return;
     }
-    let result: Record<string, unknown>;
+    let result: object;
     try {
-        result = await handle(asRequest(msg.message));
+        result = await handle(msg.message);
     } catch (e) {
         result = { error: e.message };
     }
+    const error = (result as { error?: unknown }).error;
+    if (typeof error === 'string' && error) {
+        logger.debug(`${hostLogPrefix} ${msg.command} failed: ${error}`);
+    }
     messages.sendTo(msg.from, msg.command, result, msg.callback);
 }
+
+/**
+ * List a directory on the disk of this host, with only the entries the user of ioBroker may read
+ *
+ * The message is `{ root?, path?, filter?, dirsOnly?, showHidden?, instance? }`, the answer
+ * `{ root, path, parent, crumbs, entries, selected?, truncated?, sep, error? }`. Used by the `diskSelector` of
+ * jsonConfig; the socket server treats it as protected like `cmdExec`.
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message
+ */
+const readDiskDir: HostCommand<DiskCommandsDeps> = (deps, msg) =>
+    answer(deps, msg, message =>
+        diskDir.readDiskDir(asRequest(message, true), {
+            dataDir: path.resolve(tools.getControllerDir(), tools.getDefaultDataDir()),
+            rootDir: path.resolve(tools.getRootDir()),
+            homeDir: os.homedir(),
+        }),
+    );
 
 /**
  * List the files of a directory of an adapter installed on this host, e.g. its `widgets` folder
@@ -61,10 +96,11 @@ async function answer(
  * @param deps What this group of commands needs
  * @param msg The received message
  */
-const listAdapterDir: HostCommand<AdapterFileCommandsDeps> = (deps, msg) =>
-    answer(deps, msg, async request => ({
-        files: await adapterFiles.listAdapterDir(request.adapter, request.path),
-    }));
+const listAdapterDir: HostCommand<DiskCommandsDeps> = (deps, msg) =>
+    answer(deps, msg, async message => {
+        const request = asRequest(message);
+        return { files: await adapterFiles.listAdapterDir(request.adapter, request.path) };
+    });
 
 /**
  * Read one piece of a file of an adapter installed on this host
@@ -77,16 +113,17 @@ const listAdapterDir: HostCommand<AdapterFileCommandsDeps> = (deps, msg) =>
  * @param deps What this group of commands needs
  * @param msg The received message
  */
-const readAdapterFile: HostCommand<AdapterFileCommandsDeps> = (deps, msg) =>
-    answer(deps, msg, async request => ({
-        ...(await adapterFiles.readAdapterFileChunk(
+const readAdapterFile: HostCommand<DiskCommandsDeps> = (deps, msg) =>
+    answer(deps, msg, message => {
+        const request = asRequest(message);
+        return adapterFiles.readAdapterFileChunk(
             request.adapter,
             request.path,
             request.offset,
             request.length,
             request.compress,
-        )),
-    }));
+        );
+    });
 
 /**
  * Read several small files of an adapter installed on this host in one go
@@ -99,18 +136,28 @@ const readAdapterFile: HostCommand<AdapterFileCommandsDeps> = (deps, msg) =>
  * @param deps What this group of commands needs
  * @param msg The received message
  */
-const readAdapterFiles: HostCommand<AdapterFileCommandsDeps> = (deps, msg) =>
-    answer(deps, msg, async request => ({
-        files: await adapterFiles.readAdapterFiles(request.adapter, request.paths, request.length, request.compress),
-    }));
+const readAdapterFiles: HostCommand<DiskCommandsDeps> = (deps, msg) =>
+    answer(deps, msg, async message => {
+        const request = asRequest(message);
+        return {
+            files: await adapterFiles.readAdapterFiles(
+                request.adapter,
+                request.paths,
+                request.length,
+                request.compress,
+            ),
+        };
+    });
 
 /**
- * Create the host commands that hand out the files of installed adapters to instances on other hosts
+ * Create the host commands that read the disk of this host: `readDiskDir` for any directory the user of ioBroker may
+ * read, and `listAdapterDir`, `readAdapterFile` and `readAdapterFiles` for the package of an installed adapter
  *
  * @param deps Everything these commands need
  */
-export function createAdapterFileCommands(deps: AdapterFileCommandsDeps): Record<string, HostCommandHandler> {
+export function createDiskCommands(deps: DiskCommandsDeps): Record<string, HostCommandHandler> {
     return {
+        readDiskDir: msg => readDiskDir(deps, msg),
         listAdapterDir: msg => listAdapterDir(deps, msg),
         readAdapterFile: msg => readAdapterFile(deps, msg),
         readAdapterFiles: msg => readAdapterFiles(deps, msg),
