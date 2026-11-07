@@ -8,7 +8,7 @@
 
 > **Session** = `object`
 
-Defined in: [types-dev/index.d.ts:254](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L254)
+Defined in: [types-dev/index.d.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L255)
 
 ## Indexable
 
@@ -20,7 +20,7 @@ Defined in: [types-dev/index.d.ts:254](https://github.com/ioBroker/ioBroker.js-c
 
 > `optional` **cookie?**: `object`
 
-Defined in: [types-dev/index.d.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L255)
+Defined in: [types-dev/index.d.ts:256](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L256)
 
 #### maxAge?
 

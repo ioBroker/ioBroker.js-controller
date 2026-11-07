@@ -8,4 +8,4 @@
 
 > **UserInterfaceClientRemoveMessage** = `Omit`\<[`Message`](../interfaces/Message.md), `"message"` \| `"command"`\> & `object` \| `Omit`\<[`Message`](../interfaces/Message.md), `"message"` \| `"command"`\> & `object`
 
-Defined in: [adapter/src/lib/\_Types.ts:195](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/_Types.ts#L195)
+Defined in: [adapter/src/lib/\_Types.ts:195](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/adapter/src/lib/_Types.ts#L195)
