@@ -1790,7 +1790,7 @@
           "type": "boolean"
         },
         "webComponents": {
-          "description": "Web components of the adapter (see @iobroker/web-components): URLs of ES modules, relative to the admin folder, which admin and web serve as /adapter/<name>/. vis-2, devices and admin load them from there",
+          "description": "Web components of the adapter (see @iobroker/web-components): their manifest files (.json), relative to the admin folder, which admin and web serve as /adapter/<name>/. A manifest names the ES module of its element; vis-2, devices and admin read the manifests and load a module only when they show its element. An ES module that exports its manifest is accepted too",
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
