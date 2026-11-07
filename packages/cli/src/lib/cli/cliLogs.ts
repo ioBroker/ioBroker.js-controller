@@ -1,8 +1,16 @@
 import { CLICommand, type CLICommandOptions } from './cliCommand.js';
-import { tools, logger as toolsLogger } from '@iobroker/js-controller-common';
+import {
+    tools,
+    logger as toolsLogger,
+    EXIT_CODES,
+    LOG_LEVELS,
+    isLogLevelAtLeast,
+    parseLogEntryHeader,
+} from '@iobroker/js-controller-common';
 import chokidar from 'chokidar';
 import fs from 'fs-extra';
 import os from 'node:os';
+import { basename } from 'node:path';
 import es from 'event-stream';
 import { createRequire } from 'node:module';
 // eslint-disable-next-line unicorn/prefer-module
@@ -15,6 +23,8 @@ interface CLILogsOptions {
     complete?: boolean;
     /** An optional RegExp to filter by */
     regex?: RegExp;
+    /** The lowest level to still show, if the output is restricted to a severity */
+    minLevel?: ioBroker.LogLevel;
 }
 
 /** Command ioBroker state ... */
@@ -44,6 +54,18 @@ export class CLILogs extends CLICommand {
             complete: this.options.all,
         };
 
+        // Optional, so calls without a level keep showing everything as before
+        if (params.level !== undefined) {
+            const level = String(params.level).toLowerCase();
+
+            if (!tools.isLogLevel(level)) {
+                console.error(`Unknown log level "${params.level}". Use one of: ${LOG_LEVELS.join(', ')}`);
+                return void this.options.callback(EXIT_CODES.INVALID_ARGUMENTS);
+            }
+
+            options.minLevel = level;
+        }
+
         const config = fs.readJSONSync(require.resolve(getConfigFileName()));
         const logger = toolsLogger(config.log);
         // @ts-expect-error todo adjust logger type
@@ -60,8 +82,9 @@ export class CLILogs extends CLICommand {
                 regex = new RegExp(`: ${adapterName}\\.`);
                 options.regex = regex;
             }
+            const matches = this.createFilter(options);
             lines.forEach(line => {
-                if (regex && !regex.test(line)) {
+                if (!matches(line)) {
                     return;
                 }
                 console.log(line);
@@ -71,8 +94,12 @@ export class CLILogs extends CLICommand {
                 fileName = fileName.replace(/\\/g, '/');
                 const parts = fileName.split('/');
                 parts.pop();
+                // chokidar matches no globs since version 4, so `<dir>/iobroker*` was taken as a file name and
+                // nothing was ever watched. Watch the directory and leave out the files that are no log files
                 chokidar
-                    .watch(`${parts.join('/')}/iobroker*`, {
+                    .watch(parts.join('/'), {
+                        depth: 0,
+                        ignored: (file, stats) => !!stats?.isFile() && !basename(file).startsWith('iobroker'),
                         awaitWriteFinish: { stabilityThreshold: 500 },
                         followSymlinks: false,
                     })
@@ -91,32 +118,37 @@ export class CLILogs extends CLICommand {
      * @param event The type of change
      * @param path Which path has changed
      * @param stats Information about the file
-     * @param stats.size The current size of the file in bytes
+     * @param stats.size The current size of the file in bytes - a bigint since chokidar 6
      */
     watchHandler(
         options: CLILogsOptions,
         event: string,
         path: string,
         stats?: {
-            size: number;
+            size: number | bigint;
         },
     ): void {
-        if (!stats) {
+        if (event === 'unlink') {
+            this.fileSizes.delete(path);
             return;
         }
+        // the directory itself and its subdirectories are reported too, `addDir` with the size of a directory
+        if (!stats || (event !== 'add' && event !== 'change')) {
+            return;
+        }
+        // `createReadStream()` refuses a bigint as start
+        const size = Number(stats.size);
         if (event === 'add' || !this.fileSizes.has(path)) {
-            this.fileSizes.set(path, stats.size);
-            if (stats.size > 0 && (this.isReady || (options.complete && this.isTodaysLogfile(path)))) {
+            this.fileSizes.set(path, size);
+            if (size > 0 && (this.isReady || (options.complete && this.isTodaysLogfile(path)))) {
                 this.streamChange(path, 0, options);
             }
         } else if (event === 'change') {
             const oldFileSize = this.fileSizes.get(path)!;
-            this.fileSizes.set(path, stats.size);
-            if (this.isReady && stats.size > oldFileSize) {
+            this.fileSizes.set(path, size);
+            if (this.isReady && size > oldFileSize) {
                 this.streamChange(path, oldFileSize, options);
             }
-        } else if (event === 'unlink') {
-            this.fileSizes.delete(path);
         }
     }
 
@@ -143,16 +175,53 @@ export class CLILogs extends CLICommand {
             start,
             autoClose: true,
         });
-        if (options.regex) {
+        if (options.regex || options.minLevel) {
             // Read the input line by line and only include the lines matching the filter
             input
                 .pipe(es.split())
-                .pipe(es.filterSync(line => options.regex!.test(line)))
+                .pipe(es.filterSync(this.createFilter(options)))
                 .pipe(es.mapSync((line: string) => line + os.EOL))
                 .pipe(process.stdout);
         } else {
             // just pipe the input through
             tools.pipeLinewise(input, process.stdout);
         }
+    }
+
+    /**
+     * Create the check of log lines against the active filters, for one read of a file
+     *
+     * A log entry can span several lines, e.g. a stack trace, and only its first line carries the
+     * level. Those follow-up lines inherit the decision made for the entry they belong to, so
+     * filtering by level does not cut a stack trace in half. Which lines start an entry is decided
+     * by the shared parser, the same one the host commands `getLogs` and `searchLogs` use: it takes
+     * a level only where the time stamp of an entry is, so a level quoted inside a message does not
+     * count as one.
+     *
+     * The decision belongs to one read and starts as "not shown". A read can begin with follow-up
+     * lines - the last lines of a file, or a stream from an offset - whose entry it does not know,
+     * and showing them would ignore the level. Files that are streamed at the same time do not
+     * share it either.
+     *
+     * @param options the active filters
+     */
+    private createFilter(options: CLILogsOptions): (line: string) => boolean {
+        let showEntry = false;
+
+        return line => {
+            if (options.minLevel) {
+                const header = parseLogEntryHeader(line);
+
+                if (header) {
+                    showEntry = isLogLevelAtLeast(header.level, options.minLevel);
+                }
+
+                if (!showEntry) {
+                    return false;
+                }
+            }
+
+            return !options.regex || options.regex.test(line);
+        };
     }
 }

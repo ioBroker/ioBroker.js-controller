@@ -8,7 +8,7 @@
 
 > **ChownFileCallback** = (`err?`, `processed?`) => `void`
 
-Defined in: [types-dev/index.d.ts:712](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L712)
+Defined in: [types-dev/index.d.ts:714](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/types-dev/index.d.ts#L714)
 
 ## Parameters
 
