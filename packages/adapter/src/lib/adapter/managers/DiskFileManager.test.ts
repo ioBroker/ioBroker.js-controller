@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import os from 'node:os';
 import path from 'node:path';
 import fs from 'node:fs/promises';
+import zlib from 'node:zlib';
 import { DiskFileManager } from './DiskFileManager.js';
 import type { AdapterContext } from '../context.js';
 import type { InternalSendToHostOptions } from '../../_Types.js';
@@ -39,10 +40,11 @@ interface FakeHost {
  * @param behaviour.silent whether the host answers at all
  * @param behaviour.changeAt from this offset on the host reports another modification time
  * @param behaviour.failAt from this offset on the requests fail
+ * @param behaviour.compress whether the host compresses the pieces, if asked for
  */
 function makeManager(
     file: Buffer,
-    behaviour: { supported?: boolean; silent?: boolean; changeAt?: number; failAt?: number } = {},
+    behaviour: { supported?: boolean; silent?: boolean; changeAt?: number; failAt?: number; compress?: boolean } = {},
 ): { mgr: DiskFileManager; host: FakeHost } {
     const host: FakeHost = { requests: [], maxParallel: 0, deleted: false };
     let open = 0;
@@ -81,11 +83,14 @@ function makeManager(
         if (behaviour.failAt !== undefined && offset >= behaviour.failAt) {
             throw new Error(`Timeout exceeded at ${offset}`);
         }
+        const piece = file.subarray(offset, offset + length);
+        const compressed = behaviour.compress && opts.message.compress === true;
         return {
             size: file.length,
             mtime: behaviour.changeAt !== undefined && offset >= behaviour.changeAt ? 2 : 1,
             offset,
-            data: file.subarray(offset, offset + length).toString('base64'),
+            data: (compressed ? zlib.gzipSync(piece) : piece).toString('base64'),
+            ...(compressed ? { compressed: true } : {}),
         };
     };
     const ctx = {
@@ -123,6 +128,17 @@ describe('DiskFileManager on another host', () => {
         assert.ok(host.maxParallel <= 4, 'but not all at once');
     });
 
+    it('asks for compressed pieces and unpacks them', async () => {
+        const content = Buffer.from('a line of a log file\n'.repeat(150_000));
+        const { mgr, host } = makeManager(content, { compress: true });
+
+        const result = await mgr.readDiskFile(URL);
+
+        assert.ok(result.equals(content));
+        const reads = host.requests.filter(r => r.command === 'readDiskFile');
+        assert.ok(reads.every(r => r.message.compress === true));
+    });
+
     it('checks the host only once', async () => {
         const { mgr, host } = makeManager(makeContent(100));
         await mgr.readDiskFile(URL);
@@ -147,14 +163,14 @@ describe('DiskFileManager on another host', () => {
 
     it('stops when the file changes while it is read', async () => {
         const { mgr } = makeManager(makeContent(5 * CHUNK), { changeAt: 2 * CHUNK });
-        await assert.rejects(mgr.readDiskFile(URL), /changed on host "there" while reading/);
+        await assert.rejects(mgr.readDiskFile(URL), /changed on host "there" while it was fetched/);
     });
 
     it('reports the error of the host', async () => {
         const { mgr } = makeManager(makeContent(10));
         await assert.rejects(
             mgr.readDiskFile('iobdisk://there/telegram.0/video/2.mp4'),
-            /host "there" cannot hand out telegram.0\/video\/2.mp4: file "video\/2.mp4" of telegram.0 not found/,
+            /host "there" refused readDiskFile of "telegram.0\/video\/2.mp4": file "video\/2.mp4" of telegram.0 not found/,
         );
     });
 
@@ -220,7 +236,7 @@ describe('DiskFileManager on another host', () => {
         const { mgr } = makeManager(makeContent(10));
         await assert.rejects(
             mgr.deleteDiskFile('iobdisk://there/telegram.0/video'),
-            /host "there" cannot delete telegram.0\/video: "video" of telegram.0 is not a file/,
+            /host "there" refused deleteDiskFile of "telegram.0\/video": "video" of telegram.0 is not a file/,
         );
         const old = makeManager(makeContent(10), { supported: false });
         await assert.rejects(old.mgr.deleteDiskFile(URL), /js-controller of host "there" is too old/);

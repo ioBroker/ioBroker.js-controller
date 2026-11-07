@@ -1,7 +1,9 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import type { Stats } from 'node:fs';
-import { getControllerDir, getDefaultDataDir } from '@/lib/common/tools.js';
+import { tools } from '@iobroker/js-controller-common-db';
+import { FILE_CHUNK_SIZE, FILE_MAX_CHUNK_SIZE, readChunk, type FileChunk } from './diskChunks.js';
+import { isInside } from './diskPaths.js';
 
 /**
  * `iobdisk://` URLs point to a file on the disk of one specific host, below the data directory of an instance:
@@ -13,15 +15,16 @@ import { getControllerDir, getDefaultDataDir } from '@/lib/common/tools.js';
  * (`sendToHost(host, 'readDiskFile', ...)`, `sendToHost(host, 'deleteDiskFile', ...)`).
  *
  * Only files below `iobroker-data/<namespace>` (or the older `iobroker-data/<adapter>_<instance>`) can be addressed,
- * never anything else of the host.
+ * never anything else of the host. The checks that keep a path inside that directory and the pieces a file is handed
+ * out in are the same as for the files of adapters and for `readDiskDir`, see `diskPaths.ts` and `diskChunks.ts`.
  */
 const URL_PREFIX = 'iobdisk://';
 
 /** Size of one chunk when a file is read from another host, in bytes */
-export const DISK_FILE_CHUNK_SIZE = 1024 * 1024;
+export const DISK_FILE_CHUNK_SIZE = FILE_CHUNK_SIZE;
 
 /** Largest chunk the host hands out in one answer, in bytes */
-export const DISK_FILE_MAX_CHUNK_SIZE = 4 * 1024 * 1024;
+export const DISK_FILE_MAX_CHUNK_SIZE = FILE_MAX_CHUNK_SIZE;
 
 /** An instance namespace like `telegram.0` - the adapter name never contains a dot */
 const NAMESPACE_REGEX = /^[a-zA-Z0-9][a-zA-Z0-9_-]*\.\d+$/;
@@ -109,10 +112,10 @@ export function parseDiskFileUrl(url: unknown): DiskFileLocation {
     if (!isDiskFileUrl(url)) {
         throw new Error(`not an ${URL_PREFIX} URL: ${JSON.stringify(url)}`);
     }
-    const [host, namespace, ...segments] = url.slice(URL_PREFIX.length).split('/');
+    const parts = url.slice(URL_PREFIX.length).split('/');
     let decoded: string[];
     try {
-        decoded = [host, namespace, ...segments].map(part => decodeURIComponent(part));
+        decoded = parts.map(part => decodeURIComponent(part));
     } catch {
         throw new Error(`invalid ${URL_PREFIX} URL: ${url}`);
     }
@@ -130,7 +133,7 @@ export function parseDiskFileUrl(url: unknown): DiskFileLocation {
 
 /** The absolute data directory of this host, as `utils.getAbsoluteDefaultDataDir()` of adapter-core gives it */
 function getAbsoluteDataDir(): string {
-    return path.resolve(getControllerDir(), getDefaultDataDir());
+    return path.resolve(tools.getControllerDir(), tools.getDefaultDataDir());
 }
 
 /**
@@ -163,22 +166,11 @@ export function toDiskFileLocation(host: string, namespace: string, filePath: st
     }
     const absolute = path.resolve(filePath);
     for (const dir of getInstanceDataDirs(namespace)) {
-        if (absolute !== dir && isInside(dir, absolute)) {
+        if (absolute !== dir && isInside(absolute, dir)) {
             return { host, namespace, path: splitRelativePath(path.relative(dir, absolute)).join('/') };
         }
     }
     throw new Error(`"${filePath}" is not inside the data directory of ${namespace}`);
-}
-
-/**
- * Whether `target` is `root` itself or inside of it
- *
- * @param root directory
- * @param target path to check
- */
-function isInside(root: string, target: string): boolean {
-    const relative = path.relative(root, target);
-    return relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
 }
 
 /**
@@ -203,7 +195,7 @@ export async function resolveDiskFile(namespace: unknown, relativePath: unknown)
         } catch {
             continue;
         }
-        if (!isInside(realDir, realFile)) {
+        if (!isInside(realFile, realDir)) {
             throw new Error(`file "${segments.join('/')}" of ${namespace as string} is outside its data directory`);
         }
         const stat = await fs.stat(realFile);
@@ -213,6 +205,27 @@ export async function resolveDiskFile(namespace: unknown, relativePath: unknown)
         return realFile;
     }
     throw new Error(`file "${segments.join('/')}" of ${namespace as string} not found`);
+}
+
+/**
+ * Read one piece of the file an `iobdisk://` URL points to on this host, for the host command `readDiskFile`
+ *
+ * @param namespace namespace of the instance, e.g. `telegram.0`
+ * @param relativePath path below the data directory of the instance
+ * @param offset position in the file to read from, 0 if not given
+ * @param length how many bytes to read at most, {@link DISK_FILE_CHUNK_SIZE} if not given
+ * @param compress whether the piece may be compressed with gzip (a video is not, as it is compressed already)
+ * @throws {Error} if the request is invalid, or the file does not exist or is outside the data directory
+ */
+export async function readDiskFileChunk(
+    namespace: unknown,
+    relativePath: unknown,
+    offset?: unknown,
+    length?: unknown,
+    compress?: unknown,
+): Promise<FileChunk> {
+    const file = await resolveDiskFile(namespace, relativePath);
+    return readChunk(file, splitRelativePath(relativePath).join('/'), offset, length, compress);
 }
 
 /**
@@ -229,7 +242,7 @@ export async function resolveDiskFile(namespace: unknown, relativePath: unknown)
  */
 export async function deleteDiskFile(namespace: unknown, relativePath: unknown): Promise<boolean> {
     const segments = splitRelativePath(relativePath);
-    const name = segments[segments.length - 1];
+    const name = segments[segments.length - 1] ?? '';
     for (const dir of getInstanceDataDirs(assertNamespace(namespace))) {
         let realDir: string;
         let realParent: string;
@@ -239,7 +252,7 @@ export async function deleteDiskFile(namespace: unknown, relativePath: unknown):
         } catch {
             continue;
         }
-        if (!isInside(realDir, realParent)) {
+        if (!isInside(realParent, realDir)) {
             throw new Error(`file "${segments.join('/')}" of ${namespace as string} is outside its data directory`);
         }
         const file = path.join(realParent, name);

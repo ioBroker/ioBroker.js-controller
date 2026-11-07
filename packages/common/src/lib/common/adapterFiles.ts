@@ -16,49 +16,32 @@
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { promisify } from 'node:util';
-import zlib from 'node:zlib';
 import { tools } from '@iobroker/js-controller-common-db';
+import {
+    FILE_CHUNK_SIZE,
+    FILE_MAX_CHUNK_SIZE,
+    encodePiece,
+    readChunk,
+    readCompress,
+    readInteger,
+    readPiece,
+    type FileChunk,
+} from './diskChunks.js';
 import { DISK_DIR_MAX_ENTRIES, isHiddenName, isInside } from './diskPaths.js';
 
+export { decodeChunkData } from './diskChunks.js';
+
 /** Size of one piece of a file, as `readAdapterFile` hands it out by default */
-export const ADAPTER_FILE_CHUNK_SIZE = 1024 * 1024;
+export const ADAPTER_FILE_CHUNK_SIZE = FILE_CHUNK_SIZE;
 
 /** The largest piece of a file one `readAdapterFile` hands out */
-export const ADAPTER_FILE_MAX_CHUNK_SIZE = 4 * 1024 * 1024;
+export const ADAPTER_FILE_MAX_CHUNK_SIZE = FILE_MAX_CHUNK_SIZE;
 
 /** The most files a directory listing contains - a widgets folder has some hundred */
 export const ADAPTER_DIR_MAX_FILES = DISK_DIR_MAX_ENTRIES;
 
 /** The most files one `readAdapterFiles` hands out */
 export const ADAPTER_FILES_MAX_BATCH = 100;
-
-/** A piece smaller than this is not compressed, as gzip would win nearly nothing */
-const MIN_COMPRESS_SIZE = 256;
-
-/** Files that are compressed already, so gzip would only cost time */
-const COMPRESSED_EXTENSIONS = new Set([
-    '.7z',
-    '.avif',
-    '.br',
-    '.gif',
-    '.gz',
-    '.jpeg',
-    '.jpg',
-    '.mp3',
-    '.mp4',
-    '.ogg',
-    '.png',
-    '.tgz',
-    '.webm',
-    '.webp',
-    '.woff',
-    '.woff2',
-    '.zip',
-]);
-
-const gzip = promisify(zlib.gzip);
-const gunzip = promisify(zlib.gunzip);
 
 /** The longest relative path that is accepted */
 const MAX_PATH_LENGTH = 1_024;
@@ -76,36 +59,13 @@ export interface AdapterFileEntry {
     mtime: number;
 }
 
-/** One piece of a file, as `readAdapterFile` hands it out */
-export interface AdapterFileChunk {
-    /** Size of the whole file in bytes */
-    size: number;
-    /** Time of the last modification of the file in ms, to notice a file that changes while it is read */
-    mtime: number;
-    /** Position of `data` in the file */
-    offset: number;
-    /** The bytes from `offset` on, base64 encoded; empty at the end of the file */
-    data: string;
-    /** Whether `data` was compressed with gzip before it was base64 encoded; `offset` and `size` count raw bytes */
-    compressed?: boolean;
-}
+/** One piece of a file, as `readAdapterFile` hands it out - the same as every host command that hands out a file */
+export type AdapterFileChunk = FileChunk;
 
 /** The beginning of one file, as `readAdapterFiles` hands it out */
 export interface AdapterFilesEntry extends AdapterFileChunk {
     /** The file as it was requested */
     path: string;
-}
-
-/** One piece of a file as read from the disk */
-interface FilePiece {
-    /** Size of the whole file in bytes */
-    size: number;
-    /** Time of the last modification of the file in ms */
-    mtime: number;
-    /** Position of `buffer` in the file */
-    offset: number;
-    /** The read bytes */
-    buffer: Buffer;
 }
 
 /**
@@ -242,91 +202,6 @@ export async function listDir(root: string, dirPath: unknown): Promise<AdapterFi
 }
 
 /**
- * Check that a value is an integer in the given range, or use the default if it is not given
- *
- * @param value received value
- * @param name name of the attribute for the error message
- * @param min smallest allowed value
- * @param max largest allowed value
- * @param defaultValue value if nothing was given
- */
-function readInteger(value: unknown, name: string, min: number, max: number, defaultValue: number): number {
-    if (value === undefined || value === null) {
-        return defaultValue;
-    }
-    if (typeof value !== 'number' || !Number.isInteger(value) || value < min || value > max) {
-        throw new Error(`invalid ${name} ${JSON.stringify(value)}`);
-    }
-    return value;
-}
-
-/**
- * Read one piece of a file below `root` from the disk
- *
- * @param root e.g. the package directory of an adapter
- * @param filePath the file relative to `root`
- * @param start position in the file to read from
- * @param toRead how many bytes to read at most
- */
-async function readPiece(root: string, filePath: unknown, start: number, toRead: number): Promise<FilePiece> {
-    const file = await resolveBelow(root, splitRelativePath(filePath));
-    const handle = await fs.open(file, 'r');
-    try {
-        // checked on the opened file, so that it cannot be swapped between the check and the reading
-        const stat = await handle.stat();
-        if (!stat.isFile()) {
-            throw new Error(`"${String(filePath)}" is no file`);
-        }
-        const buffer = Buffer.alloc(Math.max(0, Math.min(toRead, stat.size - start)));
-        let read = 0;
-        while (read < buffer.length) {
-            const { bytesRead } = await handle.read(buffer, read, buffer.length - read, start + read);
-            if (!bytesRead) {
-                break;
-            }
-            read += bytesRead;
-        }
-        return { size: stat.size, mtime: stat.mtimeMs, offset: start, buffer: buffer.subarray(0, read) };
-    } finally {
-        await handle.close();
-    }
-}
-
-/**
- * Encode a piece for the answer, compressed if asked for and if it gets smaller by it
- *
- * @param piece the read piece
- * @param filePath the file, whose extension tells whether it is compressed already
- * @param compress whether the requester can take compressed pieces
- */
-async function encodePiece(piece: FilePiece, filePath: unknown, compress: boolean): Promise<AdapterFileChunk> {
-    const { size, mtime, offset, buffer } = piece;
-    if (
-        compress &&
-        buffer.length >= MIN_COMPRESS_SIZE &&
-        !COMPRESSED_EXTENSIONS.has(path.extname(String(filePath)).toLowerCase())
-    ) {
-        const packed = await gzip(buffer);
-        if (packed.length < buffer.length) {
-            return { size, mtime, offset, data: packed.toString('base64'), compressed: true };
-        }
-    }
-    return { size, mtime, offset, data: buffer.toString('base64') };
-}
-
-/**
- * Check the flag that allows compressed pieces
- *
- * @param compress received value
- */
-function readCompress(compress: unknown): boolean {
-    if (compress !== undefined && compress !== null && typeof compress !== 'boolean') {
-        throw new Error(`invalid compress ${JSON.stringify(compress)}`);
-    }
-    return compress === true;
-}
-
-/**
  * Read one piece of a file below `root`
  *
  * @param root e.g. the package directory of an adapter
@@ -344,11 +219,8 @@ export async function readFileChunk(
     length?: unknown,
     compress?: unknown,
 ): Promise<AdapterFileChunk> {
-    const start = readInteger(offset, 'offset', 0, Number.MAX_SAFE_INTEGER, 0);
-    const toRead = readInteger(length, 'length', 1, ADAPTER_FILE_MAX_CHUNK_SIZE, ADAPTER_FILE_CHUNK_SIZE);
-    const mayCompress = readCompress(compress);
-
-    return encodePiece(await readPiece(root, filePath, start, toRead), filePath, mayCompress);
+    const file = await resolveBelow(root, splitRelativePath(filePath));
+    return readChunk(file, String(filePath), offset, length, compress);
 }
 
 /**
@@ -385,42 +257,12 @@ export async function readFiles(
         if (budget <= 0) {
             break;
         }
-        const piece = await readPiece(root, filePath, 0, budget);
+        const file = await resolveBelow(root, splitRelativePath(filePath));
+        const piece = await readPiece(file, 0, budget, filePath);
         budget -= piece.buffer.length;
         files.push({ path: filePath, ...(await encodePiece(piece, filePath, mayCompress)) });
     }
     return files;
-}
-
-/**
- * The raw bytes of a received piece, decompressed if the host compressed it
- *
- * @param chunk the received piece
- * @param chunk.data the bytes, base64 encoded
- * @param chunk.compressed whether the bytes are compressed with gzip
- * @param maxLength how many bytes the piece may hold at most, which also limits the decompression
- * @throws {Error} if `data` is no string, cannot be decompressed or is longer than `maxLength`
- */
-export async function decodeChunkData(
-    chunk: { data?: unknown; compressed?: unknown },
-    maxLength: number,
-): Promise<Buffer> {
-    if (typeof chunk.data !== 'string') {
-        throw new Error('invalid data');
-    }
-    const raw = Buffer.from(chunk.data, 'base64');
-    if (chunk.compressed !== true) {
-        if (raw.length > maxLength) {
-            throw new Error('the piece is longer than expected');
-        }
-        return raw;
-    }
-    try {
-        // limited, so that a small answer cannot blow up to any size
-        return await gunzip(raw, { maxOutputLength: Math.max(1, maxLength) });
-    } catch (e) {
-        throw new Error(`the piece cannot be decompressed: ${e.message}`);
-    }
 }
 
 /**

@@ -3,10 +3,8 @@ import os from 'node:os';
 import path from 'node:path';
 import fs from 'fs-extra';
 import { realpath } from 'node:fs/promises';
-import { diskFiles } from '@iobroker/js-controller-common';
-import { deleteRequestedDiskFile, readDiskFileChunk } from '../src/lib/diskFiles.js';
-
-const {
+import zlib from 'node:zlib';
+import {
     buildDiskFileUrl,
     parseDiskFileUrl,
     isDiskFileUrl,
@@ -14,8 +12,9 @@ const {
     resolveDiskFile,
     deleteDiskFile,
     getInstanceDataDirs,
+    readDiskFileChunk,
     DISK_FILE_MAX_CHUNK_SIZE,
-} = diskFiles;
+} from './diskFiles.js';
 
 describe('iobdisk:// URLs', () => {
     it('builds and parses a URL', () => {
@@ -157,7 +156,7 @@ describe('iobdisk:// files on this host', () => {
 
         assert.equal(await deleteDiskFile('telegram.0', 'video/old.mp4'), true);
         assert.equal(await fs.pathExists(old), false);
-        assert.deepEqual(await deleteRequestedDiskFile({ namespace: 'test.0', path: 'b.txt' }), { deleted: true });
+        assert.equal(await deleteDiskFile('test.0', 'b.txt'), true);
         assert.equal(await fs.pathExists(fresh), false);
 
         // not there (any more): no error
@@ -174,11 +173,7 @@ describe('iobdisk:// files on this host', () => {
         assert.equal(await fs.pathExists(videoDir), true);
         await assert.rejects(deleteDiskFile('telegram.0', '../iobroker.json'), /must not contain/);
         await assert.rejects(deleteDiskFile('files', 'x'), /invalid instance namespace/);
-        await assert.rejects(deleteRequestedDiskFile('video/1.mp4'), /invalid message/);
-        await assert.rejects(
-            deleteRequestedDiskFile({ namespace: 'telegram.0', path: '/etc/passwd' }),
-            /must be relative/,
-        );
+        await assert.rejects(deleteDiskFile('telegram.0', '/etc/passwd'), /must be relative/);
         assert.equal(await fs.pathExists(path.join(dataDir, 'iobroker.json')), true);
     });
 
@@ -203,45 +198,40 @@ describe('iobdisk:// files on this host', () => {
     });
 
     it('hands out a file in pieces', async () => {
-        const first = await readDiskFileChunk({ namespace: 'telegram.0', path: 'video/1.mp4' });
+        const first = await readDiskFileChunk('telegram.0', 'video/1.mp4');
         assert.equal(first.size, content.length);
         assert.equal(first.offset, 0);
         assert.equal(typeof first.mtime, 'number');
         assert.deepEqual(Buffer.from(first.data, 'base64'), content.subarray(0, 1024 * 1024));
 
-        const last = await readDiskFileChunk({
-            namespace: 'telegram.0',
-            path: 'video/1.mp4',
-            offset: 2_000_000,
-            length: 1024 * 1024,
-        });
+        const last = await readDiskFileChunk('telegram.0', 'video/1.mp4', 2_000_000, 1024 * 1024);
         assert.equal(last.offset, 2_000_000);
         assert.deepEqual(Buffer.from(last.data, 'base64'), content.subarray(2_000_000));
 
-        const behindTheEnd = await readDiskFileChunk({
-            namespace: 'telegram.0',
-            path: 'video/1.mp4',
-            offset: 5_000_000,
-        });
+        const behindTheEnd = await readDiskFileChunk('telegram.0', 'video/1.mp4', 5_000_000);
         assert.equal(behindTheEnd.data, '');
         assert.equal(behindTheEnd.size, content.length);
     });
 
     it('refuses invalid requests', async () => {
-        await assert.rejects(readDiskFileChunk(null), /invalid message/);
-        await assert.rejects(readDiskFileChunk({ namespace: 'telegram.0', path: 'video/1.mp4', offset: -1 }), /offset/);
-        await assert.rejects(
-            readDiskFileChunk({ namespace: 'telegram.0', path: 'video/1.mp4', offset: 1.5 }),
-            /offset/,
-        );
-        await assert.rejects(
-            readDiskFileChunk({ namespace: 'telegram.0', path: 'video/1.mp4', length: DISK_FILE_MAX_CHUNK_SIZE + 1 }),
-            /length/,
-        );
-        await assert.rejects(readDiskFileChunk({ namespace: 'files', path: 'x' }), /invalid instance namespace/);
-        await assert.rejects(
-            readDiskFileChunk({ namespace: 'telegram.0', path: '../iobroker.json' }),
-            /must not contain/,
-        );
+        await assert.rejects(readDiskFileChunk('telegram.0', 'video/1.mp4', -1), /offset/);
+        await assert.rejects(readDiskFileChunk('telegram.0', 'video/1.mp4', 1.5), /offset/);
+        await assert.rejects(readDiskFileChunk('telegram.0', 'video/1.mp4', 0, DISK_FILE_MAX_CHUNK_SIZE + 1), /length/);
+        await assert.rejects(readDiskFileChunk('telegram.0', 'video/1.mp4', 0, undefined, 'yes'), /compress/);
+        await assert.rejects(readDiskFileChunk('files', 'x'), /invalid instance namespace/);
+        await assert.rejects(readDiskFileChunk('telegram.0', '../iobroker.json'), /must not contain/);
+    });
+
+    it('compresses a piece on request, but not a video', async () => {
+        const text = 'a line of a log file\n'.repeat(1000);
+        await fs.writeFile(path.join(dataDir, 'test.0', 'log.txt'), text);
+
+        const packed = await readDiskFileChunk('test.0', 'log.txt', 0, undefined, true);
+        assert.equal(packed.compressed, true);
+        assert.equal(zlib.gunzipSync(Buffer.from(packed.data, 'base64')).toString(), text);
+
+        const video = await readDiskFileChunk('telegram.0', 'video/1.mp4', 0, undefined, true);
+        assert.equal(video.compressed, undefined);
+        assert.deepEqual(Buffer.from(video.data, 'base64'), content.subarray(0, 1024 * 1024));
     });
 });

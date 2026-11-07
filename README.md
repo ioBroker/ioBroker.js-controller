@@ -928,19 +928,23 @@ For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?p
 #### Files on the disk of another host
 
 The databases are shared, the disks are not. Whatever lies only on the disk of a host - the package of an adapter
-installed there, a certificate, a backup folder - can only be read by the js-controller of that host. It hands it out
-with host commands for two purposes:
+installed there, a video an instance stored, a certificate - can only be read by the js-controller of that host. It
+hands it out with host commands for three purposes:
 
-| Purpose                                                | Host commands                                           | Feature flag               | What can be read                                                                                                | Who may ask                                                    |
-| ------------------------------------------------------ | ------------------------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| Files of an adapter, e.g. its `widgets` for vis-2      | `listAdapterDir`, `readAdapterFiles`, `readAdapterFile` | `CONTROLLER_ADAPTER_FILES` | only the package directory of the adapter, without `node_modules`, hidden entries and symbolic links            | every instance - it is what npm publishes                      |
-| Select a file or a folder on the host (`diskSelector`) | `readDiskDir`                                           | `CONTROLLER_READ_DISK_DIR` | any directory the user of ioBroker may read, never above `root` if given; hidden entries only with `showHidden` | protected like `cmdExec` by the socket server (administrators) |
+| Purpose                                                                               | Host commands                                           | Feature flag               | What can be read                                                                                                             | Who may ask                                                                   |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Files of an adapter, e.g. its `widgets` for vis-2                                     | `listAdapterDir`, `readAdapterFiles`, `readAdapterFile` | `CONTROLLER_ADAPTER_FILES` | only the package directory of the adapter, without `node_modules`, hidden entries and symbolic links                         | every instance - it is what npm publishes                                     |
+| Select a file or a folder on the host (`diskSelector`)                                | `readDiskDir`                                           | `CONTROLLER_READ_DISK_DIR` | any directory the user of ioBroker may read, never above `root` if given; hidden entries only with `showHidden`              | protected like `cmdExec` by the socket server (administrators)                |
+| Files of an instance as `iobdisk://` URLs, e.g. a video of telegram for the assistant | `readDiskFile`, `deleteDiskFile`                        | `CONTROLLER_DISK_FILES`    | only regular files below the data directory of the instance (`iobroker-data/<adapter>.<n>` or `iobroker-data/<adapter>_<n>`) | every instance; protected like `cmdExec` by the socket server for web clients |
 
-Both keep a request below a directory - the package of the adapter, or `root` - with the same checks: nothing above it,
-also not through `..` or a symbolic link that leads out of it, and at most 5000 entries per listing. Both name the
-time of the last modification `mtime` (in ms) and answer an
-error as `{ error }` instead of throwing, and an older js-controller never answers an unknown command, so check the
-feature flag with `checkFeatureSupported` first.
+All of them keep a request below a directory - the package of the adapter, the data directory of the instance, or
+`root` - with the same checks: nothing above it, also not through `..` or a symbolic link that leads out of it, and at
+most 5000 entries per listing. A file is handed out in the same pieces by `readAdapterFile`, `readAdapterFiles` and
+`readDiskFile`: `{ size, mtime, offset, data, compressed? }` with `data` base64 encoded, 1 MB by default and 4 MB at
+most, compressed with gzip on request (`compress: true`) where it helps. The time of the last modification is always
+`mtime` (in ms). An error is answered as `{ error }` instead of throwing, and an older js-controller never answers an
+unknown command, so check the feature flag with `checkFeatureSupported` first - `fetchAdapterDir()` and the
+`iobdisk://` methods of the adapter do all of this already.
 
 ##### Files of an adapter
 
@@ -974,6 +978,40 @@ backups - on the host where the instance runs, not on the machine of the browser
 the directories with the host command [`readDiskDir`](#readdiskdir) of that host. Only the entries the user ioBroker
 runs as may read are listed. `root` keeps the dialog where the adapter wants it; it is no access control, so the
 adapter must still check the path it gets.
+
+##### Files of an instance: `iobdisk://` URLs
+
+A file path like `/opt/iobroker/iobroker-data/telegram_0/video/1.mp4` is only valid on the host where the file is. When
+telegram and the assistant run on different hosts, the assistant cannot open the video telegram stored. An `iobdisk://`
+URL names the host too:
+
+```
+iobdisk://<host>/<namespace>/<path below the data directory of the instance>
+iobdisk://pi4/telegram.0/video/2026-11-04_10-00-00.mp4
+```
+
+The instance that stores the file builds the URL, the instance that gets it reads it - from the disk if it runs on the
+same host, otherwise piece by piece from the js-controller of that host (`readDiskFile`, 4 pieces at the same time):
+
+```js
+// telegram.0 on host "pi4"
+const url = this.getDiskFileUrl('/opt/iobroker/iobroker-data/telegram_0/video/1.mp4');
+// -> 'iobdisk://pi4/telegram.0/video/1.mp4'
+
+// assistant.0 on any host
+const video = await this.readDiskFile(url); // Buffer
+// or, without holding a big file in memory as a whole:
+this.createDiskFileReadStream(url).pipe(target);
+// and when it is processed:
+await this.deleteDiskFile(url); // true, or false if it did not exist any more
+```
+
+Only files below the data directory of an instance can be addressed: `iobroker-data/<namespace>` as
+`utils.getAbsoluteInstanceDataDir()` of adapter-core gives it, or the older `iobroker-data/<adapter>_<instance>`. Paths
+with `..` and symbolic links leading out of that directory are refused, so no other file of the host can be read or
+deleted this way. `deleteDiskFile` deletes only a regular file - no directory, and a symbolic link is refused instead of
+deleting its target. The host with the file needs js-controller 8.0 or newer (feature `CONTROLLER_DISK_FILES`);
+`readDiskFile` and `deleteDiskFile` report an error if it is older or not running.
 
 ### Host discovery
 
@@ -1570,6 +1608,37 @@ ones are left out then - fetch the rest with `readAdapterFile`. `compress` works
 }
 ```
 
+#### readDiskFile
+
+Hands out one piece of a file below the data directory of an instance on this host - how `adapter.readDiskFile()` reads an `iobdisk://` URL of another host (see [Files on the disk of another host](#files-on-the-disk-of-another-host)). Supported if the host reports the feature `CONTROLLER_DISK_FILES`.
+
+```js
+const answer = await sendToHostAsync('system.host.pi4', 'readDiskFile', {
+    namespace: 'telegram.0',
+    path: 'video/1.mp4', // below iobroker-data/telegram.0 or iobroker-data/telegram_0
+    offset: 0, // optional, default 0
+    length: 1048576, // optional, default 1 MB, at most 4 MB
+    compress: true, // optional, the piece may be compressed with gzip - a video is not, as it is compressed already
+});
+// { size: 52428800, mtime: 1793612345000, offset: 0, data: '<base64>', compressed?: true } or { error: '...' }
+```
+
+The answer is the same as of [`readAdapterFile`](#readadapterfile). `data` is empty when `offset` is at or behind the end of the file. A different `size` or `mtime` in a later answer means that the file changed while it was read.
+
+#### deleteDiskFile
+
+Deletes a file below the data directory of an instance on this host - how `adapter.deleteDiskFile()` deletes an `iobdisk://` URL of another host (see [Files on the disk of another host](#files-on-the-disk-of-another-host)). Only a regular file is deleted, never a directory or a symbolic link. Supported if the host reports the feature `CONTROLLER_DISK_FILES`.
+
+```js
+const answer = await sendToHostAsync('system.host.pi4', 'deleteDiskFile', {
+    namespace: 'telegram.0',
+    path: 'video/1.mp4', // below iobroker-data/telegram.0 or iobroker-data/telegram_0
+});
+// { deleted: true }, { deleted: false } if the file did not exist, or { error: '...' }
+```
+
+Without a callback the file is deleted as well, only no answer is sent.
+
 #### readDiskDir
 
 Lists a directory on the disk of this host, e.g. to select a file or a folder in the settings of an instance
@@ -1751,6 +1820,7 @@ The following features can be checked using this method:
 - **CONTROLLER_GET_LOGS_LOG_LEVEL**: the `getLogs` host message accepts an object `{ lines, logLevel }` instead of just the number of lines, so the host returns only entries of the requested severity and more severe ones (since js-controller 8.0)
 - **CONTROLLER_SEARCH_LOGS**: the host command `searchLogs` searches the log files of the host - the rotated and gzipped ones too - with `{ hours, level, source, text, maxRows }` and answers with `{ lines, truncated, files, until }`, so that only the matching entries are transferred (since js-controller 8.0)
 - **CONTROLLER_ADAPTER_FILES**: the host commands `listAdapterDir`, `readAdapterFile` and `readAdapterFiles` hand out a directory of an adapter installed on the host, e.g. its `widgets`, so that `adapter.fetchAdapterDir()` can fetch it for an instance on another host (since js-controller 8.0)
+- **CONTROLLER_DISK_FILES**: the host commands `readDiskFile` and `deleteDiskFile` read and delete a file below the data directory of an instance on the host, how `adapter.readDiskFile()`, `adapter.createDiskFileReadStream()` and `adapter.deleteDiskFile()` handle an `iobdisk://` URL of another host (since js-controller 8.0)
 - **CONTROLLER_READ_DISK_DIR**: the host command `readDiskDir` lists a directory on the disk of the host with `{ root, path, filter, dirsOnly, showHidden, instance }` and answers with `{ root, path, parent, crumbs, entries, selected, truncated, sep, error }`. Only the entries the user of ioBroker may read are listed, and nothing above `root`, also not through `..` or a symbolic link. `root` may start with `%DATA_DIR%`, `%INSTANCE_DATA_DIR%` (needs `instance`, e.g. `myAdapter.0`), `%IOBROKER_DIR%` or `%HOME%`. Without `root` the whole disk is listed, on Windows starting with the drives. The `diskSelector` control of jsonConfig uses it (since js-controller 8.0)
 
 To check if certain adapter methods itself are existing, please simply check for their existence like

@@ -4,36 +4,27 @@ import { Readable } from 'node:stream';
 import { diskFiles } from '@iobroker/js-controller-common';
 import type { AdapterContext } from '@/lib/adapter/context.js';
 import { AdapterContextBase } from '@/lib/adapter/managers/AdapterContextBase.js';
+import { HostDiskClient, type ChunkedFile } from '@/lib/adapter/managers/HostDiskClient.js';
 import type { MessagingManager } from '@/lib/adapter/managers/MessagingManager.js';
 
 /** Feature flag of a js-controller that answers `readDiskFile` and `deleteDiskFile` */
 const DISK_FILES_FEATURE = 'CONTROLLER_DISK_FILES';
-/** How long the feature check waits for the other host, in ms */
-const FEATURE_CHECK_TIMEOUT = 5_000;
-/** How long one piece of a file may take, in ms */
-const CHUNK_TIMEOUT = 30_000;
+/** What the feature is for, in the error message about a too old js-controller */
+const DISK_FILES_PURPOSE = 'hand out iobdisk:// files';
 /** How many pieces are requested at the same time when reading from another host */
 const PARALLEL_CHUNKS = 4;
-
-/** One piece of a file as the host answers `readDiskFile` */
-interface DiskFileChunkAnswer {
-    size: number;
-    mtime: number;
-    offset: number;
-    data: string;
-}
 
 /**
  * Creates, reads and deletes `iobdisk://` URLs: files below the data directory of an instance on the disk of one host.
  *
  * A file on this host is read from the disk; a file on another host is fetched piece by piece from the js-controller
  * of that host with `sendToHost(host, 'readDiskFile', ...)`, so that also big files (videos) can be passed between
- * instances on different hosts. Deleting goes the same way (`sendToHost(host, 'deleteDiskFile', ...)`).
+ * instances on different hosts. Deleting goes the same way (`sendToHost(host, 'deleteDiskFile', ...)`). The pieces
+ * are the same as of the files of adapters and are requested compressed - the host leaves videos and images as they
+ * are, see {@link HostDiskClient}.
  */
 export class DiskFileManager extends AdapterContextBase {
-    readonly #getMessaging: () => MessagingManager;
-    /** Hosts that answered the feature check positively */
-    readonly #supportingHosts = new Set<string>();
+    readonly #client: HostDiskClient;
 
     /**
      * @param ctx Shared adapter context providing live runtime state
@@ -41,7 +32,7 @@ export class DiskFileManager extends AdapterContextBase {
      */
     constructor(ctx: AdapterContext, getMessaging: () => MessagingManager) {
         super(ctx);
-        this.#getMessaging = getMessaging;
+        this.#client = new HostDiskClient(getMessaging);
     }
 
     /**
@@ -102,21 +93,16 @@ export class DiskFileManager extends AdapterContextBase {
         if (location.host === this.host) {
             return diskFiles.deleteDiskFile(location.namespace, location.path);
         }
-        await this.#assertHostSupportsDiskFiles(location.host);
-        const answer = await this.#getMessaging().sendToHost({
-            hostName: location.host,
-            command: 'deleteDiskFile',
-            message: { namespace: location.namespace, path: location.path },
-            expectReply: true,
-            options: { timeout: CHUNK_TIMEOUT },
-        });
-        if (answer?.error) {
-            throw new Error(
-                `host "${location.host}" cannot delete ${location.namespace}/${location.path}: ${answer.error}`,
-            );
-        }
-        if (typeof answer?.deleted !== 'boolean') {
-            throw new Error(`invalid answer of host "${location.host}" for ${location.namespace}/${location.path}`);
+        await this.#client.assertFeature(location.host, DISK_FILES_FEATURE, DISK_FILES_PURPOSE);
+        const name = `${location.namespace}/${location.path}`;
+        const answer = await this.#client.request(
+            location.host,
+            'deleteDiskFile',
+            { namespace: location.namespace, path: location.path },
+            name,
+        );
+        if (typeof answer.deleted !== 'boolean') {
+            throw new Error(`invalid answer of host "${location.host}" to deleteDiskFile of "${name}"`);
         }
         return answer.deleted;
     }
@@ -135,65 +121,24 @@ export class DiskFileManager extends AdapterContextBase {
     }
 
     /**
-     * Make sure the js-controller of the host can hand out files
-     *
-     * @param host name of the host
-     */
-    async #assertHostSupportsDiskFiles(host: string): Promise<void> {
-        if (this.#supportingHosts.has(host)) {
-            return;
-        }
-        let answer: { result?: boolean } | undefined;
-        try {
-            answer = await this.#getMessaging().sendToHost({
-                hostName: host,
-                command: 'checkFeatureSupported',
-                message: DISK_FILES_FEATURE,
-                expectReply: true,
-                options: { timeout: FEATURE_CHECK_TIMEOUT },
-            });
-        } catch {
-            throw new Error(`host "${host}" does not answer - it is not running or its js-controller is too old`);
-        }
-        if (!answer?.result) {
-            throw new Error(`the js-controller of host "${host}" is too old to hand out iobdisk:// files`);
-        }
-        this.#supportingHosts.add(host);
-    }
-
-    /**
      * Request one piece of a file from the host
      *
      * @param location the parts of the URL
      * @param offset position of the piece in the file
      */
-    async #requestChunk(location: diskFiles.DiskFileLocation, offset: number): Promise<DiskFileChunkAnswer> {
-        const answer = await this.#getMessaging().sendToHost({
-            hostName: location.host,
-            command: 'readDiskFile',
-            message: {
+    #requestChunk(location: diskFiles.DiskFileLocation, offset: number): Promise<Record<string, any>> {
+        return this.#client.request(
+            location.host,
+            'readDiskFile',
+            {
                 namespace: location.namespace,
                 path: location.path,
                 offset,
                 length: diskFiles.DISK_FILE_CHUNK_SIZE,
+                compress: true,
             },
-            expectReply: true,
-            options: { timeout: CHUNK_TIMEOUT },
-        });
-        if (answer?.error) {
-            throw new Error(
-                `host "${location.host}" cannot hand out ${location.namespace}/${location.path}: ${answer.error}`,
-            );
-        }
-        if (
-            typeof answer?.size !== 'number' ||
-            typeof answer.mtime !== 'number' ||
-            answer.offset !== offset ||
-            typeof answer.data !== 'string'
-        ) {
-            throw new Error(`invalid answer of host "${location.host}" for ${location.namespace}/${location.path}`);
-        }
-        return answer as DiskFileChunkAnswer;
+            `${location.namespace}/${location.path}`,
+        );
     }
 
     /**
@@ -203,40 +148,49 @@ export class DiskFileManager extends AdapterContextBase {
      * @yields {Buffer} the content of the file, piece by piece and in order
      */
     async *#readFromHost(location: diskFiles.DiskFileLocation): AsyncGenerator<Buffer> {
-        await this.#assertHostSupportsDiskFiles(location.host);
+        await this.#client.assertFeature(location.host, DISK_FILES_FEATURE, DISK_FILES_PURPOSE);
 
+        const name = `${location.namespace}/${location.path}`;
         const chunkSize = diskFiles.DISK_FILE_CHUNK_SIZE;
-        const first = await this.#requestChunk(location, 0);
-        const { size, mtime } = first;
-        let position = 0;
-        let nextOffset = 0;
-        const pending: Promise<DiskFileChunkAnswer>[] = [Promise.resolve(first)];
-        nextOffset += chunkSize;
-
-        const request = (offset: number): Promise<DiskFileChunkAnswer> => {
-            const promise = this.#requestChunk(location, offset);
-            // a request may still be running when reading stops early - its rejection must not be unhandled
-            promise.catch(() => {});
-            return promise;
-        };
-
-        while (position < size) {
-            while (pending.length < PARALLEL_CHUNKS && nextOffset < size) {
-                pending.push(request(nextOffset));
+        const file: ChunkedFile = { size: -1, mtime: 0 };
+        // the first piece tells the size, so that the following ones can be requested at the same time
+        const first = await this.#client.decodeChunk(
+            location.host,
+            name,
+            await this.#requestChunk(location, 0),
+            file,
+            0,
+            chunkSize,
+            true,
+        );
+        const pending: Promise<Record<string, any>>[] = [];
+        let nextOffset = first.length;
+        const requestMore = (): void => {
+            while (pending.length < PARALLEL_CHUNKS && nextOffset < file.size) {
+                const promise = this.#requestChunk(location, nextOffset);
+                // a request may still be running when reading stops early - its rejection must not be unhandled
+                promise.catch(() => {});
+                pending.push(promise);
                 nextOffset += chunkSize;
             }
-            const chunk = await pending.shift()!;
-            if (chunk.size !== size || chunk.mtime !== mtime) {
-                throw new Error(
-                    `${location.namespace}/${location.path} changed on host "${location.host}" while reading`,
-                );
-            }
-            const data = Buffer.from(chunk.data, 'base64');
-            if (chunk.offset !== position || data.length !== Math.min(chunkSize, size - position)) {
-                throw new Error(
-                    `incomplete piece of ${location.namespace}/${location.path} from host "${location.host}"`,
-                );
-            }
+        };
+
+        requestMore();
+        if (first.length) {
+            yield first;
+        }
+        let position = first.length;
+        while (position < file.size) {
+            requestMore();
+            const data = await this.#client.decodeChunk(
+                location.host,
+                name,
+                await pending.shift()!,
+                file,
+                position,
+                chunkSize,
+                true,
+            );
             position += data.length;
             yield data;
         }
