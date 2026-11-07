@@ -4,14 +4,11 @@ import { adapterFiles } from '@iobroker/js-controller-common';
 import type { FetchAdapterDirOptions, FetchAdapterDirResult } from '@/lib/_Types.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
 import { AdapterContextBase } from '@/lib/adapter/managers/AdapterContextBase.js';
+import { HostDiskClient, type ChunkedFile } from '@/lib/adapter/managers/HostDiskClient.js';
 import type { MessagingManager } from '@/lib/adapter/managers/MessagingManager.js';
 
-/** Feature flag of a js-controller that answers `listAdapterDir` and `readAdapterFile` */
+/** Feature flag of a js-controller that answers `listAdapterDir`, `readAdapterFile` and `readAdapterFiles` */
 const ADAPTER_FILES_FEATURE = 'CONTROLLER_ADAPTER_FILES';
-/** How long the feature check waits for the other host, in ms */
-const FEATURE_CHECK_TIMEOUT = 5_000;
-/** How long the listing or one piece of a file may take, in ms */
-const REQUEST_TIMEOUT = 30_000;
 /** How many requests go to another host at the same time */
 const PARALLEL_REQUESTS = 4;
 /** Files up to this size are fetched together with others in one `readAdapterFiles` */
@@ -34,12 +31,10 @@ interface PlannedFile {
  * from its package; otherwise the js-controller of a host it is installed on hands the files out with
  * `sendToHost(host, 'listAdapterDir', ...)`, `sendToHost(host, 'readAdapterFiles', ...)` for the small files, several
  * in one answer, and `sendToHost(host, 'readAdapterFile', ...)` for the big ones, piece by piece - all compressed
- * with gzip where it helps.
+ * with gzip where it helps. The requests go the same way as for the `iobdisk://` URLs, see {@link HostDiskClient}.
  */
 export class AdapterFileManager extends AdapterContextBase {
-    readonly #getMessaging: () => MessagingManager;
-    /** Hosts that answered the feature check positively */
-    readonly #supportingHosts = new Set<string>();
+    readonly #client: HostDiskClient;
 
     /**
      * @param ctx Shared adapter context providing live runtime state
@@ -47,7 +42,7 @@ export class AdapterFileManager extends AdapterContextBase {
      */
     constructor(ctx: AdapterContext, getMessaging: () => MessagingManager) {
         super(ctx);
-        this.#getMessaging = getMessaging;
+        this.#client = new HostDiskClient(getMessaging);
     }
 
     /**
@@ -133,58 +128,6 @@ export class AdapterFileManager extends AdapterContextBase {
     }
 
     /**
-     * Send a request to a host and wait for the answer
-     *
-     * @param host name of the host
-     * @param command `listAdapterDir` or `readAdapterFile`
-     * @param message the payload
-     * @throws {Error} if the host does not answer in time or answers with an error
-     */
-    async #request(host: string, command: string, message: Record<string, unknown>): Promise<Record<string, any>> {
-        const answer = await this.#getMessaging().sendToHost({
-            hostName: host,
-            command,
-            message,
-            expectReply: true,
-            options: { timeout: REQUEST_TIMEOUT },
-        });
-        if (answer?.error) {
-            throw new Error(`host "${host}" refused ${command} of "${String(message.path)}": ${answer.error}`);
-        }
-        if (!answer || typeof answer !== 'object') {
-            throw new Error(`invalid answer of host "${host}" to ${command}`);
-        }
-        return answer;
-    }
-
-    /**
-     * Make sure the js-controller of the host can hand out the files of adapters
-     *
-     * @param host name of the host
-     */
-    async #assertHostSupportsAdapterFiles(host: string): Promise<void> {
-        if (this.#supportingHosts.has(host)) {
-            return;
-        }
-        let answer: { result?: boolean } | undefined;
-        try {
-            answer = await this.#getMessaging().sendToHost({
-                hostName: host,
-                command: 'checkFeatureSupported',
-                message: ADAPTER_FILES_FEATURE,
-                expectReply: true,
-                options: { timeout: FEATURE_CHECK_TIMEOUT },
-            });
-        } catch {
-            throw new Error(`host "${host}" does not answer - it is not running or its js-controller is too old`);
-        }
-        if (!answer?.result) {
-            throw new Error(`the js-controller of host "${host}" is too old to hand out the files of adapters`);
-        }
-        this.#supportingHosts.add(host);
-    }
-
-    /**
      * Fetch the directory of an adapter from another host
      *
      * @param host name of the host
@@ -194,9 +137,9 @@ export class AdapterFileManager extends AdapterContextBase {
      * @returns the written files relative to `target`
      */
     async #fetchFromHost(host: string, adapter: string, dirPath: string, target: string): Promise<string[]> {
-        await this.#assertHostSupportsAdapterFiles(host);
+        await this.#client.assertFeature(host, ADAPTER_FILES_FEATURE, 'hand out the files of adapters');
 
-        const listing = await this.#request(host, 'listAdapterDir', { adapter, path: dirPath });
+        const listing = await this.#client.request(host, 'listAdapterDir', { adapter, path: dirPath }, dirPath);
         if (!Array.isArray(listing.files)) {
             throw new Error(`invalid answer of host "${host}" to listAdapterDir`);
         }
@@ -278,12 +221,12 @@ export class AdapterFileManager extends AdapterContextBase {
      */
     async #fetchFiles(host: string, adapter: string, dirPath: string, files: PlannedFile[]): Promise<void> {
         const paths = files.map(file => `${dirPath}/${file.path}`);
-        const answer = await this.#request(host, 'readAdapterFiles', {
-            adapter,
-            paths,
-            length: adapterFiles.ADAPTER_FILE_CHUNK_SIZE,
-            compress: true,
-        });
+        const answer = await this.#client.request(
+            host,
+            'readAdapterFiles',
+            { adapter, paths, length: adapterFiles.ADAPTER_FILE_CHUNK_SIZE, compress: true },
+            dirPath,
+        );
         if (!Array.isArray(answer.files) || answer.files.length > files.length) {
             throw new Error(`invalid answer of host "${host}" to readAdapterFiles`);
         }
@@ -318,50 +261,30 @@ export class AdapterFileManager extends AdapterContextBase {
         try {
             let offset = 0;
             // unknown until the first piece arrives
-            let size = -1;
-            let mtime = 0;
+            const file: ChunkedFile = { size: -1, mtime: 0 };
             let chunk = first;
             do {
                 // the beginning from readAdapterFiles may be shorter than a piece, as the host stops after 1 MB
                 const fromBatch = !!chunk;
-                chunk ??= await this.#request(host, 'readAdapterFile', {
-                    adapter,
-                    path: filePath,
-                    offset,
-                    length: chunkSize,
-                    compress: true,
-                });
-                if (
-                    !Number.isSafeInteger(chunk.size) ||
-                    chunk.size < 0 ||
-                    typeof chunk.mtime !== 'number' ||
-                    chunk.offset !== offset
-                ) {
-                    throw new Error(`invalid answer of host "${host}" for "${filePath}"`);
-                }
-                if (size === -1) {
-                    size = chunk.size;
-                    mtime = chunk.mtime;
-                } else if (chunk.size !== size || chunk.mtime !== mtime) {
-                    throw new Error(`"${filePath}" changed on host "${host}" while it was fetched`);
-                }
-                const expected = Math.min(
-                    fromBatch ? adapterFiles.ADAPTER_FILE_MAX_CHUNK_SIZE : chunkSize,
-                    size - offset,
+                chunk ??= await this.#client.request(
+                    host,
+                    'readAdapterFile',
+                    { adapter, path: filePath, offset, length: chunkSize, compress: true },
+                    filePath,
                 );
-                let data: Buffer;
-                try {
-                    data = await adapterFiles.decodeChunkData(chunk, expected);
-                } catch (e) {
-                    throw new Error(`invalid piece of "${filePath}" from host "${host}": ${e.message}`);
-                }
-                if (fromBatch ? !data.length && expected > 0 : data.length !== expected) {
-                    throw new Error(`incomplete piece of "${filePath}" from host "${host}"`);
-                }
+                const data = await this.#client.decodeChunk(
+                    host,
+                    filePath,
+                    chunk,
+                    file,
+                    offset,
+                    fromBatch ? adapterFiles.ADAPTER_FILE_MAX_CHUNK_SIZE : chunkSize,
+                    !fromBatch,
+                );
                 await handle.write(data, 0, data.length, offset);
                 offset += data.length;
                 chunk = undefined;
-            } while (offset < size);
+            } while (offset < file.size);
         } finally {
             await handle.close();
         }

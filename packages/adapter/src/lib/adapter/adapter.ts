@@ -2,6 +2,7 @@ import net from 'node:net';
 import os from 'node:os';
 import { EventEmitter } from 'node:events';
 import { join } from 'node:path';
+import type { Readable } from 'node:stream';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
@@ -9135,6 +9136,65 @@ export class AdapterClass extends EventEmitter {
      */
     async registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void> {
         return this.#async.registerNotification(scope, category, message, options);
+    }
+
+    /**
+     * Build an `iobdisk://` URL for a file in the data directory of this instance.
+     *
+     * A plain file path is only valid on the host where the file is. An `iobdisk://` URL also names the host, so it
+     * can be handed to an instance on another host, which reads the file with {@link readDiskFile} or
+     * {@link createDiskFileReadStream}. Example: `iobdisk://pi4/telegram.0/video/2026-11-04_10-00-00.mp4`
+     *
+     * Only files in the data directory of the instance can be addressed: `iobroker-data/<namespace>` as
+     * `utils.getAbsoluteInstanceDataDir()` of adapter-core gives it, or the older `iobroker-data/<adapter>_<instance>`.
+     *
+     * @param filePath absolute path inside the data directory of this instance, or a path relative to `iobroker-data/<namespace>`
+     * @throws {Error} if the file is outside the data directory of this instance
+     */
+    getDiskFileUrl(filePath: string): string {
+        return this.#async.getDiskFileUrl(filePath);
+    }
+
+    /**
+     * Read the whole file an `iobdisk://` URL points to.
+     *
+     * A file on this host is read from the disk. A file on another host is fetched piece by piece (1 MB each) from the
+     * js-controller of that host, which needs js-controller 8.0 or newer (feature `CONTROLLER_DISK_FILES`).
+     * For big files prefer {@link createDiskFileReadStream}, which does not hold the whole file in memory.
+     *
+     * @param url e.g. `iobdisk://pi4/telegram.0/video/2026-11-04_10-00-00.mp4`
+     * @throws {Error} if the URL is invalid, the host does not answer or is too old, or the file does not exist or changes while it is read
+     */
+    async readDiskFile(url: string): Promise<Buffer> {
+        return this.#async.readDiskFile(url);
+    }
+
+    /**
+     * Read the file an `iobdisk://` URL points to as a stream, piece by piece, from this or another host.
+     *
+     * The errors of {@link readDiskFile} are emitted as `error` event of the stream.
+     *
+     * @param url e.g. `iobdisk://pi4/telegram.0/video/2026-11-04_10-00-00.mp4`
+     * @throws {Error} if the URL is invalid
+     */
+    createDiskFileReadStream(url: string): Readable {
+        return this.#async.createDiskFileReadStream(url);
+    }
+
+    /**
+     * Delete the file an `iobdisk://` URL points to, e.g. a video of another instance after it was processed.
+     *
+     * A file on this host is deleted directly, a file on another host by the js-controller of that host (js-controller
+     * 8.0 or newer, feature `CONTROLLER_DISK_FILES`). Only a regular file in the data directory of the instance is
+     * deleted - never a directory, nothing outside the data directory, and a symbolic link is refused instead of
+     * deleting its target.
+     *
+     * @param url e.g. `iobdisk://pi4/telegram.0/video/2026-11-04_10-00-00.mp4`
+     * @returns `true` if the file was deleted, `false` if it did not exist (any more)
+     * @throws {Error} if the URL is invalid, the host does not answer or is too old, or the file cannot be deleted
+     */
+    async deleteDiskFile(url: string): Promise<boolean> {
+        return this.#async.deleteDiskFile(url);
     }
 
     /**

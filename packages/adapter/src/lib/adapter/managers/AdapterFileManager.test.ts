@@ -152,7 +152,9 @@ describe('AdapterFileManager.fetchAdapterDir', () => {
         assert.ok(sent < text.length / 10, `${sent} bytes sent for ${text.length}`);
     });
 
-    it('fetches many small files with few requests', async () => {
+    it('fetches many small files with few requests', async function () {
+        // writing 150 files takes a while on Windows
+        this.timeout(10_000);
         const dir = path.join(remoteRoot, 'widgets', 'many');
         await fs.mkdir(dir);
         for (let i = 0; i < 150; i++) {
