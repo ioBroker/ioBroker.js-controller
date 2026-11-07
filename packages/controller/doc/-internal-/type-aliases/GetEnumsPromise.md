@@ -8,4 +8,4 @@
 
 > **GetEnumsPromise** = `Promise`\<[`NonNullCallbackReturnTypeOf`](NonNullCallbackReturnTypeOf.md)\<[`GetEnumsCallback`](GetEnumsCallback.md)\>\>
 
-Defined in: [types-dev/index.d.ts:604](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L604)
+Defined in: [types-dev/index.d.ts:623](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L623)

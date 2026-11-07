@@ -8,7 +8,7 @@
 
 > **GetEnumsCallback** = (`err?`, `result?`) => `void`
 
-Defined in: [types-dev/index.d.ts:598](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L598)
+Defined in: [types-dev/index.d.ts:617](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L617)
 
 ## Parameters
 
@@ -17,6 +17,8 @@ Defined in: [types-dev/index.d.ts:598](https://github.com/ioBroker/ioBroker.js-c
 `Error` \| `null`
 
 ### result?
+
+\{\[`groupName`: `string`\]: `Record`\<`string`, [`EnumObject`](../interfaces/EnumObject.md)\>; \}
 
 ## Returns
 

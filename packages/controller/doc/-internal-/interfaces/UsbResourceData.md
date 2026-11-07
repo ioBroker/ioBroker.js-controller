@@ -6,7 +6,7 @@
 
 # Interface: UsbResourceData
 
-Defined in: [types-dev/index.d.ts:133](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L133)
+Defined in: [types-dev/index.d.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L136)
 
 A USB device occupied by an instance
 
@@ -16,7 +16,7 @@ A USB device occupied by an instance
 
 > **path**: `string`
 
-Defined in: [types-dev/index.d.ts:135](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L135)
+Defined in: [types-dev/index.d.ts:138](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L138)
 
 System path of the USB device, e.g. "/dev/bus/usb/001/004" or "\\\\.\\COM3"
 
@@ -26,7 +26,7 @@ System path of the USB device, e.g. "/dev/bus/usb/001/004" or "\\\\.\\COM3"
 
 > `optional` **productId?**: `string`
 
-Defined in: [types-dev/index.d.ts:139](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L139)
+Defined in: [types-dev/index.d.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L142)
 
 USB product id (hex string), e.g. "ea60"
 
@@ -36,6 +36,6 @@ USB product id (hex string), e.g. "ea60"
 
 > `optional` **vendorId?**: `string`
 
-Defined in: [types-dev/index.d.ts:137](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L137)
+Defined in: [types-dev/index.d.ts:140](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L140)
 
 USB vendor id (hex string), e.g. "10c4"

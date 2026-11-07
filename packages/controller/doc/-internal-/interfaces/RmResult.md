@@ -6,7 +6,7 @@
 
 # Interface: RmResult
 
-Defined in: [types-dev/index.d.ts:715](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L715)
+Defined in: [types-dev/index.d.ts:734](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L734)
 
 Contains the return values of rm
 
@@ -16,7 +16,7 @@ Contains the return values of rm
 
 > **file**: `string`
 
-Defined in: [types-dev/index.d.ts:719](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L719)
+Defined in: [types-dev/index.d.ts:738](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L738)
 
 The name of the deleted file or directory
 
@@ -26,6 +26,6 @@ The name of the deleted file or directory
 
 > **path**: `string`
 
-Defined in: [types-dev/index.d.ts:717](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L717)
+Defined in: [types-dev/index.d.ts:736](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L736)
 
 The parent directory of the deleted file or directory

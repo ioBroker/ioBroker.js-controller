@@ -8,4 +8,4 @@
 
 > **CommandsPermissions** = [`CommandsPermissionsObject`](CommandsPermissionsObject.md) \| [`CommandsPermissionsEntry`](CommandsPermissionsEntry.md)[]
 
-Defined in: [adapter/src/lib/\_Types.ts:409](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/_Types.ts#L409)
+Defined in: [adapter/src/lib/\_Types.ts:409](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/adapter/src/lib/_Types.ts#L409)

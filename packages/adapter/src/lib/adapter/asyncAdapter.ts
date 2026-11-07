@@ -1,5 +1,7 @@
 import type {
     AllPropsUnknown,
+    FetchAdapterDirOptions,
+    FetchAdapterDirResult,
     InternalAdapterConfig,
     InternalGetCertificatesResult,
     NotificationOptions,
@@ -7,6 +9,7 @@ import type {
     SendToUserInterfaceClientOptions,
 } from '@/lib/_Types.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
+import { AdapterFileManager } from '@/lib/adapter/managers/AdapterFileManager.js';
 import { CertificateManager } from '@/lib/adapter/managers/CertificateManager.js';
 import { MessagingManager } from '@/lib/adapter/managers/MessagingManager.js';
 import { ResourceManager } from '@/lib/adapter/managers/ResourceManager.js';
@@ -21,6 +24,7 @@ export class AsyncAdapter {
     #messagingInstance?: MessagingManager;
     #certificatesInstance?: CertificateManager;
     #resourcesInstance?: ResourceManager;
+    #adapterFilesInstance?: AdapterFileManager;
 
     /**
      * @param ctx Shared adapter context providing live runtime state
@@ -42,6 +46,11 @@ export class AsyncAdapter {
     /** Lazily-constructed exclusive-resource manager. */
     get #resources(): ResourceManager {
         return (this.#resourcesInstance ??= new ResourceManager(this.#ctx, () => this.#messaging));
+    }
+
+    /** Lazily-constructed manager that fetches directories of installed adapters. */
+    get #adapterFiles(): AdapterFileManager {
+        return (this.#adapterFilesInstance ??= new AdapterFileManager(this.#ctx, () => this.#messaging));
     }
 
     /**
@@ -360,6 +369,22 @@ export class AsyncAdapter {
             return this.#resources.getHostUsedResources(type);
         }
         return this.#resources.getHostUsedResources();
+    }
+
+    /**
+     * Copy a directory of an installed adapter into a local directory, from this or another host.
+     *
+     * @param options which directory of which adapter, where to, and optionally from which host
+     */
+    fetchAdapterDir(options: FetchAdapterDirOptions): Promise<FetchAdapterDirResult> {
+        Validator.assertObject<FetchAdapterDirOptions>(options, 'options');
+        Validator.assertString(options.adapter, 'options.adapter');
+        Validator.assertString(options.path, 'options.path');
+        Validator.assertString(options.target, 'options.target');
+        if (options.host !== undefined) {
+            Validator.assertString(options.host, 'options.host');
+        }
+        return this.#adapterFiles.fetchAdapterDir(options);
     }
 
     /**

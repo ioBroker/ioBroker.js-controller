@@ -373,7 +373,7 @@ export class CLIObjects extends CLICommand {
                         /^system\.adapter\.(?<adapterName>.+)\.(?<instanceNr>\d+)$/g.test(id) &&
                         'encryptedNative' in res
                     ) {
-                        await this._autoEncrypt(objects, res, propPath, value as string);
+                        await this._autoEncrypt(objects, res, propPath);
                     }
 
                     doSetObject(res);
@@ -383,48 +383,33 @@ export class CLIObjects extends CLICommand {
     }
 
     /**
-     * Encrypts all newly set properties of encryptedNative - currently customized for propPath
+     * Encrypts the attributes of `encryptedNative` that were set, the same way as `adapter.updateConfig()` does
+     *
+     * An entry of `encryptedNative` may reach into `native`, like `devices.password`, and the set value may be a
+     * single string, a part of `native` or the whole `native`. Only the set value is encrypted, the rest of
+     * `native` is stored encrypted already.
      *
      * @param objects - objects db instance
-     * @param res - object which will be adapted
+     * @param res - the instance object, the value is already set in it
      * @param propPath - path of the changed property
-     * @param value - value which has been newly set to the property
      */
-    private async _autoEncrypt(
-        objects: ObjectsClient,
-        res: ioBroker.AnyObject,
-        propPath: string,
-        value: string,
-    ): Promise<void> {
-        // input: it's an instance object and has encrypted native, was a native value set?
-        if (/^native\..+[^.]$/g.test(propPath) && typeof value === 'string') {
-            // single native property
-            const prop = propPath.split('.')[1];
-            if ('encryptedNative' in res && res.encryptedNative?.includes(prop)) {
-                try {
-                    const config = await objects.getObjectAsync('system.config');
-                    res.native[prop] = tools.encrypt(config!.native.secret, res.native[prop]);
-                } catch (e) {
-                    console.error(`Could not auto-encrypt property "${prop}": ${e.message}`);
-                }
+    private async _autoEncrypt(objects: ObjectsClient, res: ioBroker.AnyObject, propPath: string): Promise<void> {
+        const keys = 'encryptedNative' in res ? res.encryptedNative : undefined;
+        const native: unknown = res.native;
+        if (!keys?.length || !tools.isObject(native) || (propPath !== 'native' && !propPath.startsWith('native.'))) {
+            return;
+        }
+
+        try {
+            const config = await objects.getObjectAsync('system.config');
+            const secret = config!.native.secret;
+            if (propPath === 'native') {
+                tools.encryptArray({ obj: native, secret, keys });
+            } else {
+                encryptSetValue(native, propPath, secret, keys);
             }
-        } else if (propPath === 'native' && tools.isObject(value)) {
-            // whole native attribute
-            let config;
-            for (const prop of Object.keys(value)) {
-                if (
-                    typeof (res.native as Record<string, any>)[prop] === 'string' &&
-                    'encryptedNative' in res &&
-                    res.encryptedNative?.includes(prop)
-                ) {
-                    try {
-                        config = config || (await objects.getObjectAsync('system.config'))!;
-                        res.native[prop] = tools.encrypt(config.native.secret, res.native[prop]);
-                    } catch (e) {
-                        console.error(`Could not auto-encrypt property "${prop}": ${e.message}`);
-                    }
-                }
-            }
+        } catch (e) {
+            console.error(`Could not auto-encrypt "${propPath}" of "${res._id}": ${e.message}`);
         }
     }
 
@@ -695,6 +680,59 @@ function deepSelectProperty(object: ioBroker.AnyObject, path: string): any {
     }
     path = normalizePropertyPath(path);
     return _deepSelectProperty(object, path.split('.'));
+}
+
+/**
+ * Encrypts the attributes of `encryptedNative` inside a value that was set below `native`
+ *
+ * `encryptArray` encrypts what an entry addresses in all of `native`, but only the set value may be encrypted here:
+ * the rest of `native` is stored encrypted already. So the set value is put into an object of the same shape as
+ * `native` that holds nothing but the set branch, where an array on the way becomes an array of this one element.
+ * `encryptArray` then encrypts exactly what it would encrypt in `native` (including its rule that a path runs through
+ * at most one array), and the encrypted value is written back.
+ *
+ * @param native - `native` of the instance object, with the value already set at `propPath`
+ * @param propPath - the path that was set, like `native.devices[0].password`
+ * @param secret - the system secret to encrypt with
+ * @param keys - the entries of `encryptedNative`
+ */
+function encryptSetValue(native: Record<string, any>, propPath: string, secret: string, keys: string[]): void {
+    // `native.devices[0].password` -> ['devices', '0', 'password']
+    const parts = normalizePropertyPath(propPath)
+        .split('.')
+        .slice(1)
+        .map(part => part.replace(/^\[(\d+)]$/, '$1'));
+
+    const branch: Record<string, any> = {};
+    let parent: any = native;
+    let mirror: any = branch;
+    for (let i = 0; i < parts.length; i++) {
+        const next = parent[parts[i]];
+        const isLast = i === parts.length - 1;
+        if (!isLast && (!next || typeof next !== 'object')) {
+            return;
+        }
+        // the set value itself, or an empty array or object for the way to it
+        const node = isLast ? next : Array.isArray(next) ? [] : {};
+        if (Array.isArray(mirror)) {
+            mirror.push(node);
+        } else {
+            mirror[parts[i]] = node;
+        }
+        if (!isLast) {
+            parent = next;
+            mirror = node;
+        }
+    }
+
+    tools.encryptArray({ obj: branch, secret, keys });
+
+    // read the value back, as a string or an array of strings is replaced by its encrypted copy
+    let value: any = branch;
+    for (const part of parts) {
+        value = Array.isArray(value) ? value[0] : value[part];
+    }
+    parent[parts[parts.length - 1]] = value;
 }
 
 /**
