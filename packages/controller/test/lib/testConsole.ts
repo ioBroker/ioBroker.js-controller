@@ -1,5 +1,6 @@
 import path from 'node:path';
-import { exec as execAsync } from 'promisify-child-process';
+import { exec as execAsync, execFile as execFileAsync } from 'promisify-child-process';
+import { decryptArray } from '@iobroker/js-controller-common-db/tools';
 import { BackupRestore, Install } from '@iobroker/js-controller-cli';
 import type { TestContext } from '../_Types.js';
 import fs from 'fs-extra';
@@ -768,6 +769,115 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             await context.objects.delObjectAsync(id);
         }
     }).timeout(10_000);
+
+    // `object set` encrypts what encryptedNative addresses, so that the adapter can decrypt it on start
+    it(`${testName}object set encrypts encryptedNative`, async () => {
+        const id = 'system.adapter.enctest.0';
+        const AES = '$/aes-192-cbc:';
+        const keys = ['password', 'a', 'cloud.token', 'devices.password', 'tokens', 'deep.rows.password'];
+        await context.objects.setObject(id, {
+            common: {
+                name: 'enctest',
+                version: '1.0.0',
+                host: 'system.host.test',
+                enabled: false,
+                mode: 'daemon',
+                platform: 'Javascript/Node.js',
+                materialize: false,
+                installedVersion: '1.0.0',
+            },
+            native: {},
+            encryptedNative: keys,
+            type: 'instance',
+            instanceObjects: [],
+            objects: [],
+        });
+        const secret = (await context.objects.getObjectAsync('system.config'))!.native.secret;
+
+        /**
+         * Run `iobroker object set` without a shell, so the JSON in the assignment needs no quoting
+         *
+         * @param assignment `propPath=value`
+         */
+        const objectSet = async (assignment: string): Promise<Record<string, any>> => {
+            const res = await execFileAsync(process.execPath, [iobExecutable, 'object', 'set', id, assignment]);
+            assert.ok(!res.stderr, String(res.stderr));
+            return (await context.objects.getObjectAsync(id))!.native;
+        };
+        /**
+         * Decrypt a copy of native the way the adapter does on start
+         *
+         * @param native native of the instance object
+         */
+        const decryptLikeAdapter = (native: Record<string, any>): Record<string, any> => {
+            const copy = structuredClone(native);
+            decryptArray({ obj: copy, secret, keys });
+            return copy;
+        };
+
+        try {
+            // the whole native
+            const plain = {
+                password: 'p',
+                a: 'x',
+                cloud: { token: 't' },
+                devices: [{ password: 'd0', ip: '1.1.1.1' }, { password: 'd1' }],
+                tokens: ['t0', 't1'],
+                deep: [{ rows: [{ password: 'r' }] }],
+                other: 'o',
+            };
+            let native = await objectSet(`native=${JSON.stringify(plain)}`);
+            for (const value of [
+                native.password,
+                native.a,
+                native.cloud.token,
+                native.devices[0].password,
+                native.devices[1].password,
+                native.tokens[0],
+                native.tokens[1],
+            ]) {
+                assert.ok(value.startsWith(AES), value);
+            }
+            assert.strictEqual(native.devices[0].ip, '1.1.1.1');
+            assert.strictEqual(native.other, 'o');
+            // a path through two arrays is neither encrypted by updateConfig nor decrypted on start
+            assert.strictEqual(native.deep[0].rows[0].password, 'r');
+            assert.deepStrictEqual(decryptLikeAdapter(native), plain);
+
+            // single values: only the set value is encrypted, the others keep their cipher text
+            const before = native;
+            native = await objectSet('native.devices[1].password=d1new');
+            assert.strictEqual(native.devices[0].password, before.devices[0].password);
+            native = await objectSet('native.tokens.0=t0new');
+            assert.strictEqual(native.tokens[1], before.tokens[1]);
+            native = await objectSet('native.a=y');
+            native = await objectSet('native.cloud={"token":"t2"}');
+            native = await objectSet('native.deep[0].rows[0].password=r2');
+            assert.strictEqual(native.deep[0].rows[0].password, 'r2');
+            for (const value of [native.devices[1].password, native.tokens[0], native.a, native.cloud.token]) {
+                assert.ok(value.startsWith(AES), value);
+            }
+            assert.deepStrictEqual(decryptLikeAdapter(native), {
+                ...plain,
+                a: 'y',
+                cloud: { token: 't2' },
+                devices: [{ password: 'd0', ip: '1.1.1.1' }, { password: 'd1new' }],
+                tokens: ['t0new', 't1'],
+                deep: [{ rows: [{ password: 'r2' }] }],
+            });
+
+            // a part of native that holds several encrypted values
+            await objectSet('native.devices=[{"password":"x0"},{"password":"x1"}]');
+            native = await objectSet('native.tokens=["n0","n1"]');
+            assert.ok(native.devices[1].password.startsWith(AES));
+            assert.ok(native.tokens[1].startsWith(AES));
+            const decrypted = decryptLikeAdapter(native);
+            assert.deepStrictEqual(decrypted.devices, [{ password: 'x0' }, { password: 'x1' }]);
+            assert.deepStrictEqual(decrypted.tokens, ['n0', 'n1']);
+        } finally {
+            await context.objects.delObjectAsync(id);
+        }
+    }).timeout(60_000);
 
     // info
     it(`${testName}info`, async () => {

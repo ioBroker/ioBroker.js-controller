@@ -13,6 +13,7 @@
 ## Classes
 
 - [AdapterContextBase](classes/AdapterContextBase.md)
+- [AdapterFileManager](classes/AdapterFileManager.md)
 - [AliasManager](classes/AliasManager.md)
 - [AsyncAdapter](classes/AsyncAdapter.md)
 - [CertificateManager](classes/CertificateManager.md)
@@ -65,6 +66,8 @@
 - [EvaluatedFileACL](interfaces/EvaluatedFileACL.md)
 - [ExtendObjectOptions](interfaces/ExtendObjectOptions.md)
 - [ExtendObjectOptionsPreserve](interfaces/ExtendObjectOptionsPreserve.md)
+- [FetchAdapterDirOptions](interfaces/FetchAdapterDirOptions.md)
+- [FetchAdapterDirResult](interfaces/FetchAdapterDirResult.md)
 - [FileACL](interfaces/FileACL.md)
 - [FileObject](interfaces/FileObject.md)
 - [FolderObject](interfaces/FolderObject.md)
@@ -175,6 +178,7 @@
 - [PartialUserObject](interfaces/PartialUserObject.md)
 - [PendingReply](interfaces/PendingReply.md)
 - [PermissionSet](interfaces/PermissionSet.md)
+- [PlannedFile](interfaces/PlannedFile.md)
 - [ReadDirResult](interfaces/ReadDirResult.md)
 - [RedisConnectionOptions](interfaces/RedisConnectionOptions.md)
 - [RepoInfo](interfaces/RepoInfo.md)

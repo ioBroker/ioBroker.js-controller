@@ -341,6 +341,7 @@ export class Controller {
         // every group of host commands gets its own bundle, so it is visible here what each may touch
         const commandDeps: HostCommandGroupDeps = {
             files: { objects, messages, logger, hostLogPrefix },
+            disk: { messages, logger, hostLogPrefix },
             info: {
                 objects,
                 messages,
