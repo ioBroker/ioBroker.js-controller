@@ -1031,10 +1031,55 @@ export class ObjectsInRedisClient {
             fileOptions = { notExists: true };
         }
 
+        // A directory has no rights of its own (in Redis no entry at all, in the file DB an entry without `acl`),
+        // and a missing file neither: to read it (e.g. `readDir`), the file rights of the meta object that owns
+        // the files apply, not `defaultNewAcl` of `system.config`.
+        // Only for reading: creating or writing a new file is still checked against `defaultNewAcl`.
+        if ((fileOptions.notExists || (fileOptions.isDir && !fileOptions.acl)) && flag === CONSTS.ACCESS_READ) {
+            const metaFileAcl = await this._getMetaFileAcl(id);
+            if (metaFileAcl) {
+                if (!utils.checkFile({ notExists: true, acl: metaFileAcl }, userContext, flag, this.defaultNewAcl)) {
+                    return null;
+                }
+                return fileOptions;
+            }
+        }
+
         if (!utils.checkFile(fileOptions, userContext, flag as number, this.defaultNewAcl)) {
             return null;
         }
         return fileOptions;
+    }
+
+    /**
+     * Get the file rights (`acl.file`) of the meta object that owns the files, e.g. `vis-2.0`.
+     * They apply to its directories, which have no entry of their own.
+     *
+     * @param id The id of the meta object owning the files
+     * @returns The file rights of the meta object or null if it has none
+     */
+    private async _getMetaFileAcl(id: string): Promise<ioBroker.FileACL | null> {
+        if (!this.client) {
+            return null;
+        }
+        let meta: {
+            type?: string;
+            acl?: { owner?: ioBroker.ObjectIDs.User; ownerGroup?: ioBroker.ObjectIDs.Group; file?: number };
+        } | null;
+        try {
+            const metaStr = await this.client.get(this.objNamespace + id);
+            meta = metaStr ? JSON.parse(metaStr) : null;
+        } catch {
+            return null;
+        }
+        if (meta?.type !== 'meta' || typeof meta.acl?.file !== 'number') {
+            return null;
+        }
+        return {
+            owner: meta.acl.owner || this.defaultNewAcl?.owner || CONSTS.SYSTEM_ADMIN_USER,
+            ownerGroup: meta.acl.ownerGroup || this.defaultNewAcl?.ownerGroup || CONSTS.SYSTEM_ADMIN_GROUP,
+            permissions: meta.acl.file,
+        };
     }
 
     /**
@@ -1721,18 +1766,19 @@ export class ObjectsInRedisClient {
                 this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${strObj}`);
                 continue;
             }
-            if (dontCheck || utils.checkObject(obj, userContext, CONSTS.ACCESS_READ)) {
-                if (!obj || obj.virtualFile) {
-                    // virtual file, ignore
-                    continue;
-                }
+            if (!obj || obj.virtualFile) {
+                // virtual file, ignore
+                continue;
+            }
+            // A file entry has no `common`, so `checkObject` would let every file through:
+            // check the file rights (owner, group, everybody) like `readFile` does
+            if (dontCheck || utils.checkFile(obj, userContext, CONSTS.ACCESS_READ, this.defaultNewAcl)) {
                 obj.acl ||= {} as FileObject['acl'];
-                if (
-                    userContext.user !== CONSTS.SYSTEM_ADMIN_USER &&
-                    !userContext.groups?.includes(CONSTS.SYSTEM_ADMIN_GROUP)
-                ) {
-                    obj.acl!.read = !!(obj.acl!.permissions & CONSTS.ACCESS_EVERY_READ);
-                    obj.acl!.write = !!(obj.acl!.permissions & CONSTS.ACCESS_EVERY_WRITE);
+                if (!dontCheck) {
+                    obj.acl!.read = true;
+                    obj.acl!.write =
+                        !!userContext.acl?.file?.write &&
+                        utils.checkFile(obj, userContext, CONSTS.ACCESS_WRITE, this.defaultNewAcl);
                 } else {
                     obj.acl!.read = true;
                     obj.acl!.write = true;
