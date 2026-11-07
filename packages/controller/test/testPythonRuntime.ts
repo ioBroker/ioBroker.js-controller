@@ -544,6 +544,16 @@ describe('pythonRuntime', () => {
                     'sys.stderr.write("tail without newline")',
                 ].join('\n'),
             );
+
+            // The first full start of the interpreter took anything from half a second to more than
+            // 20 seconds on the GitHub Windows runners, while later starts are quick. That cold start
+            // is paid here, so the test below checks the contract and not the speed of the runner.
+            this.timeout(120_000);
+            spawnSync(python!, ['-u', '-m', 'testmod'], {
+                cwd: path.join(adapterDir, 'python'),
+                windowsHide: true,
+                timeout: 90_000,
+            });
         });
 
         afterEach(async () => {
@@ -558,6 +568,15 @@ describe('pythonRuntime', () => {
         });
 
         after(async () => {
+            // A Python that still runs keeps its working directory - the python/ folder - locked on
+            // Windows, and removing it would fail with EBUSY on top of whatever failed the test.
+            const running = child;
+            if (running && running.exitCode === null && running.signalCode === null) {
+                const closed = new Promise(resolve => running.once('close', resolve));
+                running.kill();
+                await Promise.race([closed, new Promise(resolve => setTimeout(resolve, 5_000))]);
+            }
+
             if (adapterDir) {
                 // Windows releases the handles of a process a moment after it is gone, and a virus
                 // scanner may still hold a file it was just shown - retry instead of failing on EBUSY.
@@ -588,7 +607,23 @@ describe('pythonRuntime', () => {
             const logged: { level: string; line: string }[] = [];
             forwardPythonOutput(proc, 'python.7', (level, line) => logged.push({ level, line }));
 
-            const exitCode = await new Promise<number | null>(resolve => proc.on('close', resolve));
+            // Done in about a second once the interpreter is warm. Should it still take too long, the
+            // failure has to show how far it got, which a bare mocha timeout does not.
+            const exitCode = await new Promise<number | null>((resolve, reject) => {
+                const timer = setTimeout(
+                    () =>
+                        reject(
+                            new Error(
+                                `Python (pid ${proc.pid}) did not exit within 20 seconds, output so far: ${JSON.stringify(logged)}`,
+                            ),
+                        ),
+                    20_000,
+                );
+                proc.on('close', code => {
+                    clearTimeout(timer);
+                    resolve(code);
+                });
+            });
 
             assert.equal(exitCode, 0);
 
