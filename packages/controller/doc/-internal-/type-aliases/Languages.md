@@ -8,4 +8,4 @@
 
 > **Languages** = `"en"` \| `"de"` \| `"ru"` \| `"pt"` \| `"nl"` \| `"fr"` \| `"it"` \| `"es"` \| `"pl"` \| `"uk"` \| `"zh-cn"`
 
-Defined in: [types-dev/objects.d.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/objects.d.ts#L162)
+Defined in: [types-dev/objects.d.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L162)

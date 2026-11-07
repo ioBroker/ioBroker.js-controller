@@ -8,7 +8,7 @@
 
 > **SmartNameObject** = `{ [lang in Languages]?: string }` & `object`
 
-Defined in: [types-dev/objects.d.ts:193](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/objects.d.ts#L193)
+Defined in: [types-dev/objects.d.ts:193](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L193)
 
 ## Type Declaration
 

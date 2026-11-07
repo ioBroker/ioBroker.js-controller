@@ -6,7 +6,7 @@
 
 # Interface: GpioResourceData
 
-Defined in: [types-dev/index.d.ts:148](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L148)
+Defined in: [types-dev/index.d.ts:152](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L152)
 
 A GPIO pin occupied by an instance
 
@@ -16,7 +16,7 @@ A GPIO pin occupied by an instance
 
 > `optional` **chip?**: `string`
 
-Defined in: [types-dev/index.d.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L160)
+Defined in: [types-dev/index.d.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L164)
 
 GPIO chip the pin belongs to, e.g. "gpiochip2" for an I²C port expander. Leave it out for the main chip
 of the board; an entry without a chip counts as overlapping with the same pin on any chip, because the
@@ -28,7 +28,7 @@ host cannot tell which one was meant.
 
 > **pin**: `number`
 
-Defined in: [types-dev/index.d.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L154)
+Defined in: [types-dev/index.d.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L158)
 
 Line offset of the pin on its GPIO chip. On the main chip of a Raspberry Pi that is the BCM number, so
 GPIO 17 is header pin 11. Convert physical header pins, wiringPi numbers or sysfs numbers (which start

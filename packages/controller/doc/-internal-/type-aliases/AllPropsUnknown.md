@@ -8,7 +8,7 @@
 
 > **AllPropsUnknown**\<`T`\> = `{ [K in keyof T]: unknown }`
 
-Defined in: [adapter/src/lib/\_Types.ts:421](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/adapter/src/lib/_Types.ts#L421)
+Defined in: [adapter/src/lib/\_Types.ts:421](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/adapter/src/lib/_Types.ts#L421)
 
 ## Type Parameters
 

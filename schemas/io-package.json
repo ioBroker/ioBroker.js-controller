@@ -1789,6 +1789,16 @@
           "description": "Show version as prefix in web adapter (usually - ip:port/material, webByVersion - ip:port/1.2.3/material)",
           "type": "boolean"
         },
+        "webComponents": {
+          "description": "Web components of the adapter (see @iobroker/web-components): their manifest files (.json), relative to the admin folder, which admin and web serve as /adapter/<name>/. A manifest names the ES module of its element; vis-2, devices and admin read the manifests and load a module only when they show its element. An ES module that exports its manifest is accepted too",
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
         "webExtendable": {
           "description": "If web server in this adapter can be extended with plugin/extensions like proxy, simple-api",
           "type": "boolean"

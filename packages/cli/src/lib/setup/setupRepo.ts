@@ -252,6 +252,12 @@ export class Repo {
 
             console.log(`Used ${repoUrl.length > 1 ? 'repositories' : 'repository'}: ${repoUrl.join(', ')}`);
 
+            if (tools.clearInactiveRepositoryCaches(systemRepos, systemConfig.common.activeRepo, repoUrl)) {
+                systemRepos.from = `system.host.${tools.getHostName()}.cli`;
+                systemRepos.ts = Date.now();
+                await this.objects.setObject(SYSTEM_REPOSITORIES_ID, systemRepos);
+            }
+
             const allSources: ioBroker.RepositoryJson = {} as ioBroker.RepositoryJson;
 
             for (const url of repoUrl) {
