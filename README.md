@@ -1670,11 +1670,12 @@ The complex names are respected by:
 - `protectedNative`: the attributes are removed from the instance object when it is read by another adapter, at any depth
 - the adapter start: the attributes are decrypted in `this.config`, e.g. `this.config.cloud.token` and `this.config.devices[0].password` (since js-controller 7.2.3, before only top-level names were decrypted on start)
 - `adapter.updateConfig()`: the attributes are encrypted before the configuration is stored
+- `iobroker object set`: the attributes are encrypted when they are set, whether the set value is one attribute (`native.devices[0].password=...`), a part of `native` or the whole `native` (since js-controller 8.0.0, before only top-level names were encrypted)
 - `adapter.getEncryptedConfig()`: `getEncryptedConfig('cloud.token')` returns the decrypted string, `getEncryptedConfig('devices.password')` returns an array with one decrypted value per element
 
 For encryption, a path may run through at most one array.
 
-**Note:** The configuration dialogs of Admin (JSON config and React-based settings) currently encrypt and decrypt only top-level attribute names. A nested value entered there is stored as plain text, and the adapter would then try to decrypt this plain text on start. Only list complex names in `encryptedNative` if these values are stored encrypted, e.g. via `adapter.updateConfig()` or by your own configuration UI.
+**Note:** The configuration dialogs of Admin (JSON config and React-based settings) currently encrypt and decrypt only top-level attribute names. A nested value entered there is stored as plain text, and the adapter would then try to decrypt this plain text on start. Only list complex names in `encryptedNative` if these values are stored encrypted, e.g. via `adapter.updateConfig()`, `iobroker object set` or by your own configuration UI.
 
 #### Define Adapter dependencies to other adapters
 
