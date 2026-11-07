@@ -6,7 +6,7 @@
 
 # Interface: RepositoryJsonAdapterContent
 
-Defined in: [types-dev/objects.d.ts:1133](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1133)
+Defined in: [types-dev/objects.d.ts:1135](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1135)
 
 ## Indexable
 
@@ -20,7 +20,7 @@ Other Adapter related properties, not important for this implementation
 
 > **blockedVersions**: `string`[]
 
-Defined in: [types-dev/objects.d.ts:1139](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1139)
+Defined in: [types-dev/objects.d.ts:1141](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1141)
 
 Array of blocked versions, each entry represents a semver range
 
@@ -30,7 +30,7 @@ Array of blocked versions, each entry represents a semver range
 
 > **dependencies**: [`Dependencies`](../type-aliases/Dependencies.md)
 
-Defined in: [types-dev/objects.d.ts:1160](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1160)
+Defined in: [types-dev/objects.d.ts:1162](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1162)
 
 A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter on the same host.
 
@@ -40,7 +40,7 @@ A record of ioBroker adapters (including "js-controller") and version ranges whi
 
 > **globalDependencies**: [`Dependencies`](../type-aliases/Dependencies.md)
 
-Defined in: [types-dev/objects.d.ts:1162](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1162)
+Defined in: [types-dev/objects.d.ts:1164](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1164)
 
 A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter in the whole system.
 
@@ -50,7 +50,7 @@ A record of ioBroker adapters (including "js-controller") and version ranges whi
 
 > `optional` **icon?**: `string`
 
-Defined in: [types-dev/objects.d.ts:1154](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1154)
+Defined in: [types-dev/objects.d.ts:1156](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1156)
 
 Adapter icon
 
@@ -60,7 +60,7 @@ Adapter icon
 
 > `optional` **licenses?**: `object`[]
 
-Defined in: [types-dev/objects.d.ts:1147](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1147)
+Defined in: [types-dev/objects.d.ts:1149](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1149)
 
 List of licenses
 
@@ -78,7 +78,7 @@ List of licenses
 
 > **meta**: `string`
 
-Defined in: [types-dev/objects.d.ts:1145](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1145)
+Defined in: [types-dev/objects.d.ts:1147](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1147)
 
 Link to package
 
@@ -88,7 +88,7 @@ Link to package
 
 > **name**: `string`
 
-Defined in: [types-dev/objects.d.ts:1135](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1135)
+Defined in: [types-dev/objects.d.ts:1137](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1137)
 
 Adapter name
 
@@ -98,7 +98,7 @@ Adapter name
 
 > **news**: `object`
 
-Defined in: [types-dev/objects.d.ts:1158](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1158)
+Defined in: [types-dev/objects.d.ts:1160](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1160)
 
 History
 
@@ -112,7 +112,7 @@ History
 
 > `optional` **packetName?**: `string`
 
-Defined in: [types-dev/objects.d.ts:1143](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1143)
+Defined in: [types-dev/objects.d.ts:1145](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1145)
 
 If given, the packet name differs from the adapter name, e.g. because it is a scoped package
 
@@ -122,7 +122,7 @@ If given, the packet name differs from the adapter name, e.g. because it is a sc
 
 > `optional` **processed?**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:1156](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1156)
+Defined in: [types-dev/objects.d.ts:1158](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1158)
 
 Internally used flag
 
@@ -132,7 +132,7 @@ Internally used flag
 
 > `optional` **published?**: `string`
 
-Defined in: [types-dev/objects.d.ts:1149](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1149)
+Defined in: [types-dev/objects.d.ts:1151](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1151)
 
 Normally by admin is a ISO string with published date
 
@@ -142,7 +142,7 @@ Normally by admin is a ISO string with published date
 
 > `optional` **unsafePerm?**: `boolean`
 
-Defined in: [types-dev/objects.d.ts:1141](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1141)
+Defined in: [types-dev/objects.d.ts:1143](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1143)
 
 If true, the unsafe perm flag is needed on installation
 
@@ -152,7 +152,7 @@ If true, the unsafe perm flag is needed on installation
 
 > `optional` **url?**: `string`
 
-Defined in: [types-dev/objects.d.ts:1152](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1152)
+Defined in: [types-dev/objects.d.ts:1154](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1154)
 
 Link to adapter repo
 
@@ -162,6 +162,6 @@ Link to adapter repo
 
 > **version**: `string`
 
-Defined in: [types-dev/objects.d.ts:1137](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/objects.d.ts#L1137)
+Defined in: [types-dev/objects.d.ts:1139](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L1139)
 
 Newest available version

@@ -8,4 +8,4 @@
 
 > **CheckStateCommand** = `"getState"` \| `"setState"` \| `"delState"`
 
-Defined in: [adapter/src/lib/\_Types.ts:310](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/adapter/src/lib/_Types.ts#L310)
+Defined in: [adapter/src/lib/\_Types.ts:310](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/adapter/src/lib/_Types.ts#L310)
