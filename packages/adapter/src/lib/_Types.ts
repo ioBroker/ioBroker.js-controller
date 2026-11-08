@@ -694,6 +694,29 @@ export interface MayReadOptions {
     fileName?: string;
 }
 
+/** Which directory of which adapter is fetched, and where to - see `AdapterClass.fetchAdapterDir` */
+export interface FetchAdapterDirOptions {
+    /** Name of the adapter, without `iobroker.` and without instance number, e.g. `wattcycle` */
+    adapter: string;
+    /** The directory inside the package of the adapter, separated by `/`, e.g. `widgets` */
+    path: string;
+    /** Local directory the files are written to; it is created if it does not exist */
+    target: string;
+    /**
+     * The host to fetch from. If not given, this host is taken if the adapter is installed here, else the first
+     * running host with an instance of the adapter.
+     */
+    host?: string;
+}
+
+/** What `AdapterClass.fetchAdapterDir` fetched */
+export interface FetchAdapterDirResult {
+    /** The host the files came from */
+    host: string;
+    /** The written files, relative to `target` and separated by `/` */
+    files: string[];
+}
+
 /** Options for sending a message to another instance */
 export interface InternalSendToOptions {
     /** The instance to send the message to */

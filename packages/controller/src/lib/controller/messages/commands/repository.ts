@@ -98,6 +98,9 @@ const getRepository: HostCommand<RepositoryCommandsDeps> = async (deps, msg) => 
             active = [active];
         }
 
+        // nothing reads the catalogue of a repository that is not active, it only bloats the object (#3427)
+        const released = tools.clearInactiveRepositoryCaches(systemRepos, systemConfig?.common?.activeRepo, active);
+
         for (const repoUrl of active) {
             const repo = systemRepos.native.repositories[repoUrl];
             if (!repo) {
@@ -158,7 +161,8 @@ const getRepository: HostCommand<RepositoryCommandsDeps> = async (deps, msg) => 
             }
         }
 
-        if (changed || forcedUpdate) {
+        // `released` only writes the smaller object, the auto upgrade below still waits for a changed catalogue
+        if (changed || released || forcedUpdate) {
             try {
                 // update timestamp so adapters like admin know when it was written the last time
                 systemRepos.ts = Date.now();
