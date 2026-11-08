@@ -1,5 +1,6 @@
 import { spawn } from 'node:child_process';
 import os from 'node:os';
+import { setTimeout as wait } from 'node:timers/promises';
 import { execAsync, getRootDir } from '@iobroker/js-controller-common-db/tools';
 import path from 'node:path';
 import url from 'node:url';
@@ -7,9 +8,9 @@ import url from 'node:url';
 /**
  * Restarts the js-controller
  *
- * @param callback callback to execute after restart is triggered
+ * @param exitProcess if the current process should be terminated after the restart has been triggered
  */
-export default async function restart(callback?: () => void): Promise<void> {
+export default async function restart(exitProcess = true): Promise<void> {
     let cmd;
     let args;
     if (os.platform() === 'win32') {
@@ -48,10 +49,11 @@ export default async function restart(callback?: () => void): Promise<void> {
         });
         child.unref();
     }
-    if (typeof callback === 'function') {
-        setTimeout(() => callback(), 500);
-    } else {
-        setTimeout(() => process.exit(), 500);
+    // give the init system some time to pick up the restart
+    await wait(500);
+
+    if (exitProcess) {
+        process.exit();
     }
 }
 
