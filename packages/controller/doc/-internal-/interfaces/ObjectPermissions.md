@@ -6,7 +6,7 @@
 
 # Interface: ObjectPermissions
 
-Defined in: [types-dev/index.d.ts:274](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L274)
+Defined in: [types-dev/index.d.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/index.d.ts#L279)
 
 Defines the rights a user or group has to change objects
 
@@ -20,7 +20,7 @@ Defines the rights a user or group has to change objects
 
 > **file**: [`ObjectOperationPermissions`](ObjectOperationPermissions.md)
 
-Defined in: [types-dev/index.d.ts:276](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L276)
+Defined in: [types-dev/index.d.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/index.d.ts#L281)
 
 The access rights for files
 
@@ -30,7 +30,7 @@ The access rights for files
 
 > **object**: [`ObjectOperationPermissions`](ObjectOperationPermissions.md)
 
-Defined in: [types-dev/index.d.ts:278](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L278)
+Defined in: [types-dev/index.d.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/index.d.ts#L283)
 
 The access rights for objects
 
@@ -40,7 +40,7 @@ The access rights for objects
 
 > `optional` **state?**: [`ObjectOperationPermissions`](ObjectOperationPermissions.md)
 
-Defined in: [types-dev/index.d.ts:282](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L282)
+Defined in: [types-dev/index.d.ts:287](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/index.d.ts#L287)
 
 The access rights for states
 
@@ -50,6 +50,6 @@ The access rights for states
 
 > **users**: [`ObjectOperationPermissions`](ObjectOperationPermissions.md)
 
-Defined in: [types-dev/index.d.ts:280](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L280)
+Defined in: [types-dev/index.d.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/index.d.ts#L285)
 
 The access rights for users/groups

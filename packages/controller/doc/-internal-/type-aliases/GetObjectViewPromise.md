@@ -8,7 +8,7 @@
 
 > **GetObjectViewPromise**\<`T`\> = `Promise`\<[`NonNullCallbackReturnTypeOf`](NonNullCallbackReturnTypeOf.md)\<[`GetObjectViewCallback`](GetObjectViewCallback.md)\<`T`\>\>\>
 
-Defined in: [types-dev/index.d.ts:736](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L736)
+Defined in: [types-dev/index.d.ts:757](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/index.d.ts#L757)
 
 ## Type Parameters
 
