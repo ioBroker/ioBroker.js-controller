@@ -391,8 +391,8 @@ export class Repo {
         }
 
         const objs = await this.objects.getObjectViewAsync('system', 'instance', {
-            startkey: 'system.adapter.admin',
-            endkey: 'system.adapter.admin\u9999',
+            startkey: `${SYSTEM_ADAPTER_PREFIX}admin.`,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}admin.\u9999`,
         });
 
         if (objs?.rows?.length) {

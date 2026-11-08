@@ -224,7 +224,10 @@ describe('InstanceManager.setInstanceOfflineStates', () => {
     it('resets alive and connected and counts both writes', async () => {
         const setState = sinon.stub().resolves();
         const getState = sinon.stub().resolves(null);
-        const { manager, options } = createManager({ states: { setState, getState } as any });
+        const { manager, options } = createManager({
+            objects: { objectExists: sinon.stub().resolves(true) } as any,
+            states: { setState, getState } as any,
+        });
 
         await manager.setInstanceOfflineStates('system.adapter.hm-rpc.0');
 
@@ -237,7 +240,10 @@ describe('InstanceManager.setInstanceOfflineStates', () => {
     it('also resets the connection state of the adapter when it was connected', async () => {
         const setState = sinon.stub().resolves();
         const getState = sinon.stub().resolves({ val: true });
-        const { manager, options } = createManager({ states: { setState, getState } as any });
+        const { manager, options } = createManager({
+            objects: { objectExists: sinon.stub().resolves(true) } as any,
+            states: { setState, getState } as any,
+        });
 
         await manager.setInstanceOfflineStates('system.adapter.hm-rpc.0');
 
@@ -245,6 +251,59 @@ describe('InstanceManager.setInstanceOfflineStates', () => {
         assert.equal(setState.callCount, 3);
         assert.equal(setState.thirdCall.args[0], 'hm-rpc.0.info.connection');
         assert.equal(options.statistics.outputCount, 3);
+    });
+
+    it('deletes the states without object of a deleted instance and writes nothing', async () => {
+        const setState = sinon.stub().resolves();
+        const delState = sinon.stub().resolves();
+        const keys: Record<string, string[]> = {
+            'system.adapter.hm-rpc.0.*': ['system.adapter.hm-rpc.0.alive', 'system.adapter.hm-rpc.0.sigKill'],
+            'hm-rpc.0.*': ['hm-rpc.0.info.connection', 'hm-rpc.0.recreated'],
+        };
+        // the instance with the same number was created again, with an object for one of its states
+        const existing = ['hm-rpc.0.recreated'];
+        const { manager } = createManager({
+            objects: { objectExists: (id: string) => Promise.resolve(existing.includes(id)) } as any,
+            states: { setState, delState, getKeys: (pattern: string) => Promise.resolve(keys[pattern]) } as any,
+        });
+
+        await manager.setInstanceOfflineStates('system.adapter.hm-rpc.0');
+
+        assert.deepEqual(
+            delState.args.map(args => args[0]),
+            ['system.adapter.hm-rpc.0.alive', 'system.adapter.hm-rpc.0.sigKill', 'hm-rpc.0.info.connection'],
+        );
+        assert.equal(setState.called, false);
+    });
+
+    it('finds a deleted instance even if the object change handler has removed its entry already', async () => {
+        const delState = sinon.stub().resolves();
+        const { manager } = createManager({
+            objects: { objectExists: sinon.stub().resolves(false) } as any,
+            states: {
+                delState,
+                getKeys: (pattern: string) => Promise.resolve(pattern.startsWith('system.') ? [`${pattern}x`] : []),
+            } as any,
+        });
+        assert.equal(manager.procs['system.adapter.hm-rpc.0'], undefined);
+
+        await manager.setInstanceOfflineStates('system.adapter.hm-rpc.0');
+
+        assert.equal(delState.callCount, 1);
+    });
+
+    it('takes an instance for existing if the objects database cannot tell, and deletes nothing', async () => {
+        const setState = sinon.stub().resolves();
+        const delState = sinon.stub().resolves();
+        const { manager } = createManager({
+            objects: { objectExists: sinon.stub().rejects(new Error('DB closed')) } as any,
+            states: { setState, delState, getState: sinon.stub().resolves(null) } as any,
+        });
+
+        await manager.setInstanceOfflineStates('system.adapter.hm-rpc.0');
+
+        assert.equal(setState.firstCall.args[0], 'system.adapter.hm-rpc.0.alive');
+        assert.equal(delState.called, false);
     });
 });
 

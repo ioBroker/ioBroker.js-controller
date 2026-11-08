@@ -97,6 +97,22 @@ async function runExit(options: {
 }
 
 describe('createInstanceExitHandler cleanup', () => {
+    it('reports the end of the log redirection, but not for a deleted instance', async () => {
+        for (const [deleted, expected] of [
+            [false, 1],
+            [true, 0],
+        ] as const) {
+            const setState = sinon.stub().resolves();
+            const config = { ...instanceObject(), deleted };
+            config.common = { ...config.common, logTransporter: true };
+            const instances = fakeInstances({ [INSTANCE_ID]: { config } });
+
+            await runExit({ ctx: { states: { setState } as any }, instances, code: 0 });
+
+            assert.equal(setState.withArgs(`${INSTANCE_ID}.logging`).callCount, expected, `deleted: ${deleted}`);
+        }
+    });
+
     it('marks the instance as offline and cleans its auto subscribes', async () => {
         const instances = fakeInstances({ [INSTANCE_ID]: { config: instanceObject() } });
 

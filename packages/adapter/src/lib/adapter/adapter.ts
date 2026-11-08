@@ -13530,7 +13530,7 @@ export class AdapterClass extends EventEmitter {
         let objs: (IoPackageInstanceObject & { state?: ioBroker.StateValue })[];
 
         // Instances in mode "once" run like "schedule" ones: the host and the adapter write alive, sigKill, logLevel, ...
-        if (instanceObj?.common && !('onlyWWW' in instanceObj.common)) {
+        if (instanceObj?.common && !instanceObj.common.onlyWWW) {
             objs = tools.getInstanceIndicatorObjects(this.namespace, instanceObj.common);
         } else {
             objs = [];
