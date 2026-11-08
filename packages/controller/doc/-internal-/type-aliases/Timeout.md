@@ -8,4 +8,4 @@
 
 > **Timeout** = [`Branded`](Branded.md)\<`number`, `"Timeout"`\> \| `null`
 
-Defined in: [types-dev/index.d.ts:779](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/index.d.ts#L779)
+Defined in: [types-dev/index.d.ts:780](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/types-dev/index.d.ts#L780)
