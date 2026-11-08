@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) The states that count the data points of vis projects (`vis-2.0.datapoints.<project>`) of deleted or renamed projects are deleted, and so are those named by the former rule, which replaced the letter "s" instead of the spaces (e.g. `vis-2.0.datapoints.te_t`)
 * (@GermanBluefox) Fixed the backup validation reporting only the first invalid optional JSON file under `files/`: now all invalid files are listed in one warning and empty files are skipped (#3561)
 * (@GermanBluefox) Updated `@iobroker/plugin-base` to 4.0.0, which `@iobroker/plugin-docker` 1.3 already requires; `@iobroker/plugin-sentry` keeps its own copy of 3.x, which works next to it because the plugin handler does not check the class of a plugin
 * (@GermanBluefox) A user who is not an administrator may list a directory now if the file rights (`acl.file`) of the meta object that owns it allow it, e.g. `vis-2.0` for the vis-2 runtime without login. Before, a directory has no rights of its own and was checked against `defaultNewAcl` of `system.config`, which mostly denied it. Writing and creating files are checked as before
