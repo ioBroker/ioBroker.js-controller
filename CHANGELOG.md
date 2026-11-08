@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) `zipFiles.readDirAsZip` and `zipFiles.writeObjectsAsZip` of `@iobroker/js-controller-common` return a promise now; a callback still works, but is deprecated. The host commands `readDirAsZip` and `writeObjectsAsZip` now always answer, with the error as text: `readDirAsZip` sent an error as an empty object before, and did not answer at all on an unexpected error. A file that cannot be stringified is left out of the zip instead of being packed unconverted, and if not a single file of the directory can be read, the answer is that error instead of an empty zip; files that were left out are named in `skipped` of the answer
 * (@GermanBluefox) Fixed `iobroker upgrade <adapter>@<tag>` and `iobroker upgrade self@<tag>` with an npm dist tag such as `latest` or `next`: the tag was passed to semver as a version, which skipped the upgrade dialog and reported "Invalid Version: latest". The tag is now resolved with npm to the version it stands for, and an unknown tag is reported
 * (@GermanBluefox) The states that count the data points of vis projects (`vis-2.0.datapoints.<project>`) of deleted or renamed projects are deleted, and so are those named by the former rule, which replaced the letter "s" instead of the spaces (e.g. `vis-2.0.datapoints.te_t`)
 * (@GermanBluefox) Fixed the backup validation reporting only the first invalid optional JSON file under `files/`: now all invalid files are listed in one warning and empty files are skipped (#3561)
