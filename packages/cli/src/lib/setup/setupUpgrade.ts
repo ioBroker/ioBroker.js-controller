@@ -155,7 +155,15 @@ export class Upgrade {
                 if ((repo[sortedAdapter] as ioBroker.RepositoryJsonAdapterContent)?.controller) {
                     continue;
                 }
-                await this.upgradeAdapter(repo, sortedAdapter, forceDowngrade, autoConfirm, true);
+                try {
+                    await this.upgradeAdapter(repo, sortedAdapter, forceDowngrade, autoConfirm, true);
+                } catch (e) {
+                    if (!(e instanceof IoBrokerError) || e.code !== EXIT_CODES.INVALID_DEPENDENCY_VERSION) {
+                        throw e;
+                    }
+                    // the other adapters can still be upgraded
+                    console.error(e.message);
+                }
             }
         } else {
             console.log('All adapters are up to date');
@@ -168,7 +176,7 @@ export class Upgrade {
      * @param deps local dependencies - required on this host
      * @param globalDeps global dependencies - required on one of the hosts
      */
-    private async _checkDependencies(deps: IoPackDependencies, globalDeps: IoPackDependencies): Promise<void> {
+    async checkDependencies(deps: IoPackDependencies, globalDeps: IoPackDependencies): Promise<void> {
         if (!deps && !globalDeps) {
             return Promise.resolve();
         }
@@ -189,105 +197,105 @@ export class Upgrade {
             undefined,
         );
 
-        if (objs?.rows?.length) {
-            for (const dName in allDeps) {
-                if (dName === 'js-controller') {
-                    const version = allDeps[dName];
-                    // Check only if version not *, else we don't have to read io-pack unnecessarily
-                    if (version !== '*') {
-                        const iopkg_ = fs.readJSONSync(`${tools.getControllerDir()}/package.json`);
-                        try {
-                            if (!semver.satisfies(iopkg_.version, version, { includePrerelease: true })) {
-                                return Promise.reject(
-                                    new Error(
-                                        `Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}`,
-                                    ),
-                                );
-                            }
-                        } catch (e) {
-                            console.log(`Can not check js-controller dependency requirement: ${e.message}`);
+        const instances = objs?.rows ?? [];
+
+        for (const dName in allDeps) {
+            if (dName === 'js-controller') {
+                const version = allDeps[dName];
+                // Check only if version not *, else we don't have to read io-pack unnecessarily
+                if (version !== '*') {
+                    const iopkg_ = fs.readJSONSync(`${tools.getControllerDir()}/package.json`);
+                    try {
+                        if (!semver.satisfies(iopkg_.version, version, { includePrerelease: true })) {
                             return Promise.reject(
                                 new Error(
                                     `Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}`,
                                 ),
                             );
                         }
-                    }
-                } else {
-                    let gInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
-                    let locInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
-                    // if global dep get all instances of adapter
-                    if (globalDeps[dName] !== undefined) {
-                        gInstances = objs.rows.filter(obj => obj.value.common && obj.value.common.name === dName);
-                    }
-                    if (deps[dName] !== undefined) {
-                        // local dependencies: get all instances on the same host
-                        locInstances = objs.rows.filter(
-                            obj =>
-                                obj.value.common &&
-                                obj.value.common.name === dName &&
-                                obj.value.common.host === this.hostname,
+                    } catch (e) {
+                        console.log(`Can not check js-controller dependency requirement: ${e.message}`);
+                        return Promise.reject(
+                            new Error(
+                                `Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}`,
+                            ),
                         );
-                        if (locInstances.length === 0) {
-                            return Promise.reject(new Error(`Required dependency "${dName}" not found on this host.`));
-                        }
                     }
+                }
+            } else {
+                let gInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
+                let locInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
+                // if global dep get all instances of adapter
+                if (globalDeps[dName] !== undefined) {
+                    gInstances = instances.filter(obj => obj.value.common && obj.value.common.name === dName);
+                }
+                if (deps[dName] !== undefined) {
+                    // local dependencies: get all instances on the same host
+                    locInstances = instances.filter(
+                        obj =>
+                            obj.value.common &&
+                            obj.value.common.name === dName &&
+                            obj.value.common.host === this.hostname,
+                    );
+                    if (locInstances.length === 0) {
+                        return Promise.reject(new Error(`Required dependency "${dName}" not found on this host.`));
+                    }
+                }
 
-                    let isFound = false;
-                    // we check that all instances match - respect different local and global dep versions
-                    for (const instance of locInstances) {
-                        const instanceVersion = instance.value.common.version;
-                        try {
-                            if (
-                                !semver.satisfies(instanceVersion, deps[dName], {
-                                    includePrerelease: true,
-                                })
-                            ) {
-                                return Promise.reject(
-                                    new Error(
-                                        `Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}`,
-                                    ),
-                                );
-                            }
-                        } catch (e) {
-                            console.log(`Can not check dependency requirement: ${e.message}`);
+                let isFound = false;
+                // we check that all instances match - respect different local and global dep versions
+                for (const instance of locInstances) {
+                    const instanceVersion = instance.value.common.version;
+                    try {
+                        if (
+                            !semver.satisfies(instanceVersion, deps[dName], {
+                                includePrerelease: true,
+                            })
+                        ) {
                             return Promise.reject(
                                 new Error(
                                     `Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}`,
                                 ),
                             );
                         }
-                        isFound = true;
+                    } catch (e) {
+                        console.log(`Can not check dependency requirement: ${e.message}`);
+                        return Promise.reject(
+                            new Error(
+                                `Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}`,
+                            ),
+                        );
                     }
+                    isFound = true;
+                }
 
-                    for (const instance of gInstances) {
-                        const instanceVersion = instance.value.common.version;
-                        try {
-                            if (
-                                !semver.satisfies(instanceVersion, globalDeps[dName], {
-                                    includePrerelease: true,
-                                })
-                            ) {
-                                return Promise.reject(
-                                    new Error(
-                                        `Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}`,
-                                    ),
-                                );
-                            }
-                        } catch (e) {
-                            console.log(`Can not check dependency requirement: ${e.message}`);
+                for (const instance of gInstances) {
+                    const instanceVersion = instance.value.common.version;
+                    try {
+                        if (
+                            !semver.satisfies(instanceVersion, globalDeps[dName], {
+                                includePrerelease: true,
+                            })
+                        ) {
                             return Promise.reject(
                                 new Error(
                                     `Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}`,
                                 ),
                             );
                         }
-                        isFound = true;
+                    } catch (e) {
+                        console.log(`Can not check dependency requirement: ${e.message}`);
+                        return Promise.reject(
+                            new Error(
+                                `Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}`,
+                            ),
+                        );
                     }
+                    isFound = true;
+                }
 
-                    if (isFound === false) {
-                        return Promise.reject(new Error(`Required dependency "${dName}" not found.`));
-                    }
+                if (isFound === false) {
+                    return Promise.reject(new Error(`Required dependency "${dName}" not found.`));
                 }
             }
         }
@@ -301,6 +309,8 @@ export class Upgrade {
      * @param forceDowngrade flag to force downgrade
      * @param autoConfirm automatically confirm the tty questions (bypass)
      * @param upgradeAll if true, this is an upgrade all call, we don't do major upgrades if no tty
+     * @throws {IoBrokerError} with the code INVALID_DEPENDENCY_VERSION if the dependencies are not met, before any
+     * instance is stopped. They are not checked with `forceDowngrade`, or for a version not newer than the installed one.
      */
     async upgradeAdapter(
         repoUrlOrObject: string | ioBroker.RepositoryJson | undefined,
@@ -329,7 +339,7 @@ export class Upgrade {
         } else {
             version = '';
         }
-        /** Whether the user asked to reinstall even if this version is installed already */
+        /** Whether the user insists on this version: reinstall it, and do not check its dependencies */
         const forced = forceDowngrade;
         if (version) {
             forceDowngrade = true;
@@ -546,14 +556,27 @@ export class Upgrade {
             return true;
         };
 
+        // An explicit version is no reason to skip the check: this is also how admin upgrades an adapter. Only going back
+        // is, as the repository names the dependencies of its newest version only. For another version that is newer,
+        // they are the best we know.
+        const mustCheckDependencies =
+            !forced && !(version && semver.valid(version) && semver.lte(version, installedVersion));
+
+        const checkDependenciesOf = async (deps: IoPackDependencies, globalDeps: IoPackDependencies): Promise<void> => {
+            try {
+                await this.checkDependencies(deps, globalDeps);
+            } catch (e) {
+                throw new IoBrokerError({
+                    code: EXIT_CODES.INVALID_DEPENDENCY_VERSION,
+                    message: `Dependencies of "${adapter}" are not met: ${e.message} - use --force to upgrade anyway`,
+                });
+            }
+        };
+
         // If a version is included in the repository
         if (repoAdapter.version) {
-            if (!forceDowngrade) {
-                try {
-                    await this._checkDependencies(repoAdapter.dependencies, repoAdapter.globalDependencies);
-                } catch (e) {
-                    return console.error(`Cannot check dependencies: ${e.message}`);
-                }
+            if (mustCheckDependencies) {
+                await checkDependenciesOf(repoAdapter.dependencies, repoAdapter.globalDependencies);
             }
 
             if (
@@ -616,14 +639,9 @@ export class Upgrade {
                 return;
             }
 
-            if (!forceDowngrade) {
-                try {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    await this._checkDependencies(ioPack.common.dependencies, ioPack.common.globalDependencies);
-                } catch (e) {
-                    console.error(`Cannot check dependencies: ${e.message}`);
-                    return;
-                }
+            if (mustCheckDependencies) {
+                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                await checkDependenciesOf(ioPack.common.dependencies, ioPack.common.globalDependencies);
             }
 
             if (
@@ -839,7 +857,7 @@ export function processCommandUpgrade(options: ProcessCommandOptions): void {
                 return void callback();
             } catch (err) {
                 console.error(`Cannot upgrade: ${err.message}`);
-                return void callback(EXIT_CODES.INVALID_REPO);
+                return void callback(err instanceof IoBrokerError ? err.code : EXIT_CODES.INVALID_REPO);
             }
         } else {
             // upgrade all

@@ -29,11 +29,16 @@ interface UpgradedAdapter {
     newVersion: string;
 }
 
+interface FailedAdapter extends UpgradedAdapter {
+    /** Why the upgrade failed */
+    reason: string;
+}
+
 interface UpgradeAdaptersResult {
     /** Adapters which were successfully upgraded */
     upgradedAdapters: UpgradedAdapter[];
     /** Adapters which were failed to upgrade */
-    failedAdapters: UpgradedAdapter[];
+    failedAdapters: FailedAdapter[];
 }
 
 interface AdapterUpgradeConfiguration {
@@ -100,7 +105,7 @@ export class AdapterAutoUpgradeManager {
     async upgradeAdapters(): Promise<UpgradeAdaptersResult> {
         this.logger.info(`${this.logPrefix} Check for available automatic adapter upgrades`);
         const upgradedAdapters: UpgradedAdapter[] = [];
-        const failedAdapters: UpgradedAdapter[] = [];
+        const failedAdapters: FailedAdapter[] = [];
         const repoName = await this.getConfiguredRepositoryName();
         const repoInformation = await this.getRepository(repoName);
 
@@ -141,6 +146,7 @@ export class AdapterAutoUpgradeManager {
                         name: repoAdapterInfo.name,
                         newVersion: repoAdapterInfo.version,
                         oldVersion: adapterConfig.version,
+                        reason: e.message,
                     });
                 }
             }
@@ -155,7 +161,7 @@ export class AdapterAutoUpgradeManager {
      * @param options information of the adapter to install, e.g. version and name, sa well as active repo
      */
     private async upgradeAdapter(options: UpgradeAdapterOptions): Promise<void> {
-        const { repoName, name, version } = options;
+        const { repoName, name, version, dependencies, globalDependencies } = options;
 
         this.logger.info(`${this.logPrefix} Upgrade adapter "${name}" to ${version}`);
 
@@ -166,6 +172,9 @@ export class AdapterAutoUpgradeManager {
             processExit: () => undefined,
         });
 
+        // Explicit versions bypass the dependency checks inside upgradeAdapter.
+        // Automatic upgrades must reject incompatible versions before stopping any instance.
+        await upgrade.checkDependencies(dependencies, globalDependencies);
         await upgrade.upgradeAdapter(repoName, `${name}@${version}`, false, true, false);
     }
 

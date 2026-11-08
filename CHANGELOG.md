@@ -4,6 +4,8 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) `iobroker upgrade <adapter>@<version>`, which admin also uses, checks the dependencies now and refuses an upgrade which cannot run, before any instance is stopped: only `--force` or going back to an older version skips the check. A refused upgrade ends with the exit code `INVALID_DEPENDENCY_VERSION`, and the notification about a failed automatic upgrade names the reason
+* (@softwarecrash) Fixed automatic adapter upgrades installing versions with unmet dependencies and reporting success even though the adapter could no longer start
 * (@GermanBluefox) Fixed states without object left by a deleted instance: the host stopping it wrote `sigKill`, `alive` and `connected` after the objects were gone, and the instance itself e.g. `info.connection` on unload - the host now deletes these states once the instance ended
 * (@GermanBluefox) Fixed instances in mode `once` (e.g. vis) writing `alive`, `connected`, `sigKill`, `logLevel` and `compactMode` without objects - they get the same `system.adapter.<instance>.*` objects as all others now, existing instances at their next start
 * (@GermanBluefox) Fixed `iobroker update` writing the number and the list of updates to `system.adapter.admin.0.info.updatesNumber`/`updatesList`, which have no objects, instead of `admin.0.info.updatesNumber`/`updatesList`
