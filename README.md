@@ -1434,7 +1434,16 @@ With such a setup, ioBroker will connect to one of these sentinel processes to g
 
 #### readDirAsZip
 
-... TODO
+Packs a directory of the file storage into a zip archive.
+
+```js
+const answer = await this.sendToHostAsync(host, 'readDirAsZip', { id: 'vis-2.0', name: '/main' });
+// { error: null, data: '<base64>', skipped: ['main/broken.png'] }
+```
+
+`data` is missing for a directory without files. `skipped` is only there if files could not be packed: they are missing
+in the archive, so check it if the archive has to be complete. If not a single file could be packed, or on another
+problem, the answer is `{ error: '<message>' }`.
 
 #### writeDirAsZip
 
@@ -1446,7 +1455,12 @@ With such a setup, ioBroker will connect to one of these sentinel processes to g
 
 #### writeObjectsAsZip
 
-... TODO
+Stores the objects of a zip archive below a root ID. The answer is `{}` if all were stored, otherwise
+`{ error: '<message>' }` - the objects that were valid are stored even then.
+
+```js
+await this.sendToHostAsync(host, 'writeObjectsAsZip', { id: 'vis-2.0', adapter: 'vis-2', data: '<base64>' });
+```
 
 #### updateMultihost
 

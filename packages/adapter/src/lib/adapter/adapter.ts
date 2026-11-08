@@ -13529,7 +13529,8 @@ export class AdapterClass extends EventEmitter {
     private async _createInstancesObjects(instanceObj: ioBroker.InstanceObject): Promise<void> {
         let objs: (IoPackageInstanceObject & { state?: ioBroker.StateValue })[];
 
-        if (instanceObj?.common && !('onlyWWW' in instanceObj.common) && instanceObj.common.mode !== 'once') {
+        // Instances in mode "once" run like "schedule" ones: the host and the adapter write alive, sigKill, logLevel, ...
+        if (instanceObj?.common && !instanceObj.common.onlyWWW) {
             objs = tools.getInstanceIndicatorObjects(this.namespace, instanceObj.common);
         } else {
             objs = [];
