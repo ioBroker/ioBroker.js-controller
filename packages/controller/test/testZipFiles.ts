@@ -116,6 +116,15 @@ describe('zipFiles', () => {
             assert.deepEqual(await unzip(base64), { 'a.txt': 'A' });
         });
 
+        it('names the files that are missing in the archive', async () => {
+            const { client } = createObjects({ 'widgets/a.txt': 'A', 'widgets/b.txt': 'B' }, ['widgets/b.txt']);
+
+            const { base64, skipped } = await zipFiles.packDirAsZip(client, 'zipfilestest.0', 'widgets');
+
+            assert.deepEqual(await unzip(base64!), { 'a.txt': 'A' });
+            assert.deepEqual(skipped, ['widgets/b.txt']);
+        });
+
         it('rejects if no file at all could be packed', async () => {
             const { client } = createObjects({ 'widgets/a.txt': 'A' }, ['widgets/a.txt']);
 

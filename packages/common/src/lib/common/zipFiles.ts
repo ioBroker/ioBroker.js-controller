@@ -68,6 +68,14 @@ async function _addFile(objects: ObjectsClient, id: string, name: string, option
     zip.file(name, data!);
 }
 
+/** The result of {@link packDirAsZip} */
+export interface PackedDir {
+    /** The base64 encoded zip archive, undefined if the directory contains no files */
+    base64?: string;
+    /** The files that could not be packed and are missing in the archive, as paths in the file storage */
+    skipped: string[];
+}
+
 /** Gets the result of {@link readDirAsZip}, for callers which still pass a callback */
 export type ReadDirAsZipCallback = (err?: Error | null, base64?: string) => void;
 
@@ -100,12 +108,12 @@ export async function readDirAsZip(
         options = null;
     }
     if (!callback) {
-        return _readDirAsZip(objects, id, name, options);
+        return (await packDirAsZip(objects, id, name, options)).base64;
     }
 
     let base64: string | undefined;
     try {
-        base64 = await _readDirAsZip(objects, id, name, options);
+        ({ base64 } = await packDirAsZip(objects, id, name, options));
     } catch (e) {
         callback(e);
         return;
@@ -116,19 +124,23 @@ export async function readDirAsZip(
 }
 
 /**
- * Pack all files of a directory into a zip archive, see {@link readDirAsZip}
+ * Pack all files of a directory into a zip archive and tell which ones are missing in it
+ *
+ * Files which cannot be read are skipped. If no file at all could be packed, but at least one has failed,
+ * the error is thrown.
  *
  * @param objects The objects database client
  * @param id The object ID owning the files
  * @param name Path of the directory to read inside the object's file storage
  * @param options Optional settings passed to the objects client
+ * @returns The archive and the files that are missing in it
  */
-async function _readDirAsZip(
+export async function packDirAsZip(
     objects: ObjectsClient,
     id: string,
     name: string,
     options?: any,
-): Promise<string | undefined> {
+): Promise<PackedDir> {
     if (name[0] === '/') {
         name = name.substring(1);
     }
@@ -148,11 +160,12 @@ async function _readDirAsZip(
     const files = await _getAllFilesInDir(objects, id, name, options);
 
     if (!files.length) {
-        return;
+        return { skipped: [] };
     }
 
     const zip = new JSZip();
     const errors: string[] = [];
+    const skipped: string[] = [];
     let packedFiles = 0;
 
     for (const file of files) {
@@ -161,6 +174,7 @@ async function _readDirAsZip(
             packedFiles++;
         } catch (e) {
             errors.push(e.message);
+            skipped.push(file);
         }
     }
 
@@ -172,7 +186,7 @@ async function _readDirAsZip(
         console.error(`Some files could not be packed: ${errors.join(', ')}`);
     }
 
-    return zip.generateAsync({ type: 'base64' });
+    return { base64: await zip.generateAsync({ type: 'base64' }), skipped };
 }
 
 interface CheckDirOptions {
