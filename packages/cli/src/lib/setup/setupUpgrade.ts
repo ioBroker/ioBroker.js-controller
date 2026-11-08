@@ -155,7 +155,15 @@ export class Upgrade {
                 if ((repo[sortedAdapter] as ioBroker.RepositoryJsonAdapterContent)?.controller) {
                     continue;
                 }
-                await this.upgradeAdapter(repo, sortedAdapter, forceDowngrade, autoConfirm, true);
+                try {
+                    await this.upgradeAdapter(repo, sortedAdapter, forceDowngrade, autoConfirm, true);
+                } catch (e) {
+                    if (!(e instanceof IoBrokerError) || e.code !== EXIT_CODES.INVALID_DEPENDENCY_VERSION) {
+                        throw e;
+                    }
+                    // the other adapters can still be upgraded
+                    console.error(e.message);
+                }
             }
         } else {
             console.log('All adapters are up to date');
@@ -301,6 +309,8 @@ export class Upgrade {
      * @param forceDowngrade flag to force downgrade
      * @param autoConfirm automatically confirm the tty questions (bypass)
      * @param upgradeAll if true, this is an upgrade all call, we don't do major upgrades if no tty
+     * @throws {IoBrokerError} with the code INVALID_DEPENDENCY_VERSION if the dependencies are not met, before any
+     * instance is stopped. They are not checked with `forceDowngrade`, or for a version not newer than the installed one.
      */
     async upgradeAdapter(
         repoUrlOrObject: string | ioBroker.RepositoryJson | undefined,
@@ -329,7 +339,7 @@ export class Upgrade {
         } else {
             version = '';
         }
-        /** Whether the user asked to reinstall even if this version is installed already */
+        /** Whether the user insists on this version: reinstall it, and do not check its dependencies */
         const forced = forceDowngrade;
         if (version) {
             forceDowngrade = true;
@@ -546,14 +556,27 @@ export class Upgrade {
             return true;
         };
 
+        // An explicit version is no reason to skip the check: this is also how admin upgrades an adapter. Only going back
+        // is, as the repository names the dependencies of its newest version only. For another version that is newer,
+        // they are the best we know.
+        const mustCheckDependencies =
+            !forced && !(version && semver.valid(version) && semver.lte(version, installedVersion));
+
+        const checkDependenciesOf = async (deps: IoPackDependencies, globalDeps: IoPackDependencies): Promise<void> => {
+            try {
+                await this.checkDependencies(deps, globalDeps);
+            } catch (e) {
+                throw new IoBrokerError({
+                    code: EXIT_CODES.INVALID_DEPENDENCY_VERSION,
+                    message: `Dependencies of "${adapter}" are not met: ${e.message} - use --force to upgrade anyway`,
+                });
+            }
+        };
+
         // If a version is included in the repository
         if (repoAdapter.version) {
-            if (!forceDowngrade) {
-                try {
-                    await this.checkDependencies(repoAdapter.dependencies, repoAdapter.globalDependencies);
-                } catch (e) {
-                    return console.error(`Cannot check dependencies: ${e.message}`);
-                }
+            if (mustCheckDependencies) {
+                await checkDependenciesOf(repoAdapter.dependencies, repoAdapter.globalDependencies);
             }
 
             if (
@@ -616,14 +639,9 @@ export class Upgrade {
                 return;
             }
 
-            if (!forceDowngrade) {
-                try {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    await this.checkDependencies(ioPack.common.dependencies, ioPack.common.globalDependencies);
-                } catch (e) {
-                    console.error(`Cannot check dependencies: ${e.message}`);
-                    return;
-                }
+            if (mustCheckDependencies) {
+                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                await checkDependenciesOf(ioPack.common.dependencies, ioPack.common.globalDependencies);
             }
 
             if (
@@ -839,7 +857,7 @@ export function processCommandUpgrade(options: ProcessCommandOptions): void {
                 return void callback();
             } catch (err) {
                 console.error(`Cannot upgrade: ${err.message}`);
-                return void callback(EXIT_CODES.INVALID_REPO);
+                return void callback(err instanceof IoBrokerError ? err.code : EXIT_CODES.INVALID_REPO);
             }
         } else {
             // upgrade all

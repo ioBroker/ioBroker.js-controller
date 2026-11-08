@@ -87,6 +87,7 @@ describe('automatic adapter upgrade dependency checks', () => {
         assert.equal(result.upgradedAdapters.length, 0);
         assert.equal(result.failedAdapters.length, 1);
         assert.match(logError.firstCall.args[0], /Invalid version of "js-controller"/);
+        assert.match(result.failedAdapters[0].reason, /Invalid version of "js-controller"/);
     });
 
     for (const version of ['7.2.5', '7.2.6']) {

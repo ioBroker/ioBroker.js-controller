@@ -29,11 +29,16 @@ interface UpgradedAdapter {
     newVersion: string;
 }
 
+interface FailedAdapter extends UpgradedAdapter {
+    /** Why the upgrade failed */
+    reason: string;
+}
+
 interface UpgradeAdaptersResult {
     /** Adapters which were successfully upgraded */
     upgradedAdapters: UpgradedAdapter[];
     /** Adapters which were failed to upgrade */
-    failedAdapters: UpgradedAdapter[];
+    failedAdapters: FailedAdapter[];
 }
 
 interface AdapterUpgradeConfiguration {
@@ -100,7 +105,7 @@ export class AdapterAutoUpgradeManager {
     async upgradeAdapters(): Promise<UpgradeAdaptersResult> {
         this.logger.info(`${this.logPrefix} Check for available automatic adapter upgrades`);
         const upgradedAdapters: UpgradedAdapter[] = [];
-        const failedAdapters: UpgradedAdapter[] = [];
+        const failedAdapters: FailedAdapter[] = [];
         const repoName = await this.getConfiguredRepositoryName();
         const repoInformation = await this.getRepository(repoName);
 
@@ -141,6 +146,7 @@ export class AdapterAutoUpgradeManager {
                         name: repoAdapterInfo.name,
                         newVersion: repoAdapterInfo.version,
                         oldVersion: adapterConfig.version,
+                        reason: e.message,
                     });
                 }
             }
