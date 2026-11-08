@@ -329,6 +329,8 @@ export class Upgrade {
         } else {
             version = '';
         }
+        /** Whether the user asked to reinstall even if this version is installed already */
+        const forced = forceDowngrade;
         if (version) {
             forceDowngrade = true;
         }
@@ -399,6 +401,21 @@ export class Upgrade {
         }
 
         const installedVersion = ioInstalled.common.version;
+
+        if (tools.isNpmDistTag(version)) {
+            const resolved = await this.resolveDistTag(adapter, version);
+            if (!resolved) {
+                return;
+            }
+            version = resolved;
+            if (!forced && version === installedVersion) {
+                return console.log(
+                    `Adapter "${adapter}"${
+                        adapter.length < 15 ? new Array(15 - adapter.length).join(' ') : ''
+                    } is up to date.`,
+                );
+            }
+        }
 
         /**
          * We show changelog (news) and ask user if he really wants to upgrade but only if fd is associated with a tty, returns true if upgrade desired
@@ -672,6 +689,43 @@ export class Upgrade {
     }
 
     /**
+     * Find the version an npm dist tag stands for, e.g. for `iobroker upgrade web@next`. The repository does not know
+     * the tags, and what `latest` names on npm may be newer than what a stable repository offers.
+     *
+     * If there is none, this is reported and the process exits.
+     *
+     * @param name name of the adapter
+     * @param tag the dist tag
+     * @returns the version, undefined if it is not known
+     */
+    private async resolveDistTag(name: string, tag: string): Promise<string | undefined> {
+        let version = '';
+        let reason = 'npm names no version';
+        try {
+            version = await this.lookUpDistTag(name, tag);
+        } catch (e) {
+            reason = e.message.includes('E404') ? 'no such tag' : e.message.split('\n')[0];
+        }
+        if (!version) {
+            console.error(`Cannot find the version of "${name}@${tag}" on npm: ${reason}`);
+            this.processExit(EXIT_CODES.UNKNOWN_PACKET_NAME);
+            return;
+        }
+        console.log(`"${name}@${tag}" is version ${version}`);
+        return version;
+    }
+
+    /**
+     * Ask npm for the version of a dist tag
+     *
+     * @param name name of the adapter
+     * @param tag the dist tag
+     */
+    protected lookUpDistTag(name: string, tag: string): Promise<string> {
+        return tools.resolveNpmDistTag(name, tag);
+    }
+
+    /**
      * Upgrade the js-controller
      *
      * @param options additional information like if controller running, optional url, version
@@ -691,6 +745,13 @@ export class Upgrade {
 
         const controllerName = installed.common.name;
         let sources: ioBroker.RepositoryJson | undefined;
+
+        if (targetVersion && tools.isNpmDistTag(targetVersion)) {
+            targetVersion = await this.resolveDistTag(controllerName, targetVersion);
+            if (!targetVersion) {
+                return;
+            }
+        }
 
         if (targetVersion === undefined) {
             try {

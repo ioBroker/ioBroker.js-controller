@@ -97,6 +97,10 @@
             },
             "persist": {
               "type": "boolean"
+            },
+            "pairing": {
+              "type": "boolean",
+              "description": "Whether this host offers itself to be attached to a master: it announces itself via mDNS and accepts the `join` command of a master over UDP 50005. Off when absent - ready-made images switch it on, because only the image knows that a device is fresh. Switched off again by the join, and without effect once the host uses a remote database."
             }
           },
           "required": [
@@ -430,7 +434,7 @@
         },
         "path": {
           "type": "string",
-          "description": "Absolute path to back-up directory or empty to back-up in data directory"
+          "description": "Absolute path to the back-up directory or empty to back-up in data directory"
         },
         "// path": {
           "type": "string"

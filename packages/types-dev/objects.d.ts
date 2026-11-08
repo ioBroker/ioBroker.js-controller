@@ -887,8 +887,10 @@ declare global {
             /** Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/1.2.3/material` instead of `http://ip:port/material` */
             webByVersion?: boolean;
             /**
-             * Web components of the adapter (see `@iobroker/web-components`): URLs of ES modules, relative to the admin
-             * folder, which admin and web serve as `/adapter/<name>/`. vis-2, devices and admin load them from there
+             * Web components of the adapter (see `@iobroker/web-components`): their manifest files (`.json`),
+             * relative to the admin folder, which admin and web serve as `/adapter/<name>/`. A manifest names the ES
+             * module of its element; vis-2, devices and admin read the manifests and load a module only when they show
+             * its element. An ES module that exports its manifest is accepted too
              */
             webComponents?: string[];
             /** Whether the web server in this adapter can be extended with plugin/extensions */
@@ -1297,9 +1299,9 @@ declare global {
             /** Register notifications for the built-in notification system */
             notifications?: Notification[];
             /** Objects created for each instance, inside the namespace of this adapter */
-            instanceObjects: (StateObject | DeviceObject | ChannelObject | FolderObject | MetaObject)[];
+            instanceObjects?: (StateObject | DeviceObject | ChannelObject | FolderObject | MetaObject)[];
             /** Objects created for the adapter, anywhere in the global namespace */
-            objects: ioBroker.AnyObject[];
+            objects?: ioBroker.AnyObject[];
         }
 
         interface PartialAdapterObject extends Partial<Omit<AdapterObject, 'common'>> {

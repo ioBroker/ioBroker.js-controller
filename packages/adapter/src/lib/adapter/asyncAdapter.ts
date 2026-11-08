@@ -1,5 +1,7 @@
 import type {
     AllPropsUnknown,
+    FetchAdapterDirOptions,
+    FetchAdapterDirResult,
     InternalAdapterConfig,
     InternalGetCertificatesResult,
     NotificationOptions,
@@ -7,10 +9,13 @@ import type {
     SendToUserInterfaceClientOptions,
 } from '@/lib/_Types.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
+import { AdapterFileManager } from '@/lib/adapter/managers/AdapterFileManager.js';
 import { CertificateManager } from '@/lib/adapter/managers/CertificateManager.js';
 import { MessagingManager } from '@/lib/adapter/managers/MessagingManager.js';
 import { ResourceManager } from '@/lib/adapter/managers/ResourceManager.js';
+import { DiskFileManager } from '@/lib/adapter/managers/DiskFileManager.js';
 import { Validator } from '@/lib/adapter/validator.js';
+import type { Readable } from 'node:stream';
 
 /**
  * Clean async-only facade for the adapter's outbound messaging. Owns the {@link MessagingManager}
@@ -21,6 +26,8 @@ export class AsyncAdapter {
     #messagingInstance?: MessagingManager;
     #certificatesInstance?: CertificateManager;
     #resourcesInstance?: ResourceManager;
+    #adapterFilesInstance?: AdapterFileManager;
+    #diskFilesInstance?: DiskFileManager;
 
     /**
      * @param ctx Shared adapter context providing live runtime state
@@ -42,6 +49,57 @@ export class AsyncAdapter {
     /** Lazily-constructed exclusive-resource manager. */
     get #resources(): ResourceManager {
         return (this.#resourcesInstance ??= new ResourceManager(this.#ctx, () => this.#messaging));
+    }
+
+    /** Lazily-constructed manager that fetches directories of installed adapters. */
+    get #adapterFiles(): AdapterFileManager {
+        return (this.#adapterFilesInstance ??= new AdapterFileManager(this.#ctx, () => this.#messaging));
+    }
+
+    /** Lazily-constructed manager of `iobdisk://` files. */
+    get #diskFiles(): DiskFileManager {
+        return (this.#diskFilesInstance ??= new DiskFileManager(this.#ctx, () => this.#messaging));
+    }
+
+    /**
+     * Builds the `iobdisk://` URL of a file in the data directory of this instance.
+     *
+     * @param filePath absolute path below the data directory of this instance, or a path relative to it
+     */
+    getDiskFileUrl(filePath: unknown): string {
+        Validator.assertString(filePath, 'filePath');
+        return this.#diskFiles.getDiskFileUrl(filePath);
+    }
+
+    /**
+     * Reads the whole file an `iobdisk://` URL points to, from this or another host.
+     *
+     * @param url e.g. `iobdisk://pi4/telegram.0/video/1.mp4`
+     */
+    async readDiskFile(url: unknown): Promise<Buffer> {
+        Validator.assertString(url, 'url');
+        return this.#diskFiles.readDiskFile(url);
+    }
+
+    /**
+     * Reads the file an `iobdisk://` URL points to as a stream, from this or another host.
+     *
+     * @param url e.g. `iobdisk://pi4/telegram.0/video/1.mp4`
+     */
+    createDiskFileReadStream(url: unknown): Readable {
+        Validator.assertString(url, 'url');
+        return this.#diskFiles.createDiskFileReadStream(url);
+    }
+
+    /**
+     * Deletes the file an `iobdisk://` URL points to, on this or another host.
+     *
+     * @param url e.g. `iobdisk://pi4/telegram.0/video/1.mp4`
+     * @returns `true` if the file was deleted, `false` if it did not exist
+     */
+    async deleteDiskFile(url: unknown): Promise<boolean> {
+        Validator.assertString(url, 'url');
+        return this.#diskFiles.deleteDiskFile(url);
     }
 
     /**
@@ -360,6 +418,22 @@ export class AsyncAdapter {
             return this.#resources.getHostUsedResources(type);
         }
         return this.#resources.getHostUsedResources();
+    }
+
+    /**
+     * Copy a directory of an installed adapter into a local directory, from this or another host.
+     *
+     * @param options which directory of which adapter, where to, and optionally from which host
+     */
+    fetchAdapterDir(options: FetchAdapterDirOptions): Promise<FetchAdapterDirResult> {
+        Validator.assertObject<FetchAdapterDirOptions>(options, 'options');
+        Validator.assertString(options.adapter, 'options.adapter');
+        Validator.assertString(options.path, 'options.path');
+        Validator.assertString(options.target, 'options.target');
+        if (options.host !== undefined) {
+            Validator.assertString(options.host, 'options.host');
+        }
+        return this.#adapterFiles.fetchAdapterDir(options);
     }
 
     /**
