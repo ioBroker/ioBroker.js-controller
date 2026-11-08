@@ -425,7 +425,8 @@ export class InstanceManager {
     }
 
     /**
-     * Mark given adapter instance as offline on state level
+     * Mark given adapter instance as offline on state level. For an instance that was deleted, its states without
+     * object are deleted instead.
      *
      * @param id id of the instance
      */
@@ -434,6 +435,11 @@ export class InstanceManager {
         const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
 
         try {
+            if (await this.#isInstanceDeleted(id)) {
+                await this.#deleteStatesOfDeletedInstance(id);
+                return;
+            }
+
             statistics.countOutput(2);
             await states.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
             await states.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
@@ -452,6 +458,42 @@ export class InstanceManager {
             // nothing would correct that afterwards. Persisting reports a failed write instead of rejecting, so
             // this cannot swallow the error of the block above either.
             await this.usedResources.markStopped(adapterInstance);
+        }
+    }
+
+    /**
+     * Whether the object of an instance is gone. It asks the database and not `procs`, because the object change
+     * handler may have removed the entry already: it does not wait for the end of an instance it had to kill.
+     *
+     * @param id id of the instance
+     * @returns false if this cannot be told, so that a database problem cannot look like a deleted instance
+     */
+    async #isInstanceDeleted(id: ioBroker.ObjectIDs.Instance): Promise<boolean> {
+        try {
+            return !(await this.#options.objects.objectExists(id));
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * Delete the states of a deleted instance which have no object. The CLI deletes the objects and states first, but
+     * the instance writes its states until it ends (e.g. `info.connection` on unload), and this host writes `sigKill`
+     * to stop it - all of them would remain without object. An instance with the same number may already exist again,
+     * so only the states without object are deleted.
+     *
+     * @param id id of the deleted instance
+     */
+    async #deleteStatesOfDeletedInstance(id: ioBroker.ObjectIDs.Instance): Promise<void> {
+        const { objects, states } = this.#options;
+        const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
+
+        for (const pattern of [`${id}.*`, `${adapterInstance}.*`]) {
+            for (const stateId of (await states.getKeys(pattern)) ?? []) {
+                if (!(await objects.objectExists(stateId))) {
+                    await states.delState(stateId);
+                }
+            }
         }
     }
 

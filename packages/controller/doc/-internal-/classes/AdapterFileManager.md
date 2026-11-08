@@ -6,7 +6,7 @@
 
 # Class: AdapterFileManager
 
-Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:39](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L39)
+Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:36](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L36)
 
 Fetches a directory of an installed adapter - e.g. its `widgets` folder - into a local directory.
 
@@ -14,7 +14,7 @@ An adapter only exists on the hosts it is installed on. If it is installed on th
 from its package; otherwise the js-controller of a host it is installed on hands the files out with
 `sendToHost(host, 'listAdapterDir', ...)`, `sendToHost(host, 'readAdapterFiles', ...)` for the small files, several
 in one answer, and `sendToHost(host, 'readAdapterFile', ...)` for the big ones, piece by piece - all compressed
-with gzip where it helps.
+with gzip where it helps. The requests go the same way as for the `iobdisk://` URLs, see [HostDiskClient](HostDiskClient.md).
 
 ## Extends
 
@@ -26,7 +26,7 @@ with gzip where it helps.
 
 > **new AdapterFileManager**(`ctx`, `getMessaging`): `AdapterFileManager`
 
-Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:48](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L48)
+Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L43)
 
 #### Parameters
 
@@ -56,7 +56,7 @@ Returns the adapter's messaging manager, which matches the host's answers to the
 
 > **fetchAdapterDir**(`options`): `Promise`\<[`FetchAdapterDirResult`](../interfaces/FetchAdapterDirResult.md)\>
 
-Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:59](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L59)
+Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L54)
 
 Copy a directory of an installed adapter into a local directory, from this or another host
 
