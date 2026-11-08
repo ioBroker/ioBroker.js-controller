@@ -14,6 +14,9 @@ import type { HostMetaManager } from '@/lib/controller/host/hostMetaManager.js';
 import type { ControllerLogger, DiagInfoType } from '@/lib/controller/types.js';
 import type { TaskObject } from '@/lib/objects.js';
 
+/** `common.name` of the states that count the data points of a vis project (`<vis>.0.datapoints.<project>`) */
+const VIS_DATAPOINTS_NAME = 'Datapoints count';
+
 /** Everything the diagnostics collector needs to do its work */
 export interface DiagInfoCollectorOptions {
     /** The connected objects database client */
@@ -261,7 +264,7 @@ export class DiagInfoCollector {
 
             try {
                 const points = await calcProjects({ objects: this.#objects, instance: 0, visAdapter });
-                let total = null;
+                let total: number | null = null;
                 const tasks = [];
 
                 if (points?.length) {
@@ -275,7 +278,7 @@ export class DiagInfoCollector {
                             type: 'state',
                             native: {},
                             common: {
-                                name: 'Datapoints count',
+                                name: VIS_DATAPOINTS_NAME,
                                 role: 'state',
                                 type: 'number',
                                 read: true,
@@ -294,11 +297,58 @@ export class DiagInfoCollector {
                 }
 
                 await hostMeta.extendObjects(tasks as TaskObject[]);
+
+                // only with a complete result, otherwise the states of all projects would look stale
+                if (total !== null) {
+                    await this.#removeStaleVisDatapoints(visAdapter, new Set(points.map(point => point.id)));
+                }
             } catch (e) {
                 logger.error(`${hostLogPrefix} cannot call visUtils: ${e.message}`);
             }
         }
 
         return diag;
+    }
+
+    /**
+     * Delete the states that count the data points of vis projects which do not exist any more: of deleted or renamed
+     * projects, and those named by the former rule, which replaced the letter "s" instead of the spaces
+     * (`vis-2.0.datapoints.te_t` for the project "test", `vis-2.0.datapoints.New project`).
+     *
+     * Only states created for the count (`common.name` is {@link VIS_DATAPOINTS_NAME}) are deleted.
+     *
+     * @param visAdapter the vis adapter, whose instance 0 is counted
+     * @param keep the IDs of the states written just now
+     */
+    async #removeStaleVisDatapoints(visAdapter: (typeof VIS_ADAPTERS)[number], keep: Set<string>): Promise<void> {
+        const prefix = `${visAdapter}.0.datapoints.`;
+        let rows: ioBroker.GetObjectViewItem<ioBroker.StateObject>[];
+        try {
+            const view = await this.#objects.getObjectViewAsync('system', 'state', {
+                startkey: prefix,
+                endkey: `${prefix}${HIGHEST_UNICODE_SYMBOL}`,
+            });
+            rows = view.rows;
+        } catch (e) {
+            this.#logger.debug(
+                `${this.#hostLogPrefix} cannot read the data point counts of ${visAdapter}: ${e.message}`,
+            );
+            return;
+        }
+
+        for (const row of rows) {
+            if (keep.has(row.id) || !row.id.startsWith(prefix) || row.value?.common?.name !== VIS_DATAPOINTS_NAME) {
+                continue;
+            }
+            try {
+                await this.#objects.delObjectAsync(row.id);
+                await this.#states.delState(row.id);
+                this.#logger.debug(
+                    `${this.#hostLogPrefix} deleted the data point count of a former vis project: ${row.id}`,
+                );
+            } catch (e) {
+                this.#logger.debug(`${this.#hostLogPrefix} cannot delete ${row.id}: ${e.message}`);
+            }
+        }
     }
 }
