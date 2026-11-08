@@ -2085,6 +2085,20 @@ export function getRootDir(): string {
     return path.join(getControllerDir(), '..', '..');
 }
 
+/**
+ * Check whether a Node.js version fulfills a range like `engines.node`.
+ *
+ * A prerelease or nightly build counts by its version, so `27.0.0-alpha.0` fulfills `>=22` but not `>=22 <27`. semver
+ * would otherwise refuse every prerelease for such a range, and with it every test system of a new Node.js version.
+ *
+ * @param range the required range
+ * @param nodeVersion the version to check, by default the running one
+ * @returns true if the version is in this range
+ */
+export function nodeVersionSatisfies(range: string, nodeVersion: string = process.version): boolean {
+    return semver.satisfies(nodeVersion, range, { includePrerelease: true });
+}
+
 /** Returns whether the current process is executed via dev-server */
 export function isDevServerInstallation(): boolean {
     return !!require.main?.path.includes(`${path.sep}.dev-server${path.sep}`);
