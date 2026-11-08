@@ -8,4 +8,4 @@
 
 > **IoPackageInstanceObject** = [`StateObject`](../interfaces/StateObject.md) \| [`DeviceObject`](../interfaces/DeviceObject.md) \| [`ChannelObject`](../interfaces/ChannelObject.md) \| [`FolderObject`](../interfaces/FolderObject.md) \| [`MetaObject`](../interfaces/MetaObject.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:63](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/adapter/src/lib/_Types.ts#L63)
+Defined in: [adapter/src/lib/\_Types.ts:63](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/adapter/src/lib/_Types.ts#L63)

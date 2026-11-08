@@ -6,7 +6,7 @@
 
 # Interface: BluetoothResourceData
 
-Defined in: [types-dev/index.d.ts:146](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L146)
+Defined in: [types-dev/index.d.ts:147](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/index.d.ts#L147)
 
 A Bluetooth / HCI adapter occupied by an instance
 
@@ -16,6 +16,6 @@ A Bluetooth / HCI adapter occupied by an instance
 
 > **hci**: `string`
 
-Defined in: [types-dev/index.d.ts:148](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L148)
+Defined in: [types-dev/index.d.ts:149](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/index.d.ts#L149)
 
 HCI device name or index, e.g. "hci0"

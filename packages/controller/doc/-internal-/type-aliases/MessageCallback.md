@@ -8,7 +8,7 @@
 
 > **MessageCallback** = (`response?`) => `void`
 
-Defined in: [types-dev/index.d.ts:605](https://github.com/ioBroker/ioBroker.js-controller/blob/98273cb4cc0c7037120155b66f48ca6569e88c55/packages/types-dev/index.d.ts#L605)
+Defined in: [types-dev/index.d.ts:606](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/index.d.ts#L606)
 
 Due to backward compatibility first param can be result or error
 
