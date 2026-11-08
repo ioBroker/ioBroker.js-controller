@@ -115,6 +115,60 @@ describe('automatic adapter upgrade dependency checks', () => {
         });
     }
 
+    describe('with an empty instance view', () => {
+        beforeEach(() => {
+            getObjectView.withArgs('system', 'instance').resolves({ rows: [] });
+        });
+
+        it('rejects an incompatible controller', async () => {
+            repository.javascript.globalDependencies = [];
+
+            const result = await manager.upgradeAdapters();
+
+            assert.equal(upgrade.callCount, 0);
+            assert.equal(result.upgradedAdapters.length, 0);
+            assert.equal(result.failedAdapters.length, 1);
+            assert.match(logError.firstCall.args[0], /Invalid version of "js-controller"/);
+        });
+
+        for (const dependencyType of ['dependencies', 'globalDependencies'] as const) {
+            it(`rejects missing ${dependencyType}`, async () => {
+                repository.javascript.dependencies = [];
+                repository.javascript.globalDependencies = [];
+                repository.javascript[dependencyType] = [{ web: '>=6.0.0' }];
+
+                const result = await manager.upgradeAdapters();
+
+                assert.equal(upgrade.callCount, 0);
+                assert.equal(result.upgradedAdapters.length, 0);
+                assert.equal(result.failedAdapters.length, 1);
+                assert.match(logError.firstCall.args[0], /Required dependency "web" not found/);
+            });
+        }
+
+        it('allows a compatible controller without adapter dependencies', async () => {
+            controllerVersion = '7.2.5';
+            repository.javascript.globalDependencies = [];
+
+            const result = await manager.upgradeAdapters();
+
+            sinon.assert.calledOnceWithExactly(upgrade, 'stable', 'javascript@10.4.4', false, true, false);
+            assert.equal(result.upgradedAdapters.length, 1);
+            assert.equal(result.failedAdapters.length, 0);
+        });
+
+        it('allows an adapter without dependency requirements', async () => {
+            repository.javascript.dependencies = [];
+            repository.javascript.globalDependencies = [];
+
+            const result = await manager.upgradeAdapters();
+
+            assert.equal(upgrade.callCount, 1);
+            assert.equal(result.upgradedAdapters.length, 1);
+            assert.equal(result.failedAdapters.length, 0);
+        });
+    });
+
     it('does not install if reading dependency information fails', async () => {
         getObjectView.withArgs('system', 'instance').rejects(new Error('Database unavailable'));
 

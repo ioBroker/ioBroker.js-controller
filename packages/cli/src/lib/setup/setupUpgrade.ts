@@ -189,105 +189,105 @@ export class Upgrade {
             undefined,
         );
 
-        if (objs?.rows?.length) {
-            for (const dName in allDeps) {
-                if (dName === 'js-controller') {
-                    const version = allDeps[dName];
-                    // Check only if version not *, else we don't have to read io-pack unnecessarily
-                    if (version !== '*') {
-                        const iopkg_ = fs.readJSONSync(`${tools.getControllerDir()}/package.json`);
-                        try {
-                            if (!semver.satisfies(iopkg_.version, version, { includePrerelease: true })) {
-                                return Promise.reject(
-                                    new Error(
-                                        `Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}`,
-                                    ),
-                                );
-                            }
-                        } catch (e) {
-                            console.log(`Can not check js-controller dependency requirement: ${e.message}`);
+        const instances = objs?.rows ?? [];
+
+        for (const dName in allDeps) {
+            if (dName === 'js-controller') {
+                const version = allDeps[dName];
+                // Check only if version not *, else we don't have to read io-pack unnecessarily
+                if (version !== '*') {
+                    const iopkg_ = fs.readJSONSync(`${tools.getControllerDir()}/package.json`);
+                    try {
+                        if (!semver.satisfies(iopkg_.version, version, { includePrerelease: true })) {
                             return Promise.reject(
                                 new Error(
                                     `Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}`,
                                 ),
                             );
                         }
-                    }
-                } else {
-                    let gInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
-                    let locInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
-                    // if global dep get all instances of adapter
-                    if (globalDeps[dName] !== undefined) {
-                        gInstances = objs.rows.filter(obj => obj.value.common && obj.value.common.name === dName);
-                    }
-                    if (deps[dName] !== undefined) {
-                        // local dependencies: get all instances on the same host
-                        locInstances = objs.rows.filter(
-                            obj =>
-                                obj.value.common &&
-                                obj.value.common.name === dName &&
-                                obj.value.common.host === this.hostname,
+                    } catch (e) {
+                        console.log(`Can not check js-controller dependency requirement: ${e.message}`);
+                        return Promise.reject(
+                            new Error(
+                                `Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}`,
+                            ),
                         );
-                        if (locInstances.length === 0) {
-                            return Promise.reject(new Error(`Required dependency "${dName}" not found on this host.`));
-                        }
                     }
+                }
+            } else {
+                let gInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
+                let locInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
+                // if global dep get all instances of adapter
+                if (globalDeps[dName] !== undefined) {
+                    gInstances = instances.filter(obj => obj.value.common && obj.value.common.name === dName);
+                }
+                if (deps[dName] !== undefined) {
+                    // local dependencies: get all instances on the same host
+                    locInstances = instances.filter(
+                        obj =>
+                            obj.value.common &&
+                            obj.value.common.name === dName &&
+                            obj.value.common.host === this.hostname,
+                    );
+                    if (locInstances.length === 0) {
+                        return Promise.reject(new Error(`Required dependency "${dName}" not found on this host.`));
+                    }
+                }
 
-                    let isFound = false;
-                    // we check that all instances match - respect different local and global dep versions
-                    for (const instance of locInstances) {
-                        const instanceVersion = instance.value.common.version;
-                        try {
-                            if (
-                                !semver.satisfies(instanceVersion, deps[dName], {
-                                    includePrerelease: true,
-                                })
-                            ) {
-                                return Promise.reject(
-                                    new Error(
-                                        `Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}`,
-                                    ),
-                                );
-                            }
-                        } catch (e) {
-                            console.log(`Can not check dependency requirement: ${e.message}`);
+                let isFound = false;
+                // we check that all instances match - respect different local and global dep versions
+                for (const instance of locInstances) {
+                    const instanceVersion = instance.value.common.version;
+                    try {
+                        if (
+                            !semver.satisfies(instanceVersion, deps[dName], {
+                                includePrerelease: true,
+                            })
+                        ) {
                             return Promise.reject(
                                 new Error(
                                     `Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}`,
                                 ),
                             );
                         }
-                        isFound = true;
+                    } catch (e) {
+                        console.log(`Can not check dependency requirement: ${e.message}`);
+                        return Promise.reject(
+                            new Error(
+                                `Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}`,
+                            ),
+                        );
                     }
+                    isFound = true;
+                }
 
-                    for (const instance of gInstances) {
-                        const instanceVersion = instance.value.common.version;
-                        try {
-                            if (
-                                !semver.satisfies(instanceVersion, globalDeps[dName], {
-                                    includePrerelease: true,
-                                })
-                            ) {
-                                return Promise.reject(
-                                    new Error(
-                                        `Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}`,
-                                    ),
-                                );
-                            }
-                        } catch (e) {
-                            console.log(`Can not check dependency requirement: ${e.message}`);
+                for (const instance of gInstances) {
+                    const instanceVersion = instance.value.common.version;
+                    try {
+                        if (
+                            !semver.satisfies(instanceVersion, globalDeps[dName], {
+                                includePrerelease: true,
+                            })
+                        ) {
                             return Promise.reject(
                                 new Error(
                                     `Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}`,
                                 ),
                             );
                         }
-                        isFound = true;
+                    } catch (e) {
+                        console.log(`Can not check dependency requirement: ${e.message}`);
+                        return Promise.reject(
+                            new Error(
+                                `Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}`,
+                            ),
+                        );
                     }
+                    isFound = true;
+                }
 
-                    if (isFound === false) {
-                        return Promise.reject(new Error(`Required dependency "${dName}" not found.`));
-                    }
+                if (isFound === false) {
+                    return Promise.reject(new Error(`Required dependency "${dName}" not found.`));
                 }
             }
         }
