@@ -103,6 +103,19 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
                 ack: true,
             },
         });
+
+        objs.push({
+            _id: `${id}.isPrimary`,
+            type: 'state',
+            common: {
+                name: `${hostname} - is primary host`,
+                read: true,
+                write: false,
+                type: 'boolean',
+                role: 'indicator',
+            },
+            native: {},
+        });
     }
 
     objs.push({
@@ -278,19 +291,6 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
         type: 'state',
         common: {
             name: `${hostname} - alive status`,
-            read: true,
-            write: false,
-            type: 'boolean',
-            role: 'indicator',
-        },
-        native: {},
-    });
-
-    objs.push({
-        _id: `${id}.isPrimary`,
-        type: 'state',
-        common: {
-            name: `${hostname} - is primary host`,
             read: true,
             write: false,
             type: 'boolean',
