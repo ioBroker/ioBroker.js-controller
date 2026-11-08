@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@FernetMenta) Fixed a host that no longer received host messages, state changes and object changes after the host serving the databases restarted, until it was restarted itself: the pub/sub connections only receive, so they could stay on a connection that is gone without noticing. They now reconnect whenever the main connection reconnects (#3524)
 * (@GermanBluefox) `iobroker upgrade <adapter>@<version>`, which admin also uses, checks the dependencies now and refuses an upgrade which cannot run, before any instance is stopped: only `--force` or going back to an older version skips the check. A refused upgrade ends with the exit code `INVALID_DEPENDENCY_VERSION`, and the notification about a failed automatic upgrade names the reason
 * (@softwarecrash) Fixed automatic adapter upgrades installing versions with unmet dependencies and reporting success even though the adapter could no longer start
 * (@GermanBluefox) Fixed states without object left by a deleted instance: the host stopping it wrote `sigKill`, `alive` and `connected` after the objects were gone, and the instance itself e.g. `info.connection` on unload - the host now deletes these states once the instance ended
