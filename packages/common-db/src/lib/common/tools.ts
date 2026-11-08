@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { statfs } from 'node:fs/promises';
 import semver from 'semver';
 import os from 'node:os';
 import crypto from 'node:crypto';
@@ -27,7 +28,6 @@ import jwt from 'jsonwebtoken';
 import axios, { type AxiosResponse } from 'axios';
 // @ts-expect-error has no types
 import extend from 'node.extend';
-import type * as DiskUsage from 'diskusage';
 
 import { EXIT_CODES } from '@/lib/common/exitCodes.js';
 import { password } from '@/lib/common/password.js';
@@ -151,7 +151,6 @@ export enum ERRORS {
 
 events.EventEmitter.prototype.setMaxListeners(100);
 let npmVersion: string;
-let diskusage: typeof DiskUsage;
 
 const randomID = Math.round(Math.random() * 10_000_000_000_000); // Used for creation of User-Agent
 const VENDOR_FILE = '/etc/iob-vendor.json';
@@ -431,6 +430,9 @@ function getAppName(): AppName {
 
     return 'iobroker';
 }
+
+/** How long npm may take to resolve a dist tag the user asked for, in ms */
+const NPM_DIST_TAG_TIMEOUT = 30_000;
 
 export const appNameLowerCase = 'iobroker';
 export const appName = getAppName();
@@ -1138,19 +1140,47 @@ export function getInstalledInfo(hostRunningVersion?: string): Record<string, Ad
  * Reads an adapter's npm version
  *
  * @param adapter The adapter to read the npm version from. Null for the root ioBroker packet
+ * @param tag The dist tag to read
+ * @param timeout How long npm may take in ms
  */
-async function getNpmVersion(adapter: string): Promise<string> {
+async function getNpmVersion(adapter: string, tag = 'latest', timeout = 2_000): Promise<string> {
     adapter = adapter ? `${appName}.${adapter}` : appName;
     adapter = adapter.toLowerCase();
 
-    const cliCommand = `npm view ${adapter}@latest version`;
+    const cliCommand = `npm view ${adapter}@${tag} version`;
 
-    const result = await execAsync(cliCommand, { timeout: 2000, windowsHide: true });
+    const result = await execAsync(cliCommand, { timeout, windowsHide: true });
     let version;
     if (result?.stdout) {
         version = semver.valid(result.stdout.trim());
     }
     return version || '';
+}
+
+/**
+ * Whether what follows the `@` of `adapter@...` is an npm dist tag such as `latest` or `next`, and no version or range.
+ * npm itself refuses a tag that could be read as a range, so this cannot take a version for a tag.
+ *
+ * @param version what was given as the version
+ */
+export function isNpmDistTag(version: string): boolean {
+    return /^[a-z][a-z0-9._-]*$/i.test(version) && semver.validRange(version) === null;
+}
+
+/**
+ * Ask npm which version a dist tag of an adapter stands for
+ *
+ * @param adapter The name of the adapter, e.g. `web`
+ * @param tag The dist tag, e.g. `next`
+ * @returns the version, an empty string if npm names none
+ * @throws {Error} if the names are invalid, or npm fails - also for an unknown tag (E404)
+ */
+export function resolveNpmDistTag(adapter: string, tag: string): Promise<string> {
+    // both go into a command line
+    if (!/^[a-z0-9][a-z0-9._-]*$/i.test(adapter) || !isNpmDistTag(tag)) {
+        throw new Error(`Invalid npm dist tag: "${adapter}@${tag}"`);
+    }
+    return getNpmVersion(adapter, tag, NPM_DIST_TAG_TIMEOUT);
 }
 
 async function getIoPack(sources: ioBroker.RepositoryJson, name: string, failCounter: string[]): Promise<void> {
@@ -1307,6 +1337,39 @@ export async function getRepositoryFile(): Promise<ioBroker.RepositoryJson> {
         return sources;
     }
     throw error;
+}
+
+/**
+ * Release downloaded catalogues that are neither active nor requested by this refresh.
+ * Repository definitions remain available for later reactivation.
+ *
+ * @param repositories Repository configuration object
+ * @param active Active repository names, or undefined when the configuration is unavailable
+ * @param requested Additional repositories requested explicitly
+ * @returns Whether any cached data was removed
+ */
+export function clearInactiveRepositoryCaches(
+    repositories: ioBroker.RepositoryObject,
+    active: string | string[] | undefined,
+    requested: string[] = [],
+): boolean {
+    if (active === undefined) {
+        return false;
+    }
+
+    const retained = new Set([...(Array.isArray(active) ? active : [active]), ...requested]);
+    let changed = false;
+    for (const [name, repository] of Object.entries(repositories.native.repositories)) {
+        if (!retained.has(name) && typeof repository !== 'string') {
+            if (repository.json || repository.hash || repository.time) {
+                repository.json = null;
+                repository.hash = '';
+                delete repository.time;
+                changed = true;
+            }
+        }
+    }
+    return changed;
 }
 
 /** Result of getRepositoryFileAsync */
@@ -1664,57 +1727,30 @@ export interface GetDiskInfoResponse {
  * Read the disk-free space
  */
 export async function getDiskInfo(): Promise<GetDiskInfoResponse | null> {
-    const platform = process.platform;
-    if (diskusage) {
+    // `statfs` is supported on all platforms and requires no external tools, like `wmic`,
+    // which has been removed from current Windows versions. It can query any existing path
+    // on the volume, so no drive letter is parsed and UNC installations work too
+    const diskPaths: string[] = [];
+
+    try {
+        diskPaths.push(getRootDir());
+    } catch {
+        // the controller directory could not be determined, only the fallback below is left
+    }
+
+    // the directory of this module always exists and is located on the same volume
+    diskPaths.push(thisDir);
+
+    for (const diskPath of diskPaths) {
         try {
-            const path = platform === 'win32' ? thisDir.substring(0, 2) : '/';
-            const info = diskusage.checkSync(path);
-            return { 'Disk size': info.total, 'Disk free': info.free };
+            const stats = await statfs(diskPath);
+
+            return {
+                'Disk size': stats.blocks * stats.bsize,
+                'Disk free': stats.bavail * stats.bsize,
+            };
         } catch (e) {
             console.log(e.message);
-        }
-    } else {
-        if (platform === 'win32') {
-            // Caption  FreeSpace     Size
-            // A:
-            // C:       66993807360   214640357376
-            // D:
-            // Y:       116649795584  148368257024
-            // Z:       116649795584  148368257024
-            const disk = thisDir.substring(0, 2).toUpperCase();
-
-            const { stdout } = await execAsync('wmic logicaldisk get size,freespace,caption');
-
-            if (typeof stdout === 'string') {
-                const lines = stdout.split('\n');
-                const line = lines.find(line => {
-                    const parts = line.split(/\s+/);
-                    return parts[0].toUpperCase() === disk;
-                });
-                if (line) {
-                    const parts = line.split(/\s+/);
-                    return {
-                        'Disk size': parseInt(parts[2]),
-                        'Disk free': parseInt(parts[1]),
-                    };
-                }
-            }
-        } else {
-            const { stdout } = await execAsync(`df -k ${getRootDir()}`);
-            //, stderr) {
-            // Filesystem            1K-blocks    Used Available Use% Mounted on
-            // /dev/mapper/vg00-lv01 162544556 9966192 145767152   7% /
-            try {
-                if (typeof stdout === 'string') {
-                    const parts = stdout.split('\n')[1].split(/\s+/);
-                    return {
-                        'Disk size': parseInt(parts[1]) * 1024,
-                        'Disk free': parseInt(parts[3]) * 1024,
-                    };
-                }
-            } catch {
-                // continue regardless of error
-            }
         }
     }
 
@@ -1928,14 +1964,6 @@ function makeid(length: number): string {
  * @param objects db
  */
 export async function getHostInfo(objects: ObjectsRedisClient): Promise<HostInfo> {
-    if (!diskusage) {
-        try {
-            diskusage = require('diskusage');
-        } catch {
-            // ignore
-        }
-    }
-
     const systemConfig: ioBroker.SystemConfigObject = await objects.getObjectAsync('system.config');
     const systemRepos: ioBroker.RepositoryObject = await objects.getObjectAsync('system.repositories');
 
@@ -2482,6 +2510,186 @@ export function decrypt(key: string, value: string): string {
     const decrypted = Buffer.concat([decipher.update(encryptedText), decipher.final()]);
 
     return decrypted.toString();
+}
+
+/** Options of `encryptArray` and `decryptArray` */
+export interface EncryptArrayOptions {
+    /** The objects whose values should be en/decrypted */
+    obj: Record<string, unknown>;
+    /** Keys which need to be en/decrypted */
+    keys: string[];
+    /** Secret to use for en/decryption */
+    secret: string;
+}
+
+/**
+ * Encrypt given keys of given object
+ *
+ * @param options keys, object and secret information
+ */
+export function encryptArray(options: EncryptArrayOptions): void {
+    const { secret, obj, keys } = options;
+
+    for (const attr of keys) {
+        const val = getObjectAttribute(obj, attr);
+        if (Array.isArray(val)) {
+            const encrypted: string[] = [];
+            for (let i = 0; i < val.length; i++) {
+                encrypted[i] = typeof val[i] === 'string' ? encrypt(secret, val[i]) : val[i];
+            }
+            setObjectAttribute(obj, attr, encrypted);
+        } else if (typeof val === 'string') {
+            setObjectAttribute(obj, attr, encrypt(secret, val));
+        }
+    }
+}
+
+/**
+ * Decrypt given keys of given object
+ *
+ * @param options keys, object and secret information
+ */
+export function decryptArray(options: EncryptArrayOptions): void {
+    const { secret, obj, keys } = options;
+
+    for (const attr of keys) {
+        const val = getObjectAttribute(obj, attr);
+        if (Array.isArray(val)) {
+            const decrypted: string[] = [];
+            for (let i = 0; i < val.length; i++) {
+                decrypted[i] = typeof val[i] === 'string' ? decrypt(secret, val[i]) : val[i];
+            }
+            setObjectAttribute(obj, attr, decrypted);
+        } else if (typeof val === 'string') {
+            setObjectAttribute(obj, attr, decrypt(secret, val));
+        }
+    }
+}
+
+/**
+ * Get attribute of an object with complex names
+ *
+ * @param obj - object to get the attribute from
+ * @param attrParts - attribute parts
+ * @param index - index of attribute part
+ */
+function _getObjectAttribute(obj: Record<string, any>, attrParts: string[], index: number): any {
+    if (index === attrParts.length - 1) {
+        return obj[attrParts[index]];
+    }
+    if (!obj[attrParts[index]] || typeof obj[attrParts[index]] !== 'object') {
+        return;
+    }
+    if (Array.isArray(obj[attrParts[index]])) {
+        const result: any = [];
+        for (let i = 0; i < obj[attrParts[index]].length; i++) {
+            result.push(_getObjectAttribute(obj[attrParts[index]][i], attrParts, index + 1));
+        }
+        return result;
+    }
+
+    return _getObjectAttribute(obj[attrParts[index]], attrParts, index + 1);
+}
+
+/**
+ * Get attribute of an object with complex or simple names
+ *
+ * @param obj - object to get the attribute from
+ * @param attr - attribute name, can be complex like `attr1.attr2.attr3`
+ * @returns could be a value or an array
+ */
+export function getObjectAttribute(obj: Record<string, any>, attr: string): any {
+    // Optimization for 98% of the cases
+    if (!attr.includes('.')) {
+        return obj[attr];
+    }
+    return _getObjectAttribute(obj, attr.split('.'), 0);
+}
+
+/**
+ * Set attribute in an object with complex names
+ *
+ * @param obj - object to get the attribute from
+ * @param value - value to set (Could be an array)
+ * @param attrParts - attribute parts
+ * @param index - index of attribute part
+ */
+function _setObjectAttribute(obj: Record<string, any>, value: any, attrParts: string[], index: number): any {
+    if (index === attrParts.length - 1) {
+        obj[attrParts[index]] = value;
+        return;
+    }
+    if (!obj[attrParts[index]] || typeof obj[attrParts[index]] !== 'object') {
+        return;
+    }
+    if (Array.isArray(obj[attrParts[index]])) {
+        if (!Array.isArray(value)) {
+            throw new Error('Value is not an array');
+        }
+        for (let i = 0; i < obj[attrParts[index]].length; i++) {
+            _setObjectAttribute(obj[attrParts[index]][i], value[i], attrParts, index + 1);
+        }
+        return;
+    }
+
+    _setObjectAttribute(obj[attrParts[index]], value, attrParts, index + 1);
+}
+
+/**
+ * Set attribute in an object with complex or simple names
+ *
+ * @param obj - object to get the attribute from
+ * @param attr - attribute name, can be complex like `attr1.attr2.attr3`
+ * @param value - value to set (could be a value or an array)
+ */
+export function setObjectAttribute(obj: Record<string, any>, attr: string, value: any): void {
+    // Optimization for 98% of the cases
+    if (!attr.includes('.')) {
+        obj[attr] = value;
+        return;
+    }
+    _setObjectAttribute(obj, value, attr.split('.'), 0);
+}
+
+/**
+ * Delete attribute in an object with complex names
+ *
+ * @param obj - object to get the attribute from
+ * @param attrParts - attribute parts
+ * @param index - index of attribute part
+ */
+function _deleteObjectAttribute(obj: Record<string, any>, attrParts: string[], index: number): any {
+    if (index === attrParts.length - 1) {
+        delete obj[attrParts[index]];
+        return;
+    }
+    if (!obj[attrParts[index]] || typeof obj[attrParts[index]] !== 'object') {
+        return;
+    }
+    if (Array.isArray(obj[attrParts[index]])) {
+        for (let i = 0; i < obj[attrParts[index]].length; i++) {
+            _deleteObjectAttribute(obj[attrParts[index]][i], attrParts, index + 1);
+        }
+        return;
+    }
+
+    _deleteObjectAttribute(obj[attrParts[index]], attrParts, index + 1);
+}
+
+/**
+ * Delete attribute in an object with complex names
+ *
+ * @param obj - object to get the attribute from
+ * @param attr - attribute name, can be complex like `attr1.attr2.attr3`
+ */
+export function deleteObjectAttribute(obj: Record<string, any>, attr: string): void {
+    // Optimization for 98% of the cases
+    if (!attr.includes('.')) {
+        delete obj[attr];
+        return;
+    }
+
+    _deleteObjectAttribute(obj, attr.split('.'), 0);
 }
 
 /**

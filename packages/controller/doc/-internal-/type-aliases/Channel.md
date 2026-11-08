@@ -8,4 +8,4 @@
 
 > **Channel** = \`script.js.$\{"common" \| "global"\}\` \| `` `${string}.${number}.info` ``
 
-Defined in: [types-dev/objects.d.ts:73](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/objects.d.ts#L73)
+Defined in: [types-dev/objects.d.ts:73](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/objects.d.ts#L73)

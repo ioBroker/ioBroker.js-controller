@@ -56,6 +56,7 @@ export class MessagingManager extends AdapterContextBase {
             command,
             message,
             from: `system.adapter.${this.namespace}`,
+            ...MessagingManager.userOf(options),
         };
 
         const states = this.states;
@@ -98,6 +99,20 @@ export class MessagingManager extends AdapterContextBase {
         }
 
         await states.pushMessage(instanceName, obj);
+    }
+
+    /**
+     * The `user` field of an outbound message, from the `user` of the send options.
+     *
+     * Spread into the envelope, so a send without a user leaves the field out entirely instead of
+     * putting an empty one in: a receiver that checks `obj.user` must be able to tell "nobody named a
+     * user" from "the user is known", and an empty string is neither.
+     *
+     * @param options the send options the caller passed, if any
+     */
+    private static userOf(options?: SendToOptions): { user?: ioBroker.ObjectIDs.User } {
+        const user = options?.user;
+        return typeof user === 'string' && user ? { user } : {};
     }
 
     /**
@@ -198,6 +213,7 @@ export class MessagingManager extends AdapterContextBase {
             command,
             message,
             from: `system.adapter.${this.namespace}`,
+            ...MessagingManager.userOf(options),
         };
 
         const states = this.states;

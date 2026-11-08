@@ -8,7 +8,7 @@
 
 > **ReadDirCallback** = (`err?`, `entries?`) => `void`
 
-Defined in: [types-dev/index.d.ts:683](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/types-dev/index.d.ts#L683)
+Defined in: [types-dev/index.d.ts:703](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/index.d.ts#L703)
 
 ## Parameters
 
