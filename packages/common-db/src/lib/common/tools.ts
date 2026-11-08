@@ -431,6 +431,9 @@ function getAppName(): AppName {
     return 'iobroker';
 }
 
+/** How long npm may take to resolve a dist tag the user asked for, in ms */
+const NPM_DIST_TAG_TIMEOUT = 30_000;
+
 export const appNameLowerCase = 'iobroker';
 export const appName = getAppName();
 
@@ -1137,19 +1140,47 @@ export function getInstalledInfo(hostRunningVersion?: string): Record<string, Ad
  * Reads an adapter's npm version
  *
  * @param adapter The adapter to read the npm version from. Null for the root ioBroker packet
+ * @param tag The dist tag to read
+ * @param timeout How long npm may take in ms
  */
-async function getNpmVersion(adapter: string): Promise<string> {
+async function getNpmVersion(adapter: string, tag = 'latest', timeout = 2_000): Promise<string> {
     adapter = adapter ? `${appName}.${adapter}` : appName;
     adapter = adapter.toLowerCase();
 
-    const cliCommand = `npm view ${adapter}@latest version`;
+    const cliCommand = `npm view ${adapter}@${tag} version`;
 
-    const result = await execAsync(cliCommand, { timeout: 2000, windowsHide: true });
+    const result = await execAsync(cliCommand, { timeout, windowsHide: true });
     let version;
     if (result?.stdout) {
         version = semver.valid(result.stdout.trim());
     }
     return version || '';
+}
+
+/**
+ * Whether what follows the `@` of `adapter@...` is an npm dist tag such as `latest` or `next`, and no version or range.
+ * npm itself refuses a tag that could be read as a range, so this cannot take a version for a tag.
+ *
+ * @param version what was given as the version
+ */
+export function isNpmDistTag(version: string): boolean {
+    return /^[a-z][a-z0-9._-]*$/i.test(version) && semver.validRange(version) === null;
+}
+
+/**
+ * Ask npm which version a dist tag of an adapter stands for
+ *
+ * @param adapter The name of the adapter, e.g. `web`
+ * @param tag The dist tag, e.g. `next`
+ * @returns the version, an empty string if npm names none
+ * @throws {Error} if the names are invalid, or npm fails - also for an unknown tag (E404)
+ */
+export function resolveNpmDistTag(adapter: string, tag: string): Promise<string> {
+    // both go into a command line
+    if (!/^[a-z0-9][a-z0-9._-]*$/i.test(adapter) || !isNpmDistTag(tag)) {
+        throw new Error(`Invalid npm dist tag: "${adapter}@${tag}"`);
+    }
+    return getNpmVersion(adapter, tag, NPM_DIST_TAG_TIMEOUT);
 }
 
 async function getIoPack(sources: ioBroker.RepositoryJson, name: string, failCounter: string[]): Promise<void> {

@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Fixed `iobroker upgrade <adapter>@<tag>` and `iobroker upgrade self@<tag>` with an npm dist tag such as `latest` or `next`: the tag was passed to semver as a version, which skipped the upgrade dialog and reported "Invalid Version: latest". The tag is now resolved with npm to the version it stands for, and an unknown tag is reported
 * (@GermanBluefox) The states that count the data points of vis projects (`vis-2.0.datapoints.<project>`) of deleted or renamed projects are deleted, and so are those named by the former rule, which replaced the letter "s" instead of the spaces (e.g. `vis-2.0.datapoints.te_t`)
 * (@GermanBluefox) Fixed the backup validation reporting only the first invalid optional JSON file under `files/`: now all invalid files are listed in one warning and empty files are skipped (#3561)
 * (@GermanBluefox) Updated `@iobroker/plugin-base` to 4.0.0, which `@iobroker/plugin-docker` 1.3 already requires; `@iobroker/plugin-sentry` keeps its own copy of 3.x, which works next to it because the plugin handler does not check the class of a plugin
