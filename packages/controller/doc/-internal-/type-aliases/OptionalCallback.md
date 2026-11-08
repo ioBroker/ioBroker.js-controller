@@ -8,4 +8,4 @@
 
 > **OptionalCallback** = `undefined` \| [`Callback`](Callback.md)
 
-Defined in: [adapter/src/lib/adapter/validator.ts:6](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/adapter/src/lib/adapter/validator.ts#L6)
+Defined in: [adapter/src/lib/adapter/validator.ts:6](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/validator.ts#L6)

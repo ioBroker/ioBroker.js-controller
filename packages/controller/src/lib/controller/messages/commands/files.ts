@@ -19,6 +19,9 @@ export interface FileCommandsDeps {
 /**
  * Read a directory of the files' database as zip file
  *
+ * It always answers: `{ error: null, data, skipped? }`, without `data` for a directory without files, or
+ * `{ error: '<message>' }`. `skipped` names the files that could not be packed and are missing in the archive.
+ *
  * @param deps What this group of commands needs
  * @param msg The received message
  */
@@ -32,15 +35,25 @@ const readDirAsZip: HostCommand<FileCommandsDeps> = async (deps, msg) => {
 
     const { from, command, callback } = msg;
     try {
-        await zipFiles.readDirAsZip(objects, msg.message.id, msg.message.name, msg.message.options, (err, base64) => {
-            if (base64) {
-                messages.sendTo(from, command, { error: err, data: base64 }, callback);
-            } else {
-                messages.sendTo(from, command, { error: err }, callback);
-            }
-        });
+        const { base64, skipped } = await zipFiles.packDirAsZip(
+            objects,
+            msg.message.id,
+            msg.message.name,
+            msg.message.options,
+        );
+        messages.sendTo(
+            from,
+            command,
+            {
+                error: null,
+                ...(base64 ? { data: base64 } : {}),
+                ...(skipped.length ? { skipped } : {}),
+            },
+            callback,
+        );
     } catch (e) {
         logger.error(`${hostLogPrefix} Cannot read dir as zip: ${e.message}`);
+        messages.sendTo(from, command, { error: e.message }, callback);
     }
 };
 
@@ -129,6 +142,7 @@ const readObjectsAsZip: HostCommand<FileCommandsDeps> = async (deps, msg) => {
 const writeObjectsAsZip: HostCommand<FileCommandsDeps> = async (deps, msg) => {
     const { objects, logger, hostLogPrefix, messages } = deps;
 
+    let error: string | undefined;
     try {
         await zipFiles.writeObjectsAsZip(
             objects,
@@ -136,14 +150,13 @@ const writeObjectsAsZip: HostCommand<FileCommandsDeps> = async (deps, msg) => {
             msg.message.adapter,
             Buffer.from(msg.message.data || '', 'base64'),
             msg.message.options,
-            err => {
-                if (msg.callback && msg.from) {
-                    messages.sendTo(msg.from, msg.command, { error: err?.message }, msg.callback);
-                }
-            },
         );
     } catch (e) {
-        logger.error(`${hostLogPrefix} Cannot write objects as zip: ${e.message}`);
+        error = e.message;
+        logger.error(`${hostLogPrefix} Cannot write objects as zip: ${error}`);
+    }
+    if (msg.callback && msg.from) {
+        messages.sendTo(msg.from, msg.command, { error }, msg.callback);
     }
 };
 

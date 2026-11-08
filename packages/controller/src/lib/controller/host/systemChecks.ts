@@ -311,7 +311,7 @@ export class SystemChecks {
                     scope: 'system',
                     category: 'automaticAdapterUpgradeFailed',
                     message: failedAdapters
-                        .map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`)
+                        .map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}: ${entry.reason}`)
                         .join('\n'),
                     instance: `${SYSTEM_HOST_PREFIX}${hostname}`,
                 });
