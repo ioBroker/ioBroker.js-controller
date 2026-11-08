@@ -2,6 +2,7 @@ import net from 'node:net';
 import os from 'node:os';
 import { EventEmitter } from 'node:events';
 import { join } from 'node:path';
+import type { Readable } from 'node:stream';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
@@ -17,7 +18,9 @@ import * as url from 'node:url';
 
 import {
     EXIT_CODES,
+    describePortInUse,
     getObjectsConstructor,
+    getPortInUse,
     getStatesConstructor,
     isInstalledFromNpm,
     logger,
@@ -25,15 +28,11 @@ import {
     tools,
 } from '@iobroker/js-controller-common';
 import {
-    decryptArray,
-    encryptArray,
     getAdapterScopedPackageIdentifier,
     getSupportedFeatures,
     isMessageboxSupported,
     listInstalledNodeModules,
     requestModuleNameByUrl,
-    deleteObjectAttribute,
-    getObjectAttribute,
 } from '@/lib/adapter/utils.js';
 
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -119,6 +118,8 @@ import type {
     NotificationOptions,
     Pattern,
     MayReadOptions,
+    FetchAdapterDirOptions,
+    FetchAdapterDirResult,
     SendToOptions,
     SendToUserInterfaceClientOptions,
     SetStateChangedResult,
@@ -134,7 +135,13 @@ import { AliasManager } from '@/lib/adapter/managers/AliasManager.js';
 import { SubscriptionManager } from '@/lib/adapter/managers/SubscriptionManager.js';
 import type { AdapterContext } from '@/lib/adapter/context.js';
 import { SYSTEM_ADAPTER_PREFIX, DEFAULT_OBJECTS_WARN_LIMIT } from '@iobroker/js-controller-common-db/constants';
-import { isLogLevel } from '@iobroker/js-controller-common-db/tools';
+import {
+    decryptArray,
+    deleteObjectAttribute,
+    encryptArray,
+    getObjectAttribute,
+    isLogLevel,
+} from '@iobroker/js-controller-common-db/tools';
 
 const controllerVersion = packJson.version;
 
@@ -539,11 +546,13 @@ export interface AdapterClass {
      * @param hostName name of the host
      * @param command command name
      * @param message message to send
+     * @param options optional options to control the send behaviour
      */
     sendToHostAsync(
         hostName: string,
         command: string,
         message: ioBroker.MessagePayload,
+        options?: SendToOptions,
     ): Promise<ioBroker.MessagePayload>;
 
     /**
@@ -8983,12 +8992,14 @@ export class AdapterClass extends EventEmitter {
      * @param command command name
      * @param message message to send
      * @param callback optional return result
+     * @param options optional options to control the send behaviour
      */
     sendToHost(
         hostName: string | null,
         command: string,
         message: any,
         callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
+        options?: SendToOptions,
     ): void;
 
     /**
@@ -8998,7 +9009,7 @@ export class AdapterClass extends EventEmitter {
      * If no host name given (e.g. null), the callback argument will be ignored. Because normally many responses will come.
      *
      * @param hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is null, the message will be sent to all hosts.
-     * @param command command name. One of: "cmdExec", "getRepository", "getRepositoryCompact", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
+     * @param command command name. One of: "cmdExec", "getRepository", "getRepositoryCompact", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging", "checkDocker". Commands can be checked in controller.js (function processMessage)
      * @param message object that will be given as argument for request
      * @param callback optional return result
      *        ```js
@@ -9007,8 +9018,10 @@ export class AdapterClass extends EventEmitter {
      *              if (!result) adapter.log.error('No response received');
      *            }
      *        ```
+     * @param options optional send options: a `timeout` for the answer, or the `user` this message is
+     * sent on behalf of - the host sees it as `obj.user`
      */
-    sendToHost(hostName: unknown, command: unknown, message: unknown, callback?: unknown): any {
+    sendToHost(hostName: unknown, command: unknown, message: unknown, callback?: unknown, options?: unknown): any {
         if (typeof message === 'function' && typeof callback === 'undefined') {
             callback = message;
             message = undefined;
@@ -9026,12 +9039,18 @@ export class AdapterClass extends EventEmitter {
         if (!tools.isObject(callback)) {
             Validator.assertOptionalCallback(callback, 'callback');
         }
+        if (options !== undefined) {
+            Validator.assertObject<SendToOptions>(options, 'options');
+        }
 
         if (tools.isObject(callback)) {
             this.#fireAndForget(
-                this.#async.sendToHost(hostName, command, message, {
-                    callback: callback as ioBroker.MessageCallbackInfo,
-                }),
+                this.#async.sendToHost(
+                    hostName,
+                    command,
+                    message,
+                    this.#withSendFlags(options, { callback: callback as ioBroker.MessageCallbackInfo }),
+                ),
                 'Error in sendToHost',
             );
             return;
@@ -9041,7 +9060,7 @@ export class AdapterClass extends EventEmitter {
 
         // A broadcast (hostName === null) yields many replies, so the callback is ignored — matching legacy behavior.
         if (typeof cb === 'function' && hostName !== null) {
-            this.sendToHostAsync(hostName, command, message).then(
+            this.sendToHostAsync(hostName, command, message, options).then(
                 (reply: any) => cb(reply),
                 (err: Error) => cb(err),
             );
@@ -9049,7 +9068,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         this.#fireAndForget(
-            this.#async.sendToHost(hostName, command, message, { expectReply: false }),
+            this.#async.sendToHost(hostName, command, message, this.#withSendFlags(options, { expectReply: false })),
             'Error in sendToHost',
         );
     }
@@ -9058,16 +9077,22 @@ export class AdapterClass extends EventEmitter {
      * Async version of sendToHost
      *
      * @param hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is null, the message will be sent to all hosts.
-     * @param command command name. One of: "cmdExec", "getRepository", "getRepositoryCompact", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
+     * @param command command name. One of: "cmdExec", "getRepository", "getRepositoryCompact", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging", "checkDocker". Commands can be checked in controller.js (function processMessage)
      * @param message object that will be given as argument for request
+     * @param options optional send options, e.g. a `timeout` or the `user` the message is sent for
      */
-    sendToHostAsync(hostName: unknown, command: unknown, message?: unknown): any {
+    sendToHostAsync(hostName: unknown, command: unknown, message?: unknown, options?: unknown): any {
         if (typeof message === 'undefined') {
             message = command;
             command = 'send';
         }
         // broadcast (null host) yields many responses → never wait for a reply
-        return this.#async.sendToHost(hostName, command, message, { expectReply: hostName !== null });
+        return this.#async.sendToHost(
+            hostName,
+            command,
+            message,
+            this.#withSendFlags(options, { expectReply: hostName !== null }),
+        );
     }
 
     /**
@@ -9111,6 +9136,65 @@ export class AdapterClass extends EventEmitter {
      */
     async registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void> {
         return this.#async.registerNotification(scope, category, message, options);
+    }
+
+    /**
+     * Build an `iobdisk://` URL for a file in the data directory of this instance.
+     *
+     * A plain file path is only valid on the host where the file is. An `iobdisk://` URL also names the host, so it
+     * can be handed to an instance on another host, which reads the file with {@link readDiskFile} or
+     * {@link createDiskFileReadStream}. Example: `iobdisk://pi4/telegram.0/video/2026-11-04_10-00-00.mp4`
+     *
+     * Only files in the data directory of the instance can be addressed: `iobroker-data/<namespace>` as
+     * `utils.getAbsoluteInstanceDataDir()` of adapter-core gives it, or the older `iobroker-data/<adapter>_<instance>`.
+     *
+     * @param filePath absolute path inside the data directory of this instance, or a path relative to `iobroker-data/<namespace>`
+     * @throws {Error} if the file is outside the data directory of this instance
+     */
+    getDiskFileUrl(filePath: string): string {
+        return this.#async.getDiskFileUrl(filePath);
+    }
+
+    /**
+     * Read the whole file an `iobdisk://` URL points to.
+     *
+     * A file on this host is read from the disk. A file on another host is fetched piece by piece (1 MB each) from the
+     * js-controller of that host, which needs js-controller 8.0 or newer (feature `CONTROLLER_DISK_FILES`).
+     * For big files prefer {@link createDiskFileReadStream}, which does not hold the whole file in memory.
+     *
+     * @param url e.g. `iobdisk://pi4/telegram.0/video/2026-11-04_10-00-00.mp4`
+     * @throws {Error} if the URL is invalid, the host does not answer or is too old, or the file does not exist or changes while it is read
+     */
+    async readDiskFile(url: string): Promise<Buffer> {
+        return this.#async.readDiskFile(url);
+    }
+
+    /**
+     * Read the file an `iobdisk://` URL points to as a stream, piece by piece, from this or another host.
+     *
+     * The errors of {@link readDiskFile} are emitted as `error` event of the stream.
+     *
+     * @param url e.g. `iobdisk://pi4/telegram.0/video/2026-11-04_10-00-00.mp4`
+     * @throws {Error} if the URL is invalid
+     */
+    createDiskFileReadStream(url: string): Readable {
+        return this.#async.createDiskFileReadStream(url);
+    }
+
+    /**
+     * Delete the file an `iobdisk://` URL points to, e.g. a video of another instance after it was processed.
+     *
+     * A file on this host is deleted directly, a file on another host by the js-controller of that host (js-controller
+     * 8.0 or newer, feature `CONTROLLER_DISK_FILES`). Only a regular file in the data directory of the instance is
+     * deleted - never a directory, nothing outside the data directory, and a symbolic link is refused instead of
+     * deleting its target.
+     *
+     * @param url e.g. `iobdisk://pi4/telegram.0/video/2026-11-04_10-00-00.mp4`
+     * @returns `true` if the file was deleted, `false` if it did not exist (any more)
+     * @throws {Error} if the URL is invalid, the host does not answer or is too old, or the file cannot be deleted
+     */
+    async deleteDiskFile(url: string): Promise<boolean> {
+        return this.#async.deleteDiskFile(url);
     }
 
     /**
@@ -9219,6 +9303,39 @@ export class AdapterClass extends EventEmitter {
      */
     async getHostUsedResources(type?: ioBroker.UsedResourceType): Promise<ioBroker.RegisteredResource[]> {
         return type === undefined ? this.#async.getHostUsedResources() : this.#async.getHostUsedResources(type);
+    }
+
+    /**
+     * Copy a directory of an installed adapter into a local directory - also from another host.
+     *
+     * The files of an adapter only exist on the hosts it is installed on. vis-2 for example collects the
+     * `widgets` folder of every adapter with widgets, which fails when the adapter runs on another host. This
+     * fetches such a directory: if the adapter is installed on this host, it is copied from its package,
+     * otherwise the js-controller of the host hands the files out - small files several in one answer, big files
+     * piece by piece, compressed with gzip where it helps (js-controller 8.0 or newer on that host, feature
+     * `CONTROLLER_ADAPTER_FILES`).
+     *
+     * Only the package directory of the adapter can be read, and not all of it: everything below
+     * `node_modules`, hidden files and directories (name starting with a dot) and symbolic links are left out.
+     *
+     * Existing files in `target` are overwritten, other files there are kept. If fetching fails, `target` may
+     * hold a part of the files - fetch into an empty directory and move it into place when it is complete.
+     *
+     * @example
+     * ```ts
+     * const { host, files } = await adapter.fetchAdapterDir({
+     *     adapter: 'wattcycle',
+     *     path: 'widgets',
+     *     target: '/opt/iobroker/iobroker-data/vis-2.0/remote/wattcycle',
+     * });
+     * ```
+     * @param options which directory of which adapter, where to, and optionally from which host
+     * @returns the host the files came from and the written files, relative to `target`
+     * @throws {Error} if the adapter or path is invalid, no running host has the adapter, the host is too old or
+     * does not answer, or a file changes while it is fetched
+     */
+    async fetchAdapterDir(options: FetchAdapterDirOptions): Promise<FetchAdapterDirResult> {
+        return this.#async.fetchAdapterDir(options);
     }
 
     // external signatures
@@ -13345,8 +13462,9 @@ export class AdapterClass extends EventEmitter {
                 }
             }
 
-            // catch it on Windows
-            if (this.getPortRunning && err?.message === 'listen EADDRINUSE') {
+            // the port `getPort()` found free was taken before the adapter listened on it (seen on Windows), so try
+            // the next one. Only the port that `getPort()` handed out counts, any other EADDRINUSE goes on below
+            if (this.getPortRunning && getPortInUse(err)?.port === this.getPortRunning.port) {
                 const { host, port, callback } = this.getPortRunning;
                 this._logger.warn(
                     `${this.namespaceLog} Port ${port}${host ? ` for host ${host}` : ''} is in use. Get next`,
@@ -13374,6 +13492,19 @@ export class AdapterClass extends EventEmitter {
         if (err && !this._stopInProgress) {
             const message = err.code ? `Exception-Code: ${err.code}: ${err.message}` : err.message;
             this._logger.error(`${this.namespaceLog} ${message}`);
+            const portInUse = getPortInUse(err);
+            if (portInUse) {
+                try {
+                    const resources = await this.getHostUsedResources(
+                        portInUse.protocol === 'udp' ? 'udpPort' : 'tcpPort',
+                    );
+                    this._logger.error(
+                        `${this.namespaceLog} ${describePortInUse({ portInUse, resources, instance: this.namespace })}`,
+                    );
+                } catch {
+                    // without the used resources of the host there is nobody to name
+                }
+            }
             try {
                 await this.registerNotification('system', null, message);
             } catch {
@@ -13405,7 +13536,7 @@ export class AdapterClass extends EventEmitter {
             objs = [];
         }
 
-        if (instanceObj && 'instanceObjects' in instanceObj) {
+        if (instanceObj && 'instanceObjects' in instanceObj && instanceObj.instanceObjects) {
             for (const instObj of instanceObj.instanceObjects) {
                 const obj: IoPackageInstanceObject & { state?: ioBroker.StateValue } = instObj;
 

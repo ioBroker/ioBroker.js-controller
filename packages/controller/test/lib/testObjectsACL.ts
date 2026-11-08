@@ -262,4 +262,107 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         assert.strictEqual(obj!.acl!.owner, 'system.user.notGovernor');
         assert.strictEqual(obj!.acl!.ownerGroup, 'system.group.notSenatorGroup');
     }).timeout(2_000);
+
+    // Directories have no entry of their own: reading them is checked against `acl.file` of the meta object
+    const openMetaId = 'aclDirTest.open';
+    const closedMetaId = 'aclDirTest.closed';
+    const user = 'system.user.user';
+
+    it(`${textName}files: prepare meta objects and files`, async () => {
+        const objects = context.objects;
+
+        // new files and directories without own rights get "nothing for everybody"
+        const defaultNewAcl = {
+            object: 1632,
+            state: 1632,
+            file: 1632,
+            owner: 'system.user.admin' as const,
+            ownerGroup: 'system.group.administrator' as const,
+        };
+        const config = await objects.getObject('system.config');
+        config!.common.defaultNewAcl = defaultNewAcl;
+        await objects.setObject('system.config', config!);
+        await objects.setDefaultAcl(defaultNewAcl);
+
+        for (const [id, file] of [
+            [openMetaId, 0x664],
+            [closedMetaId, 0x660],
+        ] as const) {
+            await objects.setObject(id, {
+                type: 'meta',
+                common: { name: id, type: 'meta.user' },
+                native: {},
+                acl: {
+                    object: 0x664,
+                    file,
+                    owner: 'system.user.admin',
+                    ownerGroup: 'system.group.administrator',
+                } as ioBroker.ObjectACL,
+            });
+            await objects.writeFileAsync(id, 'sub/public.txt', 'public');
+            await objects.writeFileAsync(id, 'sub/secret.txt', 'secret');
+            await objects.chmodFileAsync(id, 'sub/public.txt', { mode: 0x644 });
+            await objects.chmodFileAsync(id, 'sub/secret.txt', { mode: 0x600 });
+        }
+
+        const meta = await objects.getObject(openMetaId);
+        assert.strictEqual((meta!.acl as unknown as { file: number }).file, 0x664);
+    }).timeout(5_000);
+
+    it(`${textName}files: user may list a directory if acl.file of the meta object allows it`, async () => {
+        const objects = context.objects;
+
+        const root = await objects.readDirAsync(openMetaId, '', { user });
+        assert.ok(root.find(entry => entry.file === 'sub' && entry.isDir));
+
+        const sub = await objects.readDirAsync(openMetaId, 'sub', { user });
+        const names = sub.map(entry => entry.file);
+        assert.ok(names.includes('public.txt'));
+        // a file that the user may not read is not listed
+        assert.ok(!names.includes('secret.txt'));
+
+        const publicFile = sub.find(entry => entry.file === 'public.txt')!;
+        assert.strictEqual(publicFile.acl!.read, true);
+        // the group of the user may not write files
+        assert.strictEqual(publicFile.acl!.write, false);
+    }).timeout(2_000);
+
+    it(`${textName}files: admin lists every file`, async () => {
+        const objects = context.objects;
+
+        const sub = await objects.readDirAsync(openMetaId, 'sub', { user: 'system.user.admin' });
+        const names = sub.map(entry => entry.file);
+        assert.ok(names.includes('public.txt'));
+        assert.ok(names.includes('secret.txt'));
+    }).timeout(2_000);
+
+    it(`${textName}files: user may not list a directory if acl.file of the meta object does not allow it`, async () => {
+        const objects = context.objects;
+
+        await assert.rejects(objects.readDirAsync(closedMetaId, '', { user }), { message: 'permissionError' });
+        await assert.rejects(objects.readDirAsync(closedMetaId, 'sub', { user }), { message: 'permissionError' });
+    }).timeout(2_000);
+
+    it(`${textName}files: the rights of a file itself still apply`, async () => {
+        const objects = context.objects;
+
+        const { file } = await objects.readFile(openMetaId, 'sub/public.txt', { user });
+        assert.strictEqual(file?.toString(), 'public');
+
+        await assert.rejects(objects.readFile(openMetaId, 'sub/secret.txt', { user }), {
+            message: 'permissionError',
+        });
+        // a file in the closed meta object, that everybody may read
+        const closedPublic = await objects.readFile(closedMetaId, 'sub/public.txt', { user });
+        assert.strictEqual(closedPublic.file?.toString(), 'public');
+    }).timeout(2_000);
+
+    it(`${textName}files: acl.file of the meta object does not allow to create files`, async () => {
+        const objects = context.objects;
+
+        await assert.rejects(objects.writeFileAsync(openMetaId, 'sub/new.txt', 'new', { user }), {
+            message: 'permissionError',
+        });
+        assert.strictEqual(await objects.fileExists(openMetaId, 'sub/new.txt'), false);
+    }).timeout(2_000);
 }

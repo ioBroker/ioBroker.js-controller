@@ -1,5 +1,7 @@
 ![Logo](iobroker.png)
+
 # ioBroker.js-controller
+
 ![Number of Installations](https://iobroker.live/badges/js-controller-installed.svg)
 ![Number of Installations](https://iobroker.live/badges/js-controller-stable.svg)
 [![NPM version](https://img.shields.io/npm/v/iobroker.js-controller.svg)](https://www.npmjs.com/package/iobroker.js-controller)
@@ -12,6 +14,7 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 **Please check the js-controller compatibility information below which version runs on your Node.js version**
 
 ## Overview
+
 - [Compatibility](#compatibility)
 - [Links](#links)
 - [Usage](#usage)
@@ -21,64 +24,75 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 - [License](#license)
 
 ## Compatibility
-* js-controller 8.x (Nicole) works with Node.js 22.x, 24.x and 26.x
-* js-controller 7.2 (Milla) works with Node.js 18.x, 20.x, 22.x and 24.x
-* js-controller 7.x (Lucy) works with Node.js 18.x, 20.x, 22.x and probably 24.x
-* js-controller 6.x (Kiera) works with Node.js 18.x, 20.x, 22.x
-* js-controller 5.x works with Node.js 16.x, 18.x, 20.x
-* js-controller 4.x works with Node.js 12.x, 14.x, 16.x (incl. up to NPM 8), 18.x
-* js-controller 3.x works with Node.js 10.x, 12.x, 14.x , 16.x (first tests look good, NPM 7 still has some issues, so NPM6 is best)
-* js-controller 2.x works with Node.js 8.x, 10.x, 12.x, 14.x (untested)
-* js-controller 1.x works with Node.js 4.x, 6.x, 8.x, 10.x (untested)
+
+- js-controller 8.x (Nicole) works with Node.js 22.x (22.22.2 or newer), 24.x and 26.x
+- js-controller 7.2 (Milla) works with Node.js 18.x, 20.x, 22.x and 24.x
+- js-controller 7.x (Lucy) works with Node.js 18.x, 20.x, 22.x and probably 24.x
+- js-controller 6.x (Kiera) works with Node.js 18.x, 20.x, 22.x
+- js-controller 5.x works with Node.js 16.x, 18.x, 20.x
+- js-controller 4.x works with Node.js 12.x, 14.x, 16.x (incl. up to NPM 8), 18.x
+- js-controller 3.x works with Node.js 10.x, 12.x, 14.x , 16.x (first tests look good, NPM 7 still has some issues, so NPM6 is best)
+- js-controller 2.x works with Node.js 8.x, 10.x, 12.x, 14.x (untested)
+- js-controller 1.x works with Node.js 4.x, 6.x, 8.x, 10.x (untested)
 
 Please try to stay current with your Node.js version because the support is limited in time. As of now (May 2024) all Node.js versions below 18.x are no longer supported by Node.js and considered EOL (End Of Life).
 To upgrade your Node.js version and ioBroker, please follow https://forum.iobroker.net/topic/44566/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten-2021-edition!
 
 As it is hard to keep a lot of the decentralized adapters up-to-date, up from controller version 6.0.4 the js-controller will override the `@iobroker/adapter-core` dependency of single adapters to ensure compatibility with the current js-controller version.
 
-* js-controller 6.x (Kiera) specifies this version as `^3.1.6`.
+- js-controller 6.x (Kiera) specifies this version as `^3.1.6`.
 
 ## Links
-* [Changelog](CHANGELOG.md)
-* Official website: https://www.iobroker.net
-* Forum: https://forum.iobroker.net
-* Explanation of the concept: https://github.com/iobroker/iobroker
 
-----------------------------------------------------------------------
+- [Changelog](CHANGELOG.md)
+- Official website: https://www.iobroker.net
+- Forum: https://forum.iobroker.net
+- Explanation of the concept: https://github.com/iobroker/iobroker
+
+---
 
 ## Usage
+
 Example how to install on a Debian-based system:
+
 ```
 curl -sLf https://iobroker.net/install.sh | bash -
 ```
 
 ### Install ioBroker
+
 See [Linux instructions](https://www.iobroker.net/#en/documentation/install/linux.md),
 [Windows instructions](https://www.iobroker.net/#en/documentation/install/windows.md) and
 
 after that, ioBroker should be running and available in the browser under `http://<ip>:8081/`.
 
 ### Start ioBroker controller
+
 #### Linux
-* run `iobroker start` to start the ioBroker controller in the background
-* watch the logfile `iobroker logs --watch`
+
+- run `iobroker start` to start the ioBroker controller in the background
+- watch the logfile `iobroker logs --watch`
+- optionally restrict the output to a severity with `--level`, e.g. `iobroker logs --watch --level warn` shows warnings and errors only. Without it, all levels are shown as before. It combines with the adapter filter, e.g. `iobroker logs iot --level error`
 
 or
 
-* run `node node_modules/iobroker.js-controller/controller.js` in the ioBroker directory to start the ioBroker controller in foreground and watch the log on console.
+- run `node node_modules/iobroker.js-controller/controller.js` in the ioBroker directory to start the ioBroker controller in foreground and watch the log on console.
 
 ### Windows
-* run `iobroker start` in the ioBroker directory to start the ioBroker controller as service. The name of the service is "iobroker(<servicename>)"
-* check the logfile `log/iobroker.log`
+
+- run `iobroker start` in the ioBroker directory to start the ioBroker controller as service. The name of the service is "iobroker(<servicename>)"
+- check the logfile `log/iobroker.log`
 
 or
 
-* run `node node_modules/iobroker.js-controller/controller.js` in the ioBroker directory to start the ioBroker controller in foreground and watch the log on console
+- run `node node_modules/iobroker.js-controller/controller.js` in the ioBroker directory to start the ioBroker controller in foreground and watch the log on console
 
 ## Configuration
+
 The main configuration is stored in `iobroker-data/iobroker.json`. Normally, there is no need to edit this file because the ioBroker CLI commands can control most of the settings.
 
 ## Feature Overview
+
 - [Admin UI](#admin-ui)
 - [Automatic adapter upgrade](#automatic-adapter-upgrade)
 - [Command Line Interface](#command-line-interface)
@@ -96,6 +110,7 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 - [Objects warn limit](#objects-warn-limit)
 - [Controlling and monitoring of adapter processes](#controlling-and-monitoring-of-adapter-processes)
 - [Multihost](#multihost)
+- [Host discovery](#host-discovery)
 - [TIERS: Start instances in an ordered manner](#tiers-start-instances-in-an-ordered-manner)
 - [Custom Node.js process arguments](#custom-nodejs-process-arguments)
 - [IPv6 DNS resolution support](#ipv6-dns-resolution-support)
@@ -110,6 +125,7 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 - [Resources monitor](doc/used-resources.md)
 
 ### Admin UI
+
 **Feature status:** stable
 
 The admin adapter is installed automatically and starts a web-server that hosts the Admin UI. Default port is 8081, so just open `http://<iobroker-ip>:8081/`
@@ -117,50 +133,53 @@ The admin adapter is installed automatically and starts a web-server that hosts 
 If port 8081 is occupied, you can install a second Admin UI on an alternate port and change the port for the first admin UI. To do so, run `iobroker add admin --enabled --port 8090` and go to the `http://<iobroker-ip>:8090/`. Of course, you can change port 8090 to a different one.
 
 ### Automatic adapter upgrade
+
 **Feature status:** New in 6.0.0
 
 Whenever the repository changes, the controller will perform an automatic upgrade of the adapters, w.r.t. the auto-upgrade policy.
 The policy can be configured system-wide and per adapter. Whenever there is no policy on adapter-level the system-wide policy is used as a fallback.
 
 Technically, the system-wide policy is configured in the `system.config` object in `common.adapterAutoUpgrade.defaultPolicy`. The policy is only active for the
-repositories which are set to `true` in `common.adapterAutoUpgrade.repositories`. On adapter level, the policy is configured in `common.automaticUpgrade` 
+repositories which are set to `true` in `common.adapterAutoUpgrade.repositories`. On adapter level, the policy is configured in `common.automaticUpgrade`
 of each `system.adapter.<adapterName>` object.
 
-Valid values for the policy are `none`, `patch`, `minor` and `major`. These relate to the version ranges, which will be automatically upgraded. 
-**It is strongly recommended to not configure `major` upgrades to be performed automatically, as these do often contain breaking changes and need manual 
+Valid values for the policy are `none`, `patch`, `minor` and `major`. These relate to the version ranges, which will be automatically upgraded.
+**It is strongly recommended to not configure `major` upgrades to be performed automatically, as these do often contain breaking changes and need manual
 intervention by the user.**
 
 A successful as well as a failed auto-upgrade will generate a notification in the ioBroker notification system (see [Notification System](#notification-system)).
 
 ### Command Line Interface
+
 **Feature status:** stable
 
 The command line interface is described at https://www.iobroker.net/#de/documentation/config/cli.md
 
 ### Adapter Upgrade with Webserver
+
 **Feature status:** New in 5.0.0
 
 **Feature Flag for detection:** `ADAPTER_WEBSERVER_UPGRADE`
 
-An adapter can be upgraded via `sendToHost`. The adapter sends parameters to the `js-controller` which contain the 
+An adapter can be upgraded via `sendToHost`. The adapter sends parameters to the `js-controller` which contain the
 information of the adapter to upgrade as well as information to start a webserver. The webserver can be polled by a UI,
 even if the adapter itself is stopped during upgrade or does not know of the upgrade.
 
-Example: 
+Example:
 
 ```typescript
-sendToHostAsync('system.host.test', 'upgradeAdapterWithWebserver', { 
-    version: '1.0.5', 
-    adapterName: 'hm-rpc', 
-    useHttps: true, 
-    port: 8081, 
+sendToHostAsync('system.host.test', 'upgradeAdapterWithWebserver', {
+    version: '1.0.5',
+    adapterName: 'hm-rpc',
+    useHttps: true,
+    port: 8081,
     certPrivateName: 'defaultPrivate',
-    certPublicName: 'defaultPublic' 
+    certPublicName: 'defaultPublic',
 });
 ```
 
-In this example the controller will upgrade the adapter `hm-rpc` to version `1.0.5`. During the upgrade, 
-the log and status information is provided by a webserver running on port `8081`, and using `https` with 
+In this example the controller will upgrade the adapter `hm-rpc` to version `1.0.5`. During the upgrade,
+the log and status information is provided by a webserver running on port `8081`, and using `https` with
 the given certificates.
 
 During the update, you can perform a `GET` request against the webserver to get the current status of the upgrade.
@@ -181,6 +200,7 @@ interface ServerResponse {
 ```
 
 ### Controller UI Upgrade
+
 **Feature status:** New in 5.0.0
 
 **Feature Flag for detection:** `CONTROLLER_UI_UPGRADE`
@@ -194,7 +214,7 @@ Example:
 sendToHostAsync('system.host.test', 'upgradeController', { version: '5.0.5', adminInstance: 0 });
 ```
 
-In this example, the controller will be upgraded to version `5.0.5` and the web server will 
+In this example, the controller will be upgraded to version `5.0.5` and the web server will
 take the configuration (http/s, port, certificates) of `system.adapter.admin.0`.
 During the update, you can perform a `GET` request against the webserver to get the current status of the upgrade.
 
@@ -214,9 +234,10 @@ interface ServerResponse {
 ```
 
 ### Managing node modules
+
 **Feature status:** New in 6.0.0
 
-In the past, adapters which needed additional user-defined node modules directly interacted with `npm` to install them. 
+In the past, adapters which needed additional user-defined node modules directly interacted with `npm` to install them.
 With the ongoing development of `npm` it turned out to be problematically as additional packages get removed during other `npm` operations.
 
 Hence, the controller now provides convenience methods to manage additional node modules.
@@ -238,7 +259,7 @@ To use the installed node module, you can import it:
 const module = await adapter.importNodeModule('axios');
 ```
 
-Note, that the behavior mimics the one of [JavaScript's "import" operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import). 
+Note, that the behavior mimics the one of [JavaScript's "import" operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import).
 
 If you are just interested in the `default export`, use the example below.
 
@@ -268,7 +289,7 @@ const installedNodeModules = await adapter.listInstalledNodeModules();
 adapter.log.info(`Installed modules are: ${installedNodeModules.join(', ')}`);
 ```
 
-To get the adapter scoped package identifier you can use: 
+To get the adapter scoped package identifier you can use:
 
 ```typescript
 // e.g. @iobroker-javascript.0/axios
@@ -276,27 +297,29 @@ const packageIdentifier = adapter.getAdapterScopedPackageIdentifier('axios');
 ```
 
 ### Per host `adapter` objects
+
 **Feature status:** New in 6.0.0
 
-Previous to js-controller 6.0.0 all adapter objects were only created as `system.adapter.<adapterName>`. This had the downside, that 
+Previous to js-controller 6.0.0 all adapter objects were only created as `system.adapter.<adapterName>`. This had the downside, that
 it was not possible to determine if an adapter is installed on a specific host on database level. Furthermore, in multihost environments
 the content of `system.adapter.<adapterName>` was filled with the last uploaded version of this adapter. Thus having different versions of an adapter
-on different hosts lead to an inconsistent object. 
+on different hosts lead to an inconsistent object.
 
 Up from controller 6.0.0 the objects of type `adapter` are additionally created under `system.host.<hostName>.adapter.<adapterName>`.
-If you need to interact with objects of type `adapter`, please use them from there. For now the objects are additionally created under 
+If you need to interact with objects of type `adapter`, please use them from there. For now the objects are additionally created under
 their previous `system.adapter.<adapterName>` structure to ensure backward compatibility.
 
-Furthermore, instances and their states will not move to another structure and will stay at `system.adapter.<adapterName>.<instanceNumber>`. 
+Furthermore, instances and their states will not move to another structure and will stay at `system.adapter.<adapterName>.<instanceNumber>`.
 Note, that instances are unique across the whole system and are thus not affected by the described problem. Also objects of `type` instance have a `common.host` attribute
 to find the corresponding host.
 
 ### Ignoring specific adapter version
+
 **Feature status:** New in 6.0.0
 
-If you know, that a specific version of an adapter is not suitable for you, you may want to ignore this update to avoid accidentally installing it. 
+If you know, that a specific version of an adapter is not suitable for you, you may want to ignore this update to avoid accidentally installing it.
 You can do so by using the cli command `iobroker version <adapter> --ignore <version>` and to recognize all updates again use `iobroker version <adapter> --recognize`.
-If a version of an adapter is ignored, you will not be able to update to this specific version on this ioBroker host. 
+If a version of an adapter is ignored, you will not be able to update to this specific version on this ioBroker host.
 If you use a multihost environment you might need to execute the commands once per host.
 
 Internally this will set `common.ignoreVersion` to the specified version on the `system.host.<hostName>.adapter.<adapterName>` object.
@@ -304,6 +327,7 @@ The version to be ignored can be specified via a semver range. So an absolute ve
 Another example, if you want to ignore all updates in the `1.5.x` range, you can specify `~1.5.0`.
 
 ### Operating system package management
+
 **Feature status:** New in 6.0.0
 
 **Feature Flag for detection:** `CONTROLLER_OS_PACKAGE_UPGRADE`
@@ -313,12 +337,14 @@ To upgrade a package, you have to send a message to the controller with the foll
 
 ```typescript
 sendToHostAsync('system.host.test', 'upgradeOsPackages', {
-    packages: [{
-      // the package name
-      name: 'google-chrome-stable',
-      // the optional version
-      version: '120.0.6099.199-1' 
-    }],
+    packages: [
+        {
+            // the package name
+            name: 'google-chrome-stable',
+            // the optional version
+            version: '120.0.6099.199-1',
+        },
+    ],
     // if the controller should be restarted afterwards
     restart: true,
 });
@@ -330,23 +356,25 @@ If a package fails, the response will have a value of `false` for `success` and 
 Currently only upgrading of packages is supported. If you need a specific OS dependency for your adapter, you can specify it inside `io-package.json` with the field `osDependencies`.
 
 ### Custom installation logic
+
 **Feature status:** New in 5.0.0
 
-If an adapter needs to execute custom install logic, one possibility is to use the `scripts` attribute of `package.json`. 
+If an adapter needs to execute custom install logic, one possibility is to use the `scripts` attribute of `package.json`.
 However, often adapters already want to interact with the ioBroker databases during the installation logic.
 
 Hence, you can set `ioPackage.common.install` flag to true, to indicate that the js-controller should perform an installation run with your adapter after the npm installation is successfully done.
-During the installation run, the `install` instead of the `ready` event will be emitted. 
+During the installation run, the `install` instead of the `ready` event will be emitted.
 Alternatively, you can also pass an `install` function to the constructor the same way as for `ready`.
 
 ```typescript
 this.on('install', () => {
-    this.log.info('Performing installation logic ...')
+    this.log.info('Performing installation logic ...');
     // Perform your installation logic
 });
 ```
 
 ### Hostname
+
 **Feature status:** stable
 
 By default, the hostname for the js-controller instance will be taken from the official hostname of the server ioBroker is running on. The hostname should not be changed after the first start of ioBroker on this host.
@@ -357,15 +385,16 @@ If you need to set a specific hostname before the first start of iobroker you ca
 
 ```json5
 {
-  "system": {
-    // ...
-    "hostname": "local",
-    // ...
-  },
+    system: {
+        // ...
+        hostname: 'local',
+        // ...
+    },
 }
 ```
 
 ### Adapter process memory limitation
+
 **Feature status:** stable
 
 By default, the memory management is done by Node.js automatically. A Garbage Collector (GC) will clean up unused objects automatically from time to time.
@@ -374,17 +403,18 @@ If needed, especially for low memory situations the memory limit for all adapter
 
 ```json5
 {
-  // ...
-  "system": {
     // ...
-    "memoryLimitMB": 0,
+    system: {
+        // ...
+        memoryLimitMB: 0,
+        // ...
+    },
     // ...
-  },
-  // ...
 }
 ```
 
 ### Directly executing TypeScript adapters
+
 **Feature status:** Stable since js-controller 3.3.0
 
 The js-controller is able to execute `.ts` files, which removes the need of compiling to JavaScript first.
@@ -394,17 +424,18 @@ E.g. in `package.json`:
 
 ```json
 {
-  "main": "src/main.ts"
+    "main": "src/main.ts"
 }
 ```
 
 Note, that the sources need to be presence on every installation and thus need to be included in the npm package.
 Vice versa, the build folder is no longer required and should not be published to npm any longer.
 
-Technically, the sources are compiled with ESBuild at every startup; hence this feature should not be used on adapters 
+Technically, the sources are compiled with ESBuild at every startup; hence this feature should not be used on adapters
 consisting of many sources to prevent noticeably delayed adapter starts.
 
 ### Adapters written in Python
+
 **Feature status:** experimental
 
 An adapter can be written in Python instead of Node.js by setting `common.platform` in its
@@ -412,10 +443,10 @@ An adapter can be written in Python instead of Node.js by setting `common.platfo
 
 ```json
 {
-  "common": {
-    "platform": "Python",
-    "main": "python/myadapter/__main__.py"
-  }
+    "common": {
+        "platform": "Python",
+        "main": "python/myadapter/__main__.py"
+    }
 }
 ```
 
@@ -433,7 +464,7 @@ differs is that it is started from a virtual environment rather than with Node.j
 is not available, and that both its output streams are forwarded to the log -- `print()` and
 libraries logging to stdout on one, tracebacks and Python's default logging on the other.
 
-Building that virtual environment is *not* done by the controller. It is the job of the
+Building that virtual environment is _not_ done by the controller. It is the job of the
 [`py-controller`](https://github.com/ioBroker/ioBroker.py-controller) adapter, which creates one per
 adapter below `iobroker-data/py/` and records what it built in an `environment.json` next to it. The
 controller starts an instance only when that environment exists and matches the installed adapter
@@ -448,24 +479,27 @@ through environment variables rather than command line arguments, so they do not
 process list, which any user on the machine can read.
 
 ### Statistics
+
 **Feature status:** stable
 
 The js-controller is collecting statistics for the host (`system.host.hostname.*`), running compact groups (`system.host.hostname.compaczgroupX.*`) and for each adapter (`system.adapter.adaptername.*`). The data contains memory usage, free memory, number of events and also the event loop lag of the Node.js process.
 
 ### Error Reporting via ioBroker Sentry
+
 **Feature status:** stable since js-controller 3.0.0
 
 Sentry.io is a way for developers to get an overview about errors from their applications. The js-controller uses this method to make sure application crashes are reported to us. With this, we can make sure to provide fixes for problems very fast.
 
-Especially with the automatic restart behavior of ioBroker, some crashes happen and no one really realizes them. And so we also do not get bug reports for them. With this method the information is provided to us. 
+Especially with the automatic restart behavior of ioBroker, some crashes happen and no one really realizes them. And so we also do not get bug reports for them. With this method the information is provided to us.
 
-When the js-controller crashes or another Code error happens (and only then!), this error that also appears in the ioBroker log is submitted to our own Sentry server hosted in Germany. If you have allowed iobroker GmbH to collect diagnostic data, then also your anonymous installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. IP addresses are not stored with the crash report! 
+When the js-controller crashes or another Code error happens (and only then!), this error that also appears in the ioBroker log is submitted to our own Sentry server hosted in Germany. If you have allowed iobroker GmbH to collect diagnostic data, then also your anonymous installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. IP addresses are not stored with the crash report!
 
 All of this helps me to provide an error-free smart home system that basically never crashes.
 
 If you want to disable the error reporting, you can do this by setting the state "system.host.NAME.plugins.sentry.enabled" to false. You should see a log message stating that sentry was disabled. After disabling the plugin no crashes from your system are reported and so cannot be fixed without reporting them by yourself manually!
 
 ### Notification System
+
 **Feature status:** Stable since js-controller 5.0.0
 
 The notification system in ioBroker allows setting, detecting and storing notifications per Host and allows querying the details.
@@ -480,92 +514,92 @@ The js-controller defines in its io-package the system scope together with all d
 
 ```json
 {
-  "notifications": [
-    {
-      "scope": "system",
-      "name": {
-        "en": "System Notifications",
-        "de": "System-Benachrichtigungen",
-        "ru": "Системные уведомления",
-        "pt": "Notificações do sistema",
-        "nl": "Systeemmeldingen",
-        "fr": "Notifications système",
-        "it": "Notifiche di sistema",
-        "es": "Notificaciones del sistema",
-        "pl": "Powiadomienia systemowe",
-        "zh-cn": "系统通知"
-      },
-      "description": {
-        "en": "These notifications are collected by the ioBroker system and point to issues you should check and fix.",
-        "de": "Diese Benachrichtigungen werden vom ioBroker-System erfasst und weisen auf Probleme hin, die überprüft und behoben werden sollten.",
-        "ru": "Эти уведомления собираются системой ioBroker и указывают на проблемы, которые вы должны проверить и исправить.",
-        "pt": "Essas notificações são coletadas pelo sistema ioBroker e apontam para problemas que você deve verificar e corrigir.",
-        "nl": "Deze meldingen worden verzameld door het ioBroker-systeem en wijzen op problemen die u moet controleren en oplossen.",
-        "fr": "Ces notifications sont collectées par le système ioBroker et indiquent des problèmes que vous devez vérifier et résoudre.",
-        "it": "Queste notifiche vengono raccolte dal sistema ioBroker e indicano problemi che dovresti controllare e correggere.",
-        "es": "Estas notificaciones son recopiladas por el sistema ioBroker y señalan problemas que debe verificar y solucionar.",
-        "pl": "Te powiadomienia są zbierane przez system ioBroker i wskazują problemy, które należy sprawdzić i naprawić.",
-        "zh-cn": "这些通知由ioBroker系统收集，并指出您应检查并修复的问题"
-      },
-      "categories": [
+    "notifications": [
         {
-          "category": "memIssues",
-          "name": {
-            "en": "Issues with RAM availability",
-            "de": "Probleme mit der Arbeitsspeicher-Verfügbarkeit",
-            "ru": "Проблемы с доступностью оперативной памяти",
-            "pt": "Problemas com disponibilidade de RAM",
-            "nl": "Problemen met de beschikbaarheid van RAM",
-            "fr": "Problèmes de disponibilité de la RAM",
-            "it": "Problemi con la disponibilità della RAM",
-            "es": "Problemas con la disponibilidad de RAM",
-            "pl": "Problemy z dostępnością pamięci RAM",
-            "zh-cn": "RAM可用性问题"
-          },
-          "severity": "alert",
-          "description": {
-            "en": "Your system is running out of memory. Please check the number of running adapters and processes or if single processes need too many memory.",
-            "de": "Es steht nicht genug Arbeitsspeicher zur Verfügung. Die Anzahl der laufenden Adapter und Prozesse sollte geprüft werden, oder ob einzelne Prozesse zuviel Speicher benötigen.",
-            "ru": "В вашей системе не хватает памяти. Пожалуйста, проверьте количество работающих адаптеров и процессов, или если отдельным процессам требуется слишком много памяти.",
-            "pt": "Seu sistema está ficando sem memória. Verifique o número de adaptadores e processos em execução ou se processos únicos precisam de muita memória.",
-            "nl": "Uw systeem heeft onvoldoende geheugen. Controleer het aantal actieve adapters en processen of als afzonderlijke processen te veel geheugen nodig hebben.",
-            "fr": "Votre système manque de mémoire. Veuillez vérifier le nombre d'adaptateurs et de processus en cours d'exécution ou si des processus uniques nécessitent trop de mémoire.",
-            "it": "Il tuo sistema sta esaurendo la memoria. Controllare il numero di adattatori e processi in esecuzione o se i singoli processi richiedono troppa memoria.",
-            "es": "Su sistema se está quedando sin memoria. Verifique el número de adaptadores y procesos en ejecución o si los procesos individuales necesitan demasiada memoria.",
-            "pl": "W Twoim systemie kończy się pamięć. Sprawdź liczbę działających adapterów i procesów lub czy pojedyncze procesy wymagają zbyt dużej ilości pamięci.",
-            "zh-cn": "您的系统内存不足。请检查正在运行的适配器和进程的数量，或者单个进程是否需要太多内存。"
-          },
-          "regex": [
-            "^Exception-Code: ENOMEM",
-            "buffer allocation failed"
-          ],
-          "limit": 10
+            "scope": "system",
+            "name": {
+                "en": "System Notifications",
+                "de": "System-Benachrichtigungen",
+                "ru": "Системные уведомления",
+                "pt": "Notificações do sistema",
+                "nl": "Systeemmeldingen",
+                "fr": "Notifications système",
+                "it": "Notifiche di sistema",
+                "es": "Notificaciones del sistema",
+                "pl": "Powiadomienia systemowe",
+                "zh-cn": "系统通知"
+            },
+            "description": {
+                "en": "These notifications are collected by the ioBroker system and point to issues you should check and fix.",
+                "de": "Diese Benachrichtigungen werden vom ioBroker-System erfasst und weisen auf Probleme hin, die überprüft und behoben werden sollten.",
+                "ru": "Эти уведомления собираются системой ioBroker и указывают на проблемы, которые вы должны проверить и исправить.",
+                "pt": "Essas notificações são coletadas pelo sistema ioBroker e apontam para problemas que você deve verificar e corrigir.",
+                "nl": "Deze meldingen worden verzameld door het ioBroker-systeem en wijzen op problemen die u moet controleren en oplossen.",
+                "fr": "Ces notifications sont collectées par le système ioBroker et indiquent des problèmes que vous devez vérifier et résoudre.",
+                "it": "Queste notifiche vengono raccolte dal sistema ioBroker e indicano problemi che dovresti controllare e correggere.",
+                "es": "Estas notificaciones son recopiladas por el sistema ioBroker y señalan problemas que debe verificar y solucionar.",
+                "pl": "Te powiadomienia są zbierane przez system ioBroker i wskazują problemy, które należy sprawdzić i naprawić.",
+                "zh-cn": "这些通知由ioBroker系统收集，并指出您应检查并修复的问题"
+            },
+            "categories": [
+                {
+                    "category": "memIssues",
+                    "name": {
+                        "en": "Issues with RAM availability",
+                        "de": "Probleme mit der Arbeitsspeicher-Verfügbarkeit",
+                        "ru": "Проблемы с доступностью оперативной памяти",
+                        "pt": "Problemas com disponibilidade de RAM",
+                        "nl": "Problemen met de beschikbaarheid van RAM",
+                        "fr": "Problèmes de disponibilité de la RAM",
+                        "it": "Problemi con la disponibilità della RAM",
+                        "es": "Problemas con la disponibilidad de RAM",
+                        "pl": "Problemy z dostępnością pamięci RAM",
+                        "zh-cn": "RAM可用性问题"
+                    },
+                    "severity": "alert",
+                    "description": {
+                        "en": "Your system is running out of memory. Please check the number of running adapters and processes or if single processes need too many memory.",
+                        "de": "Es steht nicht genug Arbeitsspeicher zur Verfügung. Die Anzahl der laufenden Adapter und Prozesse sollte geprüft werden, oder ob einzelne Prozesse zuviel Speicher benötigen.",
+                        "ru": "В вашей системе не хватает памяти. Пожалуйста, проверьте количество работающих адаптеров и процессов, или если отдельным процессам требуется слишком много памяти.",
+                        "pt": "Seu sistema está ficando sem memória. Verifique o número de adaptadores e processos em execução ou se processos únicos precisam de muita memória.",
+                        "nl": "Uw systeem heeft onvoldoende geheugen. Controleer het aantal actieve adapters en processen of als afzonderlijke processen te veel geheugen nodig hebben.",
+                        "fr": "Votre système manque de mémoire. Veuillez vérifier le nombre d'adaptateurs et de processus en cours d'exécution ou si des processus uniques nécessitent trop de mémoire.",
+                        "it": "Il tuo sistema sta esaurendo la memoria. Controllare il numero di adattatori e processi in esecuzione o se i singoli processi richiedono troppa memoria.",
+                        "es": "Su sistema se está quedando sin memoria. Verifique el número de adaptadores y procesos en ejecución o si los procesos individuales necesitan demasiada memoria.",
+                        "pl": "W Twoim systemie kończy się pamięć. Sprawdź liczbę działających adapterów i procesów lub czy pojedyncze procesy wymagają zbyt dużej ilości pamięci.",
+                        "zh-cn": "您的系统内存不足。请检查正在运行的适配器和进程的数量，或者单个进程是否需要太多内存。"
+                    },
+                    "regex": ["^Exception-Code: ENOMEM", "buffer allocation failed"],
+                    "limit": 10
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
 ```
 
 #### How to define own scopes?
+
 Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system.
 You can use the name of your adapter as a scope, e.g. `hm-rpc` to avoid conflicts with other scopes.
 If you plan on using a general purpose scope, please contact the core development group so that scope names can be checked to stay unique.
-The same applies if you see the need to enhance the system scope by additional categories. 
+The same applies if you see the need to enhance the system scope by additional categories.
 Let's discuss the requirements that they can also be added officially into upcoming js-controller versions.
 
 A scope and category definition needs to contain all relevant UI texts in the JSON.
 
 #### How to register own notifications?
-An adapter can use the __method__ `registerNotification` to register own notifications to the system. To find out if the used controller version supports this feature, check if the method exists (or require at least js-controller 3.2.0).
+
+An adapter can use the **method** `registerNotification` to register own notifications to the system. To find out if the used controller version supports this feature, check if the method exists (or require at least js-controller 3.2.0).
 
 This method takes the following parameters:
-* scope: scope to be addressed
-* category: category to be addressed, if a null message will be checked by regex of given scope
-* message: message to be stored/checked
-* options: Available with js-controller version 7.0. Additional options for the notification, currently you can provide additional `contextData` which is also stored with the notification information. Notification processing adapters can use this data
 
-Note, that the structure of the `contextData` which can be stored via the options object is not defined by the controller. Adapters which handle messages can use individual data attributes. 
+- scope: scope to be addressed
+- category: category to be addressed, if a null message will be checked by regex of given scope
+- message: message to be stored/checked
+- options: Available with js-controller version 7.0. Additional options for the notification, currently you can provide additional `contextData` which is also stored with the notification information. Notification processing adapters can use this data
+
+Note, that the structure of the `contextData` which can be stored via the options object is not defined by the controller. Adapters which handle messages can use individual data attributes.
 Currently, it is planned to support individual notification customization in the `admin` adapter. More information will be available in the `admin` adapter as soon as this feature is ready.
 
 The top-level of `contextData` should not be populated with individual data. The only allowed key on top-level is the name of the adapter which consumes these data, e.g. `contextData.admin` for the `admin` adapter.
@@ -574,75 +608,86 @@ The structure inside the adapter property needs to be defined by the consuming a
 When a regex is defined then `console.error` output from the adapter is always checked by the regex and notifications are registered automatically when the regex matches!
 
 #### How to read notifications?
-The host supports the __message__ command `getNotifications` to query the stored notifications together with the localized names and descriptions.
+
+The host supports the **message** command `getNotifications` to query the stored notifications together with the localized names and descriptions.
 
 The message needs to take the following parameters in the message object:
-* `scope` - scope of notifications
-* `category` - category of notifications
-* `instance` - instance of notifications
+
+- `scope` - scope of notifications
+- `category` - category of notifications
+- `instance` - instance of notifications
 
 All three are optional and can be a string or null/undefined if omitted.
 
 #### How to clear notifications?
-The host supports the __message__ command `clearNotifications` to clear specific notifications after they are handled.
+
+The host supports the **message** command `clearNotifications` to clear specific notifications after they are handled.
 
 **Please only clear notifications that really were handled and displayed to the user especially for "system" scope!**
 
 The message needs to take the following parameters in the message object:
-* `scope` - scope of notifications
-* `category` - category of notifications
-* `instance` - instance of notifications
+
+- `scope` - scope of notifications
+- `category` - category of notifications
+- `instance` - instance of notifications
 
 All three are optional and can be a string or null/undefined if omitted.
 
 ### Disk space warnings
+
 **Feature status:** New in 6.0.0
 
-The js-controller will generate a notification of in the scope `system` and the category `diskSpaceIssues` on warning level, if your free disk space falls under a specified threshold. 
-By default, this threshold is 5 % of disk space. Via the state `system.host.<hostname>.diskWarning` you can override this level to any level between `0` and `100`. 
+The js-controller will generate a notification of in the scope `system` and the category `diskSpaceIssues` on warning level, if your free disk space falls under a specified threshold.
+By default, this threshold is 5 % of disk space. Via the state `system.host.<hostname>.diskWarning` you can override this level to any level between `0` and `100`.
 
 ### Objects warn limit
+
 **Feature status:** New in 7.1.0
 
 The js-controller will generate a notification of in the scope `system` and the category `numberObjectsLimitExceeded` on warning level, if your number of objects for an adapter instance exceed a specified threshold.
 By default, this is set to `5000` objects. Via the state `system.adapter.<adapter>.<instance>.objectsWarnLimit` you can override this threshold to any positive number.
 
 ### Logging
+
 #### Log levels
+
 **Feature status:** stable
 
 The js-controller and each adapter can define their own log level. By default, `info` is used. The following log levels can be used:
-* silly (most logging)
-* debug
-* info
-* warn
-* error (only errors are logged)
+
+- silly (most logging)
+- debug
+- info
+- warn
+- error (only errors are logged)
 
 The log level for js-controller is configured in iobroker.json in the logs section:
 
 ```json5
 {
-  // ...
-  "log": {
-    "level": "info",
     // ...
-  }
-  // ...
+    log: {
+        level: 'info',
+        // ...
+    },
+    // ...
 }
 ```
 
 #### Dynamic Loglevel change
+
 **Feature status:** stable since js-controller 2.0.0
 
 The log level can be changed dynamically for adapter-instance and host (main controller and compact group controllers) after they have been started. Initially, the configured loglevel is always used!
 
-The states `system.adapter.xy.logLevel` and `system.host.hostname.logLevel` are updated on instance/controller start with the configured log level and can afterward be used to change the loglevel during runtime. These changes are __not__ persisted, so the next restarts resets the loglevel to the configured one.
+The states `system.adapter.xy.logLevel` and `system.host.hostname.logLevel` are updated on instance/controller start with the configured log level and can afterward be used to change the loglevel during runtime. These changes are **not** persisted, so the next restarts resets the loglevel to the configured one.
 
 The Loglevel change is only effective if there is no loglevel (property "level") defined on the transport configuration.
 
 This possibility allows debugging adapters better and during runtime.
 
 #### File-based logging
+
 **Feature status:** stable
 
 The default logging will log file based in the log directory inside the ioBroker directory. The logfile will be stored with a name that contains the date and will be deleted after 7 days. It only contains the logs from the current host.
@@ -651,92 +696,94 @@ The logging is configured in the `iobroker.json` file and can be changed there:
 
 ```json5
 {
-  // ...
-  "log": {
-    "level": "info",
-    "maxDays": 7,
-    "noStdout": true,
-    "transport": {
-      "file1": {
-        "type": "file",
-        "enabled": true,
-        "filename": "log/iobroker",
-        "fileext": ".log",
-        "maxsize": null,
-        "maxFiles": null
-      },
-    },
     // ...
-  },
+    log: {
+        level: 'info',
+        maxDays: 7,
+        noStdout: true,
+        transport: {
+            file1: {
+                type: 'file',
+                enabled: true,
+                filename: 'log/iobroker',
+                fileext: '.log',
+                maxsize: null,
+                maxFiles: null,
+            },
+        },
+        // ...
+    },
 }
 ```
 
 If you want to pin a special loglevel for the file transport, you can add a property "level" with a hard defined loglevel. Then no dynamic control is possible.
 
-Since js-controller 3.0 Logfiles on non-Windows-based systems are compressed in rotation, so that the older Files need less space in your storage. 
+Since js-controller 3.0 Logfiles on non-Windows-based systems are compressed in rotation, so that the older Files need less space in your storage.
 
 If you do not want to compress the files, this behavior can be deactivated by `iobroker.json`:
 
 ```json5
 {
-  // ...
-  "log": {
     // ...
-    "transport": {
-      "file1": {
+    log: {
         // ...
-        "zippedArchive": false,
+        transport: {
+            file1: {
+                // ...
+                zippedArchive: false,
+                // ...
+            },
+        },
         // ...
-      },
     },
-    // ...
-  },
 }
 ```
 
-
 #### Syslog logging
+
 **Feature status:** stable
 
 ioBroker also supports logging to a syslog server. The configuration is also stored in the `iobroker.json` configuration file. A section for syslog is pre-created but disabled by default.
 
 ```json5
 {
-  // ...
-  "log": {
     // ...
-    "transport": {
-      // ...
-      "syslog1": {
-        "type": "syslog",
-        "enabled": false,
-        "host": "localhost",
-        "host_comment": "The host running syslogd, defaults to localhost.",
-        "port_comment": "The port on the host that syslog is running on, defaults to syslogd's default port(514/UDP).",
-        "protocol": "udp4",
-        "protocol_comment": "The network protocol to log over (e.g. tcp4, udp4, unix, unix-connect, etc).",
-        "path_comment": "The path to the syslog dgram socket (i.e. /dev/log or /var/run/syslog for OS X).",
-        "facility_comment": "Syslog facility to use (Default: local0).",
-        "localhost": "iobroker",
-        "localhost_comment": "Host to indicate that log messages are coming from (Default: localhost).",
-        "sysLogType_comment": "The type of the syslog protocol to use (Default: BSD).",
-        "app_name_comment": "The name of the application (Default: process.title).",
-        "eol_comment": "The end of line character to be added to the end of the message (Default: Message without modifications)."
-      }
-    }
-  }
-  // ...
+    log: {
+        // ...
+        transport: {
+            // ...
+            syslog1: {
+                type: 'syslog',
+                enabled: false,
+                host: 'localhost',
+                host_comment: 'The host running syslogd, defaults to localhost.',
+                port_comment: "The port on the host that syslog is running on, defaults to syslogd's default port(514/UDP).",
+                protocol: 'udp4',
+                protocol_comment: 'The network protocol to log over (e.g. tcp4, udp4, unix, unix-connect, etc).',
+                path_comment: 'The path to the syslog dgram socket (i.e. /dev/log or /var/run/syslog for OS X).',
+                facility_comment: 'Syslog facility to use (Default: local0).',
+                localhost: 'iobroker',
+                localhost_comment: 'Host to indicate that log messages are coming from (Default: localhost).',
+                sysLogType_comment: 'The type of the syslog protocol to use (Default: BSD).',
+                app_name_comment: 'The name of the application (Default: process.title).',
+                eol_comment: 'The end of line character to be added to the end of the message (Default: Message without modifications).',
+            },
+        },
+    },
+    // ...
 }
 ```
 
 If you want to pin a special loglevel for the file transport, you can add a property "level" with a hard defined loglevel. Then no dynamic control is possible.
 
 #### Other Log transports
+
 See the iobroker.json and Admin for more transports and their settings.
 
 If you want to pin a special loglevel for the file transport, you can add a property "level" with a hard defined loglevel. Then no dynamic control is possible.
 
 #### Adapters are allowed to subscribe log messages
+
 **Feature status:** stable
 
 ioBroker allows adapters to subscribe to log messages from the whole system. E.g., admin adapter is using this logic
@@ -744,28 +791,33 @@ ioBroker allows adapters to subscribe to log messages from the whole system. E.g
 More details for this feature can be found at https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/logging.md
 
 ### Controlling and monitoring of adapter processes
+
 The full definition for adapter settings can be found at https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#adapter
 
 #### Multiple adapter instances
+
 **Feature status:** stable
 
 ioBroker allows installing multiple adapters on the system. For each adapter, the JavaScript code is installed once.
 For each adapter, multiple instances can be created and started with independent configurations.
 
 #### Adapter types
+
 **Feature status:** stable
 
 ioBroker supports multiple Adapter modes. These are:
-* `deamon`:    The adapter is started and runs all the time. If the process gets killed, it will be restarted automatically. This adapter type is mainly used for all situations where communications or actions are done continuously. These adapters also support a restart schedule where the controller restarts the instances. The adapter needs RAM and some CPU resources also when doing nothing.
-* `schedule`:  The adapter is started based on a defined schedule (e.g., once per hour, once a day, all 10 minutes ...), then is doing its work and is stopping itself when finished. The adapter is only using RAM and CPU when needed.
-* `once`:      The adapter ist started only once after it's object got modified. No restarting happens after the adapter stops.
-* `none`:      The adapter is officially not having any process, but could be a webExtension (so iis included by a web instance on the same host or is only running client side and so offering www files)
+
+- `deamon`: The adapter is started and runs all the time. If the process gets killed, it will be restarted automatically. This adapter type is mainly used for all situations where communications or actions are done continuously. These adapters also support a restart schedule where the controller restarts the instances. The adapter needs RAM and some CPU resources also when doing nothing.
+- `schedule`: The adapter is started based on a defined schedule (e.g., once per hour, once a day, all 10 minutes ...), then is doing its work and is stopping itself when finished. The adapter is only using RAM and CPU when needed.
+- `once`: The adapter ist started only once after it's object got modified. No restarting happens after the adapter stops.
+- `none`: The adapter is officially not having any process, but could be a webExtension (so iis included by a web instance on the same host or is only running client side and so offering www files)
 
 > **_NOTE:_** Up from controller v6 for adapters of type `schedule` and if `connectionType` is set to `cloud`
 >
 > If the schedule consists of a CRON tab without specifically specifying seconds, the execution will be delayed randomly up to 60 seconds. This is to prevent unwanted DDoS attacks. If your adapter needs to exactly run at a specified second, please specify the second in your CRON tab so no delay will be introduced by the controller.
 
 #### Start adapter instances as normal processes
+
 **Feature status:** stable
 
 By default, adapters are started by the js-controller as separate Node.js processes. They connect to the state and object DBs to read and write their data and some statistical information.
@@ -777,6 +829,7 @@ With this approach, the whole iobroker system is very robust. A faulty adapter w
 The downside is that more RAM is required because each Node.js process needs 20-30 MB RAM for the Node.js part of it. With this, a 1 GB system is usually limited to run approximately 10 to 15 adapter processes. Aside from using systems with more RAM, distributing adapters onto multiple hosts in a multihost environment is possible.
 
 #### Start adapter instances in compact mode
+
 The compact mode is developed especially for systems with low memory. All adapters configured to run in compact mode will run inside the same process as js-controller.
 
 As a result, each adapter needs 20-30 MB less RAM because it does not need to have its own Node.js process handling. This way, even a system with only 512 MB RAM can run several adapter instances.
@@ -786,23 +839,26 @@ The downside is that as soon as one adapter is crashes or generates an unhandled
 To minimize the risk, adapter instances are run by default in compact group 1 which means that a second process is created for all adapters. A problem there would also not crash the js-controller itself. If you need less RAM usage you can manually change that and configure the instances to run on group 0 (=inside js-controller).
 
 ##### Compact mode
+
 **Feature status:** Technology preview (since 2.0.0)
 
 To enable compact mode for a js-controller instance, you can use the new "compact" CLI commands, or you can manually change the `iobroker.json` configuration file
 
 ```json5
 {
-  // ...
-  "system": {
     // ...
-    "compact":true
-  }
-  // ...
+    system: {
+        // ...
+        compact: true,
+    },
+    // ...
 }
 ```
+
 and restart the js-controller.
 
 ##### Compact groups
+
 **Feature status:** Technology preview (since 2.0.0)
 
 To be able to handle the risk of crashed controller processes affecting the whole system, it is possible to assign the adapter instances to different compact groups. Each group will be run in their own process, only group 0 is handled directly by the main js-controller process.
@@ -812,9 +868,11 @@ Using several compact groups, you can, by using a bit more memory, lower the ris
 Compact groups can be configured for the respective instances using the compact CLI commands (see ìobroker compact commands on https://www.iobroker.net/#de/documentation/config/cli.md).
 
 ##### Implementation details
+
 https://forum.iobroker.net/topic/18338/experimentell-js-controller-compact-mode
 
 ##### Testing details for development
+
 For testing, set up your js-controller to use compact mode and change the `io-package.json` and javascript files accordingly. Do not forget to `iobroker upload adaptername` after changing `io-package.json`.
 
 Please check that your adapter starts and runs as expected also when compact mode is used.
@@ -822,36 +880,41 @@ Please check that your adapter starts and runs as expected also when compact mod
 For adapters running in compact mode, special care must be taken to clean up used resources without throwing errors. You need to make sure that **all** initialized connections, timers and intervals are closed and stopped in the `unload` handler.
 
 #### Check available RAM before adapters are started
+
 **Feature status:** stable, since js-controller 3.0
 
 The js-controller checks the available RAM of the system before starting a new adapter process. If the available RAM is below 50/100 MB by default, an error/warn is logged. The limits can be configured in iobroker.json
 
 ```json5
 {
-  "system": {
-    "memLimitWarn": 100,
-    "memLimitWarnComment": "If the available RAM is below this threshold on adapter start, a warning will be logged.",
-    "memLimitError": 50,
-    "memLimitErrorComment": "If the available RAM is below this threshold on adapter start, an error will be logged."
-  }
-  // ...
+    system: {
+        memLimitWarn: 100,
+        memLimitWarnComment: 'If the available RAM is below this threshold on adapter start, a warning will be logged.',
+        memLimitError: 50,
+        memLimitErrorComment: 'If the available RAM is below this threshold on adapter start, an error will be logged.',
+    },
+    // ...
 }
 ```
 
-Later versions of js-controller might prevent the start of a new adapter process if system resources are too low! 
+Later versions of js-controller might prevent the start of a new adapter process if system resources are too low!
 
 #### Manually run adapter instances for debugging
+
 **Feature status:** stable
 
 For debugging reasons, sometimes it is necessary to start an adapter instance via the command line to get more detailed logging.
 
 To do so, manually execute the adapter's main JavaScript file, which is usually named `main.js` or `<adaptername>.js` (where "adaptername" is the name of the adapter):
+
 ```bash
 node node_modules/iobroker.adaptername/main.js --force --logs
 ```
+
 All log output will now be printed to the console.
 
 ### Multihost
+
 **Feature status:** stable
 
 When local interfaces are required or the host system is reaching its resource limits, the ioBroker system can be distributed to additional hosts. All hosts in a multihost environment are connected to the same states and objects databases and are thus synchronized with each other.
@@ -862,7 +925,148 @@ All other hosts are configured to connect to this master host.
 
 For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?page_id=3068&lang=de
 
+#### Files on the disk of another host
+
+The databases are shared, the disks are not. Whatever lies only on the disk of a host - the package of an adapter
+installed there, a video an instance stored, a certificate - can only be read by the js-controller of that host. It
+hands it out with host commands for three purposes:
+
+| Purpose                                                                               | Host commands                                           | Feature flag               | What can be read                                                                                                             | Who may ask                                                                   |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------- | -------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Files of an adapter, e.g. its `widgets` for vis-2                                     | `listAdapterDir`, `readAdapterFiles`, `readAdapterFile` | `CONTROLLER_ADAPTER_FILES` | only the package directory of the adapter, without `node_modules`, hidden entries and symbolic links                         | every instance - it is what npm publishes                                     |
+| Select a file or a folder on the host (`diskSelector`)                                | `readDiskDir`                                           | `CONTROLLER_READ_DISK_DIR` | any directory the user of ioBroker may read, never above `root` if given; hidden entries only with `showHidden`              | protected like `cmdExec` by the socket server (administrators)                |
+| Files of an instance as `iobdisk://` URLs, e.g. a video of telegram for the assistant | `readDiskFile`, `deleteDiskFile`                        | `CONTROLLER_DISK_FILES`    | only regular files below the data directory of the instance (`iobroker-data/<adapter>.<n>` or `iobroker-data/<adapter>_<n>`) | every instance; protected like `cmdExec` by the socket server for web clients |
+
+All of them keep a request below a directory - the package of the adapter, the data directory of the instance, or
+`root` - with the same checks: nothing above it, also not through `..` or a symbolic link that leads out of it, and at
+most 5000 entries per listing. A file is handed out in the same pieces by `readAdapterFile`, `readAdapterFiles` and
+`readDiskFile`: `{ size, mtime, offset, data, compressed? }` with `data` base64 encoded, 1 MB by default and 4 MB at
+most, compressed with gzip on request (`compress: true`) where it helps. The time of the last modification is always
+`mtime` (in ms). An error is answered as `{ error }` instead of throwing, and an older js-controller never answers an
+unknown command, so check the feature flag with `checkFeatureSupported` first - `fetchAdapterDir()` and the
+`iobdisk://` methods of the adapter do all of this already.
+
+##### Files of an adapter
+
+An instance that needs files from the package of another adapter - e.g. vis-2, which collects the `widgets` folder of
+every adapter with widgets - cannot read them from its own disk when that adapter is installed on another host.
+
+`adapter.fetchAdapterDir()` copies such a directory into a local directory. If the adapter is installed on the host of
+the calling instance, the directory is copied from its package. Otherwise the js-controller of a host it is installed
+on hands the files out with the host commands `listAdapterDir`, `readAdapterFiles` (small files, several in one
+answer) and `readAdapterFile` (big files, in pieces of 1 MB), compressed with gzip where it helps:
+
+```js
+const { host, files } = await adapter.fetchAdapterDir({
+    adapter: 'wattcycle', // without "iobroker." and instance number
+    path: 'widgets', // directory inside the package of the adapter
+    target: '/opt/iobroker/iobroker-data/vis-2.0/remote/wattcycle', // created if it does not exist
+    host: 'frigate', // optional: by default this host if the adapter is installed here, else the first running host with an instance of it
+});
+```
+
+The other host needs js-controller 8.0 or newer (feature `CONTROLLER_ADAPTER_FILES`), the calling instance an
+`adapter.fetchAdapterDir` - check for it before using it. Only the package directory of the adapter can be read, and not
+all of it: `node_modules`, hidden files and directories (name starting with a dot) and symbolic links are left out, and
+the js-controller itself cannot be read this way. Existing files in `target` are overwritten, other files there are kept;
+if fetching fails, `target` may hold a part of the files, so fetch into an empty directory and move it into place.
+
+##### Select a file or a folder on the host
+
+The `diskSelector` control of jsonConfig lets the user pick a file or a folder - e.g. a certificate or a folder for
+backups - on the host where the instance runs, not on the machine of the browser and not on the host of admin. It lists
+the directories with the host command [`readDiskDir`](#readdiskdir) of that host. Only the entries the user ioBroker
+runs as may read are listed. `root` keeps the dialog where the adapter wants it; it is no access control, so the
+adapter must still check the path it gets.
+
+##### Files of an instance: `iobdisk://` URLs
+
+A file path like `/opt/iobroker/iobroker-data/telegram_0/video/1.mp4` is only valid on the host where the file is. When
+telegram and the assistant run on different hosts, the assistant cannot open the video telegram stored. An `iobdisk://`
+URL names the host too:
+
+```
+iobdisk://<host>/<namespace>/<path below the data directory of the instance>
+iobdisk://pi4/telegram.0/video/2026-11-04_10-00-00.mp4
+```
+
+The instance that stores the file builds the URL, the instance that gets it reads it - from the disk if it runs on the
+same host, otherwise piece by piece from the js-controller of that host (`readDiskFile`, 4 pieces at the same time):
+
+```js
+// telegram.0 on host "pi4"
+const url = this.getDiskFileUrl('/opt/iobroker/iobroker-data/telegram_0/video/1.mp4');
+// -> 'iobdisk://pi4/telegram.0/video/1.mp4'
+
+// assistant.0 on any host
+const video = await this.readDiskFile(url); // Buffer
+// or, without holding a big file in memory as a whole:
+this.createDiskFileReadStream(url).pipe(target);
+// and when it is processed:
+await this.deleteDiskFile(url); // true, or false if it did not exist any more
+```
+
+Only files below the data directory of an instance can be addressed: `iobroker-data/<namespace>` as
+`utils.getAbsoluteInstanceDataDir()` of adapter-core gives it, or the older `iobroker-data/<adapter>_<instance>`. Paths
+with `..` and symbolic links leading out of that directory are refused, so no other file of the host can be read or
+deleted this way. `deleteDiskFile` deletes only a regular file - no directory, and a symbolic link is refused instead of
+deleting its target. The host with the file needs js-controller 8.0 or newer (feature `CONTROLLER_DISK_FILES`);
+`readDiskFile` and `deleteDiskFile` report an error if it is older or not running.
+
+### Host discovery
+
+**Feature status:** New in 8.0.0
+
+Attaching a new host used to require a shell on that host. On a ready-made image, in a container or
+on a headless device that is exactly what is missing, so a fresh host can now be found on the network
+and attached from the Admin of an existing system.
+
+**Pairing is opt-in.** Only a host with `"multihostService": { "pairing": true }` in its
+`iobroker.json` takes part. A normal installation does not have it and stays silent on the network.
+The ready-made images switch it on, because only the image builder knows that a device is fresh: the
+check whether a host is "unclaimed" can only tell that no second host belongs to its system, which is
+just as true for an installation that has been running for years.
+
+With pairing switched on, the host:
+
+- announces itself via mDNS/DNS-SD as `_iobroker._tcp` on port 50005 — the port the multihost service
+  already listens on. The TXT record carries the installation id (`uuid`), the host name, the
+  controller version and two flags: `unclaimed` and `master`;
+- opens the **pairing listener** on UDP 50005, which answers a `browse` with its name and accepts the
+  `join` of a master — as long as it uses a local objects database. Burn the image, boot it, and an
+  existing system can offer to attach it, with nothing to confirm on the new host.
+
+A host counts as **unclaimed** while pairing is on, it uses a local objects database and no second
+host has joined it. Installed adapters are deliberately not part of that check — a ready-made image
+usually ships with admin and a backup adapter already set up, and that is still a host nobody has
+claimed.
+
+A `join` switches pairing off again in the stored `iobroker.json`, so after the restart the host
+neither announces itself nor listens for pairing any more. The first `iobroker.json` is kept as
+`iobroker.json.bak` (a second join does not overwrite it). Nothing reads it automatically: to detach
+the host again, copy it back and restart the controller.
+
+Switch pairing off on an image that you do not intend to attach to another system with
+`"pairing": false`, followed by the `updateMultihost` host message — that closes the listener and
+withdraws the announcement immediately, no controller restart needed. `join` is not authenticated, so
+while the listener is open, anyone who can reach the host on the network can attach it to a system of
+their choosing.
+
+A host that can attach others — one with its own objects database — only starts listening for the
+announcements when its Admin asks which hosts are out there (`multihostBrowse`). From then on it keeps
+the result in `system.host.<hostname>.discoveredHosts` as JSON, so the Admin can subscribe to it. The
+list is refreshed every 60 seconds and hosts the user declined are filtered out.
+
+mDNS does not cross a Docker bridge or a subnet border. The multihost UDP protocol on port 50005
+still answers a `browse` in those setups, so `multihostBrowse` merges both sources.
+
+The mDNS part is provided by the **optional** dependency `bonjour-service`. It binds UDP 5353, which
+does not work on every system — notably not on some Windows setups. When the package is missing or
+cannot be started, the controller writes one info line and carries on without it: hosts are then
+only found over the multihost UDP protocol, and `discoveredHosts` stays empty.
+
 ### TIERS: Start instances in an ordered manner
+
 **Feature status:** Technology preview (since 3.3.0)
 
 Starting from js-controller 3.3.0, you can define the `common.tier` attribute in the io-package.json.
@@ -870,42 +1074,48 @@ Lower TIERS will start before higher TIERS. Currently, 3 TIER levels are support
 Note, that the admin adapter as the central control platform will always be started first.
 
 #### TIER 1
-Logic and scripting engines, which should be able to act as fast as possible 
+
+Logic and scripting engines, which should be able to act as fast as possible
 to work with states delivered by higher TIER adapters.
 
 #### TIER 2
+
 Adapters which deliver data from external APIs, which are important and can change at any time.
 This also often includes messaging adapters.
 
 #### TIER 3
-Adapters which are not time-critical like Visualization, Backup adapters, and adapters whose information does 
+
+Adapters which are not time-critical like Visualization, Backup adapters, and adapters whose information does
 not necessarily need to be up-to-date. These are often `schedule` adapters, whose information is always a bit delayed.
 
 ### Custom Node.js process arguments
+
 **Feature status:** New in 5.0.0
 
 **Passing custom arguments to the Node.js adapter process**
 
 To use this feature, use the `nodeProcessParams` in the `common` section of `io-package.json`.
 Using this feature will disable the possibility to start the adapter in `compact mode`, as then
-other adapters would also be affected by the passed parameters. The property `nodeProcessParams` needs 
+other adapters would also be affected by the passed parameters. The property `nodeProcessParams` needs
 to be an array of strings.
 
 Example: `"nodeProcessParams": ["--tls-min-v1.0"]`
 
 ### IPv6 DNS resolution support
+
 **Feature status:** New in 5.0.0
 
-You can decide to use IPv6 first as DNS resolution method instead of IPv4 first (default). 
+You can decide to use IPv6 first as DNS resolution method instead of IPv4 first (default).
 To use this, configure `dnsResolution` to `verbatim` in `iobroker.json`.
 
 For handling IPv6 and IPv4 in adapters, we provide some convenience methods.
 These are available via [ioBroker Adapter Core](https://github.com/ioBroker/adapter-core#commontools) starting with version 2.7.0.
 
-Ensure that DNS resolution is performed according to ioBroker config 
+Ensure that DNS resolution is performed according to ioBroker config
 if you need to ensure this for non-standard adapter processes (e.g., own started subprocesses).
 
 ### Object and State Aliases
+
 **Feature status:** stable (since 2.0.0)
 
 **Feature Flag for detection:** `ALIAS, ALIAS_SEPARATE_READ_WRITE_ID`
@@ -925,14 +1135,14 @@ and the alias could use the same value calculated as kWh.
 Some devices have separate states for semantically one state. One to read the current status from and one to write to, to
 control the device. You can combine these states into one alias by using a separate alias id to write to and another to read from.
 
-We recommend to use the `devices` adapter to manage aliases. 
+We recommend to use the `devices` adapter to manage aliases.
 Alternatively, you can use Admin interface on the "Objects" tab to create aliases. Just open the context menu on the state, for which you want to create an alias, and select "Create Alias".
 
 To create an alias object simple create a new object with an own name in the `alias.0` namespace and add the alias definition in the common section (here for an alias with the id `"alias.0.aliasName"`):
 
 ```json5
 {
-    _id: "alias.0.aliasName",
+    _id: 'alias.0.aliasName',
     common: {
         name: 'Test AliasC',
         type: 'number',
@@ -942,11 +1152,11 @@ To create an alias object simple create a new object with an own name in the `al
         alias: {
             id: 'state.id.of.target',
             read: 'val * 10 + 1',
-            write: '(val - 1) / 10'
-        }
+            write: '(val - 1) / 10',
+        },
     },
     native: {},
-    type: 'state'
+    type: 'state',
 }
 ```
 
@@ -954,7 +1164,7 @@ or using different read and write ids (supported starting js-controller 3.0, che
 
 ```json5
 {
-    _id: "alias.0.aliasName",
+    _id: 'alias.0.aliasName',
     common: {
         name: 'Test AliasC',
         type: 'number',
@@ -964,31 +1174,31 @@ or using different read and write ids (supported starting js-controller 3.0, che
         alias: {
             id: {
                 read: 'state.id.to.read.from',
-                write: 'state.id.to.write.to'
+                write: 'state.id.to.write.to',
             },
             read: 'val * 10 + 1',
-            write: '(val - 1) / 10'
-        }
+            write: '(val - 1) / 10',
+        },
     },
     native: {},
-    type: 'state'
+    type: 'state',
 }
 ```
 
 The following fields are allowed in the alias structure:
 
-* `alias.id` contains the ID of the target object/state to mirror OR (since js-controller 3.0) represents an object with the following two properties:
-    * `alias.id.write` contains the ID of the object which will be set when alias is written
-    * `alias.id.read` contains the ID of the object which will be mirrored to the alias object/state   
-* `alias.read` can optionally contain a "read" script (will be evaluated) to calculate the alias value when the target state changes
-* `alias.write` can optionally contain a "write" script (will be evaluated) to calculate the target value if the alias value is changed
+- `alias.id` contains the ID of the target object/state to mirror OR (since js-controller 3.0) represents an object with the following two properties:
+    - `alias.id.write` contains the ID of the object which will be set when alias is written
+    - `alias.id.read` contains the ID of the object which will be mirrored to the alias object/state
+- `alias.read` can optionally contain a "read" script (will be evaluated) to calculate the alias value when the target state changes
+- `alias.write` can optionally contain a "write" script (will be evaluated) to calculate the target value if the alias value is changed
 
 Note, that alias states will be automatically scaled if the following conditions match:
 
-* target and source state are of type `number`
-* either the alias state or (not both) the source state are of unit `%`
-* no `read` or `write` function is defined
-* the state which is not of unit `%` has a valid `min` and `max` property
+- target and source state are of type `number`
+- either the alias state or (not both) the source state are of unit `%`
+- no `read` or `write` function is defined
+- the state which is not of unit `%` has a valid `min` and `max` property
 
 To set the alias properties without a JavaScript or in adapter code you can also use the cli commands like:
 
@@ -998,17 +1208,20 @@ iobroker object set alias.0.aliasName common.alias.read="read-func"
 iobroker object set alias.0.aliasName common.alias.write="write-func"
 ```
 
-> **_NOTE:_** The permissions of the source object are ignored and only the permissions set on the alias object itself are relevant for database operations. 
+> **_NOTE:_** The permissions of the source object are ignored and only the permissions set on the alias object itself are relevant for database operations.
 
 Additional information about aliases could be found [here](https://www.iobroker.net/#en/documentation/dev/aliases.md).
 
 ### State and objects databases and files
+
 ioBroker is storing three different types of data:
-* **objects** contain the metadata, descriptions and configuration values for all objects and states stored by ioBroker. Objects are created initially and sometimes updated, but usually not changed very frequently
-* **files** are all JSON, image and other files that are accessible for all ioBroker adapters. A `meta.user` object needs to exist for the adapter or instance to define allowed root directories. As example see `sayIt` adapter `io-package`.
-* **states** contain the real data from sensors, devices and objects which are updated frequently
+
+- **objects** contain the metadata, descriptions and configuration values for all objects and states stored by ioBroker. Objects are created initially and sometimes updated, but usually not changed very frequently
+- **files** are all JSON, image and other files that are accessible for all ioBroker adapters. A `meta.user` object needs to exist for the adapter or instance to define allowed root directories. As example see `sayIt` adapter `io-package`.
+- **states** contain the real data from sensors, devices and objects which are updated frequently
 
 #### ioBroker in-memory database with JSON file storage
+
 By default, the js-controller process is offering in-memory DBs at ports 9000 (for states) and 9001 (for objects/file). All adapter processes and js-controller processes from other hosts connect to these databases to read and store data.
 
 The in-memory DBs for states and objects use JSON files to store the data. The files are stored after changes every 30 seconds and are backed up automatically. The files are stored in iobroker-data directory, the backups in a subfolder.
@@ -1021,29 +1234,32 @@ For the objects and states databases, special additional logging of the redis pr
 
 ```json5
 {
-  "objects": {
-    //...
-    "enhancedLogging": false
-  }
+    objects: {
+        //...
+        enhancedLogging: false,
+    },
 }
 ```
 
 When not configured differently, the file databases are persisted every 15s (15000ms) after data are changed. The interval in ms can be changed by configuration in iobroker.json starting js-controller 3.0.
+
 > **_NOTE:_** If you do that be aware that you may lose data when the js-controller crashes unexpectedly!
 
 ```json5
 {
-  "objects": {
-    // ...
-    "writeFileInterval": 60000
-  }
+    objects: {
+        // ...
+        writeFileInterval: 60000,
+    },
 }
 ```
 
 #### Redis as database
+
 Redis is a well-known industrial grade in-memory database optimized for speed and stability. It performs better than the ioBroker In-Memory database which is written in JavaScript.
 
 ##### Install Redis
+
 - Linux from here: https://redis.io/download
 - Windows from here: [https://github.com/MSOpenTech/redis/releases](https://github.com/MSOpenTech/redis/releases)
 
@@ -1051,7 +1267,9 @@ e.g. for Linux:
 https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04
 
 ##### Configure Redis
+
 ###### Locale of the redis-server process
+
 Since js-controller 7.2.3 the locale of the redis-server process no longer matters. Nothing needs to be configured.
 
 Earlier versions required it to be `LANG=C`, because Redis calls `setlocale(LC_COLLATE, "")` on startup and its Lua engine then compared object keys with `strcoll()`. Under a UTF-8 collation the key range check in the view scripts stopped holding, and **every** object view (`getObjectView`, `getAdapterObjects`, `getForeignObjects`, ...) silently returned nothing — while the objects themselves were stored correctly and reading a single object by its id kept working. The view scripts now compare keys byte by byte, which gives the same result on every host and is a little faster than before.
@@ -1059,6 +1277,7 @@ Earlier versions required it to be `LANG=C`, because Redis calls `setlocale(LC_C
 If you are still on an older version and see empty views, adapters that find no objects, or an empty admin object tree while the data is clearly in Redis, set `LC_ALL=C` for the redis-server process (see https://forum.iobroker.net/topic/52976/wichtiger-hinweis-f%C3%BCr-redis-installationen, German) or upgrade.
 
 ###### Allow Network access
+
 Ideally, the Redis server should be installed on the same host as the js-controller process because as soon as Redis is configured to be used, the ioBroker installation will not work without it.
 
 If you plan to install Redis on a different host than the js-controller or use a multi-host environment (see below), you must allow connections to redis from any address (the default only accepts connections from 127.0.0.1).
@@ -1066,6 +1285,7 @@ To do that edit the file `/etc/redis/redis.conf` (`sudo nano /etc/redis/redis.co
 Don't forget to restart redis after that. (`sudo systemctl restart redis-server`)
 
 ###### Redis Slaves
+
 If you have multiple hosts, you can install Redis to all of them and configure the other hosts to be slaves of the Master host. With this, all data is available on all hosts, so even if one host crashes completely, you still have the database content from the other hosts.
 
 More details can be found at https://redis.io/topics/replication#configuration and https://redis.io/commands/replicaof
@@ -1077,6 +1297,7 @@ In case of a crash of the master, you can reconfigure one of the slaves to be th
 After reconfiguring Redis, you also need to update all ioBroker states/objects DB settings to connect to the new Redis Master host.
 
 ###### Redis persistence
+
 By default, Redis is a pure in-memory Database which means that it has no content when it starts. In the default configuration, the content of the redis DB is stored on disk after a certain number of changed keys.
 
 Depending on how many changes your system is doing, it will update the data on disk roughly every 5 minutes by default.
@@ -1087,6 +1308,7 @@ If you are not working on an SD card and want to have real up-to-date data on di
 Please see https://redis.io/topics/persistence for details, differences, and configuration information for both persistence options.
 
 ##### Using Redis as States-DB
+
 **Feature status:** stable
 
 There is a possibility to use Redis as a state database. It is reasonable to do that for big installations or for systems with performance problems.
@@ -1121,6 +1343,7 @@ If it does not start, please check the log at `log/iobroker.*.log` in the ioBrok
 To switch back to file-based states, write the same commands again, just instead of **redis** in the fourth line, write nothing and press ENTER.
 
 ##### Using Redis as objects/File-DB
+
 **Feature status:** New in 2.0.0
 
 Starting with js-controller 2.0.0, objects and files can also be stored in Redis. Since Redis holds all data in the RAM, this setup uses much more RAM because uploaded files and image assets are also stored in Redis. Please think carefully about this step and make sure your system has enough RAM available!
@@ -1128,6 +1351,7 @@ Starting with js-controller 2.0.0, objects and files can also be stored in Redis
 The setup is comparable to the setup for states in Redis by using `iobroker setup custom`, but enter **redis** as type of the objects' database. You can use the same redis server for states and objects/files database.
 
 ##### Using Redis Sentinel as objects/File-DB
+
 **Feature status:** New in 2.0.0
 
 Redis Sentinel is an industry standard to achieve a highly available redis database. It is based on a Redis master-slave setup with at least three nodes. Additional so-called sentinel processes monitor all redis instances in the master-slave setup.
@@ -1141,9 +1365,11 @@ ioBroker allows using a Redis Sentinel system. For this you use `iobroker custom
 With such a setup, ioBroker will connect to one of these sentinel processes to get the current Master Redis and then connect to it. When the connection to the Master is disconnected, all data updates are cached and transmitted as soon as a connection to the new master has been established.
 
 ##### Using Password for Redis Databases
+
 **Feature status:** Stable
 
 ### Certificate Handling
+
 ... CLI
 ... Files vs PEM content
 ... TODO
@@ -1151,83 +1377,331 @@ With such a setup, ioBroker will connect to one of these sentinel processes to g
 ### js-controller Host Messages
 
 ... TODO
+
 #### shell
+
 ... TODO
 
 #### cmdExec
+
 ... TODO
 
 #### getRepository
+
 ... TODO
 
 #### getInstalled
+
 ... TODO
 
 #### getInstalledAdapter
+
 ... TODO
 
 #### getVersion
+
 ... TODO
 
 #### getDiagData
+
 ... TODO
 
 ... TODO
 
 #### getLocationOnDisk
+
 ... TODO
 
 #### getDevList
+
 ... TODO
 
 #### getLogs
+
 ... TODO
 
 #### getHostInfo
+
 ... TODO
 
 #### getHostInfoShort
+
 ... TODO
 
 #### delLogs
+
 ... TODO
 
 #### readDirAsZip
-... TODO
+
+Packs a directory of the file storage into a zip archive.
+
+```js
+const answer = await this.sendToHostAsync(host, 'readDirAsZip', { id: 'vis-2.0', name: '/main' });
+// { error: null, data: '<base64>', skipped: ['main/broken.png'] }
+```
+
+`data` is missing for a directory without files. `skipped` is only there if files could not be packed: they are missing
+in the archive, so check it if the archive has to be complete. If not a single file could be packed, or on another
+problem, the answer is `{ error: '<message>' }`.
 
 #### writeDirAsZip
+
 ... TODO
 
 #### readObjectsAsZip
+
 ... TODO
 
 #### writeObjectsAsZip
-... TODO
+
+Stores the objects of a zip archive below a root ID. The answer is `{}` if all were stored, otherwise
+`{ error: '<message>' }` - the objects that were valid are stored even then.
+
+```js
+await this.sendToHostAsync(host, 'writeObjectsAsZip', { id: 'vis-2.0', adapter: 'vis-2', data: '<base64>' });
+```
 
 #### updateMultihost
+
 ... TODO
 
 #### getInterfaces
+
 ... TODO
 
 #### upload
+
 ... TODO
 
 #### rebuildAdapter
+
 ... TODO
 
 #### readBaseSettings
+
 ... TODO
 
 #### writeBaseSettings
+
 ... TODO
 
+#### multihostBrowse
+
+Returns the ioBroker hosts on the local network. Merges the hosts which announced themselves via
+mDNS with an active `browse` over the multihost UDP protocol, because neither reaches every network
+on its own. Hosts the user declined are filtered out.
+
+```js5
+// message
+{ timeout: 2000 }           // optional, how long the UDP browse waits, 500..10000 ms, default 2000
+// answer
+{
+  result: true,
+  hosts: [
+    {
+      uuid: 'a1b2...',      // installation id, needed to decline this host
+      hostname: 'iobroker',
+      ip: '192.168.1.42',
+      port: 50005,
+      unclaimed: true,      // belongs to no system yet and can be attached
+      master: false,        // runs a multihost master (mDNS source only)
+      version: '8.0.0',     // controller version (mDNS source only)
+      info: { /* os, cpus, memory, ... */ },  // static information (UDP source only)
+      source: 'mdns',       // 'mdns' or 'udp'
+    },
+  ],
+}
+```
+
+Only hosts that report an installation id are listed — the decline list is keyed by it, so a host
+without one could be offered but never rejected. The fields are picked explicitly rather than passed
+through: a `browse` answer of an unsecured master also carries its database configuration, which has
+no business travelling to the caller of this message.
+
+#### multihostPair
+
+Acts on a host found by `multihostBrowse`. Sent to the master, which then reaches the other host over
+UDP port 50005.
+
+```js5
+// message
+{
+  ip: '192.168.1.42',       // required
+  cmd: 'join',              // required: 'join' | 'decline' | 'identify'
+  uuid: 'a1b2...',          // required for 'decline'
+  password: '',             // 'join' only, when the master runs secured
+  revoke: false,            // 'decline' only, take the rejection back
+}
+// answer
+{ result: true, answer: 'ok' }
+```
+
+- `join` — the host fetches the database configuration of this master, stores it and restarts. It
+  refuses when it already belongs to a system, when it runs a multihost service of its own (a master
+  is not a pairing target), when it declined this master before, or when a join is already running on
+  it. The target host must have the pairing listener switched on (see
+  [Host discovery](#host-discovery)); every command also needs this master's installation id
+  (`system.meta.uuid`), because a master the other host cannot identify is one the user could never
+  decline. The master checks itself first: it has to run the multihost service, and its databases
+  must not listen on `127.0.0.1` only — otherwise the answer says what is missing, instead of the
+  other host failing a few seconds later. A host whose master hands out a loopback address refuses
+  the join as well.
+
+    All four commands are rate limited per sender, so an unauthenticated flood cannot keep a host busy.
+
+- `decline` — the host is hidden from the discovery list of this system. The decision is stored on
+  the master, so it also holds while the other host is switched off. The other host is notified as
+  well and then ignores this master; if it cannot be reached, it stays hidden anyway.
+- `identify` — the host writes its own name into its log, which helps to tell two freshly installed
+  devices apart.
+
+The other host only carries out `join`, `decline` and `identify` while it offers itself for pairing.
+Any other host answers `not in pairing mode`, so with pairing off nothing on it can be changed
+without authentication.
+
+#### multihostConnect
+
+Attaches **this** host to a master. The counterpart to `multihostPair` with `join`, for the case
+where the user sits in the Admin of the new host rather than in the Admin of the master. The
+controller restarts after a successful connect.
+
+```js5
+// message
+{ ip: '192.168.1.10', password: '' }
+// answer
+{ result: true }
+```
+
+#### listAdapterDir
+
+Lists the files of a directory of an adapter installed on this host, with all subdirectories. Hidden files and
+directories, `node_modules` and symbolic links are left out; at most 5000 files are listed. Used by
+`adapter.fetchAdapterDir()`, see [Files on the disk of another host](#files-on-the-disk-of-another-host).
+
+```js5
+// message
+{ adapter: 'wattcycle', path: 'widgets' }
+// answer, paths relative to the requested directory
+{ files: [{ path: 'wattcycle/customWidgets.js', size: 2310, mtime: 1762430000000 }] }
+// or
+{ error: 'adapter "wattcycle" is not installed on this host' }
+```
+
+#### readAdapterFile
+
+Reads one piece of a file of an adapter installed on this host. `length` is 1 MB by default and 4 MB at most; the
+answer at the end of the file has an empty `data`. A changed `mtime` between two pieces means the file was changed.
+With `compress: true` the host compresses the piece with gzip if it gets smaller by it and says so with
+`compressed: true`; `offset`, `length` and `size` always count the uncompressed bytes. Already compressed formats
+(images, fonts, archives) and pieces under 256 bytes are not compressed.
+
+```js5
+// message
+{ adapter: 'wattcycle', path: 'widgets/wattcycle/customWidgets.js', offset: 0, length: 1048576, compress: true }
+// answer, data is base64 encoded - of the gzip compressed bytes if compressed is true
+{ size: 2310, mtime: 1762430000000, offset: 0, data: 'H4sIAAAA...', compressed: true }
+```
+
+#### readAdapterFiles
+
+Reads several small files of an adapter installed on this host in one go, at most 100, each from its beginning, so that
+a widget set with hundreds of small files does not need a request per file. The files are read in the given order
+until `length` bytes (1 MB by default, 4 MB at most) are read in total: the last file may be cut off and the following
+ones are left out then - fetch the rest with `readAdapterFile`. `compress` works as with `readAdapterFile`.
+
+```js5
+// message
+{ adapter: 'wattcycle', paths: ['widgets/wattcycle/customWidgets.js', 'widgets/wattcycle/i18n/de.json'], compress: true }
+// answer, in the order of paths
+{
+    files: [
+        { path: 'widgets/wattcycle/customWidgets.js', size: 2310, mtime: 1762430000000, offset: 0, data: 'H4sIAAAA...', compressed: true },
+        { path: 'widgets/wattcycle/i18n/de.json', size: 120, mtime: 1762430000000, offset: 0, data: 'eyJ0aXRsZSI6...' },
+    ],
+}
+```
+
+#### readDiskFile
+
+Hands out one piece of a file below the data directory of an instance on this host - how `adapter.readDiskFile()` reads an `iobdisk://` URL of another host (see [Files on the disk of another host](#files-on-the-disk-of-another-host)). Supported if the host reports the feature `CONTROLLER_DISK_FILES`.
+
+```js
+const answer = await sendToHostAsync('system.host.pi4', 'readDiskFile', {
+    namespace: 'telegram.0',
+    path: 'video/1.mp4', // below iobroker-data/telegram.0 or iobroker-data/telegram_0
+    offset: 0, // optional, default 0
+    length: 1048576, // optional, default 1 MB, at most 4 MB
+    compress: true, // optional, the piece may be compressed with gzip - a video is not, as it is compressed already
+});
+// { size: 52428800, mtime: 1793612345000, offset: 0, data: '<base64>', compressed?: true } or { error: '...' }
+```
+
+The answer is the same as of [`readAdapterFile`](#readadapterfile). `data` is empty when `offset` is at or behind the end of the file. A different `size` or `mtime` in a later answer means that the file changed while it was read.
+
+#### deleteDiskFile
+
+Deletes a file below the data directory of an instance on this host - how `adapter.deleteDiskFile()` deletes an `iobdisk://` URL of another host (see [Files on the disk of another host](#files-on-the-disk-of-another-host)). Only a regular file is deleted, never a directory or a symbolic link. Supported if the host reports the feature `CONTROLLER_DISK_FILES`.
+
+```js
+const answer = await sendToHostAsync('system.host.pi4', 'deleteDiskFile', {
+    namespace: 'telegram.0',
+    path: 'video/1.mp4', // below iobroker-data/telegram.0 or iobroker-data/telegram_0
+});
+// { deleted: true }, { deleted: false } if the file did not exist, or { error: '...' }
+```
+
+Without a callback the file is deleted as well, only no answer is sent.
+
+#### readDiskDir
+
+Lists a directory on the disk of this host, e.g. to select a file or a folder in the settings of an instance
+(`diskSelector` of jsonConfig), see [Files on the disk of another host](#files-on-the-disk-of-another-host). Feature
+flag `CONTROLLER_READ_DISK_DIR`: an older controller never answers, so check the flag first (`checkFeatureSupported`).
+
+```js5
+// message
+{
+  root: '%INSTANCE_DATA_DIR%/certs', // optional, nothing above it is listed. Absolute, may start with
+                                     // %DATA_DIR%, %INSTANCE_DATA_DIR%, %IOBROKER_DIR% or %HOME%.
+                                     // Default: the whole disk, on Windows starting with the drives
+  path: '/opt/iobroker/iobroker-data/myAdapter.0/certs/server.pem', // optional, absolute or relative
+                                     // to root. A file lists its directory, a missing path its nearest
+                                     // existing parent, a path outside of root the root. Default: root
+  filter: '*.pem;*.crt',             // optional, file patterns (case-insensitive), directories always
+  dirsOnly: false,                   // optional, only directories
+  showHidden: false,                 // optional, also the entries starting with a dot
+  instance: 'myAdapter.0',           // needed for %INSTANCE_DATA_DIR%
+}
+// answer
+{
+  root: '/opt/iobroker/iobroker-data/myAdapter.0/certs',
+  path: '/opt/iobroker/iobroker-data/myAdapter.0/certs', // the listed directory
+  parent: null,                      // the directory above, null at the root
+  crumbs: [{ name: '/opt/iobroker/iobroker-data/myAdapter.0/certs', path: '...' }], // root .. path
+  entries: [                         // directories first, then files, sorted by name
+    { name: 'server.pem', path: '/opt/.../certs/server.pem', isDir: false, size: 1500, mtime: 1793979169840 },
+  ],
+  selected: 'server.pem',            // the file `path` pointed to
+  truncated: false,                  // more than 5000 entries, only the first ones are listed
+  sep: '/',
+  error: undefined,                  // why nothing could be listed, e.g. the root does not exist
+}
+```
+
+Only the entries the user ioBroker runs as may read are listed (directories: also enter), and no sockets, devices or
+broken links. A symbolic link that leads out of `root` is left out, one that stays inside is followed. `root` only keeps a
+dialog where the adapter wants it; who may list the disk at all is decided by the socket server, which treats the
+command as protected like `cmdExec`.
+
 ### Adapter Development
+
 **Feature status:** Stable
 
 TODO: Link to Adapter Development docs
 
 #### Automatically Encrypt/Decrypt configuration fields
+
 **Feature status:** Stable, since js-controller 3.0
 
 Since js-controller 3.0, the adapter developer can define an array or field names in io-package.json as encryptedNative to define which fields should be automatically encrypted before being stored by Admin and decrypted when the adapter process starts.
@@ -1235,9 +1709,10 @@ The values are not decrypted when the object itself is read!
 
 With this change and the Admin support for this soon, the adapter developer does not need to struggle around with encryption or decryption of adapter values and can simply configure this.
 
-To preserve backward compatibility, you can check for the feature flag `ADAPTER_AUTO_DECRYPT_NATIVE` or add a global Admin dependency to the respective Admin (>=4.0.10) version. 
+To preserve backward compatibility, you can check for the feature flag `ADAPTER_AUTO_DECRYPT_NATIVE` or add a global Admin dependency to the respective Admin (>=4.0.10) version.
 
 #### Protect free reading of adapter configuration fields
+
 **Feature status:** Stable, since js-controller 2.0
 
 Normally, all objects can be read by any adapter using getObject or getForeignObject. To make sure sensible adapter configuration values are protected from that free reading they can be secured.
@@ -1247,6 +1722,7 @@ If an array with field names from native is defined in io-package.json as common
 It is best practice adding the field names of encrypted fields to the protectedNative array too to make sure the fields stay protected (even if encrypted). Only let other adapters read your encrypted values if there is a need to (e.g. adapter interoperability)
 
 #### Complex attribute names in encryptedNative and protectedNative
+
 **Feature status:** Stable, since js-controller 7.0.7
 
 The entries of `encryptedNative` and `protectedNative` are not limited to top-level attributes of `native`. A complex attribute name addresses a nested attribute by joining the path segments with a dot. If a segment points to an array, the rest of the path is applied to every element of that array.
@@ -1254,18 +1730,18 @@ The entries of `encryptedNative` and `protectedNative` are not limited to top-le
 ```json5
 // io-package.json
 {
-  "native": {
-    "password": "",
-    "cloud": {
-      "token": ""
+    native: {
+        password: '',
+        cloud: {
+            token: '',
+        },
+        devices: [
+            { ip: '192.168.1.10', password: '' },
+            { ip: '192.168.1.11', password: '' },
+        ],
     },
-    "devices": [
-      { "ip": "192.168.1.10", "password": "" },
-      { "ip": "192.168.1.11", "password": "" }
-    ]
-  },
-  "encryptedNative": ["password", "cloud.token", "devices.password"],
-  "protectedNative": ["password", "cloud.token", "devices.password"]
+    encryptedNative: ['password', 'cloud.token', 'devices.password'],
+    protectedNative: ['password', 'cloud.token', 'devices.password'],
 }
 ```
 
@@ -1273,37 +1749,40 @@ The entries of `encryptedNative` and `protectedNative` are not limited to top-le
 - `devices.password` addresses `native.devices[i].password` of every element. Elements without this attribute, or with a value that is not a string, are left untouched.
 
 The complex names are respected by:
+
 - `protectedNative`: the attributes are removed from the instance object when it is read by another adapter, at any depth
 - the adapter start: the attributes are decrypted in `this.config`, e.g. `this.config.cloud.token` and `this.config.devices[0].password` (since js-controller 7.2.3, before only top-level names were decrypted on start)
 - `adapter.updateConfig()`: the attributes are encrypted before the configuration is stored
+- `iobroker object set`: the attributes are encrypted when they are set, whether the set value is one attribute (`native.devices[0].password=...`), a part of `native` or the whole `native` (since js-controller 8.0.0, before only top-level names were encrypted)
 - `adapter.getEncryptedConfig()`: `getEncryptedConfig('cloud.token')` returns the decrypted string, `getEncryptedConfig('devices.password')` returns an array with one decrypted value per element
 
 For encryption, a path may run through at most one array.
 
-**Note:** The configuration dialogs of Admin (JSON config and React-based settings) currently encrypt and decrypt only top-level attribute names. A nested value entered there is stored as plain text, and the adapter would then try to decrypt this plain text on start. Only list complex names in `encryptedNative` if these values are stored encrypted, e.g. via `adapter.updateConfig()` or by your own configuration UI.
+**Note:** The configuration dialogs of Admin (JSON config and React-based settings) currently encrypt and decrypt only top-level attribute names. A nested value entered there is stored as plain text, and the adapter would then try to decrypt this plain text on start. Only list complex names in `encryptedNative` if these values are stored encrypted, e.g. via `adapter.updateConfig()`, `iobroker object set` or by your own configuration UI.
 
 #### Define Adapter dependencies to other adapters
+
 **Feature status:** Stable
 
 Dependencies are defined in an array and can contain an adapter name of an object.
 
 When using the object style, you can define a semver version range for this adapter:
+
 ```json5
 {
-  "dependencies": [
-    {
-      "js-controller": ">=2.0.0"
-    }
-  ],
+    dependencies: [
+        {
+            'js-controller': '>=2.0.0',
+        },
+    ],
 }
 ```
 
 If the version do not matter and just the adapter itself needs to be present you can also use:
+
 ```json5
 {
-  "dependencies": [
-    "web"
-  ],
+    dependencies: ['web'],
 }
 ```
 
@@ -1315,15 +1794,17 @@ This is mainly used to define the needed "js-controller" version for yor adapter
 
 **`common.globalDependencies` for dependencies on any Host**
 With common.globalDependencies in io-package.json and starting with js-controller 3.0, you can define a global dependency that will be checked over all hosts. Irrelevant where on the system the referenced adapter is installed it needs to match the version and at least one instance needs to exist.
-This can mainly be used for more loose dependencies where adapters are split over multiple hosts but still work together, e.g. Admin. 
+This can mainly be used for more loose dependencies where adapters are split over multiple hosts but still work together, e.g. Admin.
 
 #### Subscribe to Logs from other adapters
+
 **Feature status:** Stable
 
 The js-controller allows adapters to subscribe to log messages from other adapters and react on them.
 For details see https://github.com/ioBroker/ioBroker.js-controller/blob/master/doc/LOGGING.md
 
 #### Adapter Feature Detection
+
 **Feature status:** Stable since js-controller 2.0.0
 
 Since js-controller 2.0, there exists a dedicated method to detect if certain features exist for an adapter.
@@ -1338,19 +1819,24 @@ if (adapter.supportsFeature && adapter.supportsFeature('NAME')) {
 
 The following features can be checked using this method:
 
-* **ALIAS**: checks if the Alias feature is existing (since `js-controller` 2.0)
-* **ALIAS_SEPARATE_READ_WRITE_ID**: allows specifying separate IDs for reading and writing (since `js-controller` 3.0)
-* **ADAPTER_GETPORT_BIND**: the adapter.getPort method allows an optional second parameter to bind the port only on a special network interface (since `js-controller` 2.0) 
-* **ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE**: adapter.setObject(*) methods now sets the default value (def) after the object was created (since `js-controller` 2.0)
-* **ADAPTER_DEL_OBJECT_RECURSIVE**: adapter.delObjects supports `options.recursive` flag to delete whole object structures (since js-controller 2.2)
-* **ADAPTER_AUTO_DECRYPT_NATIVE**: The Controller supports auto decryption of encrypted native properties (since js-controller 3.0)
-* **PLUGINS**: Plugins are supported by this js-controller and adapters, see the section below for more details (since js-controller 3.0)
-* **CONTROLLER_NPM_AUTO_REBUILD**: Automatic rebuild when node version mismatch is detected (since js-controller 3.0)
-* **CONTROLLER_READWRITE_BASE_SETTINGS**: Allow reading and writing of js-controller base settings file (iobroker.json) via host messages (since js-controller 3.0)
-* **CONTROLLER_MULTI_REPO**: indicates that the controller supports multiple repository sources, which will be combined in one (since js-controller 4.0)
-* **CONTROLLER_LICENSE_MANAGER**: js-controller can read licenses from iobroker.net (since js-controller 4.0)
-* **DEL_INSTANCE_CUSTOM**: indicates that controller is able to delete all custom attributes of an adapter and instance if it is deleted via `--custom` flag (since js-controller 4.0)
-* **CONTROLLER_CMD_EXEC_FILES**: the `cmdExec` host message supports sending files together with the command via the `files` property (since js-controller 7.2)
+- **ALIAS**: checks if the Alias feature is existing (since `js-controller` 2.0)
+- **ALIAS_SEPARATE_READ_WRITE_ID**: allows specifying separate IDs for reading and writing (since `js-controller` 3.0)
+- **ADAPTER_GETPORT_BIND**: the adapter.getPort method allows an optional second parameter to bind the port only on a special network interface (since `js-controller` 2.0)
+- **ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE**: adapter.setObject(*) methods now sets the default value (def) after the object was created (since `js-controller` 2.0)
+- **ADAPTER_DEL_OBJECT_RECURSIVE**: adapter.delObjects supports `options.recursive` flag to delete whole object structures (since js-controller 2.2)
+- **ADAPTER_AUTO_DECRYPT_NATIVE**: The Controller supports auto decryption of encrypted native properties (since js-controller 3.0)
+- **PLUGINS**: Plugins are supported by this js-controller and adapters, see the section below for more details (since js-controller 3.0)
+- **CONTROLLER_NPM_AUTO_REBUILD**: Automatic rebuild when node version mismatch is detected (since js-controller 3.0)
+- **CONTROLLER_READWRITE_BASE_SETTINGS**: Allow reading and writing of js-controller base settings file (iobroker.json) via host messages (since js-controller 3.0)
+- **CONTROLLER_MULTI_REPO**: indicates that the controller supports multiple repository sources, which will be combined in one (since js-controller 4.0)
+- **CONTROLLER_LICENSE_MANAGER**: js-controller can read licenses from iobroker.net (since js-controller 4.0)
+- **DEL_INSTANCE_CUSTOM**: indicates that controller is able to delete all custom attributes of an adapter and instance if it is deleted via `--custom` flag (since js-controller 4.0)
+- **CONTROLLER_CMD_EXEC_FILES**: the `cmdExec` host message supports sending files together with the command via the `files` property (since js-controller 7.2)
+- **CONTROLLER_GET_LOGS_LOG_LEVEL**: the `getLogs` host message accepts an object `{ lines, logLevel }` instead of just the number of lines, so the host returns only entries of the requested severity and more severe ones (since js-controller 8.0)
+- **CONTROLLER_SEARCH_LOGS**: the host command `searchLogs` searches the log files of the host - the rotated and gzipped ones too - with `{ hours, level, source, text, maxRows }` and answers with `{ lines, truncated, files, until }`, so that only the matching entries are transferred (since js-controller 8.0)
+- **CONTROLLER_ADAPTER_FILES**: the host commands `listAdapterDir`, `readAdapterFile` and `readAdapterFiles` hand out a directory of an adapter installed on the host, e.g. its `widgets`, so that `adapter.fetchAdapterDir()` can fetch it for an instance on another host (since js-controller 8.0)
+- **CONTROLLER_DISK_FILES**: the host commands `readDiskFile` and `deleteDiskFile` read and delete a file below the data directory of an instance on the host, how `adapter.readDiskFile()`, `adapter.createDiskFileReadStream()` and `adapter.deleteDiskFile()` handle an `iobdisk://` URL of another host (since js-controller 8.0)
+- **CONTROLLER_READ_DISK_DIR**: the host command `readDiskDir` lists a directory on the disk of the host with `{ root, path, filter, dirsOnly, showHidden, instance }` and answers with `{ root, path, parent, crumbs, entries, selected, truncated, sep, error }`. Only the entries the user of ioBroker may read are listed, and nothing above `root`, also not through `..` or a symbolic link. `root` may start with `%DATA_DIR%`, `%INSTANCE_DATA_DIR%` (needs `instance`, e.g. `myAdapter.0`), `%IOBROKER_DIR%` or `%HOME%`. Without `root` the whole disk is listed, on Windows starting with the drives. The `diskSelector` control of jsonConfig uses it (since js-controller 8.0)
 
 To check if certain adapter methods itself are existing, please simply check for their existence like
 
@@ -1369,6 +1855,7 @@ if (typeof adapter.getObjectView === 'function') {
 ```
 
 #### Plugin-System for Adapters and js-controller
+
 **Feature status:** Stable since js-controller 3.0.0
 
 Starting with js-controller 3.0, a flexible plugin system is available to the js-controller and also to adapters.
@@ -1381,22 +1868,26 @@ New Plugins should always be developed, reviewed and published by ioBroker Core 
 Since js-controller 3.0, the sentry plugin is integrated and activated by default in js-controller. See the information above.
 
 #### Maintenance mode
+
 There is a special maintenance mode. It is used by some special adapters, that will clean the objects and states from invalid entries.
-Invalid entries could be: 
+Invalid entries could be:
+
 - has invalid ID (e.g., null, empty or with prohibited chars, very long IDs over 2000 chars),
 - has an empty object or with no object type.
 - states that have no according entry in object DB
 
 To make it possible to get such an entries, the maintenance mode was implemented.
 To make a call in maintenance mode, you must provide `options` object with the at least following attributes:
+
 ```json5
 {
     user: 'system.user.admin',
     maintenance: true,
 }
-```    
+```
 
 Following adapter methods support maintenance mode:
+
 ```
 - adapter.getForeignState
 - adapter.getForeignObject
@@ -1412,18 +1903,21 @@ Following adapter methods support maintenance mode:
 *** Do not use this mode for any other purposes except sanitizing/cleaning/repairing of existing DBs (Object and States)***
 
 ### Environment Variables
+
 Feature status: **stable**
 
-There are several environment variables which are respected by the js-controller. 
+There are several environment variables which are respected by the js-controller.
 
 #### `IOB_NO_SETCAP` (up from js-controller 7.0.X)
-By default, the js-controller sets some capabilities on the Node.js executable. 
-Currently, `cap_net_admin`, `cap_net_bind_service`, `cap_net_raw` are set to e.g. allow Node.js to start/stop BLE advertising without root privileges. On installation these are set by the ioBroker installer. 
+
+By default, the js-controller sets some capabilities on the Node.js executable.
+Currently, `cap_net_admin`, `cap_net_bind_service`, `cap_net_raw` are set to e.g. allow Node.js to start/stop BLE advertising without root privileges. On installation these are set by the ioBroker installer.
 However, on upgrades of Node.js these get lost. If js-controller detects a Node.js upgrade, it will ensure that these capabilities are set again.
 
 In some scenarios, e.g. during development it may be useful to deactivate this feature. You can do so by settings the `IOB_NO_SETCAP` environment variable to `true`.
 
 ### Vendor Packages Workflow
+
 Feature status: New in 7.0.0
 
 This feature is only of interest for vendors which aim to provide a package which is published to a private package registry (e.g. GitHub Packages).
@@ -1433,15 +1927,16 @@ In the following, information is provided how private packages can be installed 
 The information is tested with GitHub packages. However, it should work in a similar fashion with other registries, like GitLab Packages.
 
 #### Package Registry
-You can use e.g. the GitHub package registry. Simply scope your adapter to your organization or personal scope by changing the package name in the `package.json` 
+
+You can use e.g. the GitHub package registry. Simply scope your adapter to your organization or personal scope by changing the package name in the `package.json`
 and configuring the `publishConfig`:
 
 ```json
 {
-  "name": "@org/vendorAdapter",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  }
+    "name": "@org/vendorAdapter",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    }
 }
 ```
 
@@ -1460,16 +1955,17 @@ Where `YOUR_TOKEN` is an access token which has the permissions to write package
 If you then execute `npm publish`, the package will be published to your custom registry instead of the `npm` registry.
 
 #### Vendor Repository
+
 In your vendor-specific repository, each adapter can have a separate field called `packetName`.
 This represents the real name of the npm packet. E.g.
 
 ```json
 {
-  "vendorAdapter": {
-    "version": "1.0.0",
-    "name": "vendorAdapter",
-    "packetName": "@org/vendorAdapter"
-  }
+    "vendorAdapter": {
+        "version": "1.0.0",
+        "name": "vendorAdapter",
+        "packetName": "@org/vendorAdapter"
+    }
 }
 ```
 
@@ -1477,8 +1973,9 @@ The js-controller will alias the package name to the adapter name on installatio
 This has one drawback, which is normally not relevant for vendor setups. You can not install the adapter via the `npm url` command, meaning no installation from GitHub or local tarballs.
 
 #### Token setup
+
 On the customers ioBroker host, create a `.npmrc` file inside of `/home/iobroker/`.
-It should look like: 
+It should look like:
 
 ```
 //npm.pkg.github.com/:_authToken=<YOUR_TOKEN>
@@ -1486,12 +1983,13 @@ It should look like:
 ```
 
 Where `YOUR_TOKEN` is an access token which has the permissions to read packages.
-A best practice working with multiple customers is, to create an organization for each customer instead of using your personal scope. 
+A best practice working with multiple customers is, to create an organization for each customer instead of using your personal scope.
 Hence, you can scope them to not have access to packages of other customers or your own.
 
 Find more information in the [documentation](https://docs.npmjs.com/cli/v9/configuring-npm/npmrc#auth-related-configuration).
 
 ## Release cycle and Development process overview
+
 The goal is to release an update for the js-controller roughly all 6 months (April/September). The main reasons for this are shorter iterations and fewer changes that can be problematic for the users (and getting fast feedback) and also trying to stay up-to-date with the dependencies.
 
 For the dependencies, we will use depend-a-bot. In general, the goal is still to support a certain range of Node.js LTS versions. Currently, js-controller 3.0 will start with nodes 10.x up to 12/14.x. If dependency updates break that and would require a major-release, this will be discussed and decided on core developer level BEFORE merging such a dependency change!
@@ -1515,4 +2013,4 @@ The MIT License (MIT)
 
 Copyright (c) 2014-2026 bluefox <dogafox@gmail.com>,
 
-Copyright (c) 2014      hobbyquaker
+Copyright (c) 2014 hobbyquaker

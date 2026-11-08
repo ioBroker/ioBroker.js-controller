@@ -515,16 +515,21 @@ export function logger(
                             if (match) {
                                 const date = new Date(match[1]);
                                 if (date < forXdays) {
-                                    // delete file
+                                    // delete file first and log afterward: writing the log line can trigger
+                                    // a rotation, which removes outdated files by itself (maxFiles)
                                     try {
+                                        // @ts-expect-error we use undocumented stuff here TODO
+                                        fs.unlinkSync(`${transport.dirname}/${files[i]}`);
                                         this.log({
                                             level: 'info',
                                             message: `host.${hostname} Delete log file ${files[i]}`,
                                         });
                                         console.log(`host.${hostname} Delete log file ${files[i]}`);
-                                        // @ts-expect-error we use undocumented stuff here TODO
-                                        fs.unlinkSync(`${transport.dirname}/${files[i]}`);
                                     } catch (e) {
+                                        if (e.code === 'ENOENT') {
+                                            // already deleted by the log rotation
+                                            continue;
+                                        }
                                         // there is a bug under windows, that file stays opened and cannot be deleted
                                         this.log({
                                             level: os.platform().startsWith('win') ? 'info' : 'error',

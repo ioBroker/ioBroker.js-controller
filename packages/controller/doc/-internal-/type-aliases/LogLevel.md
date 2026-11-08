@@ -8,4 +8,4 @@
 
 > **LogLevel** = `"silly"` \| `"debug"` \| `"info"` \| `"warn"` \| `"error"`
 
-Defined in: [types-dev/index.d.ts:369](https://github.com/ioBroker/ioBroker.js-controller/blob/fbcb96b805024a3fe1d4616ca7344b605c640ae5/packages/types-dev/index.d.ts#L369)
+Defined in: [types-dev/index.d.ts:374](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/types-dev/index.d.ts#L374)
