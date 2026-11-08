@@ -1,9 +1,9 @@
 {
     "name": "iobroker.js-controller",
     "type": "module",
-    "version": "8.0.0-alpha.5-20261004-d0887094b",
+    "version": "8.0.0-alpha.16-20261107-5f1282043",
     "engines": {
-        "node": ">=22.19.0"
+        "node": ">=22.22.2"
     },
     "bin": {
         "iobroker": "./iobroker.js"
@@ -20,22 +20,25 @@
         "@iobroker/js-controller-cli": "file:../cli",
         "@iobroker/js-controller-common": "file:../common",
         "@iobroker/js-controller-common-db": "file:../common-db",
-        "@iobroker/plugin-base": "~3.0.3",
-        "@iobroker/plugin-sentry": "~3.2.0",
-        "axios": "^1.18.0",
-        "cron-parser": "^5.6.1",
+        "@iobroker/plugin-base": "~4.0.0",
+        "@iobroker/plugin-sentry": "~3.2.1",
+        "axios": "^1.21.0",
+        "cron-parser": "^5.10.3",
         "debug": "^4.4.3",
         "decache": "^4.6.2",
         "deep-clone": "^3.0.3",
-        "fs-extra": "^11.3.5",
+        "fs-extra": "^11.4.1",
         "jsonwebtoken": "^9.0.3",
         "loadavg-windows": "^1.1.1",
-        "node-schedule": "^2.1.1",
-        "pidusage": "^4.0.1",
+        "node-schedule": "^2.1.2",
+        "pidusage": "^4.1.0",
         "promisify-child-process": "^5.0.1",
         "prompt": "^1.3.0",
         "readline-sync": "^1.4.10",
-        "semver": "^7.8.5"
+        "semver": "^7.8.6"
+    },
+    "optionalDependencies": {
+        "bonjour-service": "^1.4.4"
     },
     "homepage": "https://www.iobroker.com",
     "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
@@ -82,6 +85,7 @@
         "restart": "node iobroker.js restart",
         "release": "release-script",
         "test": "mocha test --exit",
+        "test-unit": "mocha \"src/lib/**/*.test.ts\" --exit",
         "test-jsonl": "mocha test/jsonl/ --exit",
         "test-redis-socket": "mocha test/redis-socket/ --exit",
         "test-redis-sentinel": "mocha test/redis-sentinel/ --exit"

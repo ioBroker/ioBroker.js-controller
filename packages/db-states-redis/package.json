@@ -1,9 +1,9 @@
 {
     "name": "@iobroker/db-states-redis",
     "type": "module",
-    "version": "8.0.0-alpha.5-20261004-d0887094b",
+    "version": "8.0.0-alpha.16-20261107-5f1282043",
     "engines": {
-        "node": ">=22.19.0"
+        "node": ">=22.22.2"
     },
     "dependencies": {
         "@iobroker/db-base": "file:../db-base",

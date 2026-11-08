@@ -6,7 +6,7 @@
 
 # Interface: InternalGetStatesOfOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:800](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L800)
+Defined in: [adapter/src/lib/\_Types.ts:835](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/adapter/src/lib/_Types.ts#L835)
 
 Options for reading the states of a device or channel
 
@@ -16,7 +16,7 @@ Options for reading the states of a device or channel
 
 > **callback**: [`GetObjectsCallback3`](../type-aliases/GetObjectsCallback3.md)\<[`StateObject`](StateObject.md)\>
 
-Defined in: [adapter/src/lib/\_Types.ts:808](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L808)
+Defined in: [adapter/src/lib/\_Types.ts:843](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/adapter/src/lib/_Types.ts#L843)
 
 Called with the states
 
@@ -26,7 +26,7 @@ Called with the states
 
 > `optional` **options?**: \{ `user?`: `` `system.user.${string}` ``; \} \| `null`
 
-Defined in: [adapter/src/lib/\_Types.ts:806](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L806)
+Defined in: [adapter/src/lib/\_Types.ts:841](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/adapter/src/lib/_Types.ts#L841)
 
 Optional settings including the user context
 
@@ -36,7 +36,7 @@ Optional settings including the user context
 
 > **parentChannel**: `string` \| `null` \| `undefined`
 
-Defined in: [adapter/src/lib/\_Types.ts:804](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L804)
+Defined in: [adapter/src/lib/\_Types.ts:839](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/adapter/src/lib/_Types.ts#L839)
 
 The parent channel name
 
@@ -46,6 +46,6 @@ The parent channel name
 
 > **parentDevice**: `string` \| `null` \| `undefined`
 
-Defined in: [adapter/src/lib/\_Types.ts:802](https://github.com/ioBroker/ioBroker.js-controller/blob/d0887094b5dfd9bda3a0096a0ef2ea334d850a72/packages/adapter/src/lib/_Types.ts#L802)
+Defined in: [adapter/src/lib/\_Types.ts:837](https://github.com/ioBroker/ioBroker.js-controller/blob/5f1282043f999cdf804278f2c26fca61ad596533/packages/adapter/src/lib/_Types.ts#L837)
 
 The parent device name

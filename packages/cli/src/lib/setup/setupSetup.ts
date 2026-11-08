@@ -290,7 +290,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
             throw new Error('Objects not set up, call setupObjects first');
         }
 
-        if (iopkg.objects?.length > 0) {
+        if (iopkg.objects && iopkg.objects.length > 0) {
             const obj = iopkg.objects.pop()!;
 
             let existingObj: ioBroker.Object | undefined | null;
