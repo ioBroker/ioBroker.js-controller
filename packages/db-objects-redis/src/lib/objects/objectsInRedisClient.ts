@@ -406,6 +406,9 @@ export class ObjectsInRedisClient {
                     `✅ ${this.namespace} Objects DB reconnected via Redis Sentinel (master group "${this.settings.connection.options.name}")`,
                 );
             }
+            if (wasReady) {
+                this.reconnectSubscribers();
+            }
             wasReady = true;
 
             this.log.debug(`${this.namespace} Objects client ready ... initialize now`);
@@ -873,6 +876,18 @@ export class ObjectsInRedisClient {
                 ready = true;
             }
         });
+    }
+
+    /**
+     * Pub/sub sockets only receive, so after a server restart they can stay `ready` on a dead connection.
+     * Reconnecting them makes their own `ready` handlers replay the subscriptions.
+     */
+    private reconnectSubscribers(): void {
+        for (const subscriber of [this.sub, this.subSystem]) {
+            if (subscriber?.status === 'ready') {
+                subscriber.disconnect(true);
+            }
+        }
     }
 
     /**
