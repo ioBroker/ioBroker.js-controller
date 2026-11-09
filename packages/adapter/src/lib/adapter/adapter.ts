@@ -18,6 +18,7 @@ import * as url from 'node:url';
 
 import {
     EXIT_CODES,
+    StallDetector,
     describePortInUse,
     getObjectsConstructor,
     getPortInUse,
@@ -958,6 +959,8 @@ export class AdapterClass extends EventEmitter {
     private defaultHistory: null | string = null;
     private pluginHandler?: PluginHandler;
     private _reportInterval?: null | NodeJS.Timeout;
+    /** A frozen process keeps its sockets, so it sees no reconnect */
+    private _stallDetector?: StallDetector;
     private getPortRunning: null | InternalGetPortOptions = null;
     private readonly _namespaceRegExp: RegExp;
     instance?: number;
@@ -1907,6 +1910,7 @@ export class AdapterClass extends EventEmitter {
             }
             shutdownStarted = true;
 
+            this._stallDetector?.stop();
             if (this._reportInterval) {
                 clearInterval(this._reportInterval);
                 this._reportInterval = null;
@@ -12555,6 +12559,7 @@ export class AdapterClass extends EventEmitter {
         this.#states = new this.States({
             namespace: this.namespaceLog,
             connection: this._config.states,
+            reconnected: () => this._fenceIfMovedAway('a states reconnect'),
             connected: async () => {
                 if (!this.#states) {
                     return;
@@ -12872,6 +12877,7 @@ export class AdapterClass extends EventEmitter {
             namespace: this.namespaceLog,
             connection: this._config.objects,
             logger: this._logger,
+            reconnected: () => this._fenceIfMovedAway('an objects reconnect'),
             connected: async () => {
                 this.connected = true;
                 if (this._initializeTimeout) {
@@ -13441,12 +13447,45 @@ export class AdapterClass extends EventEmitter {
             }
             this.emit('install');
         } else {
+            if (!this.startedInCompactMode) {
+                this._stallDetector = new StallDetector(gap => this._fenceIfMovedAway(`a stall of ${gap} ms`));
+                this._stallDetector.start();
+            }
             if (typeof this._options.ready === 'function') {
                 Promise.resolve(this._options.ready()).catch(e =>
                     this._logger.error(`${this.namespaceLog} Error in ready handler: ${e.message}`),
                 );
             }
             this.emit('ready');
+        }
+    }
+
+    /**
+     * Terminate if this instance was moved to another host meanwhile, so the copy there runs alone
+     *
+     * @param reason why the check runs, for the log
+     */
+    private async _fenceIfMovedAway(reason: string): Promise<void> {
+        if (this.startedInCompactMode || this._config.isInstall || this.terminated || !this.#objects || !this.host) {
+            return;
+        }
+
+        let obj: ioBroker.InstanceObject | null | undefined;
+        try {
+            obj = await this.#objects.getObject(`system.adapter.${this.namespace}`);
+        } catch (e) {
+            this._logger.warn(
+                `${this.namespaceLog} Cannot check the host of this instance after ${reason}: ${e.message}`,
+            );
+            return;
+        }
+
+        if (obj?.common?.host && obj.common.host !== this.host) {
+            // no unload: it could still write stale states over those of the new copy
+            this.terminate(
+                `Moved to host "${obj.common.host}" during ${reason}`,
+                EXIT_CODES.ADAPTER_REQUESTED_TERMINATION,
+            );
         }
     }
 

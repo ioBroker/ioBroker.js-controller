@@ -61,6 +61,8 @@ export interface ObjectsSettings {
     primaryHostLost?: () => void;
     /** Called when the client gets disconnected */
     disconnected?: () => void;
+    /** Called on every reconnect, before the subscriptions are restored */
+    reconnected?: () => void | Promise<void>;
     /** Handler for system-level object changes */
     change?: ChangeFunction;
     /** Handler for user-level object changes */
@@ -407,6 +409,11 @@ export class ObjectsInRedisClient {
                 );
             }
             if (wasReady) {
+                try {
+                    await this.settings.reconnected?.();
+                } catch (e) {
+                    this.log.error(`${this.namespace} Objects reconnect handler failed: ${e.message}`);
+                }
                 this.reconnectSubscribers();
             }
             wasReady = true;
