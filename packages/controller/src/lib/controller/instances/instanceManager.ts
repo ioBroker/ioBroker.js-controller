@@ -632,6 +632,9 @@ export class InstanceManager {
     /**
      * Sends kill signal via sigKill state or a kill after timeouts or if forced
      *
+     * A second call while a stop is running waits for it and ignores its own `force` and `movedAway`, so a forced
+     * stop can come only after the running stop's `stopTimeout`.
+     *
      * @param id instance id
      * @param force if forced we will kill the pid
      * @param options how to stop
