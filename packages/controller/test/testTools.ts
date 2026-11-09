@@ -9,7 +9,32 @@ import {
     execFileAsync,
     isForeignProcess,
     isProcessRunning,
+    nodeVersionSatisfies,
 } from '@iobroker/js-controller-common-db/tools';
+
+/**
+ * Check whether WMI answers a process query on this machine
+ *
+ * @returns true if the own process could be looked up
+ */
+async function wmiAnswers(): Promise<boolean> {
+    try {
+        const { stdout } = await execFileAsync(
+            'powershell.exe',
+            [
+                '-NoProfile',
+                '-NonInteractive',
+                '-Command',
+                `(Get-CimInstance Win32_Process -Filter 'ProcessId=${process.pid}').Name`,
+            ],
+            // the first query after a reboot may take a while, which is also what warms WMI up for the test
+            { timeout: 90_000 },
+        );
+        return !!stdout?.trim();
+    } catch {
+        return false;
+    }
+}
 
 describe('test tools.js helpers', () => {
     it('FORBIDDEN_CHARS', () => {
@@ -70,7 +95,14 @@ describe('test tools.js helpers', () => {
         assert.strictEqual(isProcessRunning(0x7fffffff), false);
     });
 
-    it('isForeignProcess', async () => {
+    it('isForeignProcess', async function () {
+        // On a busy GitHub Windows runner WMI sometimes does not answer at all. isForeignProcess then rightly
+        // answers "cannot inspect" for every process, which proves nothing about how it tells them apart.
+        if (os.platform() === 'win32' && !(await wmiAnswers())) {
+            console.warn('WMI does not answer on this machine, isForeignProcess cannot be verified');
+            this.skip();
+        }
+
         const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'iob-pids-'));
         // mimic an installation, so the controller directory shows up in both command lines
         const controllerDir = path.join(tmpDir, 'node_modules', 'iobroker.js-controller');
@@ -104,6 +136,38 @@ describe('test tools.js helpers', () => {
             await fs.rm(tmpDir, { recursive: true, force: true });
         }
     })
-        // six inspections, each of which may need its own PowerShell start on Windows
-        .timeout(240_000);
+        // the WMI probe and six inspections, each of which may need its own PowerShell start on Windows
+        .timeout(330_000);
+});
+
+describe('nodeVersionSatisfies', () => {
+    it('takes a prerelease or nightly build by its version', () => {
+        assert.equal(nodeVersionSatisfies('>=22.22.2', 'v27.0.0-alpha.0'), true);
+        assert.equal(nodeVersionSatisfies('>=22.22.2', '27.0.0-nightly20261101abcdef'), true);
+    });
+
+    it('does not take a prerelease for the release it leads to', () => {
+        assert.equal(nodeVersionSatisfies('>=22.22.2', 'v22.22.2-rc.1'), false);
+        assert.equal(nodeVersionSatisfies('>=22 <27', 'v27.0.0-alpha.0'), false);
+    });
+
+    it('lets a range without minor and patch start with the prereleases of that major', () => {
+        assert.equal(nodeVersionSatisfies('>=22', 'v22.0.0-rc.1'), true);
+    });
+
+    it('checks released versions as before', () => {
+        assert.equal(nodeVersionSatisfies('>=22.22.2', 'v22.22.2'), true);
+        assert.equal(nodeVersionSatisfies('>=22.22.2', 'v26.1.0'), true);
+        assert.equal(nodeVersionSatisfies('>=22.22.2', 'v22.22.1'), false);
+    });
+
+    it('checks the running version if no other is given', () => {
+        assert.equal(nodeVersionSatisfies('*'), true);
+        assert.equal(nodeVersionSatisfies(`>${process.version}`), false);
+    });
+
+    it('does not throw on what it cannot read', () => {
+        assert.equal(nodeVersionSatisfies('not a range', 'v22.22.2'), false);
+        assert.equal(nodeVersionSatisfies('>=22', 'not a version'), false);
+    });
 });

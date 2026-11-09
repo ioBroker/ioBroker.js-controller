@@ -6,7 +6,7 @@
 
 # Class: AsyncAdapter
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L19)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:24](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L24)
 
 Clean async-only facade for the adapter's outbound messaging. Owns the [MessagingManager](MessagingManager.md)
 and exposes promise-based methods without the legacy `*Async` postfix.
@@ -17,7 +17,7 @@ and exposes promise-based methods without the legacy `*Async` postfix.
 
 > **new AsyncAdapter**(`ctx`): `AsyncAdapter`
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L28)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L35)
 
 #### Parameters
 
@@ -37,7 +37,7 @@ Shared adapter context providing live runtime state
 
 > **checkUsedResource**\<`T`\>(`type`, `data?`): `Promise`\<[`RegisteredResource`](../type-aliases/RegisteredResource.md)\<keyof [`UsedResourceDataMap`](../interfaces/UsedResourceDataMap.md)\>[]\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:305](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L305)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:363](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L363)
 
 Asks the host whether another instance currently holds a resource, without registering it.
 
@@ -77,7 +77,7 @@ when the host refuses the request or does not answer
 
 > **clearPending**(): `void`
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:378](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L378)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:452](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L452)
 
 Rejects all pending reply promises and clears their timers (used on stop).
 
@@ -91,7 +91,7 @@ Rejects all pending reply promises and clears their timers (used on stop).
 
 > **clearUsedResources**(): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L321)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:379](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L379)
 
 Frees all exclusive resources this instance registered, across all types.
 
@@ -105,11 +105,79 @@ when the host refuses the command or does not answer
 
 ***
 
+### createDiskFileReadStream()
+
+> **createDiskFileReadStream**(`url`): `Readable`
+
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L89)
+
+Reads the file an `iobdisk://` URL points to as a stream, from this or another host.
+
+#### Parameters
+
+##### url
+
+`unknown`
+
+e.g. `iobdisk://pi4/telegram.0/video/1.mp4`
+
+#### Returns
+
+`Readable`
+
+***
+
+### deleteDiskFile()
+
+> **deleteDiskFile**(`url`): `Promise`\<`boolean`\>
+
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:100](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L100)
+
+Deletes the file an `iobdisk://` URL points to, on this or another host.
+
+#### Parameters
+
+##### url
+
+`unknown`
+
+e.g. `iobdisk://pi4/telegram.0/video/1.mp4`
+
+#### Returns
+
+`Promise`\<`boolean`\>
+
+`true` if the file was deleted, `false` if it did not exist
+
+***
+
+### fetchAdapterDir()
+
+> **fetchAdapterDir**(`options`): `Promise`\<[`FetchAdapterDirResult`](../interfaces/FetchAdapterDirResult.md)\>
+
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:428](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L428)
+
+Copy a directory of an installed adapter into a local directory, from this or another host.
+
+#### Parameters
+
+##### options
+
+[`FetchAdapterDirOptions`](../interfaces/FetchAdapterDirOptions.md)
+
+which directory of which adapter, where to, and optionally from which host
+
+#### Returns
+
+`Promise`\<[`FetchAdapterDirResult`](../interfaces/FetchAdapterDirResult.md)\>
+
+***
+
 ### freeUsedResource()
 
 > **freeUsedResource**\<`T`\>(`type`, `data?`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L333)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:391](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L391)
 
 Frees previously registered exclusive resources of this instance. `data` is a filter: every field it
 names must match. If it is omitted, all registered resources of the given `type` are freed.
@@ -168,7 +236,7 @@ chained certificate name
 
 > **getCertificates**(`publicName?`, `privateName?`, `chainedName?`): `Promise`\<[`InternalGetCertificatesResult`](../interfaces/InternalGetCertificatesResult.md)\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:215](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L215)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L273)
 
 Loads SSL certificates by name, falling back to the instance config defaults. File-backed
 certificate values are resolved to their content and their paths returned for watching.
@@ -201,7 +269,7 @@ chained certificate name (defaults to `config.certChained`)
 
 > **getCertificates**(`publicName?`, `privateName?`, `chainedName?`): `Promise`\<[`InternalGetCertificatesResult`](../interfaces/InternalGetCertificatesResult.md)\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:226](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L226)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:284](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L284)
 
 **`Internal`**
 
@@ -231,6 +299,28 @@ chained certificate name
 
 ***
 
+### getDiskFileUrl()
+
+> **getDiskFileUrl**(`filePath`): `string`
+
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:69](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L69)
+
+Builds the `iobdisk://` URL of a file in the data directory of this instance.
+
+#### Parameters
+
+##### filePath
+
+`unknown`
+
+absolute path below the data directory of this instance, or a path relative to it
+
+#### Returns
+
+`string`
+
+***
+
 ### getHostUsedResources()
 
 #### Param
@@ -243,7 +333,7 @@ resource type to read; if omitted, the resources of every type are read
 
 > **getHostUsedResources**\<`T`\>(`type`): `Promise`\<[`RegisteredResource`](../type-aliases/RegisteredResource.md)\<`T`\>[]\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L350)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L408)
 
 Reads the exclusive resources of the given type registered on this instance's host, across all
 instances of that host.
@@ -270,7 +360,7 @@ resource type to read, e.g. "serialPort"
 
 > **getHostUsedResources**(): `Promise`\<[`RegisteredResource`](../type-aliases/RegisteredResource.md)\<keyof [`UsedResourceDataMap`](../interfaces/UsedResourceDataMap.md)\>[]\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L352)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:410](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L410)
 
 Reads the exclusive resources of every type registered on this instance's host.
 
@@ -284,7 +374,7 @@ Reads the exclusive resources of every type registered on this instance's host.
 
 > **hasRelevantCertificateChange**(`obj`): `boolean`
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:266](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L266)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:324](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L324)
 
 Tells whether a new version of the `system.certificates` object changes one of the certificates
 handed out by the last [getCertificates](#getcertificates) call. Returns false if certificates were never
@@ -301,6 +391,28 @@ the new `system.certificates` object, or null/undefined if it was deleted
 #### Returns
 
 `boolean`
+
+***
+
+### readDiskFile()
+
+> **readDiskFile**(`url`): `Promise`\<`Buffer`\<`ArrayBufferLike`\>\>
+
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L79)
+
+Reads the whole file an `iobdisk://` URL points to, from this or another host.
+
+#### Parameters
+
+##### url
+
+`unknown`
+
+e.g. `iobdisk://pi4/telegram.0/video/1.mp4`
+
+#### Returns
+
+`Promise`\<`Buffer`\<`ArrayBufferLike`\>\>
 
 ***
 
@@ -334,7 +446,7 @@ additional notification options
 
 > **registerNotification**\<`Scope`\>(`scope`, `category`, `message`, `options?`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L175)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:233](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L233)
 
 Sends an addNotification command to the host of this adapter instance.
 
@@ -378,7 +490,7 @@ additional notification options
 
 > **registerNotification**(`scope`, `category`, `message`, `options?`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:188](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L188)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:246](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L246)
 
 **`Internal`**
 
@@ -418,7 +530,7 @@ additional notification options
 
 > **registerUsedResource**\<`T`\>(`type`, `data`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:288](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L288)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:346](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L346)
 
 Registers an exclusive resource (serial port, TCP/UDP port, USB device, ...) as used by this
 instance. The registration is forwarded to the host, which stores it under
@@ -458,7 +570,7 @@ when the host refuses the registration or does not answer
 
 > **resolveReply**(`obj`): `boolean`
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:371](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L371)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:445](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L445)
 
 Resolves a pending reply promise for an acked messagebox message.
 Returns true if a pending entry was found and consumed.
@@ -507,7 +619,7 @@ send options
 
 > **sendTo**(`instanceName`, `command`, `message`, `options?`): `Promise`\<`any`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:59](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L59)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:117](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L117)
 
 Sends a message to another adapter instance and, unless `options.expectReply` is `false`,
 resolves with the reply when it arrives (or rejects with `Error('Timeout exceeded')` on timeout).
@@ -549,7 +661,7 @@ send options; set `expectReply: false` for fire-and-forget, or pass a legacy
 
 > **sendTo**(`instanceName`, `command`, `message?`, `options?`): `Promise`\<`any`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:72](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L72)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:130](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L130)
 
 **`Internal`**
 
@@ -615,7 +727,7 @@ send options
 
 > **sendToHost**(`hostName`, `command`, `message`, `options?`): `Promise`\<`any`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:110](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L110)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:168](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L168)
 
 Sends a message to a host, or broadcasts to all hosts when `hostName` is `null`.
 For a specific host, resolves with the reply unless `options.expectReply` is `false`.
@@ -655,7 +767,7 @@ send options; set `expectReply: false` for fire-and-forget
 
 > **sendToHost**(`hostName`, `command`, `message?`, `options?`): `Promise`\<`any`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:123](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L123)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L181)
 
 **`Internal`**
 
@@ -695,7 +807,7 @@ send options
 
 > **sendToUI**(`options`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L159)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:217](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L217)
 
 Sends a message to a single UI client, or broadcasts to all connected UI clients when `clientId` is omitted.
 
@@ -717,7 +829,7 @@ clientId and data options
 
 > **stopWatchingCertificates**(): `void`
 
-Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:275](https://github.com/ioBroker/ioBroker.js-controller/blob/58da667b3a7ef168beb3343c4c64ac4e031a2ffd/packages/adapter/src/lib/adapter/asyncAdapter.ts#L275)
+Defined in: [adapter/src/lib/adapter/asyncAdapter.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/asyncAdapter.ts#L333)
 
 Forgets the certificates handed out by the last [getCertificates](#getcertificates) call, so
 [hasRelevantCertificateChange](#hasrelevantcertificatechange) no longer reports changes to them. Used when the adapter

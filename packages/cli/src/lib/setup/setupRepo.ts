@@ -5,7 +5,11 @@ import path from 'node:path';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
-import { SYSTEM_CONFIG_ID, SYSTEM_REPOSITORIES_ID } from '@iobroker/js-controller-common-db/constants';
+import {
+    SYSTEM_ADAPTER_PREFIX,
+    SYSTEM_CONFIG_ID,
+    SYSTEM_REPOSITORIES_ID,
+} from '@iobroker/js-controller-common-db/constants';
 import { BETA_REPO_URL, isIntegerLikeInput, isVersionIgnored, STABLE_REPO_URL } from '@/lib/setup/utils.js';
 import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
 import { dbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
@@ -252,6 +256,12 @@ export class Repo {
 
             console.log(`Used ${repoUrl.length > 1 ? 'repositories' : 'repository'}: ${repoUrl.join(', ')}`);
 
+            if (tools.clearInactiveRepositoryCaches(systemRepos, systemConfig.common.activeRepo, repoUrl)) {
+                systemRepos.from = `system.host.${tools.getHostName()}.cli`;
+                systemRepos.ts = Date.now();
+                await this.objects.setObject(SYSTEM_REPOSITORIES_ID, systemRepos);
+            }
+
             const allSources: ioBroker.RepositoryJson = {} as ioBroker.RepositoryJson;
 
             for (const url of repoUrl) {
@@ -381,16 +391,18 @@ export class Repo {
         }
 
         const objs = await this.objects.getObjectViewAsync('system', 'instance', {
-            startkey: 'system.adapter.admin',
-            endkey: 'system.adapter.admin\u9999',
+            startkey: `${SYSTEM_ADAPTER_PREFIX}admin.`,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}admin.\u9999`,
         });
 
         if (objs?.rows?.length) {
             const listStr = list.join(', ');
             for (const row of objs.rows) {
                 if (row?.value?.type === 'instance') {
-                    await this.states.setState(`${row.id}.info.updatesNumber`, { val: list.length, ack: true });
-                    await this.states.setState(`${row.id}.info.updatesList`, { val: listStr, ack: true });
+                    // the states of the admin instance itself, e.g. admin.0.info.updatesList
+                    const namespace = row.id.substring(SYSTEM_ADAPTER_PREFIX.length);
+                    await this.states.setState(`${namespace}.info.updatesNumber`, { val: list.length, ack: true });
+                    await this.states.setState(`${namespace}.info.updatesList`, { val: listStr, ack: true });
                 }
             }
         }

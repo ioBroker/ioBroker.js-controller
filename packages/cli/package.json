@@ -1,26 +1,26 @@
 {
     "name": "@iobroker/js-controller-cli",
     "type": "module",
-    "version": "8.0.0-alpha.11-20261103-58da667b3",
+    "version": "8.0.0-alpha.17-20261108-a17e80dea",
     "engines": {
-        "node": ">=22.19.0"
+        "node": ">=22.22.2"
     },
     "dependencies": {
         "@iobroker/js-controller-common": "file:../common",
         "@iobroker/js-controller-common-db": "file:../common-db",
-        "@iobroker/plugin-base": "~3.0.3",
-        "axios": "^1.18.0",
-        "chokidar": "^5.0.0",
+        "@iobroker/plugin-base": "~4.0.0",
+        "axios": "^1.21.0",
+        "chokidar": "^6.0.0",
         "debug": "^4.4.3",
         "deep-clone": "^3.0.3",
         "event-stream": "^4.0.1",
-        "fs-extra": "^11.3.5",
+        "fs-extra": "^11.4.1",
         "mime-types": "^3.0.2",
         "promisify-child-process": "^5.0.1",
         "readline-sync": "^1.4.10",
-        "semver": "^7.8.5",
-        "tar": "^7.5.16",
-        "yargs": "^18.0.0"
+        "semver": "^7.8.6",
+        "tar": "^7.5.22",
+        "yargs": "^18.2.0"
     },
     "keywords": [
         "ioBroker"
