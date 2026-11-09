@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import sinon from 'sinon';
 import fs from 'fs-extra';
+import { tools } from '@iobroker/js-controller-common';
 import { InstanceManager } from '@/lib/controller/instances/instanceManager.js';
 import type { InstanceManagerOptions } from '@/lib/controller/instances/instanceManager.js';
 import {
@@ -67,20 +68,20 @@ describe('InstanceManager.checkAndAddInstance', () => {
     it('ignores an instance which belongs to another host', async () => {
         const { manager } = createManager();
 
-        const added = await manager.checkAndAddInstance(instanceObject({ common: { host: 'otherhost' } }), [
-            '192.168.0.2',
-        ]);
+        const added = await manager.checkAndAddInstance(instanceObject({ common: { host: 'otherhost' } }));
 
         assert.equal(added, false);
         assert.deepEqual(Object.keys(manager.procs), []);
     });
 
-    it('accepts an instance whose host matches one of our IP addresses', async () => {
+    it('accepts an instance whose host matches one of our IP addresses', async function () {
+        const ip = tools.findIPs()[0];
+        if (!ip) {
+            this.skip();
+        }
         const { manager } = createManager();
 
-        const added = await manager.checkAndAddInstance(instanceObject({ common: { host: '192.168.0.2' } }), [
-            '192.168.0.2',
-        ]);
+        const added = await manager.checkAndAddInstance(instanceObject({ common: { host: ip } }));
 
         assert.equal(added, true);
     });
@@ -88,7 +89,7 @@ describe('InstanceManager.checkAndAddInstance', () => {
     it('ignores an instance which has been marked as deleted', async () => {
         const { manager } = createManager();
 
-        const added = await manager.checkAndAddInstance(instanceObject({ deleted: true }), []);
+        const added = await manager.checkAndAddInstance(instanceObject({ deleted: true }));
 
         assert.equal(added, false);
         assert.deepEqual(Object.keys(manager.procs), []);
@@ -99,7 +100,7 @@ describe('InstanceManager.checkAndAddInstance', () => {
         const { manager } = createManager({ objects: { setObject } as any });
         const instance = instanceObject({ common: { host: '' } });
 
-        const added = await manager.checkAndAddInstance(instance, []);
+        const added = await manager.checkAndAddInstance(instance);
 
         assert.equal(added, true);
         assert.equal(instance.common.host, 'testhost');
@@ -113,7 +114,7 @@ describe('InstanceManager.checkAndAddInstance', () => {
         const logger = silentLogger({ error });
         const { manager } = createManager({ objects: { setObject } as any, logger });
 
-        const added = await manager.checkAndAddInstance(instanceObject({ common: { host: '' } }), []);
+        const added = await manager.checkAndAddInstance(instanceObject({ common: { host: '' } }));
 
         assert.equal(added, true);
         assert.equal(error.calledOnce, true);
@@ -124,7 +125,7 @@ describe('InstanceManager.checkAndAddInstance', () => {
         const { manager } = createManager();
         const instance = instanceObject();
 
-        await manager.checkAndAddInstance(instance, []);
+        await manager.checkAndAddInstance(instance);
 
         const stored = manager.procs['system.adapter.hm-rpc.0'].config;
         assert.deepEqual(stored, instance);
@@ -134,10 +135,10 @@ describe('InstanceManager.checkAndAddInstance', () => {
     it('keeps an already known config when the instance is checked again', async () => {
         const { manager } = createManager();
 
-        await manager.checkAndAddInstance(instanceObject({ common: { loglevel: 'debug' } }), []);
+        await manager.checkAndAddInstance(instanceObject({ common: { loglevel: 'debug' } }));
         const firstConfig = manager.procs['system.adapter.hm-rpc.0'].config;
 
-        await manager.checkAndAddInstance(instanceObject({ common: { loglevel: 'info' } }), []);
+        await manager.checkAndAddInstance(instanceObject({ common: { loglevel: 'info' } }));
 
         assert.equal(manager.procs['system.adapter.hm-rpc.0'].config, firstConfig);
         assert.equal(firstConfig.common.loglevel, 'debug');
@@ -157,7 +158,7 @@ describe('InstanceManager.checkAndAddInstance in compact mode', () => {
         const { manager } = createManager({ config: compactConfig });
         const instance = instanceObject({ common: { compact: true } });
 
-        await manager.checkAndAddInstance(instance, []);
+        await manager.checkAndAddInstance(instance);
 
         assert.equal(instance.common.runAsCompactMode, false);
         assert.equal(instance.common.compactGroup, 1);
@@ -168,7 +169,6 @@ describe('InstanceManager.checkAndAddInstance in compact mode', () => {
 
         await manager.checkAndAddInstance(
             instanceObject({ common: { compact: true, runAsCompactMode: true, compactGroup: 2 } }),
-            [],
         );
 
         assert.deepEqual(manager.compactProcs[2].instances, []);
@@ -183,7 +183,6 @@ describe('InstanceManager.checkAndAddInstance in compact mode', () => {
 
         const added = await manager.checkAndAddInstance(
             instanceObject({ common: { compact: true, runAsCompactMode: true, compactGroup: 2 } }),
-            [],
         );
 
         assert.equal(added, false);
@@ -198,7 +197,6 @@ describe('InstanceManager.checkAndAddInstance in compact mode', () => {
 
         const added = await manager.checkAndAddInstance(
             instanceObject({ common: { compact: true, runAsCompactMode: true, compactGroup: 2 } }),
-            [],
         );
 
         assert.equal(added, true);
@@ -213,7 +211,6 @@ describe('InstanceManager.checkAndAddInstance in compact mode', () => {
 
         const added = await manager.checkAndAddInstance(
             instanceObject({ common: { compact: true, runAsCompactMode: false, compactGroup: 1 } }),
-            [],
         );
 
         assert.equal(added, false);
@@ -292,16 +289,18 @@ describe('InstanceManager.setInstanceOfflineStates', () => {
         assert.equal(delState.callCount, 1);
     });
 
-    it('writes nothing for an instance which moved to another host', async () => {
+    it('writes nothing for an instance which was stopped because it moved to another host', async () => {
         const setState = sinon.stub().resolves();
         const { manager } = createManager({
-            objects: {
-                objectExists: sinon.stub().resolves(true),
-                getObject: sinon.stub().resolves(instanceObject({ common: { host: 'otherhost' } })),
-            } as any,
+            objects: { objectExists: sinon.stub().resolves(true) } as any,
             states: { setState, getState: sinon.stub().resolves({ val: true }) } as any,
         });
+        manager.procs['system.adapter.hm-rpc.0'] = {
+            config: instanceObject({ common: { stopTimeout: 1 } }),
+            process: { pid: 4711, kill: sinon.stub() },
+        } as any;
 
+        await manager.stopInstance('system.adapter.hm-rpc.0', false, { movedAway: true });
         await manager.setInstanceOfflineStates('system.adapter.hm-rpc.0');
 
         assert.equal(setState.called, false);
@@ -352,9 +351,9 @@ describe('InstanceManager.stopInstance', () => {
     it('stops a copy which moved to another host with SIGTERM and leaves sigKill alone', async () => {
         const setState = sinon.stub().resolves();
         const { manager } = createManager({ states: { setState } as any });
-        const child = addRunning(manager, { host: 'otherhost' });
+        const child = addRunning(manager, {});
 
-        await manager.stopInstance('system.adapter.hm-rpc.0', false);
+        await manager.stopInstance('system.adapter.hm-rpc.0', false, { movedAway: true });
 
         assert.equal(setState.called, false);
         assert.equal(child.kill.firstCall.args[0], 'SIGTERM');
@@ -366,9 +365,9 @@ describe('InstanceManager.stopInstance', () => {
             states: { setState: sinon.stub().resolves() } as any,
             messages: { sendToAndWait } as any,
         });
-        const child = addRunning(manager, { host: 'otherhost', supportedMessages: { stopInstance: true } });
+        const child = addRunning(manager, { supportedMessages: { stopInstance: true } });
 
-        await manager.stopInstance('system.adapter.hm-rpc.0', false);
+        await manager.stopInstance('system.adapter.hm-rpc.0', false, { movedAway: true });
 
         assert.equal(sendToAndWait.called, false);
         assert.equal(child.kill.firstCall.args[0], 'SIGTERM');

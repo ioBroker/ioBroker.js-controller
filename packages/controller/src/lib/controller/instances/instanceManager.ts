@@ -104,6 +104,8 @@ export class InstanceManager {
 
     /** Timer which delays the writing of the pids file */
     #storeTimer: NodeJS.Timeout | null = null;
+    /** Instances stopped because they moved to another host, their offline states are not ours to write */
+    readonly #stoppedAsMovedAway = new Set<string>();
 
     /**
      * @param options Everything the instance manager needs to do its work
@@ -142,7 +144,6 @@ export class InstanceManager {
         if (instances.length === 0) {
             logger.info(`${hostLogPrefix} no instances found`);
         } else {
-            const _ipArr = tools.findIPs();
             if (!isCompactGroupController) {
                 logger.info(`${hostLogPrefix} ${instances.length} instance${instances.length === 1 ? '' : 's'} found`);
             }
@@ -183,7 +184,7 @@ export class InstanceManager {
                 logger.debug(`${hostLogPrefix} check instance "${instance._id}" for host "${instance.common.host}"`);
 
                 if (
-                    (await this.checkAndAddInstance(instance, _ipArr)) &&
+                    (await this.checkAndAddInstance(instance)) &&
                     instance.common.enabled &&
                     (instance.common.mode !== 'extension' || !instance.native.webInstance)
                 ) {
@@ -247,13 +248,12 @@ export class InstanceManager {
      * Check if an instance is handled by this host process and initialize internal data structures
      *
      * @param instance instance object
-     * @param ipArr IP-Array from this host
      * @returns true if instance needs to be handled by this host (true) or not
      */
-    async checkAndAddInstance(instance: ioBroker.InstanceObject, ipArr: string[]): Promise<boolean> {
+    async checkAndAddInstance(instance: ioBroker.InstanceObject): Promise<boolean> {
         const { config, logger, hostLogPrefix, hostname, isCompactGroupController } = this.#options;
 
-        if (!ipArr.includes(instance.common.host) && instance.common.host && instance.common.host !== hostname) {
+        if (!this.#isAssignedHere(instance.common.host)) {
             return false;
         }
         // @ts-expect-error todo who does this? legacy or still needed?
@@ -440,7 +440,7 @@ export class InstanceManager {
                 return;
             }
             // these states now belong to the copy on the new host
-            if (await this.#isMovedAway(id)) {
+            if (this.#stoppedAsMovedAway.delete(id)) {
                 return;
             }
 
@@ -487,20 +487,6 @@ export class InstanceManager {
      */
     #isAssignedHere(host: string | null | undefined): boolean {
         return !host || host === this.#options.hostname || tools.findIPs().includes(host);
-    }
-
-    /**
-     * Whether the instance is now assigned to another host. False if the objects database cannot tell.
-     *
-     * @param id id of the instance
-     */
-    async #isMovedAway(id: ioBroker.ObjectIDs.Instance): Promise<boolean> {
-        try {
-            const obj = await this.#options.objects.getObject(id);
-            return !!obj && !this.#isAssignedHere(obj.common?.host);
-        } catch {
-            return false;
-        }
     }
 
     /**
@@ -617,8 +603,10 @@ export class InstanceManager {
      *
      * @param id instance id
      * @param force if forced we will kill the pid
+     * @param options how to stop
+     * @param options.movedAway the instance is now assigned to another host, so stop the own child only
      */
-    async stopInstance(id: string, force: boolean): Promise<void> {
+    async stopInstance(id: string, force: boolean, options: { movedAway?: boolean } = {}): Promise<void> {
         const { states, logger, hostLogPrefix, hostObjectPrefix, isCompactGroupController, state } = this.#options;
         const proc = this.procs[id];
 
@@ -679,8 +667,11 @@ export class InstanceManager {
             stopTimeout.timeout = null;
         }
 
-        // sigKill and the stopInstance message are shared with the copy on the new host
-        const movedAway = !this.#isAssignedHere(instance.common.host);
+        // sigKill, the stopInstance message and the offline states belong to the copy on the new host
+        const movedAway = !!options.movedAway;
+        if (movedAway) {
+            this.#stoppedAsMovedAway.add(id);
+        }
 
         switch (instance.common.mode) {
             case 'daemon':
@@ -986,13 +977,13 @@ export class InstanceManager {
 
                 if (proc.process || proc.config.common.mode === 'schedule') {
                     proc.restartExpected = true;
-                    await this.stopInstance(id, false);
+                    await this.stopInstance(id, false, {
+                        movedAway: !!obj && !this.#isAssignedHere(obj.common.host),
+                    });
                     if (!this.procs[id]) {
                         return;
                     }
-                    const _ipArr = tools.findIPs();
-
-                    if (await this.checkAndAddInstance(proc.config, _ipArr)) {
+                    if (await this.checkAndAddInstance(proc.config)) {
                         if (
                             proc.config.common.enabled &&
                             (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
@@ -1023,8 +1014,7 @@ export class InstanceManager {
                         `${hostLogPrefix} ignore object change because the adapter is still in installation/rebuild queue`,
                     );
                 } else {
-                    const _ipArr = tools.findIPs();
-                    if (proc.config && (await this.checkAndAddInstance(proc.config, _ipArr))) {
+                    if (proc.config && (await this.checkAndAddInstance(proc.config))) {
                         if (
                             proc.config.common.enabled &&
                             (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
@@ -1046,9 +1036,8 @@ export class InstanceManager {
                     }
                 }
             } else if (obj?.common) {
-                const _ipArr = tools.findIPs();
                 // new adapter
-                if (!(await this.checkAndAddInstance(obj, _ipArr))) {
+                if (!(await this.checkAndAddInstance(obj))) {
                     return;
                 }
 
