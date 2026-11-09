@@ -1,5 +1,4 @@
-import semver from 'semver';
-import { EXIT_CODES } from '@iobroker/js-controller-common-db';
+import { EXIT_CODES, tools } from '@iobroker/js-controller-common-db';
 
 /** What is known about an adapter that is about to be installed */
 export interface AdapterCompatibilityInput {
@@ -61,7 +60,7 @@ export function checkAdapterCompatibility(input: AdapterCompatibilityInput): Ada
     }
 
     const engine = input.packageJson?.engines?.node;
-    if (engine && !semver.satisfies(nodeVersion, engine)) {
+    if (engine && !tools.nodeVersionSatisfies(engine, nodeVersion)) {
         return {
             exitCode: EXIT_CODES.INVALID_NODE_VERSION,
             message: `Adapter does not support current nodejs version. Required ${engine}. Actual version: v${nodeVersion}`,
