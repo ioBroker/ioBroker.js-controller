@@ -40,6 +40,8 @@ export interface StatesSettings {
     connected?: () => void;
     /** Called when the client gets disconnected */
     disconnected?: () => void;
+    /** Called on every reconnect, before the subscriptions are restored */
+    reconnected?: () => void | Promise<void>;
     /** Handler for user-level state changes */
     changeUser?: UserChangeFunction;
     /** Handler for system-level state and message changes */
@@ -342,6 +344,11 @@ export class StateRedisClient {
                 );
             }
             if (wasReady) {
+                try {
+                    await this.settings.reconnected?.();
+                } catch (e) {
+                    this.log.error(`${this.namespace} States reconnect handler failed: ${e.message}`);
+                }
                 this.reconnectSubscribers();
             }
             wasReady = true;

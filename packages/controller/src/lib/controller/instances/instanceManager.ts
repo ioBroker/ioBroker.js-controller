@@ -490,6 +490,35 @@ export class InstanceManager {
     }
 
     /**
+     * Stop running instances which were moved, disabled or deleted while their object changes could not reach us,
+     * e.g. after a reconnect or a stall
+     *
+     * @param reason why the check runs, for the log
+     */
+    async recheckInstances(reason: string): Promise<void> {
+        const { objects, logger, hostLogPrefix } = this.#options;
+
+        for (const [id, proc] of Object.entries(this.procs)) {
+            if ((!proc.process && !proc.schedule) || proc.stopping) {
+                continue;
+            }
+
+            let obj: ioBroker.InstanceObject | null | undefined;
+            try {
+                obj = (await objects.getObject(id)) as ioBroker.InstanceObject | null | undefined;
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot recheck ${id} after ${reason}: ${e.message}`);
+                continue;
+            }
+
+            if (!obj || !obj.common.enabled || !this.#isAssignedHere(obj.common.host)) {
+                logger.warn(`${hostLogPrefix} ${id} was moved, disabled or deleted during ${reason}, stopping it`);
+                await this.handleObjectChange(id, obj ?? null);
+            }
+        }
+    }
+
+    /**
      * Delete the states of a deleted instance which have no object. The CLI deletes the objects and states first, but
      * the instance writes its states until it ends (e.g. `info.connection` on unload), and this host writes `sigKill`
      * to stop it - all of them would remain without object. An instance with the same number may already exist again,

@@ -503,3 +503,81 @@ describe('InstanceManager.handleObjectChange', () => {
         assert.equal(manager.procs['system.adapter.hm-rpc.0'], undefined);
     });
 });
+
+describe('InstanceManager.recheckInstances', () => {
+    /**
+     * Create a manager with one running daemon and the given current object
+     *
+     * @param current what the objects database returns now, an Error to fail the read
+     */
+    function setup(current: ioBroker.InstanceObject | null | Error): {
+        manager: InstanceManager;
+        kill: sinon.SinonStub;
+        getObject: sinon.SinonStub;
+    } {
+        const getObject = current instanceof Error ? sinon.stub().rejects(current) : sinon.stub().resolves(current);
+        const { manager } = createManager({
+            objects: { getObject } as any,
+            states: { setState: sinon.stub().resolves() } as any,
+            notificationHandler: { clearNotifications: sinon.stub().resolves() } as any,
+        });
+        const kill = sinon.stub();
+        manager.procs['system.adapter.hm-rpc.0'] = {
+            config: instanceObject({ common: { stopTimeout: 1 } }),
+            process: { pid: 4711, kill },
+        } as any;
+        return { manager, kill, getObject };
+    }
+
+    it('stops an instance which was moved to another host meanwhile', async () => {
+        const { manager, kill } = setup(instanceObject({ common: { host: 'otherhost', stopTimeout: 1 } }));
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(kill.firstCall.args[0], 'SIGTERM');
+        assert.equal(manager.procs['system.adapter.hm-rpc.0'], undefined);
+    });
+
+    it('stops an instance which was disabled meanwhile', async () => {
+        const { manager, kill } = setup(instanceObject({ common: { enabled: false, stopTimeout: 1 } }));
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(kill.called, true);
+    });
+
+    it('leaves an instance alone which is still assigned to this host', async () => {
+        const { manager, kill } = setup(instanceObject({ common: { stopTimeout: 1 } }));
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(kill.called, false);
+        assert.ok(manager.procs['system.adapter.hm-rpc.0']);
+    });
+
+    it('leaves an instance alone if its object cannot be read', async () => {
+        const { manager, kill } = setup(new Error('DB closed'));
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(kill.called, false);
+    });
+
+    it('skips an instance which is already being stopped', async () => {
+        const { manager, getObject } = setup(null);
+        manager.procs['system.adapter.hm-rpc.0'].stopping = true;
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(getObject.called, false);
+    });
+
+    it('does not read instances which are not running', async () => {
+        const { manager, getObject } = setup(null);
+        delete manager.procs['system.adapter.hm-rpc.0'].process;
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(getObject.called, false);
+    });
+});

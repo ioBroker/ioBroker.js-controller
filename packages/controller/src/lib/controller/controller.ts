@@ -6,6 +6,7 @@ import { setTimeout as wait } from 'node:timers/promises';
 import {
     EXIT_CODES,
     NotificationHandler,
+    StallDetector,
     describePortInUse,
     getObjectsConstructor,
     getPortInUse,
@@ -166,6 +167,8 @@ export class Controller {
     #statesDisconnectTimeout: NodeJS.Timeout | null = null;
     /** Timer that renews the primary host lock */
     #primaryHostInterval: NodeJS.Timeout | null = null;
+    /** A frozen process keeps its sockets, so it sees no reconnect */
+    #stallDetector = new StallDetector(gap => this.#recheckInstances(`a stall of ${gap} ms`));
 
     /**
      * @param options The id of the compact group if this is a compact group controller
@@ -667,6 +670,7 @@ export class Controller {
                 );
                 // give the main controller a bit longer, so that adapter and compact processes can exit before
             },
+            reconnected: () => this.#recheckInstances('a reconnect'),
             change: async (id, obj) => this.#instances?.handleObjectChange(id, obj),
             primaryHostLost: () => {
                 if (!this.#state.isStopping) {
@@ -727,6 +731,7 @@ export class Controller {
                 await this.#pairing!.start();
                 await this.#instances!.usedResources.load();
                 this.#state.setStarted(true);
+                this.#stallDetector.start();
                 await this.#instances!.getInstances();
             }
         } else {
@@ -771,6 +776,21 @@ export class Controller {
             await wait(1_000);
             process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
         }, 10_000);
+    }
+
+    /**
+     * Stop instances whose object changes may have been missed, without waiting for it
+     *
+     * @param reason why the check runs, for the log
+     */
+    #recheckInstances(reason: string): void {
+        if (!this.#state.started || this.#state.isStopping) {
+            return;
+        }
+        this.#logger.info(`${this.#hostLogPrefix} Rechecking the instances of this host after ${reason}`);
+        this.#instances
+            ?.recheckInstances(reason)
+            .catch(e => this.#logger.error(`${this.#hostLogPrefix} Cannot recheck instances: ${e.message}`));
     }
 
     /**
@@ -859,6 +879,7 @@ export class Controller {
             clearInterval(this.#primaryHostInterval);
             this.#primaryHostInterval = null;
         }
+        this.#stallDetector.stop();
 
         this.#ips?.close();
         this.#status?.close();
