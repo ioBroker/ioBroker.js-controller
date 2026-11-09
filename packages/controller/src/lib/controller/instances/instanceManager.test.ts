@@ -292,6 +292,21 @@ describe('InstanceManager.setInstanceOfflineStates', () => {
         assert.equal(delState.callCount, 1);
     });
 
+    it('writes nothing for an instance which moved to another host', async () => {
+        const setState = sinon.stub().resolves();
+        const { manager } = createManager({
+            objects: {
+                objectExists: sinon.stub().resolves(true),
+                getObject: sinon.stub().resolves(instanceObject({ common: { host: 'otherhost' } })),
+            } as any,
+            states: { setState, getState: sinon.stub().resolves({ val: true }) } as any,
+        });
+
+        await manager.setInstanceOfflineStates('system.adapter.hm-rpc.0');
+
+        assert.equal(setState.called, false);
+    });
+
     it('takes an instance for existing if the objects database cannot tell, and deletes nothing', async () => {
         const setState = sinon.stub().resolves();
         const delState = sinon.stub().resolves();
@@ -304,6 +319,59 @@ describe('InstanceManager.setInstanceOfflineStates', () => {
 
         assert.equal(setState.firstCall.args[0], 'system.adapter.hm-rpc.0.alive');
         assert.equal(delState.called, false);
+    });
+});
+
+describe('InstanceManager.stopInstance', () => {
+    /**
+     * Register a running daemon with the given config
+     *
+     * @param manager the manager to register it with
+     * @param common parts of `common` this test cares about
+     */
+    function addRunning(manager: InstanceManager, common: Record<string, any>): { kill: sinon.SinonStub } {
+        const child = { pid: 4711, kill: sinon.stub() };
+        manager.procs['system.adapter.hm-rpc.0'] = {
+            config: instanceObject({ common: { stopTimeout: 1, ...common } }),
+            process: child,
+        } as any;
+        return child;
+    }
+
+    it('stops an instance of this host via sigKill', async () => {
+        const setState = sinon.stub().resolves();
+        const { manager } = createManager({ states: { setState } as any });
+        addRunning(manager, {});
+
+        await manager.stopInstance('system.adapter.hm-rpc.0', false);
+
+        assert.equal(setState.firstCall.args[0], 'system.adapter.hm-rpc.0.sigKill');
+        assert.equal(setState.firstCall.args[1].val, -1);
+    });
+
+    it('stops a copy which moved to another host with SIGTERM and leaves sigKill alone', async () => {
+        const setState = sinon.stub().resolves();
+        const { manager } = createManager({ states: { setState } as any });
+        const child = addRunning(manager, { host: 'otherhost' });
+
+        await manager.stopInstance('system.adapter.hm-rpc.0', false);
+
+        assert.equal(setState.called, false);
+        assert.equal(child.kill.firstCall.args[0], 'SIGTERM');
+    });
+
+    it('does not send stopInstance to a copy which moved to another host', async () => {
+        const sendToAndWait = sinon.stub().resolves();
+        const { manager } = createManager({
+            states: { setState: sinon.stub().resolves() } as any,
+            messages: { sendToAndWait } as any,
+        });
+        const child = addRunning(manager, { host: 'otherhost', supportedMessages: { stopInstance: true } });
+
+        await manager.stopInstance('system.adapter.hm-rpc.0', false);
+
+        assert.equal(sendToAndWait.called, false);
+        assert.equal(child.kill.firstCall.args[0], 'SIGTERM');
     });
 });
 

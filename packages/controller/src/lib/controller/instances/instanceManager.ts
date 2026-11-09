@@ -439,6 +439,10 @@ export class InstanceManager {
                 await this.#deleteStatesOfDeletedInstance(id);
                 return;
             }
+            // these states now belong to the copy on the new host
+            if (await this.#isMovedAway(id)) {
+                return;
+            }
 
             statistics.countOutput(2);
             await states.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
@@ -471,6 +475,29 @@ export class InstanceManager {
     async #isInstanceDeleted(id: ioBroker.ObjectIDs.Instance): Promise<boolean> {
         try {
             return !(await this.#options.objects.objectExists(id));
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * Whether an instance with the given host is assigned to this host
+     *
+     * @param host `common.host` of the instance
+     */
+    #isAssignedHere(host: string | null | undefined): boolean {
+        return !host || host === this.#options.hostname || tools.findIPs().includes(host);
+    }
+
+    /**
+     * Whether the instance is now assigned to another host. False if the objects database cannot tell.
+     *
+     * @param id id of the instance
+     */
+    async #isMovedAway(id: ioBroker.ObjectIDs.Instance): Promise<boolean> {
+        try {
+            const obj = await this.#options.objects.getObject(id);
+            return !!obj && !this.#isAssignedHere(obj.common?.host);
         } catch {
             return false;
         }
@@ -652,6 +679,9 @@ export class InstanceManager {
             stopTimeout.timeout = null;
         }
 
+        // sigKill and the stopInstance message are shared with the copy on the new host
+        const movedAway = !this.#isAssignedHere(instance.common.host);
+
         switch (instance.common.mode) {
             case 'daemon':
                 if (!proc.process) {
@@ -670,8 +700,9 @@ export class InstanceManager {
                     }
                     delete proc.process;
                 } else if (
-                    (instance.common.messagebox && instance.common.supportStopInstance) ||
-                    instance.common.supportedMessages?.stopInstance
+                    !movedAway &&
+                    ((instance.common.messagebox && instance.common.supportStopInstance) ||
+                        instance.common.supportedMessages?.stopInstance)
                 ) {
                     /**
                      * Ask the instance to stop itself and kill it as soon as it has answered
@@ -748,13 +779,19 @@ export class InstanceManager {
                 } else if (!proc.startedAsCompactGroup) {
                     let err;
                     try {
-                        // if started, let it end itself as first try
-                        await states.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix });
+                        if (movedAway) {
+                            this.procs[id].process?.kill('SIGTERM');
+                        } else {
+                            // if started, let it end itself as first try
+                            await states.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix });
+                        }
                     } catch (e) {
                         err = e;
                     }
                     // send kill signal
-                    logger.info(`${hostLogPrefix} stopInstance ${instance._id} send kill signal`);
+                    logger.info(
+                        `${hostLogPrefix} stopInstance ${instance._id} send ${movedAway ? 'SIGTERM, moved to another host' : 'kill signal'}`,
+                    );
                     const proc = this.procs[id];
                     const stopTimeout = this.stopTimeouts[id];
 
