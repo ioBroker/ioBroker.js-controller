@@ -1879,14 +1879,30 @@ export function generateDefaultCertificates(): DefaultCertificates {
         { shortName: 'OU', value: 'iobroker' },
     ];
 
-    const issAttrs = [
-        { name: 'commonName', value: 'iobroker' },
-        { name: 'organizationName', value: 'ioBroker GmbH' },
-        { shortName: 'OU', value: 'iobroker' },
-    ];
-
+    // the certificate is self-signed, so the issuer is the subject itself
     cert.setSubject(subAttrs);
-    cert.setIssuer(issAttrs);
+    cert.setIssuer(subAttrs);
+
+    const altNames: { type: number; value?: string; ip?: string }[] = [];
+    for (const dns of new Set([os.hostname(), getHostName(), 'localhost'])) {
+        if (dns) {
+            altNames.push({ type: 2, value: dns });
+        }
+    }
+
+    for (const ip of new Set(['127.0.0.1', '::1', ...findIPs()])) {
+        // IPv6 addresses with a zone (e.g. fe80::1%eth0) cannot be put into a certificate
+        if (!ip || ip.includes('%')) {
+            continue;
+        }
+        try {
+            // node-forge throws on an address it cannot encode, which must not prevent the certificate
+            pki.createCertificate().setExtensions([{ name: 'subjectAltName', altNames: [{ type: 7, ip }] }]);
+            altNames.push({ type: 7, ip });
+        } catch {
+            // ignore this address
+        }
+    }
 
     cert.setExtensions([
         {
@@ -1898,23 +1914,11 @@ export function generateDefaultCertificates(): DefaultCertificates {
             name: 'keyUsage',
             critical: true,
             digitalSignature: true,
-            contentCommitment: true,
             keyEncipherment: true,
-            dataEncipherment: true,
-            keyAgreement: true,
-            keyCertSign: true,
-            cRLSign: true,
-            encipherOnly: true,
-            decipherOnly: true,
         },
         {
             name: 'subjectAltName',
-            altNames: [
-                {
-                    type: 2,
-                    value: os.hostname(),
-                },
-            ],
+            altNames,
         },
         {
             name: 'subjectKeyIdentifier',
@@ -1923,12 +1927,6 @@ export function generateDefaultCertificates(): DefaultCertificates {
             name: 'extKeyUsage',
             serverAuth: true,
             clientAuth: true,
-            codeSigning: false,
-            emailProtection: false,
-            timeStamping: false,
-        },
-        {
-            name: 'authorityKeyIdentifier',
         },
     ]);
 

@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) Fixed generated default certificates: removed empty authorityKeyIdentifier, restricted keyUsage, issuer equals subject, added IPs to SAN (#3615)
 * (@FernetMenta) Fixed a host that no longer received host messages, state changes and object changes after the host serving the databases restarted, until it was restarted itself: the pub/sub connections only receive, so they could stay on a connection that is gone without noticing. They now reconnect whenever the main connection reconnects (#3524)
 * (@GermanBluefox) A prerelease or nightly build of Node.js (e.g. `27.0.0-alpha.0`, as `node-update.sh --force` installs it) counts by its version now: the controller started not at all with it, and adapters could not be installed and got disabled, even if the required range like `>=22.22.2` allows this version. The controller warns that this is unsupported, and an upper limit of an adapter (`>=22 <27`) still counts
 * (@GermanBluefox) `iobroker upgrade <adapter>@<version>`, which admin also uses, checks the dependencies now and refuses an upgrade which cannot run, before any instance is stopped: only `--force` or going back to an older version skips the check. A refused upgrade ends with the exit code `INVALID_DEPENDENCY_VERSION`, and the notification about a failed automatic upgrade names the reason

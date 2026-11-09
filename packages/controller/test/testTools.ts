@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
+import { X509Certificate } from 'node:crypto';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -7,6 +8,8 @@ import {
     FORBIDDEN_CHARS,
     execAsync,
     execFileAsync,
+    generateDefaultCertificates,
+    getHostName,
     isForeignProcess,
     isProcessRunning,
     nodeVersionSatisfies,
@@ -138,6 +141,35 @@ describe('test tools.js helpers', () => {
     })
         // the WMI probe and six inspections, each of which may need its own PowerShell start on Windows
         .timeout(330_000);
+});
+
+describe('generateDefaultCertificates', () => {
+    it('generates a valid self-signed TLS server certificate', () => {
+        const { defaultPublic } = generateDefaultCertificates();
+        const cert = new X509Certificate(defaultPublic);
+
+        assert.equal(cert.issuer, cert.subject);
+        assert.equal(cert.verify(cert.publicKey), true);
+
+        const altNames = cert.subjectAltName ?? '';
+        assert.ok(altNames.includes(`DNS:${getHostName()}`), altNames);
+        assert.ok(altNames.includes('DNS:localhost'), altNames);
+        assert.ok(altNames.includes('IP Address:127.0.0.1'), altNames);
+
+        // a certificate with CA:FALSE must not be able to sign other certificates
+        assert.equal(cert.ca, false);
+        // keyUsage: OID 2.5.29.15, critical flag (01 01 ff), OCTET STRING and BIT STRING header, unused bits, flags
+        const keyUsage = cert.raw.indexOf(Buffer.from([0x06, 0x03, 0x55, 0x1d, 0x0f, 0x01, 0x01, 0xff]));
+        assert.notEqual(keyUsage, -1);
+        const keyUsageFlags = cert.raw[keyUsage + 13];
+        // digitalSignature and keyEncipherment
+        assert.equal(keyUsageFlags & 0xa0, 0xa0);
+        // no keyCertSign and no cRLSign
+        assert.equal(keyUsageFlags & 0x06, 0);
+
+        // an empty authorityKeyIdentifier (OID 2.5.29.35 followed by the empty SEQUENCE 0x3000) is rejected by Chrome
+        assert.equal(cert.raw.includes(Buffer.from([0x06, 0x03, 0x55, 0x1d, 0x23])), false);
+    }).timeout(30_000);
 });
 
 describe('nodeVersionSatisfies', () => {
