@@ -359,6 +359,20 @@ describe('InstanceManager.stopInstance', () => {
         assert.equal(child.kill.firstCall.args[0], 'SIGTERM');
     });
 
+    it('lets a second stop wait for the running one, and both resolve', async () => {
+        const setState = sinon.stub().resolves();
+        const { manager } = createManager({ states: { setState } as any });
+        const child = addRunning(manager, {});
+
+        await Promise.all([
+            manager.stopInstance('system.adapter.hm-rpc.0', false),
+            manager.stopInstance('system.adapter.hm-rpc.0', false),
+        ]);
+
+        assert.equal(setState.callCount, 1);
+        assert.equal(child.kill.callCount, 1);
+    });
+
     it('does not send stopInstance to a copy which moved to another host', async () => {
         const sendToAndWait = sinon.stub().resolves();
         const { manager } = createManager({
