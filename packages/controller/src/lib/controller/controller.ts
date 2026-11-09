@@ -1175,7 +1175,7 @@ export class Controller {
 
         let invalidVersion;
         try {
-            invalidVersion = !semver.satisfies(process.version, packageJson.engines.node);
+            invalidVersion = !tools.nodeVersionSatisfies(packageJson.engines.node);
         } catch {
             // semver could also not support the node version or something else ... failsafe
             invalidVersion = true;
@@ -1197,6 +1197,12 @@ export class Controller {
             );
 
             process.exit(EXIT_CODES.INVALID_NODE_VERSION);
+        }
+
+        if (semver.prerelease(process.version)) {
+            this.#logger.warn(
+                `${this.#hostLogPrefix} Node.js ${process.version} is a prerelease: this is UNSUPPORTED and meant for test systems only`,
+            );
         }
 
         return packageJson;
