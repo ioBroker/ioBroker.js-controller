@@ -6,7 +6,7 @@
 
 # Interface: CheckStatesResult
 
-Defined in: [adapter/src/lib/\_Types.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/_Types.ts#L279)
+Defined in: [adapter/src/lib/\_Types.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/adapter/src/lib/_Types.ts#L279)
 
 Result of checking a set of states
 
@@ -16,7 +16,7 @@ Result of checking a set of states
 
 > **ids**: `string`[]
 
-Defined in: [adapter/src/lib/\_Types.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/_Types.ts#L283)
+Defined in: [adapter/src/lib/\_Types.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/adapter/src/lib/_Types.ts#L283)
 
 The matching state ids
 
@@ -26,6 +26,6 @@ The matching state ids
 
 > **objs**: [`StateObject`](StateObject.md)[]
 
-Defined in: [adapter/src/lib/\_Types.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/_Types.ts#L281)
+Defined in: [adapter/src/lib/\_Types.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/adapter/src/lib/_Types.ts#L281)
 
 The matching state objects
