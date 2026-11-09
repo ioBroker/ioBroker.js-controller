@@ -9,6 +9,7 @@ import {
     execFileAsync,
     isForeignProcess,
     isProcessRunning,
+    nodeVersionSatisfies,
 } from '@iobroker/js-controller-common-db/tools';
 
 /**
@@ -137,4 +138,36 @@ describe('test tools.js helpers', () => {
     })
         // the WMI probe and six inspections, each of which may need its own PowerShell start on Windows
         .timeout(330_000);
+});
+
+describe('nodeVersionSatisfies', () => {
+    it('takes a prerelease or nightly build by its version', () => {
+        assert.equal(nodeVersionSatisfies('>=22.22.2', 'v27.0.0-alpha.0'), true);
+        assert.equal(nodeVersionSatisfies('>=22.22.2', '27.0.0-nightly20261101abcdef'), true);
+    });
+
+    it('does not take a prerelease for the release it leads to', () => {
+        assert.equal(nodeVersionSatisfies('>=22.22.2', 'v22.22.2-rc.1'), false);
+        assert.equal(nodeVersionSatisfies('>=22 <27', 'v27.0.0-alpha.0'), false);
+    });
+
+    it('lets a range without minor and patch start with the prereleases of that major', () => {
+        assert.equal(nodeVersionSatisfies('>=22', 'v22.0.0-rc.1'), true);
+    });
+
+    it('checks released versions as before', () => {
+        assert.equal(nodeVersionSatisfies('>=22.22.2', 'v22.22.2'), true);
+        assert.equal(nodeVersionSatisfies('>=22.22.2', 'v26.1.0'), true);
+        assert.equal(nodeVersionSatisfies('>=22.22.2', 'v22.22.1'), false);
+    });
+
+    it('checks the running version if no other is given', () => {
+        assert.equal(nodeVersionSatisfies('*'), true);
+        assert.equal(nodeVersionSatisfies(`>${process.version}`), false);
+    });
+
+    it('does not throw on what it cannot read', () => {
+        assert.equal(nodeVersionSatisfies('not a range', 'v22.22.2'), false);
+        assert.equal(nodeVersionSatisfies('>=22', 'not a version'), false);
+    });
 });

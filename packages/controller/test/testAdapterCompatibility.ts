@@ -66,6 +66,22 @@ describe('checkAdapterCompatibility', () => {
         );
     });
 
+    it('takes a prerelease of Node.js by its version', () => {
+        const check = (node: string, nodeVersion: string): ReturnType<typeof checkAdapterCompatibility> =>
+            checkAdapterCompatibility({
+                ioPackage: { common: {} },
+                packageJson: { engines: { node } },
+                platform: 'linux',
+                nodeVersion,
+            });
+
+        assert.equal(check('>=22', 'v27.0.0-alpha.0'), null);
+        assert.equal(check('>=22', 'v27.0.0-nightly20261101abcdef'), null);
+        // the upper limit of an adapter still counts, and the prerelease comes before its release
+        assert.equal(check('>=22 <27', 'v27.0.0-alpha.0')?.exitCode, EXIT_CODES.INVALID_NODE_VERSION);
+        assert.equal(check('>=22.22.2', 'v22.22.2-rc.1')?.exitCode, EXIT_CODES.INVALID_NODE_VERSION);
+    });
+
     it('checks this system if nothing else is given', () => {
         const own = process.platform as 'linux' | 'darwin' | 'win32';
         const other = own === 'win32' ? 'linux' : 'win32';
