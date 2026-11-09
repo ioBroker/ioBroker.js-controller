@@ -36,7 +36,7 @@ Settings for the objects client including connection and namespaces
 
 > **activateSets**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1189
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1194
 
 Activates the usage of sets
 
@@ -50,7 +50,7 @@ Activates the usage of sets
 
 > **addPreserveSettings**(`settings`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1100
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1105
 
 Add object property paths that should be preserved when an object is overwritten (controller only)
 
@@ -72,7 +72,7 @@ One or more property paths to preserve
 
 > **checkFileAsync**(`id`, `name`, `userContext`, `flag`): `Promise`\<[`FileObject`](../interfaces/FileObject.md) \| `null`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:136
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:141
 
 Check whether the current options have the required rights on a file
 
@@ -112,7 +112,7 @@ The access flag(s) to check for
 
 > **checkFileRights**(`id`, `name`, `options`, `flag`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:154
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:159
 
 Check whether the current user is allowed to access a file
 
@@ -158,7 +158,7 @@ Called with the effective options once the rights have been checked
 
 > **chmodFile**(`id`, `name`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:478
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:483
 
 Change the file mode (permissions) of a single file
 
@@ -208,7 +208,7 @@ Called with the processed file
 
 > **chmodFileAsync**(`id`, `name`, `options`): `Promise`\<[`ChownFileResult`](../interfaces/ChownFileResult.md)[] \| `undefined`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:491
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:496
 
 Promise-version of chmodFile
 
@@ -252,7 +252,7 @@ The user on whose behalf the operation is performed
 
 > **chmodObject**(`pattern`, `options`, `callback?`): `void` \| `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:691
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:696
 
 Change the file mode (permissions) of all files matching the given pattern
 
@@ -308,7 +308,7 @@ Called with the list of changed objects
 
 > **chmodObjectAsync**(`pattern`, `options`): `Promise`\<[`Object`](../type-aliases/Object.md)[] \| `undefined`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:707
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:712
 
 Promise-version of chmodObject
 
@@ -358,7 +358,7 @@ The user on whose behalf the operation is performed
 
 > **chownFile**(`id`, `name`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:436
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:441
 
 Change the owner and owner group of a file
 
@@ -420,7 +420,7 @@ Called with the processed file(s)
 
 > **chownFileAsync**(`id`, `name`, `options`): `Promise`\<[`ChownFileResult`](../interfaces/ChownFileResult.md)[] \| `undefined`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:452
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:457
 
 Promise-version of chownFile
 
@@ -470,7 +470,7 @@ The user on whose behalf the operation is performed
 
 > **chownObject**(`pattern`, `options`, `callback?`): `void` \| `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:657
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:662
 
 Change the owner and owner group of all objects matching the given pattern
 
@@ -526,7 +526,7 @@ Called with the list of changed objects
 
 > **chownObjectAsync**(`pattern`, `options`): `Promise`\<[`Object`](../type-aliases/Object.md)[] \| `undefined`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:673
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:678
 
 Promise-version of chownObject
 
@@ -590,7 +590,7 @@ Connect to the objects database and set up the change and file subscriptions
 
 > **deactivateSets**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1193
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1198
 
 Deactivates the usage of sets
 
@@ -604,7 +604,7 @@ Deactivates the usage of sets
 
 > **delFile**(`id`, `name`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:289
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:294
 
 Delete a file of an object (alias for [unlink](#unlink))
 
@@ -644,7 +644,7 @@ Called once the file has been deleted
 
 > **delFileAsync**(`id`, `name`, `options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:299
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:304
 
 Promise-version of delFile
 
@@ -680,7 +680,7 @@ The current request options including the user
 
 > **delObject**(`id`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:913
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:918
 
 Delete an object
 
@@ -706,7 +706,7 @@ Called once the object has been deleted
 
 > **delObject**(`id`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:921
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:926
 
 Delete an object
 
@@ -738,7 +738,7 @@ Called once the object has been deleted
 
 > **delObject**(`id`, `options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:930
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:935
 
 Delete an object
 
@@ -766,7 +766,7 @@ The current request options including the user
 
 > **delObjectAsync**(`id`, `options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:940
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:945
 
 Promise-version of delObject
 
@@ -798,7 +798,7 @@ The user on whose behalf the operation is performed
 
 > **destroy**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1124
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1129
 
 Destructor of the class. Called when shutting down to close the redis connections.
 
@@ -812,7 +812,7 @@ Destructor of the class. Called when shutting down to close the redis connection
 
 > **destroyDB**(`options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1109
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1114
 
 Delete the whole objects database (requires admin rights)
 
@@ -840,7 +840,7 @@ Called once the database has been destroyed
 
 > **destroyDBAsync**(`options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1118
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1123
 
 Promise-version of destroyDB
 
@@ -868,7 +868,7 @@ The user on whose behalf the database is destroyed
 
 > **enableFileCache**(`enabled`, `callback?`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:501
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:506
 
 Enable or disable the file cache
 
@@ -894,7 +894,7 @@ Called with the resulting cache state
 
 > **enableFileCache**(`enabled`, `options?`, `callback?`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:509
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:514
 
 Enable or disable the file cache
 
@@ -928,7 +928,7 @@ Called with the resulting cache state
 
 > **enableFileCacheAsync**(`enabled`, `options?`): `Promise`\<`boolean`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:518
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:523
 
 Promise-version of enableFileCache
 
@@ -956,7 +956,7 @@ The current request options including the user
 
 > **extendObject**\<`T`\>(`id`, `obj`, `options?`): `Promise`\<\{ `id`: `string`; `value`: [`AnyObject`](../type-aliases/AnyObject.md); \}\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1047
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1052
 
 Extend an existing object with the given partial object, creating it if it does not exist
 
@@ -996,7 +996,7 @@ The current request options including the user, or the callback
 
 > **extendPrimaryHostLock**(`ms`): `Promise`\<`number`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1159
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1164
 
 Extend the primary host lock time
 Value will expire after ms milliseconds
@@ -1021,7 +1021,7 @@ ms until value expires
 
 > **fileExists**(`id`, `name`, `options?`): `Promise`\<`boolean`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:256
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:261
 
 Check if a given file exists
 
@@ -1057,7 +1057,7 @@ optional user context
 
 > **findObject**(`idOrName`, `type`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1072
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1077
 
 Find an object by its id or name
 
@@ -1095,7 +1095,7 @@ Called with the found id and the original id/name
 
 > **findObject**(`idOrName`, `type`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1083
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1088
 
 Find an object by its id or name
 
@@ -1127,7 +1127,7 @@ Called with the found id and the original id/name
 
 > **findObject**(`idOrName`, `type?`, `options?`): `Promise`\<`string` \| `undefined`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1091
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1096
 
 Find an object by its id or name
 
@@ -1161,7 +1161,7 @@ The current request options (may include a language)
 
 > **getFileId**(`id`, `name`, `isMeta?`): `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:127
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:132
 
 Build the internal redis key for a file
 
@@ -1197,7 +1197,7 @@ Whether to return the key of the meta-entry (true) or the data entry (false)
 
 > **getKeys**(`pattern`, `options`, `callback`, `dontModify?`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:759
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:764
 
 Get all object ids matching the given pattern
 
@@ -1235,7 +1235,7 @@ If true, the returned keys are not stripped of the namespace
 
 > **getKeys**(`pattern`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:768
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:773
 
 Get all object ids matching the given pattern
 
@@ -1261,7 +1261,7 @@ Called with the matching keys
 
 > **getKeys**(`pattern`, `options?`, `callback?`, `dontModify?`): `Promise`\<`string`[] \| `undefined`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:777
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:782
 
 Get all object ids matching the given pattern
 
@@ -1301,7 +1301,7 @@ If true, the returned keys are not stripped of the namespace
 
 > **getKeysAsync**(`pattern`, `options?`): `Promise`\<`string`[] \| `undefined`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:787
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:792
 
 Promise-version of getKeys
 
@@ -1333,7 +1333,7 @@ The user on whose behalf the keys are read
 
 > **getMeta**(`id`): `Promise`\<`string` \| `null`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1199
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1204
 
 Get value from meta namespace
 
@@ -1357,7 +1357,7 @@ redis key
 
 > **getObject**\<`T`\>(`id`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:721
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:726
 
 Get a single object by its id
 
@@ -1395,7 +1395,7 @@ Called with the read object
 
 > **getObject**\<`T`\>(`id`, `options?`): [`GetObjectPromise`](../type-aliases/GetObjectPromise.md)\<`T`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:730
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:735
 
 Get a single object by its id
 
@@ -1427,7 +1427,7 @@ The current request options including the user
 
 > **getObject**\<`T`\>(`id`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:739
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:744
 
 Get a single object by its id
 
@@ -1461,7 +1461,7 @@ Called with the read object
 
 > **getObjectAsync**\<`T`\>(`id`, `options?`): `Promise`\<[`ObjectIdToObjectType`](../type-aliases/ObjectIdToObjectType.md)\<`T`, `"read"`\> \| `null` \| `undefined`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:747
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:752
 
 Promise-version of getObject
 
@@ -1501,7 +1501,7 @@ use `getObject` without callback instead
 
 > **getObjectList**(`params`): [`GetObjectListPromise`](../type-aliases/GetObjectListPromise.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:999
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1004
 
 Get the list of objects matching the given parameters
 
@@ -1521,7 +1521,7 @@ Query parameters such as startkey and endkey
 
 > **getObjectList**(`params`, `options?`): [`GetObjectListPromise`](../type-aliases/GetObjectListPromise.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1006
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1011
 
 Get the list of objects matching the given parameters
 
@@ -1547,7 +1547,7 @@ The current request options including the user
 
 > **getObjectList**(`params`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1016
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1021
 
 Get the list of objects matching the given parameters
 
@@ -1573,7 +1573,7 @@ Called with the matching objects
 
 > **getObjectList**\<`T`\>(`params`, `options?`, `callback?`): `T` *extends* [`GetObjectListCallback`](../type-aliases/GetObjectListCallback.md)\<[`Object`](../type-aliases/Object.md)\> ? `void` : [`GetObjectListPromise`](../type-aliases/GetObjectListPromise.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1024
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1029
 
 Get the list of objects matching the given parameters
 
@@ -1613,7 +1613,7 @@ Called with the matching objects
 
 > **getObjectListAsync**(`params`, `options?`): [`GetObjectListPromise`](../type-aliases/GetObjectListPromise.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1034
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1039
 
 Promise-version of getObjectList
 
@@ -1643,7 +1643,7 @@ The current request options including the user
 
 > **getObjects**(`keys`, `options?`): `Promise`\<[`AnyObject`](../type-aliases/AnyObject.md)[]\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:797
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:802
 
 Get multiple objects by their ids
 
@@ -1669,7 +1669,7 @@ The current request options including the user
 
 > **getObjects**(`keys`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:806
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:811
 
 Get multiple objects by their ids
 
@@ -1695,7 +1695,7 @@ Called with the read objects
 
 > **getObjects**(`keys`, `options`, `callback`, `dontModify?`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:817
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:822
 
 Get multiple objects by their ids
 
@@ -1735,7 +1735,7 @@ If true, the returned objects are not cloned/modified
 
 > **getObjectsAsync**(`keys`, `options?`): `Promise`\<[`AnyObject`](../type-aliases/AnyObject.md)[]\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:828
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:833
 
 Promise-version of getObjects
 
@@ -1765,7 +1765,7 @@ The current request options including the user
 
 > **getObjectsByPattern**(`pattern`, `options`): `Promise`\<`void` \| [`AnyObject`](../type-aliases/AnyObject.md)[]\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:838
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:843
 
 Get all objects whose id matches the given pattern
 
@@ -1791,7 +1791,7 @@ The current request options including the user
 
 > **getObjectsByPattern**(`pattern`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:848
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:853
 
 Get all objects whose id matches the given pattern
 
@@ -1825,7 +1825,7 @@ Called with the matching objects
 
 > **getObjectsByPatternAsync**(`pattern`, `options`): `Promise`\<`void` \| ([`AnyObject`](../type-aliases/AnyObject.md) \| \{ `error`: `string`; \} \| `null`)[]\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:860
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:865
 
 Promise-version of getObjectsByPattern
 
@@ -1859,7 +1859,7 @@ The user on whose behalf the objects are read
 
 > **getObjectView**\<`Design`, `Search`\>(`design`, `search`, `params?`, `options?`): [`GetObjectViewPromise`](../type-aliases/GetObjectViewPromise.md)\<[`InferGetObjectViewItemType`](../type-aliases/InferGetObjectViewItemType.md)\<`Design`, `Search`\>\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:957
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:962
 
 Run a predefined object view (design document) and return the matching rows
 
@@ -1907,7 +1907,7 @@ The current request options including the user
 
 > **getObjectView**\<`Design`, `Search`\>(`design`, `search`, `params`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:969
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:974
 
 Run a predefined object view (design document) and return the matching rows
 
@@ -1961,7 +1961,7 @@ Called with the matching rows
 
 > **getObjectView**\<`Design`, `Search`\>(`design`, `search`, `params`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:980
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:985
 
 Run a predefined object view (design document) and return the matching rows
 
@@ -2011,7 +2011,7 @@ Called with the matching rows
 
 > **getObjectViewAsync**\<`Design`, `Search`\>(`design`, `search`, `params?`, `options?`): [`GetObjectViewPromise`](../type-aliases/GetObjectViewPromise.md)\<[`InferGetObjectViewItemType`](../type-aliases/InferGetObjectViewItemType.md)\<`Design`, `Search`\>\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:990
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:995
 
 Promise-version of getObjectView
 
@@ -2065,7 +2065,7 @@ The user on whose behalf the view is queried
 
 > **getPrimaryHost**(): `Promise`\<`string` \| `null`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1171
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1176
 
 Get the name of the primary host
 
@@ -2079,7 +2079,7 @@ Get the name of the primary host
 
 > **getProtocolVersion**(): `Promise`\<`string` \| `null`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1151
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1156
 
 Returns the protocol version from DB
 
@@ -2093,7 +2093,7 @@ Returns the protocol version from DB
 
 > **getStatus**(): [`DbStatus`](../interfaces/DbStatus.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:87
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:92
 
 Get the current status of the database
 
@@ -2107,7 +2107,7 @@ Get the current status of the database
 
 > **getUserGroup**(`user`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:176
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:181
 
 Determine the groups and effective ACL of the given user
 
@@ -2135,7 +2135,7 @@ Called with the user, its groups, and the effective ACL
 
 > **isSystemLocaleSupported**(): `Promise`\<`boolean`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:946
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:951
 
 Function to check if comparisons will work according to the configured Locale
 
@@ -2149,7 +2149,7 @@ Function to check if comparisons will work according to the configured Locale
 
 > **loadLuaScripts**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1128
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1133
 
 Load and register the Lua scripts used for atomic operations on the redis server
 
@@ -2163,7 +2163,7 @@ Load and register the Lua scripts used for atomic operations on the redis server
 
 > **migrateToSets**(): `Promise`\<`number`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1147
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1152
 
 Migrate all objects to sets
 
@@ -2179,7 +2179,7 @@ number of migrated sets
 
 > **mkdir**(`id`, `dirName?`, `options?`, `callback?`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:405
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:410
 
 Create a directory for an object's files (simulated, as redis has no real directories)
 
@@ -2219,7 +2219,7 @@ Called once the directory has been created
 
 > **mkdirAsync**(`id`, `dirName?`, `options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:417
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:422
 
 Promise-version of mkdir
 
@@ -2253,7 +2253,7 @@ The current request options including the user
 
 > **normalizeFilename**(`name`): `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:100
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:105
 
 Normalize a file name by collapsing slashes and backslashes into a single forward slash
 
@@ -2275,7 +2275,7 @@ The file name to normalize
 
 > **objectExists**(`id`, `options?`): `Promise`\<`boolean`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:246
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:251
 
 Check if a given object exists
 
@@ -2303,7 +2303,7 @@ optional user context
 
 > **readDir**(`id`, `name`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:311
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:316
 
 List the contents of a directory of an object
 
@@ -2343,7 +2343,7 @@ Called with the directory entries
 
 > **readDirAsync**(`id`, `name`, `options?`): [`ReadDirPromise`](../type-aliases/ReadDirPromise.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:321
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:326
 
 Promise-version of readDir
 
@@ -2379,7 +2379,7 @@ The current request options including the user
 
 > **readFile**(`id`, `name`, `options?`): [`ReadFilePromise`](../type-aliases/ReadFilePromise.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:226
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:231
 
 Read a file of an object
 
@@ -2411,7 +2411,7 @@ The current request options including the user
 
 > **readFile**(`id`, `name`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:237
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:242
 
 Read a file of an object
 
@@ -2451,7 +2451,7 @@ Called with the file content and mime type
 
 > **releasePrimaryHost**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1175
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1180
 
 Ensure we are no longer the primary host
 
@@ -2465,7 +2465,7 @@ Ensure we are no longer the primary host
 
 > **rename**(`id`, `oldName`, `newName`, `options?`, `callback?`): `void` \| `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:335
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:340
 
 Rename a file or directory of an object
 
@@ -2511,7 +2511,7 @@ Called once the file has been renamed
 
 > **renameAsync**(`id`, `oldName`, `newName`, `options`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:347
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:352
 
 Promise-version of rename
 
@@ -2555,7 +2555,7 @@ The user on whose behalf the operation is performed
 
 > **rm**(`id`, `name`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:383
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:388
 
 Delete a file or directory of an object
 
@@ -2595,7 +2595,7 @@ Called with the list of removed files
 
 > **rmAsync**(`id`, `name`, `options`): `Promise`\<`void` \| [`RmResult`](../interfaces/RmResult.md)[]\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:394
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:399
 
 Promise-version of rm
 
@@ -2633,7 +2633,7 @@ The user on whose behalf the operation is performed
 
 > **setDefaultAcl**(`defaultNewAcl`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:169
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:174
 
 Set the default ACL applied to new objects and apply it to all existing objects without an ACL
 
@@ -2655,7 +2655,7 @@ The default ACL to use, or null to use the built-in default
 
 > **setExists**(`id`): `Promise`\<`boolean`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1141
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1146
 
 Checks if a given set exists
 
@@ -2679,7 +2679,7 @@ id of the set
 
 > **setObject**\<`T`\>(`id`, `obj`, `options?`): `Promise`\<\{ `id`: `string`; \} \| `undefined`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:873
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:878
 
 Set anew or update an object
 
@@ -2717,7 +2717,7 @@ options for access control are optional
 
 > **setObject**\<`T`\>(`id`, `obj`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:884
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:889
 
 Set anew or update an object
 
@@ -2761,7 +2761,7 @@ return function
 
 > **setObject**\<`T`\>(`id`, `obj`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:894
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:899
 
 Set anew or update an object
 
@@ -2801,7 +2801,7 @@ return function
 
 > **setObjectAsync**(`id`, `obj`, `options?`): `Promise`\<\{ `id`: `string`; \} \| `undefined`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:903
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:908
 
 Promise-version of setObject
 
@@ -2839,7 +2839,7 @@ use `setObject` without callback instead
 
 > **setPrimaryHost**(`ms`): `Promise`\<`number`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1167
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1172
 
 Sets the current host as primary if no primary host active
 Value expires after ms milliseconds
@@ -2864,7 +2864,7 @@ ms until value expires
 
 > **setProtocolVersion**(`version`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1181
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1186
 
 Sets the protocol version to the DB
 
@@ -2888,7 +2888,7 @@ protocol version
 
 > **subscribe**(`pattern`, `callback?`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:551
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:556
 
 Subscribe to object changes matching the given pattern
 
@@ -2914,7 +2914,7 @@ Called once the subscription is registered
 
 > **subscribe**(`pattern`, `options?`, `callback?`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:559
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:564
 
 Subscribe to object changes matching the given pattern
 
@@ -2948,7 +2948,7 @@ Called once the subscription is registered
 
 > **subscribeAsync**(`pattern`, `options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:568
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:573
 
 Promise-version of subscribe
 
@@ -2976,7 +2976,7 @@ The current request options including the user
 
 > **subscribePrimaryHost**(): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1185
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:1190
 
 Subscribe to expired events to get expiration of the primary host
 
@@ -2992,7 +2992,7 @@ Subscribe to expired events to get expiration of the primary host
 
 > **subscribeUser**(`pattern`, `callback?`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:577
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:582
 
 Subscribe a user to object changes matching the given pattern
 
@@ -3018,7 +3018,7 @@ Called once the subscription is registered
 
 > **subscribeUser**(`pattern`, `options?`, `callback?`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:585
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:590
 
 Subscribe a user to object changes matching the given pattern
 
@@ -3052,7 +3052,7 @@ Called once the subscription is registered
 
 > **subscribeUserAsync**(`pattern`, `options`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:594
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:599
 
 Promise-version of subscribeUser
 
@@ -3080,7 +3080,7 @@ The current request options including the user
 
 > **subscribeUserFile**(`id`, `pattern`, `options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:530
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:535
 
 Subscribe a user to file changes of an object
 
@@ -3114,7 +3114,7 @@ The current request options including the user
 
 > **touch**(`id`, `name`, `options`, `callback`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:359
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:364
 
 Update the modification time of a file
 
@@ -3154,7 +3154,7 @@ Called once the file has been touched
 
 > **touchAsync**(`id`, `name`, `options`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:370
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:375
 
 Promise-version of touch
 
@@ -3192,7 +3192,7 @@ The user on whose behalf the operation is performed
 
 > **unlink**(`id`, `name`, `options`, `callback?`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:268
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:273
 
 Delete a file or directory of an object
 
@@ -3232,7 +3232,7 @@ Called with the list of removed files
 
 > **unlinkAsync**(`id`, `name`, `options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:278
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:283
 
 Promise-version of unlink
 
@@ -3268,7 +3268,7 @@ The current request options including the user
 
 > **unsubscribe**(`pattern`, `callback?`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:605
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:610
 
 Unsubscribe from object changes matching the given pattern
 
@@ -3294,7 +3294,7 @@ Called once the subscription is removed
 
 > **unsubscribe**(`pattern`, `options?`, `callback?`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:613
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:618
 
 Unsubscribe from object changes matching the given pattern
 
@@ -3328,7 +3328,7 @@ Called once the subscription is removed
 
 > **unsubscribeAsync**(`pattern`, `options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:622
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:627
 
 Promise-version of unsubscribe
 
@@ -3356,7 +3356,7 @@ The current request options including the user
 
 > **unsubscribeUser**(`pattern`, `options?`, `callback?`): `void`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:632
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:637
 
 Unsubscribe a user from object changes matching the given pattern
 
@@ -3390,7 +3390,7 @@ Called once the subscription is removed
 
 > **unsubscribeUserAsync**(`pattern`, `options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:641
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:646
 
 Promise-version of unsubscribeUser
 
@@ -3418,7 +3418,7 @@ The current request options including the user
 
 > **unsubscribeUserFile**(`id`, `pattern`, `options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:540
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:545
 
 Unsubscribe a user from file changes of an object
 
@@ -3452,7 +3452,7 @@ The current request options including the user
 
 > **validateMetaObject**(`id`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:94
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:99
 
 Checks if given ID is a meta-object, else throws error
 
@@ -3480,7 +3480,7 @@ if id is invalid
 
 > **writeFile**(`id`, `name`, `data`, `callback?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:186
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:191
 
 Write data into a file of an object
 
@@ -3518,7 +3518,7 @@ Called once the file has been written
 
 > **writeFile**(`id`, `name`, `data`, `options?`, `callback?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:196
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:201
 
 Write data into a file of an object
 
@@ -3564,7 +3564,7 @@ Called once the file has been written
 
 > **writeFileAsync**(`id`, `name`, `data`, `options?`): `Promise`\<`void`\>
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:211
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:216
 
 Promise-version of writeFile
 
