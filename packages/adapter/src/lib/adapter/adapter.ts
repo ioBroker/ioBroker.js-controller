@@ -12555,7 +12555,7 @@ export class AdapterClass extends EventEmitter {
         this.#states = new this.States({
             namespace: this.namespaceLog,
             connection: this._config.states,
-            reconnected: () => this._fenceIfMovedAway('a states reconnect'),
+            fence: this._fenceEnabled() ? () => this._fence('a states reconnect') : undefined,
             connected: async () => {
                 if (!this.#states) {
                     return;
@@ -12873,7 +12873,7 @@ export class AdapterClass extends EventEmitter {
             namespace: this.namespaceLog,
             connection: this._config.objects,
             logger: this._logger,
-            reconnected: () => this._fenceIfMovedAway('an objects reconnect'),
+            fence: this._fenceEnabled() ? () => this._fence('an objects reconnect') : undefined,
             connected: async () => {
                 this.connected = true;
                 if (this._initializeTimeout) {
@@ -13453,32 +13453,50 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Terminate if this instance was moved to another host meanwhile, so the copy there runs alone
+     * Whether the database clients hold commands after a reconnect until the fence passes
+     */
+    private _fenceEnabled(): boolean {
+        return !this.startedInCompactMode && !this._config.isInstall;
+    }
+
+    /**
+     * Fence after a reconnect: true if this instance is still assigned to this host. Otherwise it terminates
+     * without unload, as it could write stale states over those of the copy on the new host.
      *
      * @param reason why the check runs, for the log
      */
-    private async _fenceIfMovedAway(reason: string): Promise<void> {
-        if (this.startedInCompactMode || this._config.isInstall || this.terminated || !this.#objects || !this.host) {
-            return;
+    private async _fence(reason: string): Promise<boolean> {
+        if (this.terminated || !this.#objects) {
+            return false;
         }
 
-        let obj: ioBroker.InstanceObject | null | undefined;
+        const limitMs = (this._config.objects.connectTimeout || 2_000) * 2;
+        let timer: NodeJS.Timeout | undefined;
+        let obj: ioBroker.AnyObject | null;
         try {
-            obj = await this.#objects.getObject(`system.adapter.${this.namespace}`);
+            obj = await Promise.race([
+                this.#objects.getObjectForFence(`system.adapter.${this.namespace}`),
+                new Promise<never>((_, reject) => {
+                    timer = setTimeout(() => reject(new Error(`no answer within ${limitMs} ms`)), limitMs);
+                }),
+            ]);
         } catch (e) {
-            this._logger.warn(
-                `${this.namespaceLog} Cannot check the host of this instance after ${reason}: ${e.message}`,
+            // a normal error code, so the controller restarts the instance with its usual delay
+            this.terminate(
+                `Cannot confirm the host of this instance after ${reason}: ${e.message}`,
+                EXIT_CODES.NO_CONNECTION_TO_OBJ_DB,
             );
-            return;
+            return false;
+        } finally {
+            clearTimeout(timer);
         }
 
-        if (obj?.common?.host && obj.common.host !== this.host) {
-            // no unload: it could still write stale states over those of the new copy
-            this.terminate(
-                `Moved to host "${obj.common.host}" during ${reason}`,
-                EXIT_CODES.ADAPTER_REQUESTED_TERMINATION,
-            );
+        const host = (obj as ioBroker.InstanceObject | null)?.common?.host;
+        if (host && host !== this.host) {
+            this.terminate(`Moved to host "${host}" during ${reason}`, EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+            return false;
         }
+        return true;
     }
 
     private async _exceptionHandler(err: NodeJS.ErrnoException, isUnhandledRejection?: boolean): Promise<void> {
