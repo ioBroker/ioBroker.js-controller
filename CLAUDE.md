@@ -61,12 +61,6 @@ All packages live under `packages/`:
 
 Both have pluggable backends (file, JSONL, Redis) via the `db-*` packages.
 
-**Process management:** The controller spawns adapter processes as child processes, monitors health, tracks resource usage (CPU/memory), handles restarts and graceful shutdown.
-
-**Event-driven:** Heavy use of EventEmitter for state changes, object changes, and adapter lifecycle events.
-
-**Build output:** TypeScript compiles to dual format — ESM (`build/esm/`) and CJS (`build/cjs/`). Post-build runs `esm2cjs` conversion and `tsc-alias` for path resolution.
-
 ## Code Conventions
 
 - TypeScript strict mode, ES module imports
@@ -77,10 +71,3 @@ Both have pluggable backends (file, JSONL, Redis) via the `db-*` packages.
 - No circular dependencies between packages
 - Dev dependencies go in root `package.json`; package-specific deps go in their own `package.json`
 - New files must be TypeScript
-
-## CI
-
-GitHub Actions runs on push to master and all PRs:
-- ESLint check
-- Matrix: Windows / Ubuntu / macOS × Node 18, 20, 22, 24
-- Full test suite (requires Redis, installed automatically in CI)
