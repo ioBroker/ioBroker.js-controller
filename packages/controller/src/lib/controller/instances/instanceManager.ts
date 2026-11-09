@@ -106,6 +106,8 @@ export class InstanceManager {
     #storeTimer: NodeJS.Timeout | null = null;
     /** Instances stopped because they moved to another host, their offline states are not ours to write */
     readonly #stoppedAsMovedAway = new Set<string>();
+    /** Stops in progress, so a second stop of the same instance waits for the first */
+    readonly #runningStops = new Map<string, Promise<void>>();
 
     /**
      * @param options Everything the instance manager needs to do its work
@@ -491,7 +493,7 @@ export class InstanceManager {
 
     /**
      * Stop running instances which were moved, disabled or deleted while their object changes could not reach us,
-     * e.g. after a reconnect or a stall
+     * e.g. during a reconnect
      *
      * @param reason why the check runs, for the log
      */
@@ -636,6 +638,25 @@ export class InstanceManager {
      * @param options.movedAway the instance is now assigned to another host, so stop the own child only
      */
     async stopInstance(id: string, force: boolean, options: { movedAway?: boolean } = {}): Promise<void> {
+        // a second call would replace the timer and resolver of the running one, which then never resolves
+        const running = this.#runningStops.get(id);
+        if (running) {
+            return running;
+        }
+        const stop = this.#stopInstance(id, force, options).finally(() => this.#runningStops.delete(id));
+        this.#runningStops.set(id, stop);
+        return stop;
+    }
+
+    /**
+     * Stop an instance, see stopInstance
+     *
+     * @param id instance id
+     * @param force if forced we will kill the pid
+     * @param options how to stop
+     * @param options.movedAway the instance is now assigned to another host, so stop the own child only
+     */
+    async #stopInstance(id: string, force: boolean, options: { movedAway?: boolean }): Promise<void> {
         const { states, logger, hostLogPrefix, hostObjectPrefix, isCompactGroupController, state } = this.#options;
         const proc = this.procs[id];
 

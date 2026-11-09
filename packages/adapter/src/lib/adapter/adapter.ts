@@ -18,7 +18,6 @@ import * as url from 'node:url';
 
 import {
     EXIT_CODES,
-    StallDetector,
     describePortInUse,
     getObjectsConstructor,
     getPortInUse,
@@ -959,8 +958,6 @@ export class AdapterClass extends EventEmitter {
     private defaultHistory: null | string = null;
     private pluginHandler?: PluginHandler;
     private _reportInterval?: null | NodeJS.Timeout;
-    /** A frozen process keeps its sockets, so it sees no reconnect */
-    private _stallDetector?: StallDetector;
     private getPortRunning: null | InternalGetPortOptions = null;
     private readonly _namespaceRegExp: RegExp;
     instance?: number;
@@ -1910,7 +1907,6 @@ export class AdapterClass extends EventEmitter {
             }
             shutdownStarted = true;
 
-            this._stallDetector?.stop();
             if (this._reportInterval) {
                 clearInterval(this._reportInterval);
                 this._reportInterval = null;
@@ -13447,10 +13443,6 @@ export class AdapterClass extends EventEmitter {
             }
             this.emit('install');
         } else {
-            if (!this.startedInCompactMode) {
-                this._stallDetector = new StallDetector(gap => this._fenceIfMovedAway(`a stall of ${gap} ms`));
-                this._stallDetector.start();
-            }
             if (typeof this._options.ready === 'function') {
                 Promise.resolve(this._options.ready()).catch(e =>
                     this._logger.error(`${this.namespaceLog} Error in ready handler: ${e.message}`),

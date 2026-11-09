@@ -63,6 +63,8 @@ export interface ObjectsSettings {
     disconnected?: () => void;
     /** Called on every reconnect, before the subscriptions are restored */
     reconnected?: () => void | Promise<void>;
+    /** Called after the system subscriptions were restored on a reconnect, events of the gap may be lost */
+    resubscribed?: () => void;
     /** Handler for system-level object changes */
     change?: ChangeFunction;
     /** Handler for user-level object changes */
@@ -249,6 +251,7 @@ export class ObjectsInRedisClient {
         // Becomes true after the first successful "ready" so we can tell a
         // re-connection apart from the initial connection
         let wasReady = false;
+        let subSystemWasReady = false;
 
         this.settings.connection.options.retryStrategy = (reconnectCount: number): Error | number => {
             if (!ready && initError) {
@@ -633,6 +636,11 @@ export class ObjectsInRedisClient {
                             }
                         }
                     }
+
+                    if (subSystemWasReady) {
+                        this.settings.resubscribed?.();
+                    }
+                    subSystemWasReady = true;
                 });
             }
 
