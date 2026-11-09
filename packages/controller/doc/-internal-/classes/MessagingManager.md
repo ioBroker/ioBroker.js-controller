@@ -6,7 +6,7 @@
 
 # Class: MessagingManager
 
-Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:22](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L22)
+Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:22](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L22)
 
 Owns the adapter's outbound messaging and the pending-reply registry.
 
@@ -20,7 +20,7 @@ Owns the adapter's outbound messaging and the pending-reply registry.
 
 > **new MessagingManager**(`ctx`): `MessagingManager`
 
-Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L30)
+Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L30)
 
 #### Parameters
 
@@ -44,7 +44,7 @@ Shared adapter context providing live runtime state
 
 > **clearPendingCallbacks**(): `void`
 
-Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:272](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L272)
+Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:288](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L288)
 
 Rejects all pending reply promises and clears their timers (used on stop).
 
@@ -58,7 +58,7 @@ Rejects all pending reply promises and clears their timers (used on stop).
 
 > **registerNotification**(`scope`, `category`, `message`, `options?`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:317](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L317)
+Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L333)
 
 Sends an addNotification command to the host of this adapter instance.
 
@@ -98,7 +98,7 @@ additional notification options
 
 > **resolveCallback**(`obj`): `boolean`
 
-Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L243)
+Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L259)
 
 Resolves a pending reply promise for an acked messagebox message.
 Returns true if a pending entry was found and consumed.
@@ -121,7 +121,7 @@ incoming message object from the messagebox
 
 > **sendTo**(`opts`): `Promise`\<`any`\>
 
-Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L43)
+Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L43)
 
 Sends a message to another adapter instance.
 
@@ -147,7 +147,7 @@ Normalized send options
 
 > **sendToHost**(`opts`): `Promise`\<`any`\>
 
-Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:194](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L194)
+Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:209](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L209)
 
 Sends a message to a host, or broadcasts to all hosts when `hostName` is `null`.
 
@@ -173,7 +173,7 @@ Normalized send options
 
 > **sendToUI**(`options`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:290](https://github.com/ioBroker/ioBroker.js-controller/blob/c3c2ce2df82625eae67326b09085f3e88ee12d45/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L290)
+Defined in: [adapter/src/lib/adapter/managers/MessagingManager.ts:306](https://github.com/ioBroker/ioBroker.js-controller/blob/a17e80dea823ba7c3680a13c50b1c95e26a6a048/packages/adapter/src/lib/adapter/managers/MessagingManager.ts#L306)
 
 Sends a message to a single UI client, or broadcasts to all connected UI clients when `clientId` is omitted.
 

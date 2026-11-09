@@ -18,6 +18,9 @@ export type { SupportedFeature } from '@/lib/common/constants.js';
 export * as zipFiles from '@/lib/common/zipFiles.js';
 export * from '@/lib/common/logEntries.js';
 export * from '@/lib/common/portInUse.js';
+export * as adapterFiles from '@/lib/common/adapterFiles.js';
+export * as diskDir from '@/lib/common/diskDir.js';
+export * as diskFiles from '@/lib/common/diskFiles.js';
 export * from '@/lib/common/tools.js';
 export * from '@iobroker/js-controller-common-db';
 

@@ -144,7 +144,8 @@ export function createInstanceExitHandler(
 
         const proc = procs[id];
 
-        if (proc?.config?.common.logTransporter) {
+        // @ts-expect-error `deleted` is only set by the object change handler, see there
+        if (proc?.config?.common.logTransporter && !proc.config.deleted) {
             statistics.countOutput();
             console.log(`================================== > LOG REDIRECT ${id} => false [Process stopped]`);
             options.states

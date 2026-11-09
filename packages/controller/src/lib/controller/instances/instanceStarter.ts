@@ -2,7 +2,6 @@ import os from 'node:os';
 import path from 'node:path';
 import fs from 'fs-extra';
 import cp from 'node:child_process';
-import semver from 'semver';
 import decache from 'decache';
 import { createRequire } from 'node:module';
 import { isInstalledFromNpm, tools } from '@iobroker/js-controller-common';
@@ -340,7 +339,7 @@ export class InstanceStarter {
 
         // check node.js version if defined in package.json
         if (proc.engine) {
-            if (!semver.satisfies(process.version.replace(/^v/, ''), proc.engine)) {
+            if (!tools.nodeVersionSatisfies(proc.engine)) {
                 logger.warn(
                     `${hostLogPrefix} startInstance ${name}.${instanceNo}: required Node.js version ${proc.engine}, actual version ${process.version}`,
                 );

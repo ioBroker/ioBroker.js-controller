@@ -1,13 +1,12 @@
 {
     "name": "@iobroker/js-controller-common-db",
     "type": "module",
-    "version": "8.0.0-alpha.14-20261106-c3c2ce2df",
+    "version": "8.0.0-alpha.17-20261108-a17e80dea",
     "engines": {
         "node": ">=22.22.2"
     },
     "optionalDependencies": {
         "@datalust/winston-seq": "^3.0.1",
-        "diskusage": "^1.2.0",
         "winston-syslog": "^2.7.1"
     },
     "dependencies": {

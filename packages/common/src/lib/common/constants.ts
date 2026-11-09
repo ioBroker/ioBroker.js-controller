@@ -29,6 +29,9 @@ const SUPPORTED_FEATURES_INTERNAL = [
     'CONTROLLER_PYTHON_ADAPTERS', // Controller can start adapters with `common.platform: "Python"`. Since `js-controller` 8.0
     'CONTROLLER_REPOSITORY_COMPACT', // sendToHost('getRepositoryCompact') answers with the version and the icon per adapter instead of the whole repository. Since `js-controller` 8.0
     'CONTROLLER_CHECK_DOCKER', // sendToHost('checkDocker', { instance }) answers whether the instance can use Docker on that host, checked by its `@iobroker/plugin-docker`. Since `js-controller` 8.0
+    'CONTROLLER_ADAPTER_FILES', // sendToHost('listAdapterDir'), sendToHost('readAdapterFile') and sendToHost('readAdapterFiles') hand out a directory of an adapter installed on the host, e.g. its `widgets`, which `adapter.fetchAdapterDir()` uses. Since `js-controller` 8.0
+    'CONTROLLER_READ_DISK_DIR', // sendToHost('readDiskDir', { root, path, filter, dirsOnly, showHidden }) lists a directory on the disk of the host, only with the entries the user of ioBroker may read. Since `js-controller` 8.0
+    'CONTROLLER_DISK_FILES', // sendToHost('readDiskFile', { namespace, path, offset, length }) hands out files below the data directory of an instance in pieces, sendToHost('deleteDiskFile', { namespace, path }) deletes one, for `iobdisk://` URLs. Since `js-controller` 8.0
 ] as const;
 
 export const SUPPORTED_FEATURES = [...SUPPORTED_FEATURES_INTERNAL];

@@ -1,15 +1,14 @@
 {
     "name": "@iobroker/db-base",
     "type": "module",
-    "version": "8.0.0-alpha.14-20261106-c3c2ce2df",
+    "version": "8.0.0-alpha.17-20261108-a17e80dea",
     "engines": {
         "node": ">=22.22.2"
     },
     "dependencies": {
         "@iobroker/js-controller-common-db": "file:../common-db",
         "deep-clone": "^3.0.3",
-        "fs-extra": "^11.4.1",
-        "respjs": "^4.2.0"
+        "fs-extra": "^11.4.1"
     },
     "keywords": [
         "ioBroker",

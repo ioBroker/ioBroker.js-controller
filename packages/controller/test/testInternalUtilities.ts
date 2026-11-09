@@ -1,4 +1,4 @@
-import { getCronExpression } from '../src/lib/utils.js';
+import { getCronExpression, getInstallArgsFromInstalledFrom } from '../src/lib/utils.js';
 import assert from 'node:assert/strict';
 import { BlocklistManager } from '../src/lib/blocklistManager.js';
 import { startController, stopController } from './lib/setup4controller.js';
@@ -33,6 +33,39 @@ describe('test internal helpers', () => {
         }
 
         objects = _objects;
+    });
+
+    it('getInstallArgsFromInstalledFrom', () => {
+        // packages from the repository or npm are installed by name
+        assert.deepStrictEqual(getInstallArgsFromInstalledFrom('admin@7.1.0', 'admin'), ['install', 'admin@7.1.0']);
+        assert.deepStrictEqual(getInstallArgsFromInstalledFrom('ioBroker.admin@7.1.0', 'admin'), [
+            'install',
+            'admin@7.1.0',
+        ]);
+
+        // URLs and the short GitHub URL format use the url command
+        assert.deepStrictEqual(getInstallArgsFromInstalledFrom('https://example.com/iobroker.test-1.0.0.tgz', 'test'), [
+            'url',
+            'https://example.com/iobroker.test-1.0.0.tgz',
+            'test',
+        ]);
+        assert.deepStrictEqual(getInstallArgsFromInstalledFrom('ioBroker/ioBroker.test#abc1234', 'test'), [
+            'url',
+            'ioBroker/ioBroker.test#abc1234',
+            'test',
+        ]);
+
+        // a local tarball installed via `iobroker url /path/to/adapter.tgz` uses the url command as well
+        assert.deepStrictEqual(getInstallArgsFromInstalledFrom('/tmp/iobroker.test-1.0.0.tgz', 'test'), [
+            'url',
+            '/tmp/iobroker.test-1.0.0.tgz',
+            'test',
+        ]);
+        assert.deepStrictEqual(getInstallArgsFromInstalledFrom('iobroker.test-1.0.0.tgz', 'test'), [
+            'url',
+            'iobroker.test-1.0.0.tgz',
+            'test',
+        ]);
     });
 
     it('getCronExpression', () => {
