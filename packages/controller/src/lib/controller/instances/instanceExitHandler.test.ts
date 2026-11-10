@@ -77,7 +77,8 @@ async function runExit(options: {
     instances: any;
     mode?: string;
     wakeUp?: boolean;
-    code: number;
+    /** `null` when a signal ended the process */
+    code: number | null;
     signal?: string | null;
 }): Promise<void> {
     const { instances, mode = 'daemon', wakeUp = false, code, signal = null } = options;
@@ -88,7 +89,7 @@ async function runExit(options: {
         wakeUp,
     });
 
-    handler(code, signal as string);
+    handler(code as number, signal as string);
 
     // the handler awaits a few promises internally before it is done
     for (let i = 0; i < 5; i++) {
@@ -198,6 +199,30 @@ describe('createInstanceExitHandler restart behaviour', () => {
         const instances = fakeInstances({ [INSTANCE_ID]: { config: instance } });
 
         await runExit({ instances, code: 0 });
+
+        assert.equal(instances.procs[INSTANCE_ID].restartTimer, undefined);
+    });
+
+    it('restarts a daemon that names a web instance for its web extension after it crashed', async () => {
+        const instance = instanceObject();
+        instance.native.webInstance = '*';
+        const instances = fakeInstances({ [INSTANCE_ID]: { config: instance } });
+
+        // e.g. killed by V8 because its heap ran out of memory
+        await runExit({ instances, code: null, signal: 'SIGABRT' });
+
+        const proc = instances.procs[INSTANCE_ID];
+        assert.ok(proc.restartTimer, 'a restart should have been scheduled');
+        clearTimeout(proc.restartTimer);
+    });
+
+    it('does not restart an instance of mode extension that runs inside a web instance', async () => {
+        const instance = instanceObject();
+        instance.common.mode = 'extension';
+        instance.native.webInstance = 'web.0';
+        const instances = fakeInstances({ [INSTANCE_ID]: { config: instance } });
+
+        await runExit({ instances, mode: 'extension', code: 0 });
 
         assert.equal(instances.procs[INSTANCE_ID].restartTimer, undefined);
     });
