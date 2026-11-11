@@ -4,6 +4,7 @@ import { X509Certificate } from 'node:crypto';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import { domainToASCII } from 'node:url';
 import {
     FORBIDDEN_CHARS,
     execAsync,
@@ -11,6 +12,7 @@ import {
     generateDefaultCertificates,
     getHostName,
     isForeignProcess,
+    isMalformedDefaultCertificate,
     isProcessRunning,
     nodeVersionSatisfies,
 } from '@iobroker/js-controller-common-db/tools';
@@ -143,6 +145,70 @@ describe('test tools.js helpers', () => {
         .timeout(330_000);
 });
 
+/** ASN.1 tag of a UTF8String */
+const UTF8_STRING = 0x0c;
+/** ASN.1 tag of a PrintableString */
+const PRINTABLE_STRING = 0x13;
+/** Start of the encoded OIDs 2.5.4.x of the attributes in a name, e.g. 2.5.4.3 for commonName */
+const NAME_ATTRIBUTE_OID = Buffer.from([0x06, 0x03, 0x55, 0x04]);
+
+/**
+ * Find the offsets of the value tags of all CN, O and OU attributes in a DER encoded certificate
+ *
+ * @param der the DER encoded certificate
+ */
+function nameValueTagOffsets(der: Buffer): number[] {
+    const offsets: number[] = [];
+    for (let pos = der.indexOf(NAME_ATTRIBUTE_OID); pos !== -1; pos = der.indexOf(NAME_ATTRIBUTE_OID, pos + 1)) {
+        // 0x03 commonName, 0x0a organizationName, 0x0b organizationalUnitName
+        if ([0x03, 0x0a, 0x0b].includes(der[pos + NAME_ATTRIBUTE_OID.length])) {
+            offsets.push(pos + NAME_ATTRIBUTE_OID.length + 1);
+        }
+    }
+    return offsets;
+}
+
+/**
+ * Change bytes in the DER encoding of a PEM certificate (the signature does not match afterward)
+ *
+ * @param pem the PEM encoded certificate
+ * @param change function that changes the DER encoded certificate in place
+ */
+function changeCertificate(pem: string, change: (der: Buffer) => void): string {
+    const der = Buffer.from(new X509Certificate(pem).raw);
+    change(der);
+    const base64 = der.toString('base64').replace(/(.{64})/g, '$1\n');
+    return `-----BEGIN CERTIFICATE-----\n${base64.trim()}\n-----END CERTIFICATE-----\n`;
+}
+
+/**
+ * Encode the names of a certificate as PrintableString like older js-controller versions did
+ *
+ * @param pem the PEM encoded certificate
+ */
+function asPrintableStrings(pem: string): string {
+    return changeCertificate(pem, der => {
+        for (const offset of nameValueTagOffsets(der)) {
+            der[offset] = PRINTABLE_STRING;
+        }
+    });
+}
+
+/**
+ * Replace bytes in the DER encoding of a PEM certificate by bytes of the same length
+ *
+ * @param pem the PEM encoded certificate
+ * @param search the bytes to replace
+ * @param replacement the new bytes, as long as search
+ */
+function replaceInCertificate(pem: string, search: Buffer, replacement: Buffer): string {
+    return changeCertificate(pem, der => {
+        for (let pos = der.indexOf(search); pos !== -1; pos = der.indexOf(search, pos + 1)) {
+            replacement.copy(der, pos);
+        }
+    });
+}
+
 describe('generateDefaultCertificates', () => {
     it('generates a valid self-signed TLS server certificate', () => {
         const { defaultPublic } = generateDefaultCertificates();
@@ -152,7 +218,7 @@ describe('generateDefaultCertificates', () => {
         assert.equal(cert.verify(cert.publicKey), true);
 
         const altNames = cert.subjectAltName ?? '';
-        assert.ok(altNames.includes(`DNS:${getHostName()}`), altNames);
+        assert.ok(altNames.includes(`DNS:${domainToASCII(getHostName())}`), altNames);
         assert.ok(altNames.includes('DNS:localhost'), altNames);
         assert.ok(altNames.includes('IP Address:127.0.0.1'), altNames);
 
@@ -170,6 +236,61 @@ describe('generateDefaultCertificates', () => {
         // an empty authorityKeyIdentifier (OID 2.5.29.35 followed by the empty SEQUENCE 0x3000) is rejected by Chrome
         assert.equal(cert.raw.includes(Buffer.from([0x06, 0x03, 0x55, 0x1d, 0x23])), false);
     }).timeout(30_000);
+
+    it('writes the names as UTF8String, so browsers accept a host name with "_"', () => {
+        const { defaultPublic } = generateDefaultCertificates('iobroker_test');
+        const cert = new X509Certificate(defaultPublic);
+
+        assert.ok(cert.subject.includes('CN=iobroker_test'), cert.subject);
+        assert.ok((cert.subjectAltName ?? '').includes('DNS:iobroker_test'), cert.subjectAltName);
+
+        // CN, O and OU of subject and issuer; a PrintableString (0x13) must not contain "_",
+        // Chrome rejects such a certificate with ERR_SSL_SERVER_CERT_BAD_FORMAT
+        const tags = nameValueTagOffsets(cert.raw).map(offset => cert.raw[offset]);
+        assert.equal(tags.length, 6);
+        assert.ok(
+            tags.every(tag => tag === UTF8_STRING),
+            tags.map(tag => tag.toString(16)).join(),
+        );
+        assert.equal(isMalformedDefaultCertificate(defaultPublic), false);
+    }).timeout(30_000);
+
+    it('puts a host name with an umlaut as punycode into the alternative names', () => {
+        const { defaultPublic } = generateDefaultCertificates('iobrökertest');
+        const altNames = new X509Certificate(defaultPublic).subjectAltName ?? '';
+
+        assert.ok(altNames.includes('DNS:xn--iobrkertest-ufb'), altNames);
+        assert.equal(/[^\x20-\x7e]/.test(altNames), false, altNames);
+    }).timeout(30_000);
+});
+
+describe('isMalformedDefaultCertificate', () => {
+    let underscoreCert: string;
+    let hyphenCert: string;
+
+    before(function () {
+        this.timeout(60_000);
+        underscoreCert = generateDefaultCertificates('iobroker_test').defaultPublic;
+        hyphenCert = generateDefaultCertificates('iobroker-test').defaultPublic;
+    });
+
+    it('reports a default certificate of an older version for a host name with "_"', () => {
+        assert.equal(isMalformedDefaultCertificate(asPrintableStrings(underscoreCert)), true);
+    });
+
+    it('does not report a default certificate of an older version for a host name browsers accept', () => {
+        assert.equal(isMalformedDefaultCertificate(asPrintableStrings(hyphenCert)), false);
+    });
+
+    it('does not report a certificate that was not generated by js-controller', () => {
+        const foreign = replaceInCertificate(
+            asPrintableStrings(underscoreCert),
+            Buffer.from('ioBroker GmbH'),
+            Buffer.from('Other Company'),
+        );
+        assert.equal(isMalformedDefaultCertificate(foreign), false);
+        assert.equal(isMalformedDefaultCertificate('no certificate'), false);
+    });
 });
 
 describe('nodeVersionSatisfies', () => {

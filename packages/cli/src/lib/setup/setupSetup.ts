@@ -430,6 +430,11 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
                                 );
                                 cert = null;
                             }
+                        } else if (!cert.certificateFilename && tools.isMalformedDefaultCertificate(cert.certificate)) {
+                            console.log(
+                                'Existing earlier generated certificate cannot be read by browsers because of a character like "_" in the host name. Generating new Certificate!',
+                            );
+                            cert = null;
                         }
                     }
                     if (!cert) {
