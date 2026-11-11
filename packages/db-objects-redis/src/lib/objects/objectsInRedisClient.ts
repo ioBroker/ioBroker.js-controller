@@ -116,6 +116,18 @@ interface Script {
     loaded?: boolean;
 }
 
+/**
+ * Check if two objects only differ in `ts`, `from` and `user`, which describe the last write and not the content
+ *
+ * @param storedObj the object as stored in the database
+ * @param newObj the object that would be written
+ */
+function isSameContent(storedObj: ioBroker.AnyObject, newObj: ioBroker.AnyObject): boolean {
+    const { ts: _storedTs, from: _storedFrom, user: _storedUser, ...storedContent } = storedObj;
+    const { ts: _newTs, from: _newFrom, user: _newUser, ...newContent } = newObj;
+    return isDeepStrictEqual(storedContent, newContent);
+}
+
 interface Options {
     /** The user id for database operations */
     user?: string;
@@ -4527,6 +4539,7 @@ export class ObjectsInRedisClient {
         obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options: CallOptions,
         callback?: (err?: Error | null, obj?: ObjectIdValue, id?: string) => void,
+        skipUnchanged = false,
     ): Promise<[ObjectIdValue, string] | void> {
         if (!id || typeof id !== 'string' || utils.REG_CHECK_ID.test(id)) {
             // @ts-expect-error we fix when removing cb
@@ -4543,7 +4556,12 @@ export class ObjectsInRedisClient {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
 
+        // the object as stored, because the merge below changes oldObj in place
+        let storedObj: ioBroker.AnyObject | null = null;
         try {
+            if (skipUnchanged && oldObj) {
+                storedObj = JSON.parse(oldObj);
+            }
             oldObj = oldObj ? JSON.parse(oldObj) : null;
         } catch {
             this.log.error(`${this.namespace} Cannot parse JSON ${id}: ${oldObj}`);
@@ -4600,7 +4618,7 @@ export class ObjectsInRedisClient {
                         } else {
                             options.ownerGroup = groups[0];
                         }
-                        this._extendObject(id, obj, options, callback);
+                        this._extendObject(id, obj, options, callback, skipUnchanged);
                     });
                 }
             }
@@ -4633,6 +4651,12 @@ export class ObjectsInRedisClient {
         if (_oldObj && !tools.checkNonEditable(_oldObj, oldObj)) {
             return tools.maybeCallbackWithError(callback, 'Invalid password for update of vendor information');
         }
+
+        if (storedObj && isSameContent(storedObj, oldObj)) {
+            // nothing to write: the stored object keeps its ts and the subscribers get no objectChange
+            return tools.maybeCallbackWithError(callback, null, { id, value: storedObj }, id);
+        }
+
         const message = JSON.stringify(oldObj);
 
         try {
@@ -4709,6 +4733,25 @@ export class ObjectsInRedisClient {
             );
         }
 
+        this._extendObjectWithRights(id, obj, options, callback, false);
+    }
+
+    /**
+     * Check the write rights and extend the object
+     *
+     * @param id The id of the object to extend
+     * @param obj The partial object to merge into the existing object
+     * @param options The current request options including the user
+     * @param callback Called with the result
+     * @param skipUnchanged Do not write the object and do not publish an objectChange, if the merge changes nothing but `ts`, `from` and `user`
+     */
+    private _extendObjectWithRights<T extends string>(
+        id: T,
+        obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options: ioBroker.ExtendObjectOptions | null | undefined,
+        callback: ioBroker.ExtendObjectCallback,
+        skipUnchanged: boolean,
+    ): void {
         if (options?.acl) {
             options.acl = null;
         }
@@ -4718,17 +4761,32 @@ export class ObjectsInRedisClient {
                 return tools.maybeCallbackWithRedisError(callback, err);
             }
             // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
-            return this._extendObject(id, obj, options, callback);
+            return this._extendObject(id, obj, options, callback, skipUnchanged);
         });
     }
 
+    /**
+     * Promise-version of extendObject
+     *
+     * @param id The id of the object to extend
+     * @param obj The partial object to merge into the existing object
+     * @param options The current request options including the user
+     * @param skipUnchanged Do not write the object and do not publish an objectChange, if the merge changes nothing but `ts`, `from` and `user`. The stored object is returned then.
+     */
     extendObjectAsync(
         id: string,
         obj: Partial<ioBroker.AnyObject>,
         options?: ioBroker.ExtendObjectOptions,
+        skipUnchanged = false,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>> {
         return new Promise((resolve, reject) =>
-            this.extendObject(id, obj, options || null, (err, res) => (err ? reject(err) : resolve(res))),
+            this._extendObjectWithRights(
+                id,
+                obj,
+                options || null,
+                (err, res) => (err ? reject(err) : resolve(res)),
+                skipUnchanged,
+            ),
         );
     }
 
