@@ -94,7 +94,10 @@ describe('States-Redis-Sentinel: Test states', function () {
     });
 
     it('States-Redis-Sentinel: should setState with failover', function (done) {
-        this.timeout(60000);
+        // 30 received values take 30 s, and during the failover nothing is received: the Sentinels
+        // need 5 s to notice that the master is down, and the client and its PubSub client may each
+        // wait retry_max_delay (15 s in the test setup) before they reconnect to the new master
+        this.timeout(120_000);
 
         let sendCounter = 1;
         let receiveCounter = 0;

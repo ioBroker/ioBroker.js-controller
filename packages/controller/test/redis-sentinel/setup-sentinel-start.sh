@@ -7,6 +7,8 @@ then
     TRAVIS_BUILD_DIR="$(pwd)/../.."
 fi
 cp ${TRAVIS_BUILD_DIR}/test/redis-sentinel/config/*.config ${TRAVIS_BUILD_DIR}/test/redis-sentinel/
+# the log directory is ignored by git, so it does not exist in a fresh checkout
+mkdir -p ${TRAVIS_BUILD_DIR}/test/redis-sentinel/log
 echo "Starting 3 nodes Redis cluster with Sentinels"
 sudo redis-server ${TRAVIS_BUILD_DIR}/test/redis-sentinel/redis1.config 2>&1 >> ${TRAVIS_BUILD_DIR}/test/redis-sentinel/log/redis1.log &
 sudo redis-server ${TRAVIS_BUILD_DIR}/test/redis-sentinel/redis2.config 2>&1 >> ${TRAVIS_BUILD_DIR}/test/redis-sentinel/log/redis2.log &
