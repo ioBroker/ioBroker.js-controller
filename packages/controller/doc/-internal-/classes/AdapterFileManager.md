@@ -6,7 +6,7 @@
 
 # Class: AdapterFileManager
 
-Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:36](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L36)
+Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:36](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L36)
 
 Fetches a directory of an installed adapter - e.g. its `widgets` folder - into a local directory.
 
@@ -26,7 +26,7 @@ with gzip where it helps. The requests go the same way as for the `iobdisk://` U
 
 > **new AdapterFileManager**(`ctx`, `getMessaging`): `AdapterFileManager`
 
-Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L43)
+Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L43)
 
 #### Parameters
 
@@ -56,7 +56,7 @@ Returns the adapter's messaging manager, which matches the host's answers to the
 
 > **fetchAdapterDir**(`options`): `Promise`\<[`FetchAdapterDirResult`](../interfaces/FetchAdapterDirResult.md)\>
 
-Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L54)
+Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L54)
 
 Copy a directory of an installed adapter into a local directory, from this or another host
 
