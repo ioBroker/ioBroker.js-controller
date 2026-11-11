@@ -8,7 +8,7 @@
 
 > **UsedResourceData**\<`T`\> = [`UsedResourceDataMap`](../interfaces/UsedResourceDataMap.md)\[`T`\]
 
-Defined in: [types-dev/index.d.ts:187](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/types-dev/index.d.ts#L187)
+Defined in: [types-dev/index.d.ts:187](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/types-dev/index.d.ts#L187)
 
 The type-specific payload for a given resource type (without bookkeeping fields)
 
