@@ -3845,6 +3845,10 @@ export class AdapterClass extends EventEmitter {
      * }
      * ```
      *
+     * If the merged object equals the existing one (apart from `ts`, `from` and `user`), nothing is written:
+     * the object keeps its `ts` and no objectChange is sent. So it is fine to call extendObject on every poll.
+     * The default value (`common.def`) is still set if the state does not exist.
+     *
      * @param id object ID, that must be extended
      * @param obj part that must be extended
      * @param options optional user context
@@ -4000,7 +4004,10 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            const cbObj = await this.#objects.extendObject(options.id, options.obj, options.options);
+            // Adapters extend their own objects on every poll, so an object that does not change is not written again.
+            // extendForeignObject keeps writing: extending system.adapter.<name>.<instance> with `common.enabled: true`
+            // is used to restart a running instance, and that needs the objectChange even if nothing changed.
+            const cbObj = await this.#objects.extendObject(options.id, options.obj, options.options, true);
             let defState;
             if (options.obj.type === 'state' || oldObj.type === 'state') {
                 if (options.obj.common && 'def' in options.obj.common && options.obj.common.def !== undefined) {
