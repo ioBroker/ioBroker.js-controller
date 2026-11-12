@@ -1790,13 +1790,82 @@
           "type": "boolean"
         },
         "webComponents": {
-          "description": "Web components of the adapter (see @iobroker/web-components): their manifest files (.json), relative to the admin folder, which admin and web serve as /adapter/<name>/. A manifest names the ES module of its element; vis-2, devices and admin read the manifests and load a module only when they show its element. An ES module that exports its manifest is accepted too",
+          "description": "Web components of the adapter (see @iobroker/web-components): their manifest files (.json), relative to the admin folder, which admin and web serve as /adapter/<name>/. A manifest names the ES module of its element; vis-2, devices and admin read the manifests and load a module only when they show its element. An ES module that exports its manifest is accepted too. An entry may also be an object with the manifest file and a short form of the manifest (tag, name, icon, size), generated from the manifest, so that a host can list a component whose adapter is not installed, from the repository alone",
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
           "items": {
-            "type": "string",
-            "minLength": 1
+            "oneOf": [
+              {
+                "description": "The manifest file (.json), relative to the admin folder",
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "description": "The manifest file with a short form of the manifest. Settings and description are left out on purpose, as common is copied into every instance object",
+                "type": "object",
+                "required": [
+                  "manifest",
+                  "tag",
+                  "name"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "manifest": {
+                    "description": "The manifest file (.json), relative to the admin folder",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "tag": {
+                    "description": "Name of the custom element, as in the manifest: lower case, with a \"-\"",
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9._]*-[a-z0-9._-]*$"
+                  },
+                  "name": {
+                    "description": "Name of the component, as in the manifest",
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      {
+                        "$ref": "#/definitions/multilingual"
+                      }
+                    ]
+                  },
+                  "icon": {
+                    "description": "Picture of the component, as in the manifest: relative to the manifest file, or a data: URL",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "size": {
+                    "description": "The size the element looks best in, as in the manifest",
+                    "type": "object",
+                    "required": [
+                      "width",
+                      "height"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "width": {
+                        "description": "In px",
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "height": {
+                        "description": "In px",
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "noResize": {
+                        "description": "The component works in exactly this size only",
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
           }
         },
         "webExtendable": {
