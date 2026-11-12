@@ -6,7 +6,7 @@
 
 # Class: HostDiskClient
 
-Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L28)
+Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L28)
 
 The requester side of the host commands that read the disk of another host - shared by `fetchAdapterDir`
 ([AdapterFileManager](AdapterFileManager.md)) and the `iobdisk://` URLs ([DiskFileManager](DiskFileManager.md)), as both ask the js-controller of the
@@ -24,7 +24,7 @@ other host in the same way:
 
 > **new HostDiskClient**(`getMessaging`): `HostDiskClient`
 
-Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:36](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L36)
+Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:36](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L36)
 
 #### Parameters
 
@@ -44,7 +44,7 @@ Returns the adapter's messaging manager, which matches the host's answers to the
 
 > **assertFeature**(`host`, `feature`, `purpose`): `Promise`\<`void`\>
 
-Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:48](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L48)
+Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:48](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L48)
 
 Make sure the js-controller of the host knows the feature
 
@@ -82,7 +82,7 @@ if the host does not answer or its js-controller is too old
 
 > **decodeChunk**(`host`, `name`, `chunk`, `file`, `offset`, `length`, `exact`): `Promise`\<`Buffer`\<`ArrayBufferLike`\>\>
 
-Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L116)
+Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L116)
 
 Check a received piece of a file and unpack it
 
@@ -145,7 +145,7 @@ if the piece does not fit or the file changed since the first piece
 
 > **request**(`host`, `command`, `message`, `name`): `Promise`\<`Record`\<`string`, `any`\>\>
 
-Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L81)
+Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L81)
 
 Send a request to a host and wait for the answer
 

@@ -6,7 +6,7 @@
 
 # Interface: PlannedFile
 
-Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L18)
+Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L18)
 
 A file of the listing, with the place it is written to
 
@@ -16,7 +16,7 @@ A file of the listing, with the place it is written to
 
 > **dest**: `string`
 
-Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:22](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L22)
+Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:22](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L22)
 
 Absolute path of the copy
 
@@ -26,7 +26,7 @@ Absolute path of the copy
 
 > **path**: `string`
 
-Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:20](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L20)
+Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:20](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L20)
 
 Path relative to the fetched directory, separated by `/`
 
@@ -36,6 +36,6 @@ Path relative to the fetched directory, separated by `/`
 
 > **size**: `number`
 
-Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:24](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L24)
+Defined in: [adapter/src/lib/adapter/managers/AdapterFileManager.ts:24](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/AdapterFileManager.ts#L24)
 
 Size according to the listing, `Infinity` if the listing gave none
