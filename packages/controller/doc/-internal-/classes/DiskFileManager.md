@@ -6,7 +6,7 @@
 
 # Class: DiskFileManager
 
-Defined in: [adapter/src/lib/adapter/managers/DiskFileManager.ts:26](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/DiskFileManager.ts#L26)
+Defined in: [adapter/src/lib/adapter/managers/DiskFileManager.ts:26](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/DiskFileManager.ts#L26)
 
 Creates, reads and deletes `iobdisk://` URLs: files below the data directory of an instance on the disk of one host.
 
@@ -26,7 +26,7 @@ are, see [HostDiskClient](HostDiskClient.md).
 
 > **new DiskFileManager**(`ctx`, `getMessaging`): `DiskFileManager`
 
-Defined in: [adapter/src/lib/adapter/managers/DiskFileManager.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/DiskFileManager.ts#L33)
+Defined in: [adapter/src/lib/adapter/managers/DiskFileManager.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/DiskFileManager.ts#L33)
 
 #### Parameters
 
@@ -56,7 +56,7 @@ Returns the adapter's messaging manager, which matches the host's answers to the
 
 > **createDiskFileReadStream**(`url`): `Readable`
 
-Defined in: [adapter/src/lib/adapter/managers/DiskFileManager.ts:75](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/DiskFileManager.ts#L75)
+Defined in: [adapter/src/lib/adapter/managers/DiskFileManager.ts:75](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/DiskFileManager.ts#L75)
 
 Read the file an `iobdisk://` URL points to as a stream, without holding it in memory as a whole
 
@@ -80,7 +80,7 @@ e.g. `iobdisk://pi4/telegram.0/video/1.mp4`
 
 > **deleteDiskFile**(`url`): `Promise`\<`boolean`\>
 
-Defined in: [adapter/src/lib/adapter/managers/DiskFileManager.ts:91](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/DiskFileManager.ts#L91)
+Defined in: [adapter/src/lib/adapter/managers/DiskFileManager.ts:91](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/DiskFileManager.ts#L91)
 
 Delete the file an `iobdisk://` URL points to, on this or another host
 
@@ -106,7 +106,7 @@ e.g. `iobdisk://pi4/telegram.0/video/1.mp4`
 
 > **getDiskFileUrl**(`filePath`): `string`
 
-Defined in: [adapter/src/lib/adapter/managers/DiskFileManager.ts:44](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/DiskFileManager.ts#L44)
+Defined in: [adapter/src/lib/adapter/managers/DiskFileManager.ts:44](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/DiskFileManager.ts#L44)
 
 Build the `iobdisk://` URL of a file of this instance
 
@@ -129,7 +129,7 @@ absolute path below `iobroker-data/<namespace>` (or `iobroker-data/<adapter>_<in
 
 > **readDiskFile**(`url`): `Promise`\<`Buffer`\<`ArrayBufferLike`\>\>
 
-Defined in: [adapter/src/lib/adapter/managers/DiskFileManager.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/548ee3ae9978eec52d0d08eb53e4b7e6eb35d9d1/packages/adapter/src/lib/adapter/managers/DiskFileManager.ts#L56)
+Defined in: [adapter/src/lib/adapter/managers/DiskFileManager.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/DiskFileManager.ts#L56)
 
 Read the whole file an `iobdisk://` URL points to
 
