@@ -821,10 +821,31 @@ const _adapterObject: ioBroker.AdapterObject = {
                 dsn: 'XYZ',
             },
         },
+        // a plain manifest file, or the manifest file with the short form of the manifest
+        webComponents: [
+            'webcomponents/test-plain.json',
+            {
+                manifest: 'webcomponents/test-tile.json',
+                tag: 'test-tile',
+                name: { en: 'Tile', de: 'Kachel' },
+                icon: '../dm-widgets/test-tile.svg',
+                size: { width: 360, height: 420 },
+            },
+        ],
     },
     instanceObjects: [],
     objects: [],
 };
+
+for (const entry of _adapterObject.common.webComponents ?? []) {
+    // $ExpectType string
+    const _manifestFile = typeof entry === 'string' ? entry : entry.manifest;
+}
+
+const _webComponentWithoutTag: ioBroker.AdapterCommon['webComponents'] = [
+    // @ts-expect-error the short form needs the tag of the element
+    { manifest: 'webcomponents/test-tile.json', name: 'Tile' },
+];
 
 if (_adapterObject.common.licenseInformation && _adapterObject.common.licenseInformation.type === 'paid') {
     // for non-free licenses link is non optional
