@@ -1,6 +1,7 @@
 /// <reference types="@iobroker/types-dev" />
 export { StateRedisClient as Client, type StatesSettings } from '@/lib/states/statesInRedisClient.js';
 export { interview } from '@/lib/states/interview.js';
+export { SET_STATE_SCRIPT_MARKER } from '@/lib/states/setStateScript.js';
 /**
  * Get the default port for the database
  *

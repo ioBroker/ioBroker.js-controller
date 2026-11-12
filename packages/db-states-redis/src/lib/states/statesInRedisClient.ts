@@ -15,6 +15,7 @@ import type IORedis from 'ioredis';
 import { tools } from '@iobroker/db-base';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import type { DbStatus, ConnectionOptions } from '@iobroker/db-base/inMemFileDB';
+import { SET_STATE_SCRIPT } from '@/lib/states/setStateScript.js';
 
 type JSONDecoderValue = Record<string, any>;
 
@@ -95,6 +96,8 @@ export class StateRedisClient {
     private readonly userSubscriptions: Record<string, RegExp> = {};
     /** System level subscriptions value true means messagebox is subscribed */
     private readonly systemSubscriptions: Record<string, RegExp | true> = {};
+    /** SHA1 of the loaded SETSTATE script, `null` if the server does not support it (then setState uses GET + MULTI) */
+    private setStateScriptSha: string | null = null;
 
     /**
      * @param settings Settings for the states client including connection and namespaces
@@ -673,6 +676,9 @@ export class StateRedisClient {
                 throw new Error('States DB is not allowed to start in the current Multihost environment');
             }
 
+            // (Re)load on every connect: a restarted or failed-over Redis has lost its scripts
+            await this.loadSetStateScript();
+
             if (initCounter < 1) {
                 if (this.settings.connection.port === 0) {
                     this.log.debug(
@@ -712,6 +718,91 @@ export class StateRedisClient {
      */
     getStatus(): DbStatus {
         return { type: 'redis', server: false };
+    }
+
+    /**
+     * Loads the SETSTATE script, which lets the server compute `lc` so setState needs one round trip instead of two.
+     * Never throws: if the server does not support it (older in-memory DB, Redis without scripting),
+     * setState keeps using the classic GET + MULTI path.
+     */
+    private async loadSetStateScript(): Promise<void> {
+        if (!this.client) {
+            return;
+        }
+        try {
+            this.setStateScriptSha = (await this.client.script('LOAD', SET_STATE_SCRIPT)) as string;
+        } catch (e) {
+            this.setStateScriptSha = null;
+            this.log.debug(
+                `${this.namespace} SETSTATE script not supported by states DB, using GET + MULTI: ${e.message}`,
+            );
+        }
+    }
+
+    /**
+     * Reads the current state of an id as stored, falls back to `{ val: null }` if it does not exist or cannot be parsed
+     *
+     * @param id The id of the state
+     */
+    private async getOldState(id: string): Promise<Record<string, any>> {
+        const oldObj = await this.client!.get(this.namespaceRedis + id);
+        if (oldObj) {
+            try {
+                return JSON.parse(oldObj);
+            } catch {
+                this.log.warn(`${this.namespace} Cannot parse "${oldObj}"`);
+            }
+        }
+        return { val: null };
+    }
+
+    /**
+     * Writes the state with the SETSTATE script, the server adds `lc` and publishes the change
+     *
+     * @param id The id of the state
+     * @param objString The new state serialized as JSON, without `lc`
+     * @param val The new value, must be a primitive
+     * @param ts The timestamp of the new state
+     * @param expire Optional expire in seconds
+     * @returns false if the script is not available on the server, the caller then has to use the classic path
+     */
+    private async setStateWithServerLc(
+        id: string,
+        objString: string,
+        val: ioBroker.StateValue,
+        ts: number,
+        expire: number | undefined,
+    ): Promise<boolean> {
+        // `lc` is the last property of a state, so the server can simply append it
+        const stateWithoutLc = objString.slice(0, -1);
+        const valJson = JSON.stringify(val);
+        for (let attempt = 0; attempt < 2; attempt++) {
+            if (!this.client || !this.setStateScriptSha) {
+                return false;
+            }
+            try {
+                await this.client.evalsha(
+                    this.setStateScriptSha,
+                    1,
+                    this.namespaceRedis + id,
+                    stateWithoutLc,
+                    valJson,
+                    String(ts),
+                    expire ? String(expire) : '',
+                );
+                return true;
+            } catch (e) {
+                // Script got lost (Redis restart, failover, SCRIPT FLUSH): load it again once and retry
+                if (!/NOSCRIPT|Unknown Script/i.test(e.message)) {
+                    throw e;
+                }
+                this.setStateScriptSha = null;
+                if (attempt === 0) {
+                    await this.loadSetStateScript();
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -778,25 +869,19 @@ export class StateRedisClient {
             delete state.expire;
         }
 
-        let oldObj;
-        try {
-            oldObj = await this.client.get(this.namespaceRedis + id);
-        } catch (e) {
-            this.log.warn(`${this.namespace} get state error: ${e.message}`);
-            return tools.maybeCallbackWithRedisError(callback, e, id);
-        }
-        if (!this.client) {
-            return;
-        }
-
-        if (!oldObj) {
-            oldObj = { val: null };
-        } else {
+        // The old state is only needed if the new one takes values from it.
+        // Otherwise only `lc` depends on it, and that the server can compute itself (SETSTATE script).
+        const needsOldState = state.val === undefined || state.ack === null;
+        let oldObj: Record<string, any> | undefined;
+        if (needsOldState) {
             try {
-                oldObj = JSON.parse(oldObj);
-            } catch {
-                this.log.warn(`${this.namespace} Cannot parse "${oldObj}"`);
-                oldObj = { val: null };
+                oldObj = await this.getOldState(id);
+            } catch (e) {
+                this.log.warn(`${this.namespace} get state error: ${e.message}`);
+                return tools.maybeCallbackWithRedisError(callback, e, id);
+            }
+            if (!this.client) {
+                return;
             }
         }
 
@@ -805,11 +890,11 @@ export class StateRedisClient {
         if (state.val !== undefined) {
             obj.val = state.val;
         } else {
-            obj.val = oldObj.val;
+            obj.val = oldObj!.val;
         }
 
         if (state.ack !== undefined) {
-            obj.ack = state.ack === null ? oldObj.ack || false : state.ack;
+            obj.ack = state.ack === null ? oldObj!.ack || false : state.ack;
         } else {
             obj.ack = false;
         }
@@ -837,13 +922,42 @@ export class StateRedisClient {
             obj.user = state.user;
         }
 
-        let hasChanged;
-
         if (typeof state.lc === 'number') {
             obj.lc = state.lc;
-        } else {
+        } else if (!needsOldState && this.setStateScriptSha && (obj.val === null || typeof obj.val !== 'object')) {
+            // one round trip: the server compares the value with the stored one and appends `lc`
+            const objString = JSON.stringify(obj);
+            this.settings.connection.enhancedLogging &&
+                this.log.silly(
+                    `${this.namespace} redis publish ${this.namespaceRedis}${id} ${objString} (lc by server)`,
+                );
+            try {
+                if (await this.setStateWithServerLc(id, objString, obj.val!, obj.ts, expire)) {
+                    return tools.maybeCallbackWithError(callback, null, id);
+                }
+            } catch (e) {
+                return tools.maybeCallbackWithRedisError(callback, e, id);
+            }
+            // script not available, continue with the classic path
+            if (!this.client) {
+                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            }
+        }
+
+        if (obj.lc === undefined) {
+            if (!oldObj) {
+                try {
+                    oldObj = await this.getOldState(id);
+                } catch (e) {
+                    this.log.warn(`${this.namespace} get state error: ${e.message}`);
+                    return tools.maybeCallbackWithRedisError(callback, e, id);
+                }
+                if (!this.client) {
+                    return;
+                }
+            }
             // isDeepStrictEqual works on objects and primitive values
-            hasChanged = !isDeepStrictEqual(oldObj.val, obj.val);
+            const hasChanged = !isDeepStrictEqual(oldObj.val, obj.val);
             if (!oldObj.lc || hasChanged) {
                 obj.lc = obj.ts;
             } else {
