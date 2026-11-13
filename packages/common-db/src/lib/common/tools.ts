@@ -4287,6 +4287,18 @@ export function isLogLevel(level: string): level is ioBroker.LogLevel {
 }
 
 /**
+ * Check if a given string is a valid log level of an instance, which is a log level or `off`
+ *
+ * Kept apart from {@link isLogLevel}, because `off` is no level of a log entry: the filters of the log files
+ * (`iobroker logs --level`, `getLogs`, `searchLogs`) must keep refusing it.
+ *
+ * @param level level to validate
+ */
+export function isInstanceLogLevel(level: string): level is ioBroker.InstanceLogLevel {
+    return level === 'off' || isLogLevel(level);
+}
+
+/**
  * Get the controller pid
  *
  * @returns pid if running else undefined

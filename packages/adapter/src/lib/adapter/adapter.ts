@@ -140,7 +140,7 @@ import {
     deleteObjectAttribute,
     encryptArray,
     getObjectAttribute,
-    isLogLevel,
+    isInstanceLogLevel,
 } from '@iobroker/js-controller-common-db/tools';
 
 const controllerVersion = packJson.version;
@@ -913,6 +913,11 @@ export class AdapterClass extends EventEmitter {
     private enums: Record<string, ioBroker.EnumObject> = {};
     private eventLoopLags: number[] = [];
     private overwriteLogLevel: boolean = false;
+    /**
+     * The log level of this instance is `off`: the logger is silent, while `_config.log.level` stays a real level
+     * (`error`), because adapters read `adapter.log.level` and compare it with the levels they know
+     */
+    #logLevelOff = false;
     adapterReady: boolean = false;
     /**
      * Contains a live cache of the adapter's states.
@@ -1127,8 +1132,10 @@ export class AdapterClass extends EventEmitter {
             })
             .parseSync();
 
-        if (parsedArgs.loglevel && isLogLevel(parsedArgs.loglevel)) {
-            this._config.log.level = parsedArgs.loglevel;
+        if (parsedArgs.loglevel && isInstanceLogLevel(parsedArgs.loglevel)) {
+            // The logger does not exist yet: it is created with this level below and silenced there for `off`
+            this.#logLevelOff = parsedArgs.loglevel === 'off';
+            this._config.log.level = parsedArgs.loglevel === 'off' ? 'error' : parsedArgs.loglevel;
             this.overwriteLogLevel = true;
         }
 
@@ -1151,6 +1158,8 @@ export class AdapterClass extends EventEmitter {
                 this._config.log.level = 'debug';
                 this.overwriteLogLevel = true;
             }
+            // --debug is a run to look at the output, so it wins over a log level of `off`
+            this.#logLevelOff = false;
         }
 
         if (parsedArgs.instance && parseInt(parsedArgs.instance, 10).toString() === parsedArgs.instance) {
@@ -1183,6 +1192,8 @@ export class AdapterClass extends EventEmitter {
         this._namespaceRegExp = new RegExp(`^${`${this.namespace}.`.replace(/\./g, '\\.')}`); // cache the regex object 'adapter.0.'
 
         this._logger = logger(this._config.log);
+        // `--loglevel off`: the transports got `error` above, but the instance must not output even that
+        this._logger.silent = this.#logLevelOff;
 
         // compatibility
         if (!this._logger.silly) {
@@ -12656,21 +12667,20 @@ export class AdapterClass extends EventEmitter {
 
                 if (id === `system.adapter.${this.namespace}.logLevel`) {
                     if (this._config && this._config.log && state && !state.ack) {
-                        let currentLevel = this._config.log.level;
+                        let currentLevel = this.#getInstanceLogLevel();
                         const newLogLevel = state.val as string;
-                        if (state.val && state.val !== currentLevel && isLogLevel(newLogLevel)) {
+                        if (state.val && state.val !== currentLevel && isInstanceLogLevel(newLogLevel)) {
                             this.overwriteLogLevel = true;
-                            this._config.log.level = newLogLevel;
-                            for (const transport of this._logger.transports) {
-                                // set the loglevel on transport only if no loglevel was pinned in log config
-                                // @ts-expect-error it is our own modification
-                                if (!transport._defaultConfigLoglevel) {
-                                    transport.level = newLogLevel;
-                                }
+                            const message = `Loglevel changed from "${currentLevel}" to "${newLogLevel}"`;
+                            if (newLogLevel === 'off') {
+                                // Logged before the logger is silenced, so the log shows why the instance is quiet
+                                this._logger.info(`${this.namespaceLog} ${message}`);
+                                this.#applyLogLevel(newLogLevel);
+                            } else {
+                                // Logged after the logger is active again (and has the new level)
+                                this.#applyLogLevel(newLogLevel);
+                                this._logger.info(`${this.namespaceLog} ${message}`);
                             }
-                            this._logger.info(
-                                `${this.namespaceLog} Loglevel changed from "${currentLevel}" to "${state.val}"`,
-                            );
                             currentLevel = newLogLevel;
                         } else if (state.val && state.val !== currentLevel) {
                             this._logger.info(`${this.namespaceLog} Got invalid loglevel "${state.val}", ignoring`);
@@ -13107,6 +13117,42 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
+     * Apply a log level of the instance (from `common.loglevel` or the state `logLevel`) to the logger
+     *
+     * `off` is no level winston knows. The logger as a whole is silenced instead, which holds back every transport,
+     * also one with a level of its own in iobroker.json and the one that forwards the log to other instances like
+     * admin - "off" means that the instance outputs nothing at all, not even errors. The silencing is done on the
+     * logger and not on the transports, so that a transport which iobroker.json switches off with `silent: true` is
+     * not switched on again with the next level. The real level stays `error`, so that `_config.log.level` and
+     * `adapter.log.level` keep being a valid `LogLevel` for code that compares it.
+     *
+     * @param level the new log level of the instance
+     */
+    #applyLogLevel(level: ioBroker.InstanceLogLevel): void {
+        const realLevel: ioBroker.LogLevel = level === 'off' ? 'error' : level;
+
+        this.#logLevelOff = level === 'off';
+        this._config.log.level = realLevel;
+
+        for (const transport of this._logger.transports) {
+            // set the loglevel on transport only if no loglevel was pinned in log config
+            // @ts-expect-error it is our own modification
+            if (!transport._defaultConfigLoglevel) {
+                transport.level = realLevel;
+            }
+        }
+
+        this._logger.silent = this.#logLevelOff;
+    }
+
+    /**
+     * Get the log level of the instance as the user set it, which is `off` while the logger is silenced
+     */
+    #getInstanceLogLevel(): ioBroker.InstanceLogLevel {
+        return this.#logLevelOff ? 'off' : this._config.log.level;
+    }
+
+    /**
      * Initialize the adapter
      *
      * @param adapterConfig the AdapterOptions or the InstanceObject, is null/undefined if it is an installation process
@@ -13181,18 +13227,14 @@ export class AdapterClass extends EventEmitter {
             }
 
             // @ts-expect-error
-            if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
+            const configuredLogLevel: unknown = adapterConfig.common.loglevel;
+            if (
+                typeof configuredLogLevel === 'string' &&
+                isInstanceLogLevel(configuredLogLevel) &&
+                !this.overwriteLogLevel
+            ) {
                 // set configured in DB log level
-                for (const trans of Object.values(this._logger.transports)) {
-                    // set the loglevel on transport only if no loglevel was pinned in log config
-                    // @ts-expect-error it is our own modification
-                    if (!trans._defaultConfigLoglevel) {
-                        // @ts-expect-error
-                        trans.level = adapterConfig.common.loglevel;
-                    }
-                }
-                // @ts-expect-error
-                this._config.log.level = adapterConfig.common.loglevel;
+                this.#applyLogLevel(configuredLogLevel);
             }
 
             // @ts-expect-error
@@ -13314,7 +13356,8 @@ export class AdapterClass extends EventEmitter {
         // set current loglevel
         this.#states
             .setState(`system.adapter.${this.namespace}.logLevel`, {
-                val: this._config.log.level,
+                // `off` and not the `error` the logger is set to, so that admin shows what the user chose
+                val: this.#getInstanceLogLevel(),
                 ack: true,
                 from: `system.adapter.${this.namespace}`,
             })

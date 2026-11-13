@@ -1100,3 +1100,8 @@ async function testCheckPasswordAsync(user: string, password: string): Promise<v
     // @ts-expect-error forgot to extract the tuple
     const isPasswordCorrectArrayWrong = isPasswordCorrectArray === true;
 }
+
+// "off" is a log level of an instance, but no level of a logger or a log entry
+const _instanceLogLevelOff: ioBroker.InstanceCommon['loglevel'] = 'off';
+// @ts-expect-error "off" is no LogLevel
+const _logLevelOff: ioBroker.LogLevel = 'off';

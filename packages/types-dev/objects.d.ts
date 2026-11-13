@@ -780,8 +780,11 @@ declare global {
             localLinks?: Record<string, string | LocalLink>;
             /** @deprecated Use {@link localLinks} */
             localLink?: string;
-            /** Default log level for this adapter. It can be changed for every instance separately */
-            loglevel?: LogLevel;
+            /**
+             * Default log level for this adapter. It can be changed for every instance separately.
+             * `off` (for an instance, set by the user) switches every output of the instance off, also errors
+             */
+            loglevel?: InstanceLogLevel;
             /** Whether this adapter receives logs from other hosts and adapters (e.g., to store them somewhere) */
             logTransporter?: boolean;
             /** Path to the start file of the adapter. Should be the same as in `package.json` */

@@ -373,6 +373,14 @@ declare global {
         type GetObjectListParams = GetObjectViewParams | undefined;
 
         type LogLevel = 'silly' | 'debug' | 'info' | 'warn' | 'error';
+        /**
+         * Log level of an adapter instance
+         * (`common.loglevel` and the state `system.adapter.<name>.<instance>.logLevel`)
+         *
+         * Besides the real levels, `off` switches every output of the instance off, also errors. It is no level of a
+         * log entry and no level a logger can be set to, which is why it is not part of {@link LogLevel}
+         */
+        type InstanceLogLevel = LogLevel | 'off';
         interface Logger {
             /** log a message with silly level */
             silly(message: string): void;
