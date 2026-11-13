@@ -6,7 +6,7 @@
 
 # Interface: InternalGetAdapterObjectsOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:550](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/_Types.ts#L550)
+Defined in: [adapter/src/lib/\_Types.ts:550](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/adapter/src/lib/_Types.ts#L550)
 
 Options for reading all objects of the adapter
 
@@ -16,7 +16,7 @@ Options for reading all objects of the adapter
 
 > `optional` **callback?**: (`objects`) => `void`
 
-Defined in: [adapter/src/lib/\_Types.ts:552](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/_Types.ts#L552)
+Defined in: [adapter/src/lib/\_Types.ts:552](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/adapter/src/lib/_Types.ts#L552)
 
 Called with the adapter's objects
 

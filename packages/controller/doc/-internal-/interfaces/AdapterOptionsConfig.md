@@ -6,7 +6,7 @@
 
 # Interface: AdapterOptionsConfig
 
-Defined in: [adapter/src/lib/\_Types.ts:222](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/_Types.ts#L222)
+Defined in: [adapter/src/lib/\_Types.ts:222](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/adapter/src/lib/_Types.ts#L222)
 
 Subset of the adapter config relevant for the connection to the controller
 
@@ -16,7 +16,7 @@ Subset of the adapter config relevant for the connection to the controller
 
 > **log**: `object`
 
-Defined in: [adapter/src/lib/\_Types.ts:224](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/_Types.ts#L224)
+Defined in: [adapter/src/lib/\_Types.ts:224](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/adapter/src/lib/_Types.ts#L224)
 
 Logging configuration
 

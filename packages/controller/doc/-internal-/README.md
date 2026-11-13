@@ -225,6 +225,7 @@
 - [ValidateIdOptions](interfaces/ValidateIdOptions.md)
 - [VisIconSet](interfaces/VisIconSet.md)
 - [VisWidget](interfaces/VisWidget.md)
+- [WebComponentEntry](interfaces/WebComponentEntry.md)
 
 ## Type Aliases
 

@@ -8,7 +8,7 @@
 
 > **ObjectChangeHandler** = (`id`, `obj`) => `void` \| `Promise`\<`void`\>
 
-Defined in: [types-dev/index.d.ts:592](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L592)
+Defined in: [types-dev/index.d.ts:592](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L592)
 
 ## Parameters
 

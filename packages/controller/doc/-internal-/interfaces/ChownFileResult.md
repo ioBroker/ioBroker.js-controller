@@ -6,7 +6,7 @@
 
 # Interface: ChownFileResult
 
-Defined in: [types-dev/index.d.ts:715](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L715)
+Defined in: [types-dev/index.d.ts:715](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L715)
 
 Contains the return values of chownFile
 
@@ -16,7 +16,7 @@ Contains the return values of chownFile
 
 > **acl**: [`EvaluatedFileACL`](EvaluatedFileACL.md)
 
-Defined in: [types-dev/index.d.ts:727](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L727)
+Defined in: [types-dev/index.d.ts:727](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L727)
 
 Access rights
 
@@ -26,7 +26,7 @@ Access rights
 
 > `optional` **createdAt?**: `number`
 
-Defined in: [types-dev/index.d.ts:731](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L731)
+Defined in: [types-dev/index.d.ts:731](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L731)
 
 Date of creation
 
@@ -36,7 +36,7 @@ Date of creation
 
 > **file**: `string`
 
-Defined in: [types-dev/index.d.ts:719](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L719)
+Defined in: [types-dev/index.d.ts:719](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L719)
 
 Name of the file or directory
 
@@ -46,7 +46,7 @@ Name of the file or directory
 
 > **isDir**: `boolean`
 
-Defined in: [types-dev/index.d.ts:725](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L725)
+Defined in: [types-dev/index.d.ts:725](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L725)
 
 Whether this is a directory or a file
 
@@ -56,7 +56,7 @@ Whether this is a directory or a file
 
 > `optional` **modifiedAt?**: `number`
 
-Defined in: [types-dev/index.d.ts:729](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L729)
+Defined in: [types-dev/index.d.ts:729](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L729)
 
 Date of last modification
 
@@ -66,7 +66,7 @@ Date of last modification
 
 > **path**: `string`
 
-Defined in: [types-dev/index.d.ts:717](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L717)
+Defined in: [types-dev/index.d.ts:717](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L717)
 
 The parent directory of the processed file or directory
 
@@ -76,7 +76,7 @@ The parent directory of the processed file or directory
 
 > `optional` **stats?**: `object`
 
-Defined in: [types-dev/index.d.ts:721](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L721)
+Defined in: [types-dev/index.d.ts:721](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L721)
 
 File system stats
 

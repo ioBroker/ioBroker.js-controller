@@ -6,7 +6,7 @@
 
 # Interface: FileACL
 
-Defined in: [types-dev/objects.d.ts:7](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/objects.d.ts#L7)
+Defined in: [types-dev/objects.d.ts:7](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L7)
 
 Defines access rights for a single file
 
@@ -20,7 +20,7 @@ Defines access rights for a single file
 
 > **owner**: `` `system.user.${string}` ``
 
-Defined in: [types-dev/objects.d.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/objects.d.ts#L9)
+Defined in: [types-dev/objects.d.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L9)
 
 Full name of the user who owns this file, e.g. "system.user.admin"
 
@@ -30,7 +30,7 @@ Full name of the user who owns this file, e.g. "system.user.admin"
 
 > **ownerGroup**: `` `system.group.${string}` ``
 
-Defined in: [types-dev/objects.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/objects.d.ts#L11)
+Defined in: [types-dev/objects.d.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L11)
 
 Full name of the group who owns this file, e.g. "system.group.administrator"
 
@@ -40,6 +40,6 @@ Full name of the group who owns this file, e.g. "system.group.administrator"
 
 > **permissions**: `number`
 
-Defined in: [types-dev/objects.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/objects.d.ts#L13)
+Defined in: [types-dev/objects.d.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L13)
 
 Linux-type permissions defining access to this file
