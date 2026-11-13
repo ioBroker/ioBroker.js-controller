@@ -268,6 +268,20 @@ export interface SpawnPythonOptions {
 }
 
 /**
+ * Translate the log level of an instance into one that the Python SDK understands
+ *
+ * `off` silences the logger of a Node.js adapter, it is no level of its own. The SDK hands the level on to
+ * Python's `logging`, which has no "off" (`setLevel('OFF')` raises a `ValueError`), and an SDK that does not know
+ * the value could fail to start at all. `error` is the most restrictive level every SDK understands, so a Python
+ * instance set to `off` still logs its errors - better than not running - until the SDK knows `off` itself.
+ *
+ * @param logLevel log level of the instance (`common.loglevel`)
+ */
+export function pythonLogLevel(logLevel: string): string {
+    return logLevel === 'off' ? 'error' : logLevel;
+}
+
+/**
  * Start a Python adapter
  *
  * Two differences to the Node path are intentional. Both output streams are piped rather than
@@ -281,11 +295,13 @@ export interface SpawnPythonOptions {
 export function spawnPythonAdapter(options: SpawnPythonOptions): ChildProcess {
     const { adapterDir, main, interpreter, args, env } = options;
     const entry = resolvePythonEntry(adapterDir, main);
+    // The same arguments as a Node adapter gets, except for a log level the SDK does not know
+    const pythonArgs = args.map((arg, i) => (i > 0 && args[i - 1] === '--loglevel' ? pythonLogLevel(arg) : arg));
 
     // -u disables buffering. Python block-buffers stdout as soon as it is a pipe rather than a
     // terminal, which is exactly the case here: forwarded output would arrive in 8 KB chunks long
     // after the fact, and whatever sat in the buffer would be lost if the process is killed.
-    return spawn(interpreter, ['-u', '-m', entry.module, ...args], {
+    return spawn(interpreter, ['-u', '-m', entry.module, ...pythonArgs], {
         stdio: ['ignore', 'pipe', 'pipe'],
         windowsHide: true,
         cwd: entry.cwd,
@@ -373,7 +389,7 @@ export function buildPythonEnv(
     env.IOB_INSTANCE = String(instance);
 
     if (logLevel) {
-        env.IOB_LOGLEVEL = logLevel;
+        env.IOB_LOGLEVEL = pythonLogLevel(logLevel);
     }
 
     return env;

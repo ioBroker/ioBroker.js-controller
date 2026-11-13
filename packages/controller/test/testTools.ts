@@ -8,6 +8,8 @@ import {
     execAsync,
     execFileAsync,
     isForeignProcess,
+    isInstanceLogLevel,
+    isLogLevel,
     isProcessRunning,
     nodeVersionSatisfies,
 } from '@iobroker/js-controller-common-db/tools';
@@ -169,5 +171,27 @@ describe('nodeVersionSatisfies', () => {
     it('does not throw on what it cannot read', () => {
         assert.equal(nodeVersionSatisfies('not a range', 'v22.22.2'), false);
         assert.equal(nodeVersionSatisfies('>=22', 'not a version'), false);
+    });
+});
+
+describe('isLogLevel and isInstanceLogLevel', () => {
+    it('accepts the levels of a log entry', () => {
+        for (const level of ['silly', 'debug', 'info', 'warn', 'error']) {
+            assert.equal(isLogLevel(level), true, level);
+            assert.equal(isInstanceLogLevel(level), true, level);
+        }
+    });
+
+    it('accepts "off" only as the level of an instance', () => {
+        // a log entry never has the level "off", so the filters of the log files must keep refusing it
+        assert.equal(isLogLevel('off'), false);
+        assert.equal(isInstanceLogLevel('off'), true);
+    });
+
+    it('refuses what is no level', () => {
+        for (const level of ['', 'verbose', 'OFF', 'Error', 'none']) {
+            assert.equal(isLogLevel(level), false, level);
+            assert.equal(isInstanceLogLevel(level), false, level);
+        }
     });
 });

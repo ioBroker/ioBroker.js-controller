@@ -175,7 +175,7 @@ rebuilds it.
 | `IOB_STATES_SENTINELS` / `IOB_OBJECTS_SENTINELS` | `host:port,host:port` — the sentinels, **instead of** `…_HOST` and `…_PORT` (only for a Sentinel setup). An IPv6 literal is bracketed: `[::1]:26379` |
 | `IOB_STATES_SENTINEL_NAME` / `IOB_OBJECTS_SENTINEL_NAME` | Name of the master group, `mymaster` unless configured otherwise                                                                  |
 | `IOB_INSTANCE`                         | Instance number, e.g. `0`                                                                                                                                      |
-| `IOB_LOGLEVEL`                         | Log level for this instance (only when configured)                                                                                                             |
+| `IOB_LOGLEVEL`                         | Log level for this instance (only when configured); the instance level `off` is passed as `error`, also in `--loglevel`                                        |
 
 The SDK must read these variables instead of parsing `iobroker.json`. The database, instance and
 log-level `IOB_*` variables listed above are cleared from the controller's inherited environment
