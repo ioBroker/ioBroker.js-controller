@@ -27,6 +27,7 @@
     },
     "scripts": {
         "build": "tsc -b tsconfig.build.json",
+        "test-unit": "mocha --node-option import=tsx \"src/lib/**/*.test.ts\" --exit",
         "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ../cjs/ --cwd=build/esm/"
     },
     "main": "build/cjs/index.js",

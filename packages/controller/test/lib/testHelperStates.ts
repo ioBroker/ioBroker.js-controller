@@ -44,4 +44,59 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         // clean up
         await context.adapter.requireLog!(false);
     });
+
+    it(`${testName}sigKill from another host should not terminate the instance`, async () => {
+        let unloaded = false;
+        context.onAdapterUnload = (callback: () => void) => {
+            unloaded = true;
+            callback();
+        };
+
+        // the controller of another host stops its copy of this instance, e.g. after it has been moved
+        await context.states.setState(`system.adapter.${context.adapter.namespace}.sigKill`, {
+            val: -1,
+            ack: false,
+            from: 'system.host.anotherHost',
+        });
+        // give the adapter time to process the state change
+        await new Promise(resolve => setTimeout(resolve, 500));
+        context.onAdapterUnload = null;
+
+        assert.strictEqual(unloaded, false);
+    });
+
+    describe(`${testName}fence after a reconnect`, () => {
+        const instanceId = (): string => `system.adapter.${context.adapter.namespace}`;
+        let originalHost: string;
+        let terminated: { reason?: string; code?: number } | null;
+        let originalTerminate: any;
+
+        beforeEach(async () => {
+            const obj = await context.objects.getObjectAsync(instanceId());
+            originalHost = obj!.common.host;
+            terminated = null;
+            originalTerminate = context.adapter.terminate;
+            (context.adapter as any).terminate = (reason?: string, code?: number) => (terminated = { reason, code });
+        });
+
+        afterEach(async () => {
+            (context.adapter as any).terminate = originalTerminate;
+            await context.objects.extendObject(instanceId(), { common: { host: originalHost } });
+        });
+
+        it('keeps an instance which is still assigned to this host', async () => {
+            await context.objects.extendObject(instanceId(), { common: { host: context.adapter.host } });
+
+            assert.strictEqual(await (context.adapter as any)._fence('a test'), true);
+            assert.strictEqual(terminated, null);
+        });
+
+        it('terminates an instance which was moved to another host, without unload', async () => {
+            await context.objects.extendObject(instanceId(), { common: { host: 'anotherHost' } });
+
+            assert.strictEqual(await (context.adapter as any)._fence('a test'), false);
+            assert.strictEqual(terminated!.code, 11); // ADAPTER_REQUESTED_TERMINATION
+            assert.match(terminated!.reason!, /Moved to host "anotherHost"/);
+        });
+    });
 }
