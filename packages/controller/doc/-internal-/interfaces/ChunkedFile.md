@@ -6,7 +6,7 @@
 
 # Interface: ChunkedFile
 
-Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L10)
+Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L10)
 
 What is known about a file while its pieces arrive
 
@@ -16,7 +16,7 @@ What is known about a file while its pieces arrive
 
 > **mtime**: `number`
 
-Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:14](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L14)
+Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:14](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L14)
 
 Time of the last modification, as the first piece said
 
@@ -26,6 +26,6 @@ Time of the last modification, as the first piece said
 
 > **size**: `number`
 
-Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L12)
+Defined in: [adapter/src/lib/adapter/managers/HostDiskClient.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/adapter/src/lib/adapter/managers/HostDiskClient.ts#L12)
 
 Size of the whole file, `-1` until the first piece arrived

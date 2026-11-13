@@ -6,7 +6,7 @@
 
 # Interface: UsedResourceDataMap
 
-Defined in: [types-dev/index.d.ts:174](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L174)
+Defined in: [types-dev/index.d.ts:174](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L174)
 
 Maps every known resource type to its strictly typed payload.
 To introduce a new resource type, add its `RESOURCE_TYPE: RESOURCE_TYPE_Data` entry here
@@ -18,7 +18,7 @@ To introduce a new resource type, add its `RESOURCE_TYPE: RESOURCE_TYPE_Data` en
 
 > **bluetooth**: [`BluetoothResourceData`](BluetoothResourceData.md)
 
-Defined in: [types-dev/index.d.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L179)
+Defined in: [types-dev/index.d.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L179)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [types-dev/index.d.ts:179](https://github.com/ioBroker/ioBroker.js-c
 
 > **gpio**: [`GpioResourceData`](GpioResourceData.md)
 
-Defined in: [types-dev/index.d.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L180)
+Defined in: [types-dev/index.d.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L180)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [types-dev/index.d.ts:180](https://github.com/ioBroker/ioBroker.js-c
 
 > **serialPort**: [`SerialPortResourceData`](SerialPortResourceData.md)
 
-Defined in: [types-dev/index.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L175)
+Defined in: [types-dev/index.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L175)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [types-dev/index.d.ts:175](https://github.com/ioBroker/ioBroker.js-c
 
 > **tcpPort**: [`TcpPortResourceData`](TcpPortResourceData.md)
 
-Defined in: [types-dev/index.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L176)
+Defined in: [types-dev/index.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L176)
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: [types-dev/index.d.ts:176](https://github.com/ioBroker/ioBroker.js-c
 
 > **udpPort**: [`UdpPortResourceData`](UdpPortResourceData.md)
 
-Defined in: [types-dev/index.d.ts:177](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L177)
+Defined in: [types-dev/index.d.ts:177](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L177)
 
 ***
 
@@ -58,4 +58,4 @@ Defined in: [types-dev/index.d.ts:177](https://github.com/ioBroker/ioBroker.js-c
 
 > **usb**: [`UsbResourceData`](UsbResourceData.md)
 
-Defined in: [types-dev/index.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/03667c060d7cad736217ec7e1b837e0ace8bb659/packages/types-dev/index.d.ts#L178)
+Defined in: [types-dev/index.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/index.d.ts#L178)
