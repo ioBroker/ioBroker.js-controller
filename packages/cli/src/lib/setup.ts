@@ -384,15 +384,50 @@ function initYargs(): ReturnType<typeof yargs> {
                 .command('view [<certificate name>]', 'Show certificate', {});
         })
         .command('clean <yes>', 'Clears all objects and states', {})
-        .command('backup', 'Create backup', {})
+        .command('backup', 'Create backup', yargs => {
+            yargs
+                .option('encrypt', {
+                    describe:
+                        'Encrypt the backup (.tar.gz.enc) with a password from the prompt, --password-file or IOB_BACKUP_PASSWORD; --encrypt false skips the encryption of iobroker.json',
+                    type: 'boolean',
+                })
+                .option('password-file', {
+                    describe: 'File with the password of the backup',
+                    type: 'string',
+                })
+                .command('[<backup name or path>]', 'Create a backup', {})
+                .command('keygen', 'Create a key pair to encrypt backups without a password', {
+                    save: {
+                        describe: 'Store the public key in iobroker.json, so every backup is encrypted for it',
+                        type: 'boolean',
+                    },
+                });
+        })
         .command('restore <backup name or path>', 'Restore a specified backup', {
             force: {
                 describe: 'Restore backup of different controller version',
                 alias: 'f',
                 type: 'boolean',
             },
+            'password-file': {
+                describe: 'File with the password of an encrypted backup',
+                type: 'string',
+            },
+            'key-file': {
+                describe: 'File with the private key of an encrypted backup',
+                type: 'string',
+            },
         })
-        .command('validate <backup name or path>', 'Validate a specified backup', {})
+        .command('validate <backup name or path>', 'Validate a specified backup', {
+            'password-file': {
+                describe: 'File with the password of an encrypted backup',
+                type: 'string',
+            },
+            'key-file': {
+                describe: 'File with the private key of an encrypted backup',
+                type: 'string',
+            },
+        })
         .command(['status [all|<adapter>.<instance>]', 'isrun'], 'Status of ioBroker or adapter instance', yargs => {
             yargs
                 .command('all', 'Show entire config')
