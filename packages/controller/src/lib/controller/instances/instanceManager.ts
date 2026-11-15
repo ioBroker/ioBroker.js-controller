@@ -8,6 +8,7 @@ import { InstanceStarter } from '@/lib/controller/instances/instanceStarter.js';
 import { CompactGroupManager } from '@/lib/controller/instances/compactGroupManager.js';
 import { ScheduleRunner } from '@/lib/controller/instances/scheduleRunner.js';
 import { UsedResourcesManager } from '@/lib/controller/instances/usedResourcesManager.js';
+import { WebExtensionProvider } from '@/lib/controller/instances/webExtensionProvider.js';
 import { isPythonAdapter } from '@/lib/pythonRuntime.js';
 import type { NotificationHandler } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
@@ -101,6 +102,8 @@ export class InstanceManager {
     readonly scheduler: ScheduleRunner;
     /** Keeps the registry of the resources the instances of this host occupy */
     readonly usedResources: UsedResourcesManager;
+    /** Installs the code of web extensions of other hosts which the web servers of this host load */
+    readonly webExtensions: WebExtensionProvider;
 
     /** Timer which delays the writing of the pids file */
     #storeTimer: NodeJS.Timeout | null = null;
@@ -119,6 +122,7 @@ export class InstanceManager {
         this.compactGroups = new CompactGroupManager(forChildren);
         this.usedResources = new UsedResourcesManager(forChildren);
         this.scheduler = new ScheduleRunner(forChildren);
+        this.webExtensions = new WebExtensionProvider(forChildren);
     }
 
     /**
@@ -199,6 +203,13 @@ export class InstanceManager {
         }
 
         this.initInstances();
+
+        // after the instances of this host, so their own installations are queued first
+        try {
+            await this.webExtensions.setInstances(instances);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Cannot check the web extensions of other hosts: ${e.message}`);
+        }
     }
 
     /**
@@ -833,6 +844,7 @@ export class InstanceManager {
         try {
             // sometimes a process receives SIGTERM twice, the timestamp of the first request is kept
             state.markStopping();
+            this.webExtensions.stop();
             elapsed = Date.now() - state.isStopping!;
             logger.debug(
                 `${hostLogPrefix} stop isStopping=${elapsed} isDaemon=${isDaemon} allInstancesStopped=${this.allInstancesStopped}`,
@@ -903,6 +915,9 @@ export class InstanceManager {
             // the configuration of an instance defines which resources it occupies, so keep the registry
             // in line with it - no matter whether the instance is known here, running, or was just deleted
             await this.usedResources.syncInstance(id, obj);
+
+            // a web server of this host may load the web extension of an instance of another host
+            this.webExtensions.handleObjectChange(id, obj);
 
             // known adapter
             const proc = this.procs[id];
