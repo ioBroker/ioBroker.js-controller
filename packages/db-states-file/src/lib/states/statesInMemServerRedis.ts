@@ -397,8 +397,16 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB<RedisHandlerInter
                 if (pattern.substring(0, 3) === this.namespaceStates) {
                     pattern = pattern.substring(this.namespaceStates.length);
                 }
-                const keys = this._getKeys(pattern);
-                const result = keys.map(id => this.namespaceStates + id);
+                let result: string[];
+                try {
+                    const keys = this._getKeys(pattern);
+                    result = keys.map(id => this.namespaceStates + id);
+                } catch (e) {
+                    return void handler.sendError(
+                        responseId,
+                        new Error(`ERROR _getKeys pattern=${pattern}: ${e.message}`),
+                    );
+                }
                 handler.sendArray(responseId, result);
             } else {
                 handler.sendError(
@@ -412,11 +420,19 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB<RedisHandlerInter
         handler.on('psubscribe', (data, responseId) => {
             const { id, namespace } = this._normalizeId(data[0]);
             if (namespace === this.namespaceMsg) {
-                this._subscribeMessageForClient(handler, id.substr(this.namespaceMsgLen));
-                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                try {
+                    this._subscribeMessageForClient(handler, id.substr(this.namespaceMsgLen));
+                    handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                } catch (e) {
+                    handler.sendError(responseId, e);
+                }
             } else if (namespace === this.namespaceLog) {
-                this._subscribeLogForClient(handler, id.substr(this.namespaceLogLen));
-                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                try {
+                    this._subscribeLogForClient(handler, id.substr(this.namespaceLogLen));
+                    handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                } catch (e) {
+                    handler.sendError(responseId, e);
+                }
             } else if (namespace === this.namespaceStates) {
                 try {
                     this._subscribeForClient(handler, id);
@@ -425,8 +441,12 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB<RedisHandlerInter
                     handler.sendError(responseId, e);
                 }
             } else if (namespace === this.metaNamespace) {
-                this._subscribeMeta(handler, id);
-                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                try {
+                    this._subscribeMeta(handler, id);
+                    handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                } catch (e) {
+                    handler.sendError(responseId, e);
+                }
             } else {
                 handler.sendError(
                     responseId,

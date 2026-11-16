@@ -833,14 +833,26 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB<RedisHandlerInt
                 return void handler.sendError(responseId, new Error('id is null'));
             }
             if (namespace === this.namespaceObj) {
-                this._subscribeConfigForClient(handler, id);
-                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                try {
+                    this._subscribeConfigForClient(handler, id);
+                    handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                } catch (e) {
+                    handler.sendError(responseId, e);
+                }
             } else if (namespace === this.namespaceMeta) {
-                this._subscribeMeta(handler, id);
-                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                try {
+                    this._subscribeMeta(handler, id);
+                    handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                } catch (e) {
+                    handler.sendError(responseId, e);
+                }
             } else if (namespace === this.namespaceFile) {
-                this._subscribeFileForClient(handler, id, name);
-                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                try {
+                    this._subscribeFileForClient(handler, id, name);
+                    handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                } catch (e) {
+                    handler.sendError(responseId, e);
+                }
             } else {
                 handler.sendError(
                     responseId,
