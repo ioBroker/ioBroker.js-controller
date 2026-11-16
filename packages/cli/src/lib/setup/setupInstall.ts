@@ -530,7 +530,7 @@ export class Install {
                             obj =>
                                 obj.value.common &&
                                 obj.value.common.name === dName &&
-                                obj.value.common.host === hostname,
+                                tools.isInstanceAssignedToHost(obj.value, hostname),
                         );
                         if (locInstances.length === 0) {
                             console.error(`host.${hostname} Required dependency "${dName}" not found on this host.`);
@@ -815,7 +815,7 @@ export class Install {
         // check singletonHost one on host
         if (obj.common.singletonHost) {
             for (const row of res.rows) {
-                if (row.value?.common.host === hostname) {
+                if (tools.isInstanceAssignedToHost(row.value, hostname)) {
                     if (ignoreIfExists) {
                         return;
                     }
@@ -1059,7 +1059,11 @@ export class Install {
                 .filter(row => instanceRegex.test(row.value._id))
                 // if instance given, also delete it from foreign host else only instance on this host
                 .filter(row => {
-                    if (instance !== undefined || !row.value.common?.host || row.value.common?.host === hostname) {
+                    if (
+                        instance !== undefined ||
+                        !row.value.common?.host ||
+                        tools.isInstanceAssignedToHost(row.value, hostname)
+                    ) {
                         return true;
                     }
                     if (!notDeleted.includes(row.value._id)) {
@@ -2040,7 +2044,7 @@ export class Install {
                 const localDeps = tools.parseDependencies(row.value.common.dependencies);
 
                 for (const localDep of Object.keys(localDeps)) {
-                    if (row.value.common.host === scopedHostname && localDep === adapter) {
+                    if (tools.isInstanceAssignedToHost(row.value, scopedHostname) && localDep === adapter) {
                         if (instance === undefined) {
                             // this adapter needs us locally and all instances should be deleted
                             return `${row.value.common.name}.${row.id.split('.').pop()}`;
@@ -2097,7 +2101,11 @@ export class Install {
         scopedHostname: string,
     ): boolean {
         for (const row of instancesRows) {
-            if (row.value && row.value.common.name === adapter && row.value.common.host !== scopedHostname) {
+            if (
+                row.value &&
+                row.value.common.name === adapter &&
+                !tools.isInstanceAssignedToHost(row.value, scopedHostname)
+            ) {
                 return true;
             }
         }
@@ -2124,7 +2132,7 @@ export class Install {
             if (
                 row.value &&
                 row.value.common.name === adapter &&
-                row.value.common.host === scopedHostname &&
+                tools.isInstanceAssignedToHost(row.value, scopedHostname) &&
                 parseInt(row.value._id.split('.').pop()!) !== instance
             ) {
                 return true;
@@ -2149,7 +2157,7 @@ export class Install {
         if (doc) {
             for (const row of doc.rows) {
                 // stop only started instances on this host
-                if (row.value.common.enabled && hostname === row.value.common.host) {
+                if (row.value.common.enabled && tools.isInstanceAssignedToHost(row.value, hostname)) {
                     instances.push(row.value);
                 }
             }
