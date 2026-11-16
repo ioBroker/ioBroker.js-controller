@@ -1514,6 +1514,23 @@ export function getAdapterDir(adapter: string): string | null {
 }
 
 /**
+ * Checks if an instance is assigned to the given host
+ *
+ * An instance is assigned to a host only by its hostname in `common.host`, an IP address is not accepted.
+ * An instance with an empty `common.host` is not assigned to any host, so this returns false for it.
+ * The controller claims such an instance on start and writes its hostname into `common.host`.
+ *
+ * @param instance the instance object
+ * @param hostname name of the host, like `tools.getHostName()`
+ */
+export function isInstanceAssignedToHost(
+    instance: Pick<ioBroker.InstanceObject, 'common'> | null | undefined,
+    hostname: string,
+): boolean {
+    return !!hostname && instance?.common?.host === hostname;
+}
+
+/**
  * Returns the hostname of this host
  */
 export function getHostName(): string {

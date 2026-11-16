@@ -75,14 +75,37 @@ describe('InstanceManager.checkAndAddInstance', () => {
         assert.deepEqual(Object.keys(manager.procs), []);
     });
 
-    it('accepts an instance whose host matches one of our IP addresses', async () => {
-        const { manager } = createManager();
+    it('reassigns an instance from one of our IP addresses to our host name', async () => {
+        const setObject = sinon.stub().resolves();
+        const info = sinon.stub();
+        const { manager } = createManager({ objects: { setObject } as any, logger: silentLogger({ info }) });
+        const instance = instanceObject({ common: { host: '192.168.0.2' } });
 
-        const added = await manager.checkAndAddInstance(instanceObject({ common: { host: '192.168.0.2' } }), [
-            '192.168.0.2',
-        ]);
+        const added = await manager.checkAndAddInstance(instance, ['192.168.0.2']);
 
         assert.equal(added, true);
+        assert.equal(instance.common.host, 'testhost');
+        assert.equal(setObject.calledOnce, true);
+        assert.equal(setObject.firstCall.args[0], 'system.adapter.hm-rpc.0');
+        assert.equal(setObject.firstCall.args[1].common.host, 'testhost');
+        assert.ok(
+            info.args.some(args =>
+                /Reassign instance system\.adapter\.hm-rpc\.0 from IP 192\.168\.0\.2 to host testhost/.test(args[0]),
+            ),
+        );
+    });
+
+    it('ignores an instance assigned to an IP address which is not ours and leaves it unchanged', async () => {
+        const setObject = sinon.stub().resolves();
+        const { manager } = createManager({ objects: { setObject } as any });
+        const instance = instanceObject({ common: { host: '172.17.0.2' } });
+
+        const added = await manager.checkAndAddInstance(instance, ['192.168.0.2']);
+
+        assert.equal(added, false);
+        assert.equal(instance.common.host, '172.17.0.2');
+        assert.equal(setObject.called, false);
+        assert.deepEqual(Object.keys(manager.procs), []);
     });
 
     it('ignores an instance which has been marked as deleted', async () => {

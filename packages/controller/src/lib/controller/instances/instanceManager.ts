@@ -163,7 +163,9 @@ export class InstanceManager {
 
                 // @ts-expect-error is mode web valid, it is not in schema
                 if (instance.common.mode === 'web' || instance.common.mode === 'none') {
-                    if (instance.common.host === hostname) {
+                    await this.#reassignFromIp(instance, _ipArr);
+
+                    if (tools.isInstanceAssignedToHost(instance, hostname)) {
                         const name = instance._id.split('.')[2];
                         const adapterDir = tools.getAdapterDir(name);
                         if (!fs.existsSync(adapterDir!)) {
@@ -244,16 +246,42 @@ export class InstanceManager {
     }
 
     /**
+     * Legacy: instances were assigned to a host by IP address, convert an own IP to the hostname
+     *
+     * @param instance instance object, it is updated in place
+     * @param ipArr IP-Array from this host
+     */
+    async #reassignFromIp(instance: ioBroker.InstanceObject, ipArr: string[]): Promise<void> {
+        const { logger, hostLogPrefix, hostname } = this.#options;
+
+        if (!instance.common.host || !ipArr.includes(instance.common.host)) {
+            return;
+        }
+
+        const ip = instance.common.host;
+        instance.common.host = hostname;
+
+        try {
+            await this.#options.objects.setObject(instance._id, instance);
+            logger.info(`${hostLogPrefix} Reassign instance ${instance._id} from IP ${ip} to host ${hostname}`);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Cannot update hostname for ${instance._id}: ${e.message}`);
+        }
+    }
+
+    /**
      * Check if an instance is handled by this host process and initialize internal data structures
      *
      * @param instance instance object
-     * @param ipArr IP-Array from this host
+     * @param ipArr IP-Array from this host, an instance assigned to one of these IPs is reassigned to the hostname
      * @returns true if instance needs to be handled by this host (true) or not
      */
     async checkAndAddInstance(instance: ioBroker.InstanceObject, ipArr: string[]): Promise<boolean> {
         const { config, logger, hostLogPrefix, hostname, isCompactGroupController } = this.#options;
 
-        if (!ipArr.includes(instance.common.host) && instance.common.host && instance.common.host !== hostname) {
+        await this.#reassignFromIp(instance, ipArr);
+
+        if (instance.common.host && !tools.isInstanceAssignedToHost(instance, hostname)) {
             return false;
         }
         // @ts-expect-error todo who does this? legacy or still needed?
