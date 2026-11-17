@@ -549,8 +549,63 @@ export function getDockerInformation(): DockerInformation {
     return { isDocker: isDocker(), isOfficial: false };
 }
 
+/** Paths belonging to the WinSW service that runs an ioBroker installation */
+export interface WindowsServiceInstallation {
+    /** Path to the WinSW executable which hosts the ioBroker service */
+    executable: string;
+    /** Path to the WinSW configuration of the main ioBroker service */
+    config: string;
+}
+
 /**
- * Controller UI upgrade is not supported on Windows and MacOS
+ * Find the WinSW executable and configuration of a Windows ioBroker service installation.
+ *
+ * WinSW exposes its executable path to the service process. The directory scan is a fallback for
+ * child processes, such as Admin, and only accepts XML files with a same-named executable.
+ *
+ * @param rootDir ioBroker installation root
+ * @param env environment used to detect WinSW
+ */
+export function getWindowsServiceInstallation(
+    rootDir = getRootDir(),
+    env: NodeJS.ProcessEnv = process.env,
+): WindowsServiceInstallation | undefined {
+    const winswExecutable = env.WINSW_EXECUTABLE;
+
+    if (winswExecutable) {
+        const config =
+            env.WINSW_CONFIG_FILE ??
+            path.join(
+                path.dirname(winswExecutable),
+                `${path.basename(winswExecutable, path.extname(winswExecutable))}.xml`,
+            );
+
+        if (fs.existsSync(winswExecutable) && fs.existsSync(config)) {
+            return { executable: winswExecutable, config };
+        }
+    }
+
+    const daemonDir = path.join(rootDir, 'daemon');
+    try {
+        for (const file of fs.readdirSync(daemonDir)) {
+            if (!file.endsWith('.xml')) {
+                continue;
+            }
+
+            const executable = path.join(daemonDir, `${file.slice(0, -4)}.exe`);
+            if (fs.existsSync(executable)) {
+                return { executable, config: path.join(daemonDir, file) };
+            }
+        }
+    } catch {
+        // Not a Windows service installation
+    }
+
+    return undefined;
+}
+
+/**
+ * Controller UI upgrade is not supported on macOS or Windows installations without a WinSW service.
  */
 export function isControllerUiUpgradeSupported(): boolean {
     const dockerInfo = getDockerInformation();
@@ -570,7 +625,12 @@ export function isControllerUiUpgradeSupported(): boolean {
         return true;
     }
 
-    return !['win32', 'darwin'].includes(os.platform());
+    const platform = os.platform();
+    if (platform === 'win32') {
+        return getWindowsServiceInstallation() !== undefined;
+    }
+
+    return platform !== 'darwin';
 }
 
 /**

@@ -2,8 +2,10 @@ import fs from 'fs-extra';
 import type cp from 'node:child_process';
 import { spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
+import path from 'node:path';
 import { tools } from '@iobroker/js-controller-common';
 import { SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
+import { execFileAsync, getWindowsServiceInstallation } from '@iobroker/js-controller-common-db/tools';
 import { PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import type { NotificationHandler } from '@iobroker/js-controller-common';
@@ -203,6 +205,67 @@ export class SystemChecks {
     async startUpgradeManager(options: UpgradeArguments): Promise<void> {
         const { version, adminInstance, uid, gid } = options;
         const upgradeProcessPath = require.resolve('../../upgradeManager');
+
+        if (process.platform === 'win32') {
+            const windowsService = getWindowsServiceInstallation();
+            if (!windowsService) {
+                throw new Error('Cannot start controller upgrade: no WinSW service installation found');
+            }
+
+            const daemonDir = path.dirname(windowsService.executable);
+            const helperServiceId = `iob_controller_upgrade_${this.#hostname.replace(/[^a-zA-Z0-9_.-]/g, '_')}`;
+            const helperConfig = path.join(daemonDir, `${helperServiceId}.xml`);
+            const rootDir = tools.getRootDir();
+            const escapeXml = (value: string | number): string =>
+                String(value)
+                    .replaceAll('&', '&amp;')
+                    .replaceAll('<', '&lt;')
+                    .replaceAll('>', '&gt;')
+                    .replaceAll('"', '&quot;')
+                    .replaceAll("'", '&apos;');
+            const helperXml = `<service>
+    <id>${escapeXml(helperServiceId)}</id>
+    <name>${escapeXml(`ioBroker controller upgrade (${this.#hostname})`)}</name>
+    <description>Temporary service for an ioBroker js-controller upgrade</description>
+    <executable>${escapeXml(process.execPath)}</executable>
+    <arguments>&quot;${escapeXml(upgradeProcessPath)}&quot; ${escapeXml(version)} ${adminInstance} ${uid} ${gid}</arguments>
+    <workingdirectory>${escapeXml(rootDir)}</workingdirectory>
+    <env name="IOBROKER_WINDOWS_UPGRADE_HELPER_SERVICE" value="${escapeXml(helperServiceId)}"/>
+    <env name="IOBROKER_WINDOWS_UPGRADE_HELPER_CONFIG" value="${escapeXml(helperConfig)}"/>
+    <env name="IOBROKER_WINDOWS_MAIN_SERVICE_CONFIG" value="${escapeXml(windowsService.config)}"/>
+    <env name="IOBROKER_ROOT_DIR" value="${escapeXml(rootDir)}"/>
+    <log mode="none"/>
+    <stoptimeout>30sec</stoptimeout>
+</service>
+`;
+
+            await fs.writeFile(helperConfig, helperXml, 'utf8');
+            let installed = false;
+
+            try {
+                await execFileAsync(windowsService.executable, ['install', helperConfig, '--no-elevate'], {
+                    cwd: daemonDir,
+                });
+                installed = true;
+                await execFileAsync(windowsService.executable, ['start', helperConfig, '--no-elevate'], {
+                    cwd: daemonDir,
+                });
+            } catch (e) {
+                if (installed) {
+                    try {
+                        await execFileAsync(windowsService.executable, ['uninstall', helperConfig, '--no-elevate'], {
+                            cwd: daemonDir,
+                        });
+                    } catch {
+                        // Keep the original error
+                    }
+                }
+                await fs.remove(helperConfig);
+                throw e;
+            }
+            return;
+        }
+
         let upgradeProcess: cp.ChildProcess;
 
         const isSystemd = await tools.isIoBrokerInstalledAsSystemd();
