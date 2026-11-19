@@ -86,6 +86,27 @@ export interface ServerResponse {
 }
 
 /**
+ * Check whether an incoming request targets the upgrade status endpoint.
+ *
+ * The temporary server listens on the Admin port, so browser reconnect attempts for Socket.IO and
+ * other Admin resources can reach it while the controller is stopped. These requests must not
+ * consume the final response and trigger the shutdown of the upgrade server.
+ *
+ * @param requestUrl URL from the incoming HTTP request
+ */
+export function isUpgradeStatusRequest(requestUrl: string | undefined): boolean {
+    if (!requestUrl) {
+        return false;
+    }
+
+    try {
+        return new url.URL(requestUrl, 'http://localhost').pathname === '/';
+    } catch {
+        return false;
+    }
+}
+
+/**
  * Send the current upgrade status and invoke the callback only after a final response was flushed.
  *
  * @param res HTTP response
@@ -401,9 +422,19 @@ class UpgradeManager {
     /**
      * This function is called when the webserver receives a message
      *
+     * @param req server request
      * @param res server response
      */
-    webServerCallback(res: http.ServerResponse): void {
+    webServerCallback(req: http.IncomingMessage, res: http.ServerResponse): void {
+        if (!isUpgradeStatusRequest(req.url)) {
+            res.writeHead(404, {
+                Connection: 'close',
+                'Content-Type': 'text/plain',
+            });
+            res.end('Not found');
+            return;
+        }
+
         const responseSocket = res.socket;
         sendUpgradeResponse(res, this.response, () => {
             if (!this.response.running) {
@@ -421,8 +452,8 @@ class UpgradeManager {
     async startInsecureWebServer(params: InsecureWebServerParameters): Promise<void> {
         const { port } = params;
 
-        this.server = http.createServer((_req, res) => {
-            this.webServerCallback(res);
+        this.server = http.createServer((req, res) => {
+            this.webServerCallback(req, res);
         });
 
         this.monitorSockets(this.server);
@@ -444,8 +475,8 @@ class UpgradeManager {
     async startSecureWebServer(params: SecureWebServerParameters): Promise<void> {
         const { port, certPublic, certPrivate } = params;
 
-        this.server = https.createServer({ key: certPrivate, cert: certPublic }, (_req, res) => {
-            this.webServerCallback(res);
+        this.server = https.createServer({ key: certPrivate, cert: certPublic }, (req, res) => {
+            this.webServerCallback(req, res);
         });
 
         this.monitorSockets(this.server);

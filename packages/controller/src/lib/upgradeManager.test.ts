@@ -7,7 +7,17 @@ import path from 'node:path';
 import fs from 'fs-extra';
 
 import { getWindowsServiceInstallation } from '@iobroker/js-controller-common-db/tools';
-import { sanitizeUpgradeOutput, sendUpgradeResponse } from './upgradeManager.js';
+import { isUpgradeStatusRequest, sanitizeUpgradeOutput, sendUpgradeResponse } from './upgradeManager.js';
+
+describe('lib/upgradeManager: status request', () => {
+    it('accepts only the root status endpoint', () => {
+        assert.strictEqual(isUpgradeStatusRequest('/'), true);
+        assert.strictEqual(isUpgradeStatusRequest('/?cacheBust=1'), true);
+        assert.strictEqual(isUpgradeStatusRequest('/socket.io/?EIO=4&transport=polling'), false);
+        assert.strictEqual(isUpgradeStatusRequest('/favicon.ico'), false);
+        assert.strictEqual(isUpgradeStatusRequest(undefined), false);
+    });
+});
 
 describe('lib/upgradeManager: status response', () => {
     it('waits until the final response was flushed before invoking the shutdown callback', () => {
