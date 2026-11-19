@@ -898,6 +898,10 @@
             "getHistory": {
               "description": "If adapter supports getHistory message. (Same as legacy `getHistory`, to avoid problems, set both flags in parallel for now)",
               "type": "boolean"
+            },
+            "help": {
+              "description": "If adapter answers the message `help` with `{ help: string }`: an English text that describes its messages (parameters and answers) and its states, for AI agents (e.g. pi-agent) and script authors. Optionally the answer has `commands: [{ command: string, write: boolean }]` too, with `write: true` for every message that changes something (writes states, switches devices, deletes data)",
+              "type": "boolean"
             }
           }
         },

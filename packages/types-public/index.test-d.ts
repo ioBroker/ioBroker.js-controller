@@ -800,6 +800,7 @@ const _adapterObject: ioBroker.AdapterObject = {
         },
         supportedMessages: {
             deviceManager: true,
+            help: true,
         },
         titleLang: {
             de: 'foo',
