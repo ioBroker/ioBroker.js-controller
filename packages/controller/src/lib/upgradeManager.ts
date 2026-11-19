@@ -100,7 +100,7 @@ export function isUpgradeStatusRequest(requestUrl: string | undefined): boolean 
     }
 
     try {
-        return new url.URL(requestUrl, 'http://localhost').pathname === '/';
+        return new url.URL(requestUrl, 'http://localhost').pathname === '/controller-upgrade-status';
     } catch {
         return false;
     }

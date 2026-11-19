@@ -10,9 +10,10 @@ import { getWindowsServiceInstallation } from '@iobroker/js-controller-common-db
 import { isUpgradeStatusRequest, sanitizeUpgradeOutput, sendUpgradeResponse } from './upgradeManager.js';
 
 describe('lib/upgradeManager: status request', () => {
-    it('accepts only the root status endpoint', () => {
-        assert.strictEqual(isUpgradeStatusRequest('/'), true);
-        assert.strictEqual(isUpgradeStatusRequest('/?cacheBust=1'), true);
+    it('accepts only the dedicated status endpoint', () => {
+        assert.strictEqual(isUpgradeStatusRequest('/controller-upgrade-status'), true);
+        assert.strictEqual(isUpgradeStatusRequest('/controller-upgrade-status?cacheBust=1'), true);
+        assert.strictEqual(isUpgradeStatusRequest('/'), false);
         assert.strictEqual(isUpgradeStatusRequest('/socket.io/?EIO=4&transport=polling'), false);
         assert.strictEqual(isUpgradeStatusRequest('/favicon.ico'), false);
         assert.strictEqual(isUpgradeStatusRequest(undefined), false);
