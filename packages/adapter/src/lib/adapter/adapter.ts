@@ -908,6 +908,8 @@ export class AdapterClass extends EventEmitter {
     private readonly _config: InternalAdapterJsonConfig;
     private readonly _options: AdapterOptions;
     private readonly startedInCompactMode: boolean;
+    /** Name of the host this process runs on, only its controller is allowed to terminate us via sigKill */
+    private readonly localHostname: string;
     /** List of instances which want our logs */
     private readonly logList = new Set<string>();
     private enums: Record<string, ioBroker.EnumObject> = {};
@@ -1089,6 +1091,7 @@ export class AdapterClass extends EventEmitter {
             this._config = this._options.config as ioBroker.IoBrokerJson;
         }
         this.startedInCompactMode = !!this._options.compact;
+        this.localHostname = tools.getHostName();
 
         const parsedArgs = yargs(process.argv.slice(2))
             .options({
@@ -12552,6 +12555,7 @@ export class AdapterClass extends EventEmitter {
         this.#states = new this.States({
             namespace: this.namespaceLog,
             connection: this._config.states,
+            fence: this._fenceEnabled() ? () => this._fence('a states reconnect') : undefined,
             connected: async () => {
                 if (!this.#states) {
                     return;
@@ -12626,8 +12630,9 @@ export class AdapterClass extends EventEmitter {
                     id === `system.adapter.${this.namespace}.sigKill` &&
                     state &&
                     state.ts > this.statesConnectedTime! &&
-                    state.from &&
-                    state.from.startsWith('system.host.')
+                    // in multihost the sigKill state is shared by all copies of this instance, a controller
+                    // stopping its (possibly stale) copy on another host must not terminate us
+                    state.from === `system.host.${this.localHostname}`
                 ) {
                     const sigKillVal = parseInt(state.val as any);
                     if (!isNaN(sigKillVal)) {
@@ -12868,6 +12873,7 @@ export class AdapterClass extends EventEmitter {
             namespace: this.namespaceLog,
             connection: this._config.objects,
             logger: this._logger,
+            fence: this._fenceEnabled() ? () => this._fence('an objects reconnect') : undefined,
             connected: async () => {
                 this.connected = true;
                 if (this._initializeTimeout) {
@@ -13075,7 +13081,8 @@ export class AdapterClass extends EventEmitter {
             !this._config.forceIfDisabled &&
             !this._config.isInstall &&
             !this.startedInCompactMode &&
-            killRes?.from?.startsWith('system.host.') &&
+            // a stale value left by the controller of another host (e.g. after a failover) is not meant for us
+            killRes?.from === `system.host.${this.localHostname}` &&
             killRes.ack &&
             !isNaN(killRes.val) &&
             killRes.val !== process.pid
@@ -13443,6 +13450,53 @@ export class AdapterClass extends EventEmitter {
             }
             this.emit('ready');
         }
+    }
+
+    /**
+     * Whether the database clients hold commands after a reconnect until the fence passes
+     */
+    private _fenceEnabled(): boolean {
+        return !this.startedInCompactMode && !this._config.isInstall;
+    }
+
+    /**
+     * Fence after a reconnect: true if this instance is still assigned to this host. Otherwise it terminates
+     * without unload, as it could write stale states over those of the copy on the new host.
+     *
+     * @param reason why the check runs, for the log
+     */
+    private async _fence(reason: string): Promise<boolean> {
+        if (this.terminated || !this.#objects) {
+            return false;
+        }
+
+        const limitMs = (this._config.objects.connectTimeout || 2_000) * 2;
+        let timer: NodeJS.Timeout | undefined;
+        let obj: ioBroker.AnyObject | null;
+        try {
+            obj = await Promise.race([
+                this.#objects.getObjectForFence(`system.adapter.${this.namespace}`),
+                new Promise<never>((_, reject) => {
+                    timer = setTimeout(() => reject(new Error(`no answer within ${limitMs} ms`)), limitMs);
+                }),
+            ]);
+        } catch (e) {
+            // a normal error code, so the controller restarts the instance with its usual delay
+            this.terminate(
+                `Cannot confirm the host of this instance after ${reason}: ${e.message}`,
+                EXIT_CODES.NO_CONNECTION_TO_OBJ_DB,
+            );
+            return false;
+        } finally {
+            clearTimeout(timer);
+        }
+
+        const host = (obj as ioBroker.InstanceObject | null)?.common?.host;
+        if (host && host !== this.host) {
+            this.terminate(`Moved to host "${host}" during ${reason}`, EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+            return false;
+        }
+        return true;
     }
 
     private async _exceptionHandler(err: NodeJS.ErrnoException, isUnhandledRejection?: boolean): Promise<void> {
