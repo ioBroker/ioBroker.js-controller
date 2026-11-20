@@ -6,7 +6,7 @@
 
 # Interface: WebComponentEntry
 
-Defined in: [types-dev/objects.d.ts:580](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L580)
+Defined in: [types-dev/objects.d.ts:593](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L593)
 
 A web component of `common.webComponents` with a short form of its manifest. The manifest stays the source:
 the short form is generated from it (`@iobroker/web-components`) and copied into the repository, so that a
@@ -19,7 +19,7 @@ as `common` is copied into every instance object
 
 > `optional` **icon?**: `string`
 
-Defined in: [types-dev/objects.d.ts:588](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L588)
+Defined in: [types-dev/objects.d.ts:601](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L601)
 
 Picture of the component, as in the manifest: relative to the manifest file, or a `data:` URL
 
@@ -29,7 +29,7 @@ Picture of the component, as in the manifest: relative to the manifest file, or 
 
 > **manifest**: `string`
 
-Defined in: [types-dev/objects.d.ts:582](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L582)
+Defined in: [types-dev/objects.d.ts:595](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L595)
 
 The manifest file (`.json`), relative to the admin folder, like a plain entry of `webComponents`
 
@@ -39,7 +39,7 @@ The manifest file (`.json`), relative to the admin folder, like a plain entry of
 
 > **name**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
-Defined in: [types-dev/objects.d.ts:586](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L586)
+Defined in: [types-dev/objects.d.ts:599](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L599)
 
 Name of the component, as in the manifest
 
@@ -49,7 +49,7 @@ Name of the component, as in the manifest
 
 > `optional` **size?**: `object`
 
-Defined in: [types-dev/objects.d.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L590)
+Defined in: [types-dev/objects.d.ts:603](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L603)
 
 The size the element looks best in, as in the manifest
 
@@ -77,6 +77,6 @@ In px
 
 > **tag**: `string`
 
-Defined in: [types-dev/objects.d.ts:584](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L584)
+Defined in: [types-dev/objects.d.ts:597](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L597)
 
 Name of the custom element, as in the manifest
