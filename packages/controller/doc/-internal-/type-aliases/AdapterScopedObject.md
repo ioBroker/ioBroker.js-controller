@@ -8,6 +8,6 @@
 
 > **AdapterScopedObject** = [`FolderObject`](../interfaces/FolderObject.md) \| [`DeviceObject`](../interfaces/DeviceObject.md) \| [`ChannelObject`](../interfaces/ChannelObject.md) \| [`StateObject`](../interfaces/StateObject.md)
 
-Defined in: [types-dev/objects.d.ts:1451](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L1451)
+Defined in: [types-dev/objects.d.ts:1464](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L1464)
 
 All objects that usually appear in an adapter scope
