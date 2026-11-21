@@ -6,7 +6,7 @@
 
 # Interface: MessageRule
 
-Defined in: [types-dev/objects.d.ts:611](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/types-dev/objects.d.ts#L611)
+Defined in: [types-dev/objects.d.ts:650](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L650)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/objects.d.ts:611](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **buttons?**: (`"cancel"` \| `"agree"` \| `"ok"`)[]
 
-Defined in: [types-dev/objects.d.ts:623](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/types-dev/objects.d.ts#L623)
+Defined in: [types-dev/objects.d.ts:662](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L662)
 
 The buttons that should be shown on the message dialog
 
@@ -24,7 +24,7 @@ The buttons that should be shown on the message dialog
 
 > **condition**: `object`
 
-Defined in: [types-dev/objects.d.ts:625](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/types-dev/objects.d.ts#L625)
+Defined in: [types-dev/objects.d.ts:664](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L664)
 
 The condition that needs to be met to display the message
 
@@ -42,7 +42,7 @@ The condition that needs to be met to display the message
 
 > **level**: `"info"` \| `"warn"` \| `"error"`
 
-Defined in: [types-dev/objects.d.ts:621](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/types-dev/objects.d.ts#L621)
+Defined in: [types-dev/objects.d.ts:660](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L660)
 
 The severity level of the message
 
@@ -52,7 +52,7 @@ The severity level of the message
 
 > `optional` **link?**: `string`
 
-Defined in: [types-dev/objects.d.ts:617](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/types-dev/objects.d.ts#L617)
+Defined in: [types-dev/objects.d.ts:656](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L656)
 
 Optional link
 
@@ -62,7 +62,7 @@ Optional link
 
 > `optional` **linkText?**: [`Translated`](../type-aliases/Translated.md)
 
-Defined in: [types-dev/objects.d.ts:619](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/types-dev/objects.d.ts#L619)
+Defined in: [types-dev/objects.d.ts:658](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L658)
 
 Text of the link
 
@@ -72,7 +72,7 @@ Text of the link
 
 > **text**: [`Translated`](../type-aliases/Translated.md)
 
-Defined in: [types-dev/objects.d.ts:615](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/types-dev/objects.d.ts#L615)
+Defined in: [types-dev/objects.d.ts:654](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L654)
 
 The message content
 
@@ -82,6 +82,6 @@ The message content
 
 > **title**: [`Translated`](../type-aliases/Translated.md)
 
-Defined in: [types-dev/objects.d.ts:613](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/types-dev/objects.d.ts#L613)
+Defined in: [types-dev/objects.d.ts:652](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L652)
 
 The message title

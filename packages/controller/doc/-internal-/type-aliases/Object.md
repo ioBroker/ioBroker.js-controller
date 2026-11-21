@@ -8,7 +8,7 @@
 
 > **Object** = [`AnyObject`](AnyObject.md) & `object`
 
-Defined in: [types-dev/objects.d.ts:1427](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/types-dev/objects.d.ts#L1427)
+Defined in: [types-dev/objects.d.ts:1468](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L1468)
 
 ## Type Declaration
 

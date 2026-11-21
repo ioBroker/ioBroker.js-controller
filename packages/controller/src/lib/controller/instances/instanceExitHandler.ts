@@ -284,7 +284,9 @@ export function createInstanceExitHandler(
             state.connected &&
             !state.isStopping &&
             proc?.config?.common.enabled &&
-            !proc.config.native.webInstance &&
+            // Only an instance of mode `extension` runs inside the web adapter when it names a web instance.
+            // A daemon that brings a web extension too (e.g. puppeteer, frigate) is a process of its own and is restarted
+            (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance) &&
             mode !== 'once'
         ) {
             if (code === EXIT_CODES.UNCAUGHT_EXCEPTION) {

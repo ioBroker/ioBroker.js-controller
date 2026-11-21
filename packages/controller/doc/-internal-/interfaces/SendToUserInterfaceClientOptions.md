@@ -6,7 +6,7 @@
 
 # Interface: SendToUserInterfaceClientOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/adapter/src/lib/_Types.ts#L414)
+Defined in: [adapter/src/lib/\_Types.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/adapter/src/lib/_Types.ts#L414)
 
 Options for sending data to a UI client
 
@@ -16,7 +16,7 @@ Options for sending data to a UI client
 
 > `optional` **clientId?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:416](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/adapter/src/lib/_Types.ts#L416)
+Defined in: [adapter/src/lib/\_Types.ts:416](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/adapter/src/lib/_Types.ts#L416)
 
 id of the UI client, if not given, send it to all active clients
 
@@ -26,6 +26,6 @@ id of the UI client, if not given, send it to all active clients
 
 > **data**: `unknown`
 
-Defined in: [adapter/src/lib/\_Types.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/adapter/src/lib/_Types.ts#L418)
+Defined in: [adapter/src/lib/\_Types.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/adapter/src/lib/_Types.ts#L418)
 
 data to send to the client

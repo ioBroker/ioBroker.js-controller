@@ -8,4 +8,4 @@
 
 > **WelcomeScreenEntry** = `string` \| \{ `color`: `string`; `img`: `string`; `link`: `string`; `name`: `string`; `order?`: `number`; \}
 
-Defined in: [types-dev/objects.d.ts:492](https://github.com/ioBroker/ioBroker.js-controller/blob/35649f21e4f20d2707b133cc45f16a31003db77b/packages/types-dev/objects.d.ts#L492)
+Defined in: [types-dev/objects.d.ts:492](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/objects.d.ts#L492)
