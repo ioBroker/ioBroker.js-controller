@@ -558,6 +558,29 @@ export interface WindowsServiceInstallation {
 }
 
 /**
+ * Check whether a WinSW service uses the LocalSystem account.
+ *
+ * LocalSystem is WinSW's default when no serviceaccount element is present. A temporary upgrade
+ * helper cannot safely copy custom service credentials, so those installations are not supported.
+ *
+ * @param config path to the WinSW XML configuration
+ */
+function isWindowsServiceRunningAsLocalSystem(config: string): boolean {
+    try {
+        const xml = fs.readFileSync(config, 'utf8');
+        const serviceAccount = xml.match(/<serviceaccount\b[^>]*>([\s\S]*?)<\/serviceaccount>/i);
+        if (!serviceAccount) {
+            return true;
+        }
+
+        const username = serviceAccount[1].match(/<username\b[^>]*>([\s\S]*?)<\/username>/i)?.[1].trim();
+        return username?.toLowerCase() === 'localsystem';
+    } catch {
+        return false;
+    }
+}
+
+/**
  * Find the WinSW executable and configuration of a Windows ioBroker service installation.
  *
  * WinSW exposes its executable path to the service process. The directory scan is a fallback for
@@ -580,7 +603,7 @@ export function getWindowsServiceInstallation(
                 `${path.basename(winswExecutable, path.extname(winswExecutable))}.xml`,
             );
 
-        if (fs.existsSync(winswExecutable) && fs.existsSync(config)) {
+        if (fs.existsSync(winswExecutable) && fs.existsSync(config) && isWindowsServiceRunningAsLocalSystem(config)) {
             return { executable: winswExecutable, config };
         }
     }
@@ -593,8 +616,9 @@ export function getWindowsServiceInstallation(
             }
 
             const executable = path.join(daemonDir, `${file.slice(0, -4)}.exe`);
-            if (fs.existsSync(executable)) {
-                return { executable, config: path.join(daemonDir, file) };
+            const config = path.join(daemonDir, file);
+            if (fs.existsSync(executable) && isWindowsServiceRunningAsLocalSystem(config)) {
+                return { executable, config };
             }
         }
     } catch {

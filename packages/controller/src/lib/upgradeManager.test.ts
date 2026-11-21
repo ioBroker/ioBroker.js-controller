@@ -7,13 +7,14 @@ import path from 'node:path';
 import fs from 'fs-extra';
 
 import { getWindowsServiceInstallation } from '@iobroker/js-controller-common-db/tools';
-import { isUpgradeStatusRequest, sanitizeUpgradeOutput, sendUpgradeResponse } from './upgradeManager.js';
+import { isUpgradeStatusRequest, restartControllerAndCleanup, sendUpgradeResponse } from './upgradeManager.js';
 
 describe('lib/upgradeManager: status request', () => {
-    it('accepts only the dedicated status endpoint', () => {
+    it('accepts the legacy root path and the dedicated status endpoint', () => {
         assert.strictEqual(isUpgradeStatusRequest('/controller-upgrade-status'), true);
         assert.strictEqual(isUpgradeStatusRequest('/controller-upgrade-status?cacheBust=1'), true);
-        assert.strictEqual(isUpgradeStatusRequest('/'), false);
+        assert.strictEqual(isUpgradeStatusRequest('/'), true);
+        assert.strictEqual(isUpgradeStatusRequest('/?cacheBust=1'), true);
         assert.strictEqual(isUpgradeStatusRequest('/socket.io/?EIO=4&transport=polling'), false);
         assert.strictEqual(isUpgradeStatusRequest('/favicon.ico'), false);
         assert.strictEqual(isUpgradeStatusRequest(undefined), false);
@@ -78,38 +79,22 @@ describe('lib/upgradeManager: status response', () => {
     });
 });
 
-describe('lib/upgradeManager: output sanitizing', () => {
-    it('replaces the complete generated certificate object', () => {
-        const output = JSON.stringify(
-            {
-                defaultPrivate: '-----BEGIN PRIVATE KEY-----\nprivate\n-----END PRIVATE KEY-----',
-                defaultPublic: '-----BEGIN CERTIFICATE-----\npublic\n-----END CERTIFICATE-----',
+describe('lib/upgradeManager: shutdown cleanup', () => {
+    it('cleans up the Windows helper even if restarting the controller fails', async () => {
+        const messages: Array<{ error?: boolean; message: string }> = [];
+        let cleanedUp = false;
+
+        await restartControllerAndCleanup(
+            () => Promise.reject(new Error('start failed')),
+            () => {
+                cleanedUp = true;
+                return Promise.resolve();
             },
-            null,
-            2,
+            (message, error) => messages.push({ error, message }),
         );
 
-        assert.strictEqual(
-            sanitizeUpgradeOutput(output),
-            'Certificate configuration updated (certificate contents omitted)',
-        );
-    });
-
-    it('redacts standalone private keys and certificates as a fallback', () => {
-        const output = [
-            '-----BEGIN PRIVATE KEY-----',
-            'private',
-            '-----END PRIVATE KEY-----',
-            '-----BEGIN CERTIFICATE-----',
-            'public',
-            '-----END CERTIFICATE-----',
-        ].join('\n');
-        const sanitized = sanitizeUpgradeOutput(output);
-
-        assert.ok(!sanitized.includes('private'));
-        assert.ok(!sanitized.includes('public'));
-        assert.ok(sanitized.includes('[REDACTED PRIVATE KEY]'));
-        assert.ok(sanitized.includes('[REDACTED CERTIFICATE]'));
+        assert.strictEqual(cleanedUp, true);
+        assert.deepStrictEqual(messages, [{ error: true, message: 'Could not start js-controller: start failed' }]);
     });
 });
 
@@ -141,5 +126,33 @@ describe('lib/upgradeManager: Windows service detection', () => {
         await fs.writeFile(path.join(daemonDir, 'iob_test.xml'), '<service/>');
 
         assert.strictEqual(getWindowsServiceInstallation(tempDir, {}), undefined);
+    });
+
+    it('does not accept a main service running as a custom account', async () => {
+        const daemonDir = path.join(tempDir, 'daemon');
+        const executable = path.join(daemonDir, 'iob_test.exe');
+        const config = path.join(daemonDir, 'iob_test.xml');
+        await fs.ensureDir(daemonDir);
+        await fs.writeFile(executable, '');
+        await fs.writeFile(
+            config,
+            '<service><serviceaccount><username>.\\iobroker</username></serviceaccount></service>',
+        );
+
+        assert.strictEqual(getWindowsServiceInstallation(tempDir, {}), undefined);
+    });
+
+    it('accepts an explicitly configured LocalSystem main service', async () => {
+        const daemonDir = path.join(tempDir, 'daemon');
+        const executable = path.join(daemonDir, 'iob_test.exe');
+        const config = path.join(daemonDir, 'iob_test.xml');
+        await fs.ensureDir(daemonDir);
+        await fs.writeFile(executable, '');
+        await fs.writeFile(
+            config,
+            '<service><serviceaccount><username>LocalSystem</username></serviceaccount></service>',
+        );
+
+        assert.deepStrictEqual(getWindowsServiceInstallation(tempDir, {}), { executable, config });
     });
 });
