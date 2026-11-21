@@ -117,6 +117,9 @@ jobs:
       - name: Execute Common Unit Tests
         run: npm run test-common
 
+      - name: Execute CLI Unit Tests
+        run: npm run test-cli
+
       - name: Execute Jsonl Tests
         run: npm run test-jsonl
 
