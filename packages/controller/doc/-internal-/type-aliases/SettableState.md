@@ -8,4 +8,4 @@
 
 > **SettableState** = [`AtLeastOne`](AtLeastOne.md)\<[`State`](../interfaces/State.md)\>
 
-Defined in: [types-dev/index.d.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/index.d.ts#L249)
+Defined in: [types-dev/index.d.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/f0774d1b08db8894d2f278bf0cdb40854907903e/packages/types-dev/index.d.ts#L249)

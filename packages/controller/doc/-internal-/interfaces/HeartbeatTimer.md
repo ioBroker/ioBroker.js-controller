@@ -6,7 +6,7 @@
 
 # Interface: HeartbeatTimer
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L11)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/f0774d1b08db8894d2f278bf0cdb40854907903e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L11)
 
 A heartbeat timer for a subscribed UI client
 
@@ -16,7 +16,7 @@ A heartbeat timer for a subscribed UI client
 
 > **heartbeat**: `number`
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L15)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/f0774d1b08db8894d2f278bf0cdb40854907903e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L15)
 
 The heartbeat interval
 
@@ -26,6 +26,6 @@ The heartbeat interval
 
 > **timer**: `Timeout`
 
-Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L13)
+Defined in: [adapter/src/lib/adapter/userInterfaceMessagingController.ts:13](https://github.com/ioBroker/ioBroker.js-controller/blob/f0774d1b08db8894d2f278bf0cdb40854907903e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L13)
 
 The actual timer
