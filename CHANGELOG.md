@@ -4,6 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
+* (@GermanBluefox) `extendObject` of an adapter does not write an object again if nothing changes (apart from `ts`, `from` and `user`): adapters that extend their objects on every poll rewrote all of them each time, which grew `objects.jsonl` and sent an objectChange to every subscriber such as admin. An unchanged object now keeps its `ts` and sends no objectChange; the default value (`common.def`) is still set if the state is missing. `extendForeignObject` writes as before, because extending `system.adapter.<name>.<instance>` with `common.enabled: true` is used to restart a running instance
 * (@GermanBluefox) The Redis socket and Sentinel tests run in CI again and fail the build when a test fails (#3613)
 * (@GermanBluefox) Fixed the generated default certificate for host names with "_" (Chrome rejected it with ERR_SSL_SERVER_CERT_BAD_FORMAT): names are written as UTF8String, alternative names as punycode and with the IP addresses of the host, and such existing default certificates are regenerated on update (#3615)
 * (@GermanBluefox) Added `common.supportedMessages.help` to the `io-package.json` schema and the typings: the adapter answers the message `help` with `{ help, commands? }`, an English description of its messages and states, so that an AI agent such as pi-agent can find the adapters it may ask and learn how; `commands` marks the messages that change something with `write: true`
