@@ -108,7 +108,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
         beforeEach(async () => {
             // the test adapter runs in compact mode, which never fences
-            compact = context.adapter.startedInCompactMode;
+            compact = (context.adapter as any).startedInCompactMode;
             (context.adapter as any).startedInCompactMode = false;
             system = (context.adapter as any)._config.system;
             (context.adapter as any)._config.system = { ...system };
