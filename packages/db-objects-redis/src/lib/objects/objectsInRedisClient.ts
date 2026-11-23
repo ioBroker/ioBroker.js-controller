@@ -18,7 +18,7 @@ import extend from 'node.extend';
 import type IORedis from 'ioredis';
 import Redis from 'ioredis';
 
-import { tools } from '@iobroker/db-base';
+import { FenceGate, tools } from '@iobroker/db-base';
 import {
     type ACLObject,
     checkObjectRightsAsync,
@@ -61,6 +61,13 @@ export interface ObjectsSettings {
     primaryHostLost?: () => void;
     /** Called when the client gets disconnected */
     disconnected?: () => void;
+    /**
+     * Adapters only: from a lost connection until this resolves true, commands and subscription replays are held.
+     * If it resolves false, nothing held is sent.
+     */
+    fence?: () => Promise<boolean>;
+    /** Called after the system subscriptions were restored on a reconnect, events of the gap may be lost */
+    resubscribed?: () => void;
     /** Handler for system-level object changes */
     change?: ChangeFunction;
     /** Handler for user-level object changes */
@@ -151,6 +158,9 @@ export class ObjectsInRedisClient {
     private sub: IORedis.Redis | null;
     private subSystem: IORedis.Redis | null;
     private settings: ObjectsSettings;
+    #gate: FenceGate | null;
+    /** The main connection was ready once, so a later loss is a reconnect */
+    #wasConnected = false;
     private readonly preserveSettings: ('custom' | 'smartName' | 'material' | 'habpanel' | 'mobile')[];
     private defaultNewAcl: ACLObject | null;
     private readonly namespace: string;
@@ -195,6 +205,7 @@ export class ObjectsInRedisClient {
         this.existingMetaObjects = {};
 
         this.log = tools.getLogger(this.settings.logger);
+        this.#gate = this.settings.fence ? new FenceGate(this.settings.fence) : null;
 
         if (this.settings.autoConnect !== false) {
             this.connectDb();
@@ -259,6 +270,8 @@ export class ObjectsInRedisClient {
         // Becomes true after the first successful "ready" so we can tell a
         // re-connection apart from the initial connection
         let wasReady = false;
+        let subSystemWasReady = false;
+        let subWasReady = false;
 
         this.settings.connection.options.retryStrategy = (reconnectCount: number): Error | number => {
             if (!ready && initError) {
@@ -383,6 +396,9 @@ export class ObjectsInRedisClient {
                 this.log.silly(`${this.namespace} Objects-Redis Event close (stop=${this.stop})`);
             }
             //if (ready && typeof this.settings.disconnected === 'function') this.settings.disconnected();
+            if (wasReady) {
+                this.#gate?.close();
+            }
         });
 
         this.client.on('reconnecting', () => {
@@ -419,9 +435,15 @@ export class ObjectsInRedisClient {
                 );
             }
             if (wasReady) {
+                if (!(await this.#fencePassed())) {
+                    return;
+                }
                 this.reconnectSubscribers();
+            } else if (this.#gate) {
+                this.#failCommandsOnLoss(this.client);
             }
             wasReady = true;
+            this.#wasConnected = true;
 
             this.log.debug(`${this.namespace} Objects client ready ... initialize now`);
             try {
@@ -588,6 +610,10 @@ export class ObjectsInRedisClient {
                 }
 
                 this.subSystem.on('ready', async () => {
+                    if (subSystemWasReady) {
+                        // the main connection runs the fence, the replay waits for it
+                        await this.#gate?.passed();
+                    }
                     if (--initCounter < 1) {
                         if (this.settings.connection.port === 0) {
                             this.log.debug(
@@ -638,6 +664,11 @@ export class ObjectsInRedisClient {
                             }
                         }
                     }
+
+                    if (subSystemWasReady) {
+                        this.settings.resubscribed?.();
+                    }
+                    subSystemWasReady = true;
                 });
             }
 
@@ -738,6 +769,11 @@ export class ObjectsInRedisClient {
                 }
 
                 this.sub.on('ready', async () => {
+                    if (subWasReady) {
+                        // the main connection runs the fence, the replay waits for it
+                        await this.#gate?.passed();
+                    }
+                    subWasReady = true;
                     if (!this.sub) {
                         // client gone while ready emitted, can maybe not happen, but ts is happy
                         return;
@@ -891,6 +927,66 @@ export class ObjectsInRedisClient {
     }
 
     /**
+     * Enable the fence after the connect, if the client was created without one
+     *
+     * @param fence resolves true if the held commands may be sent
+     */
+    enableFence(fence: () => Promise<boolean>): void {
+        if (this.#gate) {
+            return;
+        }
+        this.#gate = new FenceGate(fence);
+        if (this.#wasConnected && this.client) {
+            this.#failCommandsOnLoss(this.client);
+        }
+    }
+
+    /**
+     * Commands in flight at a loss fail instead of being sent again
+     *
+     * @param client the main client
+     */
+    #failCommandsOnLoss(client: IORedis.Redis): void {
+        client.options.maxRetriesPerRequest = 0;
+        client.options.autoResendUnfulfilledCommands = false;
+    }
+
+    /**
+     * Run the fence after a reconnect, true if there is none
+     */
+    #fencePassed(): Promise<boolean> {
+        return this.#gate ? this.#gate.check() : Promise.resolve(true);
+    }
+
+    /**
+     * Resolves with the client once the fence allows commands
+     */
+    async #connection(): Promise<IORedis.Redis> {
+        if (this.#gate && this.#wasConnected && this.client && this.client.status !== 'ready') {
+            // lost, but the close event is not handled yet
+            this.#gate.close();
+        }
+        await this.#gate?.passed();
+        if (!this.client) {
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
+        }
+        return this.client;
+    }
+
+    /**
+     * Read an object without waiting for the fence, for the fence itself
+     *
+     * @param id id of the object
+     */
+    async getObjectForFence(id: string): Promise<ioBroker.AnyObject | null> {
+        if (!this.client) {
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
+        }
+        const obj = await this.client.get(this.objNamespace + id);
+        return obj ? JSON.parse(obj) : null;
+    }
+
+    /**
      * Pub/sub sockets only receive, so after a server restart they can stay `ready` on a dead connection.
      * Reconnecting them makes their own `ready` handlers replay the subscriptions.
      */
@@ -950,12 +1046,13 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         if (!Buffer.isBuffer(data)) {
             data = Buffer.from(data);
         }
 
-        await this.client.set(id, data);
-        await this.client.publish(id, data.byteLength.toString(10));
+        await client.set(id, data);
+        await client.publish(id, data.byteLength.toString(10));
     }
 
     /**
@@ -963,12 +1060,13 @@ export class ObjectsInRedisClient {
      *
      * @param id - id of the data with namespace prefix
      */
-    private _getBinaryState(id: string): Promise<Buffer<ArrayBufferLike> | null> {
+    private async _getBinaryState(id: string): Promise<Buffer<ArrayBufferLike> | null> {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
-        return this.client.getBuffer(id);
+        return client.getBuffer(id);
     }
 
     /**
@@ -980,8 +1078,9 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         } else {
-            await this.client.del(id);
-            await this.client.publish(id, 'null'); // inform about deletion
+            const client = await this.#connection();
+            await client.del(id);
+            await client.publish(id, 'null'); // inform about deletion
         }
     }
 
@@ -1043,9 +1142,10 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         let fileOptionsStr: string | undefined | null;
         try {
-            fileOptionsStr = await this.client.get(fileId);
+            fileOptionsStr = await client.get(fileId);
         } catch {
             // ignore
         }
@@ -1089,12 +1189,13 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             return null;
         }
+        const client = await this.#connection();
         let meta: {
             type?: string;
             acl?: { owner?: ioBroker.ObjectIDs.User; ownerGroup?: ioBroker.ObjectIDs.Group; file?: number };
         } | null;
         try {
-            const metaStr = await this.client.get(this.objNamespace + id);
+            const metaStr = await client.get(this.objNamespace + id);
             meta = metaStr ? JSON.parse(metaStr) : null;
         } catch {
             return null;
@@ -1245,6 +1346,7 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         // virtual files only get Meta objects
         if (options.virtualFile) {
             meta = {
@@ -1252,7 +1354,7 @@ export class ObjectsInRedisClient {
                 virtualFile: true,
             }; // Store file with flags as it would not exist
             try {
-                await this.client.set(metaID, JSON.stringify(meta));
+                await client.set(metaID, JSON.stringify(meta));
                 return tools.maybeCallback(callback);
             } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e);
@@ -1278,7 +1380,7 @@ export class ObjectsInRedisClient {
 
             try {
                 await this._setBinaryState(this.getFileId(id, name, false), data || '');
-                await this.client.set(metaID, JSON.stringify(meta));
+                await client.set(metaID, JSON.stringify(meta));
                 return tools.maybeCallback(callback);
             } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e);
@@ -1515,6 +1617,7 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         if (!id || typeof id !== 'string') {
             throw new Error(`invalid ID ${JSON.stringify(id)}`);
         }
@@ -1525,7 +1628,7 @@ export class ObjectsInRedisClient {
                     err ? reject(err) : resolve(),
                 );
             });
-            const exists = await this.client.exists(this.objNamespace + id);
+            const exists = await client.exists(this.objNamespace + id);
             return !!exists;
         } catch (e) {
             this.log.error(`${this.namespace} Cannot check object existence of "${id}": ${e.message}`);
@@ -1541,6 +1644,7 @@ export class ObjectsInRedisClient {
      * @param options optional user context
      */
     async fileExists(id: string, name: string, options?: { user?: ioBroker.ObjectIDs.User } | null): Promise<boolean> {
+        const client = await this.#connection();
         if (typeof name !== 'string') {
             name = '';
         }
@@ -1557,7 +1661,7 @@ export class ObjectsInRedisClient {
             }
 
             id = this.getFileId(id, name, false);
-            const exists = await this.client.exists(id);
+            const exists = await client.exists(id);
             return !!exists;
         } catch (e) {
             this.log.error(`${this.namespace} Cannot check file existence of "${id}": ${e.message}`);
@@ -1574,13 +1678,14 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         if (meta?.notExists) {
             return this._rm(id, name, userContext);
         }
         const metaID = this.getFileId(id, name, true);
         const dataID = this.getFileId(id, name, false);
         await this._delBinaryState(dataID);
-        await this.client.del(metaID);
+        await client.del(metaID);
     }
 
     /**
@@ -1677,6 +1782,7 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         if (id === '') {
             // special case for "root"
             const dirID = this.getFileId('*', '*');
@@ -1764,7 +1870,7 @@ export class ObjectsInRedisClient {
         // Check permissions
         let strObjs: (null | string)[];
         try {
-            strObjs = await this.client.mget(keys);
+            strObjs = await client.mget(keys);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
@@ -1901,10 +2007,11 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         for (const id of keys) {
             try {
                 try {
-                    await this.client.rename(
+                    await client.rename(
                         id.replace(/\$%\$meta$/, '$%$data'),
                         id.replace(oldBase, newBase).replace(/\$%\$meta$/, '$%$data'),
                     );
@@ -1914,7 +2021,7 @@ export class ObjectsInRedisClient {
                         throw e;
                     }
                 }
-                await this.client.rename(id, id.replace(oldBase, newBase));
+                await client.rename(id, id.replace(oldBase, newBase));
             } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e);
             }
@@ -1930,6 +2037,7 @@ export class ObjectsInRedisClient {
         callback?: ioBroker.ErrorCallback,
         meta?: MetaObject,
     ): Promise<void> {
+        const client = await this.#connection();
         const oldMetaID = this.getFileId(id, oldName, true);
         const oldDataID = this.getFileId(id, oldName, false);
         const newMetaID = this.getFileId(id, newName, true);
@@ -1978,7 +2086,7 @@ export class ObjectsInRedisClient {
             // Check permissions
             let strObjs: (string | null)[];
             try {
-                strObjs = await this.client.mget(keys);
+                strObjs = await client.mget(keys);
             } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e);
             }
@@ -2009,8 +2117,8 @@ export class ObjectsInRedisClient {
             return this._renameHelper(result, oldBase, newBase, callback);
         }
         try {
-            await this.client.rename(oldDataID, newDataID);
-            await this.client.rename(oldMetaID, newMetaID);
+            await client.rename(oldDataID, newDataID);
+            await client.rename(oldMetaID, newMetaID);
             return tools.maybeCallback(callback);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
@@ -2098,12 +2206,13 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         if (!meta || meta.notExists) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
         meta.modifiedAt = Date.now();
         try {
-            await this.client.set(metaID, JSON.stringify(meta));
+            await client.set(metaID, JSON.stringify(meta));
             return tools.maybeCallback(callback);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
@@ -2164,10 +2273,11 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         for (const id of keys) {
             await this._delBinaryState(id.replace(/\$%\$meta$/, '$%$data'));
-            await this.client.del(id);
+            await client.del(id);
         }
     }
 
@@ -2177,6 +2287,7 @@ export class ObjectsInRedisClient {
         userContext: UserContext,
         meta?: FileObject | null,
     ): Promise<ioBroker.RmResult[] | undefined> {
+        const client = await this.#connection();
         if (meta && !meta.isDir) {
             // it is a file
             const metaID = this.getFileId(id, name, true);
@@ -2212,7 +2323,7 @@ export class ObjectsInRedisClient {
             // Check permissions
             let strObjs: (string | null)[];
             try {
-                strObjs = await this.client.mget(keys);
+                strObjs = await client.mget(keys);
             } catch {
                 // ignore
             }
@@ -2391,13 +2502,14 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         for (const id of keys) {
             const meta = metas.shift()!;
             meta.acl!.owner = options.owner;
             meta.acl!.ownerGroup = options.ownerGroup;
             try {
-                await this.client.set(id, JSON.stringify(meta));
+                await client.set(id, JSON.stringify(meta));
             } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e);
             }
@@ -2424,13 +2536,14 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         if (!meta.isDir && !meta.notExists) {
             // it is a file
             const metaID = this.getFileId(id, name, true);
             meta.acl!.owner = options.owner;
             meta.acl!.ownerGroup = options.ownerGroup;
             try {
-                await this.client.set(metaID, JSON.stringify(meta));
+                await client.set(metaID, JSON.stringify(meta));
             } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e);
             }
@@ -2477,7 +2590,7 @@ export class ObjectsInRedisClient {
         // Check permissions
         let metasStr: (string | null)[];
         try {
-            metasStr = await this.client.mget(keys);
+            metasStr = await client.mget(keys);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
@@ -2653,13 +2766,14 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         for (let i = 0; i < keys.length; i++) {
             const id = keys[i];
             const meta = metas[i];
             meta.acl!.permissions = options.mode;
             try {
-                await this.client.set(id, JSON.stringify(meta));
+                await client.set(id, JSON.stringify(meta));
             } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e);
             }
@@ -2682,12 +2796,13 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         if (!meta.isDir && !meta.notExists) {
             // it is a file
             const metaID = this.getFileId(id, name, true);
             meta.acl!.permissions = options.mode;
             try {
-                await this.client.set(metaID, JSON.stringify(meta));
+                await client.set(metaID, JSON.stringify(meta));
             } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e);
             }
@@ -2735,7 +2850,7 @@ export class ObjectsInRedisClient {
         // Check permissions
         let strObjs: (null | string)[];
         try {
-            strObjs = await this.client.mget(keys);
+            strObjs = await client.mget(keys);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
@@ -3320,6 +3435,7 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         for (const id of keys) {
             const obj: ioBroker.AnyObject = objs.shift()!;
             const message = JSON.stringify(obj);
@@ -3339,13 +3455,13 @@ export class ObjectsInRedisClient {
 
             if (!commands.length) {
                 // only set
-                await this.client.set(id, message);
+                await client.set(id, message);
             } else {
                 // set all commands atomic
                 commands.push(['set', id, message]);
-                await this.client.multi(commands).exec();
+                await client.multi(commands).exec();
             }
-            await this.client.publish(id, message);
+            await client.publish(id, message);
         }
     }
 
@@ -3369,6 +3485,7 @@ export class ObjectsInRedisClient {
                 if (!this.client) {
                     return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
                 }
+                const client = await this.#connection();
 
                 if (!keys) {
                     return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
@@ -3376,7 +3493,7 @@ export class ObjectsInRedisClient {
 
                 let strObjects;
                 try {
-                    strObjects = await this.client.mget(keys);
+                    strObjects = await client.mget(keys);
                 } catch (e) {
                     return tools.maybeCallbackWithRedisError(callback, e);
                 }
@@ -3535,6 +3652,7 @@ export class ObjectsInRedisClient {
                 if (!this.client) {
                     return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
                 }
+                const client = await this.#connection();
 
                 if (!keys) {
                     return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
@@ -3542,7 +3660,7 @@ export class ObjectsInRedisClient {
 
                 let strObjs: (null | string)[];
                 try {
-                    strObjs = await this.client.mget(keys);
+                    strObjs = await client.mget(keys);
                 } catch (e) {
                     return tools.maybeCallbackWithRedisError(callback, e);
                 }
@@ -3667,13 +3785,14 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
 
         let obj, err;
         try {
-            obj = await this.client.get(this.objNamespace + id);
+            obj = await client.get(this.objNamespace + id);
         } catch (e) {
             this.log.debug(`${this.namespace} redis get ${id}, error - ${e.message}`);
             err = e;
@@ -3804,6 +3923,7 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         const result: string[] = [];
         if (keys) {
@@ -3830,7 +3950,7 @@ export class ObjectsInRedisClient {
             // Check permissions
             let metas: (string | null)[];
             try {
-                metas = await this.client.mget(keys);
+                metas = await client.mget(keys);
             } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e);
             }
@@ -3969,10 +4089,11 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         let objs;
         try {
-            objs = await this.client.mget(_keys);
+            objs = await client.mget(_keys);
             if (this.settings.connection.enhancedLogging) {
                 this.log.silly(`${this.namespace} redis mget ${!objs ? 0 : objs.length} ${_keys.length}`);
             }
@@ -4227,12 +4348,13 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         // make a copy of object, because we will modify it
         obj = deepClone(obj);
 
         obj._id = id;
 
-        const oldObjStr = await this.client.get(this.objNamespace + id);
+        const oldObjStr = await client.get(this.objNamespace + id);
 
         let oldObj: ioBroker.AnyObject | null;
         try {
@@ -4393,11 +4515,11 @@ export class ObjectsInRedisClient {
         }
 
         if (!commands.length) {
-            await this.client.set(this.objNamespace + id, message);
+            await client.set(this.objNamespace + id, message);
         } else {
             // set all commands atomic
             commands.push(['set', this.objNamespace + id, message]);
-            await this.client.multi(commands).exec();
+            await client.multi(commands).exec();
         }
 
         // object updated -> if type changed to meta -> cache
@@ -4405,7 +4527,7 @@ export class ObjectsInRedisClient {
             this.existingMetaObjects[id] = true;
         }
 
-        await this.client.publish(this.objNamespace + id, message);
+        await client.publish(this.objNamespace + id, message);
         return { id };
     }
 
@@ -4518,11 +4640,12 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         // read object
         let oldObjStr: string | null;
         try {
-            oldObjStr = await this.client.get(this.objNamespace + id);
+            oldObjStr = await client.get(this.objNamespace + id);
         } catch (e) {
             this.log.warn(`${this.namespace} redis get ${id}, error - ${e.message}`);
             // TODO: maybe better throw? We have not deleted the object
@@ -4562,11 +4685,11 @@ export class ObjectsInRedisClient {
 
             if (!commands.length) {
                 // only del
-                await this.client.del(this.objNamespace + id);
+                await client.del(this.objNamespace + id);
             } else {
                 // set all commands atomic
                 commands.push(['del', this.objNamespace + id]);
-                await this.client.multi(commands).exec();
+                await client.multi(commands).exec();
             }
 
             // object has been deleted -> remove from cached meta if there
@@ -4574,7 +4697,7 @@ export class ObjectsInRedisClient {
                 this.existingMetaObjects[id] = false;
             }
 
-            await this.client.publish(this.objNamespace + id, 'null');
+            await client.publish(this.objNamespace + id, 'null');
         }
     }
 
@@ -4663,9 +4786,10 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         try {
-            const res = await this.client.eval(`return 'c-i.t' >= 'c.' and 'c-i.t' < 'c.香'`, 0);
+            const res = await client.eval(`return 'c-i.t' >= 'c.' and 'c-i.t' < 'c.香'`, 0);
             return res === null;
         } catch (e) {
             this.log.warn(`${this.namespace} Cannot check if locale is supported: ${e.message}`);
@@ -4679,6 +4803,7 @@ export class ObjectsInRedisClient {
         params: ioBroker.GetObjectViewParams | undefined,
         userContext: UserContext,
     ): ioBroker.GetObjectViewPromise<ioBroker.AnyObject> {
+        const client = await this.#connection();
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
@@ -4742,7 +4867,7 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = (await this.client.evalsha(
+                    objs = (await client.evalsha(
                         this.scripts.filter,
                         6,
                         this.objNamespace,
@@ -4835,7 +4960,7 @@ export class ObjectsInRedisClient {
                 }
                 let res: string[] | [objStrings: string[], cursor: string];
                 try {
-                    res = (await this.client.evalsha(
+                    res = (await client.evalsha(
                         this.scripts.script,
                         5,
                         this.objNamespace,
@@ -4893,7 +5018,7 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = (await this.client.evalsha(
+                    objs = (await client.evalsha(
                         this.scripts.programs,
                         5,
                         `${this.objNamespace}hm-rega.`,
@@ -4948,7 +5073,7 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = (await this.client.evalsha(
+                    objs = (await client.evalsha(
                         this.scripts.variables,
                         5,
                         `${this.objNamespace}hm-rega.`,
@@ -5002,7 +5127,7 @@ export class ObjectsInRedisClient {
                 }
                 let objs: string[];
                 try {
-                    objs = (await this.client.evalsha(
+                    objs = (await client.evalsha(
                         this.scripts.custom,
                         5,
                         this.objNamespace,
@@ -5095,7 +5220,7 @@ export class ObjectsInRedisClient {
 
         let objs: (null | string)[];
         try {
-            objs = await this.client.mget(keys);
+            objs = await client.mget(keys);
         } catch {
             objs = [];
         }
@@ -5155,10 +5280,11 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         let obj;
         try {
-            obj = await this.client.get(`${this.objNamespace}_design/${design}`);
+            obj = await client.get(`${this.objNamespace}_design/${design}`);
         } catch (e) {
             this.log.error(`${this.namespace} Cannot find view "${design}" for search "${search}" : ${e.message}`);
             throw new Error(`Cannot find view "${design}"`);
@@ -5318,6 +5444,7 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         const _keys: string[] = [];
         for (const key of keys) {
@@ -5339,7 +5466,7 @@ export class ObjectsInRedisClient {
         _keys.sort();
         let objs;
         try {
-            objs = await this.client.mget(_keys);
+            objs = await client.mget(_keys);
         } catch {
             // ignore
         }
@@ -5481,8 +5608,9 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
-        const oldObjStr: string | null = await this.client.get(this.objNamespace + id);
+        const oldObjStr: string | null = await client.get(this.objNamespace + id);
 
         let oldObj: ioBroker.Object | null;
         // the object as stored, because the merge below changes oldObj in place
@@ -5614,11 +5742,11 @@ export class ObjectsInRedisClient {
         }
 
         if (!commands.length) {
-            await this.client.set(this.objNamespace + id, message);
+            await client.set(this.objNamespace + id, message);
         } else {
             // set all commands atomic
             commands.push(['set', this.objNamespace + id, message]);
-            await this.client.multi(commands).exec();
+            await client.multi(commands).exec();
         }
 
         // extended -> if it's now type meta and currently marked as not -> cache
@@ -5626,7 +5754,7 @@ export class ObjectsInRedisClient {
             this.existingMetaObjects[id] = true;
         }
 
-        await this.client.publish(this.objNamespace + id, message);
+        await client.publish(this.objNamespace + id, message);
         return { id, value: oldObjNotNull };
     }
 
@@ -5689,6 +5817,7 @@ export class ObjectsInRedisClient {
                 if (!this.client) {
                     return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
                 }
+                const client = await this.#connection();
 
                 if (!keys || err) {
                     return tools.maybeCallbackWithError(callback, err);
@@ -5696,7 +5825,7 @@ export class ObjectsInRedisClient {
 
                 let objs: (string | null)[];
                 try {
-                    objs = await this.client.mget(keys);
+                    objs = await client.mget(keys);
                 } catch (e) {
                     return tools.maybeCallbackWithRedisError(callback, e);
                 }
@@ -5866,10 +5995,11 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         for (const id of keys) {
             try {
-                await this.client.del(id);
+                await client.del(id);
             } catch {
                 // ignore
             }
@@ -6028,14 +6158,15 @@ export class ObjectsInRedisClient {
      * @param pattern - pattern to match, e.g. io.hm-rpc.0*
      * @param count - count argument used by redis SCAN, default is 250
      */
-    private _getKeysViaScan(pattern: string, count = 250): Promise<string[]> {
+    private async _getKeysViaScan(pattern: string, count = 250): Promise<string[]> {
+        const client = await this.#connection();
         return new Promise((resolve, reject) => {
             if (!this.client) {
                 reject(new Error(ERRORS.ERROR_DB_CLOSED));
                 return;
             }
 
-            const stream = this.client.scanStream({ match: pattern, count: count });
+            const stream = client.scanStream({ match: pattern, count: count });
             let uniqueKeys: string[] = [];
 
             stream.on('data', resultKeys => {
@@ -6064,8 +6195,9 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
-        const exists = await this.client.exists(this.setNamespace + id);
+        const exists = await client.exists(this.setNamespace + id);
         return !!exists;
     }
 
@@ -6082,11 +6214,12 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         // to be safe, we remove all sets before migration
         const keys = await this._getKeysViaScan(`${this.setNamespace}object.type.*`);
         for (const key of keys) {
-            await this.client.del(key);
+            await client.del(key);
         }
 
         let noMigrated = 0;
@@ -6101,7 +6234,7 @@ export class ObjectsInRedisClient {
             if (obj.value.type) {
                 // e.g. _design/.. has no type
                 // 1 if added else 0 (mostly always part of the set)
-                const migrated = await this.client.sadd(
+                const migrated = await client.sadd(
                     `${this.setNamespace}object.type.${obj.value.type}`,
                     this.objNamespace + obj.id,
                 );
@@ -6110,7 +6243,7 @@ export class ObjectsInRedisClient {
 
             // check for custom
             if (obj.value.common?.custom) {
-                const migrated = await this.client.sadd(
+                const migrated = await client.sadd(
                     `${this.setNamespace}object.common.custom`,
                     this.objNamespace + obj.id,
                 );
@@ -6123,12 +6256,13 @@ export class ObjectsInRedisClient {
     /**
      * Returns the protocol version from DB
      */
-    getProtocolVersion(): Promise<string | null> {
+    async getProtocolVersion(): Promise<string | null> {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
-        return this.client.get(`${this.metaNamespace}objects.protocolVersion`);
+        return client.get(`${this.metaNamespace}objects.protocolVersion`);
     }
 
     /**
@@ -6138,10 +6272,11 @@ export class ObjectsInRedisClient {
      * @param ms - ms until value expires
      * @returns 1 if extended else 0
      */
-    extendPrimaryHostLock(ms: number): Promise<number> {
+    async extendPrimaryHostLock(ms: number): Promise<number> {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         // we have a host version smaller 3 no one can be primary
         if (!this.noLegacyMultihost) {
@@ -6149,7 +6284,7 @@ export class ObjectsInRedisClient {
         }
 
         // try to extend lock
-        return this.client.evalsha(
+        return client.evalsha(
             this.scripts.redlock_extend,
             3,
             `${this.metaNamespace}objects.primaryHost`,
@@ -6165,10 +6300,11 @@ export class ObjectsInRedisClient {
      * @param ms - ms until value expires
      * @returns 1 if lock acquired else 0
      */
-    setPrimaryHost(ms: number): Promise<number> {
+    async setPrimaryHost(ms: number): Promise<number> {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         // we have a host version smaller 3 no one can be primary
         if (!this.noLegacyMultihost) {
@@ -6176,7 +6312,7 @@ export class ObjectsInRedisClient {
         }
 
         // try to acquire lock
-        return this.client.evalsha(
+        return client.evalsha(
             this.scripts.redlock_acquire,
             3,
             `${this.metaNamespace}objects.primaryHost`,
@@ -6188,33 +6324,35 @@ export class ObjectsInRedisClient {
     /**
      * Get the name of the primary host
      */
-    getPrimaryHost(): Promise<string | null> {
+    async getPrimaryHost(): Promise<string | null> {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         // we have a host version smaller 3 no one can be primary
         if (!this.noLegacyMultihost) {
             return Promise.resolve('');
         }
 
-        return this.client.get(`${this.metaNamespace}objects.primaryHost`);
+        return client.get(`${this.metaNamespace}objects.primaryHost`);
     }
 
     /**
      * Ensure we are no longer the primary host
      */
-    releasePrimaryHost(): Promise<void> {
+    async releasePrimaryHost(): Promise<void> {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         if (!this.noLegacyMultihost) {
             return Promise.resolve();
         }
 
         // try to release lock
-        return this.client.evalsha(
+        return client.evalsha(
             this.scripts.redlock_release,
             4,
             `${this.metaNamespace}objects.primaryHost`,
@@ -6233,12 +6371,13 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         version = version.toString();
         // we can only set a protocol if we actually support it
         if (this.supportedProtocolVersions.includes(version)) {
-            await this.client.set(`${this.metaNamespace}objects.protocolVersion`, version);
-            await this.client.publish(`${this.metaNamespace}objects.protocolVersion`, version);
+            await client.set(`${this.metaNamespace}objects.protocolVersion`, version);
+            await client.publish(`${this.metaNamespace}objects.protocolVersion`, version);
         } else {
             throw new Error('Cannot set an unsupported protocol version on the current host');
         }
@@ -6261,8 +6400,9 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
-        await this.client.set(`${this.metaNamespace}objects.features.useSets`, '1');
+        await client.set(`${this.metaNamespace}objects.features.useSets`, '1');
         this.useSets = true;
     }
 
@@ -6273,8 +6413,9 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
-        await this.client.set(`${this.metaNamespace}objects.features.useSets`, '0');
+        await client.set(`${this.metaNamespace}objects.features.useSets`, '0');
         this.useSets = false;
     }
 
@@ -6283,11 +6424,12 @@ export class ObjectsInRedisClient {
      *
      * @param id redis key
      */
-    getMeta(id: string): Promise<string | null> {
+    async getMeta(id: string): Promise<string | null> {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
-        return this.client.get(this.metaNamespace + id);
+        return client.get(this.metaNamespace + id);
     }
 }

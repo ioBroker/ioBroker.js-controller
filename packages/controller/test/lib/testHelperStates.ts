@@ -64,4 +64,74 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
         assert.strictEqual(unloaded, false);
     });
+
+    describe(`${testName}fence after a reconnect`, () => {
+        const instanceId = (): string => `system.adapter.${context.adapter.namespace}`;
+        let originalHost: string;
+        let terminated: { reason?: string; code?: number } | null;
+        let originalTerminate: any;
+
+        beforeEach(async () => {
+            const obj = await context.objects.getObjectAsync(instanceId());
+            originalHost = obj!.common.host;
+            terminated = null;
+            originalTerminate = context.adapter.terminate;
+            (context.adapter as any).terminate = (reason?: string, code?: number) => (terminated = { reason, code });
+        });
+
+        afterEach(async () => {
+            (context.adapter as any).terminate = originalTerminate;
+            await context.objects.extendObject(instanceId(), { common: { host: originalHost } });
+        });
+
+        it('keeps an instance which is still assigned to this host', async () => {
+            await context.objects.extendObject(instanceId(), { common: { host: context.adapter.host } });
+
+            assert.strictEqual(await (context.adapter as any)._fence('a test'), true);
+            assert.strictEqual(terminated, null);
+        });
+
+        it('terminates an instance which was moved to another host, without unload', async () => {
+            await context.objects.extendObject(instanceId(), { common: { host: 'anotherHost' } });
+
+            assert.strictEqual(await (context.adapter as any)._fence('a test'), false);
+            assert.strictEqual(terminated!.code, 11); // ADAPTER_REQUESTED_TERMINATION
+            assert.match(terminated!.reason!, /Moved to host "anotherHost"/);
+        });
+    });
+
+    describe(`${testName}whether to fence`, () => {
+        const hosts = ['system.host.fenceTestA', 'system.host.fenceTestB'];
+        const needsFence = (): Promise<boolean> => (context.adapter as any)._needsFence();
+        let system: any;
+        let compact: boolean;
+
+        beforeEach(async () => {
+            // the test adapter runs in compact mode, which never fences
+            compact = (context.adapter as any).startedInCompactMode;
+            (context.adapter as any).startedInCompactMode = false;
+            system = (context.adapter as any)._config.system;
+            (context.adapter as any)._config.system = { ...system };
+            for (const id of hosts) {
+                await context.objects.setObjectAsync(id, { type: 'host', common: { name: id }, native: {} } as any);
+            }
+        });
+
+        afterEach(async () => {
+            (context.adapter as any).startedInCompactMode = compact;
+            (context.adapter as any)._config.system = system;
+            for (const id of hosts) {
+                await context.objects.delObjectAsync(id);
+            }
+        });
+
+        it('fences with more than one host', async () => {
+            assert.strictEqual(await needsFence(), true);
+        });
+
+        it('follows system.fence of iobroker.json', async () => {
+            (context.adapter as any)._config.system.fence = false;
+            assert.strictEqual(await needsFence(), false);
+        });
+    });
 }

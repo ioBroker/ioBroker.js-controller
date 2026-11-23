@@ -972,6 +972,8 @@ export class AdapterClass extends EventEmitter {
     /** contents of io-package.json */
     ioPack: ioBroker.InstanceObject;
     private _initializeTimeout?: NodeJS.Timeout | null;
+    /** Whether the DB clients fence after a reconnect */
+    private _fenceEnabled = false;
     private inited?: boolean;
     /** contents of iobroker.json if required via AdapterOptions */
     systemConfig?: InternalAdapterJsonConfig;
@@ -12562,6 +12564,7 @@ export class AdapterClass extends EventEmitter {
         this.#states = new this.States({
             namespace: this.namespaceLog,
             connection: this._config.states,
+            fence: this._fenceEnabled ? () => this._fence('a states reconnect') : undefined,
             connected: async () => {
                 if (!this.#states) {
                     return;
@@ -12888,6 +12891,12 @@ export class AdapterClass extends EventEmitter {
 
                 if (!this.#objects) {
                     return;
+                }
+
+                // decided before the states DB is created
+                this._fenceEnabled = await this._needsFence();
+                if (this._fenceEnabled) {
+                    this.#objects.enableFence(() => this._fence('an objects reconnect'));
                 }
 
                 // subscribe to user changes
@@ -13455,6 +13464,69 @@ export class AdapterClass extends EventEmitter {
             }
             this.emit('ready');
         }
+    }
+
+    /**
+     * Whether to fence: `system.fence` of iobroker.json, else only with more than one host
+     */
+    private async _needsFence(): Promise<boolean> {
+        if (this.startedInCompactMode || this._config.isInstall || !this.#objects) {
+            return false;
+        }
+        const configured = this._config.system?.fence;
+        if (typeof configured === 'boolean') {
+            return configured;
+        }
+        try {
+            const hosts = await this.#objects.getObjectView('system', 'host', {
+                startkey: 'system.host.',
+                endkey: 'system.host.\u9999',
+            });
+            return hosts.rows.length > 1;
+        } catch (e) {
+            this._logger.warn(`${this.namespaceLog} Cannot count the hosts, the fence stays on: ${e.message}`);
+            return true;
+        }
+    }
+
+    /**
+     * Fence after a reconnect: true if this instance is still assigned to this host. Otherwise it terminates
+     * without unload, as it could write stale states over those of the copy on the new host.
+     *
+     * @param reason why the check runs, for the log
+     */
+    private async _fence(reason: string): Promise<boolean> {
+        if (this.terminated || !this.#objects) {
+            return false;
+        }
+
+        const limitMs = (this._config.objects.connectTimeout || 2_000) * 2;
+        let timer: NodeJS.Timeout | undefined;
+        let obj: ioBroker.AnyObject | null;
+        try {
+            obj = await Promise.race([
+                this.#objects.getObjectForFence(`system.adapter.${this.namespace}`),
+                new Promise<never>((_, reject) => {
+                    timer = setTimeout(() => reject(new Error(`no answer within ${limitMs} ms`)), limitMs);
+                }),
+            ]);
+        } catch (e) {
+            // a normal error code, so the controller restarts the instance with its usual delay
+            this.terminate(
+                `Cannot confirm the host of this instance after ${reason}: ${e.message}`,
+                EXIT_CODES.NO_CONNECTION_TO_OBJ_DB,
+            );
+            return false;
+        } finally {
+            clearTimeout(timer);
+        }
+
+        const host = (obj as ioBroker.InstanceObject | null)?.common?.host;
+        if (host && host !== this.host) {
+            this.terminate(`Moved to host "${host}" during ${reason}`, EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+            return false;
+        }
+        return true;
     }
 
     private async _exceptionHandler(err: NodeJS.ErrnoException, isUnhandledRejection?: boolean): Promise<void> {

@@ -106,6 +106,8 @@ export class InstanceManager {
     #storeTimer: NodeJS.Timeout | null = null;
     /** Instances stopped because they moved to another host, their offline states are not ours to write */
     readonly #stoppedAsMovedAway = new Set<string>();
+    /** Stops in progress, so a second stop of the same instance waits for the first */
+    readonly #runningStops = new Map<string, Promise<void>>();
 
     /**
      * @param options Everything the instance manager needs to do its work
@@ -490,6 +492,35 @@ export class InstanceManager {
     }
 
     /**
+     * Stop running instances which were moved, disabled or deleted while their object changes could not reach us,
+     * e.g. during a reconnect
+     *
+     * @param reason why the check runs, for the log
+     */
+    async recheckInstances(reason: string): Promise<void> {
+        const { objects, logger, hostLogPrefix } = this.#options;
+
+        for (const [id, proc] of Object.entries(this.procs)) {
+            if ((!proc.process && !proc.schedule) || proc.stopping) {
+                continue;
+            }
+
+            let obj: ioBroker.InstanceObject | null | undefined;
+            try {
+                obj = (await objects.getObject(id)) as ioBroker.InstanceObject | null | undefined;
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot recheck ${id} after ${reason}: ${e.message}`);
+                continue;
+            }
+
+            if (!obj || !obj.common.enabled || !this.#isAssignedHere(obj.common.host)) {
+                logger.warn(`${hostLogPrefix} ${id} was moved, disabled or deleted during ${reason}, stopping it`);
+                await this.handleObjectChange(id, obj ?? null);
+            }
+        }
+    }
+
+    /**
      * Delete the states of a deleted instance which have no object. The CLI deletes the objects and states first, but
      * the instance writes its states until it ends (e.g. `info.connection` on unload), and this host writes `sigKill`
      * to stop it - all of them would remain without object. An instance with the same number may already exist again,
@@ -601,12 +632,34 @@ export class InstanceManager {
     /**
      * Sends kill signal via sigKill state or a kill after timeouts or if forced
      *
+     * A second call while a stop is running waits for it and ignores its own `force` and `movedAway`, so a forced
+     * stop can come only after the running stop's `stopTimeout`.
+     *
      * @param id instance id
      * @param force if forced we will kill the pid
      * @param options how to stop
      * @param options.movedAway the instance is now assigned to another host, so stop the own child only
      */
     async stopInstance(id: string, force: boolean, options: { movedAway?: boolean } = {}): Promise<void> {
+        // a second call would replace the timer and resolver of the running one, which then never resolves
+        const running = this.#runningStops.get(id);
+        if (running) {
+            return running;
+        }
+        const stop = this.#stopInstance(id, force, options).finally(() => this.#runningStops.delete(id));
+        this.#runningStops.set(id, stop);
+        return stop;
+    }
+
+    /**
+     * Stop an instance, see stopInstance
+     *
+     * @param id instance id
+     * @param force if forced we will kill the pid
+     * @param options how to stop
+     * @param options.movedAway the instance is now assigned to another host, so stop the own child only
+     */
+    async #stopInstance(id: string, force: boolean, options: { movedAway?: boolean }): Promise<void> {
         const { states, logger, hostLogPrefix, hostObjectPrefix, isCompactGroupController, state } = this.#options;
         const proc = this.procs[id];
 

@@ -61,6 +61,10 @@
             },
             "// memLimitError": {
               "type": "string"
+            },
+            "fence": {
+              "type": "boolean",
+              "description": "Whether adapters confirm their host after a DB reconnect before sending commands. Absent: only with more than one host"
             }
           },
           "required": [
