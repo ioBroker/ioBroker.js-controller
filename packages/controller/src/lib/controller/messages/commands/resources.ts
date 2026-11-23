@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import { tools } from '@iobroker/js-controller-common';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import {
     getUsedResourcesMode,
@@ -97,7 +98,7 @@ async function assertInstanceDeclaresResources(deps: ResourceCommandsDeps, insta
         throw new Error(`instance "${instance}" does not exist`);
     }
 
-    if (config.common.host !== deps.hostname) {
+    if (!tools.isInstanceAssignedToHost(config, deps.hostname)) {
         // the registry belongs to one host, and the instance is supervised by the host it runs on
         throw new Error(`instance "${instance}" does not run on this host`);
     }

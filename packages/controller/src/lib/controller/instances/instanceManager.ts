@@ -166,7 +166,9 @@ export class InstanceManager {
 
                 // @ts-expect-error is mode web valid, it is not in schema
                 if (instance.common.mode === 'web' || instance.common.mode === 'none') {
-                    if (instance.common.host === hostname) {
+                    await this.#reassignFromIp(instance);
+
+                    if (tools.isInstanceAssignedToHost(instance, hostname)) {
                         const name = instance._id.split('.')[2];
                         const adapterDir = tools.getAdapterDir(name);
                         if (!fs.existsSync(adapterDir!)) {
@@ -247,13 +249,39 @@ export class InstanceManager {
     }
 
     /**
-     * Check if an instance is handled by this host process and initialize internal data structures
+     * Legacy: instances were assigned to a host by IP address, convert an own IP to the hostname
+     *
+     * @param instance instance object, it is updated in place
+     */
+    async #reassignFromIp(instance: ioBroker.InstanceObject): Promise<void> {
+        const { logger, hostLogPrefix, hostname } = this.#options;
+
+        if (!instance.common.host || !tools.findIPs().includes(instance.common.host)) {
+            return;
+        }
+
+        const ip = instance.common.host;
+        instance.common.host = hostname;
+
+        try {
+            await this.#options.objects.setObject(instance._id, instance);
+            logger.info(`${hostLogPrefix} Reassign instance ${instance._id} from IP ${ip} to host ${hostname}`);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Cannot update hostname for ${instance._id}: ${e.message}`);
+        }
+    }
+
+    /**
+     * Check if an instance is handled by this host process and initialize internal data structures.
+     * An instance assigned to one of the IP addresses of this host is reassigned to the hostname first.
      *
      * @param instance instance object
      * @returns true if instance needs to be handled by this host (true) or not
      */
     async checkAndAddInstance(instance: ioBroker.InstanceObject): Promise<boolean> {
         const { config, logger, hostLogPrefix, hostname, isCompactGroupController } = this.#options;
+
+        await this.#reassignFromIp(instance);
 
         if (!this.#isAssignedHere(instance.common.host)) {
             return false;
@@ -483,12 +511,16 @@ export class InstanceManager {
     }
 
     /**
-     * Whether an instance with the given host is assigned to this host
+     * Whether an instance with the given host is handled by this host: assigned to it by hostname (see
+     * `tools.isInstanceAssignedToHost`), or not assigned yet, which the controller claims on start
      *
      * @param host `common.host` of the instance
      */
     #isAssignedHere(host: string | null | undefined): boolean {
-        return !host || host === this.#options.hostname || tools.findIPs().includes(host);
+        return (
+            !host ||
+            tools.isInstanceAssignedToHost({ common: { host } } as ioBroker.InstanceObject, this.#options.hostname)
+        );
     }
 
     /**
