@@ -1,3 +1,4 @@
+import { tools } from '@iobroker/js-controller-common';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import {
     getUsedResourcesMode,
@@ -391,7 +392,7 @@ export class UsedResourcesManager {
         const namespace = id.substring(SYSTEM_ADAPTER_PREFIX.length);
         let changed: ioBroker.UsedResourceType[];
 
-        if (!obj?.common || obj.common.host !== this.#options.hostname) {
+        if (!obj?.common || !tools.isInstanceAssignedToHost(obj, this.#options.hostname)) {
             // deleted or moved to another host: this host does not track its resources anymore
             changed = this.registry.removeInstance(namespace);
         } else {

@@ -667,6 +667,7 @@ export class Controller {
                 );
                 // give the main controller a bit longer, so that adapter and compact processes can exit before
             },
+            resubscribed: () => this.#recheckInstances('a reconnect'),
             change: async (id, obj) => this.#instances?.handleObjectChange(id, obj),
             primaryHostLost: () => {
                 if (!this.#state.isStopping) {
@@ -771,6 +772,21 @@ export class Controller {
             await wait(1_000);
             process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
         }, 10_000);
+    }
+
+    /**
+     * Stop instances whose object changes may have been missed, without waiting for it
+     *
+     * @param reason why the check runs, for the log
+     */
+    #recheckInstances(reason: string): void {
+        if (!this.#state.started || this.#state.isStopping) {
+            return;
+        }
+        this.#logger.info(`${this.#hostLogPrefix} Rechecking the instances of this host after ${reason}`);
+        this.#instances
+            ?.recheckInstances(reason)
+            .catch(e => this.#logger.error(`${this.#hostLogPrefix} Cannot recheck instances: ${e.message}`));
     }
 
     /**

@@ -216,7 +216,7 @@ export class NotificationHandler {
                     await this.addConfig(entry.value.notifications);
                 }
 
-                if (entry.value?.common.host === this.host) {
+                if (tools.isInstanceAssignedToHost(entry.value, this.host)) {
                     // if it's on our current host
                     instancesOnHost.push(entry.id);
                 }

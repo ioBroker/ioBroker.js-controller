@@ -1,7 +1,7 @@
 {
     "name": "iobroker.js-controller",
     "type": "module",
-    "version": "8.0.0-alpha.21-20261113-96dcc7d32",
+    "version": "8.0.0-alpha.24-20261123-540f5fc21",
     "engines": {
         "node": ">=22.22.2"
     },
@@ -23,7 +23,7 @@
         "@iobroker/plugin-base": "~4.0.0",
         "@iobroker/plugin-sentry": "~3.2.1",
         "axios": "^1.21.0",
-        "cron-parser": "^5.10.3",
+        "cron-parser": "^5.10.6",
         "debug": "^4.4.3",
         "decache": "^4.6.2",
         "deep-clone": "^3.0.3",
@@ -86,9 +86,9 @@
         "release": "release-script",
         "test": "mocha test --exit",
         "test-unit": "mocha \"src/lib/**/*.test.ts\" --exit",
-        "test-jsonl": "mocha test/jsonl/ --exit",
-        "test-redis-socket": "mocha test/redis-socket/ --exit",
-        "test-redis-sentinel": "mocha test/redis-sentinel/ --exit"
+        "test-jsonl": "mocha \"test/jsonl/*.ts\" --exit",
+        "test-redis-socket": "mocha \"test/redis-socket/*.ts\" --exit",
+        "test-redis-sentinel": "mocha \"test/redis-sentinel/*.ts\" --exit"
     },
     "main": "build/cjs/main.js",
     "module": "build/esm/main.js",

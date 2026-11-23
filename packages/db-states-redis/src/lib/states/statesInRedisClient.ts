@@ -12,9 +12,10 @@ import { isDeepStrictEqual } from 'node:util';
 import Redis from 'ioredis';
 import type IORedis from 'ioredis';
 
-import { tools } from '@iobroker/db-base';
+import { FenceGate, tools } from '@iobroker/db-base';
 import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import type { DbStatus, ConnectionOptions } from '@iobroker/db-base/inMemFileDB';
+import { SET_STATE_SCRIPT } from '@/lib/states/setStateScript.js';
 
 type JSONDecoderValue = Record<string, any>;
 
@@ -40,6 +41,11 @@ export interface StatesSettings {
     connected?: () => void;
     /** Called when the client gets disconnected */
     disconnected?: () => void;
+    /**
+     * Adapters only: from a lost connection until this resolves true, commands and subscription replays are held.
+     * If it resolves false, nothing held is sent.
+     */
+    fence?: () => Promise<boolean>;
     /** Handler for user-level state changes */
     changeUser?: UserChangeFunction;
     /** Handler for system-level state and message changes */
@@ -95,6 +101,11 @@ export class StateRedisClient {
     private readonly userSubscriptions: Record<string, RegExp> = {};
     /** System level subscriptions value true means messagebox is subscribed */
     private readonly systemSubscriptions: Record<string, RegExp | true> = {};
+    readonly #gate: FenceGate | null;
+    /** The main connection was ready once, so a later loss is a reconnect */
+    #wasConnected = false;
+    /** SHA1 of the loaded SETSTATE script, `null` if the server does not support it (then setState uses GET + MULTI) */
+    private setStateScriptSha: string | null = null;
 
     /**
      * @param settings Settings for the states client including connection and namespaces
@@ -111,6 +122,7 @@ export class StateRedisClient {
         this.namespace = this.settings.namespace || this.settings.hostname || '';
 
         this.log = tools.getLogger(this.settings.logger);
+        this.#gate = this.settings.fence ? new FenceGate(this.settings.fence) : null;
 
         if (this.settings.autoConnect !== false) {
             this.connectDb();
@@ -171,6 +183,8 @@ export class StateRedisClient {
         // Becomes true after the first successful "ready" so we can tell a
         // re-connection apart from the initial connection
         let wasReady = false;
+        let subWasReady = false;
+        let subSystemWasReady = false;
 
         this.settings.connection.options ||= {} as ioBroker.ObjectsDatabaseOptions['options'];
         const retry_max_delay = this.settings.connection.options.retry_max_delay || 5000;
@@ -307,6 +321,9 @@ export class StateRedisClient {
             this.settings.connection.enhancedLogging &&
                 this.log.silly(`${this.namespace} States-Redis Event close (stop=${this.stop})`);
             //if (ready && typeof this.settings.disconnected === 'function') this.settings.disconnected();
+            if (wasReady) {
+                this.#gate?.close();
+            }
         });
 
         this.client.on('reconnecting', () => {
@@ -342,9 +359,17 @@ export class StateRedisClient {
                 );
             }
             if (wasReady) {
+                if (!(await this.#fencePassed())) {
+                    return;
+                }
                 this.reconnectSubscribers();
+            } else if (this.#gate) {
+                // commands in flight or queued at a loss fail instead of reaching the DB after a possible move
+                this.client.options.maxRetriesPerRequest = 0;
+                this.client.options.autoResendUnfulfilledCommands = false;
             }
             wasReady = true;
+            this.#wasConnected = true;
 
             let initCounter = 0;
             if (!this.subSystem && typeof onChange === 'function') {
@@ -483,6 +508,11 @@ export class StateRedisClient {
                 }
 
                 this.subSystem.on('ready', async () => {
+                    if (subSystemWasReady) {
+                        // the main connection runs the fence, the replay waits for it
+                        await this.#gate?.passed();
+                    }
+                    subSystemWasReady = true;
                     try {
                         if (this.subSystem) {
                             await this.subSystem.subscribe(
@@ -631,6 +661,11 @@ export class StateRedisClient {
                 }
 
                 this.sub.on('ready', async () => {
+                    if (subWasReady) {
+                        // the main connection runs the fence, the replay waits for it
+                        await this.#gate?.passed();
+                    }
+                    subWasReady = true;
                     if (!this.sub) {
                         // client gone while ready emitted, can maybe not happen but ts is happy
                         return;
@@ -673,6 +708,9 @@ export class StateRedisClient {
                 throw new Error('States DB is not allowed to start in the current Multihost environment');
             }
 
+            // (Re)load on every connect: a restarted or failed-over Redis has lost its scripts
+            await this.loadSetStateScript();
+
             if (initCounter < 1) {
                 if (this.settings.connection.port === 0) {
                     this.log.debug(
@@ -696,6 +734,28 @@ export class StateRedisClient {
     }
 
     /**
+     * Run the fence after a reconnect, true if there is none
+     */
+    #fencePassed(): Promise<boolean> {
+        return this.#gate ? this.#gate.check() : Promise.resolve(true);
+    }
+
+    /**
+     * Resolves with the client once the fence allows commands
+     */
+    async #connection(): Promise<IORedis.Redis> {
+        if (this.#gate && this.#wasConnected && this.client && this.client.status !== 'ready') {
+            // lost, but the close event is not handled yet
+            this.#gate.close();
+        }
+        await this.#gate?.passed();
+        if (!this.client) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+        return this.client;
+    }
+
+    /**
      * Pub/sub sockets only receive, so after a server restart they can stay `ready` on a dead connection.
      * Reconnecting them makes their own `ready` handlers replay the subscriptions.
      */
@@ -712,6 +772,94 @@ export class StateRedisClient {
      */
     getStatus(): DbStatus {
         return { type: 'redis', server: false };
+    }
+
+    /**
+     * Loads the SETSTATE script, which lets the server compute `lc` so setState needs one round trip instead of two.
+     * Never throws: if the server does not support it (older in-memory DB, Redis without scripting),
+     * setState keeps using the classic GET + MULTI path.
+     */
+    private async loadSetStateScript(): Promise<void> {
+        if (!this.client) {
+            return;
+        }
+        try {
+            this.setStateScriptSha = (await this.client.script('LOAD', SET_STATE_SCRIPT)) as string;
+        } catch (e) {
+            this.setStateScriptSha = null;
+            this.log.debug(
+                `${this.namespace} SETSTATE script not supported by states DB, using GET + MULTI: ${e.message}`,
+            );
+        }
+    }
+
+    /**
+     * Reads the current state of an id as stored, falls back to `{ val: null }` if it does not exist or cannot be parsed
+     *
+     * @param client the client from `#connection()`, so the read waits for the fence
+     * @param id The id of the state
+     */
+    private async getOldState(client: IORedis.Redis, id: string): Promise<Record<string, any>> {
+        const oldObj = await client.get(this.namespaceRedis + id);
+        if (oldObj) {
+            try {
+                return JSON.parse(oldObj);
+            } catch {
+                this.log.warn(`${this.namespace} Cannot parse "${oldObj}"`);
+            }
+        }
+        return { val: null };
+    }
+
+    /**
+     * Writes the state with the SETSTATE script, the server adds `lc` and publishes the change
+     *
+     * @param client the client from `#connection()`, so the write waits for the fence
+     * @param id The id of the state
+     * @param objString The new state serialized as JSON, without `lc`
+     * @param val The new value, must be a primitive
+     * @param ts The timestamp of the new state
+     * @param expire Optional expire in seconds
+     * @returns false if the script is not available on the server, the caller then has to use the classic path
+     */
+    private async setStateWithServerLc(
+        client: IORedis.Redis,
+        id: string,
+        objString: string,
+        val: ioBroker.StateValue,
+        ts: number,
+        expire: number | undefined,
+    ): Promise<boolean> {
+        // `lc` is the last property of a state, so the server can simply append it
+        const stateWithoutLc = objString.slice(0, -1);
+        const valJson = JSON.stringify(val);
+        for (let attempt = 0; attempt < 2; attempt++) {
+            if (!this.client || !this.setStateScriptSha) {
+                return false;
+            }
+            try {
+                await client.evalsha(
+                    this.setStateScriptSha,
+                    1,
+                    this.namespaceRedis + id,
+                    stateWithoutLc,
+                    valJson,
+                    String(ts),
+                    expire ? String(expire) : '',
+                );
+                return true;
+            } catch (e) {
+                // Script got lost (Redis restart, failover, SCRIPT FLUSH): load it again once and retry
+                if (!/NOSCRIPT|Unknown Script/i.test(e.message)) {
+                    throw e;
+                }
+                this.setStateScriptSha = null;
+                if (attempt === 0) {
+                    await this.loadSetStateScript();
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -765,6 +913,7 @@ export class StateRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         if (!tools.isObject(state)) {
             state = {
@@ -778,25 +927,19 @@ export class StateRedisClient {
             delete state.expire;
         }
 
-        let oldObj;
-        try {
-            oldObj = await this.client.get(this.namespaceRedis + id);
-        } catch (e) {
-            this.log.warn(`${this.namespace} get state error: ${e.message}`);
-            return tools.maybeCallbackWithRedisError(callback, e, id);
-        }
-        if (!this.client) {
-            return;
-        }
-
-        if (!oldObj) {
-            oldObj = { val: null };
-        } else {
+        // The old state is only needed if the new one takes values from it.
+        // Otherwise only `lc` depends on it, and that the server can compute itself (SETSTATE script).
+        const needsOldState = state.val === undefined || state.ack === null;
+        let oldObj: Record<string, any> | undefined;
+        if (needsOldState) {
             try {
-                oldObj = JSON.parse(oldObj);
-            } catch {
-                this.log.warn(`${this.namespace} Cannot parse "${oldObj}"`);
-                oldObj = { val: null };
+                oldObj = await this.getOldState(client, id);
+            } catch (e) {
+                this.log.warn(`${this.namespace} get state error: ${e.message}`);
+                return tools.maybeCallbackWithRedisError(callback, e, id);
+            }
+            if (!this.client) {
+                return;
             }
         }
 
@@ -805,11 +948,11 @@ export class StateRedisClient {
         if (state.val !== undefined) {
             obj.val = state.val;
         } else {
-            obj.val = oldObj.val;
+            obj.val = oldObj!.val;
         }
 
         if (state.ack !== undefined) {
-            obj.ack = state.ack === null ? oldObj.ack || false : state.ack;
+            obj.ack = state.ack === null ? oldObj!.ack || false : state.ack;
         } else {
             obj.ack = false;
         }
@@ -837,13 +980,42 @@ export class StateRedisClient {
             obj.user = state.user;
         }
 
-        let hasChanged;
-
         if (typeof state.lc === 'number') {
             obj.lc = state.lc;
-        } else {
+        } else if (!needsOldState && this.setStateScriptSha && (obj.val === null || typeof obj.val !== 'object')) {
+            // one round trip: the server compares the value with the stored one and appends `lc`
+            const objString = JSON.stringify(obj);
+            this.settings.connection.enhancedLogging &&
+                this.log.silly(
+                    `${this.namespace} redis publish ${this.namespaceRedis}${id} ${objString} (lc by server)`,
+                );
+            try {
+                if (await this.setStateWithServerLc(client, id, objString, obj.val!, obj.ts, expire)) {
+                    return tools.maybeCallbackWithError(callback, null, id);
+                }
+            } catch (e) {
+                return tools.maybeCallbackWithRedisError(callback, e, id);
+            }
+            // script not available, continue with the classic path
+            if (!this.client) {
+                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            }
+        }
+
+        if (obj.lc === undefined) {
+            if (!oldObj) {
+                try {
+                    oldObj = await this.getOldState(client, id);
+                } catch (e) {
+                    this.log.warn(`${this.namespace} get state error: ${e.message}`);
+                    return tools.maybeCallbackWithRedisError(callback, e, id);
+                }
+                if (!this.client) {
+                    return;
+                }
+            }
             // isDeepStrictEqual works on objects and primitive values
-            hasChanged = !isDeepStrictEqual(oldObj.val, obj.val);
+            const hasChanged = !isDeepStrictEqual(oldObj.val, obj.val);
             if (!oldObj.lc || hasChanged) {
                 obj.lc = obj.ts;
             } else {
@@ -866,7 +1038,7 @@ export class StateRedisClient {
         commands.push(['publish', this.namespaceRedis + id, objString]);
 
         try {
-            await this.client.multi(commands).exec();
+            await client.multi(commands).exec();
             return tools.maybeCallbackWithError(callback, null, id);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e, id);
@@ -906,8 +1078,9 @@ export class StateRedisClient {
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
-        await this.client.set(this.namespaceRedis + id, JSON.stringify(state));
+        await client.set(this.namespaceRedis + id, JSON.stringify(state));
         return id;
     }
 
@@ -942,10 +1115,11 @@ export class StateRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         let obj;
         try {
-            obj = await this.client.get(this.namespaceRedis + id);
+            obj = await client.get(this.namespaceRedis + id);
             this.settings.connection.enhancedLogging && this.log.silly(`${this.namespace} redis get ${id} ok: ${obj}`);
         } catch (e) {
             this.log.warn(`${this.namespace} redis get ${id}, error - ${e.message}`);
@@ -1014,6 +1188,7 @@ export class StateRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         let _keys: string[];
         if (!dontModify) {
             _keys = keys.map(k => this.namespaceRedis + k);
@@ -1023,7 +1198,7 @@ export class StateRedisClient {
 
         let obj: (string | null)[];
         try {
-            obj = await this.client.mget(_keys);
+            obj = await client.mget(_keys);
             this.settings.connection.enhancedLogging &&
                 this.log.silly(`${this.namespace} redis mget ${!obj ? 0 : obj.length} ${_keys.length}`);
         } catch (e) {
@@ -1057,10 +1232,11 @@ export class StateRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         for (const id of keys) {
             try {
-                await this.client.del(id);
+                await client.del(id);
             } catch {
                 // ignore
             }
@@ -1085,9 +1261,10 @@ export class StateRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
         let keys;
         try {
-            keys = await this.client.keys(`${this.namespaceRedis}*`);
+            keys = await client.keys(`${this.namespaceRedis}*`);
         } catch {
             //ignore
         }
@@ -1159,10 +1336,11 @@ export class StateRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         try {
-            await this.client.del(this.namespaceRedis + id);
-            await this.client.publish(this.namespaceRedis + id, 'null');
+            await client.del(this.namespaceRedis + id);
+            await client.publish(this.namespaceRedis + id, 'null');
             this.settings.connection.enhancedLogging && this.log.silly(`${this.namespace} redis del ${id}, ok`);
             return tools.maybeCallbackWithError(callback, null, id);
         } catch (e) {
@@ -1211,10 +1389,11 @@ export class StateRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         let obj;
         try {
-            obj = await this.client.keys(this.namespaceRedis + pattern);
+            obj = await client.keys(this.namespaceRedis + pattern);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
@@ -1440,6 +1619,7 @@ export class StateRedisClient {
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         const fullMessage: ioBroker.Message = { ...message, _id: this.globalMessageId++ };
 
@@ -1447,7 +1627,7 @@ export class StateRedisClient {
             this.globalMessageId = 0;
         }
 
-        await this.client.publish(this.namespaceMsg + id, JSON.stringify(fullMessage));
+        await client.publish(this.namespaceMsg + id, JSON.stringify(fullMessage));
     }
 
     /**
@@ -1579,9 +1759,10 @@ export class StateRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         try {
-            await this.client.publish(this.namespaceLog + id, JSON.stringify(log));
+            await client.publish(this.namespaceLog + id, JSON.stringify(log));
             return tools.maybeCallbackWithError(callback, null, id);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
@@ -1702,10 +1883,11 @@ export class StateRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         let obj;
         try {
-            obj = await this.client.get(this.namespaceSession + id);
+            obj = await client.get(this.namespaceSession + id);
         } catch (e) {
             // A failed read is a database problem, not a missing session. Swallowing it here
             // turns every connection error into a silent "not logged in".
@@ -1764,9 +1946,10 @@ export class StateRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         try {
-            await this.client.setex(this.namespaceSession + id, expireS, JSON.stringify(obj));
+            await client.setex(this.namespaceSession + id, expireS, JSON.stringify(obj));
             if (this.settings.connection.enhancedLogging) {
                 this.log.silly(`${this.namespace} redis setex ${id} ${expireS} ${JSON.stringify(obj)}`);
             }
@@ -1804,11 +1987,12 @@ export class StateRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         id = this.namespaceSession + id;
         this.settings.connection.enhancedLogging && this.log.silly(`${this.namespace} redis del ${id}`);
         try {
-            await this.client.del(id);
+            await client.del(id);
             return tools.maybeCallback(callback);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
@@ -1819,12 +2003,13 @@ export class StateRedisClient {
      * Returns the protocol version from DB
      *
      */
-    getProtocolVersion(): Promise<string | null> {
+    async getProtocolVersion(): Promise<string | null> {
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
-        return this.client.get(`${this.metaNamespace}states.protocolVersion`);
+        return client.get(`${this.metaNamespace}states.protocolVersion`);
     }
 
     /**
@@ -1836,12 +2021,13 @@ export class StateRedisClient {
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
+        const client = await this.#connection();
 
         const versionStr = version.toString();
         // we can only set a protocol if we actually support it
         if (this.supportedProtocolVersions.includes(versionStr)) {
-            await this.client.set(`${this.metaNamespace}states.protocolVersion`, versionStr);
-            await this.client.publish(`${this.metaNamespace}states.protocolVersion`, versionStr);
+            await client.set(`${this.metaNamespace}states.protocolVersion`, versionStr);
+            await client.publish(`${this.metaNamespace}states.protocolVersion`, versionStr);
         } else {
             throw new Error('Cannot set an unsupported protocol version on the current host');
         }
