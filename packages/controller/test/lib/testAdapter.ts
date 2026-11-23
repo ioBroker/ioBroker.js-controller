@@ -329,14 +329,18 @@ export default function testAdapter(options: Record<string, any>): void {
             assert.strictEqual(context.adapter.connected, true);
             await stopController();
             console.log('Adapter terminated');
+            // only if both DBs go down with the controller, the adapter loses its connection
+            const allFile = objectsConfig.type === 'file' && statesConfig.type === 'file';
             let adapterStopped = false;
             context.adapter.on('exit', () => {
                 console.log('Adapter stopped');
                 adapterStopped = true;
-                assert.strictEqual(context.adapter.connected, false);
+                if (allFile) {
+                    assert.strictEqual(context.adapter.connected, false);
+                }
             });
             // redis server cannot be stopped
-            if (objectsConfig.type === 'file') {
+            if (allFile) {
                 await new Promise<void>(resolve => {
                     setTimeout(() => resolve(), 3_000 + (process.platform === 'win32' ? 5_000 : 0));
                 });
@@ -350,6 +354,16 @@ export default function testAdapter(options: Record<string, any>): void {
 
                 await new Promise<void>(resolve => {
                     setTimeout(() => resolve(), 2_000);
+                });
+            } else if (objectsConfig.type === 'file') {
+                // states are still on redis, so the adapter stays connected - just stop it
+                await new Promise<void>(resolve => {
+                    setTimeout(() => resolve(), 3_000 + (process.platform === 'win32' ? 5_000 : 0));
+                });
+                context.adapter.stop!();
+
+                await new Promise<void>(resolve => {
+                    setTimeout(() => resolve(), 4_000);
                 });
             } else {
                 await new Promise<void>(resolve => {
