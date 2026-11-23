@@ -146,7 +146,7 @@ export class ObjectsInRedisClient {
     private sub: IORedis.Redis | null;
     private subSystem: IORedis.Redis | null;
     private settings: ObjectsSettings;
-    readonly #gate: FenceGate | null;
+    #gate: FenceGate | null;
     /** The main connection was ready once, so a later loss is a reconnect */
     #wasConnected = false;
     private readonly preserveSettings: ('custom' | 'smartName' | 'material' | 'habpanel' | 'mobile')[];
@@ -428,9 +428,7 @@ export class ObjectsInRedisClient {
                 }
                 this.reconnectSubscribers();
             } else if (this.#gate) {
-                // commands in flight or queued at a loss fail instead of reaching the DB after a possible move
-                this.client.options.maxRetriesPerRequest = 0;
-                this.client.options.autoResendUnfulfilledCommands = false;
+                this.#failCommandsOnLoss(this.client);
             }
             wasReady = true;
             this.#wasConnected = true;
@@ -917,9 +915,30 @@ export class ObjectsInRedisClient {
     }
 
     /**
-     * Pub/sub sockets only receive, so after a server restart they can stay `ready` on a dead connection.
-     * Reconnecting them makes their own `ready` handlers replay the subscriptions.
+     * Enable the fence after the connect, if the client was created without one
+     *
+     * @param fence resolves true if the held commands may be sent
      */
+    enableFence(fence: () => Promise<boolean>): void {
+        if (this.#gate) {
+            return;
+        }
+        this.#gate = new FenceGate(fence);
+        if (this.#wasConnected && this.client) {
+            this.#failCommandsOnLoss(this.client);
+        }
+    }
+
+    /**
+     * Commands in flight at a loss fail instead of being sent again
+     *
+     * @param client the main client
+     */
+    #failCommandsOnLoss(client: IORedis.Redis): void {
+        client.options.maxRetriesPerRequest = 0;
+        client.options.autoResendUnfulfilledCommands = false;
+    }
+
     /**
      * Run the fence after a reconnect, true if there is none
      */
@@ -955,6 +974,10 @@ export class ObjectsInRedisClient {
         return obj ? JSON.parse(obj) : null;
     }
 
+    /**
+     * Pub/sub sockets only receive, so after a server restart they can stay `ready` on a dead connection.
+     * Reconnecting them makes their own `ready` handlers replay the subscriptions.
+     */
     private reconnectSubscribers(): void {
         for (const subscriber of [this.sub, this.subSystem]) {
             if (subscriber?.status === 'ready') {

@@ -972,6 +972,8 @@ export class AdapterClass extends EventEmitter {
     /** contents of io-package.json */
     ioPack: ioBroker.InstanceObject;
     private _initializeTimeout?: NodeJS.Timeout | null;
+    /** Whether the DB clients fence after a reconnect */
+    private _fenceEnabled = false;
     private inited?: boolean;
     /** contents of iobroker.json if required via AdapterOptions */
     systemConfig?: InternalAdapterJsonConfig;
@@ -12555,7 +12557,7 @@ export class AdapterClass extends EventEmitter {
         this.#states = new this.States({
             namespace: this.namespaceLog,
             connection: this._config.states,
-            fence: this._fenceEnabled() ? () => this._fence('a states reconnect') : undefined,
+            fence: this._fenceEnabled ? () => this._fence('a states reconnect') : undefined,
             connected: async () => {
                 if (!this.#states) {
                     return;
@@ -12873,7 +12875,6 @@ export class AdapterClass extends EventEmitter {
             namespace: this.namespaceLog,
             connection: this._config.objects,
             logger: this._logger,
-            fence: this._fenceEnabled() ? () => this._fence('an objects reconnect') : undefined,
             connected: async () => {
                 this.connected = true;
                 if (this._initializeTimeout) {
@@ -12883,6 +12884,12 @@ export class AdapterClass extends EventEmitter {
 
                 if (!this.#objects) {
                     return;
+                }
+
+                // decided before the states DB is created
+                this._fenceEnabled = await this._needsFence();
+                if (this._fenceEnabled) {
+                    this.#objects.enableFence(() => this._fence('an objects reconnect'));
                 }
 
                 // subscribe to user changes
@@ -13453,10 +13460,26 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Whether the database clients hold commands after a reconnect until the fence passes
+     * Whether to fence: `system.fence` of iobroker.json, else only with more than one host
      */
-    private _fenceEnabled(): boolean {
-        return !this.startedInCompactMode && !this._config.isInstall;
+    private async _needsFence(): Promise<boolean> {
+        if (this.startedInCompactMode || this._config.isInstall || !this.#objects) {
+            return false;
+        }
+        const configured = this._config.system?.fence;
+        if (typeof configured === 'boolean') {
+            return configured;
+        }
+        try {
+            const hosts = await this.#objects.getObjectView('system', 'host', {
+                startkey: 'system.host.',
+                endkey: 'system.host.\u9999',
+            });
+            return hosts.rows.length > 1;
+        } catch (e) {
+            this._logger.warn(`${this.namespaceLog} Cannot count the hosts, the fence stays on: ${e.message}`);
+            return true;
+        }
     }
 
     /**

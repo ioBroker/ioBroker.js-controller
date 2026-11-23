@@ -99,4 +99,39 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             assert.match(terminated!.reason!, /Moved to host "anotherHost"/);
         });
     });
+
+    describe(`${testName}whether to fence`, () => {
+        const hosts = ['system.host.fenceTestA', 'system.host.fenceTestB'];
+        const needsFence = (): Promise<boolean> => (context.adapter as any)._needsFence();
+        let system: any;
+        let compact: boolean;
+
+        beforeEach(async () => {
+            // the test adapter runs in compact mode, which never fences
+            compact = context.adapter.startedInCompactMode;
+            (context.adapter as any).startedInCompactMode = false;
+            system = (context.adapter as any)._config.system;
+            (context.adapter as any)._config.system = { ...system };
+            for (const id of hosts) {
+                await context.objects.setObjectAsync(id, { type: 'host', common: { name: id }, native: {} } as any);
+            }
+        });
+
+        afterEach(async () => {
+            (context.adapter as any).startedInCompactMode = compact;
+            (context.adapter as any)._config.system = system;
+            for (const id of hosts) {
+                await context.objects.delObjectAsync(id);
+            }
+        });
+
+        it('fences with more than one host', async () => {
+            assert.strictEqual(await needsFence(), true);
+        });
+
+        it('follows system.fence of iobroker.json', async () => {
+            (context.adapter as any)._config.system.fence = false;
+            assert.strictEqual(await needsFence(), false);
+        });
+    });
 }
