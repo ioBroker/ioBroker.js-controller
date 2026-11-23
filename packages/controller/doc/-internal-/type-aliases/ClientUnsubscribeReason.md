@@ -8,4 +8,4 @@
 
 > **ClientUnsubscribeReason** = [`MessageUnsubscribeReason`](MessageUnsubscribeReason.md) \| `"clientSubscribeError"`
 
-Defined in: [adapter/src/lib/\_Types.ts:67](https://github.com/ioBroker/ioBroker.js-controller/blob/f0774d1b08db8894d2f278bf0cdb40854907903e/packages/adapter/src/lib/_Types.ts#L67)
+Defined in: [adapter/src/lib/\_Types.ts:67](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/adapter/src/lib/_Types.ts#L67)
