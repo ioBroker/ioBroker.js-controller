@@ -259,7 +259,7 @@ export class Upload {
                 // Find the host which has this adapter
                 const instances = await tools.getInstances(adapter, this.objects, true);
                 // try to find instance on this host
-                let instance = instances.find(obj => obj?.common?.host === hostname);
+                let instance = instances.find(obj => tools.isInstanceAssignedToHost(obj, hostname));
 
                 // try to find enabled instance on live host
                 instance =
@@ -268,7 +268,7 @@ export class Upload {
                 // try to find any instance
                 instance = instance || instances.find(obj => obj?.common && liveHosts.includes(obj.common.host));
 
-                if (instance && instance.common.host !== hostname) {
+                if (instance && !tools.isInstanceAssignedToHost(instance, hostname)) {
                     console.log(`Send upload command to host "${instance.common.host}"... `);
                     // send upload message to the host
                     const response = await this.sendToHostFromCliAsync(instance.common.host, 'upload', adapter);
@@ -815,7 +815,7 @@ export class Upload {
 
         if (res) {
             for (const row of res.rows) {
-                if (row.value?.common.host === hostname) {
+                if (tools.isInstanceAssignedToHost(row.value, hostname)) {
                     const _obj = await this.objects.getObject(row.id);
                     const newObject = deepClone(_obj) as ioBroker.InstanceObject;
 

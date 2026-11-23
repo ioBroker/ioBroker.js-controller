@@ -175,6 +175,8 @@ export interface IoBJson {
         /** If the available RAM is below this threshold on adapter start, an error will be logged. */
         memLimitError: number;
         '// memLimitError': string;
+        /** Whether adapters confirm their host after a DB reconnect before sending commands. Absent: only with more than one host */
+        fence?: boolean;
     };
     /** Configuration of the multihost service used to connect several ioBroker hosts */
     multihostService: {
