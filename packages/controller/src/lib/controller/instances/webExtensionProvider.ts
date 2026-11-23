@@ -263,12 +263,11 @@ export class WebExtensionProvider {
     }
 
     /**
-     * Create a check whether a host name or address in `common.host` means this host
+     * Create a check whether `common.host` means this host: only by its hostname, an IP address is not accepted
      */
     #isThisHost(): (host: string | undefined) => boolean {
         const { hostname } = this.#options;
-        const ipArr = tools.findIPs();
-        return host => !!host && (host === hostname || ipArr.includes(host));
+        return host => tools.isInstanceAssignedToHost({ common: { host } } as ioBroker.InstanceObject, hostname);
     }
 
     /**

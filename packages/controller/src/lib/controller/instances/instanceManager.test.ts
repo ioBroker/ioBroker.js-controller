@@ -619,4 +619,26 @@ describe('InstanceManager.recheckInstances', () => {
 
         assert.equal(getObject.called, false);
     });
+
+    it('reads the instances of all hosts again for the web extensions', async () => {
+        const other = instanceObject({ _id: 'system.adapter.frigate.0', common: { host: 'otherhost' } });
+        const getObjectViewAsync = sinon.stub().resolves({ rows: [{ id: other._id, value: other }] });
+        const { manager } = createManager({ objects: { getObjectViewAsync } as any });
+        const setInstances = sinon.stub(manager.webExtensions, 'setInstances').resolves();
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(setInstances.calledOnce, true);
+        assert.deepEqual(setInstances.firstCall.args[0], [other]);
+    });
+
+    it('keeps the known instances for the web extensions if they cannot be read', async () => {
+        const getObjectViewAsync = sinon.stub().rejects(new Error('DB closed'));
+        const { manager } = createManager({ objects: { getObjectViewAsync } as any });
+        const setInstances = sinon.stub(manager.webExtensions, 'setInstances').resolves();
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(setInstances.called, false);
+    });
 });

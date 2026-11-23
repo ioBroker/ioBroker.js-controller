@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import sinon from 'sinon';
+import { tools } from '@iobroker/js-controller-common';
 import { WebExtensionProvider } from '@/lib/controller/instances/webExtensionProvider.js';
 import { testIdentity, testState } from '@/lib/controller/testing.test-utils.js';
 import type { WebExtensionProviderOptions } from '@/lib/controller/instances/webExtensionProvider.js';
@@ -93,6 +94,15 @@ describe('WebExtensionProvider.getNeededCode', () => {
         await provider.setInstances([web0, web1, frigate('*')]);
 
         assert.deepEqual(provider.getNeededCode()[0].webServers, ['system.adapter.web.0', 'system.adapter.web.1']);
+    });
+
+    it('does not take a web server assigned to an IP address of this host as one of this host', async () => {
+        const ip = tools.findIPs()[0] ?? '192.168.0.2';
+        const webOnIp = instance('system.adapter.web.0', { host: ip, webExtendable: true });
+        const { provider } = createProvider();
+        await provider.setInstances([webOnIp, frigate()]);
+
+        assert.deepEqual(provider.getNeededCode(), []);
     });
 
     it('does not need anything without a web server of this host', async () => {

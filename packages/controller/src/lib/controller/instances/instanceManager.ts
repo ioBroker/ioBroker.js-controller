@@ -561,6 +561,35 @@ export class InstanceManager {
                 await this.handleObjectChange(id, obj ?? null);
             }
         }
+
+        // the instances of other hosts may have changed during the gap too, e.g. an upgrade of a web extension
+        await this.#refreshWebExtensions(reason);
+    }
+
+    /**
+     * Read the instance objects of all hosts again for the web extensions of other hosts. The known objects are kept
+     * if they cannot be read, so that a database problem cannot look like deleted instances.
+     *
+     * @param reason why the objects are read again, for the log
+     */
+    async #refreshWebExtensions(reason: string): Promise<void> {
+        const { objects, logger, hostLogPrefix, isCompactGroupController } = this.#options;
+
+        if (isCompactGroupController) {
+            return;
+        }
+
+        try {
+            const doc = await objects.getObjectViewAsync('system', 'instance', {
+                startkey: SYSTEM_ADAPTER_PREFIX,
+                endkey: `${SYSTEM_ADAPTER_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
+            });
+            await this.webExtensions.setInstances(doc.rows.map(row => row.value).filter(obj => obj?.common));
+        } catch (e) {
+            logger.warn(
+                `${hostLogPrefix} Cannot check the web extensions of other hosts after ${reason}: ${e.message}`,
+            );
+        }
     }
 
     /**
