@@ -8,6 +8,7 @@ import { InstanceStarter } from '@/lib/controller/instances/instanceStarter.js';
 import { CompactGroupManager } from '@/lib/controller/instances/compactGroupManager.js';
 import { ScheduleRunner } from '@/lib/controller/instances/scheduleRunner.js';
 import { UsedResourcesManager } from '@/lib/controller/instances/usedResourcesManager.js';
+import { WebExtensionProvider } from '@/lib/controller/instances/webExtensionProvider.js';
 import { isPythonAdapter } from '@/lib/pythonRuntime.js';
 import type { NotificationHandler } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
@@ -101,6 +102,8 @@ export class InstanceManager {
     readonly scheduler: ScheduleRunner;
     /** Keeps the registry of the resources the instances of this host occupy */
     readonly usedResources: UsedResourcesManager;
+    /** Installs the code of web extensions of other hosts which the web servers of this host load */
+    readonly webExtensions: WebExtensionProvider;
 
     /** Timer which delays the writing of the pids file */
     #storeTimer: NodeJS.Timeout | null = null;
@@ -123,6 +126,7 @@ export class InstanceManager {
         this.compactGroups = new CompactGroupManager(forChildren);
         this.usedResources = new UsedResourcesManager(forChildren);
         this.scheduler = new ScheduleRunner(forChildren);
+        this.webExtensions = new WebExtensionProvider(forChildren);
     }
 
     /**
@@ -204,6 +208,13 @@ export class InstanceManager {
         }
 
         this.initInstances();
+
+        // after the instances of this host, so their own installations are queued first
+        try {
+            await this.webExtensions.setInstances(instances);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Cannot check the web extensions of other hosts: ${e.message}`);
+        }
     }
 
     /**
@@ -549,6 +560,35 @@ export class InstanceManager {
                 logger.warn(`${hostLogPrefix} ${id} was moved, disabled or deleted during ${reason}, stopping it`);
                 await this.handleObjectChange(id, obj ?? null);
             }
+        }
+
+        // the instances of other hosts may have changed during the gap too, e.g. an upgrade of a web extension
+        await this.#refreshWebExtensions(reason);
+    }
+
+    /**
+     * Read the instance objects of all hosts again for the web extensions of other hosts. The known objects are kept
+     * if they cannot be read, so that a database problem cannot look like deleted instances.
+     *
+     * @param reason why the objects are read again, for the log
+     */
+    async #refreshWebExtensions(reason: string): Promise<void> {
+        const { objects, logger, hostLogPrefix, isCompactGroupController } = this.#options;
+
+        if (isCompactGroupController) {
+            return;
+        }
+
+        try {
+            const doc = await objects.getObjectViewAsync('system', 'instance', {
+                startkey: SYSTEM_ADAPTER_PREFIX,
+                endkey: `${SYSTEM_ADAPTER_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
+            });
+            await this.webExtensions.setInstances(doc.rows.map(row => row.value).filter(obj => obj?.common));
+        } catch (e) {
+            logger.warn(
+                `${hostLogPrefix} Cannot check the web extensions of other hosts after ${reason}: ${e.message}`,
+            );
         }
     }
 
@@ -946,6 +986,7 @@ export class InstanceManager {
         try {
             // sometimes a process receives SIGTERM twice, the timestamp of the first request is kept
             state.markStopping();
+            this.webExtensions.stop();
             elapsed = Date.now() - state.isStopping!;
             logger.debug(
                 `${hostLogPrefix} stop isStopping=${elapsed} isDaemon=${isDaemon} allInstancesStopped=${this.allInstancesStopped}`,
@@ -1016,6 +1057,9 @@ export class InstanceManager {
             // the configuration of an instance defines which resources it occupies, so keep the registry
             // in line with it - no matter whether the instance is known here, running, or was just deleted
             await this.usedResources.syncInstance(id, obj);
+
+            // a web server of this host may load the web extension of an instance of another host
+            this.webExtensions.handleObjectChange(id, obj);
 
             // known adapter
             const proc = this.procs[id];

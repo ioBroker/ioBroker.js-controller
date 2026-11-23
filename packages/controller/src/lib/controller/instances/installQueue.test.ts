@@ -142,3 +142,27 @@ describe('InstallQueue.push', () => {
         }
     });
 });
+
+describe('InstallQueue with code only tasks', () => {
+    it('gives up after the last attempt without a process entry and reports back', async () => {
+        const error = sinon.stub();
+        const onDone = sinon.stub();
+        // no process entry: the instance runs on another host, only its code is needed here
+        const instances = fakeInstances({});
+        const queue = new InstallQueue(queueOptions({ instances, logger: silentLogger({ error }) }));
+
+        queue.push({
+            id: 'system.adapter.frigate.0',
+            version: '2.1.0',
+            disabled: true,
+            codeOnly: { isInstalled: false, downloadRetry: 4, onDone },
+        });
+        await new Promise(resolve => setTimeout(resolve, 600));
+
+        assert.equal(error.calledOnce, true);
+        assert.match(error.firstCall.args[0], /for the web extension of system\.adapter\.frigate\.0 on another host/);
+        assert.equal(onDone.calledOnce, true);
+        assert.equal(queue.has('system.adapter.frigate.0'), false);
+        assert.equal(instances.startInstance.called, false);
+    });
+});
