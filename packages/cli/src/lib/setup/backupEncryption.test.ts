@@ -8,6 +8,7 @@ import {
     decryptFile,
     encryptFile,
     generateBackupKeyPair,
+    isAcceptableScrypt,
     isEncryptedBackup,
 } from '@/lib/setup/backupEncryption.js';
 
@@ -161,5 +162,69 @@ describe('backup encryption', function () {
     it('refuses a public key in a wrong form', async () => {
         await writePlain(10);
         await assert.rejects(encryptFile(plain, encrypted, { publicKeys: ['abc'] }), /must start with/);
+    });
+
+    /**
+     * Change the JSON header of the encrypted file, its length is written again
+     *
+     * @param change changes the parsed header in place
+     */
+    async function changeHeader(change: (header: Record<string, any>) => void): Promise<void> {
+        const file = await readFile(encrypted);
+        const prefixLength = 'IOBENC1'.length + 5;
+        const headerLength = file.readUInt32BE(prefixLength - 4);
+        const header = JSON.parse(file.subarray(prefixLength, prefixLength + headerLength).toString('utf8'));
+        change(header);
+        const headerJson = Buffer.from(JSON.stringify(header), 'utf8');
+        const prefix = Buffer.from(file.subarray(0, prefixLength));
+        prefix.writeUInt32BE(headerJson.length, prefixLength - 4);
+        await writeFile(encrypted, Buffer.concat([prefix, headerJson, file.subarray(prefixLength + headerLength)]));
+    }
+
+    it('refuses scrypt parameters in the file which would take too much memory or time, before running scrypt', async () => {
+        await writePlain(10);
+        await encryptFile(plain, encrypted, { password: 'secret', scrypt });
+        // each value alone was accepted before, together they ask for 4 GiB
+        await changeHeader(header => Object.assign(header.recipients[0], { N: 2 ** 20, r: 32, p: 16 }));
+
+        const started = Date.now();
+        await assert.rejects(decryptFile(encrypted, decrypted, { password: 'secret' }), /header .* is invalid/);
+        assert.ok(Date.now() - started < 1_000);
+    });
+
+    it('refuses a chunk size in the file which is larger than any written one', async () => {
+        await writePlain(10);
+        await encryptFile(plain, encrypted, { password: 'secret', scrypt });
+        await changeHeader(header => (header.chunkSize = 2 ** 31));
+
+        await assert.rejects(decryptFile(encrypted, decrypted, { password: 'secret' }), BackupDecryptionError);
+    });
+});
+
+describe('isAcceptableScrypt', () => {
+    it('accepts the default parameters and the cheap ones of the tests', () => {
+        assert.equal(isAcceptableScrypt({ N: 2 ** 17, r: 8, p: 1 }), true);
+        assert.equal(isAcceptableScrypt(scrypt), true);
+    });
+
+    it('accepts up to twice the memory and four times the work of the default', () => {
+        assert.equal(isAcceptableScrypt({ N: 2 ** 18, r: 8, p: 1 }), true);
+        assert.equal(isAcceptableScrypt({ N: 2 ** 17, r: 8, p: 4 }), true);
+    });
+
+    it('refuses more memory or work, also if each value alone is moderate', () => {
+        assert.equal(isAcceptableScrypt({ N: 2 ** 19, r: 8, p: 1 }), false);
+        assert.equal(isAcceptableScrypt({ N: 2 ** 17, r: 32, p: 1 }), false);
+        assert.equal(isAcceptableScrypt({ N: 2 ** 17, r: 8, p: 8 }), false);
+        assert.equal(isAcceptableScrypt({ N: 2 ** 20, r: 32, p: 16 }), false);
+    });
+
+    it('refuses parameters which are no valid scrypt parameters', () => {
+        assert.equal(isAcceptableScrypt({ N: 1000, r: 8, p: 1 }), false);
+        assert.equal(isAcceptableScrypt({ N: 1, r: 8, p: 1 }), false);
+        assert.equal(isAcceptableScrypt({ N: 2 ** 10, r: 0, p: 1 }), false);
+        assert.equal(isAcceptableScrypt({ N: 2 ** 10, r: 8, p: 0 }), false);
+        assert.equal(isAcceptableScrypt({ N: 2 ** 10, r: 8.5, p: 1 }), false);
+        assert.equal(isAcceptableScrypt({ N: '1024', r: 8, p: 1 } as any), false);
     });
 });

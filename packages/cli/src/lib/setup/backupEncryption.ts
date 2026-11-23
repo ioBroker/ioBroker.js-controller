@@ -43,6 +43,12 @@ const KEY_SIZE = 32;
 const MAX_HEADER_SIZE = 1024 * 1024;
 /** Default scrypt parameters: 128 MiB of memory, about a second on a Raspberry Pi 4 */
 const DEFAULT_SCRYPT: ScryptParams = { N: 2 ** 17, r: 8, p: 1 };
+/** Upper bound for the memory scrypt may take for the parameters of a file (128 * N * r): twice the default */
+const MAX_SCRYPT_MEMORY = 2 * 128 * DEFAULT_SCRYPT.N * DEFAULT_SCRYPT.r;
+/** Upper bound for the work of scrypt for the parameters of a file (N * r * p): four times the default */
+const MAX_SCRYPT_WORK = 4 * DEFAULT_SCRYPT.N * DEFAULT_SCRYPT.r * DEFAULT_SCRYPT.p;
+/** Upper bound for the chunk size of a file, the encryption writes {@link CHUNK_SIZE} */
+const MAX_CHUNK_SIZE = 16 * 1024 * 1024;
 /** Prefix of a public key in the text form used in iobroker.json */
 const PUBLIC_KEY_PREFIX = 'iobbackup-pub-';
 
@@ -239,7 +245,12 @@ export async function decryptFile(source: string, target: string, credentials: D
         const headerHash = crypto.createHash('sha256').update(headerBytes).digest();
         const baseNonce = Buffer.from(header.nonce, 'base64');
 
-        if (baseNonce.length !== NONCE_SIZE || !Number.isInteger(header.chunkSize) || header.chunkSize <= 0) {
+        if (
+            baseNonce.length !== NONCE_SIZE ||
+            !Number.isInteger(header.chunkSize) ||
+            header.chunkSize <= 0 ||
+            header.chunkSize > MAX_CHUNK_SIZE
+        ) {
             throw new BackupDecryptionError('The header of the encrypted backup is invalid');
         }
 
@@ -374,15 +385,8 @@ async function unwrapDataKey(header: EncryptionHeader, credentials: DecryptionCr
         if (!recipient || recipient.type !== 'password') {
             throw new BackupDecryptionError('The backup is not encrypted with a password, use the private key');
         }
-        // the parameters come from the file, a manipulated one must not make scrypt take all memory
-        if (
-            !Number.isInteger(recipient.N) ||
-            recipient.N > 2 ** 20 ||
-            !Number.isInteger(recipient.r) ||
-            recipient.r > 32 ||
-            !Number.isInteger(recipient.p) ||
-            recipient.p > 16
-        ) {
+        // the parameters come from the file, a manipulated one must not make scrypt take all memory or time
+        if (!isAcceptableScrypt(recipient)) {
             throw new BackupDecryptionError('The header of the encrypted backup is invalid');
         }
         const kek = await scrypt(credentials.password, Buffer.from(recipient.salt, 'base64'), recipient);
@@ -485,6 +489,27 @@ function unwrapKey(kek: Buffer, nonce: string, wrappedKey: string, errorMessage:
     } catch {
         throw new BackupDecryptionError(errorMessage);
     }
+}
+
+/**
+ * Check the scrypt parameters read from a file: limited by the memory (128 * N * r) and the work (N * r * p) they
+ * cause together, as each of them alone can be harmless and their product not
+ *
+ * @param params the cost parameters of the file
+ */
+export function isAcceptableScrypt(params: ScryptParams): boolean {
+    const { N, r, p } = params;
+    return (
+        Number.isSafeInteger(N) &&
+        Number.isSafeInteger(r) &&
+        Number.isSafeInteger(p) &&
+        N > 1 &&
+        (N & (N - 1)) === 0 &&
+        r > 0 &&
+        p > 0 &&
+        128 * N * r <= MAX_SCRYPT_MEMORY &&
+        N * r * p <= MAX_SCRYPT_WORK
+    );
 }
 
 /**
