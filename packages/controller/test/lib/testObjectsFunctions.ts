@@ -1,5 +1,6 @@
 import type { TestContext } from '../_Types.js';
 import assert from 'node:assert/strict';
+import { setTimeout as wait } from 'node:timers/promises';
 
 /**
  * Contains tests interacting with DB via adapter.ts
@@ -1548,6 +1549,124 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         // @ts-expect-error TODO do we want this auto parsing?
         assert.strictEqual(state!.val!.hello, 'world');
         assert.strictEqual(state!.ack, true);
+    });
+
+    /**
+     * Collects the objectChange events of one id, until the returned function is called
+     *
+     * @param fullId the id with namespace
+     */
+    function recordObjectChanges(fullId: string): { changes: unknown[]; stop: () => void } {
+        const changes: unknown[] = [];
+        context.onAdapterObjectChanged = (id, obj) => {
+            if (id === fullId) {
+                changes.push(obj);
+            }
+        };
+        return { changes, stop: () => (context.onAdapterObjectChanged = null) };
+    }
+
+    /**
+     * Waits until the condition is met, at most 2 seconds
+     *
+     * @param condition checked every 20 ms
+     */
+    async function waitFor(condition: () => boolean): Promise<void> {
+        for (let i = 0; i < 100 && !condition(); i++) {
+            await wait(20);
+        }
+    }
+
+    it(`${testName}extendObject does not rewrite an unchanged object`, async function () {
+        this.timeout(5_000);
+        const id = 'testExtendUnchanged';
+        const fullId = `${context.adapterShortName}.0.${id}`;
+        // a fresh object on every call, like an adapter that builds the definition on every poll
+        const definition = (): ioBroker.PartialObject<ioBroker.StateObject> => ({
+            type: 'state',
+            common: { name: 'Unchanged', type: 'number', role: 'value', read: true, write: false },
+            native: { capability: 'power' },
+        });
+
+        await context.adapter.extendObjectAsync(id, definition());
+        const created = await context.adapter.getObjectAsync(id);
+        const createdTs = created?.ts ?? 0;
+        assert.ok(createdTs > 0);
+
+        await context.adapter.subscribeObjectsAsync(id);
+        const { changes, stop } = recordObjectChanges(fullId);
+        try {
+            // so that a rewrite would get a later ts
+            await wait(20);
+            const result = await context.adapter.extendObjectAsync(id, definition());
+            assert.strictEqual(result.id, fullId);
+
+            const unchanged = await context.adapter.getObjectAsync(id);
+            assert.deepStrictEqual(unchanged, created);
+            // time for an objectChange to arrive, if one had been published
+            await wait(500);
+            assert.strictEqual(changes.length, 0);
+
+            // a real change is still written and published
+            await context.adapter.extendObjectAsync(id, { common: { unit: 'W' } });
+            const changed = await context.adapter.getObjectAsync(id);
+            assert.strictEqual((changed?.common as ioBroker.StateCommon).unit, 'W');
+            assert.ok((changed?.ts ?? 0) > createdTs);
+            await waitFor(() => changes.length > 0);
+            assert.strictEqual(changes.length, 1);
+        } finally {
+            stop();
+            await context.adapter.unsubscribeObjectsAsync(id);
+        }
+    });
+
+    it(`${testName}extendObject sets the default value of an unchanged object without state`, async () => {
+        const id = 'testExtendUnchangedDef';
+        const definition = (): ioBroker.PartialObject<ioBroker.StateObject> => ({
+            type: 'state',
+            common: { name: 'With def', type: 'number', role: 'value', read: true, write: true, def: 7 },
+            native: {},
+        });
+
+        await context.adapter.extendObjectAsync(id, definition());
+        await context.adapter.delStateAsync(id);
+        await context.adapter.extendObjectAsync(id, definition());
+
+        const state = await context.adapter.getStateAsync(id);
+        assert.strictEqual(state?.val, 7);
+        assert.strictEqual(state?.ack, true);
+    });
+
+    it(`${testName}extendForeignObject still rewrites an unchanged object`, async function () {
+        // extending system.adapter.<name>.<instance> with common.enabled = true restarts a running instance,
+        // which needs the objectChange even if nothing changed
+        this.timeout(5_000);
+        const id = 'foreign.0.testExtendForeignUnchanged';
+        const definition = (): ioBroker.PartialObject<ioBroker.StateObject> => ({
+            type: 'state',
+            common: { name: 'Foreign', type: 'boolean', role: 'switch', read: true, write: true },
+            native: {},
+        });
+
+        await context.adapter.extendForeignObjectAsync(id, definition());
+        const created = await context.adapter.getForeignObjectAsync(id);
+        const createdTs = created?.ts ?? 0;
+        assert.ok(createdTs > 0);
+
+        await context.adapter.subscribeForeignObjectsAsync(id);
+        const { changes, stop } = recordObjectChanges(id);
+        try {
+            await wait(20);
+            await context.adapter.extendForeignObjectAsync(id, definition());
+
+            const rewritten = await context.adapter.getForeignObjectAsync(id);
+            assert.ok((rewritten?.ts ?? 0) > createdTs);
+            await waitFor(() => changes.length > 0);
+            assert.strictEqual(changes.length, 1);
+        } finally {
+            stop();
+            await context.adapter.unsubscribeForeignObjectsAsync(id);
+        }
     });
 
     it(`${testName}Check extendForeignObject with preserve option`, async () => {

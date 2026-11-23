@@ -515,6 +515,19 @@ declare global {
             deviceManager?: boolean;
             /** If the adapter supports getHistory message. */
             getHistory?: boolean;
+            /**
+             * If the adapter answers the message `help` with {@link HelpAnswer}: an English text that describes its messages
+             * (parameters and answers) and its states, for AI agents (e.g. pi-agent) and script authors.
+             */
+            help?: boolean;
+        }
+
+        /** The answer to the message `help` of an adapter with `common.supportedMessages.help` */
+        interface HelpAnswer {
+            /** English text: the messages with their parameters and answers, the states, and how to use them */
+            help: string;
+            /** The messages; `write: true` for every message that changes something (writes states, switches devices, deletes data) */
+            commands?: { command: string; write: boolean }[];
         }
 
         type AutoUpgradePolicy = 'none' | 'patch' | 'minor' | 'major';

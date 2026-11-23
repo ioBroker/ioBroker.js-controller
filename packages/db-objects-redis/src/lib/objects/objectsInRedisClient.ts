@@ -123,6 +123,18 @@ interface Script {
 }
 
 /**
+ * Check if two objects only differ in `ts`, `from` and `user`, which describe the last write and not the content
+ *
+ * @param storedObj the object as stored in the database
+ * @param newObj the object that would be written
+ */
+function isSameContent(storedObj: ioBroker.Object, newObj: ioBroker.Object): boolean {
+    const { ts: _storedTs, from: _storedFrom, user: _storedUser, ...storedContent } = storedObj;
+    const { ts: _newTs, from: _newFrom, user: _newUser, ...newContent } = newObj;
+    return isDeepStrictEqual(storedContent, newContent);
+}
+
+/**
  * Client for the objects database backed by Redis (or the in-memory redis-protocol server)
  */
 export class ObjectsInRedisClient {
@@ -5461,6 +5473,7 @@ export class ObjectsInRedisClient {
         obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options: ioBroker.ExtendObjectOptions,
         userContext: UserContext,
+        skipUnchanged: boolean,
     ): Promise<ObjectIdValue> {
         if (!id || typeof id !== 'string' || utils.REG_CHECK_ID.test(id)) {
             throw new Error(`Invalid ID: ${id}`);
@@ -5472,8 +5485,13 @@ export class ObjectsInRedisClient {
         const oldObjStr: string | null = await this.client.get(this.objNamespace + id);
 
         let oldObj: ioBroker.Object | null;
+        // the object as stored, because the merge below changes oldObj in place
+        let storedObj: ioBroker.Object | null = null;
         try {
             oldObj = oldObjStr ? JSON.parse(oldObjStr) : null;
+            if (skipUnchanged && oldObjStr) {
+                storedObj = JSON.parse(oldObjStr);
+            }
         } catch {
             this.log.error(`${this.namespace} Cannot parse JSON ${id}: ${oldObjStr}`);
             throw new Error(`Cannot parse JSON ${id}: ${oldObjStr}`);
@@ -5561,6 +5579,12 @@ export class ObjectsInRedisClient {
         if (_oldObj && !tools.checkNonEditable(_oldObj, oldObjNotNull)) {
             throw new Error('Invalid password for update of vendor information');
         }
+
+        if (storedObj && isSameContent(storedObj, oldObjNotNull)) {
+            // nothing to write: the stored object keeps its ts and the subscribers get no objectChange
+            return { id, value: storedObj };
+        }
+
         const message = JSON.stringify(oldObjNotNull);
 
         const commands = [];
@@ -5612,14 +5636,16 @@ export class ObjectsInRedisClient {
      * @param id The id of the object to extend
      * @param obj The partial object to merge into the existing object
      * @param options The current request options including the user, or the callback
+     * @param skipUnchanged Do not write the object and do not publish an objectChange, if the merge changes nothing but `ts`, `from` and `user`. The stored object is returned then.
      */
     async extendObject<T extends string>(
         id: T,
         obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options?: ioBroker.ExtendObjectOptions | null,
+        skipUnchanged = false,
     ): Promise<{ id: string; value: ioBroker.AnyObject }> {
         const userContext = await checkObjectRightsAsync(this, null, null, options, CONSTS.ACCESS_WRITE);
-        return this._extendObject(id, obj, options || {}, userContext);
+        return this._extendObject(id, obj, options || {}, userContext, skipUnchanged);
     }
 
     /**
