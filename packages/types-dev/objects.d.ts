@@ -515,6 +515,19 @@ declare global {
             deviceManager?: boolean;
             /** If the adapter supports getHistory message. */
             getHistory?: boolean;
+            /**
+             * If the adapter answers the message `help` with {@link HelpAnswer}: an English text that describes its messages
+             * (parameters and answers) and its states, for AI agents (e.g. pi-agent) and script authors.
+             */
+            help?: boolean;
+        }
+
+        /** The answer to the message `help` of an adapter with `common.supportedMessages.help` */
+        interface HelpAnswer {
+            /** English text: the messages with their parameters and answers, the states, and how to use them */
+            help: string;
+            /** The messages; `write: true` for every message that changes something (writes states, switches devices, deletes data) */
+            commands?: { command: string; write: boolean }[];
         }
 
         type AutoUpgradePolicy = 'none' | 'patch' | 'minor' | 'major';
@@ -569,6 +582,32 @@ declare global {
              * user may see. For what must not stop with its category, e.g. a phone that has to stay registered to ring.
              */
             services?: string[];
+        }
+
+        /**
+         * A web component of `common.webComponents` with a short form of its manifest. The manifest stays the source:
+         * the short form is generated from it (`@iobroker/web-components`) and copied into the repository, so that a
+         * host can list the component before its adapter is installed. Settings and description are left out on purpose,
+         * as `common` is copied into every instance object
+         */
+        interface WebComponentEntry {
+            /** The manifest file (`.json`), relative to the admin folder, like a plain entry of `webComponents` */
+            manifest: string;
+            /** Name of the custom element, as in the manifest */
+            tag: string;
+            /** Name of the component, as in the manifest */
+            name: ioBroker.StringOrTranslated;
+            /** Picture of the component, as in the manifest: relative to the manifest file, or a `data:` URL */
+            icon?: string;
+            /** The size the element looks best in, as in the manifest */
+            size?: {
+                /** In px */
+                width: number;
+                /** In px */
+                height: number;
+                /** The component works in exactly this size only */
+                noResize?: boolean;
+            };
         }
 
         interface VisIconSet {
@@ -890,9 +929,11 @@ declare global {
              * Web components of the adapter (see `@iobroker/web-components`): their manifest files (`.json`),
              * relative to the admin folder, which admin and web serve as `/adapter/<name>/`. A manifest names the ES
              * module of its element; vis-2, devices and admin read the manifests and load a module only when they show
-             * its element. An ES module that exports its manifest is accepted too
+             * its element. An ES module that exports its manifest is accepted too.
+             * An entry may also be an object with the manifest file and a short form of the manifest (tag, name, icon,
+             * size), so that a host can list a component whose adapter is not installed, from the repository alone
              */
-            webComponents?: string[];
+            webComponents?: (string | WebComponentEntry)[];
             /** Whether the web server in this adapter can be extended with plugin/extensions */
             webExtendable?: boolean;
             /** Relative path to a module that contains an extension for the web adapter. Use together with {@link native.webInstance} to configure which instances this affects */
