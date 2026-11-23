@@ -3,6 +3,9 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (@GermanBluefox) `extendObject` of an adapter does not write an object again if nothing changes (apart from `ts`, `from` and `user`): adapters that extend their objects on every poll rewrote all of them each time, which grew `objects.jsonl` and sent an objectChange to every subscriber such as admin. An unchanged object now keeps its `ts` and sends no objectChange; the default value (`common.def`) is still set if the state is missing. `extendForeignObject` writes as before, because extending `system.adapter.<name>.<instance>` with `common.enabled: true` is used to restart a running instance
+
 ## 7.2.5 (2026-10-05)
 * (@GermanBluefox) Added the user context to messages: `sendTo`/`sendToHost` write the `user`
 
