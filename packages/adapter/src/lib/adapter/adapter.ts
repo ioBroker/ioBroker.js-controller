@@ -908,6 +908,8 @@ export class AdapterClass extends EventEmitter {
     private readonly _config: InternalAdapterJsonConfig;
     private readonly _options: AdapterOptions;
     private readonly startedInCompactMode: boolean;
+    /** Name of the host this process runs on, only its controller is allowed to terminate us via sigKill */
+    private readonly localHostname: string;
     /** List of instances which want our logs */
     private readonly logList = new Set<string>();
     private enums: Record<string, ioBroker.EnumObject> = {};
@@ -1089,6 +1091,7 @@ export class AdapterClass extends EventEmitter {
             this._config = this._options.config as ioBroker.IoBrokerJson;
         }
         this.startedInCompactMode = !!this._options.compact;
+        this.localHostname = tools.getHostName();
 
         const parsedArgs = yargs(process.argv.slice(2))
             .options({
@@ -3845,6 +3848,10 @@ export class AdapterClass extends EventEmitter {
      * }
      * ```
      *
+     * If the merged object equals the existing one (apart from `ts`, `from` and `user`), nothing is written:
+     * the object keeps its `ts` and no objectChange is sent. So it is fine to call extendObject on every poll.
+     * The default value (`common.def`) is still set if the state does not exist.
+     *
      * @param id object ID, that must be extended
      * @param obj part that must be extended
      * @param options optional user context
@@ -4000,7 +4007,10 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            const cbObj = await this.#objects.extendObject(options.id, options.obj, options.options);
+            // Adapters extend their own objects on every poll, so an object that does not change is not written again.
+            // extendForeignObject keeps writing: extending system.adapter.<name>.<instance> with `common.enabled: true`
+            // is used to restart a running instance, and that needs the objectChange even if nothing changed.
+            const cbObj = await this.#objects.extendObject(options.id, options.obj, options.options, true);
             let defState;
             if (options.obj.type === 'state' || oldObj.type === 'state') {
                 if (options.obj.common && 'def' in options.obj.common && options.obj.common.def !== undefined) {
@@ -12626,8 +12636,9 @@ export class AdapterClass extends EventEmitter {
                     id === `system.adapter.${this.namespace}.sigKill` &&
                     state &&
                     state.ts > this.statesConnectedTime! &&
-                    state.from &&
-                    state.from.startsWith('system.host.')
+                    // in multihost the sigKill state is shared by all copies of this instance, a controller
+                    // stopping its (possibly stale) copy on another host must not terminate us
+                    state.from === `system.host.${this.localHostname}`
                 ) {
                     const sigKillVal = parseInt(state.val as any);
                     if (!isNaN(sigKillVal)) {
@@ -13075,7 +13086,8 @@ export class AdapterClass extends EventEmitter {
             !this._config.forceIfDisabled &&
             !this._config.isInstall &&
             !this.startedInCompactMode &&
-            killRes?.from?.startsWith('system.host.') &&
+            // a stale value left by the controller of another host (e.g. after a failover) is not meant for us
+            killRes?.from === `system.host.${this.localHostname}` &&
             killRes.ack &&
             !isNaN(killRes.val) &&
             killRes.val !== process.pid
