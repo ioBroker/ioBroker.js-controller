@@ -1,4 +1,7 @@
-#/bin/sh
+#!/bin/sh
+cd "$(dirname "$0")"
 ./setup-sentinel-start.sh
-npm run test-redis-sentinel
+(cd ../../../.. && npm run test-redis-sentinel)
+RC=$?
 ./setup-sentinel-stop.sh
+exit $RC

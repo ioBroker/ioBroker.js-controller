@@ -2157,7 +2157,10 @@ export class Install {
         if (doc) {
             for (const row of doc.rows) {
                 // stop only started instances on this host
-                if (row.value.common.enabled && tools.isInstanceAssignedToHost(row.value, hostname)) {
+                if (
+                    row.value.common.enabled &&
+                    tools.isInstanceAssignedToHost(row.value as ioBroker.InstanceObject, hostname)
+                ) {
                     instances.push(row.value);
                 }
             }
