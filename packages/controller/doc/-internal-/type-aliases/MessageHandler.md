@@ -8,7 +8,7 @@
 
 > **MessageHandler** = (`obj`) => `void` \| `Promise`\<`void`\>
 
-Defined in: [types-dev/index.d.ts:595](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/index.d.ts#L595)
+Defined in: [types-dev/index.d.ts:603](https://github.com/ioBroker/ioBroker.js-controller/blob/86bf1182d08e1fcbb51ac5fb0c89fed002e8bdd6/packages/types-dev/index.d.ts#L603)
 
 ## Parameters
 
