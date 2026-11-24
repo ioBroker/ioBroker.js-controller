@@ -141,15 +141,17 @@ const defaultAcl: {
     },
 };
 
+/** Groups and effective ACL of every user, built by loadUsersAndGroups */
 // FIXME: This should have better types. Probably Record<string, {acl: ioBroker.ObjectPermissions, [x: string | number | symbol]: any}>
-let users: Record<
+let userCache: Record<
     ioBroker.ObjectIDs.User,
     {
         groups: ioBroker.ObjectIDs.Group[];
         acl: ioBroker.ObjectPermissions;
     }
 > = {};
-let groups: ioBroker.GroupObject[] = [];
+/** The read of all users and groups in progress, shared by all callers of getUserGroupAsync */
+let usersLoading: Promise<void> | null = null;
 
 /**
  * Determines the mime type, of an extension and if it is binary content
@@ -389,12 +391,32 @@ export async function getUserGroupAsync(
         throw new Error(`invalid user name: ${user}`);
     }
 
-    if (users[user]) {
-        return [user, users[user].groups, users[user].acl];
+    const cached = userCache[user];
+    if (cached) {
+        return [user, cached.groups, cached.acl];
     }
 
+    // Every request with a user is checked here, and while the cache is empty (a fresh process,
+    // e.g. a restarted web adapter with many clients reconnecting) they all arrive at once. One read
+    // of all users and groups serves them all: with the jsonl DB every read walks all object ids, so
+    // hundreds of parallel reads blocked the controller for minutes.
+    usersLoading ||= loadUsersAndGroups(objects).finally(() => {
+        usersLoading = null;
+    });
+    await usersLoading;
+
+    return [user, userCache[user]?.groups || [], userCache[user]?.acl || deepClone(defaultAcl.acl)];
+}
+
+/**
+ * Read all users and groups and build the groups and the effective ACL of every user. The cache is
+ * replaced when complete, so a lookup never sees a half-built one.
+ *
+ * @param objects The objects database client
+ */
+async function loadUsersAndGroups(objects: ObjectClient): Promise<void> {
     let error: Error | string | undefined;
-    groups = [];
+    const groups: ioBroker.GroupObject[] = [];
     // Read all groups
     const groupList = await objects.getObjectListAsync(
         { startkey: 'system.group.', endkey: 'system.group.\u9999' },
@@ -415,7 +437,7 @@ export async function getUserGroupAsync(
         }
     }
 
-    users = {};
+    const users: typeof userCache = {};
     const userList = await objects.getObjectListAsync(
         { startkey: 'system.user.', endkey: 'system.user.\u9999' },
         { checked: true },
@@ -522,7 +544,7 @@ export async function getUserGroupAsync(
             }
         }
     }
-    return [user, users[user]?.groups || [], users[user]?.acl || deepClone(defaultAcl.acl)];
+    userCache = users;
 }
 
 /**
