@@ -16,7 +16,7 @@ Settings for the objects database client
 
 > `optional` **autoConnect?**: `boolean`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:27
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:34
 
 Whether to connect to the database immediately (default true)
 
@@ -26,7 +26,7 @@ Whether to connect to the database immediately (default true)
 
 > `optional` **change?**: [`ChangeFunction`](../type-aliases/ChangeFunction-1.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:21
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:28
 
 Handler for system-level object changes
 
@@ -36,7 +36,7 @@ Handler for system-level object changes
 
 > `optional` **changeFileUser?**: [`FileChangeHandler`](../type-aliases/FileChangeHandler.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:25
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:32
 
 Handler for user-level file changes
 
@@ -46,7 +46,7 @@ Handler for user-level file changes
 
 > `optional` **changeUser?**: [`ChangeFunction`](../type-aliases/ChangeFunction-1.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:23
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:30
 
 Handler for user-level object changes
 
@@ -70,7 +70,7 @@ Called once the client is connected
 
 > **connection**: [`RedisConnectionOptions`](RedisConnectionOptions.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:41
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:48
 
 Connection options for the redis server
 
@@ -90,7 +90,7 @@ Whether this client runs inside the controller
 
 > `optional` **defaultNewAcl?**: [`ACLObject`](ACLObject.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:35
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:42
 
 Default ACL applied to newly created objects
 
@@ -110,11 +110,26 @@ Called when the client gets disconnected
 
 ***
 
+### fence?
+
+> `optional` **fence?**: () => `Promise`\<`boolean`\>
+
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:24
+
+Adapters only: from a lost connection until this resolves true, commands and subscription replays are held.
+If it resolves false, nothing held is sent.
+
+#### Returns
+
+`Promise`\<`boolean`\>
+
+***
+
 ### hostname?
 
 > `optional` **hostname?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:31
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:38
 
 Name of this host
 
@@ -124,7 +139,7 @@ Name of this host
 
 > **logger**: [`InternalLogger`](../type-aliases/InternalLogger.md)
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:29
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:36
 
 Logger instance to use
 
@@ -134,7 +149,7 @@ Logger instance to use
 
 > `optional` **metaNamespace?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:37
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:44
 
 Namespace used for meta-information
 
@@ -144,7 +159,7 @@ Namespace used for meta-information
 
 > `optional` **namespace?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:33
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:40
 
 Namespace of this client
 
@@ -168,6 +183,20 @@ Called when the connection to the primary host is lost
 
 > `optional` **redisNamespace?**: `string`
 
-Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:39
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:46
 
 Redis key prefix (defaults to "cfg")
+
+***
+
+### resubscribed?
+
+> `optional` **resubscribed?**: () => `void`
+
+Defined in: db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:26
+
+Called after the system subscriptions were restored on a reconnect, events of the gap may be lost
+
+#### Returns
+
+`void`
