@@ -13083,7 +13083,7 @@ export class AdapterClass extends EventEmitter {
      * In multihost the sigKill state is shared by all copies of this instance: a controller stopping its
      * (possibly stale) copy on another host must not terminate us, so a sigKill from another existing host
      * is ignored. A sender that is not a host of this installation, e.g. the test harness of
-     * `@iobroker/testing` ("system.host.testing"), is still obeyed, as before.
+     * the adapter testing package ("system.host.testing"), is still obeyed, as before.
      *
      * @param from the `from` of the sigKill state
      */
