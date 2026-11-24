@@ -12650,9 +12650,7 @@ export class AdapterClass extends EventEmitter {
                     id === `system.adapter.${this.namespace}.sigKill` &&
                     state &&
                     state.ts > this.statesConnectedTime! &&
-                    // in multihost the sigKill state is shared by all copies of this instance, a controller
-                    // stopping its (possibly stale) copy on another host must not terminate us
-                    state.from === `system.host.${this.localHostname}`
+                    (await this._mayTerminateUs(state.from))
                 ) {
                     const sigKillVal = parseInt(state.val as any);
                     if (!isNaN(sigKillVal)) {
@@ -13077,6 +13075,32 @@ export class AdapterClass extends EventEmitter {
                 }
             },
         });
+    }
+
+    /**
+     * Checks whether a sigKill written by `from` may terminate this process.
+     *
+     * In multihost the sigKill state is shared by all copies of this instance: a controller stopping its
+     * (possibly stale) copy on another host must not terminate us, so a sigKill from another existing host
+     * is ignored. A sender that is not a host of this installation, e.g. the test harness of
+     * `@iobroker/testing` ("system.host.testing"), is still obeyed, as before.
+     *
+     * @param from the `from` of the sigKill state
+     */
+    private async _mayTerminateUs(from: string | undefined): Promise<boolean> {
+        if (!from?.startsWith('system.host.')) {
+            return false;
+        }
+        if (from === `system.host.${this.localHostname}`) {
+            return true;
+        }
+        try {
+            const obj = await this.#objects?.getObject(from);
+            return obj?.type !== 'host';
+        } catch (e) {
+            this._logger.warn(`${this.namespaceLog} Cannot check the sender "${from}" of sigKill: ${e.message}`);
+            return false;
+        }
     }
 
     /**
