@@ -13,6 +13,20 @@ import { dbConnect, dbConnectAsync, exitApplicationSave, resetDbConnect } from '
 import { IoBrokerError } from './customError.js';
 import { CLIProcess } from '@/lib/cli/cliProcess.js';
 import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
+import {
+    BackupDecryptionError,
+    decryptFile,
+    ENCRYPTED_BACKUP_EXTENSION,
+    encryptFile,
+    generateBackupKeyPair,
+    isEncryptedBackup,
+    type EncryptionRecipients,
+} from './backupEncryption.js';
+import {
+    createDecryptionCredentialsProvider,
+    getBackupEncryption,
+    type DecryptionCredentialsProvider,
+} from './backupCredentials.js';
 
 /** Options for the backup/restore command */
 export interface CLIBackupRestoreOptions {
@@ -76,6 +90,8 @@ export interface RestoreBackupOptions {
     force: boolean;
     /** skip adapter deletion, e.g. for setup custom db migration */
     dontDeleteAdapters: boolean;
+    /** Gives the password or private key, called only if the backup is encrypted */
+    getCredentials?: DecryptionCredentialsProvider;
 }
 
 const controllerDir = tools.getControllerDir();
@@ -289,12 +305,105 @@ export class BackupRestore {
     }
 
     /**
+     * Pack the backup into the temporary directory and encrypt it to its target, so that the unencrypted backup is
+     * never written to the backup directory
+     *
+     * @param name - path of the backup without the extension of the encryption
+     * @param encryption - for whom to encrypt it
+     * @returns the path of the encrypted backup
+     */
+    private async _packEncryptedBackup(name: string, encryption: EncryptionRecipients): Promise<string> {
+        const packed = await this._packBackup(path.join(this.tmpDir, path.basename(name)));
+        const target = `${name}${ENCRYPTED_BACKUP_EXTENSION}`;
+
+        try {
+            await encryptFile(packed, target, encryption);
+        } finally {
+            await fs.remove(packed);
+        }
+
+        return path.normalize(target);
+    }
+
+    /**
+     * The name of a backup without the postfix and the extensions, as it can be given to restore and validate
+     *
+     * @param backup - file name of the backup
+     */
+    private _shortName(backup: string): string {
+        return backup
+            .replace(new RegExp(`${ENCRYPTED_BACKUP_EXTENSION.replace('.', '\\.')}$`, 'i'), '')
+            .replace(`${this.BACKUP_POSTFIX}.tar.gz`, '');
+    }
+
+    /**
+     * Get the path of a backup given by its name without a directory: appends the postfix and the extension, an
+     * encrypted backup (`.tar.gz.enc`) is found as well
+     *
+     * @param name - name of the backup, with or without postfix and extension
+     */
+    private async _resolveBackupFile(name: string): Promise<string> {
+        name = BackupRestore.getBackupDir() + name;
+        if (/\.tar\.gz(\.enc)?$/i.test(name)) {
+            return name;
+        }
+        const regEx = new RegExp(this.BACKUP_POSTFIX, 'i');
+        if (!regEx.test(name)) {
+            name += this.BACKUP_POSTFIX;
+        }
+        if (await fs.pathExists(`${name}.tar.gz`)) {
+            return `${name}.tar.gz`;
+        }
+        if (await fs.pathExists(`${name}.tar.gz${ENCRYPTED_BACKUP_EXTENSION}`)) {
+            return `${name}.tar.gz${ENCRYPTED_BACKUP_EXTENSION}`;
+        }
+        return `${name}.tar.gz`;
+    }
+
+    /**
+     * Extract a backup into the temporary directory. An encrypted backup is decrypted completely and verified first,
+     * so nothing of a damaged or manipulated backup is extracted.
+     *
+     * @param file - path of the backup
+     * @param getCredentials - gives the password or private key if the backup is encrypted
+     */
+    private async _extractBackup(file: string, getCredentials?: DecryptionCredentialsProvider): Promise<void> {
+        if (!(await isEncryptedBackup(file))) {
+            await tar.extract({ file, cwd: this.tmpDir });
+            return;
+        }
+
+        if (!getCredentials) {
+            throw new BackupDecryptionError('The backup is encrypted, but no password or key was given');
+        }
+
+        await fs.ensureDir(this.tmpDir);
+        const decrypted = path.join(this.tmpDir, `decrypted${this.BACKUP_POSTFIX}.tar.gz`);
+        console.log(`host.${this.hostname} Decrypting backup ...`);
+        try {
+            await decryptFile(file, decrypted, await getCredentials());
+            await tar.extract({ file: decrypted, cwd: this.tmpDir });
+        } finally {
+            await fs.remove(decrypted);
+        }
+    }
+
+    /**
      * Creates backup and stores with given name
      *
      * @param name - name of the backup
      * @param noConfig - do not store configs (used by setup custom migration)
+     * @param encryption - for whom to encrypt the backup, it gets the extension `.tar.gz.enc` then
      */
-    async createBackup(name: string, noConfig = false): Promise<string> {
+    async createBackup(
+        name: string,
+        noConfig = false,
+        encryption: EncryptionRecipients | null = null,
+    ): Promise<string> {
+        if (encryption && name?.endsWith(ENCRYPTED_BACKUP_EXTENSION)) {
+            name = name.slice(0, -ENCRYPTED_BACKUP_EXTENSION.length);
+        }
+
         if (!name) {
             const d = new Date();
             name = `${d.getFullYear()}_${`0${d.getMonth() + 1}`.slice(-2)}_${`0${d.getDate()}`.slice(-2)}-${`0${d.getHours()}`.slice(
@@ -410,7 +519,7 @@ export class BackupRestore {
             await this._validateTempDirectory(noConfig);
             console.log(`host.${hostname} The backup is valid!`);
 
-            return await this._packBackup(name);
+            return encryption ? await this._packEncryptedBackup(name, encryption) : await this._packBackup(name);
         } catch (e) {
             console.error(`host.${hostname} Backup not created: ${e.message}`);
             this.removeTempBackupDir();
@@ -1015,7 +1124,7 @@ export class BackupRestore {
         if (fs.existsSync(dir)) {
             const files = fs.readdirSync(dir);
             for (const file of files) {
-                if (file.match(/\.tar\.gz$/i)) {
+                if (file.match(/\.tar\.gz(\.enc)?$/i)) {
                     result.push(file);
                 }
             }
@@ -1103,8 +1212,9 @@ export class BackupRestore {
      * Validates the given backup.json and all json files in the backup, calls processExit afterwards
      *
      * @param _name - index or name of the backup
+     * @param getCredentials - gives the password or private key, called only if the backup is encrypted
      */
-    async validateBackup(_name: string | number): Promise<void> {
+    async validateBackup(_name: string | number, getCredentials?: DecryptionCredentialsProvider): Promise<void> {
         let backups;
         let name = typeof _name === 'number' ? _name.toString() : _name;
 
@@ -1116,7 +1226,7 @@ export class BackupRestore {
                 console.log('Please specify one of the backup names:');
 
                 for (const [t, backup] of backups.entries()) {
-                    console.log(`${backup} or ${backup.replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`);
+                    console.log(`${backup} or ${this._shortName(backup)} or ${t}`);
                 }
             } else {
                 console.warn(`No backups found. Create a backup, using "${tools.appName} backup" first`);
@@ -1133,7 +1243,7 @@ export class BackupRestore {
                 if (backups.length) {
                     console.log('Please specify one of the backup names:');
                     for (const [t, backup] of backups.entries()) {
-                        console.log(`${backup} or ${backup.replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`);
+                        console.log(`${backup} or ${this._shortName(backup)} or ${t}`);
                     }
                 } else {
                     console.log(`No existing backups. Create a backup, using "${tools.appName} backup" first`);
@@ -1146,14 +1256,7 @@ export class BackupRestore {
 
         name = name.toString().replace(/\\/g, '/');
         if (!name.includes('/')) {
-            name = BackupRestore.getBackupDir() + name;
-            const regEx = new RegExp(this.BACKUP_POSTFIX, 'i');
-            if (!regEx.test(name)) {
-                name += this.BACKUP_POSTFIX;
-            }
-            if (!name.match(/\.tar\.gz$/i)) {
-                name += '.tar.gz';
-            }
+            name = await this._resolveBackupFile(name);
         }
         if (!fs.existsSync(name)) {
             console.error(`host.${this.hostname} Cannot find ${name}`);
@@ -1165,13 +1268,13 @@ export class BackupRestore {
         }
 
         try {
-            await tar.extract({
-                file: name,
-                cwd: this.tmpDir,
-            });
+            await this._extractBackup(name, getCredentials);
         } catch (e) {
             const errMessage = `Cannot extract from file "${name}": ${e.message}`;
             console.error(`host.${this.hostname} ${errMessage}`);
+            if (e instanceof BackupDecryptionError) {
+                throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP });
+            }
             throw new IoBrokerError({ message: 'Backup not found', code: EXIT_CODES.INVALID_ARGUMENTS });
         }
 
@@ -1275,7 +1378,7 @@ export class BackupRestore {
      * @param options Restore options
      */
     async restoreBackup(options: RestoreBackupOptions): Promise<RestoreBackupReturnValue> {
-        const { name: _name, dontDeleteAdapters, force } = options;
+        const { name: _name, dontDeleteAdapters, force, getCredentials } = options;
 
         let backups;
         let name = typeof _name === 'number' ? _name.toString() : _name;
@@ -1286,9 +1389,7 @@ export class BackupRestore {
             backups = this.listBackups();
             backups.sort((a, b) => (b > a ? 1 : b === a ? 0 : -1));
             if (backups.length) {
-                backups.forEach((backup, i) =>
-                    console.log(`${backup} or ${backup.replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${i}`),
-                );
+                backups.forEach((backup, i) => console.log(`${backup} or ${this._shortName(backup)} or ${i}`));
             } else {
                 console.warn('No backups found');
             }
@@ -1311,9 +1412,7 @@ export class BackupRestore {
                 console.log('No matching backup found');
                 if (backups.length) {
                     console.log('Please specify one of the backup names:');
-                    backups.forEach((backup, i) =>
-                        console.log(`${backup} or ${backup.replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${i}`),
-                    );
+                    backups.forEach((backup, i) => console.log(`${backup} or ${this._shortName(backup)} or ${i}`));
                 }
                 return { exitCode: EXIT_CODES.INVALID_ARGUMENTS, objects: this.objects, states: this.states };
             }
@@ -1322,14 +1421,7 @@ export class BackupRestore {
 
         name = name.toString().replace(/\\/g, '/');
         if (!name.includes('/')) {
-            name = BackupRestore.getBackupDir() + name;
-            const regEx = new RegExp(this.BACKUP_POSTFIX, 'i');
-            if (!regEx.test(name)) {
-                name += this.BACKUP_POSTFIX;
-            }
-            if (!name.match(/\.tar\.gz$/i)) {
-                name += '.tar.gz';
-            }
+            name = await this._resolveBackupFile(name);
         }
         if (!fs.existsSync(name)) {
             console.error(`host.${this.hostname} Cannot find ${name}`);
@@ -1344,10 +1436,7 @@ export class BackupRestore {
         }
 
         try {
-            await tar.extract({
-                file: name,
-                cwd: this.tmpDir,
-            });
+            await this._extractBackup(name, getCredentials);
         } catch (e) {
             console.error(`host.${this.hostname} Cannot extract from file "${name}": ${e.message}`);
             return { exitCode: EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP, objects: this.objects, states: this.states };
@@ -1430,6 +1519,7 @@ export function processCommandRestore(options: ProcessCommandOptions): void {
             name: args[0],
             force: !!params.force,
             dontDeleteAdapters: false,
+            getCredentials: createDecryptionCredentialsProvider(params),
         });
 
         if (exitCode === EXIT_CODES.NO_ERROR) {
@@ -1448,6 +1538,16 @@ export function processCommandBackup(options: ProcessCommandOptions): void {
     const { args, params, callback, cleanDatabase, restartController } = options;
     const name = args[0];
 
+    if (name === 'keygen') {
+        processCommandBackupKeygen(!!params.save)
+            .then(() => callback(EXIT_CODES.NO_ERROR))
+            .catch(e => {
+                console.error(`Cannot create the key pair: ${e.message}`);
+                callback(EXIT_CODES.UNKNOWN_ERROR);
+            });
+        return;
+    }
+
     dbConnect(params, async ({ states, objects }) => {
         const backup = new BackupRestore({
             states,
@@ -1457,9 +1557,30 @@ export function processCommandBackup(options: ProcessCommandOptions): void {
             processExit: callback,
         });
 
+        let encryption: EncryptionRecipients | null;
         try {
-            const filePath = await backup.createBackup(name);
+            let config: ioBroker.IoBrokerJson | undefined;
+            try {
+                config = await fs.readJSON(tools.getConfigFileName());
+            } catch {
+                // createBackup reports a missing config itself
+            }
+            encryption = await getBackupEncryption(params, config);
+        } catch (e) {
+            console.error(`Cannot create backup: ${e.message}`);
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+        }
+
+        try {
+            const filePath = await backup.createBackup(name, false, encryption);
             console.log(`Backup created: ${filePath}`);
+            if (encryption) {
+                console.log(
+                    encryption.password
+                        ? 'The backup is encrypted. Without the password it cannot be restored - keep it safe!'
+                        : 'The backup is encrypted. Only the private key of the key pair can restore it - keep it safe and not on this host!',
+                );
+            }
             console.log('This backup can only be restored with js-controller version 7.0 or higher');
             return void callback(EXIT_CODES.NO_ERROR);
         } catch (e) {
@@ -1488,7 +1609,7 @@ export function processCommandValidate(options: ProcessCommandOptions): void {
         });
 
         try {
-            await backup.validateBackup(name);
+            await backup.validateBackup(name, createDecryptionCredentialsProvider(params));
             console.log('Backup OK');
             return void exitApplicationSave(0);
         } catch (e) {
@@ -1496,4 +1617,38 @@ export function processCommandValidate(options: ProcessCommandOptions): void {
             return void exitApplicationSave(e instanceof IoBrokerError ? e.code : 1);
         }
     });
+}
+
+/**
+ * Create a key pair for the encryption of backups, print it once and optionally store the public key in iobroker.json
+ *
+ * @param save whether to store the public key in iobroker.json, so that every backup is encrypted for it
+ */
+async function processCommandBackupKeygen(save: boolean): Promise<void> {
+    const { publicKey, privateKey } = generateBackupKeyPair();
+
+    console.log('Private key - store it somewhere safe, NOT on this host. It is shown only this time:');
+    console.log('');
+    console.log(privateKey.trim());
+    console.log('');
+    console.warn(
+        'WARNING: Without this private key the backups encrypted for it cannot be restored. A lost key is a lost backup!',
+    );
+    console.log('');
+    console.log(`Public key: ${publicKey}`);
+
+    if (save) {
+        const configFile = tools.getConfigFileName();
+        const config: ioBroker.IoBrokerJson = await fs.readJSON(configFile);
+        config.backup = { ...config.backup, encryption: { mode: 'publicKey', publicKey } };
+        await fs.writeJSON(configFile, config, { spaces: 2 });
+        console.log(`The public key is stored in ${configFile}: from now on every backup is encrypted for it.`);
+    } else {
+        console.log(
+            `To encrypt every backup for it, store it in iobroker.json as "backup": { "encryption": { "mode": "publicKey", "publicKey": "${publicKey}" } } or call "${tools.appName.toLowerCase()} backup keygen --save".`,
+        );
+    }
+    console.log(
+        `Restore with "${tools.appName.toLowerCase()} restore <backup> --key-file <file with the private key>".`,
+    );
 }
