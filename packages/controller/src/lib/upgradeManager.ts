@@ -65,6 +65,47 @@ export interface ServerResponse {
     success?: boolean;
 }
 
+/** A supported endpoint of the temporary upgrade status server. */
+export type UpgradeStatusEndpoint = 'dedicated' | 'legacy';
+
+/**
+ * Identify the endpoint targeted by an upgrade status request.
+ *
+ * @param requestUrl URL from the incoming HTTP request
+ */
+export function getUpgradeStatusEndpoint(requestUrl: string | undefined): UpgradeStatusEndpoint | undefined {
+    if (!requestUrl) {
+        return undefined;
+    }
+
+    try {
+        const pathname = new url.URL(requestUrl, 'http://localhost').pathname;
+        if (pathname === '/controller-upgrade-status') {
+            return 'dedicated';
+        }
+        if (pathname === '/') {
+            return 'legacy';
+        }
+    } catch {
+        // Invalid requests are handled like unrelated resources
+    }
+
+    return undefined;
+}
+
+/**
+ * Decide whether a request may consume the final response and trigger shutdown.
+ *
+ * @param endpoint endpoint used by the current request
+ * @param dedicatedEndpointSeen whether the dedicated endpoint was used during this upgrade
+ */
+export function mayFinalizeUpgradeStatusRequest(
+    endpoint: UpgradeStatusEndpoint,
+    dedicatedEndpointSeen: boolean,
+): boolean {
+    return endpoint === 'dedicated' || !dedicatedEndpointSeen;
+}
+
 /**
  * Check whether an incoming request targets the upgrade status endpoint.
  *
@@ -75,16 +116,7 @@ export interface ServerResponse {
  * @param requestUrl URL from the incoming HTTP request
  */
 export function isUpgradeStatusRequest(requestUrl: string | undefined): boolean {
-    if (!requestUrl) {
-        return false;
-    }
-
-    try {
-        const pathname = new url.URL(requestUrl, 'http://localhost').pathname;
-        return pathname === '/' || pathname === '/controller-upgrade-status';
-    } catch {
-        return false;
-    }
+    return getUpgradeStatusEndpoint(requestUrl) !== undefined;
 }
 
 /**
@@ -167,6 +199,8 @@ class UpgradeManager {
     private server?: https.Server | http.Server;
     /** All socket connections of the webserver */
     private sockets = new Set<Socket | Duplex>();
+    /** Whether the updated Admin has polled the dedicated status endpoint */
+    private dedicatedStatusEndpointSeen = false;
     /** Name of the host for logging purposes */
     private readonly hostname = tools.getHostName();
 
@@ -429,7 +463,9 @@ class UpgradeManager {
      * @param res server response
      */
     webServerCallback(req: http.IncomingMessage, res: http.ServerResponse): void {
-        if (!isUpgradeStatusRequest(req.url)) {
+        const statusEndpoint = getUpgradeStatusEndpoint(req.url);
+
+        if (!statusEndpoint) {
             res.writeHead(404, {
                 Connection: 'close',
                 'Content-Type': 'text/plain',
@@ -438,10 +474,16 @@ class UpgradeManager {
             return;
         }
 
+        if (statusEndpoint === 'dedicated') {
+            this.dedicatedStatusEndpointSeen = true;
+        }
+        const mayFinalize = mayFinalizeUpgradeStatusRequest(statusEndpoint, this.dedicatedStatusEndpointSeen);
         const responseSocket = res.socket;
         sendUpgradeResponse(res, this.response, () => {
-            if (!this.response.running) {
-                this.log('Final information delivered');
+            if (!this.response.running && mayFinalize) {
+                this.log(
+                    `Final information delivered via ${statusEndpoint === 'dedicated' ? '/controller-upgrade-status' : '/'}`,
+                );
                 this.shutdownApp(responseSocket ?? undefined);
             }
         });

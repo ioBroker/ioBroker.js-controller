@@ -7,7 +7,13 @@ import path from 'node:path';
 import fs from 'fs-extra';
 
 import { getWindowsServiceInstallation } from '@iobroker/js-controller-common-db/tools';
-import { isUpgradeStatusRequest, restartControllerAndCleanup, sendUpgradeResponse } from './upgradeManager.js';
+import {
+    getUpgradeStatusEndpoint,
+    isUpgradeStatusRequest,
+    mayFinalizeUpgradeStatusRequest,
+    restartControllerAndCleanup,
+    sendUpgradeResponse,
+} from './upgradeManager.js';
 
 describe('lib/upgradeManager: status request', () => {
     it('accepts the legacy root path and the dedicated status endpoint', () => {
@@ -18,6 +24,14 @@ describe('lib/upgradeManager: status request', () => {
         assert.strictEqual(isUpgradeStatusRequest('/socket.io/?EIO=4&transport=polling'), false);
         assert.strictEqual(isUpgradeStatusRequest('/favicon.ico'), false);
         assert.strictEqual(isUpgradeStatusRequest(undefined), false);
+    });
+
+    it('lets the dedicated endpoint exclusively consume the final response after it was seen', () => {
+        assert.strictEqual(mayFinalizeUpgradeStatusRequest('legacy', false), true);
+        assert.strictEqual(mayFinalizeUpgradeStatusRequest('dedicated', true), true);
+        assert.strictEqual(mayFinalizeUpgradeStatusRequest('legacy', true), false);
+        assert.strictEqual(getUpgradeStatusEndpoint('/controller-upgrade-status'), 'dedicated');
+        assert.strictEqual(getUpgradeStatusEndpoint('/'), 'legacy');
     });
 });
 
