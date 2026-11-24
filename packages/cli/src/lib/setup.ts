@@ -388,8 +388,14 @@ function initYargs(): ReturnType<typeof yargs> {
             yargs
                 .option('encrypt', {
                     describe:
-                        'Encrypt the backup (.tar.gz.enc) with a password from the prompt, --password-file or IOB_BACKUP_PASSWORD; --encrypt false skips the encryption of iobroker.json',
+                        'Encrypt the backup (.tar.gz.enc) with a password from the prompt, --password, --password-file or IOB_BACKUP_PASSWORD; --encrypt false skips the encryption of iobroker.json',
                     type: 'boolean',
+                })
+                .option('password', {
+                    describe:
+                        'Password of the backup, for automated calls. It is visible in the shell history and the process list, --password-file or IOB_BACKUP_PASSWORD are safer',
+                    alias: 'p',
+                    type: 'string',
                 })
                 .option('password-file', {
                     describe: 'File with the password of the backup',
@@ -409,6 +415,12 @@ function initYargs(): ReturnType<typeof yargs> {
                 alias: 'f',
                 type: 'boolean',
             },
+            password: {
+                describe:
+                    'Password of the backup, for automated calls. It is visible in the shell history and the process list, --password-file or IOB_BACKUP_PASSWORD are safer',
+                alias: 'p',
+                type: 'string',
+            },
             'password-file': {
                 describe: 'File with the password of an encrypted backup',
                 type: 'string',
@@ -419,6 +431,12 @@ function initYargs(): ReturnType<typeof yargs> {
             },
         })
         .command('validate <backup name or path>', 'Validate a specified backup', {
+            password: {
+                describe:
+                    'Password of the backup, for automated calls. It is visible in the shell history and the process list, --password-file or IOB_BACKUP_PASSWORD are safer',
+                alias: 'p',
+                type: 'string',
+            },
             'password-file': {
                 describe: 'File with the password of an encrypted backup',
                 type: 'string',

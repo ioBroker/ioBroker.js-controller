@@ -19,17 +19,39 @@ function param(params: Record<string, any>, name: string): unknown {
 }
 
 /**
- * Get the password: from `--password-file`, the environment variable or the terminal - never from an argument, which
- * would end up in the shell history and the process list
+ * Whether a password is given without asking for it: `--password`/`-p`, `--password-file` or the environment variable
+ *
+ * @param params the parsed CLI parameters
+ */
+function hasGivenPassword(params: Record<string, any>): boolean {
+    return (
+        param(params, 'password') !== undefined ||
+        !!param(params, 'password-file') ||
+        !!process.env[BACKUP_PASSWORD_ENV]
+    );
+}
+
+/**
+ * Get the password: from `--password`/`-p`, `--password-file`, the environment variable or the terminal.
+ *
+ * `--password` is for automated calls. It ends up in the shell history and the process list, so `--password-file` or
+ * the environment variable are safer there.
  *
  * @param params the parsed CLI parameters
  * @param confirm whether to ask twice, for a new password
  */
 export async function readBackupPassword(params: Record<string, any>, confirm: boolean): Promise<string> {
+    const given = param(params, 'password');
     const passwordFile = param(params, 'password-file');
     let password: string | undefined;
 
-    if (typeof passwordFile === 'string' && passwordFile) {
+    if (given !== undefined) {
+        // yargs gives a number for "-p 1234" if the option is not declared as string
+        if (typeof given !== 'string' && typeof given !== 'number') {
+            throw new Error('--password needs a value');
+        }
+        password = String(given);
+    } else if (typeof passwordFile === 'string' && passwordFile) {
         // a trailing line break is part of most files, but hardly of the password
         password = (await readFile(passwordFile, 'utf8')).replace(/\r?\n$/, '');
     } else if (process.env[BACKUP_PASSWORD_ENV]) {
@@ -42,7 +64,7 @@ export async function readBackupPassword(params: Record<string, any>, confirm: b
         }
     } else {
         throw new Error(
-            `A password is needed: use --password-file <file> or the environment variable ${BACKUP_PASSWORD_ENV}`,
+            `A password is needed: use --password <password>, --password-file <file> or the environment variable ${BACKUP_PASSWORD_ENV}`,
         );
     }
 
@@ -55,9 +77,9 @@ export async function readBackupPassword(params: Record<string, any>, confirm: b
 /**
  * Decide how a new backup is encrypted, from `--encrypt` and `backup.encryption` of iobroker.json
  *
- * `--encrypt false` creates an unencrypted backup although iobroker.json asks for encryption. With the mode
- * `publicKey` no password is needed; a password from `--password-file` or the environment is added as a second way to
- * decrypt it.
+ * `--encrypt false` creates an unencrypted backup although iobroker.json asks for encryption. A password given with
+ * `--password`/`-p` encrypts the backup without `--encrypt`. With the mode `publicKey` no password is needed; a password
+ * from `--password`, `--password-file` or the environment is added as a second way to decrypt it.
  *
  * @param params the parsed CLI parameters
  * @param config the iobroker.json
@@ -70,7 +92,7 @@ export async function getBackupEncryption(
     const encrypt = param(params, 'encrypt');
     const settings = config?.backup?.encryption;
 
-    if (encrypt === false || (!encrypt && !settings?.mode)) {
+    if (encrypt === false || (!encrypt && !settings?.mode && param(params, 'password') === undefined)) {
         return null;
     }
 
@@ -81,7 +103,7 @@ export async function getBackupEncryption(
             );
         }
         const recipients: EncryptionRecipients = { publicKeys: [settings.publicKey] };
-        if (param(params, 'password-file') || process.env[BACKUP_PASSWORD_ENV]) {
+        if (hasGivenPassword(params)) {
             recipients.password = await readBackupPassword(params, false);
         }
         return recipients;

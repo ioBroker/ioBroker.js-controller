@@ -79,6 +79,51 @@ describe('backup credentials', () => {
         await assert.rejects(getBackupEncryption({}, config({ mode: 'publicKey' })), /keygen --save/);
     });
 
+    it('encrypts with the password of --password/-p, also without --encrypt', async () => {
+        // yargs gives the option under its name and its alias
+        assert.deepEqual(await getBackupEncryption({ password: 'BlaBla', p: 'BlaBla' }, config()), {
+            password: 'BlaBla',
+        });
+    });
+
+    it('takes --password before the file and the environment', async () => {
+        process.env[BACKUP_PASSWORD_ENV] = 'from-env';
+        assert.deepEqual(
+            await getBackupEncryption(
+                { password: 'BlaBla', 'password-file': passwordFile },
+                config({ mode: 'password' }),
+            ),
+            { password: 'BlaBla' },
+        );
+    });
+
+    it('takes a numeric --password as text', async () => {
+        assert.deepEqual(await getBackupEncryption({ password: 1234 }, config()), { password: '1234' });
+    });
+
+    it('refuses an empty --password', async () => {
+        await assert.rejects(getBackupEncryption({ password: '' }, config()), /must not be empty/);
+    });
+
+    it('does not encrypt with --encrypt false although a password is given', async () => {
+        assert.equal(await getBackupEncryption({ encrypt: false, password: 'BlaBla' }, config()), null);
+    });
+
+    it('adds the password of --password to the public key', async () => {
+        assert.deepEqual(
+            await getBackupEncryption(
+                { password: 'BlaBla' },
+                config({ mode: 'publicKey', publicKey: 'iobbackup-pub-x' }),
+            ),
+            { publicKeys: ['iobbackup-pub-x'], password: 'BlaBla' },
+        );
+    });
+
+    it('decrypts with the password of --password', async () => {
+        process.env[BACKUP_PASSWORD_ENV] = 'from-env';
+        assert.deepEqual(await createDecryptionCredentialsProvider({ password: 'BlaBla' })(), { password: 'BlaBla' });
+    });
+
     it('decrypts with the private key of --key-file before a password', async () => {
         const keyFile = path.join(dir, 'key.pem');
         await writeFile(keyFile, 'PRIVATE KEY');
