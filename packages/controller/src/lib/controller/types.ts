@@ -56,6 +56,21 @@ export interface InstallQueueEntry {
     rebuildArgs?: RebuildArgs;
     /** If the task is currently being executed */
     inProgress?: boolean;
+    /**
+     * The instance runs on another host and only its code is needed here, e.g. for a web extension which a web
+     * server of this host loads. There is no process entry for it on this host, and nothing is started afterward.
+     */
+    codeOnly?: CodeOnlyInstall;
+}
+
+/** The part of an install task that puts only the code of an adapter of another host on this host */
+export interface CodeOnlyInstall {
+    /** Whether a version of the adapter is installed on this host already, so it has to be upgraded */
+    isInstalled: boolean;
+    /** How often the installation has been tried, there is no process entry to count it */
+    downloadRetry: number;
+    /** Called once the queue is done with the task, whether it succeeded or not */
+    onDone: () => void;
 }
 
 /** Everything the controller knows about a single instance */

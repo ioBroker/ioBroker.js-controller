@@ -8,12 +8,14 @@
  */
 
 import net from 'node:net';
-import { inspect } from 'node:util';
+import crypto from 'node:crypto';
+import { inspect, isDeepStrictEqual } from 'node:util';
 
 import { RedisHandler, type ConnectionOptions, type FileDbSettings } from '@iobroker/db-base';
 import { StatesInMemoryJsonlDB } from './statesInMemJsonlDB.js';
 import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
 import { EXIT_CODES } from '@iobroker/js-controller-common-db';
+import { SET_STATE_SCRIPT_MARKER } from '@iobroker/db-states-redis';
 
 /** Shape of the dynamic subscription registry attached to redis client handlers */
 type SubscriptionRegistry = Record<string, { pattern: string; regex: RegExp }[]>;
@@ -42,6 +44,8 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB<RedisHandlerInte
     private readonly namespaceLogLen: number;
     private readonly metaNamespace: string;
     private server: net.Server | undefined;
+    /** SHA1 of the SETSTATE script once a client loaded it, see `@iobroker/db-states-redis` setStateScript.ts */
+    private setStateScriptSha: string | null = null;
 
     /**
      * Constructor
@@ -345,6 +349,70 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB<RedisHandlerInte
                     responseId,
                     new Error(`SETEX-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
                 );
+            }
+        });
+
+        // Handle Redis "SCRIPT" request. Only the SETSTATE script is known, it is emulated natively in "EVALSHA"
+        handler.on('script', (data, responseId) => {
+            const subCommand = String(data[0]).toLowerCase();
+            if (subCommand === 'load') {
+                const script = Buffer.from(data[1]);
+                if (!script.toString('utf-8').startsWith(SET_STATE_SCRIPT_MARKER)) {
+                    return void handler.sendError(responseId, new Error('Unknown LUA script'));
+                }
+                this.setStateScriptSha = crypto.createHash('sha1').update(script).digest('hex');
+                handler.sendBulk(responseId, this.setStateScriptSha);
+            } else if (subCommand === 'exists') {
+                handler.sendArray(
+                    responseId,
+                    data.slice(1).map((sha: string) => (String(sha) === this.setStateScriptSha ? 1 : 0)),
+                );
+            } else {
+                handler.sendError(responseId, new Error(`Unsupported Script command ${subCommand}`));
+            }
+        });
+
+        // Handle Redis "EVALSHA" request: SETSTATE, writes the state with `lc` computed here and publishes it.
+        // Must behave like the Lua version in `@iobroker/db-states-redis` setStateScript.ts
+        handler.on('evalsha', (data, responseId) => {
+            if (!this.setStateScriptSha || String(data[0]) !== this.setStateScriptSha) {
+                return void handler.sendError(responseId, new Error(`NOSCRIPT No matching script ${data[0]}`));
+            }
+            const { id, namespace } = this._normalizeId(String(data[2]));
+            if (namespace !== this.namespaceStates) {
+                return void handler.sendError(
+                    responseId,
+                    new Error(`EVALSHA-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
+                );
+            }
+            try {
+                const stateWithoutLc = String(data[3]);
+                const ts = String(data[5]);
+                const expireStr = String(data[6] ?? '');
+                let expire: number | undefined;
+                if (expireStr) {
+                    expire = parseInt(expireStr, 10);
+                    if (isNaN(expire)) {
+                        return void handler.sendError(responseId, new Error(`ERROR parsing expire value ${expireStr}`));
+                    }
+                }
+
+                let lc = ts;
+                const oldState = this._getState(id);
+                if (
+                    oldState &&
+                    !Buffer.isBuffer(oldState) &&
+                    typeof oldState.lc === 'number' &&
+                    oldState.lc !== 0 &&
+                    isDeepStrictEqual(oldState.val, JSON.parse(String(data[4])))
+                ) {
+                    lc = String(oldState.lc);
+                }
+
+                this._setStateDirect(id, JSON.parse(`${stateWithoutLc},"lc":${lc}}`), expire);
+                handler.sendInteger(responseId, 1);
+            } catch (err) {
+                handler.sendError(responseId, new Error(`ERROR setState id=${id}: ${(err as Error).message}`));
             }
         });
 
