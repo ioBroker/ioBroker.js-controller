@@ -1141,6 +1141,20 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         await context.adapter.subscribeStatesAsync('*hm-rpc.0._.**test/*');
     });
 
+    it(`${testName}Should reject getKeys with invalid pattern and keep server alive`, async function () {
+        if (context.statesConfig?.type === 'redis') {
+            // a real Redis server takes the pattern as a valid glob, only the in-memory servers convert it to a RegExp
+            this.skip();
+        }
+
+        await assert.rejects(context.states.getKeys('modbus.[0-3].holdingRegisters.*'), /is not a valid ID pattern/);
+
+        const id = `${context.adapterShortName}.0.${gid}afterInvalidKeys`;
+        await context.states.setState(id, { val: 7, ack: true });
+        const state = await context.states.getState(id);
+        assert.strictEqual(state!.val, 7);
+    });
+
     it(`${testName}sendTo with timeout should reject in time`, async () => {
         await assert.rejects(
             context.adapter.sendToAsync('testInstance.0', 'test', {}, { timeout: 500 }),

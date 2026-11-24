@@ -374,6 +374,15 @@ export class List {
      * @param flags Additional flags controlling the output
      */
     list(type: ListType, filter: string, flags: FlagObject): void {
+        if (filter && ['objects', 'o', 'states', 's'].includes(type)) {
+            try {
+                tools.pattern2RegEx(filter);
+            } catch (e) {
+                console.error(e.message);
+                return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
+            }
+        }
+
         this.objects.getObject('system.config', (err, systemConf) => {
             const lang: ioBroker.Languages = systemConf?.common?.language || 'en';
             switch (type) {
