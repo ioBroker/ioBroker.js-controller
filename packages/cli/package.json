@@ -1,7 +1,7 @@
 {
     "name": "@iobroker/js-controller-cli",
     "type": "module",
-    "version": "8.0.0-alpha.21-20261113-96dcc7d32",
+    "version": "8.0.0-alpha.24-20261123-540f5fc21",
     "engines": {
         "node": ">=22.22.2"
     },
@@ -37,7 +37,8 @@
     },
     "scripts": {
         "build": "tsc -b tsconfig.build.json && tsc-alias",
-        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ../cjs/ --cwd=build/esm/"
+        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ../cjs/ --cwd=build/esm/",
+        "test-unit": "mocha --node-option import=tsx \"src/lib/**/*.test.ts\" --exit"
     },
     "main": "build/cjs/index.js",
     "module": "build/esm/index.js",

@@ -1087,9 +1087,72 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         assert.strictEqual(state!.val, -20);
     });
 
+    it(`${testName}Should keep lc while the value is unchanged and set it when the value changes`, async () => {
+        // jsonl and Redis compute lc on the server (SETSTATE script), the file DB on the client: both must behave the same
+        const id = `${context.adapterShortName}.0.${gid}.lastChange`;
+        const ts = 1_762_930_000_000;
+
+        await context.states.setState(id, { val: 1, ack: true, ts });
+        let state = await context.states.getState(id);
+        assert.strictEqual(state?.lc, ts);
+
+        // same value, only ack and ts change: lc stays
+        await context.states.setState(id, { val: 1, ack: false, ts: ts + 1_000 });
+        state = await context.states.getState(id);
+        assert.strictEqual(state?.ts, ts + 1_000);
+        assert.strictEqual(state?.ack, false);
+        assert.strictEqual(state?.lc, ts);
+
+        // changed value: lc is the new ts
+        await context.states.setState(id, { val: 2, ack: true, ts: ts + 2_000 });
+        state = await context.states.getState(id);
+        assert.strictEqual(state?.lc, ts + 2_000);
+
+        // no value given: the old value is kept and lc too
+        await context.states.setState(id, { ack: false, ts: ts + 3_000 });
+        state = await context.states.getState(id);
+        assert.strictEqual(state?.val, 2);
+        assert.strictEqual(state?.lc, ts + 2_000);
+
+        // another type is a change
+        await context.states.setState(id, { val: '2', ack: true, ts: ts + 4_000 });
+        state = await context.states.getState(id);
+        assert.strictEqual(state?.lc, ts + 4_000);
+
+        // an explicit lc wins and is kept as long as the value does not change
+        await context.states.setState(id, { val: '2', ack: true, ts: ts + 5_000, lc: 123 });
+        state = await context.states.getState(id);
+        assert.strictEqual(state?.lc, 123);
+        await context.states.setState(id, { val: '2', ack: true, ts: ts + 6_000 });
+        state = await context.states.getState(id);
+        assert.strictEqual(state?.lc, 123);
+
+        // null to null is no change
+        await context.states.setState(id, { val: null, ack: true, ts: ts + 7_000 });
+        await context.states.setState(id, { val: null, ack: true, ts: ts + 8_000 });
+        state = await context.states.getState(id);
+        assert.strictEqual(state?.lc, ts + 7_000);
+
+        await context.states.delState(id);
+    });
+
     it(`${testName}Should throw on invalid subscribe`, async () => {
         await assert.rejects(context.adapter.subscribeStatesAsync('hm-rpc.0.§.test'), /is not a valid ID pattern/);
         await context.adapter.subscribeStatesAsync('*hm-rpc.0._.**test/*');
+    });
+
+    it(`${testName}Should reject getKeys with invalid pattern and keep server alive`, async function () {
+        if (context.statesConfig?.type === 'redis') {
+            // a real Redis server takes the pattern as a valid glob, only the in-memory servers convert it to a RegExp
+            this.skip();
+        }
+
+        await assert.rejects(context.states.getKeys('modbus.[0-3].holdingRegisters.*'), /is not a valid ID pattern/);
+
+        const id = `${context.adapterShortName}.0.${gid}afterInvalidKeys`;
+        await context.states.setState(id, { val: 7, ack: true });
+        const state = await context.states.getState(id);
+        assert.strictEqual(state!.val, 7);
     });
 
     it(`${testName}sendTo with timeout should reject in time`, async () => {

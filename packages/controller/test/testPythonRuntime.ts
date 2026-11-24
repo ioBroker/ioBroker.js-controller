@@ -12,6 +12,7 @@ import {
     forwardPythonOutput,
     getPythonInterpreter,
     isPythonAdapter,
+    pythonLogLevel,
     resolvePythonEntry,
     spawnPythonAdapter,
     unsupportedPythonDbConfig,
@@ -295,6 +296,13 @@ describe('pythonRuntime', () => {
             assert.equal(env.IOB_OBJECTS_DB, '2');
             assert.equal(env.IOB_INSTANCE, '3');
             assert.equal(env.IOB_LOGLEVEL, 'debug');
+        });
+
+        it('passes the log level "off" as "error"', () => {
+            // Python's logging has no "off", and an SDK that does not know the value could fail to start
+            assert.equal(buildPythonEnv(config, 0, 'off').IOB_LOGLEVEL, 'error');
+            assert.equal(pythonLogLevel('off'), 'error');
+            assert.equal(pythonLogLevel('warn'), 'warn');
         });
 
         it('only sets a password when there is one', () => {

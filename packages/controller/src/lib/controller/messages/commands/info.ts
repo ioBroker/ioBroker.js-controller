@@ -126,6 +126,31 @@ const getInstalledAdapter: HostCommand<InfoCommandsDeps> = (deps, msg) => {
 };
 
 /**
+ * Tell what an adapter is needed for on this host: its instances here and the instances of other hosts whose web
+ * extension a web server of this host loads. Admin asks every host with it after deleting an adapter on one of them
+ * and deletes it (`cmdExec del <adapter>`) where it is not needed anymore.
+ *
+ * @param deps What this group of commands needs
+ * @param msg The received message, `message` is the name of the adapter
+ */
+const getAdapterUsage: HostCommand<InfoCommandsDeps> = async (deps, msg) => {
+    const { logger, hostLogPrefix, messages, instances } = deps;
+
+    if (!msg.callback || !msg.from) {
+        logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+        return;
+    }
+
+    const adapter = typeof msg.message === 'string' ? msg.message : msg.message?.adapter;
+    if (typeof adapter !== 'string' || !/^[a-z0-9-_]+$/i.test(adapter)) {
+        messages.sendTo(msg.from, msg.command, { error: 'Expected the name of an adapter' }, msg.callback);
+        return;
+    }
+
+    messages.sendTo(msg.from, msg.command, await instances.webExtensions.getUsage(adapter), msg.callback);
+};
+
+/**
  * Answer with the version information of this host
  *
  * @param deps What this group of commands needs
@@ -422,6 +447,7 @@ export function createInfoCommands(deps: InfoCommandsDeps): Record<string, HostC
     return {
         getInstalled: msg => getInstalled(deps, msg),
         getInstalledAdapter: msg => getInstalledAdapter(deps, msg),
+        getAdapterUsage: msg => getAdapterUsage(deps, msg),
         getVersion: msg => getVersion(deps, msg),
         getDiagData: msg => getDiagData(deps, msg),
         getLocationOnDisk: msg => getLocationOnDisk(deps, msg),

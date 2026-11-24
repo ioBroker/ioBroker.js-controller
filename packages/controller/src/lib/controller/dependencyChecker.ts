@@ -134,7 +134,7 @@ export async function checkVersions(options: CheckVersionsOptions): Promise<void
     });
 
     Object.keys(globInstances).forEach(id => {
-        if (globInstances[id]?.common && globInstances[id].common.host === hostname) {
+        if (tools.isInstanceAssignedToHost(globInstances[id], hostname)) {
             instances[id] = globInstances[id];
         }
     });

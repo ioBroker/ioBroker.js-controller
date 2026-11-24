@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import sinon from 'sinon';
 import fs from 'fs-extra';
+import { tools } from '@iobroker/js-controller-common';
 import { InstanceManager } from '@/lib/controller/instances/instanceManager.js';
 import type { InstanceManagerOptions } from '@/lib/controller/instances/instanceManager.js';
 import {
@@ -67,28 +68,53 @@ describe('InstanceManager.checkAndAddInstance', () => {
     it('ignores an instance which belongs to another host', async () => {
         const { manager } = createManager();
 
-        const added = await manager.checkAndAddInstance(instanceObject({ common: { host: 'otherhost' } }), [
-            '192.168.0.2',
-        ]);
+        const added = await manager.checkAndAddInstance(instanceObject({ common: { host: 'otherhost' } }));
 
         assert.equal(added, false);
         assert.deepEqual(Object.keys(manager.procs), []);
     });
 
-    it('accepts an instance whose host matches one of our IP addresses', async () => {
-        const { manager } = createManager();
+    it('reassigns an instance from one of our IP addresses to our host name', async function () {
+        const ip = tools.findIPs()[0];
+        if (!ip) {
+            this.skip();
+        }
+        const setObject = sinon.stub().resolves();
+        const info = sinon.stub();
+        const { manager } = createManager({ objects: { setObject } as any, logger: silentLogger({ info }) });
+        const instance = instanceObject({ common: { host: ip } });
 
-        const added = await manager.checkAndAddInstance(instanceObject({ common: { host: '192.168.0.2' } }), [
-            '192.168.0.2',
-        ]);
+        const added = await manager.checkAndAddInstance(instance);
 
         assert.equal(added, true);
+        assert.equal(instance.common.host, 'testhost');
+        assert.equal(setObject.calledOnce, true);
+        assert.equal(setObject.firstCall.args[0], 'system.adapter.hm-rpc.0');
+        assert.equal(setObject.firstCall.args[1].common.host, 'testhost');
+        assert.ok(
+            info.args.some(args =>
+                String(args[0]).includes(`Reassign instance system.adapter.hm-rpc.0 from IP ${ip} to host testhost`),
+            ),
+        );
+    });
+
+    it('ignores an instance assigned to an IP address which is not ours and leaves it unchanged', async () => {
+        const setObject = sinon.stub().resolves();
+        const { manager } = createManager({ objects: { setObject } as any });
+        const instance = instanceObject({ common: { host: '203.0.113.7' } });
+
+        const added = await manager.checkAndAddInstance(instance);
+
+        assert.equal(added, false);
+        assert.equal(instance.common.host, '203.0.113.7');
+        assert.equal(setObject.called, false);
+        assert.deepEqual(Object.keys(manager.procs), []);
     });
 
     it('ignores an instance which has been marked as deleted', async () => {
         const { manager } = createManager();
 
-        const added = await manager.checkAndAddInstance(instanceObject({ deleted: true }), []);
+        const added = await manager.checkAndAddInstance(instanceObject({ deleted: true }));
 
         assert.equal(added, false);
         assert.deepEqual(Object.keys(manager.procs), []);
@@ -99,7 +125,7 @@ describe('InstanceManager.checkAndAddInstance', () => {
         const { manager } = createManager({ objects: { setObject } as any });
         const instance = instanceObject({ common: { host: '' } });
 
-        const added = await manager.checkAndAddInstance(instance, []);
+        const added = await manager.checkAndAddInstance(instance);
 
         assert.equal(added, true);
         assert.equal(instance.common.host, 'testhost');
@@ -113,7 +139,7 @@ describe('InstanceManager.checkAndAddInstance', () => {
         const logger = silentLogger({ error });
         const { manager } = createManager({ objects: { setObject } as any, logger });
 
-        const added = await manager.checkAndAddInstance(instanceObject({ common: { host: '' } }), []);
+        const added = await manager.checkAndAddInstance(instanceObject({ common: { host: '' } }));
 
         assert.equal(added, true);
         assert.equal(error.calledOnce, true);
@@ -124,7 +150,7 @@ describe('InstanceManager.checkAndAddInstance', () => {
         const { manager } = createManager();
         const instance = instanceObject();
 
-        await manager.checkAndAddInstance(instance, []);
+        await manager.checkAndAddInstance(instance);
 
         const stored = manager.procs['system.adapter.hm-rpc.0'].config;
         assert.deepEqual(stored, instance);
@@ -134,10 +160,10 @@ describe('InstanceManager.checkAndAddInstance', () => {
     it('keeps an already known config when the instance is checked again', async () => {
         const { manager } = createManager();
 
-        await manager.checkAndAddInstance(instanceObject({ common: { loglevel: 'debug' } }), []);
+        await manager.checkAndAddInstance(instanceObject({ common: { loglevel: 'debug' } }));
         const firstConfig = manager.procs['system.adapter.hm-rpc.0'].config;
 
-        await manager.checkAndAddInstance(instanceObject({ common: { loglevel: 'info' } }), []);
+        await manager.checkAndAddInstance(instanceObject({ common: { loglevel: 'info' } }));
 
         assert.equal(manager.procs['system.adapter.hm-rpc.0'].config, firstConfig);
         assert.equal(firstConfig.common.loglevel, 'debug');
@@ -157,7 +183,7 @@ describe('InstanceManager.checkAndAddInstance in compact mode', () => {
         const { manager } = createManager({ config: compactConfig });
         const instance = instanceObject({ common: { compact: true } });
 
-        await manager.checkAndAddInstance(instance, []);
+        await manager.checkAndAddInstance(instance);
 
         assert.equal(instance.common.runAsCompactMode, false);
         assert.equal(instance.common.compactGroup, 1);
@@ -168,7 +194,6 @@ describe('InstanceManager.checkAndAddInstance in compact mode', () => {
 
         await manager.checkAndAddInstance(
             instanceObject({ common: { compact: true, runAsCompactMode: true, compactGroup: 2 } }),
-            [],
         );
 
         assert.deepEqual(manager.compactProcs[2].instances, []);
@@ -183,7 +208,6 @@ describe('InstanceManager.checkAndAddInstance in compact mode', () => {
 
         const added = await manager.checkAndAddInstance(
             instanceObject({ common: { compact: true, runAsCompactMode: true, compactGroup: 2 } }),
-            [],
         );
 
         assert.equal(added, false);
@@ -198,7 +222,6 @@ describe('InstanceManager.checkAndAddInstance in compact mode', () => {
 
         const added = await manager.checkAndAddInstance(
             instanceObject({ common: { compact: true, runAsCompactMode: true, compactGroup: 2 } }),
-            [],
         );
 
         assert.equal(added, true);
@@ -213,7 +236,6 @@ describe('InstanceManager.checkAndAddInstance in compact mode', () => {
 
         const added = await manager.checkAndAddInstance(
             instanceObject({ common: { compact: true, runAsCompactMode: false, compactGroup: 1 } }),
-            [],
         );
 
         assert.equal(added, false);
@@ -292,6 +314,23 @@ describe('InstanceManager.setInstanceOfflineStates', () => {
         assert.equal(delState.callCount, 1);
     });
 
+    it('writes nothing for an instance which was stopped because it moved to another host', async () => {
+        const setState = sinon.stub().resolves();
+        const { manager } = createManager({
+            objects: { objectExists: sinon.stub().resolves(true) } as any,
+            states: { setState, getState: sinon.stub().resolves({ val: true }) } as any,
+        });
+        manager.procs['system.adapter.hm-rpc.0'] = {
+            config: instanceObject({ common: { stopTimeout: 1 } }),
+            process: { pid: 4711, kill: sinon.stub() },
+        } as any;
+
+        await manager.stopInstance('system.adapter.hm-rpc.0', false, { movedAway: true });
+        await manager.setInstanceOfflineStates('system.adapter.hm-rpc.0');
+
+        assert.equal(setState.called, false);
+    });
+
     it('takes an instance for existing if the objects database cannot tell, and deletes nothing', async () => {
         const setState = sinon.stub().resolves();
         const delState = sinon.stub().resolves();
@@ -304,6 +343,73 @@ describe('InstanceManager.setInstanceOfflineStates', () => {
 
         assert.equal(setState.firstCall.args[0], 'system.adapter.hm-rpc.0.alive');
         assert.equal(delState.called, false);
+    });
+});
+
+describe('InstanceManager.stopInstance', () => {
+    /**
+     * Register a running daemon with the given config
+     *
+     * @param manager the manager to register it with
+     * @param common parts of `common` this test cares about
+     */
+    function addRunning(manager: InstanceManager, common: Record<string, any>): { kill: sinon.SinonStub } {
+        const child = { pid: 4711, kill: sinon.stub() };
+        manager.procs['system.adapter.hm-rpc.0'] = {
+            config: instanceObject({ common: { stopTimeout: 1, ...common } }),
+            process: child,
+        } as any;
+        return child;
+    }
+
+    it('stops an instance of this host via sigKill', async () => {
+        const setState = sinon.stub().resolves();
+        const { manager } = createManager({ states: { setState } as any });
+        addRunning(manager, {});
+
+        await manager.stopInstance('system.adapter.hm-rpc.0', false);
+
+        assert.equal(setState.firstCall.args[0], 'system.adapter.hm-rpc.0.sigKill');
+        assert.equal(setState.firstCall.args[1].val, -1);
+    });
+
+    it('stops a copy which moved to another host with SIGTERM and leaves sigKill alone', async () => {
+        const setState = sinon.stub().resolves();
+        const { manager } = createManager({ states: { setState } as any });
+        const child = addRunning(manager, {});
+
+        await manager.stopInstance('system.adapter.hm-rpc.0', false, { movedAway: true });
+
+        assert.equal(setState.called, false);
+        assert.equal(child.kill.firstCall.args[0], 'SIGTERM');
+    });
+
+    it('lets a second stop wait for the running one, and both resolve', async () => {
+        const setState = sinon.stub().resolves();
+        const { manager } = createManager({ states: { setState } as any });
+        const child = addRunning(manager, {});
+
+        await Promise.all([
+            manager.stopInstance('system.adapter.hm-rpc.0', false),
+            manager.stopInstance('system.adapter.hm-rpc.0', false),
+        ]);
+
+        assert.equal(setState.callCount, 1);
+        assert.equal(child.kill.callCount, 1);
+    });
+
+    it('does not send stopInstance to a copy which moved to another host', async () => {
+        const sendToAndWait = sinon.stub().resolves();
+        const { manager } = createManager({
+            states: { setState: sinon.stub().resolves() } as any,
+            messages: { sendToAndWait } as any,
+        });
+        const child = addRunning(manager, { supportedMessages: { stopInstance: true } });
+
+        await manager.stopInstance('system.adapter.hm-rpc.0', false, { movedAway: true });
+
+        assert.equal(sendToAndWait.called, false);
+        assert.equal(child.kill.firstCall.args[0], 'SIGTERM');
     });
 });
 
@@ -434,5 +540,105 @@ describe('InstanceManager.handleObjectChange', () => {
         assert.equal(clearNotifications.calledOnce, true);
         assert.deepEqual(clearNotifications.firstCall.args, [null, null, 'system.adapter.hm-rpc.0']);
         assert.equal(manager.procs['system.adapter.hm-rpc.0'], undefined);
+    });
+});
+
+describe('InstanceManager.recheckInstances', () => {
+    /**
+     * Create a manager with one running daemon and the given current object
+     *
+     * @param current what the objects database returns now, an Error to fail the read
+     */
+    function setup(current: ioBroker.InstanceObject | null | Error): {
+        manager: InstanceManager;
+        kill: sinon.SinonStub;
+        getObject: sinon.SinonStub;
+    } {
+        const getObject = current instanceof Error ? sinon.stub().rejects(current) : sinon.stub().resolves(current);
+        const { manager } = createManager({
+            objects: { getObject } as any,
+            states: { setState: sinon.stub().resolves() } as any,
+            notificationHandler: { clearNotifications: sinon.stub().resolves() } as any,
+        });
+        const kill = sinon.stub();
+        manager.procs['system.adapter.hm-rpc.0'] = {
+            config: instanceObject({ common: { stopTimeout: 1 } }),
+            process: { pid: 4711, kill },
+        } as any;
+        return { manager, kill, getObject };
+    }
+
+    it('stops an instance which was moved to another host meanwhile', async () => {
+        const { manager, kill } = setup(instanceObject({ common: { host: 'otherhost', stopTimeout: 1 } }));
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(kill.firstCall.args[0], 'SIGTERM');
+        assert.equal(manager.procs['system.adapter.hm-rpc.0'], undefined);
+    });
+
+    it('stops an instance which was disabled meanwhile', async () => {
+        const { manager, kill } = setup(instanceObject({ common: { enabled: false, stopTimeout: 1 } }));
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(kill.called, true);
+    });
+
+    it('leaves an instance alone which is still assigned to this host', async () => {
+        const { manager, kill } = setup(instanceObject({ common: { stopTimeout: 1 } }));
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(kill.called, false);
+        assert.ok(manager.procs['system.adapter.hm-rpc.0']);
+    });
+
+    it('leaves an instance alone if its object cannot be read', async () => {
+        const { manager, kill } = setup(new Error('DB closed'));
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(kill.called, false);
+    });
+
+    it('skips an instance which is already being stopped', async () => {
+        const { manager, getObject } = setup(null);
+        manager.procs['system.adapter.hm-rpc.0'].stopping = true;
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(getObject.called, false);
+    });
+
+    it('does not read instances which are not running', async () => {
+        const { manager, getObject } = setup(null);
+        delete manager.procs['system.adapter.hm-rpc.0'].process;
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(getObject.called, false);
+    });
+
+    it('reads the instances of all hosts again for the web extensions', async () => {
+        const other = instanceObject({ _id: 'system.adapter.frigate.0', common: { host: 'otherhost' } });
+        const getObjectViewAsync = sinon.stub().resolves({ rows: [{ id: other._id, value: other }] });
+        const { manager } = createManager({ objects: { getObjectViewAsync } as any });
+        const setInstances = sinon.stub(manager.webExtensions, 'setInstances').resolves();
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(setInstances.calledOnce, true);
+        assert.deepEqual(setInstances.firstCall.args[0], [other]);
+    });
+
+    it('keeps the known instances for the web extensions if they cannot be read', async () => {
+        const getObjectViewAsync = sinon.stub().rejects(new Error('DB closed'));
+        const { manager } = createManager({ objects: { getObjectViewAsync } as any });
+        const setInstances = sinon.stub(manager.webExtensions, 'setInstances').resolves();
+
+        await manager.recheckInstances('a reconnect');
+
+        assert.equal(setInstances.called, false);
     });
 });

@@ -6,7 +6,7 @@
 
 # Interface: VisIconSet
 
-Defined in: [types-dev/objects.d.ts:600](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L600)
+Defined in: [types-dev/objects.d.ts:613](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/objects.d.ts#L613)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [types-dev/objects.d.ts:600](https://github.com/ioBroker/ioBroker.js
 
 > `optional` **icon?**: `string`
 
-Defined in: [types-dev/objects.d.ts:604](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L604)
+Defined in: [types-dev/objects.d.ts:617](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/objects.d.ts#L617)
 
 If set, this is not a widget set, but an icon set. url, name and icon are required
 
@@ -24,7 +24,7 @@ If set, this is not a widget set, but an icon set. url, name and icon are requir
 
 > `optional` **ignoreInVersions?**: `number`[]
 
-Defined in: [types-dev/objects.d.ts:606](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L606)
+Defined in: [types-dev/objects.d.ts:619](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/objects.d.ts#L619)
 
 The vis icon set does not support the listed major versions of vis
 
@@ -34,7 +34,7 @@ The vis icon set does not support the listed major versions of vis
 
 > `optional` **name?**: [`StringOrTranslated`](../type-aliases/StringOrTranslated.md)
 
-Defined in: [types-dev/objects.d.ts:601](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L601)
+Defined in: [types-dev/objects.d.ts:614](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/objects.d.ts#L614)
 
 ***
 
@@ -42,4 +42,4 @@ Defined in: [types-dev/objects.d.ts:601](https://github.com/ioBroker/ioBroker.js
 
 > **url**: `string`
 
-Defined in: [types-dev/objects.d.ts:602](https://github.com/ioBroker/ioBroker.js-controller/blob/96dcc7d328cfa50d439edfd331dfdddc8337b2c0/packages/types-dev/objects.d.ts#L602)
+Defined in: [types-dev/objects.d.ts:615](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/objects.d.ts#L615)

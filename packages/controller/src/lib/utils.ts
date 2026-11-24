@@ -54,12 +54,7 @@ export function getCronExpression(options: GetCronExpressionOptions): string {
  * @returns the arguments for the CLI, e.g. `['install', 'admin@7.1.0']`
  */
 export function getInstallArgsFromInstalledFrom(installedFrom: string, adapterName: string): string[] {
-    if (
-        tools.isShortGithubUrl(installedFrom) ||
-        installedFrom.includes('://') ||
-        path.isAbsolute(installedFrom) ||
-        /\.(tgz|gz|zip)$/i.test(installedFrom)
-    ) {
+    if (isUrlInstallSource(installedFrom)) {
         // Installing from URL supports raw http(s) and file URLs, the short GitHub URL format and local archives or paths
         return ['url', installedFrom, adapterName];
     }
@@ -68,4 +63,53 @@ export function getInstallArgsFromInstalledFrom(installedFrom: string, adapterNa
         installedFrom = installedFrom.substring(tools.appName.length + 1);
     }
     return ['install', installedFrom];
+}
+
+/**
+ * Whether an adapter was installed from somewhere else than the repository or npm: a URL, the short GitHub URL
+ * format or a local archive or path. Only the `url` command of the CLI can install from there.
+ *
+ * @param installedFrom the `common.installedFrom` of the instance
+ */
+export function isUrlInstallSource(installedFrom: string): boolean {
+    return (
+        tools.isShortGithubUrl(installedFrom) ||
+        installedFrom.includes('://') ||
+        path.isAbsolute(installedFrom) ||
+        /\.(tgz|gz|zip)$/i.test(installedFrom)
+    );
+}
+
+/** What has to be known to put the code of an adapter on this host without an instance of its own */
+export interface CodeOnlyInstallOptions {
+    /** Name of the adapter, e.g. `frigate` */
+    adapterName: string;
+    /** The version the other host runs */
+    version?: string;
+    /** The `common.installedFrom` of the instance on the other host */
+    installedFrom?: string;
+    /** Whether a version of the adapter is installed on this host already */
+    isInstalled: boolean;
+    /** Whether the location of `installedFrom` should be tried, the later attempts fall back to the version */
+    useInstalledFrom: boolean;
+}
+
+/**
+ * Get the CLI arguments to put the code of an adapter in the given version on this host
+ *
+ * The `install` command refuses an adapter which is installed already, so another version comes with `upgrade`.
+ * An adapter from a URL or a local path is fetched from there again: the version alone does not lead to it.
+ *
+ * @param options what is to be installed
+ * @returns the arguments for the CLI, e.g. `['upgrade', 'frigate@2.1.0', '--yes']`
+ */
+export function getCodeOnlyInstallArgs(options: CodeOnlyInstallOptions): string[] {
+    const { adapterName, version, installedFrom, isInstalled, useInstalledFrom } = options;
+
+    if (useInstalledFrom && installedFrom && isUrlInstallSource(installedFrom)) {
+        return ['url', installedFrom, adapterName];
+    }
+
+    const nameWithVersion = version ? `${adapterName}@${version}` : adapterName;
+    return isInstalled ? ['upgrade', nameWithVersion, '--yes'] : ['install', nameWithVersion];
 }
