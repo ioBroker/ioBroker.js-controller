@@ -6,7 +6,7 @@
 
 # Interface: GetObjectViewItem\<T\>
 
-Defined in: [types-dev/index.d.ts:748](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/index.d.ts#L748)
+Defined in: [types-dev/index.d.ts:756](https://github.com/ioBroker/ioBroker.js-controller/blob/86bf1182d08e1fcbb51ac5fb0c89fed002e8bdd6/packages/types-dev/index.d.ts#L756)
 
 ## Extended by
 
@@ -24,7 +24,7 @@ Defined in: [types-dev/index.d.ts:748](https://github.com/ioBroker/ioBroker.js-c
 
 > **id**: `T`\[`"_id"`\]
 
-Defined in: [types-dev/index.d.ts:750](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/index.d.ts#L750)
+Defined in: [types-dev/index.d.ts:758](https://github.com/ioBroker/ioBroker.js-controller/blob/86bf1182d08e1fcbb51ac5fb0c89fed002e8bdd6/packages/types-dev/index.d.ts#L758)
 
 The ID of this object
 
@@ -34,6 +34,6 @@ The ID of this object
 
 > **value**: `T`
 
-Defined in: [types-dev/index.d.ts:752](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/index.d.ts#L752)
+Defined in: [types-dev/index.d.ts:760](https://github.com/ioBroker/ioBroker.js-controller/blob/86bf1182d08e1fcbb51ac5fb0c89fed002e8bdd6/packages/types-dev/index.d.ts#L760)
 
 A copy of the object from the DB
