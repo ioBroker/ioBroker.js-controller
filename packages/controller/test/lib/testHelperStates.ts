@@ -45,24 +45,59 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         await context.adapter.requireLog!(false);
     });
 
-    it(`${testName}sigKill from another host should not terminate the instance`, async () => {
-        let unloaded = false;
-        context.onAdapterUnload = (callback: () => void) => {
-            unloaded = true;
-            callback();
-        };
+    describe(`${testName}sigKill sender`, () => {
+        const anotherHost = 'system.host.anotherHost';
+        const mayTerminateUs = (from?: string): Promise<boolean> => (context.adapter as any)._mayTerminateUs(from);
 
-        // the controller of another host stops its copy of this instance, e.g. after it has been moved
-        await context.states.setState(`system.adapter.${context.adapter.namespace}.sigKill`, {
-            val: -1,
-            ack: false,
-            from: 'system.host.anotherHost',
+        beforeEach(async () => {
+            await context.objects.setObjectAsync(anotherHost, {
+                type: 'host',
+                common: { name: anotherHost },
+                native: {},
+            } as any);
         });
-        // give the adapter time to process the state change
-        await new Promise(resolve => setTimeout(resolve, 500));
-        context.onAdapterUnload = null;
 
-        assert.strictEqual(unloaded, false);
+        afterEach(async () => {
+            await context.objects.delObjectAsync(anotherHost);
+        });
+
+        it('should not terminate the instance on a sigKill from another host', async () => {
+            let unloaded = false;
+            context.onAdapterUnload = (callback: () => void) => {
+                unloaded = true;
+                callback();
+            };
+
+            // the controller of another host stops its copy of this instance, e.g. after it has been moved
+            await context.states.setState(`system.adapter.${context.adapter.namespace}.sigKill`, {
+                val: -1,
+                ack: false,
+                from: anotherHost,
+            });
+            // give the adapter time to process the state change
+            await new Promise(resolve => setTimeout(resolve, 500));
+            context.onAdapterUnload = null;
+
+            assert.strictEqual(unloaded, false);
+        });
+
+        it('accepts the controller of the own host', async () => {
+            assert.strictEqual(await mayTerminateUs(`system.host.${(context.adapter as any).localHostname}`), true);
+        });
+
+        it('ignores the controller of another existing host', async () => {
+            assert.strictEqual(await mayTerminateUs(anotherHost), false);
+        });
+
+        it('accepts a sender that is no host of this installation, e.g. the test harness', async () => {
+            // @iobroker/testing stops the adapter with a sigKill from "system.host.testing"
+            assert.strictEqual(await mayTerminateUs('system.host.testing'), true);
+        });
+
+        it('ignores senders that are not hosts', async () => {
+            assert.strictEqual(await mayTerminateUs('system.adapter.admin.0'), false);
+            assert.strictEqual(await mayTerminateUs(undefined), false);
+        });
     });
 
     describe(`${testName}fence after a reconnect`, () => {

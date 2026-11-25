@@ -6,7 +6,7 @@
 
 # Interface: FetchAdapterDirResult
 
-Defined in: [adapter/src/lib/\_Types.ts:713](https://github.com/ioBroker/ioBroker.js-controller/blob/86bf1182d08e1fcbb51ac5fb0c89fed002e8bdd6/packages/adapter/src/lib/_Types.ts#L713)
+Defined in: [adapter/src/lib/\_Types.ts:713](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/adapter/src/lib/_Types.ts#L713)
 
 What `AdapterClass.fetchAdapterDir` fetched
 
@@ -16,7 +16,7 @@ What `AdapterClass.fetchAdapterDir` fetched
 
 > **files**: `string`[]
 
-Defined in: [adapter/src/lib/\_Types.ts:717](https://github.com/ioBroker/ioBroker.js-controller/blob/86bf1182d08e1fcbb51ac5fb0c89fed002e8bdd6/packages/adapter/src/lib/_Types.ts#L717)
+Defined in: [adapter/src/lib/\_Types.ts:717](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/adapter/src/lib/_Types.ts#L717)
 
 The written files, relative to `target` and separated by `/`
 
@@ -26,6 +26,6 @@ The written files, relative to `target` and separated by `/`
 
 > **host**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:715](https://github.com/ioBroker/ioBroker.js-controller/blob/86bf1182d08e1fcbb51ac5fb0c89fed002e8bdd6/packages/adapter/src/lib/_Types.ts#L715)
+Defined in: [adapter/src/lib/\_Types.ts:715](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/adapter/src/lib/_Types.ts#L715)
 
 The host the files came from

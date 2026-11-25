@@ -166,7 +166,7 @@ export class ObjectsInRedisClient {
     private readonly namespace: string;
     private readonly hostname: string;
     private scripts: Record<string, string>;
-    private readonly existingMetaObjects: Record<string, boolean>;
+    private readonly existingMetaObjects: Set<string>;
     private log: InternalLogger;
     private activeProtocolVersion?: string;
     private useSets?: boolean;
@@ -201,8 +201,8 @@ export class ObjectsInRedisClient {
         this.userSubscriptions = {};
         this.systemSubscriptions = {};
 
-        // cached meta-objects for file operations
-        this.existingMetaObjects = {};
+        // meta-objects known to exist, for file operations
+        this.existingMetaObjects = new Set();
 
         this.log = tools.getLogger(this.settings.logger);
         this.#gate = this.settings.fence ? new FenceGate(this.settings.fence) : null;
@@ -1012,18 +1012,16 @@ export class ObjectsInRedisClient {
      * @throws {Error} if id is invalid
      */
     async validateMetaObject(id: string): Promise<void> {
-        if (this.existingMetaObjects[id] === undefined) {
-            // if not cached -> getObject
-            const obj = await this.getObject(id);
-            if (obj && obj.type === 'meta') {
-                this.existingMetaObjects[id] = true;
-            } else {
-                this.existingMetaObjects[id] = false;
-                throw new Error(`${id} is not an object of type "meta"`);
-            }
-        } else if (this.existingMetaObjects[id] === false) {
+        if (this.existingMetaObjects.has(id)) {
+            return;
+        }
+        // A missing meta-object is not remembered: another process (e.g. `iobroker add` or an upload) may create it
+        // at any time, and this client would not learn of it and refuse the files of it until a restart
+        const obj = await this.getObject(id);
+        if (obj?.type !== 'meta') {
             throw new Error(`${id} is not an object of type "meta"`);
         }
+        this.existingMetaObjects.add(id);
     }
 
     /**
@@ -4522,11 +4520,6 @@ export class ObjectsInRedisClient {
             await client.multi(commands).exec();
         }
 
-        // object updated -> if type changed to meta -> cache
-        if (oldObj?.type === 'meta' && this.existingMetaObjects[id] === false) {
-            this.existingMetaObjects[id] = true;
-        }
-
         await client.publish(this.objNamespace + id, message);
         return { id };
     }
@@ -4693,9 +4686,7 @@ export class ObjectsInRedisClient {
             }
 
             // object has been deleted -> remove from cached meta if there
-            if (this.existingMetaObjects[id]) {
-                this.existingMetaObjects[id] = false;
-            }
+            this.existingMetaObjects.delete(id);
 
             await client.publish(this.objNamespace + id, 'null');
         }
@@ -5747,11 +5738,6 @@ export class ObjectsInRedisClient {
             // set all commands atomic
             commands.push(['set', this.objNamespace + id, message]);
             await client.multi(commands).exec();
-        }
-
-        // extended -> if it's now type meta and currently marked as not -> cache
-        if (this.existingMetaObjects[id] === false && oldObjNotNull?.type === 'meta') {
-            this.existingMetaObjects[id] = true;
         }
 
         await client.publish(this.objNamespace + id, message);
