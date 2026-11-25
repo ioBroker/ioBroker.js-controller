@@ -8,4 +8,4 @@
 
 > **MessageUnsubscribeReason** = `"client"` \| `"disconnect"`
 
-Defined in: [adapter/src/lib/\_Types.ts:66](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/adapter/src/lib/_Types.ts#L66)
+Defined in: [adapter/src/lib/\_Types.ts:66](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/adapter/src/lib/_Types.ts#L66)

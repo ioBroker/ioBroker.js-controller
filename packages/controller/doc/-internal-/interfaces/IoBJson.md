@@ -6,7 +6,7 @@
 
 # Interface: IoBJson
 
-Defined in: [types-dev/config.d.ts:151](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/config.d.ts#L151)
+Defined in: [types-dev/config.d.ts:151](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/types-dev/config.d.ts#L151)
 
 The ioBroker global config
 
@@ -16,7 +16,7 @@ The ioBroker global config
 
 > **// dataDir**: `string`
 
-Defined in: [types-dev/config.d.ts:207](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/config.d.ts#L207)
+Defined in: [types-dev/config.d.ts:209](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/types-dev/config.d.ts#L209)
 
 Comment/hint shown next to the dataDir setting in the JSON config
 
@@ -26,9 +26,19 @@ Comment/hint shown next to the dataDir setting in the JSON config
 
 > **// dnsResolution**: `string`
 
-Defined in: [types-dev/config.d.ts:216](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/config.d.ts#L216)
+Defined in: [types-dev/config.d.ts:218](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/types-dev/config.d.ts#L218)
 
 Comment/hint shown next to the dnsResolution setting in the JSON config
+
+***
+
+### backup?
+
+> `optional` **backup?**: [`BackupSettings`](BackupSettings.md)
+
+Defined in: [types-dev/config.d.ts:222](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/types-dev/config.d.ts#L222)
+
+Settings of the backups created with `iobroker backup` (not the backups of the databases, see `objects.backup`)
 
 ***
 
@@ -36,7 +46,7 @@ Comment/hint shown next to the dnsResolution setting in the JSON config
 
 > **dataDir**: `string`
 
-Defined in: [types-dev/config.d.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/config.d.ts#L205)
+Defined in: [types-dev/config.d.ts:207](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/types-dev/config.d.ts#L207)
 
 Always relative to iobroker.js-controller/
 
@@ -46,7 +56,7 @@ Always relative to iobroker.js-controller/
 
 > **dnsResolution**: `"verbatim"` \| `"ipv4first"`
 
-Defined in: [types-dev/config.d.ts:218](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/config.d.ts#L218)
+Defined in: [types-dev/config.d.ts:220](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/types-dev/config.d.ts#L220)
 
 Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
@@ -56,7 +66,7 @@ Use 'verbatim' for ipv6 first, else use 'ipv4first'
 
 > **log**: `object`
 
-Defined in: [types-dev/config.d.ts:198](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/config.d.ts#L198)
+Defined in: [types-dev/config.d.ts:200](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/types-dev/config.d.ts#L200)
 
 Logging configuration
 
@@ -82,7 +92,7 @@ Logging configuration
 
 > **multihostService**: `object`
 
-Defined in: [types-dev/config.d.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/config.d.ts#L180)
+Defined in: [types-dev/config.d.ts:182](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/types-dev/config.d.ts#L182)
 
 Configuration of the multihost service used to connect several ioBroker hosts
 
@@ -117,7 +127,7 @@ join, and without effect once the host uses a remote database.
 
 > **objects**: [`ObjectsDatabaseOptions`](ObjectsDatabaseOptions.md)
 
-Defined in: [types-dev/config.d.ts:194](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/config.d.ts#L194)
+Defined in: [types-dev/config.d.ts:196](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/types-dev/config.d.ts#L196)
 
 Configuration of the objects database
 
@@ -127,7 +137,7 @@ Configuration of the objects database
 
 > **plugins**: `object`
 
-Defined in: [types-dev/config.d.ts:209](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/config.d.ts#L209)
+Defined in: [types-dev/config.d.ts:211](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/types-dev/config.d.ts#L211)
 
 Controller plugins configuration keyed by plugin name
 
@@ -141,7 +151,7 @@ Controller plugins configuration keyed by plugin name
 
 > **states**: [`StatesDatabaseOptions`](StatesDatabaseOptions.md)
 
-Defined in: [types-dev/config.d.ts:196](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/config.d.ts#L196)
+Defined in: [types-dev/config.d.ts:198](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/types-dev/config.d.ts#L198)
 
 Configuration of the states database
 
@@ -151,7 +161,7 @@ Configuration of the states database
 
 > **system**: `object`
 
-Defined in: [types-dev/config.d.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/540f5fc218263e0c3357f35ef86f7dfd02cbc31c/packages/types-dev/config.d.ts#L153)
+Defined in: [types-dev/config.d.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/types-dev/config.d.ts#L153)
 
 System-wide controller settings
 
@@ -196,6 +206,12 @@ Interval how often the disk size will be checked in ms
 > **compact**: `boolean`
 
 Controller will try to start the instances as a part of the same process. No spawn will be done. Only by adapters that support it and have flag compact flag in io-package.json
+
+#### fence?
+
+> `optional` **fence?**: `boolean`
+
+Whether adapters confirm their host after a DB reconnect before sending commands. Absent: only with more than one host
 
 #### hostname
 
