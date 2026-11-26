@@ -15,6 +15,26 @@ import { dbConnectAsync } from '@iobroker/js-controller-cli';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import { execAsync, execFileAsync } from '@iobroker/js-controller-common-db/tools';
 
+/**
+ * Remove certificate contents and private keys from command output before it is logged or sent to Admin.
+ *
+ * @param output command output
+ */
+export function sanitizeUpgradeOutput(output: string | undefined): string {
+    return String(output || '')
+        .replace(
+            /\{\s*"defaultPrivate"\s*:\s*"(?:\\.|[^"\\])*"\s*,\s*"defaultPublic"\s*:\s*"(?:\\.|[^"\\])*"\s*\}/g,
+            'Certificate configuration updated (certificate contents omitted)',
+        )
+        .replace(
+            /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----[\s\S]*?-----END (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/g,
+            '[REDACTED PRIVATE KEY]',
+        )
+        .replace(/-----BEGIN CERTIFICATE-----[\s\S]*?-----END CERTIFICATE-----/g, '[REDACTED CERTIFICATE]')
+        .replace(/"defaultPrivate"\s*:\s*"(?:\\.|[^"\\])*"/g, '"defaultPrivate": "[REDACTED PRIVATE KEY]"')
+        .replace(/"defaultPublic"\s*:\s*"(?:\\.|[^"\\])*"/g, '"defaultPublic": "[REDACTED CERTIFICATE]"');
+}
+
 /** The upgrade arguments provided to the constructor of the UpgradeManager */
 export interface UpgradeArguments {
     /** Version of controller to upgrade too */
@@ -287,6 +307,8 @@ class UpgradeManager {
      * @param error if it is an error
      */
     log(message: string, error = false): void {
+        message = sanitizeUpgradeOutput(message);
+
         if (error) {
             this.logger.error(`host.${this.hostname} [CONTROLLER_AUTO_UPGRADE] ${message}`);
             this.response.stderr.push(message);
@@ -379,10 +401,10 @@ class UpgradeManager {
             debug: true,
         });
 
-        const stderr = String(res.stderr || '')
+        const stderr = sanitizeUpgradeOutput(res.stderr)
             .split('\n')
             .filter(line => line.trim());
-        const stdout = String(res.stdout || '')
+        const stdout = sanitizeUpgradeOutput(res.stdout)
             .split('\n')
             .filter(line => line.trim());
 
