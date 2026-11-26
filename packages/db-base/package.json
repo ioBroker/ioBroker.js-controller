@@ -1,7 +1,7 @@
 {
     "name": "@iobroker/db-base",
     "type": "module",
-    "version": "8.0.0-alpha.22-20261120-86a16c878",
+    "version": "8.0.0-alpha.27-20261126-6d87adfc0",
     "engines": {
         "node": ">=22.22.2"
     },
@@ -27,6 +27,7 @@
     },
     "scripts": {
         "build": "tsc -b tsconfig.build.json",
+        "test-unit": "mocha --node-option import=tsx \"src/lib/**/*.test.ts\" --exit",
         "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ../cjs/ --cwd=build/esm/"
     },
     "main": "build/cjs/index.js",

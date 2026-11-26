@@ -61,6 +61,10 @@
             },
             "// memLimitError": {
               "type": "string"
+            },
+            "fence": {
+              "type": "boolean",
+              "description": "Whether adapters confirm their host after a DB reconnect before sending commands. Absent: only with more than one host"
             }
           },
           "required": [
@@ -180,6 +184,10 @@
             "ipv4first"
           ],
           "description": "Use 'verbatim' for ipv6 first, else use 'ipv4first'"
+        },
+        "backup": {
+          "$ref": "#/definitions/BackupSettings",
+          "description": "Settings of the backups created with `iobroker backup` (not the backups of the databases, see `objects.backup`)"
         }
       },
       "required": [
@@ -633,6 +641,39 @@
         "warn",
         "error"
       ]
+    },
+    "BackupSettings": {
+      "type": "object",
+      "properties": {
+        "encryption": {
+          "$ref": "#/definitions/BackupEncryptionSettings",
+          "description": "Encrypt every backup, also without `--encrypt`. Absent: backups are only encrypted with `--encrypt`"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Settings of the backups created with `iobroker backup`"
+    },
+    "BackupEncryptionSettings": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "password",
+            "publicKey"
+          ],
+          "description": "`password`: with a password, asked for or taken from `--password-file` or `IOB_BACKUP_PASSWORD`. `publicKey`: with the public key below, without a password - for unattended backups. Only the private key, which should not be kept on this host, can restore them."
+        },
+        "publicKey": {
+          "type": "string",
+          "description": "The public key of `iobroker backup keygen`, needed for the mode `publicKey`"
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "additionalProperties": false,
+      "description": "How backups are encrypted"
     }
   }
 }

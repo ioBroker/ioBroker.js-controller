@@ -6,7 +6,7 @@
 
 # Interface: InternalGetCertificatesResult
 
-Defined in: [adapter/src/lib/\_Types.ts:444](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/adapter/src/lib/_Types.ts#L444)
+Defined in: [adapter/src/lib/\_Types.ts:444](https://github.com/ioBroker/ioBroker.js-controller/blob/6d87adfc026dc8a5e30ad364e1a02b04e776f99a/packages/adapter/src/lib/_Types.ts#L444)
 
 Result of [CertificateManager.getCertificates](../classes/CertificateManager.md#getcertificates): certs, letsEncrypt flag, and file-backed cert paths to watch
 
@@ -16,7 +16,7 @@ Result of [CertificateManager.getCertificates](../classes/CertificateManager.md#
 
 > **certFilePaths**: `string`[]
 
-Defined in: [adapter/src/lib/\_Types.ts:450](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/adapter/src/lib/_Types.ts#L450)
+Defined in: [adapter/src/lib/\_Types.ts:450](https://github.com/ioBroker/ioBroker.js-controller/blob/6d87adfc026dc8a5e30ad364e1a02b04e776f99a/packages/adapter/src/lib/_Types.ts#L450)
 
 Paths of file-backed certificate values that were read, for the caller to watch
 
@@ -26,7 +26,7 @@ Paths of file-backed certificate values that were read, for the caller to watch
 
 > **certs**: [`Certificates`](Certificates.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:446](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/adapter/src/lib/_Types.ts#L446)
+Defined in: [adapter/src/lib/\_Types.ts:446](https://github.com/ioBroker/ioBroker.js-controller/blob/6d87adfc026dc8a5e30ad364e1a02b04e776f99a/packages/adapter/src/lib/_Types.ts#L446)
 
 The resolved certificate content
 
@@ -36,6 +36,6 @@ The resolved certificate content
 
 > `optional` **useLetsEncrypt?**: `boolean`
 
-Defined in: [adapter/src/lib/\_Types.ts:448](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/adapter/src/lib/_Types.ts#L448)
+Defined in: [adapter/src/lib/\_Types.ts:448](https://github.com/ioBroker/ioBroker.js-controller/blob/6d87adfc026dc8a5e30ad364e1a02b04e776f99a/packages/adapter/src/lib/_Types.ts#L448)
 
 Whether Let's Encrypt certificates are configured

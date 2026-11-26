@@ -44,4 +44,129 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         // clean up
         await context.adapter.requireLog!(false);
     });
+
+    describe(`${testName}sigKill sender`, () => {
+        const anotherHost = 'system.host.anotherHost';
+        const mayTerminateUs = (from?: string): Promise<boolean> => (context.adapter as any)._mayTerminateUs(from);
+
+        beforeEach(async () => {
+            await context.objects.setObjectAsync(anotherHost, {
+                type: 'host',
+                common: { name: anotherHost },
+                native: {},
+            } as any);
+        });
+
+        afterEach(async () => {
+            await context.objects.delObjectAsync(anotherHost);
+        });
+
+        it('should not terminate the instance on a sigKill from another host', async () => {
+            let unloaded = false;
+            context.onAdapterUnload = (callback: () => void) => {
+                unloaded = true;
+                callback();
+            };
+
+            // the controller of another host stops its copy of this instance, e.g. after it has been moved
+            await context.states.setState(`system.adapter.${context.adapter.namespace}.sigKill`, {
+                val: -1,
+                ack: false,
+                from: anotherHost,
+            });
+            // give the adapter time to process the state change
+            await new Promise(resolve => setTimeout(resolve, 500));
+            context.onAdapterUnload = null;
+
+            assert.strictEqual(unloaded, false);
+        });
+
+        it('accepts the controller of the own host', async () => {
+            assert.strictEqual(await mayTerminateUs(`system.host.${(context.adapter as any).localHostname}`), true);
+        });
+
+        it('ignores the controller of another existing host', async () => {
+            assert.strictEqual(await mayTerminateUs(anotherHost), false);
+        });
+
+        it('accepts a sender that is no host of this installation, e.g. the test harness', async () => {
+            // @iobroker/testing stops the adapter with a sigKill from "system.host.testing"
+            assert.strictEqual(await mayTerminateUs('system.host.testing'), true);
+        });
+
+        it('ignores senders that are not hosts', async () => {
+            assert.strictEqual(await mayTerminateUs('system.adapter.admin.0'), false);
+            assert.strictEqual(await mayTerminateUs(undefined), false);
+        });
+    });
+
+    describe(`${testName}fence after a reconnect`, () => {
+        const instanceId = (): string => `system.adapter.${context.adapter.namespace}`;
+        let originalHost: string;
+        let terminated: { reason?: string; code?: number } | null;
+        let originalTerminate: any;
+
+        beforeEach(async () => {
+            const obj = await context.objects.getObjectAsync(instanceId());
+            originalHost = obj!.common.host;
+            terminated = null;
+            originalTerminate = context.adapter.terminate;
+            (context.adapter as any).terminate = (reason?: string, code?: number) => (terminated = { reason, code });
+        });
+
+        afterEach(async () => {
+            (context.adapter as any).terminate = originalTerminate;
+            await context.objects.extendObject(instanceId(), { common: { host: originalHost } });
+        });
+
+        it('keeps an instance which is still assigned to this host', async () => {
+            await context.objects.extendObject(instanceId(), { common: { host: context.adapter.host } });
+
+            assert.strictEqual(await (context.adapter as any)._fence('a test'), true);
+            assert.strictEqual(terminated, null);
+        });
+
+        it('terminates an instance which was moved to another host, without unload', async () => {
+            await context.objects.extendObject(instanceId(), { common: { host: 'anotherHost' } });
+
+            assert.strictEqual(await (context.adapter as any)._fence('a test'), false);
+            assert.strictEqual(terminated!.code, 11); // ADAPTER_REQUESTED_TERMINATION
+            assert.match(terminated!.reason!, /Moved to host "anotherHost"/);
+        });
+    });
+
+    describe(`${testName}whether to fence`, () => {
+        const hosts = ['system.host.fenceTestA', 'system.host.fenceTestB'];
+        const needsFence = (): Promise<boolean> => (context.adapter as any)._needsFence();
+        let system: any;
+        let compact: boolean;
+
+        beforeEach(async () => {
+            // the test adapter runs in compact mode, which never fences
+            compact = (context.adapter as any).startedInCompactMode;
+            (context.adapter as any).startedInCompactMode = false;
+            system = (context.adapter as any)._config.system;
+            (context.adapter as any)._config.system = { ...system };
+            for (const id of hosts) {
+                await context.objects.setObjectAsync(id, { type: 'host', common: { name: id }, native: {} } as any);
+            }
+        });
+
+        afterEach(async () => {
+            (context.adapter as any).startedInCompactMode = compact;
+            (context.adapter as any)._config.system = system;
+            for (const id of hosts) {
+                await context.objects.delObjectAsync(id);
+            }
+        });
+
+        it('fences with more than one host', async () => {
+            assert.strictEqual(await needsFence(), true);
+        });
+
+        it('follows system.fence of iobroker.json', async () => {
+            (context.adapter as any)._config.system.fence = false;
+            assert.strictEqual(await needsFence(), false);
+        });
+    });
 }

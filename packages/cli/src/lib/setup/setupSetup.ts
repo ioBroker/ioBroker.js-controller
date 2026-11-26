@@ -19,6 +19,7 @@ import rl from 'readline-sync';
 import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '@/lib/_Types.js';
 import type { ProcessCommandOptions } from '@/lib/cli/cliCommand.js';
 import { CLICert } from '@/lib/cli/cliCert.js';
+import { needsDefaultCertificate, type SystemCertificates } from '@/lib/setup/defaultCertificate.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
@@ -430,6 +431,11 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
                                 );
                                 cert = null;
                             }
+                        } else if (!cert.certificateFilename && tools.isMalformedDefaultCertificate(cert.certificate)) {
+                            console.log(
+                                'Existing earlier generated certificate cannot be read by browsers because of a character like "_" in the host name. Generating new Certificate!',
+                            );
+                            cert = null;
                         }
                     }
                     if (!cert) {
@@ -1722,13 +1728,23 @@ export async function processCommandSetup(options: ProcessCommandOptions): Promi
                     }
                 }
 
-                await new Promise(resolve => {
-                    // Creates a fresh certificate
-                    // Create a new instance of the cert command,
-                    // but use the resolve method as a callback
-                    const cert = new CLICert({ ...commandOptions, callback: resolve });
-                    cert.create().catch(e => console.error(`Cannot create certificate: ${e.message}`));
-                });
+                let certificates: SystemCertificates | undefined;
+                try {
+                    const certificatesObj = await objects.getObject('system.certificates');
+                    certificates = certificatesObj?.native?.certificates;
+                } catch {
+                    // cannot be read, so create one as on a fresh installation
+                }
+
+                // only a fresh installation has no certificate yet: `setup first` runs on every upgrade too
+                if (needsDefaultCertificate(certificates)) {
+                    await new Promise(resolve => {
+                        // Create a new instance of the cert command,
+                        // but use the resolve method as a callback
+                        const cert = new CLICert({ ...commandOptions, callback: resolve });
+                        cert.create().catch(e => console.error(`Cannot create certificate: ${e.message}`));
+                    });
+                }
             }
 
             // we update existing things, in first as well as normal setup

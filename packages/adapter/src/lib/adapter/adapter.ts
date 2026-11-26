@@ -140,7 +140,7 @@ import {
     deleteObjectAttribute,
     encryptArray,
     getObjectAttribute,
-    isLogLevel,
+    isInstanceLogLevel,
 } from '@iobroker/js-controller-common-db/tools';
 
 const controllerVersion = packJson.version;
@@ -908,11 +908,18 @@ export class AdapterClass extends EventEmitter {
     private readonly _config: InternalAdapterJsonConfig;
     private readonly _options: AdapterOptions;
     private readonly startedInCompactMode: boolean;
+    /** Name of the host this process runs on, only its controller is allowed to terminate us via sigKill */
+    private readonly localHostname: string;
     /** List of instances which want our logs */
     private readonly logList = new Set<string>();
     private enums: Record<string, ioBroker.EnumObject> = {};
     private eventLoopLags: number[] = [];
     private overwriteLogLevel: boolean = false;
+    /**
+     * The log level of this instance is `off`: the logger is silent, while `_config.log.level` stays a real level
+     * (`error`), because adapters read `adapter.log.level` and compare it with the levels they know
+     */
+    #logLevelOff = false;
     adapterReady: boolean = false;
     /**
      * Contains a live cache of the adapter's states.
@@ -970,6 +977,8 @@ export class AdapterClass extends EventEmitter {
     /** contents of io-package.json */
     ioPack: ioBroker.InstanceObject;
     private _initializeTimeout?: NodeJS.Timeout | null;
+    /** Whether the DB clients fence after a reconnect */
+    private _fenceEnabled = false;
     private inited?: boolean;
     /** contents of iobroker.json if required via AdapterOptions */
     systemConfig?: InternalAdapterJsonConfig;
@@ -1089,6 +1098,7 @@ export class AdapterClass extends EventEmitter {
             this._config = this._options.config as ioBroker.IoBrokerJson;
         }
         this.startedInCompactMode = !!this._options.compact;
+        this.localHostname = tools.getHostName();
 
         const parsedArgs = yargs(process.argv.slice(2))
             .options({
@@ -1127,8 +1137,10 @@ export class AdapterClass extends EventEmitter {
             })
             .parseSync();
 
-        if (parsedArgs.loglevel && isLogLevel(parsedArgs.loglevel)) {
-            this._config.log.level = parsedArgs.loglevel;
+        if (parsedArgs.loglevel && isInstanceLogLevel(parsedArgs.loglevel)) {
+            // The logger does not exist yet: it is created with this level below and silenced there for `off`
+            this.#logLevelOff = parsedArgs.loglevel === 'off';
+            this._config.log.level = parsedArgs.loglevel === 'off' ? 'error' : parsedArgs.loglevel;
             this.overwriteLogLevel = true;
         }
 
@@ -1151,6 +1163,8 @@ export class AdapterClass extends EventEmitter {
                 this._config.log.level = 'debug';
                 this.overwriteLogLevel = true;
             }
+            // --debug is a run to look at the output, so it wins over a log level of `off`
+            this.#logLevelOff = false;
         }
 
         if (parsedArgs.instance && parseInt(parsedArgs.instance, 10).toString() === parsedArgs.instance) {
@@ -1183,6 +1197,8 @@ export class AdapterClass extends EventEmitter {
         this._namespaceRegExp = new RegExp(`^${`${this.namespace}.`.replace(/\./g, '\\.')}`); // cache the regex object 'adapter.0.'
 
         this._logger = logger(this._config.log);
+        // `--loglevel off`: the transports got `error` above, but the instance must not output even that
+        this._logger.silent = this.#logLevelOff;
 
         // compatibility
         if (!this._logger.silly) {
@@ -3845,6 +3861,10 @@ export class AdapterClass extends EventEmitter {
      * }
      * ```
      *
+     * If the merged object equals the existing one (apart from `ts`, `from` and `user`), nothing is written:
+     * the object keeps its `ts` and no objectChange is sent. So it is fine to call extendObject on every poll.
+     * The default value (`common.def`) is still set if the state does not exist.
+     *
      * @param id object ID, that must be extended
      * @param obj part that must be extended
      * @param options optional user context
@@ -4000,7 +4020,10 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            const cbObj = await this.#objects.extendObject(options.id, options.obj, options.options);
+            // Adapters extend their own objects on every poll, so an object that does not change is not written again.
+            // extendForeignObject keeps writing: extending system.adapter.<name>.<instance> with `common.enabled: true`
+            // is used to restart a running instance, and that needs the objectChange even if nothing changed.
+            const cbObj = await this.#objects.extendObject(options.id, options.obj, options.options, true);
             let defState;
             if (options.obj.type === 'state' || oldObj.type === 'state') {
                 if (options.obj.common && 'def' in options.obj.common && options.obj.common.def !== undefined) {
@@ -12552,6 +12575,7 @@ export class AdapterClass extends EventEmitter {
         this.#states = new this.States({
             namespace: this.namespaceLog,
             connection: this._config.states,
+            fence: this._fenceEnabled ? () => this._fence('a states reconnect') : undefined,
             connected: async () => {
                 if (!this.#states) {
                     return;
@@ -12626,8 +12650,7 @@ export class AdapterClass extends EventEmitter {
                     id === `system.adapter.${this.namespace}.sigKill` &&
                     state &&
                     state.ts > this.statesConnectedTime! &&
-                    state.from &&
-                    state.from.startsWith('system.host.')
+                    (await this._mayTerminateUs(state.from))
                 ) {
                     const sigKillVal = parseInt(state.val as any);
                     if (!isNaN(sigKillVal)) {
@@ -12656,21 +12679,20 @@ export class AdapterClass extends EventEmitter {
 
                 if (id === `system.adapter.${this.namespace}.logLevel`) {
                     if (this._config && this._config.log && state && !state.ack) {
-                        let currentLevel = this._config.log.level;
+                        let currentLevel = this.#getInstanceLogLevel();
                         const newLogLevel = state.val as string;
-                        if (state.val && state.val !== currentLevel && isLogLevel(newLogLevel)) {
+                        if (state.val && state.val !== currentLevel && isInstanceLogLevel(newLogLevel)) {
                             this.overwriteLogLevel = true;
-                            this._config.log.level = newLogLevel;
-                            for (const transport of this._logger.transports) {
-                                // set the loglevel on transport only if no loglevel was pinned in log config
-                                // @ts-expect-error it is our own modification
-                                if (!transport._defaultConfigLoglevel) {
-                                    transport.level = newLogLevel;
-                                }
+                            const message = `Loglevel changed from "${currentLevel}" to "${newLogLevel}"`;
+                            if (newLogLevel === 'off') {
+                                // Logged before the logger is silenced, so the log shows why the instance is quiet
+                                this._logger.info(`${this.namespaceLog} ${message}`);
+                                this.#applyLogLevel(newLogLevel);
+                            } else {
+                                // Logged after the logger is active again (and has the new level)
+                                this.#applyLogLevel(newLogLevel);
+                                this._logger.info(`${this.namespaceLog} ${message}`);
                             }
-                            this._logger.info(
-                                `${this.namespaceLog} Loglevel changed from "${currentLevel}" to "${state.val}"`,
-                            );
                             currentLevel = newLogLevel;
                         } else if (state.val && state.val !== currentLevel) {
                             this._logger.info(`${this.namespaceLog} Got invalid loglevel "${state.val}", ignoring`);
@@ -12879,6 +12901,12 @@ export class AdapterClass extends EventEmitter {
                     return;
                 }
 
+                // decided before the states DB is created
+                this._fenceEnabled = await this._needsFence();
+                if (this._fenceEnabled) {
+                    this.#objects.enableFence(() => this._fence('an objects reconnect'));
+                }
+
                 // subscribe to user changes
                 this.#objects.subscribe('system.user.*');
 
@@ -13050,6 +13078,32 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
+     * Checks whether a sigKill written by `from` may terminate this process.
+     *
+     * In multihost the sigKill state is shared by all copies of this instance: a controller stopping its
+     * (possibly stale) copy on another host must not terminate us, so a sigKill from another existing host
+     * is ignored. A sender that is not a host of this installation, e.g. the test harness of
+     * the adapter testing package ("system.host.testing"), is still obeyed, as before.
+     *
+     * @param from the `from` of the sigKill state
+     */
+    private async _mayTerminateUs(from: string | undefined): Promise<boolean> {
+        if (!from?.startsWith('system.host.')) {
+            return false;
+        }
+        if (from === `system.host.${this.localHostname}`) {
+            return true;
+        }
+        try {
+            const obj = await this.#objects?.getObject(from);
+            return obj?.type !== 'host';
+        } catch (e) {
+            this._logger.warn(`${this.namespaceLog} Cannot check the sender "${from}" of sigKill: ${e.message}`);
+            return false;
+        }
+    }
+
+    /**
      * Called if states and objects successfully initialized
      */
     private async _prepareInitAdapter(): Promise<void> {
@@ -13075,7 +13129,8 @@ export class AdapterClass extends EventEmitter {
             !this._config.forceIfDisabled &&
             !this._config.isInstall &&
             !this.startedInCompactMode &&
-            killRes?.from?.startsWith('system.host.') &&
+            // a stale value left by the controller of another host (e.g. after a failover) is not meant for us
+            killRes?.from === `system.host.${this.localHostname}` &&
             killRes.ack &&
             !isNaN(killRes.val) &&
             killRes.val !== process.pid
@@ -13104,6 +13159,42 @@ export class AdapterClass extends EventEmitter {
                 return this._initAdapter(res);
             }
         }
+    }
+
+    /**
+     * Apply a log level of the instance (from `common.loglevel` or the state `logLevel`) to the logger
+     *
+     * `off` is no level winston knows. The logger as a whole is silenced instead, which holds back every transport,
+     * also one with a level of its own in iobroker.json and the one that forwards the log to other instances like
+     * admin - "off" means that the instance outputs nothing at all, not even errors. The silencing is done on the
+     * logger and not on the transports, so that a transport which iobroker.json switches off with `silent: true` is
+     * not switched on again with the next level. The real level stays `error`, so that `_config.log.level` and
+     * `adapter.log.level` keep being a valid `LogLevel` for code that compares it.
+     *
+     * @param level the new log level of the instance
+     */
+    #applyLogLevel(level: ioBroker.InstanceLogLevel): void {
+        const realLevel: ioBroker.LogLevel = level === 'off' ? 'error' : level;
+
+        this.#logLevelOff = level === 'off';
+        this._config.log.level = realLevel;
+
+        for (const transport of this._logger.transports) {
+            // set the loglevel on transport only if no loglevel was pinned in log config
+            // @ts-expect-error it is our own modification
+            if (!transport._defaultConfigLoglevel) {
+                transport.level = realLevel;
+            }
+        }
+
+        this._logger.silent = this.#logLevelOff;
+    }
+
+    /**
+     * Get the log level of the instance as the user set it, which is `off` while the logger is silenced
+     */
+    #getInstanceLogLevel(): ioBroker.InstanceLogLevel {
+        return this.#logLevelOff ? 'off' : this._config.log.level;
     }
 
     /**
@@ -13181,18 +13272,14 @@ export class AdapterClass extends EventEmitter {
             }
 
             // @ts-expect-error
-            if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
+            const configuredLogLevel: unknown = adapterConfig.common.loglevel;
+            if (
+                typeof configuredLogLevel === 'string' &&
+                isInstanceLogLevel(configuredLogLevel) &&
+                !this.overwriteLogLevel
+            ) {
                 // set configured in DB log level
-                for (const trans of Object.values(this._logger.transports)) {
-                    // set the loglevel on transport only if no loglevel was pinned in log config
-                    // @ts-expect-error it is our own modification
-                    if (!trans._defaultConfigLoglevel) {
-                        // @ts-expect-error
-                        trans.level = adapterConfig.common.loglevel;
-                    }
-                }
-                // @ts-expect-error
-                this._config.log.level = adapterConfig.common.loglevel;
+                this.#applyLogLevel(configuredLogLevel);
             }
 
             // @ts-expect-error
@@ -13314,7 +13401,8 @@ export class AdapterClass extends EventEmitter {
         // set current loglevel
         this.#states
             .setState(`system.adapter.${this.namespace}.logLevel`, {
-                val: this._config.log.level,
+                // `off` and not the `error` the logger is set to, so that admin shows what the user chose
+                val: this.#getInstanceLogLevel(),
                 ack: true,
                 from: `system.adapter.${this.namespace}`,
             })
@@ -13443,6 +13531,69 @@ export class AdapterClass extends EventEmitter {
             }
             this.emit('ready');
         }
+    }
+
+    /**
+     * Whether to fence: `system.fence` of iobroker.json, else only with more than one host
+     */
+    private async _needsFence(): Promise<boolean> {
+        if (this.startedInCompactMode || this._config.isInstall || !this.#objects) {
+            return false;
+        }
+        const configured = this._config.system?.fence;
+        if (typeof configured === 'boolean') {
+            return configured;
+        }
+        try {
+            const hosts = await this.#objects.getObjectView('system', 'host', {
+                startkey: 'system.host.',
+                endkey: 'system.host.\u9999',
+            });
+            return hosts.rows.length > 1;
+        } catch (e) {
+            this._logger.warn(`${this.namespaceLog} Cannot count the hosts, the fence stays on: ${e.message}`);
+            return true;
+        }
+    }
+
+    /**
+     * Fence after a reconnect: true if this instance is still assigned to this host. Otherwise it terminates
+     * without unload, as it could write stale states over those of the copy on the new host.
+     *
+     * @param reason why the check runs, for the log
+     */
+    private async _fence(reason: string): Promise<boolean> {
+        if (this.terminated || !this.#objects) {
+            return false;
+        }
+
+        const limitMs = (this._config.objects.connectTimeout || 2_000) * 2;
+        let timer: NodeJS.Timeout | undefined;
+        let obj: ioBroker.AnyObject | null;
+        try {
+            obj = await Promise.race([
+                this.#objects.getObjectForFence(`system.adapter.${this.namespace}`),
+                new Promise<never>((_, reject) => {
+                    timer = setTimeout(() => reject(new Error(`no answer within ${limitMs} ms`)), limitMs);
+                }),
+            ]);
+        } catch (e) {
+            // a normal error code, so the controller restarts the instance with its usual delay
+            this.terminate(
+                `Cannot confirm the host of this instance after ${reason}: ${e.message}`,
+                EXIT_CODES.NO_CONNECTION_TO_OBJ_DB,
+            );
+            return false;
+        } finally {
+            clearTimeout(timer);
+        }
+
+        const host = (obj as ioBroker.InstanceObject | null)?.common?.host;
+        if (host && host !== this.host) {
+            this.terminate(`Moved to host "${host}" during ${reason}`, EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+            return false;
+        }
+        return true;
     }
 
     private async _exceptionHandler(err: NodeJS.ErrnoException, isUnhandledRejection?: boolean): Promise<void> {

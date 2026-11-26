@@ -235,7 +235,7 @@ export class Upgrade {
                         obj =>
                             obj.value.common &&
                             obj.value.common.name === dName &&
-                            obj.value.common.host === this.hostname,
+                            tools.isInstanceAssignedToHost(obj.value, this.hostname),
                     );
                     if (locInstances.length === 0) {
                         return Promise.reject(new Error(`Required dependency "${dName}" not found on this host.`));

@@ -19,4 +19,6 @@ export interface TestContext extends Mocha.Context {
     onAdapterMessage: ioBroker.MessageHandler | null;
     /** Allow to unregister handler by setting null */
     onAdapterObjectChanged: ioBroker.ObjectChangeHandler | null;
+    /** The configuration of the states DB the tests run against, e.g. `type: 'redis'` */
+    statesConfig?: { type?: string };
 }

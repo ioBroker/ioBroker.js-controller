@@ -2,8 +2,12 @@ import fs from 'fs-extra';
 import type cp from 'node:child_process';
 import { spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
+import path from 'node:path';
+import { setTimeout as wait } from 'node:timers/promises';
+import { valid } from 'semver';
 import { tools } from '@iobroker/js-controller-common';
 import { SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
+import { execFileAsync, getWindowsServiceInstallation } from '@iobroker/js-controller-common-db/tools';
 import { PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import type { NotificationHandler } from '@iobroker/js-controller-common';
@@ -20,6 +24,112 @@ const require = createRequire(import.meta.url || `file://${__filename}`);
 const REBOOT_REQUIRED_PATH = '/var/run/reboot-required';
 /** This file contains a list of packages which require the reboot, separated by newline */
 const REBOOT_REQUIRED_PACKAGES_PATH = '/var/run/reboot-required.pkgs';
+
+const WINDOWS_SERVICE_DOES_NOT_EXIST = 1060;
+const WINDOWS_SERVICE_IS_NOT_STARTED = 1062;
+const WINDOWS_HELPER_REMOVAL_RETRIES = 20;
+const WINDOWS_HELPER_REMOVAL_RETRY_DELAY_MS = 250;
+
+type RunServiceControl = (file: string, args: readonly string[]) => Promise<unknown>;
+type RemoveFile = (file: string) => Promise<unknown>;
+type WaitForRetry = (delay: number) => Promise<unknown>;
+
+/**
+ * Escape a value before inserting it into a WinSW XML configuration.
+ *
+ * @param value value to escape
+ */
+export function escapeWindowsServiceXml(value: string | number): string {
+    return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&apos;');
+}
+
+/**
+ * Validate values received through the controller upgrade host message before starting any process.
+ *
+ * @param version requested controller version
+ * @param adminInstance Admin instance that requested the upgrade
+ */
+export function validateControllerUpgradeArguments(version: unknown, adminInstance: unknown): void {
+    if (typeof version !== 'string' || !valid(version)) {
+        throw new Error(`Invalid version "${String(version)}"`);
+    }
+    if (!Number.isInteger(adminInstance) || (adminInstance as number) < 0) {
+        throw new Error(`Invalid admin instance "${String(adminInstance)}"`);
+    }
+}
+
+function isServiceControlError(error: unknown, expectedCode: number): boolean {
+    const candidate = error as { code?: number | string; message?: string };
+    return (
+        Number(candidate?.code) === expectedCode || new RegExp(`\\b${expectedCode}\\b`).test(candidate?.message || '')
+    );
+}
+
+/**
+ * Remove a helper service left behind by an interrupted earlier controller upgrade.
+ *
+ * @param serviceId Windows service id of the temporary helper
+ * @param configFile path to its WinSW configuration
+ * @param runServiceControl service control command runner, replaceable for tests
+ * @param removeFile file removal function, replaceable for tests
+ * @param waitForRetry delay function, replaceable for tests
+ */
+export async function removeStaleWindowsUpgradeHelper(
+    serviceId: string,
+    configFile: string,
+    runServiceControl: RunServiceControl = execFileAsync,
+    removeFile: RemoveFile = fs.remove,
+    waitForRetry: WaitForRetry = wait,
+): Promise<void> {
+    try {
+        await runServiceControl('sc.exe', ['query', serviceId]);
+    } catch (error) {
+        if (!isServiceControlError(error, WINDOWS_SERVICE_DOES_NOT_EXIST)) {
+            throw error;
+        }
+        await removeFile(configFile);
+        return;
+    }
+
+    try {
+        await runServiceControl('sc.exe', ['stop', serviceId]);
+    } catch (error) {
+        if (
+            !isServiceControlError(error, WINDOWS_SERVICE_IS_NOT_STARTED) &&
+            !isServiceControlError(error, WINDOWS_SERVICE_DOES_NOT_EXIST)
+        ) {
+            throw error;
+        }
+    }
+
+    try {
+        await runServiceControl('sc.exe', ['delete', serviceId]);
+    } catch (error) {
+        if (!isServiceControlError(error, WINDOWS_SERVICE_DOES_NOT_EXIST)) {
+            throw error;
+        }
+    }
+
+    for (let attempt = 0; attempt < WINDOWS_HELPER_REMOVAL_RETRIES; attempt++) {
+        try {
+            await runServiceControl('sc.exe', ['query', serviceId]);
+        } catch (error) {
+            if (isServiceControlError(error, WINDOWS_SERVICE_DOES_NOT_EXIST)) {
+                await removeFile(configFile);
+                return;
+            }
+            throw error;
+        }
+        await waitForRetry(WINDOWS_HELPER_REMOVAL_RETRY_DELAY_MS);
+    }
+
+    throw new Error(`Could not remove stale Windows upgrade helper service "${serviceId}"`);
+}
 
 /** Everything the system checks need to do their work */
 export interface SystemChecksOptions {
@@ -202,7 +312,63 @@ export class SystemChecks {
      */
     async startUpgradeManager(options: UpgradeArguments): Promise<void> {
         const { version, adminInstance, uid, gid } = options;
+        validateControllerUpgradeArguments(version, adminInstance);
         const upgradeProcessPath = require.resolve('../../upgradeManager');
+
+        if (process.platform === 'win32') {
+            const windowsService = getWindowsServiceInstallation();
+            if (!windowsService) {
+                throw new Error('Cannot start controller upgrade: no WinSW service installation found');
+            }
+
+            const daemonDir = path.dirname(windowsService.executable);
+            const helperServiceId = `iob_controller_upgrade_${this.#hostname.replace(/[^a-zA-Z0-9_.-]/g, '_')}`;
+            const helperConfig = path.join(daemonDir, `${helperServiceId}.xml`);
+            const rootDir = tools.getRootDir();
+            const helperXml = `<service>
+    <id>${escapeWindowsServiceXml(helperServiceId)}</id>
+    <name>${escapeWindowsServiceXml(`ioBroker controller upgrade (${this.#hostname})`)}</name>
+    <description>Temporary service for an ioBroker js-controller upgrade</description>
+    <executable>${escapeWindowsServiceXml(process.execPath)}</executable>
+    <arguments>&quot;${escapeWindowsServiceXml(upgradeProcessPath)}&quot; ${escapeWindowsServiceXml(version)} ${escapeWindowsServiceXml(adminInstance)} ${escapeWindowsServiceXml(uid)} ${escapeWindowsServiceXml(gid)}</arguments>
+    <workingdirectory>${escapeWindowsServiceXml(rootDir)}</workingdirectory>
+    <env name="IOBROKER_WINDOWS_UPGRADE_HELPER_SERVICE" value="${escapeWindowsServiceXml(helperServiceId)}"/>
+    <env name="IOBROKER_WINDOWS_UPGRADE_HELPER_CONFIG" value="${escapeWindowsServiceXml(helperConfig)}"/>
+    <env name="IOBROKER_WINDOWS_MAIN_SERVICE_CONFIG" value="${escapeWindowsServiceXml(windowsService.config)}"/>
+    <env name="IOBROKER_ROOT_DIR" value="${escapeWindowsServiceXml(rootDir)}"/>
+    <log mode="none"/>
+    <stoptimeout>30sec</stoptimeout>
+</service>
+`;
+
+            await removeStaleWindowsUpgradeHelper(helperServiceId, helperConfig);
+            await fs.writeFile(helperConfig, helperXml, 'utf8');
+            let installed = false;
+
+            try {
+                await execFileAsync(windowsService.executable, ['install', helperConfig, '--no-elevate'], {
+                    cwd: daemonDir,
+                });
+                installed = true;
+                await execFileAsync(windowsService.executable, ['start', helperConfig, '--no-elevate'], {
+                    cwd: daemonDir,
+                });
+            } catch (e) {
+                if (installed) {
+                    try {
+                        await execFileAsync(windowsService.executable, ['uninstall', helperConfig, '--no-elevate'], {
+                            cwd: daemonDir,
+                        });
+                    } catch {
+                        // Keep the original error
+                    }
+                }
+                await fs.remove(helperConfig);
+                throw e;
+            }
+            return;
+        }
+
         let upgradeProcess: cp.ChildProcess;
 
         const isSystemd = await tools.isIoBrokerInstalledAsSystemd();
