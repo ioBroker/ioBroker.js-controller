@@ -4,7 +4,7 @@ import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import { getDefaultNodeArgs } from '@iobroker/js-controller-common-db/tools';
 import type { InstanceManager, InstanceManagerOptions } from '@/lib/controller/instances/instanceManager.js';
 import type { InstallQueueEntry } from '@/lib/controller/types.js';
-import { getInstallArgsFromInstalledFrom } from '@/lib/utils.js';
+import { getCodeOnlyInstallArgs, getInstallArgsFromInstalledFrom } from '@/lib/utils.js';
 
 /** How often the installation of an adapter is retried before it is given up */
 const MAX_DOWNLOAD_RETRIES = 4;
@@ -98,11 +98,17 @@ export class InstallQueue {
             return;
         }
 
-        const proc = instances.procs[task.id];
+        const { codeOnly } = task;
+        // An adapter which is only needed for its code has no process entry on this host, its task counts itself
+        const proc = codeOnly ?? instances.procs[task.id];
         proc.downloadRetry = proc.downloadRetry ?? 0;
 
-        if (proc?.downloadRetry >= MAX_DOWNLOAD_RETRIES) {
-            if (task.rebuild) {
+        if (proc.downloadRetry >= MAX_DOWNLOAD_RETRIES) {
+            if (codeOnly) {
+                logger.error(
+                    `${hostLogPrefix} Cannot install adapter "${name}" for the web extension of ${task.id} on another host. To retry it restart this host. Also check the error messages in the log!`,
+                );
+            } else if (task.rebuild) {
                 logger.error(
                     `${hostLogPrefix} Cannot rebuild adapter "${name}". To retry it disable/enable the adapter or restart host. Also check the error messages in the log or execute "npm install --production" in adapter directory manually!`,
                 );
@@ -113,6 +119,7 @@ export class InstallQueue {
             }
             setTimeout(() => {
                 this.#queue.shift();
+                codeOnly?.onDone();
                 this.#processQueue();
             }, 500);
             return;
@@ -120,7 +127,11 @@ export class InstallQueue {
 
         proc.downloadRetry++;
 
-        if (task.rebuild) {
+        if (codeOnly) {
+            logger.info(
+                `${hostLogPrefix} adapter "${name}" is needed for the web extension of ${task.id}, which runs on another host. Try to install it... ${proc.downloadRetry} attempt`,
+            );
+        } else if (task.rebuild) {
             logger.warn(
                 `${hostLogPrefix} adapter "${name}" seems to be installed for a different version of Node.js. Trying to rebuild it... ${
                     instances.procs[task.id].rebuildCounter
@@ -136,7 +147,18 @@ export class InstallQueue {
         const installArgs = [];
         const installOptions = { windowsHide: true };
 
-        if (!task.rebuild && task.installedFrom && proc.downloadRetry < 3) {
+        if (codeOnly) {
+            installArgs.push(
+                ...getCodeOnlyInstallArgs({
+                    adapterName: task.id.split('.')[2],
+                    version: task.version,
+                    installedFrom: task.installedFrom,
+                    isInstalled: codeOnly.isInstalled,
+                    // two tries with installed location, afterward we try the normal npm version install
+                    useInstalledFrom: proc.downloadRetry < 3,
+                }),
+            );
+        } else if (!task.rebuild && task.installedFrom && proc.downloadRetry < 3) {
             // two tries with installed location, afterward we try the normal npm version install
             installArgs.push(...getInstallArgsFromInstalledFrom(task.installedFrom, task.id.split('.')[2]));
         } else {
@@ -168,6 +190,12 @@ export class InstallQueue {
          * @param task The task which has been processed
          */
         const finishTask = (task: InstallQueueEntry): void => {
+            if (task.codeOnly) {
+                // nothing to start here, whoever needs the code checks the result
+                task.codeOnly.onDone();
+                return;
+            }
+
             if (!instances.procs[task.id]) {
                 return;
             }
@@ -249,6 +277,7 @@ export class InstallQueue {
                 );
                 setTimeout(() => {
                     this.#queue.shift();
+                    codeOnly?.onDone();
                     this.#processQueue();
                 }, 1_000);
             });
@@ -258,6 +287,7 @@ export class InstallQueue {
             );
             setTimeout(() => {
                 this.#queue.shift();
+                codeOnly?.onDone();
                 this.#processQueue();
             }, 1_000);
         }

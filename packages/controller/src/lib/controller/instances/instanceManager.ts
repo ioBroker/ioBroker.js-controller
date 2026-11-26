@@ -8,6 +8,7 @@ import { InstanceStarter } from '@/lib/controller/instances/instanceStarter.js';
 import { CompactGroupManager } from '@/lib/controller/instances/compactGroupManager.js';
 import { ScheduleRunner } from '@/lib/controller/instances/scheduleRunner.js';
 import { UsedResourcesManager } from '@/lib/controller/instances/usedResourcesManager.js';
+import { WebExtensionProvider } from '@/lib/controller/instances/webExtensionProvider.js';
 import { isPythonAdapter } from '@/lib/pythonRuntime.js';
 import type { NotificationHandler } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
@@ -101,11 +102,15 @@ export class InstanceManager {
     readonly scheduler: ScheduleRunner;
     /** Keeps the registry of the resources the instances of this host occupy */
     readonly usedResources: UsedResourcesManager;
+    /** Installs the code of web extensions of other hosts which the web servers of this host load */
+    readonly webExtensions: WebExtensionProvider;
 
     /** Timer which delays the writing of the pids file */
     #storeTimer: NodeJS.Timeout | null = null;
     /** Instances stopped because they moved to another host, their offline states are not ours to write */
     readonly #stoppedAsMovedAway = new Set<string>();
+    /** Stops in progress, so a second stop of the same instance waits for the first */
+    readonly #runningStops = new Map<string, Promise<void>>();
 
     /**
      * @param options Everything the instance manager needs to do its work
@@ -121,6 +126,7 @@ export class InstanceManager {
         this.compactGroups = new CompactGroupManager(forChildren);
         this.usedResources = new UsedResourcesManager(forChildren);
         this.scheduler = new ScheduleRunner(forChildren);
+        this.webExtensions = new WebExtensionProvider(forChildren);
     }
 
     /**
@@ -164,7 +170,9 @@ export class InstanceManager {
 
                 // @ts-expect-error is mode web valid, it is not in schema
                 if (instance.common.mode === 'web' || instance.common.mode === 'none') {
-                    if (instance.common.host === hostname) {
+                    await this.#reassignFromIp(instance);
+
+                    if (tools.isInstanceAssignedToHost(instance, hostname)) {
                         const name = instance._id.split('.')[2];
                         const adapterDir = tools.getAdapterDir(name);
                         if (!fs.existsSync(adapterDir!)) {
@@ -200,6 +208,13 @@ export class InstanceManager {
         }
 
         this.initInstances();
+
+        // after the instances of this host, so their own installations are queued first
+        try {
+            await this.webExtensions.setInstances(instances);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Cannot check the web extensions of other hosts: ${e.message}`);
+        }
     }
 
     /**
@@ -245,13 +260,39 @@ export class InstanceManager {
     }
 
     /**
-     * Check if an instance is handled by this host process and initialize internal data structures
+     * Legacy: instances were assigned to a host by IP address, convert an own IP to the hostname
+     *
+     * @param instance instance object, it is updated in place
+     */
+    async #reassignFromIp(instance: ioBroker.InstanceObject): Promise<void> {
+        const { logger, hostLogPrefix, hostname } = this.#options;
+
+        if (!instance.common.host || !tools.findIPs().includes(instance.common.host)) {
+            return;
+        }
+
+        const ip = instance.common.host;
+        instance.common.host = hostname;
+
+        try {
+            await this.#options.objects.setObject(instance._id, instance);
+            logger.info(`${hostLogPrefix} Reassign instance ${instance._id} from IP ${ip} to host ${hostname}`);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Cannot update hostname for ${instance._id}: ${e.message}`);
+        }
+    }
+
+    /**
+     * Check if an instance is handled by this host process and initialize internal data structures.
+     * An instance assigned to one of the IP addresses of this host is reassigned to the hostname first.
      *
      * @param instance instance object
      * @returns true if instance needs to be handled by this host (true) or not
      */
     async checkAndAddInstance(instance: ioBroker.InstanceObject): Promise<boolean> {
         const { config, logger, hostLogPrefix, hostname, isCompactGroupController } = this.#options;
+
+        await this.#reassignFromIp(instance);
 
         if (!this.#isAssignedHere(instance.common.host)) {
             return false;
@@ -481,12 +522,74 @@ export class InstanceManager {
     }
 
     /**
-     * Whether an instance with the given host is assigned to this host
+     * Whether an instance with the given host is handled by this host: assigned to it by hostname (see
+     * `tools.isInstanceAssignedToHost`), or not assigned yet, which the controller claims on start
      *
      * @param host `common.host` of the instance
      */
     #isAssignedHere(host: string | null | undefined): boolean {
-        return !host || host === this.#options.hostname || tools.findIPs().includes(host);
+        return (
+            !host ||
+            tools.isInstanceAssignedToHost({ common: { host } } as ioBroker.InstanceObject, this.#options.hostname)
+        );
+    }
+
+    /**
+     * Stop running instances which were moved, disabled or deleted while their object changes could not reach us,
+     * e.g. during a reconnect
+     *
+     * @param reason why the check runs, for the log
+     */
+    async recheckInstances(reason: string): Promise<void> {
+        const { objects, logger, hostLogPrefix } = this.#options;
+
+        for (const [id, proc] of Object.entries(this.procs)) {
+            if ((!proc.process && !proc.schedule) || proc.stopping) {
+                continue;
+            }
+
+            let obj: ioBroker.InstanceObject | null | undefined;
+            try {
+                obj = (await objects.getObject(id)) as ioBroker.InstanceObject | null | undefined;
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Cannot recheck ${id} after ${reason}: ${e.message}`);
+                continue;
+            }
+
+            if (!obj || !obj.common.enabled || !this.#isAssignedHere(obj.common.host)) {
+                logger.warn(`${hostLogPrefix} ${id} was moved, disabled or deleted during ${reason}, stopping it`);
+                await this.handleObjectChange(id, obj ?? null);
+            }
+        }
+
+        // the instances of other hosts may have changed during the gap too, e.g. an upgrade of a web extension
+        await this.#refreshWebExtensions(reason);
+    }
+
+    /**
+     * Read the instance objects of all hosts again for the web extensions of other hosts. The known objects are kept
+     * if they cannot be read, so that a database problem cannot look like deleted instances.
+     *
+     * @param reason why the objects are read again, for the log
+     */
+    async #refreshWebExtensions(reason: string): Promise<void> {
+        const { objects, logger, hostLogPrefix, isCompactGroupController } = this.#options;
+
+        if (isCompactGroupController) {
+            return;
+        }
+
+        try {
+            const doc = await objects.getObjectViewAsync('system', 'instance', {
+                startkey: SYSTEM_ADAPTER_PREFIX,
+                endkey: `${SYSTEM_ADAPTER_PREFIX}${HIGHEST_UNICODE_SYMBOL}`,
+            });
+            await this.webExtensions.setInstances(doc.rows.map(row => row.value).filter(obj => obj?.common));
+        } catch (e) {
+            logger.warn(
+                `${hostLogPrefix} Cannot check the web extensions of other hosts after ${reason}: ${e.message}`,
+            );
+        }
     }
 
     /**
@@ -601,12 +704,34 @@ export class InstanceManager {
     /**
      * Sends kill signal via sigKill state or a kill after timeouts or if forced
      *
+     * A second call while a stop is running waits for it and ignores its own `force` and `movedAway`, so a forced
+     * stop can come only after the running stop's `stopTimeout`.
+     *
      * @param id instance id
      * @param force if forced we will kill the pid
      * @param options how to stop
      * @param options.movedAway the instance is now assigned to another host, so stop the own child only
      */
     async stopInstance(id: string, force: boolean, options: { movedAway?: boolean } = {}): Promise<void> {
+        // a second call would replace the timer and resolver of the running one, which then never resolves
+        const running = this.#runningStops.get(id);
+        if (running) {
+            return running;
+        }
+        const stop = this.#stopInstance(id, force, options).finally(() => this.#runningStops.delete(id));
+        this.#runningStops.set(id, stop);
+        return stop;
+    }
+
+    /**
+     * Stop an instance, see stopInstance
+     *
+     * @param id instance id
+     * @param force if forced we will kill the pid
+     * @param options how to stop
+     * @param options.movedAway the instance is now assigned to another host, so stop the own child only
+     */
+    async #stopInstance(id: string, force: boolean, options: { movedAway?: boolean }): Promise<void> {
         const { states, logger, hostLogPrefix, hostObjectPrefix, isCompactGroupController, state } = this.#options;
         const proc = this.procs[id];
 
@@ -861,6 +986,7 @@ export class InstanceManager {
         try {
             // sometimes a process receives SIGTERM twice, the timestamp of the first request is kept
             state.markStopping();
+            this.webExtensions.stop();
             elapsed = Date.now() - state.isStopping!;
             logger.debug(
                 `${hostLogPrefix} stop isStopping=${elapsed} isDaemon=${isDaemon} allInstancesStopped=${this.allInstancesStopped}`,
@@ -931,6 +1057,9 @@ export class InstanceManager {
             // the configuration of an instance defines which resources it occupies, so keep the registry
             // in line with it - no matter whether the instance is known here, running, or was just deleted
             await this.usedResources.syncInstance(id, obj);
+
+            // a web server of this host may load the web extension of an instance of another host
+            this.webExtensions.handleObjectChange(id, obj);
 
             // known adapter
             const proc = this.procs[id];

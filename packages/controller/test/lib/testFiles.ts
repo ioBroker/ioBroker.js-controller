@@ -262,6 +262,27 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         });
     });
 
+    it(`${testName}should accept files of a meta object created after it was missing`, async () => {
+        const objects = context.objects;
+        const id = `${testId}.meta.createdLater`;
+
+        await assert.rejects(objects.readDirAsync(id, ''), {
+            message: `${id} is not an object of type "meta"`,
+        });
+
+        // like `iobroker add` creating the meta object of a new instance, while e.g. web already asked for its files
+        await objects.setObject(id, {
+            type: 'meta',
+            common: { name: 'test', type: 'meta.user' },
+            native: {},
+        });
+
+        await objects.writeFileAsync(id, 'data.json', '{}');
+        const res = await objects.readDirAsync(id, '');
+        assert.strictEqual(res.length, 1);
+        assert.strictEqual(res[0].file, 'data.json');
+    });
+
     it(`${testName}should respond with empty array if calling readDir on a single file`, async () => {
         const objects = context.objects;
         const fileName = 'dir/notADir.txt';

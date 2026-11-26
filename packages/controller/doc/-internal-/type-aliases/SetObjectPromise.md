@@ -8,4 +8,4 @@
 
 > **SetObjectPromise** = `Promise`\<[`NonNullCallbackReturnTypeOf`](NonNullCallbackReturnTypeOf.md)\<[`SetObjectCallback`](SetObjectCallback.md)\>\>
 
-Defined in: [types-dev/index.d.ts:610](https://github.com/ioBroker/ioBroker.js-controller/blob/86a16c878a99c5f58e2cbec50d45b7c891fb9e62/packages/types-dev/index.d.ts#L610)
+Defined in: [types-dev/index.d.ts:618](https://github.com/ioBroker/ioBroker.js-controller/blob/26d6e1bcd2371f3e66be3e55bc1c082edee901c6/packages/types-dev/index.d.ts#L618)

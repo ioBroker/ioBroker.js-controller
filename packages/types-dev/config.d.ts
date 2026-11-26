@@ -175,6 +175,8 @@ export interface IoBJson {
         /** If the available RAM is below this threshold on adapter start, an error will be logged. */
         memLimitError: number;
         '// memLimitError': string;
+        /** Whether adapters confirm their host after a DB reconnect before sending commands. Absent: only with more than one host */
+        fence?: boolean;
     };
     /** Configuration of the multihost service used to connect several ioBroker hosts */
     multihostService: {
@@ -216,4 +218,24 @@ export interface IoBJson {
     '// dnsResolution': string;
     /** Use 'verbatim' for ipv6 first, else use 'ipv4first' */
     dnsResolution: 'verbatim' | 'ipv4first';
+    /** Settings of the backups created with `iobroker backup` (not the backups of the databases, see `objects.backup`) */
+    backup?: BackupSettings;
+}
+
+/** Settings of the backups created with `iobroker backup` */
+export interface BackupSettings {
+    /** Encrypt every backup, also without `--encrypt`. Absent: backups are only encrypted with `--encrypt` */
+    encryption?: BackupEncryptionSettings;
+}
+
+/** How backups are encrypted */
+export interface BackupEncryptionSettings {
+    /**
+     * `password`: with a password, asked for or taken from `--password-file` or `IOB_BACKUP_PASSWORD`.
+     * `publicKey`: with the public key below, without a password - for unattended backups. Only the private key,
+     * which should not be kept on this host, can restore them.
+     */
+    mode: 'password' | 'publicKey';
+    /** The public key of `iobroker backup keygen`, needed for the mode `publicKey` */
+    publicKey?: string;
 }

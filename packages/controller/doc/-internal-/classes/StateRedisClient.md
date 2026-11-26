@@ -6,7 +6,7 @@
 
 # Class: StateRedisClient
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:50
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:55
 
 Client for the states database backed by Redis (or the in-memory redis-protocol server)
 
@@ -16,7 +16,7 @@ Client for the states database backed by Redis (or the in-memory redis-protocol 
 
 > **new StateRedisClient**(`settings`): `StateRedisClient`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:76
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:84
 
 #### Parameters
 
@@ -36,7 +36,7 @@ Settings for the states client including connection and namespaces
 
 > **\_destroyDBHelper**(`keys`, `callback?`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:158
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:191
 
 #### Parameters
 
@@ -62,7 +62,7 @@ function to be executed after keys have been deleted
 
 > **\_determineProtocolVersion**(): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:81
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:89
 
 Checks if we are allowed to start and sets the protocol version accordingly
 
@@ -76,7 +76,7 @@ Checks if we are allowed to start and sets the protocol version accordingly
 
 > **connectDb**(): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:85
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:93
 
 Connect to the states database and set up the change and message subscriptions
 
@@ -92,7 +92,7 @@ Connect to the states database and set up the change and message subscriptions
 
 > **delState**(`id`): `Promise`\<`string` \| `undefined`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:176
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:209
 
 Delete a state and publish the deletion
 
@@ -112,7 +112,7 @@ The id of the state to delete
 
 > **delState**(`id`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:183
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:216
 
 Delete a state and publish the deletion
 
@@ -140,7 +140,7 @@ Callback called with the deleted id
 
 > **destroy**(): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:170
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:203
 
 Destructor of the class. Called when shutting down to close the redis connections.
 
@@ -156,7 +156,7 @@ Destructor of the class. Called when shutting down to close the redis connection
 
 > **destroyDB**(): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:162
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:195
 
 Destroy (delete) all states in the database
 
@@ -168,7 +168,7 @@ Destroy (delete) all states in the database
 
 > **destroyDB**(`callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:166
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:199
 
 ##### Parameters
 
@@ -190,7 +190,7 @@ cb function to be executed after DB has been destroyed
 
 > **destroySession**(`id`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:392
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:425
 
 Destroy (delete) a session by its id
 
@@ -210,7 +210,7 @@ The id of the session to destroy
 
 > **destroySession**(`id`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:399
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:432
 
 Destroy (delete) a session by its id
 
@@ -240,7 +240,7 @@ callback function
 
 > **getKeys**(`pattern`, `callback?`, `dontModify?`): `Promise`\<`string`[] \| `undefined`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:191
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:224
 
 Get all state ids matching the given pattern
 
@@ -272,7 +272,7 @@ If true, the returned keys are not stripped of the namespace
 
 > **getKeys**(`pattern`, `callback`, `dontModify?`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:199
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:232
 
 Get all state ids matching the given pattern
 
@@ -306,7 +306,7 @@ If true, the returned keys are not stripped of the namespace
 
 > **getProtocolVersion**(): `Promise`\<`string` \| `null`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:404
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:437
 
 Returns the protocol version from DB
 
@@ -322,7 +322,7 @@ Returns the protocol version from DB
 
 > **getSession**(`id`): `Promise`\<[`Session`](../type-aliases/Session.md) \| `null`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:362
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:395
 
 Get a stored session by its id
 
@@ -342,7 +342,7 @@ The id of the session to read
 
 > **getSession**(`id`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:369
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:402
 
 Get a stored session by its id
 
@@ -372,7 +372,7 @@ Called with the session object, or null if not found
 
 > **getState**(`id`): [`GetStatePromise`](../type-aliases/GetStatePromise.md)
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:124
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:157
 
 Get state from database
 
@@ -392,7 +392,7 @@ id of the state
 
 > **getState**(`id`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:131
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:164
 
 Get state from database
 
@@ -420,7 +420,7 @@ optional callback, leave out and use promise return type
 
 > **getStateAsync**(`id`): `Promise`\<`void` \| [`State`](../interfaces/State.md) \| `null` \| `undefined`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:137
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:170
 
 Promise-version of getState
 
@@ -444,7 +444,7 @@ id of the state to get
 
 > **getStates**(`keys`, `callback?`, `dontModify?`): `Promise`\<([`State`](../interfaces/State.md) \| `null`)[]\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:145
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:178
 
 Get the values of multiple states
 
@@ -476,7 +476,7 @@ If true, the returned states are not cloned/modified
 
 > **getStates**(`keys`, `callback`, `dontModify?`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:153
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:186
 
 Get the values of multiple states
 
@@ -510,7 +510,7 @@ If true, the returned states are not cloned/modified
 
 > **getStatus**(): [`DbStatus`](../interfaces/DbStatus.md)
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:94
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:102
 
 Get the current status of the database
 
@@ -526,7 +526,7 @@ Get the current status of the database
 
 > **pushLog**(`id`, `log`): `Promise`\<`string`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:322
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:355
 
 Push a log message to the given log target
 
@@ -552,7 +552,7 @@ The log message to push
 
 > **pushLog**(`id`, `log`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:330
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:363
 
 Push a log message to the given log target
 
@@ -586,7 +586,7 @@ Callback called with the generated log id
 
 > **pushMessage**(`id`, `message`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:288
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:321
 
 Push a message into the message box of the given id
 
@@ -614,7 +614,7 @@ The message to push
 
 > **setProtocolVersion**(`version`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:410
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:443
 
 Sets the protocol version to the DB
 
@@ -636,7 +636,7 @@ protocol version
 
 > **setRawState**(`id`, `state`): `Promise`\<`string`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:118
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:151
 
 Directly set the raw stored value of a state without publishing a change (used for restore, do not call it)
 
@@ -666,7 +666,7 @@ The raw state object to store
 
 > **setSession**(`id`, `expireS`, `obj`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:377
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:410
 
 Create or update a session and set its expiration
 
@@ -698,7 +698,7 @@ The session data to store
 
 > **setSession**(`id`, `expireS`, `obj`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:386
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:419
 
 Create or update a session and set its expiration
 
@@ -740,7 +740,7 @@ callback function
 
 > **setState**(`id`, `state`): `Promise`\<`string`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:101
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:134
 
 Set the value of a state
 
@@ -766,7 +766,7 @@ The value (or full state object) to set
 
 > **setState**(`id`, `state`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:103
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:136
 
 ##### Parameters
 
@@ -796,7 +796,7 @@ migrate to promisified version (without callback)
 
 > **setStateAsync**(`id`, `state`): `Promise`\<`string`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:111
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:144
 
 Promise-version of setState
 
@@ -830,7 +830,7 @@ use version without `Async` postfix
 
 > **subscribe**(`pattern`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:205
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:238
 
 Subscribe to state changes matching the given pattern
 
@@ -850,7 +850,7 @@ The pattern to subscribe to
 
 > **subscribe**(`pattern`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:212
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:245
 
 Subscribe to state changes matching the given pattern
 
@@ -876,7 +876,7 @@ callback function
 
 > **subscribe**(`pattern`, `asUser`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:219
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:252
 
 Subscribe to state changes matching the given pattern
 
@@ -902,7 +902,7 @@ if true it will be subscribed as user
 
 > **subscribe**(`pattern`, `asUser`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:227
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:260
 
 Subscribe to state changes matching the given pattern
 
@@ -938,7 +938,7 @@ callback function
 
 > **subscribeLog**(`id`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:336
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:369
 
 Subscribe to log messages of the given id
 
@@ -958,7 +958,7 @@ The id of the log target to subscribe to
 
 > **subscribeLog**(`id`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:343
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:376
 
 Subscribe to log messages of the given id
 
@@ -988,7 +988,7 @@ callback function
 
 > **subscribeMessage**(`id`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:294
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:327
 
 Subscribe to messages sent to the given id
 
@@ -1008,7 +1008,7 @@ The id of the message box to subscribe to
 
 > **subscribeMessage**(`id`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:301
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:334
 
 Subscribe to messages sent to the given id
 
@@ -1038,7 +1038,7 @@ callback function
 
 > **subscribeUser**(`pattern`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:233
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:266
 
 Subscribe to state changes matching the given pattern as a user
 
@@ -1058,7 +1058,7 @@ The pattern to subscribe to
 
 > **subscribeUser**(`pattern`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:240
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:273
 
 Subscribe to state changes matching the given pattern as a user
 
@@ -1088,7 +1088,7 @@ callback function
 
 > **unsubscribe**(`pattern`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:246
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:279
 
 Unsubscribe from state changes matching the given pattern
 
@@ -1108,7 +1108,7 @@ The pattern to unsubscribe from
 
 > **unsubscribe**(`pattern`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:253
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:286
 
 Unsubscribe from state changes matching the given pattern
 
@@ -1134,7 +1134,7 @@ callback function
 
 > **unsubscribe**(`pattern`, `asUser`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:260
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:293
 
 Unsubscribe from state changes matching the given pattern
 
@@ -1160,7 +1160,7 @@ if true it will be unsubscribed as user
 
 > **unsubscribe**(`pattern`, `asUser`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:268
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:301
 
 Unsubscribe from state changes matching the given pattern
 
@@ -1196,7 +1196,7 @@ callback function
 
 > **unsubscribeLog**(`id`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:349
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:382
 
 Unsubscribe from log messages of the given id
 
@@ -1216,7 +1216,7 @@ The id of the log target to unsubscribe from
 
 > **unsubscribeLog**(`id`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:356
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:389
 
 Unsubscribe from log messages of the given id
 
@@ -1246,7 +1246,7 @@ callback function
 
 > **unsubscribeMessage**(`id`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:307
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:340
 
 Unsubscribe from messages sent to the given id
 
@@ -1266,7 +1266,7 @@ The id of the message box to unsubscribe from
 
 > **unsubscribeMessage**(`id`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:314
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:347
 
 Unsubscribe from messages sent to the given id
 
@@ -1296,7 +1296,7 @@ callback function
 
 > **unsubscribeUser**(`pattern`): `Promise`\<`void`\>
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:274
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:307
 
 Unsubscribe from state changes matching the given pattern as a user
 
@@ -1316,7 +1316,7 @@ The pattern to unsubscribe from
 
 > **unsubscribeUser**(`pattern`, `callback`): `void`
 
-Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:281
+Defined in: db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:314
 
 Unsubscribe from state changes matching the given pattern as a user
 
