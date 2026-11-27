@@ -6,7 +6,7 @@
 
 # Interface: NotificationContextData
 
-Defined in: [types-dev/index.d.ts:589](https://github.com/ioBroker/ioBroker.js-controller/blob/6d3d6fa9759e51b8e40ec707d37394a161b93e65/packages/types-dev/index.d.ts#L589)
+Defined in: [types-dev/index.d.ts:589](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/index.d.ts#L589)
 
 Additional context for the notification which can be used by notification processing adapters
 

@@ -6,7 +6,7 @@
 
 # Interface: SendToOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:678](https://github.com/ioBroker/ioBroker.js-controller/blob/6d3d6fa9759e51b8e40ec707d37394a161b93e65/packages/adapter/src/lib/_Types.ts#L678)
+Defined in: [adapter/src/lib/\_Types.ts:678](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L678)
 
 Options controlling how a message is sent
 
@@ -16,7 +16,7 @@ Options controlling how a message is sent
 
 > `optional` **timeout?**: `number`
 
-Defined in: [adapter/src/lib/\_Types.ts:680](https://github.com/ioBroker/ioBroker.js-controller/blob/6d3d6fa9759e51b8e40ec707d37394a161b93e65/packages/adapter/src/lib/_Types.ts#L680)
+Defined in: [adapter/src/lib/\_Types.ts:680](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L680)
 
 Method throws or calls error cb if callback not called in time, works for single targets only
 
@@ -26,6 +26,6 @@ Method throws or calls error cb if callback not called in time, works for single
 
 > `optional` **user?**: `` `system.user.${string}` ``
 
-Defined in: [adapter/src/lib/\_Types.ts:682](https://github.com/ioBroker/ioBroker.js-controller/blob/6d3d6fa9759e51b8e40ec707d37394a161b93e65/packages/adapter/src/lib/_Types.ts#L682)
+Defined in: [adapter/src/lib/\_Types.ts:682](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L682)
 
 The user on whose behalf the message is sent

@@ -6,7 +6,7 @@
 
 # Interface: InternalReportDeprecationOption
 
-Defined in: [adapter/src/lib/\_Types.ts:881](https://github.com/ioBroker/ioBroker.js-controller/blob/6d3d6fa9759e51b8e40ec707d37394a161b93e65/packages/adapter/src/lib/_Types.ts#L881)
+Defined in: [adapter/src/lib/\_Types.ts:881](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L881)
 
 Options for reporting a deprecation warning
 
@@ -16,7 +16,7 @@ Options for reporting a deprecation warning
 
 > **deprecationMessage**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:885](https://github.com/ioBroker/ioBroker.js-controller/blob/6d3d6fa9759e51b8e40ec707d37394a161b93e65/packages/adapter/src/lib/_Types.ts#L885)
+Defined in: [adapter/src/lib/\_Types.ts:885](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L885)
 
 The log line to report
 
@@ -26,6 +26,6 @@ The log line to report
 
 > `optional` **version?**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:883](https://github.com/ioBroker/ioBroker.js-controller/blob/6d3d6fa9759e51b8e40ec707d37394a161b93e65/packages/adapter/src/lib/_Types.ts#L883)
+Defined in: [adapter/src/lib/\_Types.ts:883](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L883)
 
 Version in which this warning will throw an error instead
