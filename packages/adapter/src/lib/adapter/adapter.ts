@@ -979,6 +979,8 @@ export class AdapterClass extends EventEmitter {
     private _initializeTimeout?: NodeJS.Timeout | null;
     /** Whether the DB clients fence after a reconnect */
     private _fenceEnabled = false;
+    /** `ts` of the last alive write that reached the DB, undefined if the next renewal should not check */
+    private _aliveTs: number | undefined;
     private inited?: boolean;
     /** contents of iobroker.json if required via AdapterOptions */
     systemConfig?: InternalAdapterJsonConfig;
@@ -12182,6 +12184,47 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * Renew the alive of this instance. With the fence on, it is read first: if it is not the last write of this
+     * process any more, it expired, so this instance may have moved.
+     *
+     * @param expireSec expiry of the alive in seconds
+     */
+    private async _renewAlive(expireSec: number): Promise<void> {
+        if (!this.#states) {
+            return;
+        }
+        const id = `system.adapter.${this.namespace}`;
+        const lastTs = this._aliveTs;
+        this._aliveTs = undefined;
+
+        let expired = false;
+        if (this._fenceEnabled && lastTs !== undefined) {
+            try {
+                expired = (await this.#states.getState(`${id}.alive`))?.ts !== lastTs;
+            } catch {
+                // the write below fails as well and is logged there
+            }
+        }
+
+        // fence before the renewal, a stale copy must not write the alive of the copy on the new host
+        if (expired) {
+            this._logger.warn(`${this.namespaceLog} Own alive expired, checking the host of this instance`);
+            if (!(await this._fence('its own alive expired'))) {
+                return;
+            }
+        }
+
+        const ts = Date.now();
+        this.#states.setState(`${id}.alive`, { val: true, ack: true, ts, expire: expireSec, from: id }).then(
+            () => (this._aliveTs = ts),
+            e => {
+                this._aliveTs = undefined;
+                this._logger.error(`${this.namespaceLog} Cannot set alive state: ${e.message}`);
+            },
+        );
+    }
+
     private _reportStatus(): void {
         if (!this.#states) {
             return;
@@ -12191,14 +12234,9 @@ export class AdapterClass extends EventEmitter {
         const reportStatusExpirySec = Math.floor(this._config.system.statisticsInterval / 1_000) + 10;
 
         const id = `system.adapter.${this.namespace}`;
-        this.#states
-            .setState(`${id}.alive`, {
-                val: true,
-                ack: true,
-                expire: reportStatusExpirySec,
-                from: id,
-            })
-            .catch(e => this._logger.error(`${this.namespaceLog} Cannot set alive state: ${e.message}`));
+        this._renewAlive(reportStatusExpirySec).catch(e =>
+            this._logger.error(`${this.namespaceLog} Cannot renew alive state: ${e.message}`),
+        );
         this.outputCount++;
         if (this.connected) {
             this.#states
@@ -13566,6 +13604,8 @@ export class AdapterClass extends EventEmitter {
         if (this.terminated || !this.#objects) {
             return false;
         }
+        // a reconnect and an expired alive usually come together, one fence covers both
+        this._aliveTs = undefined;
 
         const limitMs = (this._config.objects.connectTimeout || 2_000) * 2;
         let timer: NodeJS.Timeout | undefined;

@@ -40,6 +40,8 @@ export interface HostStatusReporterOptions {
     logWriteErrors: (writes: Promise<unknown>[], errorText: string) => void;
     /** Stops the controller, used by an empty compact group controller */
     stopController: (force?: boolean, exitProcess?: boolean) => Promise<void>;
+    /** Called if the own alive expired since the last renewal, so other hosts may have taken over instances */
+    aliveExpired: () => void;
 }
 
 /**
@@ -60,6 +62,7 @@ export class HostStatusReporter {
     readonly #state: ControllerState;
     readonly #logWriteErrors: (writes: Promise<unknown>[], errorText: string) => void;
     readonly #stopController: (force?: boolean, exitProcess?: boolean) => Promise<void>;
+    readonly #aliveExpired: () => void;
 
     /** Timer for the cyclic status report */
     #reportInterval: NodeJS.Timeout | null = null;
@@ -69,6 +72,8 @@ export class HostStatusReporter {
     #eventLoopLags: number[] = [];
     /** If less than this disk space free in %, generate a warning */
     #diskWarningLevel = DEFAULT_DISK_WARNING_LEVEL;
+    /** `ts` of the last alive write that reached the DB, undefined if the next renewal should not check */
+    #aliveTs: number | undefined;
 
     /**
      * @param options Everything the status reporter needs to do its work
@@ -88,6 +93,7 @@ export class HostStatusReporter {
         this.#state = options.state;
         this.#logWriteErrors = options.logWriteErrors;
         this.#stopController = options.stopController;
+        this.#aliveExpired = options.aliveExpired;
     }
 
     /**
@@ -110,6 +116,7 @@ export class HostStatusReporter {
 
         // this is called again after every reconnect, do not leave the previous interval behind
         this.close();
+        this.skipAliveCheck();
 
         config.system = config.system || {};
         config.system.statisticsInterval = Math.round(config.system.statisticsInterval) || 15_000;
@@ -149,14 +156,7 @@ export class HostStatusReporter {
 
         this.#statistics.countOutput(10);
 
-        states
-            .setState(`${id}.alive`, {
-                val: true,
-                ack: true,
-                expire: Math.floor(config.system.statisticsInterval / 1_000) + 10,
-                from: id,
-            })
-            .catch(e => logger.error(`${hostLogPrefix} Cannot update host alive state: ${e.message}`));
+        await this.#renewAlive();
 
         // provide infos about current process
 
@@ -358,6 +358,55 @@ export class HostStatusReporter {
                 `${hostLogPrefix} Compact group controller ${this.#compactGroup} does not own any processes, stop`,
             );
             await this.#stopController(false);
+        }
+    }
+
+    /**
+     * Do not check the own alive on the next renewal, e.g. because the instances were just rechecked
+     */
+    skipAliveCheck(): void {
+        this.#aliveTs = undefined;
+    }
+
+    /**
+     * Renew the own alive. It is read first: only this host writes it, so if it is not the last write any more, it
+     * expired - by the clock of the DB, which also runs while this host is frozen - and other hosts may have taken
+     * over instances of this host.
+     */
+    async #renewAlive(): Promise<void> {
+        const id = `${this.#hostObjectPrefix}.alive`;
+        const lastTs = this.#aliveTs;
+        this.#aliveTs = undefined;
+
+        let expired = false;
+        if (lastTs !== undefined) {
+            try {
+                expired = (await this.#states.getState(id))?.ts !== lastTs;
+            } catch {
+                // the write below fails as well and is logged there
+            }
+        }
+
+        // not after the recheck, or the alive expires on the other hosts again
+        const ts = Date.now();
+        this.#states
+            .setState(id, {
+                val: true,
+                ack: true,
+                ts,
+                expire: Math.floor(this.#config.system.statisticsInterval / 1_000) + 10,
+                from: this.#hostObjectPrefix,
+            })
+            .then(
+                () => (this.#aliveTs = ts),
+                e => {
+                    this.#aliveTs = undefined;
+                    this.#logger.error(`${this.#hostLogPrefix} Cannot update host alive state: ${e.message}`);
+                },
+            );
+
+        if (expired) {
+            this.#aliveExpired();
         }
     }
 
