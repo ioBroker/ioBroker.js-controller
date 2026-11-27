@@ -265,11 +265,11 @@ The directory relative to iobroker-data where the adapter stores the data. Suppo
 
 ### dataSource?
 
-> `optional` **dataSource?**: `"push"` \| `"poll"` \| `"assumption"`
+> `optional` **dataSource?**: `"push"` \| `"poll"` \| `"assumption"` \| `"none"`
 
 Defined in: [types-dev/objects.d.ts:763](https://github.com/ioBroker/ioBroker.js-controller/blob/6d3d6fa9759e51b8e40ec707d37394a161b93e65/packages/types-dev/objects.d.ts#L763)
 
-How the adapter will mainly receive its data. Set this together with [connectionType](#connectiontype)
+How the adapter will mainly receive its data. Set this together with [connectionType](#connectiontype). Use `none` if the adapter does not communicate with any device, hub or cloud service
 
 #### Inherited from
 
