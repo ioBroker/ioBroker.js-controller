@@ -211,11 +211,11 @@ The directory relative to iobroker-data where the adapter stores the data. Suppo
 
 ### dataSource?
 
-> `optional` **dataSource?**: `"push"` \| `"poll"` \| `"assumption"`
+> `optional` **dataSource?**: `"push"` \| `"poll"` \| `"assumption"` \| `"none"`
 
 Defined in: [types-dev/objects.d.ts:763](https://github.com/ioBroker/ioBroker.js-controller/blob/6d87adfc026dc8a5e30ad364e1a02b04e776f99a/packages/types-dev/objects.d.ts#L763)
 
-How the adapter will mainly receive its data. Set this together with [connectionType](InstanceCommon.md#connectiontype)
+How the adapter will mainly receive its data. Set this together with [connectionType](InstanceCommon.md#connectiontype). Use `none` if the adapter does not communicate with any device, hub or cloud service
 
 ***
 

@@ -1329,7 +1329,7 @@
           "type": "boolean"
         },
         "connectionType": {
-          "description": "Type of connection to device",
+          "description": "Type of connection to device. 'none' means the adapter does not communicate with any device, hub or cloud service (e.g. pure logic or calculation adapters)",
           "type": "string",
           "enum": [
             "none",
@@ -1346,7 +1346,7 @@
           "type": "string"
         },
         "dataSource": {
-          "description": "How the data will be received from device",
+          "description": "How the data will be received from device. 'none' means the adapter does not communicate with any device, hub or cloud service (e.g. pure logic or calculation adapters)",
           "type": "string",
           "enum": [
             "none",
