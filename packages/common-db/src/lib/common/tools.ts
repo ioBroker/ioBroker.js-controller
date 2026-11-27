@@ -549,8 +549,87 @@ export function getDockerInformation(): DockerInformation {
     return { isDocker: isDocker(), isOfficial: false };
 }
 
+/** Paths belonging to the WinSW service that runs an ioBroker installation */
+export interface WindowsServiceInstallation {
+    /** Path to the WinSW executable which hosts the ioBroker service */
+    executable: string;
+    /** Path to the WinSW configuration of the main ioBroker service */
+    config: string;
+}
+
 /**
- * Controller UI upgrade is not supported on Windows and MacOS
+ * Check whether a WinSW service uses the LocalSystem account.
+ *
+ * LocalSystem is WinSW's default when no serviceaccount element is present. A temporary upgrade
+ * helper cannot safely copy custom service credentials, so those installations are not supported.
+ *
+ * @param config path to the WinSW XML configuration
+ */
+function isWindowsServiceRunningAsLocalSystem(config: string): boolean {
+    try {
+        const xml = fs.readFileSync(config, 'utf8');
+        const serviceAccount = xml.match(/<serviceaccount\b[^>]*>([\s\S]*?)<\/serviceaccount>/i);
+        if (!serviceAccount) {
+            return true;
+        }
+
+        const username = serviceAccount[1].match(/<username\b[^>]*>([\s\S]*?)<\/username>/i)?.[1].trim();
+        return username?.toLowerCase() === 'localsystem';
+    } catch {
+        return false;
+    }
+}
+
+/**
+ * Find the WinSW executable and configuration of a Windows ioBroker service installation.
+ *
+ * WinSW exposes its executable path to the service process. The directory scan is a fallback for
+ * child processes, such as Admin, and only accepts XML files with a same-named executable.
+ *
+ * @param rootDir ioBroker installation root
+ * @param env environment used to detect WinSW
+ */
+export function getWindowsServiceInstallation(
+    rootDir = getRootDir(),
+    env: NodeJS.ProcessEnv = process.env,
+): WindowsServiceInstallation | undefined {
+    const winswExecutable = env.WINSW_EXECUTABLE;
+
+    if (winswExecutable) {
+        const config =
+            env.WINSW_CONFIG_FILE ??
+            path.join(
+                path.dirname(winswExecutable),
+                `${path.basename(winswExecutable, path.extname(winswExecutable))}.xml`,
+            );
+
+        if (fs.existsSync(winswExecutable) && fs.existsSync(config) && isWindowsServiceRunningAsLocalSystem(config)) {
+            return { executable: winswExecutable, config };
+        }
+    }
+
+    const daemonDir = path.join(rootDir, 'daemon');
+    try {
+        for (const file of fs.readdirSync(daemonDir)) {
+            if (!file.endsWith('.xml')) {
+                continue;
+            }
+
+            const executable = path.join(daemonDir, `${file.slice(0, -4)}.exe`);
+            const config = path.join(daemonDir, file);
+            if (fs.existsSync(executable) && isWindowsServiceRunningAsLocalSystem(config)) {
+                return { executable, config };
+            }
+        }
+    } catch {
+        // Not a Windows service installation
+    }
+
+    return undefined;
+}
+
+/**
+ * Controller UI upgrade is not supported on macOS or Windows installations without a WinSW service.
  */
 export function isControllerUiUpgradeSupported(): boolean {
     const dockerInfo = getDockerInformation();
@@ -570,7 +649,12 @@ export function isControllerUiUpgradeSupported(): boolean {
         return true;
     }
 
-    return !['win32', 'darwin'].includes(os.platform());
+    const platform = os.platform();
+    if (platform === 'win32') {
+        return getWindowsServiceInstallation() !== undefined;
+    }
+
+    return platform !== 'darwin';
 }
 
 /**

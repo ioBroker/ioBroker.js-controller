@@ -43,7 +43,8 @@ export class CLICert extends CLICommand {
 
         const certificates = tools.generateDefaultCertificates();
         if (certificates) {
-            console.log(JSON.stringify(certificates, null, 2));
+            // The certificates are not printed: the private key would end up in logs, e.g. in the output of an
+            // upgrade of the js-controller, which runs `setup first`. `iobroker cert view` shows the public part
             for (const [certName, cert] of Object.entries(certificates)) {
                 // use the command `iobroker object set ...` to update the certificate
                 console.log(`Update certificate ${certName}`);
@@ -53,6 +54,11 @@ export class CLICert extends CLICommand {
                     const objectsCommand = new CLIObjects({ ...this.options, callback: resolve });
                     objectsCommand.execute(objectsCommandArgs);
                 });
+            }
+
+            const info = tools.getCertificateInfo(certificates.defaultPublic);
+            if (info) {
+                console.log(`Created a new default certificate, valid until ${info.validityNotAfter.toISOString()}`);
             }
         }
 

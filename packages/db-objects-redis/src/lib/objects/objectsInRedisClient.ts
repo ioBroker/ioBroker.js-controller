@@ -166,7 +166,9 @@ export class ObjectsInRedisClient {
     private readonly namespace: string;
     private readonly hostname: string;
     private scripts: Record<string, string>;
-    private readonly existingMetaObjects: Record<string, boolean>;
+    /** Running reload of the Lua scripts */
+    #scriptsReload: Promise<void> | null = null;
+    private readonly existingMetaObjects: Set<string>;
     private log: InternalLogger;
     private activeProtocolVersion?: string;
     private useSets?: boolean;
@@ -201,8 +203,8 @@ export class ObjectsInRedisClient {
         this.userSubscriptions = {};
         this.systemSubscriptions = {};
 
-        // cached meta-objects for file operations
-        this.existingMetaObjects = {};
+        // meta-objects known to exist, for file operations
+        this.existingMetaObjects = new Set();
 
         this.log = tools.getLogger(this.settings.logger);
         this.#gate = this.settings.fence ? new FenceGate(this.settings.fence) : null;
@@ -1012,18 +1014,16 @@ export class ObjectsInRedisClient {
      * @throws {Error} if id is invalid
      */
     async validateMetaObject(id: string): Promise<void> {
-        if (this.existingMetaObjects[id] === undefined) {
-            // if not cached -> getObject
-            const obj = await this.getObject(id);
-            if (obj && obj.type === 'meta') {
-                this.existingMetaObjects[id] = true;
-            } else {
-                this.existingMetaObjects[id] = false;
-                throw new Error(`${id} is not an object of type "meta"`);
-            }
-        } else if (this.existingMetaObjects[id] === false) {
+        if (this.existingMetaObjects.has(id)) {
+            return;
+        }
+        // A missing meta-object is not remembered: another process (e.g. `iobroker add` or an upload) may create it
+        // at any time, and this client would not learn of it and refuse the files of it until a restart
+        const obj = await this.getObject(id);
+        if (obj?.type !== 'meta') {
             throw new Error(`${id} is not an object of type "meta"`);
         }
+        this.existingMetaObjects.add(id);
     }
 
     /**
@@ -4522,11 +4522,6 @@ export class ObjectsInRedisClient {
             await client.multi(commands).exec();
         }
 
-        // object updated -> if type changed to meta -> cache
-        if (oldObj?.type === 'meta' && this.existingMetaObjects[id] === false) {
-            this.existingMetaObjects[id] = true;
-        }
-
         await client.publish(this.objNamespace + id, message);
         return { id };
     }
@@ -4693,9 +4688,7 @@ export class ObjectsInRedisClient {
             }
 
             // object has been deleted -> remove from cached meta if there
-            if (this.existingMetaObjects[id]) {
-                this.existingMetaObjects[id] = false;
-            }
+            this.existingMetaObjects.delete(id);
 
             await client.publish(this.objNamespace + id, 'null');
         }
@@ -4867,8 +4860,9 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = (await client.evalsha(
-                        this.scripts.filter,
+                    objs = (await this.#evalScript(
+                        client,
+                        'filter',
                         6,
                         this.objNamespace,
                         params.startkey,
@@ -4960,8 +4954,9 @@ export class ObjectsInRedisClient {
                 }
                 let res: string[] | [objStrings: string[], cursor: string];
                 try {
-                    res = (await client.evalsha(
-                        this.scripts.script,
+                    res = (await this.#evalScript(
+                        client,
+                        'script',
                         5,
                         this.objNamespace,
                         params.startkey,
@@ -5018,8 +5013,9 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = (await client.evalsha(
-                        this.scripts.programs,
+                    objs = (await this.#evalScript(
+                        client,
+                        'programs',
                         5,
                         `${this.objNamespace}hm-rega.`,
                         params.startkey,
@@ -5073,8 +5069,9 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = (await client.evalsha(
-                        this.scripts.variables,
+                    objs = (await this.#evalScript(
+                        client,
+                        'variables',
                         5,
                         `${this.objNamespace}hm-rega.`,
                         params.startkey,
@@ -5127,8 +5124,9 @@ export class ObjectsInRedisClient {
                 }
                 let objs: string[];
                 try {
-                    objs = (await client.evalsha(
-                        this.scripts.custom,
+                    objs = (await this.#evalScript(
+                        client,
+                        'custom',
                         5,
                         this.objNamespace,
                         params.startkey,
@@ -5749,11 +5747,6 @@ export class ObjectsInRedisClient {
             await client.multi(commands).exec();
         }
 
-        // extended -> if it's now type meta and currently marked as not -> cache
-        if (this.existingMetaObjects[id] === false && oldObjNotNull?.type === 'meta') {
-            this.existingMetaObjects[id] = true;
-        }
-
         await client.publish(this.objNamespace + id, message);
         return { id, value: oldObjNotNull };
     }
@@ -6153,6 +6146,32 @@ export class ObjectsInRedisClient {
     }
 
     /**
+     * Run a Lua script, reloading the scripts once if the server lost them
+     *
+     * @param client the client from `#connection()`
+     * @param name script name
+     * @param numKeys number of keys in args
+     * @param args keys and arguments
+     */
+    async #evalScript(
+        client: IORedis.Redis,
+        name: string,
+        numKeys: number,
+        ...args: (string | number)[]
+    ): Promise<unknown> {
+        try {
+            return await client.evalsha(this.scripts[name], numKeys, ...args);
+        } catch (e) {
+            if (!/NOSCRIPT|Unknown Script/i.test(e.message)) {
+                throw e;
+            }
+        }
+        this.#scriptsReload ??= this.loadLuaScripts().finally(() => (this.#scriptsReload = null));
+        await this.#scriptsReload;
+        return client.evalsha(this.scripts[name], numKeys, ...args);
+    }
+
+    /**
      * Get all keys matching a pattern using redis SCAN command; duplicates are filtered out
      *
      * @param pattern - pattern to match, e.g. io.hm-rpc.0*
@@ -6284,8 +6303,9 @@ export class ObjectsInRedisClient {
         }
 
         // try to extend lock
-        return client.evalsha(
-            this.scripts.redlock_extend,
+        return this.#evalScript(
+            client,
+            'redlock_extend',
             3,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,
@@ -6312,8 +6332,9 @@ export class ObjectsInRedisClient {
         }
 
         // try to acquire lock
-        return client.evalsha(
-            this.scripts.redlock_acquire,
+        return this.#evalScript(
+            client,
+            'redlock_acquire',
             3,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,
@@ -6352,8 +6373,9 @@ export class ObjectsInRedisClient {
         }
 
         // try to release lock
-        return client.evalsha(
-            this.scripts.redlock_release,
+        return this.#evalScript(
+            client,
+            'redlock_release',
             4,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,
