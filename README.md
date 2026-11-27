@@ -930,6 +930,30 @@ One host holds the primary host lock in the objects database. If that host stops
 
 Each host shows its role in `system.host.<hostname>.isPrimary`. The primary host writes `true` with an expiry equal to the lock time (60 seconds) and renews it every 30 seconds, so the state disappears when the primary host dies or hangs. The other hosts write `false`. An adapter that should only be active on one host at a time can subscribe to the state of the host it runs on. Because the primary host rewrites `true` every 30 seconds, subscribers get an update with the same value every 30 seconds, so adapters should react to a change of `val`, not to every update.
 
+#### Stop the instances when the database is lost
+A host notices a lost database only when its connections close. In a network partition in which no packet arrives, they can stay open for minutes, and the instances of the host keep driving their devices meanwhile. If another host should take over these devices, the isolated host must stop its instances first.
+
+With `dbLossTimeout` (in ms) in `iobroker.json`, the controller reads from the objects and the states database every second. If one of them does not answer for this time, it logs `A database did not answer for ... s (system.dbLossTimeout), stopping all instances` and stops all instances of the host at once, as it does when the connection closes. It is off by default.
+
+```json5
+{
+    // ...
+    system: {
+        // ...
+        dbLossTimeout: 10000,
+        // ...
+    },
+    // ...
+}
+```
+
+- The instances stay stopped until the database answers again. Then the controller restarts itself via `iobroker restart` and starts them. Where nothing restarts the controller, e.g. a Docker image in which `iobroker restart` is blocked, it stays stopped until it is started manually or the container is restarted.
+- Choose a time well above the longest pause of the database, e.g. 10 to 30 seconds, otherwise a busy database stops the instances.
+- When the databases run in the js-controller of one host (file or JSONL), all other hosts with this setting stop their instances when that host is stopped or frozen for longer than this time.
+- A host that is frozen (a paused VM, a process stuck in swap) does not count its own pause as a lost database. When it resumes, it checks its instances as soon as it notices that its `alive` state expired, which takes up to one status interval (15 seconds by default).
+
+This setting and the checks of the controller cannot guarantee that an isolated or frozen host stops before another host takes over: an instance can run on for the time it takes to notice. To close that gap completely, the host must be stopped from outside before another one takes over, e.g. by VM high availability, STONITH (fencing via a power switch or the hypervisor), or a hardware watchdog.
+
 #### Files on the disk of another host
 
 The databases are shared, the disks are not. Whatever lies only on the disk of a host - the package of an adapter

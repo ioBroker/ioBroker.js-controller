@@ -42,6 +42,7 @@ import type { HostCommandGroupDeps } from '@/lib/controller/messages/commands/in
 import { DiagInfoCollector } from '@/lib/controller/host/diagInfoCollector.js';
 import { HostMetaManager } from '@/lib/controller/host/hostMetaManager.js';
 import { HostStatusReporter } from '@/lib/controller/host/hostStatusReporter.js';
+import { DbLossWatchdog } from '@/lib/controller/db/dbLossWatchdog.js';
 import { IpManager } from '@/lib/controller/host/ipManager.js';
 import { MultihostManager } from '@/lib/controller/host/multihostManager.js';
 import { HostPairing } from '@/lib/controller/host/hostPairing.js';
@@ -125,6 +126,8 @@ export class Controller {
     #status?: HostStatusReporter;
     /** If a recheck of the instances is running */
     #recheckRunning = false;
+    /** Stops all instances if a database stops answering, only with `system.dbLossTimeout` */
+    #dbLossWatchdog?: DbLossWatchdog;
     /** Creates and maintains the host object and its states */
     #hostMeta?: HostMetaManager;
     /** Keeps the IPs of the host object up to date */
@@ -748,6 +751,34 @@ export class Controller {
                 await this.#instances!.getInstances();
             }
         }
+        this.#startDbLossWatchdog();
+    }
+
+    /**
+     * Watch both databases if `system.dbLossTimeout` is set: a partition in which no packet arrives never closes the
+     * sockets, so the disconnect handling would not run and the instances would keep driving their devices
+     */
+    #startDbLossWatchdog(): void {
+        const timeoutMs = this.#config.system?.dbLossTimeout;
+        if (!timeoutMs || this.#isCompactGroupController || this.#state.isStopping) {
+            return;
+        }
+        this.#dbLossWatchdog ??= new DbLossWatchdog({
+            timeoutMs,
+            probes: [
+                () => this.#states!.getState(`${this.#hostObjectPrefix}.alive`),
+                () => this.#objects!.getObject(this.#hostObjectPrefix),
+            ],
+            onLoss: silentMs => {
+                this.#logger.warn(
+                    `${this.#hostLogPrefix} A database did not answer for ${Math.round(silentMs / 1_000)} s (system.dbLossTimeout), stopping all instances`,
+                );
+                this.#handleDisconnect().catch(e =>
+                    this.#logger.error(`${this.#hostLogPrefix} Cannot handle the lost database: ${e.message}`),
+                );
+            },
+        });
+        this.#dbLossWatchdog.start();
     }
 
     /**
@@ -766,6 +797,7 @@ export class Controller {
             this.#objectsDisconnectTimeout = null;
         }
 
+        this.#dbLossWatchdog?.stop();
         this.#state.setConnected(false);
         this.#logger.warn(`${this.#hostLogPrefix} Slave controller detected disconnection. Stop all instances.`);
 
@@ -891,6 +923,7 @@ export class Controller {
 
         this.#ips?.close();
         this.#status?.close();
+        this.#dbLossWatchdog?.stop();
 
         if (this.#state.isStopping) {
             return;
