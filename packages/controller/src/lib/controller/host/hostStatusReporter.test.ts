@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import sinon from 'sinon';
+import pidUsage from 'pidusage';
 import { HostStatusReporter } from '@/lib/controller/host/hostStatusReporter.js';
 import { testConfig, testIdentity, testState, testStatistics } from '@/lib/controller/testing.test-utils.js';
 
@@ -51,6 +52,12 @@ const settle = (): Promise<void> => new Promise(resolve => setImmediate(resolve)
 describe('lib/controller/host/hostStatusReporter', function () {
     // reportStatus() reads pidusage, whose first call on Windows starts wmic/PowerShell and takes a few seconds
     this.timeout(10_000);
+
+    before(async function () {
+        // the first call can take more than 10 s on Windows CI, the later ones take less than a second
+        this.timeout(60_000);
+        await pidUsage(process.pid);
+    });
 
     it('does not check the alive on the first renewal', async () => {
         const { client } = fakeStates();
