@@ -48,7 +48,10 @@ function createReporter(client: any, aliveExpired: () => void): HostStatusReport
 /** Let the alive write settle */
 const settle = (): Promise<void> => new Promise(resolve => setImmediate(resolve));
 
-describe('lib/controller/host/hostStatusReporter', () => {
+describe('lib/controller/host/hostStatusReporter', function () {
+    // reportStatus() reads pidusage, whose first call on Windows starts wmic/PowerShell and takes a few seconds
+    this.timeout(10_000);
+
     it('does not check the alive on the first renewal', async () => {
         const { client } = fakeStates();
         const expired = sinon.spy();
