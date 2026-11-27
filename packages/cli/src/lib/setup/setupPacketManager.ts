@@ -29,6 +29,50 @@ export interface UpgradePacket {
     version?: string;
 }
 
+/** A Debian package name, optionally with the architecture, e.g. `libc6:i386` */
+const APT_PACKAGE_NAME = /^[a-z0-9][a-z0-9+.-]*(?::[a-z0-9-]+)?$/;
+/** A Debian version, optionally with epoch and revision, e.g. `1:2.36-9+deb12u10` */
+const APT_PACKAGE_VERSION = /^[A-Za-z0-9.+~:-]+$/;
+
+/**
+ * Builds the command that upgrades exactly the given packets with apt-get.
+ *
+ * `apt upgrade <name>` upgrades every package of the system and only marks `<name>` in addition, and dpkg waits for
+ * an answer when a configuration file was changed locally, while nobody is there to give it. `apt-get install
+ * --only-upgrade` touches only the given packets (and what they need), never installs a packet that is not installed
+ * yet, keeps a changed configuration file, waits for a running apt instead of failing on its lock, and gets no input.
+ * All packets go into one call, so that apt resolves their dependencies together.
+ * A name or version that apt would not accept is refused, as they end up in a shell command.
+ *
+ * @param packets the packets to upgrade, with an optional version
+ * @param sudo whether apt-get has to run with sudo
+ */
+export function aptUpgradeCommand(packets: UpgradePacket[], sudo: boolean): string {
+    const invalid = packets.filter(
+        p =>
+            typeof p?.name !== 'string' ||
+            !APT_PACKAGE_NAME.test(p.name) ||
+            (p.version !== undefined &&
+                p.version !== '' &&
+                (typeof p.version !== 'string' || !APT_PACKAGE_VERSION.test(p.version))),
+    );
+    if (invalid.length) {
+        throw new Error(`Invalid package name or version: ${invalid.map(p => JSON.stringify(p)).join(', ')}`);
+    }
+
+    return [
+        ...(sudo ? ['sudo'] : []),
+        'apt-get install --only-upgrade -y -q',
+        // keep a locally changed configuration file, take the default of the package otherwise
+        '-o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold',
+        // another apt, e.g. the automatic updates, is waited for up to 5 minutes
+        '-o DPkg::Lock::Timeout=300',
+        ...packets.map(p => (p.version ? `${p.name}=${p.version}` : p.name)),
+        // whatever still asks reads the end of the input instead of waiting forever
+        '</dev/null',
+    ].join(' ');
+}
+
 /**
  * Wrapper around the system packet manager (apt or yum) to query and upgrade system packages
  */
@@ -281,20 +325,26 @@ export class PacketManager {
     async upgrade(packets: UpgradePacket[]): Promise<void> {
         await this.ready();
 
-        if (!this.manager) {
+        if (!this.manager || !packets?.length) {
+            return;
+        }
+
+        if (this.manager === 'apt') {
+            const command = aptUpgradeCommand(packets, this.sudo);
+            // package lists that are a few days old name versions which the mirror has deleted meanwhile (404)
+            await this.update();
+            // no dialog of debconf: sudo drops the variable, there the closed input keeps debconf from waiting
+            await execAsync(command, {
+                env: { ...process.env, DEBIAN_FRONTEND: 'noninteractive' },
+                maxBuffer: 16 * 1024 * 1024,
+            });
             return;
         }
 
         for (const packet of packets) {
-            let upgradeCmd = `upgrade -y ${packet.name}`;
-
-            if (packet.version) {
-                if (this.manager === 'apt') {
-                    upgradeCmd += `=${packet.version}`;
-                } else {
-                    upgradeCmd = `install ${packet.name}-${packet.version}`;
-                }
-            }
+            const upgradeCmd = packet.version
+                ? `install -y ${packet.name}-${packet.version}`
+                : `upgrade -y ${packet.name}`;
 
             await execAsync(`${(this.sudo ? 'sudo ' : '') + this.manager} ${upgradeCmd}`);
         }

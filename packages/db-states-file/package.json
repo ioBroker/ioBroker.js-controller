@@ -1,7 +1,7 @@
 {
     "name": "@iobroker/db-states-file",
     "type": "module",
-    "version": "8.0.0-alpha.26-20261124-26d6e1bcd",
+    "version": "8.0.0-alpha.28-20261127-6d3d6fa97",
     "engines": {
         "node": ">=22.22.2"
     },
