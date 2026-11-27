@@ -2,6 +2,7 @@
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
+* (@AlanSRU) A host that was frozen (VM paused, stuck in swap) and comes back on its old connections now checks its instances as well: before each renewal of its `alive`, the controller reads it, and if it expired meanwhile - so other hosts may have taken over - it logs a warning and rechecks its instances as after a reconnect. With the fence on (more than one host, or `system.fence`), an adapter does the same with its own `alive` and runs the fence before renewing it, so a stale copy stops within one status interval (#3614)
 -->
 ## __WORK IN PROGRESS__
 * (@GermanBluefox) Fixed every installation and upgrade of the js-controller replacing the default certificate with a new one: `setup first`, which npm runs each time, always created a fresh certificate, so a browser or client that trusted the self-signed certificate rejected it after the next update, and a certificate configured as file was replaced as well. Now `setup first` only creates one if there is none or it cannot be read, as on a fresh installation. `iobroker cert create` no longer prints the certificate and its private key, which so far ended up in the output of every upgrade, also in the update dialog of Admin

@@ -123,6 +123,8 @@ export class Controller {
     #messageHandler?: HostMessageHandler;
     /** Reports the status of this host */
     #status?: HostStatusReporter;
+    /** If a recheck of the instances is running */
+    #recheckRunning = false;
     /** Creates and maintains the host object and its states */
     #hostMeta?: HostMetaManager;
     /** Keeps the IPs of the host object up to date */
@@ -335,6 +337,10 @@ export class Controller {
             state: this.#state,
             logWriteErrors: (writes, errorText) => this.#logWriteErrors(writes, errorText),
             stopController: (force, exitProcess) => this.stop(force, exitProcess),
+            aliveExpired: () => {
+                this.#logger.warn(`${this.#hostLogPrefix} Own alive expired, rechecking instances`);
+                this.#recheckInstances('its own alive expired');
+            },
             ...identity,
         });
 
@@ -780,13 +786,17 @@ export class Controller {
      * @param reason why the check runs, for the log
      */
     #recheckInstances(reason: string): void {
-        if (!this.#state.started || this.#state.isStopping) {
+        if (!this.#state.started || this.#state.isStopping || this.#recheckRunning || !this.#instances) {
             return;
         }
+        // a reconnect and an expired alive usually come together, one recheck covers both
+        this.#status?.skipAliveCheck();
+        this.#recheckRunning = true;
         this.#logger.info(`${this.#hostLogPrefix} Rechecking the instances of this host after ${reason}`);
         this.#instances
-            ?.recheckInstances(reason)
-            .catch(e => this.#logger.error(`${this.#hostLogPrefix} Cannot recheck instances: ${e.message}`));
+            .recheckInstances(reason)
+            .catch(e => this.#logger.error(`${this.#hostLogPrefix} Cannot recheck instances: ${e.message}`))
+            .finally(() => (this.#recheckRunning = false));
     }
 
     /**
