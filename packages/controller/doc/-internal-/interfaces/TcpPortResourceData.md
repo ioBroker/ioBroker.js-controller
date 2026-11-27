@@ -6,7 +6,7 @@
 
 # Interface: TcpPortResourceData
 
-Defined in: [types-dev/index.d.ts:118](https://github.com/ioBroker/ioBroker.js-controller/blob/6d3d6fa9759e51b8e40ec707d37394a161b93e65/packages/types-dev/index.d.ts#L118)
+Defined in: [types-dev/index.d.ts:118](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/index.d.ts#L118)
 
 A TCP port occupied by an instance
 
@@ -16,7 +16,7 @@ A TCP port occupied by an instance
 
 > `optional` **bind?**: `string`
 
-Defined in: [types-dev/index.d.ts:122](https://github.com/ioBroker/ioBroker.js-controller/blob/6d3d6fa9759e51b8e40ec707d37394a161b93e65/packages/types-dev/index.d.ts#L122)
+Defined in: [types-dev/index.d.ts:122](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/index.d.ts#L122)
 
 Address the socket is bound to. Default "0.0.0.0" (all interfaces)
 
@@ -26,7 +26,7 @@ Address the socket is bound to. Default "0.0.0.0" (all interfaces)
 
 > `optional` **family?**: `4` \| `6`
 
-Defined in: [types-dev/index.d.ts:124](https://github.com/ioBroker/ioBroker.js-controller/blob/6d3d6fa9759e51b8e40ec707d37394a161b93e65/packages/types-dev/index.d.ts#L124)
+Defined in: [types-dev/index.d.ts:124](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/index.d.ts#L124)
 
 address family
 
@@ -36,6 +36,6 @@ address family
 
 > **port**: `number`
 
-Defined in: [types-dev/index.d.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/6d3d6fa9759e51b8e40ec707d37394a161b93e65/packages/types-dev/index.d.ts#L120)
+Defined in: [types-dev/index.d.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/index.d.ts#L120)
 
 TCP port number
