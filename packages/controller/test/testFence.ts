@@ -315,4 +315,37 @@ describe('Fence after a reconnect', function () {
         assert.equal(fenceHost, 'thisHost');
         assert.ok(await server.getObject('test.object'));
     });
+
+    it('objects: loads the Lua scripts again when the server lost them, as after a failover', async () => {
+        const server = await connect(
+            connected =>
+                new ObjectsServer({
+                    connection: connection('jsonl', serverPort, dataDir),
+                    namespace: 'server',
+                    logger,
+                    connected,
+                    change: () => {},
+                } as any),
+        );
+        toDestroy.push(server);
+        const client: ObjectsClient = await connect(
+            connected =>
+                new ObjectsClient({
+                    connection: connection('redis', serverPort),
+                    namespace: 'host',
+                    logger,
+                    connected,
+                    change: () => {},
+                } as any),
+        );
+        toDestroy.push(client);
+
+        const knownScripts: Record<string, unknown> = (server as any).objectsServer.knownScripts;
+        for (const hash of Object.keys(knownScripts)) {
+            delete knownScripts[hash];
+        }
+
+        await Promise.all([client.setPrimaryHost(1_000), client.extendPrimaryHostLock(1_000)]);
+        assert.ok(Object.keys(knownScripts).length > 0);
+    });
 });
