@@ -12201,7 +12201,9 @@ export class AdapterClass extends EventEmitter {
         let expired = false;
         if (this._fenceEnabled && lastTs !== undefined) {
             try {
-                expired = (await this.#states.getState(`${id}.alive`))?.ts !== lastTs;
+                // not getState, which answers null on a failed read as well
+                const [state] = await this.#states.getStates([`${id}.alive`]);
+                expired = state?.ts !== lastTs;
             } catch {
                 // the write below fails as well and is logged there
             }
