@@ -166,6 +166,8 @@ export class ObjectsInRedisClient {
     private readonly namespace: string;
     private readonly hostname: string;
     private scripts: Record<string, string>;
+    /** Running reload of the Lua scripts */
+    #scriptsReload: Promise<void> | null = null;
     private readonly existingMetaObjects: Set<string>;
     private log: InternalLogger;
     private activeProtocolVersion?: string;
@@ -4858,8 +4860,9 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = (await client.evalsha(
-                        this.scripts.filter,
+                    objs = (await this.#evalScript(
+                        client,
+                        'filter',
                         6,
                         this.objNamespace,
                         params.startkey,
@@ -4951,8 +4954,9 @@ export class ObjectsInRedisClient {
                 }
                 let res: string[] | [objStrings: string[], cursor: string];
                 try {
-                    res = (await client.evalsha(
-                        this.scripts.script,
+                    res = (await this.#evalScript(
+                        client,
+                        'script',
                         5,
                         this.objNamespace,
                         params.startkey,
@@ -5009,8 +5013,9 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = (await client.evalsha(
-                        this.scripts.programs,
+                    objs = (await this.#evalScript(
+                        client,
+                        'programs',
                         5,
                         `${this.objNamespace}hm-rega.`,
                         params.startkey,
@@ -5064,8 +5069,9 @@ export class ObjectsInRedisClient {
 
                 let objs: string[];
                 try {
-                    objs = (await client.evalsha(
-                        this.scripts.variables,
+                    objs = (await this.#evalScript(
+                        client,
+                        'variables',
                         5,
                         `${this.objNamespace}hm-rega.`,
                         params.startkey,
@@ -5118,8 +5124,9 @@ export class ObjectsInRedisClient {
                 }
                 let objs: string[];
                 try {
-                    objs = (await client.evalsha(
-                        this.scripts.custom,
+                    objs = (await this.#evalScript(
+                        client,
+                        'custom',
                         5,
                         this.objNamespace,
                         params.startkey,
@@ -6139,6 +6146,32 @@ export class ObjectsInRedisClient {
     }
 
     /**
+     * Run a Lua script, reloading the scripts once if the server lost them
+     *
+     * @param client the client from `#connection()`
+     * @param name script name
+     * @param numKeys number of keys in args
+     * @param args keys and arguments
+     */
+    async #evalScript(
+        client: IORedis.Redis,
+        name: string,
+        numKeys: number,
+        ...args: (string | number)[]
+    ): Promise<unknown> {
+        try {
+            return await client.evalsha(this.scripts[name], numKeys, ...args);
+        } catch (e) {
+            if (!/NOSCRIPT|Unknown Script/i.test(e.message)) {
+                throw e;
+            }
+        }
+        this.#scriptsReload ??= this.loadLuaScripts().finally(() => (this.#scriptsReload = null));
+        await this.#scriptsReload;
+        return client.evalsha(this.scripts[name], numKeys, ...args);
+    }
+
+    /**
      * Get all keys matching a pattern using redis SCAN command; duplicates are filtered out
      *
      * @param pattern - pattern to match, e.g. io.hm-rpc.0*
@@ -6270,8 +6303,9 @@ export class ObjectsInRedisClient {
         }
 
         // try to extend lock
-        return client.evalsha(
-            this.scripts.redlock_extend,
+        return this.#evalScript(
+            client,
+            'redlock_extend',
             3,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,
@@ -6298,8 +6332,9 @@ export class ObjectsInRedisClient {
         }
 
         // try to acquire lock
-        return client.evalsha(
-            this.scripts.redlock_acquire,
+        return this.#evalScript(
+            client,
+            'redlock_acquire',
             3,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,
@@ -6338,8 +6373,9 @@ export class ObjectsInRedisClient {
         }
 
         // try to release lock
-        return client.evalsha(
-            this.scripts.redlock_release,
+        return this.#evalScript(
+            client,
+            'redlock_release',
             4,
             `${this.metaNamespace}objects.primaryHost`,
             this.hostname,

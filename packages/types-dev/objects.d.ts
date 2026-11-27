@@ -677,7 +677,13 @@ declare global {
             align?: 'left' | 'center' | 'right';
         }
 
-        type ConnectionType = 'local' | 'cloud';
+        /**
+         * Where the adapter gets its data from:
+         * - `local`: from a device or hub in the local network
+         * - `cloud`: from a cloud service
+         * - `none`: the adapter does not communicate with any device, hub or cloud service (e.g. pure logic or calculation adapters)
+         */
+        type ConnectionType = 'local' | 'cloud' | 'none';
 
         type LocalLink = {
             /** Link to the web service of this adapter, like: "%web_protocol%://%ip%:%web_port%/vis-2/edit.html" */
@@ -759,8 +765,8 @@ declare global {
             compact?: boolean;
             /** The directory relative to iobroker-data where the adapter stores the data. Supports the placeholder `%INSTANCE%`. This folder will be backed up and restored automatically. */
             dataFolder?: string;
-            /** How the adapter will mainly receive its data. Set this together with {@link connectionType} */
-            dataSource?: 'poll' | 'push' | 'assumption';
+            /** How the adapter will mainly receive its data. Set this together with {@link connectionType}. Use `none` if the adapter does not communicate with any device, hub or cloud service */
+            dataSource?: 'poll' | 'push' | 'assumption' | 'none';
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter on the same host. */
             dependencies?: Dependencies;
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter in the whole system. */
