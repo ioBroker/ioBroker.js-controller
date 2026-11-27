@@ -338,6 +338,9 @@ export class Controller {
             logWriteErrors: (writes, errorText) => this.#logWriteErrors(writes, errorText),
             stopController: (force, exitProcess) => this.stop(force, exitProcess),
             aliveExpired: () => {
+                if (this.#state.isStopping) {
+                    return;
+                }
                 this.#logger.warn(`${this.#hostLogPrefix} Own alive expired, rechecking instances`);
                 this.#recheckInstances('its own alive expired');
             },
