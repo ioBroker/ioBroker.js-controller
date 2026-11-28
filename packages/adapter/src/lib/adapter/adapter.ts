@@ -12228,9 +12228,24 @@ export class AdapterClass extends EventEmitter {
             () => (this._aliveTs = ts),
             e => {
                 this._aliveTs = undefined;
-                this._logger.error(`${this.namespaceLog} Cannot set alive state: ${e.message}`);
+                this._statusWriteFailed('alive', e);
             },
         );
+    }
+
+    /**
+     * Log a failed write of the status report. A lost connection only goes to debug: with the fence on, the writes in
+     * flight are not resent but all fail at once, and the next report writes these states again.
+     *
+     * @param state name of the state below `system.adapter.<namespace>`
+     * @param e the error of the write
+     */
+    private _statusWriteFailed(state: string, e: Error): void {
+        if (e.name === 'MaxRetriesPerRequestError' || e.message === tools.ERRORS.ERROR_DB_CLOSED) {
+            this._logger.debug(`${this.namespaceLog} Cannot set ${state} state, connection lost: ${e.message}`);
+        } else {
+            this._logger.error(`${this.namespaceLog} Cannot set ${state} state: ${e.message}`);
+        }
     }
 
     private _reportStatus(): void {
@@ -12254,7 +12269,7 @@ export class AdapterClass extends EventEmitter {
                     expire: reportStatusExpirySec,
                     from: id,
                 })
-                .catch(e => this._logger.error(`${this.namespaceLog} Cannot set connected state: ${e.message}`));
+                .catch(e => this._statusWriteFailed('connected', e));
             this.outputCount++;
         }
         if (!this.startedInCompactMode) {
@@ -12280,7 +12295,7 @@ export class AdapterClass extends EventEmitter {
                             val: Math.round(100 * stats.cpu) / 100,
                             expire: reportStatusExpirySec,
                         })
-                        .catch(e => this._logger.error(`${this.namespaceLog} Cannot set cpu state: ${e.message}`));
+                        .catch(e => this._statusWriteFailed('cpu', e));
                     this.#states
                         .setState(`${id}.cputime`, {
                             ack: true,
@@ -12288,7 +12303,7 @@ export class AdapterClass extends EventEmitter {
                             val: stats.ctime / 1_000,
                             expire: reportStatusExpirySec,
                         })
-                        .catch(e => this._logger.error(`${this.namespaceLog} Cannot set cputime state: ${e.message}`));
+                        .catch(e => this._statusWriteFailed('cputime', e));
                     this.outputCount += 2;
                 }
             });
@@ -12305,7 +12320,7 @@ export class AdapterClass extends EventEmitter {
                         from: id,
                         expire: reportStatusExpirySec,
                     })
-                    .catch(e => this._logger.error(`${this.namespaceLog} Cannot set memRss state: ${e.message}`));
+                    .catch(e => this._statusWriteFailed('memRss', e));
                 this.#states
                     .setState(`${id}.memHeapTotal`, {
                         val: parseFloat(
@@ -12316,7 +12331,7 @@ export class AdapterClass extends EventEmitter {
                         from: id,
                         expire: reportStatusExpirySec,
                     })
-                    .catch(e => this._logger.error(`${this.namespaceLog} Cannot set memHeapTotal state: ${e.message}`));
+                    .catch(e => this._statusWriteFailed('memHeapTotal', e));
                 this.#states
                     .setState(`${id}.memHeapUsed`, {
                         val: parseFloat(
@@ -12327,7 +12342,7 @@ export class AdapterClass extends EventEmitter {
                         from: id,
                         expire: reportStatusExpirySec,
                     })
-                    .catch(e => this._logger.error(`${this.namespaceLog} Cannot set memHeapUsed state: ${e.message}`));
+                    .catch(e => this._statusWriteFailed('memHeapUsed', e));
             } catch (e) {
                 this._logger.warn(`${this.namespaceLog} Could not query used process memory: ${e.message}`);
             }
@@ -12341,7 +12356,7 @@ export class AdapterClass extends EventEmitter {
                         from: id,
                         expire: reportStatusExpirySec,
                     }) // average of measured values
-                    .catch(e => this._logger.error(`${this.namespaceLog} Cannot set eventLoopLag state: ${e.message}`));
+                    .catch(e => this._statusWriteFailed('eventLoopLag', e));
                 this.eventLoopLags = [];
                 this.outputCount++;
             }
@@ -12354,7 +12369,7 @@ export class AdapterClass extends EventEmitter {
                 from: id,
                 expire: reportStatusExpirySec,
             })
-            .catch(e => this._logger.error(`${this.namespaceLog} Cannot set uptime state: ${e.message}`));
+            .catch(e => this._statusWriteFailed('uptime', e));
         this.#states
             .setState(`${id}.inputCount`, {
                 val: this.inputCount,
@@ -12362,7 +12377,7 @@ export class AdapterClass extends EventEmitter {
                 from: id,
                 expire: reportStatusExpirySec,
             })
-            .catch(e => this._logger.error(`${this.namespaceLog} Cannot set inputCount state: ${e.message}`));
+            .catch(e => this._statusWriteFailed('inputCount', e));
         this.#states
             .setState(`${id}.outputCount`, {
                 val: this.outputCount,
@@ -12370,7 +12385,7 @@ export class AdapterClass extends EventEmitter {
                 from: id,
                 expire: reportStatusExpirySec,
             })
-            .catch(e => this._logger.error(`${this.namespaceLog} Cannot set outputCount state: ${e.message}`));
+            .catch(e => this._statusWriteFailed('outputCount', e));
         this.inputCount = 0;
         this.outputCount = 0;
     }

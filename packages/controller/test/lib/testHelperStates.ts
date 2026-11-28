@@ -145,6 +145,44 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
         });
     });
 
+    describe(`${testName}failed status writes`, () => {
+        let logged: { level: string; text: string }[];
+        let originalLogger: any;
+
+        beforeEach(() => {
+            logged = [];
+            originalLogger = (context.adapter as any)._logger;
+            (context.adapter as any)._logger = {
+                debug: (text: string) => logged.push({ level: 'debug', text }),
+                error: (text: string) => logged.push({ level: 'error', text }),
+            };
+        });
+
+        afterEach(() => ((context.adapter as any)._logger = originalLogger));
+
+        it('logs a lost connection at debug only', () => {
+            const maxRetries = new Error('Reached the max retries per request limit (which is 0).');
+            Object.defineProperty(maxRetries, 'name', { value: 'MaxRetriesPerRequestError' });
+
+            (context.adapter as any)._statusWriteFailed('cpu', maxRetries);
+            // the states client turns "Connection is closed." into this
+            (context.adapter as any)._statusWriteFailed('alive', new Error('DB closed'));
+
+            assert.deepStrictEqual(
+                logged.map(entry => entry.level),
+                ['debug', 'debug'],
+            );
+        });
+
+        it('logs any other error as error', () => {
+            (context.adapter as any)._statusWriteFailed('cpu', new Error('permissionError'));
+
+            assert.strictEqual(logged.length, 1);
+            assert.strictEqual(logged[0].level, 'error');
+            assert.match(logged[0].text, /Cannot set cpu state: permissionError/);
+        });
+    });
+
     describe(`${testName}whether to fence`, () => {
         const hosts = ['system.host.fenceTestA', 'system.host.fenceTestB'];
         const needsFence = (): Promise<boolean> => (context.adapter as any)._needsFence();
