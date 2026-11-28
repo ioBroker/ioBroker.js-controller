@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import sinon from 'sinon';
+import pidUsage from 'pidusage';
 import { HostStatusReporter } from '@/lib/controller/host/hostStatusReporter.js';
 import { testConfig, testIdentity, testState, testStatistics } from '@/lib/controller/testing.test-utils.js';
 
@@ -11,7 +12,7 @@ const ALIVE = 'system.host.testhost.alive';
 function fakeStates(): { store: Map<string, ioBroker.State>; client: any } {
     const store = new Map<string, ioBroker.State>();
     const client = {
-        getState: sinon.stub().callsFake((id: string) => Promise.resolve(store.get(id) ?? null)),
+        getStates: sinon.stub().callsFake((ids: string[]) => Promise.resolve(ids.map(id => store.get(id) ?? null))),
         setState: sinon.stub().callsFake((id: string, state: ioBroker.State) => {
             store.set(id, state);
             return Promise.resolve();
@@ -52,6 +53,12 @@ describe('lib/controller/host/hostStatusReporter', function () {
     // reportStatus() reads pidusage, whose first call on Windows starts wmic/PowerShell and takes a few seconds
     this.timeout(10_000);
 
+    before(async function () {
+        // the first call can take more than 10 s on Windows CI, the later ones take less than a second
+        this.timeout(60_000);
+        await pidUsage(process.pid);
+    });
+
     it('does not check the alive on the first renewal', async () => {
         const { client } = fakeStates();
         const expired = sinon.spy();
@@ -59,7 +66,7 @@ describe('lib/controller/host/hostStatusReporter', function () {
 
         await reporter.reportStatus();
 
-        assert.equal(client.getState.withArgs(ALIVE).callCount, 0);
+        assert.equal(client.getStates.callCount, 0);
         assert.equal(expired.callCount, 0);
     });
 
@@ -72,7 +79,7 @@ describe('lib/controller/host/hostStatusReporter', function () {
         await settle();
         await reporter.reportStatus();
 
-        assert.equal(client.getState.withArgs(ALIVE).callCount, 1);
+        assert.equal(client.getStates.callCount, 1);
         assert.equal(expired.callCount, 0);
     });
 
@@ -93,6 +100,20 @@ describe('lib/controller/host/hostStatusReporter', function () {
         assert.equal(expired.callCount, 1);
     });
 
+    it('does not take a failed read for an expired alive', async () => {
+        const { client } = fakeStates();
+        const expired = sinon.spy();
+        const reporter = createReporter(client, expired);
+
+        await reporter.reportStatus();
+        await settle();
+        client.getStates.rejects(new Error('Reached the max retries per request limit (which is 0).'));
+        await reporter.reportStatus();
+
+        assert.equal(client.getStates.callCount, 1);
+        assert.equal(expired.callCount, 0);
+    });
+
     it('does not check after a failed write or when told to skip', async () => {
         const { store, client } = fakeStates();
         const expired = sinon.spy();
@@ -108,7 +129,7 @@ describe('lib/controller/host/hostStatusReporter', function () {
         store.delete(ALIVE);
         await reporter.reportStatus();
 
-        assert.equal(client.getState.withArgs(ALIVE).callCount, 0);
+        assert.equal(client.getStates.callCount, 0);
         assert.equal(expired.callCount, 0);
     });
 });

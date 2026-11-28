@@ -620,6 +620,25 @@ describe('InstanceManager.recheckInstances', () => {
         assert.equal(getObject.called, false);
     });
 
+    it('cancels the pending restart of an instance which was moved to another host meanwhile', async () => {
+        const clock = sinon.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+        try {
+            const { manager } = setup(instanceObject({ common: { host: 'otherhost', stopTimeout: 1 } }));
+            const proc = manager.procs['system.adapter.hm-rpc.0'];
+            delete proc.process;
+            const startInstance = sinon.stub(manager, 'startInstance').resolves();
+            proc.restartTimer = setTimeout(() => manager.startInstance('system.adapter.hm-rpc.0'), 30_000);
+
+            await manager.recheckInstances('a reconnect');
+            await clock.tickAsync(30_000);
+
+            assert.equal(manager.procs['system.adapter.hm-rpc.0'], undefined);
+            assert.equal(startInstance.called, false);
+        } finally {
+            clock.restore();
+        }
+    });
+
     it('reads the instances of all hosts again for the web extensions', async () => {
         const other = instanceObject({ _id: 'system.adapter.frigate.0', common: { host: 'otherhost' } });
         const getObjectViewAsync = sinon.stub().resolves({ rows: [{ id: other._id, value: other }] });

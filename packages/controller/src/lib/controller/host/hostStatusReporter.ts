@@ -381,7 +381,9 @@ export class HostStatusReporter {
         let expired = false;
         if (lastTs !== undefined) {
             try {
-                expired = (await this.#states.getState(id))?.ts !== lastTs;
+                // not getState, which answers null on a failed read as well
+                const [state] = await this.#states.getStates([id]);
+                expired = state?.ts !== lastTs;
             } catch {
                 // the write below fails as well and is logged there
             }

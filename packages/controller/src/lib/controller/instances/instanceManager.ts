@@ -544,7 +544,8 @@ export class InstanceManager {
         const { objects, logger, hostLogPrefix } = this.#options;
 
         for (const [id, proc] of Object.entries(this.procs)) {
-            if ((!proc.process && !proc.schedule) || proc.stopping) {
+            // a pending restart would start an instance that was moved during the gap
+            if ((!proc.process && !proc.schedule && !proc.restartTimer) || proc.stopping) {
                 continue;
             }
 
