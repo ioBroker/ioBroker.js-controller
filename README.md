@@ -313,6 +313,20 @@ Furthermore, instances and their states will not move to another structure and w
 Note, that instances are unique across the whole system and are thus not affected by the described problem. Also objects of `type` instance have a `common.host` attribute
 to find the corresponding host.
 
+### Previous version of an adapter
+
+**Feature status:** New in 8.0.0
+
+When an adapter is upgraded or downgraded, or the same version is installed from another source (e.g. a GitHub branch instead of npm),
+the controller keeps what was installed until then in the `common` of the adapter objects:
+
+- `previousVersion`: the version installed before, e.g. `1.3.2`
+- `previousInstalledFrom`: where it was installed from, e.g. `iobroker.example@1.3.2` or a GitHub URL (absent if that was not known)
+
+The values are taken from `system.host.<hostName>.adapter.<adapterName>`, so they show what this host had installed, and the instances of this host get them as well.
+An upload, `iobroker setup` or installing the same version again from npm keep them. They help to find out what ran before a problem appeared and which version to go back to.
+They do not undo an upgrade: migrations of objects and states that the new version did stay.
+
 ### Ignoring specific adapter version
 
 **Feature status:** New in 6.0.0

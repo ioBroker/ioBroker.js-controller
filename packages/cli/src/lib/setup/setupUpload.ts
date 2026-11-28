@@ -8,7 +8,7 @@
  */
 
 import fs from 'fs-extra';
-import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
+import { tools, EXIT_CODES, isInstalledFromNpm } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'node:util';
 import axios from 'axios';
@@ -42,6 +42,63 @@ interface Logger extends InternalLogger {
 
 /** Logger without noisy levels */
 type MinimalLogger = Omit<Logger, 'info' | 'silly' | 'debug'>;
+
+/** What was installed of an adapter before the current version, see `common.previousVersion` */
+export interface PreviousInstallation {
+    /** Version installed before */
+    previousVersion?: string;
+    /** Where that version was installed from */
+    previousInstalledFrom?: ioBroker.InstalledFrom;
+}
+
+/**
+ * Determine `previousVersion` and `previousInstalledFrom` of an adapter, before its object is overwritten from io-package.json
+ *
+ * A new version, or the same version from another known source (e.g. a GitHub branch instead of npm), turns the
+ * installed one into the previous one. Otherwise (upload, setup, the same version installed again) the previous one
+ * stays. Two npm sources of the same version are the same, even when one is spelled without the version, and a
+ * source that is unknown now (npm rewrote io-package.json) is no change.
+ *
+ * @param adapterName name of the adapter, without `iobroker.`
+ * @param installed common of the adapter object of this host as it is in the DB, undefined on a new installation
+ * @param next common from the new io-package.json
+ */
+export function getPreviousInstallation(
+    adapterName: string,
+    installed: Partial<ioBroker.AdapterCommon> | undefined,
+    next: Partial<ioBroker.AdapterCommon>,
+): PreviousInstallation {
+    const installedVersion = installed?.installedVersion || installed?.version;
+    if (!installed || !installedVersion) {
+        return {};
+    }
+
+    // `iobroker.<name>` or `iobroker.<name>@<version>`, but not an npm alias `iobroker.<name>@npm:<other package>`
+    const isPlainNpm = (installedFrom: ioBroker.InstalledFrom): boolean =>
+        isInstalledFromNpm({ adapterName, installedFrom }) && !installedFrom.includes('@npm:');
+
+    const otherSource =
+        !!installed.installedFrom &&
+        !!next.installedFrom &&
+        installed.installedFrom !== next.installedFrom &&
+        !(isPlainNpm(installed.installedFrom) && isPlainNpm(next.installedFrom));
+
+    const previous: PreviousInstallation = {};
+    if (installedVersion !== next.version || otherSource) {
+        previous.previousVersion = installedVersion;
+        if (installed.installedFrom) {
+            previous.previousInstalledFrom = installed.installedFrom;
+        }
+    } else {
+        if (installed.previousVersion) {
+            previous.previousVersion = installed.previousVersion;
+        }
+        if (installed.previousInstalledFrom) {
+            previous.previousInstalledFrom = installed.previousInstalledFrom;
+        }
+    }
+    return previous;
+}
 
 /**
  * CLI command to upload adapter files into the objects database
@@ -928,6 +985,8 @@ export class Upload {
                 ioPack.common = ioPack.common || {};
                 ioPack.common.installedFrom = ioPackFile.common.installedFrom;
             }
+            const hostname = tools.getHostName();
+
             // Not existing? Why ever ... we recreate
             let _obj;
             try {
@@ -935,6 +994,15 @@ export class Upload {
             } catch {
                 // ignore err
             }
+            // What this host had installed. `system.adapter.<name>` may have been written by another host
+            let hostAdapterObj;
+            try {
+                hostAdapterObj = await this.objects.getObject(`system.host.${hostname}.adapter.${name}`);
+            } catch {
+                // ignore err
+            }
+            const installedCommon = hostAdapterObj?.common ?? _obj?.common;
+
             const obj: Omit<ioBroker.AdapterObject, '_id'> = _obj || {
                 common: ioPack.common,
                 native: ioPack.native,
@@ -957,11 +1025,15 @@ export class Upload {
 
             obj.common.installedVersion = ioPack.common.version;
 
+            // `common` comes new from io-package.json, so the previous installation is taken over from the DB.
+            // The instances get it from here, like `installedVersion`
+            delete obj.common.previousVersion;
+            delete obj.common.previousInstalledFrom;
+            Object.assign(obj.common, getPreviousInstallation(name, installedCommon, obj.common));
+
             if (obj.common.news) {
                 delete obj.common.news; // remove this information as it could be big, but it will be taken from repo
             }
-
-            const hostname = tools.getHostName();
 
             obj.from = `system.host.${hostname}.cli`;
             obj.ts = Date.now();
