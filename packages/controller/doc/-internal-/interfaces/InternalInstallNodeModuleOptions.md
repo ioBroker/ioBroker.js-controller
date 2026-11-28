@@ -6,7 +6,7 @@
 
 # Interface: InternalInstallNodeModuleOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:919](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L919)
+Defined in: [adapter/src/lib/\_Types.ts:919](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/adapter/src/lib/_Types.ts#L919)
 
 Internal options for installing a node module
 
@@ -20,7 +20,7 @@ Internal options for installing a node module
 
 > **moduleNameOrUrl**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:921](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L921)
+Defined in: [adapter/src/lib/\_Types.ts:921](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/adapter/src/lib/_Types.ts#L921)
 
 Name of the npm module or an installable url ẁorking with `npm install`
 
@@ -30,7 +30,7 @@ Name of the npm module or an installable url ẁorking with `npm install`
 
 > **version**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:915](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L915)
+Defined in: [adapter/src/lib/\_Types.ts:915](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/adapter/src/lib/_Types.ts#L915)
 
 Version of the node module
 

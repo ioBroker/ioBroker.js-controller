@@ -8,7 +8,7 @@
 
 > **UserInterfaceUnsubscribeInfoBaseObject** = `object`
 
-Defined in: [adapter/src/lib/\_Types.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L170)
+Defined in: [adapter/src/lib/\_Types.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/adapter/src/lib/_Types.ts#L170)
 
 ## Properties
 
@@ -16,6 +16,6 @@ Defined in: [adapter/src/lib/\_Types.ts:170](https://github.com/ioBroker/ioBroke
 
 > **clientId**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L172)
+Defined in: [adapter/src/lib/\_Types.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/adapter/src/lib/_Types.ts#L172)
 
 The handler id, which can be used to send information to clients
