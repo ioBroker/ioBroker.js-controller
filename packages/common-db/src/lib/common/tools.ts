@@ -3334,9 +3334,46 @@ export async function getInstances<TWithObjects extends boolean>(
     return instances;
 }
 
+/** The error `execAsync` and `execFileAsync` reject with */
+export interface ExecAsyncError extends Error {
+    /** Output of the command on stdout, `''` if there was none */
+    stdout: string;
+    /** Output of the command on stderr, `''` if there was none */
+    stderr: string;
+    /** The exit code, or e.g. `ENOENT` if the command does not exist */
+    code?: number | string | null;
+    /** If the command was killed, e.g. by the `timeout` option */
+    killed?: boolean;
+    /** The signal that ended the command */
+    signal?: NodeJS.Signals | null;
+    /** The command line */
+    cmd?: string;
+}
+
+/**
+ * Turn the error of `exec` or `execFile` into the rejection of `execAsync` or `execFileAsync`. It keeps `code`,
+ * `killed` and `signal` and carries the output of the command: callers like the PacketManager detect a command that
+ * prints its usage with a non-zero exit code by it (#3577). The message is replaced by the output on stderr when there
+ * is any, because that usually says more than "Command failed".
+ *
+ * @param error The error of `exec` or `execFile`
+ * @param stdout The output of the command on stdout
+ * @param stderr The output of the command on stderr
+ * @returns The same error with `stdout` and `stderr`
+ */
+function execFailure(error: Error, stdout: string | Buffer, stderr: string | Buffer): ExecAsyncError {
+    const failure = error as ExecAsyncError;
+    failure.stdout = stdout?.toString() ?? '';
+    failure.stderr = stderr?.toString() ?? '';
+    if (failure.stderr) {
+        failure.message = failure.stderr;
+    }
+    return failure;
+}
+
 /**
  * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
- * In error, the promise rejects with the exit code or signal, as well as stdout and stderr.
+ * On error, the promise rejects with an `ExecAsyncError`: the exit code or signal, as well as stdout and stderr.
  *
  * @param command The command to execute
  * @param execOptions The options for child_process.exec
@@ -3362,7 +3399,7 @@ export function execAsync(
     }>((resolve, reject) => {
         exec(command, { ...defaultOptions, ...execOptions }, (error, stdout, stderr) => {
             if (error) {
-                reject(stderr ? new Error(stderr.toString()) : error);
+                reject(execFailure(error, stdout, stderr));
             } else {
                 resolve({
                     stderr: stderr?.toString(),
@@ -3376,10 +3413,11 @@ export function execAsync(
 /**
  * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
  *
- * On error it rejects with the error of `child_process.execFile`, whose `code` (the exit code, or `ENOENT` when
- * the command does not exist), `killed` and `signal` say what happened - a command killed by the `timeout`
- * option has to stay distinguishable from one that exited non-zero. Only the message is replaced by the output
- * on stderr when there is any, because that usually says more than "Command failed".
+ * On error it rejects with the error of `child_process.execFile` as `ExecAsyncError`, whose `code` (the exit code, or
+ * `ENOENT` when the command does not exist), `killed` and `signal` say what happened - a command killed by the
+ * `timeout` option has to stay distinguishable from one that exited non-zero - and which carries `stdout` and
+ * `stderr`. Only the message is replaced by the output on stderr when there is any, because that usually says more
+ * than "Command failed".
  *
  * @param file The command to execute
  * @param args The arguments to pass to the command
@@ -3409,11 +3447,7 @@ export function execFileAsync(
             if (error) {
                 // the error of execFile is an Error carrying `code`, `killed` and `signal` - what the caller
                 // needs to tell a missing command and a timeout apart from a plain non-zero exit
-                const failure: Error = error;
-                if (stderr) {
-                    failure.message = stderr.toString();
-                }
-                reject(failure);
+                reject(execFailure(error, stdout, stderr));
             } else {
                 resolve({
                     stderr: stderr?.toString(),

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { aptUpgradeCommand } from './setupPacketManager.js';
+import { execAsync, execFileAsync, type ExecAsyncError } from '@iobroker/js-controller-common-db/tools';
+import { aptUpgradeCommand, PacketManager } from './setupPacketManager.js';
 
 describe('aptUpgradeCommand', () => {
     it('upgrades only the given packets, all in one call', () => {
@@ -45,6 +46,53 @@ describe('aptUpgradeCommand', () => {
             { name: 'tzdata', version: 2 as unknown as string },
         ]) {
             assert.throws(() => aptUpgradeCommand([{ name: 'openssl' }, packet], false), /Invalid package name/);
+        }
+    });
+});
+
+describe('detection of the packet manager (#3577)', () => {
+    // like `apt` without arguments: the usage on stdout, nothing on stderr, exit code 1
+    const usageOnStdout = `node -e "process.stdout.write('usage: apt');process.exit(1)"`;
+    // like `dpkg` without arguments: the hint on stderr, exit code 2
+    const hintOnStderr = `node -e "process.stderr.write('Type dpkg --help for help');process.exit(2)"`;
+
+    it('execAsync keeps the output of a command that exits non-zero', async () => {
+        await assert.rejects(execAsync(usageOnStdout), (e: ExecAsyncError) => {
+            assert.equal(e.stdout, 'usage: apt');
+            assert.equal(e.stderr, '');
+            assert.equal(e.code, 1);
+            return true;
+        });
+        await assert.rejects(execAsync(hintOnStderr), (e: ExecAsyncError) => {
+            // the output on stderr says more than "Command failed"
+            assert.equal(e.message, 'Type dpkg --help for help');
+            assert.equal(e.stderr, 'Type dpkg --help for help');
+            assert.equal(e.code, 2);
+            return true;
+        });
+    });
+
+    it('execFileAsync keeps the output as well', async () => {
+        await assert.rejects(
+            execFileAsync(process.execPath, ['-e', "process.stdout.write('usage');process.exit(1)"]),
+            (e: ExecAsyncError) => {
+                assert.equal(e.stdout, 'usage');
+                assert.equal(e.stderr, '');
+                assert.equal(e.code, 1);
+                return true;
+            },
+        );
+    });
+
+    it('takes a command that prints its usage and exits non-zero for available, as apt does', async () => {
+        const isCmd = (PacketManager.prototype as any)._isCmd as (cmd: string) => Promise<boolean>;
+        const consoleError = console.error;
+        console.error = () => {};
+        try {
+            assert.equal(await isCmd.call({}, usageOnStdout), true);
+            assert.equal(await isCmd.call({}, hintOnStderr), false);
+        } finally {
+            console.error = consoleError;
         }
     });
 });
