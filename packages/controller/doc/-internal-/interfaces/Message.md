@@ -6,7 +6,7 @@
 
 # Interface: Message
 
-Defined in: [types-dev/index.d.ts:471](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/index.d.ts#L471)
+Defined in: [types-dev/index.d.ts:471](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/types-dev/index.d.ts#L471)
 
 A message being passed between adapter instances
 
@@ -20,7 +20,7 @@ A message being passed between adapter instances
 
 > **\_id**: `number`
 
-Defined in: [types-dev/index.d.ts:473](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/index.d.ts#L473)
+Defined in: [types-dev/index.d.ts:473](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/types-dev/index.d.ts#L473)
 
 ID of this message
 
@@ -30,7 +30,7 @@ ID of this message
 
 > `optional` **callback?**: [`MessageCallbackInfo`](MessageCallbackInfo.md)
 
-Defined in: [types-dev/index.d.ts:467](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/index.d.ts#L467)
+Defined in: [types-dev/index.d.ts:467](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/types-dev/index.d.ts#L467)
 
 Callback information. This is set when the source expects a response
 
@@ -44,7 +44,7 @@ Callback information. This is set when the source expects a response
 
 > **command**: `string`
 
-Defined in: [types-dev/index.d.ts:445](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/index.d.ts#L445)
+Defined in: [types-dev/index.d.ts:445](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/types-dev/index.d.ts#L445)
 
 The command to be executed
 
@@ -58,7 +58,7 @@ The command to be executed
 
 > **from**: `string`
 
-Defined in: [types-dev/index.d.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/index.d.ts#L449)
+Defined in: [types-dev/index.d.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/types-dev/index.d.ts#L449)
 
 The source of this message
 
@@ -72,7 +72,7 @@ The source of this message
 
 > **message**: `any`
 
-Defined in: [types-dev/index.d.ts:447](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/index.d.ts#L447)
+Defined in: [types-dev/index.d.ts:447](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/types-dev/index.d.ts#L447)
 
 The message payload
 
@@ -86,7 +86,7 @@ The message payload
 
 > `optional` **user?**: `` `system.user.${string}` ``
 
-Defined in: [types-dev/index.d.ts:465](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/index.d.ts#L465)
+Defined in: [types-dev/index.d.ts:465](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/types-dev/index.d.ts#L465)
 
 The user this message is sent on behalf of, if the sender named one (`options.user` of
 `sendTo`/`sendToHost`). A socket server such as `admin` or `web` puts the authenticated

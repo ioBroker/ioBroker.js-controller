@@ -8,7 +8,7 @@
 
 > **ConnectionType** = `"local"` \| `"cloud"` \| `"none"`
 
-Defined in: [types-dev/objects.d.ts:686](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/objects.d.ts#L686)
+Defined in: [types-dev/objects.d.ts:686](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/types-dev/objects.d.ts#L686)
 
 Where the adapter gets its data from:
 - `local`: from a device or hub in the local network

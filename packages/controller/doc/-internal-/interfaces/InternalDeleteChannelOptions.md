@@ -6,7 +6,7 @@
 
 # Interface: InternalDeleteChannelOptions
 
-Defined in: [adapter/src/lib/\_Types.ts:803](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L803)
+Defined in: [adapter/src/lib/\_Types.ts:803](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/adapter/src/lib/_Types.ts#L803)
 
 Options for deleting a channel
 
@@ -16,7 +16,7 @@ Options for deleting a channel
 
 > `optional` **callback?**: [`ErrorCallback`](../type-aliases/ErrorCallback.md)
 
-Defined in: [adapter/src/lib/\_Types.ts:809](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L809)
+Defined in: [adapter/src/lib/\_Types.ts:809](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/adapter/src/lib/_Types.ts#L809)
 
 Called once the channel has been deleted
 
@@ -26,7 +26,7 @@ Called once the channel has been deleted
 
 > **channelName**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:807](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L807)
+Defined in: [adapter/src/lib/\_Types.ts:807](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/adapter/src/lib/_Types.ts#L807)
 
 The name of the channel
 
@@ -36,6 +36,6 @@ The name of the channel
 
 > **parentDevice**: `string`
 
-Defined in: [adapter/src/lib/\_Types.ts:805](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/adapter/src/lib/_Types.ts#L805)
+Defined in: [adapter/src/lib/\_Types.ts:805](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/adapter/src/lib/_Types.ts#L805)
 
 The parent device name

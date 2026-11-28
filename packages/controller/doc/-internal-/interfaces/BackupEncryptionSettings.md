@@ -6,7 +6,7 @@
 
 # Interface: BackupEncryptionSettings
 
-Defined in: [types-dev/config.d.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/config.d.ts#L232)
+Defined in: [types-dev/config.d.ts:234](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/types-dev/config.d.ts#L234)
 
 How backups are encrypted
 
@@ -16,7 +16,7 @@ How backups are encrypted
 
 > **mode**: `"password"` \| `"publicKey"`
 
-Defined in: [types-dev/config.d.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/config.d.ts#L238)
+Defined in: [types-dev/config.d.ts:240](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/types-dev/config.d.ts#L240)
 
 `password`: with a password, asked for or taken from `--password-file` or `IOB_BACKUP_PASSWORD`.
 `publicKey`: with the public key below, without a password - for unattended backups. Only the private key,
@@ -28,6 +28,6 @@ which should not be kept on this host, can restore them.
 
 > `optional` **publicKey?**: `string`
 
-Defined in: [types-dev/config.d.ts:240](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/config.d.ts#L240)
+Defined in: [types-dev/config.d.ts:242](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/types-dev/config.d.ts#L242)
 
 The public key of `iobroker backup keygen`, needed for the mode `publicKey`

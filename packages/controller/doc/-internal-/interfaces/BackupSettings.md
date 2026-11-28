@@ -6,7 +6,7 @@
 
 # Interface: BackupSettings
 
-Defined in: [types-dev/config.d.ts:226](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/config.d.ts#L226)
+Defined in: [types-dev/config.d.ts:228](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/types-dev/config.d.ts#L228)
 
 Settings of the backups created with `iobroker backup`
 
@@ -16,6 +16,6 @@ Settings of the backups created with `iobroker backup`
 
 > `optional` **encryption?**: [`BackupEncryptionSettings`](BackupEncryptionSettings.md)
 
-Defined in: [types-dev/config.d.ts:228](https://github.com/ioBroker/ioBroker.js-controller/blob/b62a32b960333e433da0f12f4d80867ad6ba6e25/packages/types-dev/config.d.ts#L228)
+Defined in: [types-dev/config.d.ts:230](https://github.com/ioBroker/ioBroker.js-controller/blob/bc55fa2b001d03ea9d1c99c36ace9b080d4e7f89/packages/types-dev/config.d.ts#L230)
 
 Encrypt every backup, also without `--encrypt`. Absent: backups are only encrypted with `--encrypt`
