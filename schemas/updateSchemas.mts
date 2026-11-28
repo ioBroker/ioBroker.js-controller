@@ -6,6 +6,51 @@ import { fileURLToPath } from 'node:url';
 
 const thisDir = dirname(fileURLToPath(import.meta.url));
 
+/** Keywords to add to one node of a generated schema */
+interface SchemaKeywords {
+    /** Keys from the root of the schema to the node */
+    path: string[];
+    /** The keywords, placed after `type` */
+    keywords: Record<string, unknown>;
+}
+
+/**
+ * Keywords of iobroker.json that the generator cannot derive from config.d.ts. The schema is generated again on
+ * every build (`postbuild`), so they are added here instead of by hand in iobroker.json, where the next build
+ * would drop them.
+ */
+const IOB_JSON_KEYWORDS: SchemaKeywords[] = [
+    {
+        // 0 (off) or at least MIN_DB_LOSS_TIMEOUT_MS of packages/controller/src/lib/controller/db/dbLossWatchdog.ts.
+        // Written as `0 | number` with `@minimum` in config.d.ts, it becomes a plain `number`
+        path: ['definitions', 'IoBJson', 'properties', 'system', 'properties', 'dbLossTimeout'],
+        keywords: { anyOf: [{ const: 0 }, { minimum: 5_000 }] },
+    },
+];
+
+/**
+ * Add keywords to a node of the schema, after its `type`
+ * @param schema the generated schema
+ * @param entry where and what to add
+ */
+function addKeywords(schema: object, entry: SchemaKeywords): void {
+    let node: unknown = schema;
+    for (const key of entry.path) {
+        node = node && typeof node === 'object' ? (node as Record<string, unknown>)[key] : undefined;
+    }
+    if (!node || typeof node !== 'object') {
+        // the property was renamed or moved: fail the build instead of losing the keywords
+        throw new Error(`Cannot add ${Object.keys(entry.keywords).join(', ')} to ${entry.path.join('.')}: not found`);
+    }
+
+    const target = node as Record<string, unknown>;
+    const { type, ...rest } = target;
+    for (const key of Object.keys(target)) {
+        delete target[key];
+    }
+    Object.assign(target, type === undefined ? {} : { type }, entry.keywords, rest);
+}
+
 /**
  * Update contents io iobroker.json schema
  */
@@ -19,6 +64,9 @@ function updateIobJSON(): void {
     };
 
     const schema = tjs.createGenerator(config).createSchema(config.type);
+    for (const entry of IOB_JSON_KEYWORDS) {
+        addKeywords(schema, entry);
+    }
 
     fs.writeJSONSync(path.join(thisDir, 'iobroker.json'), schema, { spaces: 2 });
 }

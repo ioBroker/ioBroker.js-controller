@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import sinon from 'sinon';
 import { DbLossWatchdog, MIN_DB_LOSS_TIMEOUT_MS } from '@/lib/controller/db/dbLossWatchdog.js';
 
@@ -82,5 +83,16 @@ describe('lib/controller/db/dbLossWatchdog', () => {
         watchdog.stop();
 
         assert.equal(onLoss.callCount, 0);
+    });
+});
+
+describe('system.dbLossTimeout in the schema of iobroker.json', () => {
+    it('allows 0 or at least MIN_DB_LOSS_TIMEOUT_MS', async () => {
+        // generated on every build by schemas/updateSchemas.mts, which adds the anyOf
+        const schemaFile = new URL('../../../../../../schemas/iobroker.json', import.meta.url);
+        const schema = JSON.parse(await readFile(schemaFile, 'utf8'));
+        const property = schema.definitions.IoBJson.properties.system.properties.dbLossTimeout;
+
+        assert.deepEqual(property.anyOf, [{ const: 0 }, { minimum: MIN_DB_LOSS_TIMEOUT_MS }]);
     });
 });
