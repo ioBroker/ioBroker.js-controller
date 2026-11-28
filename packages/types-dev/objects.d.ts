@@ -793,6 +793,10 @@ declare global {
             installedFrom?: InstalledFrom;
             /** Shows which version of this adapter is installed */
             installedVersion: string;
+            /** Version installed on this host before the current one (set by the js-controller on an upgrade, downgrade or installation from another source) */
+            previousVersion?: string;
+            /** Source, where the version in `previousVersion` had been installed from */
+            previousInstalledFrom?: InstalledFrom;
             /** Keywords are used by search in admin. Do not write ioBroker here */
             keywords?: string[];
             /** A dictionary of links to web services this adapter provides */
