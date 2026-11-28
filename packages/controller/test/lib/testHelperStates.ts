@@ -116,6 +116,7 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
 
         afterEach(async () => {
             (context.adapter as any).terminate = originalTerminate;
+            (context.adapter as any)._fenced = false;
             await context.objects.extendObject(instanceId(), { common: { host: originalHost } });
         });
 
@@ -132,6 +133,15 @@ export function register(it: Mocha.TestFunction, context: TestContext): void {
             assert.strictEqual(await (context.adapter as any)._fence('a test'), false);
             assert.strictEqual(terminated!.code, 11); // ADAPTER_REQUESTED_TERMINATION
             assert.match(terminated!.reason!, /Moved to host "anotherHost"/);
+        });
+
+        it('does not unload an instance which the fence terminated, e.g. on the SIGTERM of the controller', async () => {
+            await context.objects.extendObject(instanceId(), { common: { host: 'anotherHost' } });
+            await (context.adapter as any)._fence('a test');
+
+            await (context.adapter as any)._stop();
+
+            assert.strictEqual((context.adapter as any)._stopInProgress, false);
         });
     });
 

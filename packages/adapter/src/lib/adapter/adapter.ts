@@ -981,6 +981,8 @@ export class AdapterClass extends EventEmitter {
     private _fenceEnabled = false;
     /** `ts` of the last alive write that reached the DB, undefined if the next renewal should not check */
     private _aliveTs: number | undefined;
+    /** Set if the fence terminated this instance, its unload must not run any more */
+    private _fenced = false;
     private inited?: boolean;
     /** contents of iobroker.json if required via AdapterOptions */
     systemConfig?: InternalAdapterJsonConfig;
@@ -2783,6 +2785,10 @@ export class AdapterClass extends EventEmitter {
      * @param options information about the stoppage
      */
     private async _stop(options: InternalStopParameters = {}): Promise<void> {
+        // e.g. the SIGTERM of the controller after a move: the unload would drive the devices of the copy on the new host
+        if (this._fenced) {
+            return;
+        }
         const { isPause, isScheduled, reason } = options;
         let { exitCode, updateAliveState } = options;
 
@@ -13635,6 +13641,7 @@ export class AdapterClass extends EventEmitter {
                 }),
             ]);
         } catch (e) {
+            this._fenced = true;
             // a normal error code, so the controller restarts the instance with its usual delay
             this.terminate(
                 `Cannot confirm the host of this instance after ${reason}: ${e.message}`,
@@ -13647,6 +13654,7 @@ export class AdapterClass extends EventEmitter {
 
         const host = (obj as ioBroker.InstanceObject | null)?.common?.host;
         if (host && host !== this.host) {
+            this._fenced = true;
             this.terminate(`Moved to host "${host}" during ${reason}`, EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
             return false;
         }
