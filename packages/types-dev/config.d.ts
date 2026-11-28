@@ -177,6 +177,8 @@ export interface IoBJson {
         '// memLimitError': string;
         /** Whether adapters confirm their host after a DB reconnect before sending commands. Absent: only with more than one host */
         fence?: boolean;
+        /** Stop all instances if the objects or states DB did not answer for this time in ms, until the DB answers again and the controller starts them. Absent or 0: off. Values below 5000 are ignored with a warning */
+        dbLossTimeout?: number;
     };
     /** Configuration of the multihost service used to connect several ioBroker hosts */
     multihostService: {

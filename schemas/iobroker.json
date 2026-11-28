@@ -65,6 +65,18 @@
             "fence": {
               "type": "boolean",
               "description": "Whether adapters confirm their host after a DB reconnect before sending commands. Absent: only with more than one host"
+            },
+            "dbLossTimeout": {
+              "type": "number",
+              "anyOf": [
+                {
+                  "const": 0
+                },
+                {
+                  "minimum": 5000
+                }
+              ],
+              "description": "Stop all instances if the objects or states DB did not answer for this time in ms, until the DB answers again and the controller starts them. Absent or 0: off. Values below 5000 are ignored with a warning"
             }
           },
           "required": [
