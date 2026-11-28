@@ -1,3 +1,6 @@
+/** Smallest `system.dbLossTimeout`: a probe is only answered after the first interval, so a timeout near it fires on a healthy DB */
+export const MIN_DB_LOSS_TIMEOUT_MS = 5_000;
+
 /** Everything the watchdog needs to do its work */
 export interface DbLossWatchdogOptions {
     /** Time in ms a database may stay without answer before `onLoss` is called */

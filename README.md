@@ -948,7 +948,7 @@ With `dbLossTimeout` (in ms) in `iobroker.json`, the controller reads from the o
 ```
 
 - The instances stay stopped until the database answers again. Then the controller restarts itself via `iobroker restart` and starts them. Where nothing restarts the controller, e.g. a Docker image in which `iobroker restart` is blocked, it stays stopped until it is started manually or the container is restarted.
-- Choose a time well above the longest pause of the database, e.g. 10 to 30 seconds, otherwise a busy database stops the instances.
+- Choose a time well above the longest pause of the database, e.g. 10 to 30 seconds, otherwise a busy database stops the instances. Values below 5000 are ignored with a warning, the check is off then.
 - When the databases run in the js-controller of one host (file or JSONL), all other hosts with this setting stop their instances when that host is stopped or frozen for longer than this time.
 - A host that is frozen (a paused VM, a process stuck in swap) does not count its own pause as a lost database. When it resumes, it checks its instances as soon as it notices that its `alive` state expired, which takes up to one status interval (15 seconds by default).
 

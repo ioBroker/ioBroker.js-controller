@@ -42,7 +42,7 @@ import type { HostCommandGroupDeps } from '@/lib/controller/messages/commands/in
 import { DiagInfoCollector } from '@/lib/controller/host/diagInfoCollector.js';
 import { HostMetaManager } from '@/lib/controller/host/hostMetaManager.js';
 import { HostStatusReporter } from '@/lib/controller/host/hostStatusReporter.js';
-import { DbLossWatchdog } from '@/lib/controller/db/dbLossWatchdog.js';
+import { DbLossWatchdog, MIN_DB_LOSS_TIMEOUT_MS } from '@/lib/controller/db/dbLossWatchdog.js';
 import { IpManager } from '@/lib/controller/host/ipManager.js';
 import { MultihostManager } from '@/lib/controller/host/multihostManager.js';
 import { HostPairing } from '@/lib/controller/host/hostPairing.js';
@@ -763,10 +763,18 @@ export class Controller {
         if (!timeoutMs || this.#isCompactGroupController || this.#state.isStopping) {
             return;
         }
+        if (timeoutMs < MIN_DB_LOSS_TIMEOUT_MS) {
+            // not raised to the minimum: a value meant in seconds would become a much shorter timeout
+            this.#logger.warn(
+                `${this.#hostLogPrefix} system.dbLossTimeout ${timeoutMs} is below ${MIN_DB_LOSS_TIMEOUT_MS} ms, the database loss check is off`,
+            );
+            return;
+        }
         this.#dbLossWatchdog ??= new DbLossWatchdog({
             timeoutMs,
             probes: [
-                () => this.#states!.getState(`${this.#hostObjectPrefix}.alive`),
+                // not getState, which answers null on a failed read as well
+                () => this.#states!.getStates([`${this.#hostObjectPrefix}.alive`]),
                 () => this.#objects!.getObject(this.#hostObjectPrefix),
             ],
             onLoss: silentMs => {

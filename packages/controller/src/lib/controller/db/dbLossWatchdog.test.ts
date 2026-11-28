@@ -1,12 +1,14 @@
 import assert from 'node:assert/strict';
 import sinon from 'sinon';
-import { DbLossWatchdog } from '@/lib/controller/db/dbLossWatchdog.js';
+import { DbLossWatchdog, MIN_DB_LOSS_TIMEOUT_MS } from '@/lib/controller/db/dbLossWatchdog.js';
 
 describe('lib/controller/db/dbLossWatchdog', () => {
     let clock: sinon.SinonFakeTimers;
 
     beforeEach(() => {
-        clock = sinon.useFakeTimers({ toFake: ['setInterval', 'clearInterval', 'performance'] });
+        clock = sinon.useFakeTimers({
+            toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'performance'],
+        });
     });
 
     afterEach(() => clock.restore());
@@ -22,6 +24,18 @@ describe('lib/controller/db/dbLossWatchdog', () => {
 
         assert.equal(onLoss.callCount, 0);
         assert.equal(probe.callCount, 40);
+    });
+
+    it('stays quiet at the minimum timeout while a database needs 2 s for each answer', async () => {
+        const onLoss = sinon.spy();
+        const slow = (): Promise<void> => new Promise(resolve => setTimeout(resolve, 2_000));
+        const watchdog = new DbLossWatchdog({ timeoutMs: MIN_DB_LOSS_TIMEOUT_MS, probes: [slow, slow], onLoss });
+
+        watchdog.start();
+        await clock.tickAsync(60_000);
+        watchdog.stop();
+
+        assert.equal(onLoss.callCount, 0);
     });
 
     it('reports a database without answer once, after the timeout, without piling up probes', async () => {
